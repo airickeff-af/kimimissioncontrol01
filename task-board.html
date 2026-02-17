@@ -294,6 +294,7 @@
         
         .status-complete { background: rgba(34, 197, 94, 0.2); color: var(--accent-green); }
         .status-review { background: rgba(168, 85, 247, 0.2); color: var(--accent-purple); }
+        .status-blocked { background: rgba(255, 42, 109, 0.2); color: var(--accent-pink); }
         
         .completed-date {
             font-size: 0.75rem;
@@ -331,14 +332,14 @@
     <div class="main-content">
         <!-- Last Updated Banner -->
         <div class="update-banner">
-            <span>🕐 Last Updated: Feb 18, 12:56 AM HKT</span>
+            <span>🕐 Last Updated: Feb 18, 1:15 AM HKT</span>
             <button class="btn" onclick="window.location.reload()">🔄 Refresh</button>
         </div>
 
         <!-- Stats Bar -->
         <div class="stats-bar">
             <div class="stat-card">
-                <div class="stat-value" style="color: var(--accent-yellow);">3</div>
+                <div class="stat-value" style="color: var(--accent-yellow);">8</div>
                 <div class="stat-label">Pending</div>
             </div>
             <div class="stat-card">
@@ -348,6 +349,10 @@
             <div class="stat-card">
                 <div class="stat-value" style="color: var(--accent-purple);">1</div>
                 <div class="stat-label">In Review</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" style="color: var(--accent-pink);">6</div>
+                <div class="stat-label">Blocked/Waiting</div>
             </div>
             <div class="stat-card">
                 <div class="stat-value" style="color: var(--accent-green);">47</div>
@@ -360,6 +365,7 @@
             <button class="tab active" onclick="switchTab('pending')">⏳ Pending (3)</button>
             <button class="tab" onclick="switchTab('progress')">🔄 In Progress (2)</button>
             <button class="tab" onclick="switchTab('review')">👀 In Review (1)</button>
+            <button class="tab" onclick="switchTab('blocked')">🚫 Blocked/Waiting (6)</button>
             <button class="tab" onclick="switchTab('completed')">✅ Completed (47)</button>
         </div>
 
@@ -476,6 +482,117 @@
                 </div>
                 <div style="color: var(--text-secondary); font-size: 0.875rem;">
                     Audit verified 8 features working. Minor JavaScript issues flagged. Awaiting final approval.
+                </div>
+            </div>
+        </div>
+
+        <!-- BLOCKED/WAITING -->
+        <div id="blocked" class="tab-content">
+            <div class="task-card">
+                <div class="task-header">
+                    <div>
+                        <div class="task-title">🚫 Cold Call Schedule Approval</div>
+                        <div class="task-id">TASK-019</div>
+                    </div>
+                    <span class="status-badge status-blocked">WAITING</span>
+                </div>
+                <div class="task-meta">
+                    <div class="meta-item">👤 EricF</div>
+                    <div class="meta-item">📅 Due: Feb 18, 12:00 PM</div>
+                    <div class="meta-item">⏳ Waiting since Feb 17</div>
+                </div>
+                <div style="color: var(--text-secondary); font-size: 0.875rem;">
+                    Approve cold call outreach plan. 26 leads ready. ColdCall agent waiting.
+                </div>
+            </div>
+
+            <div class="task-card">
+                <div class="task-header">
+                    <div>
+                        <div class="task-title">🚫 Larry API Credentials</div>
+                        <div class="task-id">TASK-013</div>
+                    </div>
+                    <span class="status-badge status-blocked">WAITING</span>
+                </div>
+                <div class="task-meta">
+                    <div class="meta-item">👤 EricF</div>
+                    <div class="meta-item">📅 Due: Feb 28, 11:59 PM</div>
+                    <div class="meta-item">🔑 Twitter/X + LinkedIn keys</div>
+                </div>
+                <div style="color: var(--text-secondary); font-size: 0.875rem;">
+                    Twitter/X and LinkedIn API keys needed. Larry can't auto-post without these.
+                </div>
+            </div>
+
+            <div class="task-card">
+                <div class="task-header">
+                    <div>
+                        <div class="task-title">🚫 Vector Search Setup</div>
+                        <div class="task-id">TASK-014</div>
+                    </div>
+                    <span class="status-badge status-blocked">BLOCKED</span>
+                </div>
+                <div class="task-meta">
+                    <div class="meta-item">👤 Nexus</div>
+                    <div class="meta-item">📅 Due: Feb 28, 11:59 PM</div>
+                    <div class="meta-item">🔑 Needs API key</div>
+                </div>
+                <div style="color: var(--text-secondary); font-size: 0.875rem;">
+                    Enable memory vector search. Needs API key for embedding service.
+                </div>
+            </div>
+
+            <div class="task-card">
+                <div class="task-header">
+                    <div>
+                        <div class="task-title">🚫 Fix Office Page Standup</div>
+                        <div class="task-id">TASK-030</div>
+                    </div>
+                    <span class="status-badge status-blocked">NOT STARTED</span>
+                </div>
+                <div class="task-meta">
+                    <div class="meta-item">👤 Forge</div>
+                    <div class="meta-item">📅 Due: Feb 18, 2:00 AM</div>
+                    <div class="meta-item">🔴 P0 - Critical</div>
+                </div>
+                <div style="color: var(--text-secondary); font-size: 0.875rem;">
+                    Fix Meeting tab updates, Minutes tab, Add Tasks button. JavaScript broken.
+                </div>
+            </div>
+
+            <div class="task-card">
+                <div class="task-header">
+                    <div>
+                        <div class="task-title">🚫 Fix Data Viewer Clicks</div>
+                        <div class="task-id">TASK-031</div>
+                    </div>
+                    <span class="status-badge status-blocked">NOT STARTED</span>
+                </div>
+                <div class="task-meta">
+                    <div class="meta-item">👤 Forge+Code</div>
+                    <div class="meta-item">📅 Due: Feb 18, 2:00 AM</div>
+                    <div class="meta-item">🔴 P0 - Critical</div>
+                </div>
+                <div style="color: var(--text-secondary); font-size: 0.875rem;">
+                    Files listed but not clickable. `loadFileList()` called before function defined.
+                </div>
+            </div>
+
+            <div class="task-card">
+                <div class="task-header">
+                    <div>
+                        <div class="task-title">🚫 Fix Refresh Buttons (5 Pages)</div>
+                        <div class="task-id">TASK-032</div>
+                    </div>
+                    <span class="status-badge status-blocked">NOT STARTED</span>
+                </div>
+                <div class="task-meta">
+                    <div class="meta-item">👤 Forge</div>
+                    <div class="meta-item">📅 Due: Feb 18, 1:30 AM</div>
+                    <div class="meta-item">🟡 P1 - High</div>
+                </div>
+                <div style="color: var(--text-secondary); font-size: 0.875rem;">
+                    Change `location.reload()` to `window.location.reload()` on 5 pages.
                 </div>
             </div>
         </div>
