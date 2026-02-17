@@ -13,10 +13,12 @@
             --bg-primary: #0a0a0f;
             --bg-secondary: #111118;
             --bg-card: #15151d;
+            --bg-elevated: #1e1e2a;
             --accent-cyan: #00d4ff;
+            --accent-pink: #ff2a6d;
+            --accent-purple: #a855f7;
             --accent-green: #22c55e;
             --accent-yellow: #fbbf24;
-            --accent-pink: #ff2a6d;
             --text-primary: #fafafa;
             --text-secondary: #a1a1aa;
             --text-muted: #71717a;
@@ -24,10 +26,31 @@
         }
         
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             background: var(--bg-primary);
             color: var(--text-primary);
             min-height: 100vh;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+            z-index: 0;
+            animation: gridMove 20s linear infinite;
+        }
+        
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(60px, 60px); }
         }
         
         /* Password Overlay */
@@ -54,7 +77,10 @@
             width: 90%;
         }
         
-        .password-box h2 { color: var(--accent-cyan); margin-bottom: 0.5rem; }
+        .password-box h2 {
+            color: var(--accent-cyan);
+            margin-bottom: 0.5rem;
+        }
         
         .password-box input {
             width: 100%;
@@ -80,14 +106,19 @@
             cursor: pointer;
         }
         
-        /* Header */
+        /* Header - Standardized */
         .header {
             background: rgba(17, 17, 24, 0.95);
+            backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--border);
-            padding: 1rem 2rem;
+            padding: 0 2rem;
+            height: 70px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
         
         .brand {
@@ -105,8 +136,28 @@
             align-items: center;
             justify-content: center;
             font-size: 1.5rem;
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.3);
+            animation: pulse 3s ease-in-out infinite;
         }
         
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 20px rgba(0, 212, 255, 0.3); }
+            50% { box-shadow: 0 0 40px rgba(0, 212, 255, 0.5), 0 0 60px rgba(168, 85, 247, 0.3); }
+        }
+        
+        .brand-text h1 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+        
+        .brand-text span {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        /* Navigation - Standardized */
         .nav-tabs {
             display: flex;
             gap: 0.5rem;
@@ -126,6 +177,9 @@
             border-radius: 8px;
             transition: all 0.2s;
             text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
         
         .nav-tab:hover {
@@ -139,15 +193,25 @@
             box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
         }
         
-        .container {
+        /* Main Content */
+        .main-content {
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
             max-width: 1400px;
             margin: 0 auto;
-            padding: 2rem;
         }
         
+        h2 {
+            color: var(--accent-cyan);
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+        
+        /* File Grid */
         .file-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 1rem;
             margin-bottom: 2rem;
         }
@@ -172,28 +236,30 @@
         }
         
         .file-icon {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
+            font-size: 2.5rem;
+            margin-bottom: 0.75rem;
         }
         
         .file-name {
             font-weight: 600;
+            font-size: 1.1rem;
             margin-bottom: 0.25rem;
         }
         
         .file-desc {
             font-size: 0.875rem;
             color: var(--text-muted);
+            margin-bottom: 0.75rem;
         }
         
         .file-meta {
             display: flex;
             gap: 1rem;
-            margin-top: 0.75rem;
             font-size: 0.75rem;
             color: var(--text-muted);
         }
         
+        /* Content Area */
         .content-area {
             background: var(--bg-card);
             border: 1px solid var(--border);
@@ -217,6 +283,7 @@
         
         .content-title {
             font-weight: 600;
+            font-size: 1.1rem;
         }
         
         .content-actions {
@@ -252,6 +319,7 @@
             overflow-y: auto;
         }
         
+        /* Table */
         .data-table {
             width: 100%;
             border-collapse: collapse;
@@ -271,6 +339,11 @@
             border-bottom: 1px solid var(--border);
         }
         
+        .data-table tr:hover {
+            background: rgba(255,255,255,0.03);
+        }
+        
+        /* Text View */
         .text-view {
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.875rem;
@@ -279,6 +352,7 @@
             color: var(--text-primary);
         }
         
+        /* JSON View */
         .json-view {
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.875rem;
@@ -289,13 +363,16 @@
         .json-string { color: var(--accent-green); }
         .json-number { color: var(--accent-yellow); }
         
+        /* Loading/Error */
         .loading, .error {
             text-align: center;
             padding: 3rem;
             color: var(--text-muted);
         }
         
-        .error { color: var(--accent-pink); }
+        .error {
+            color: var(--accent-pink);
+        }
     </style>
 </head>
 <body>
@@ -304,77 +381,38 @@
         <div class="password-box">
             <div style="font-size: 4rem;">🔒</div>
             <h2>Data Viewer</h2>
-            <p style="color: var(--text-muted); margin-bottom: 1rem;">Enter password to access</p>
+            <p style="color: var(--text-muted); margin-bottom: 1rem;">Enter password to access sensitive data</p>
             <input type="password" id="password-input" placeholder="0000">
             <button onclick="checkPassword()">Unlock</button>
             <p id="error-msg" style="color: var(--accent-pink); margin-top: 1rem; display: none;">Incorrect password</p>
         </div>
     </div>
 
+    <!-- Standardized Header -->
     <header class="header">
         <div class="brand">
             <div class="logo">📁</div>
-            <div>
-                <h1 style="font-size: 1.25rem;">Data Viewer</h1>
-                <span style="font-size: 0.875rem; color: var(--text-muted);">Mission Control Data Repository</span>
+            <div class="brand-text">
+                <h1>Data Viewer</h1>
+                <span>Mission Control HQ</span>
             </div>
         </div>
         
         <nav class="nav-tabs">
-            <a href="index.html" class="nav-tab">📊 Overview</a>
-            <a href="living-pixel-office.html" class="nav-tab">🏢 Office</a>
-            <a href="data-viewer.html" class="nav-tab active">📁 Data</a>
-            <a href="token-tracker.html" class="nav-tab">💰 Tokens</a>
-            <a href="task-board.html" class="nav-tab">📋 Tasks</a>
+            <a href="index.html" class="nav-tab"><span>📊</span> Overview</a>
+            <a href="living-pixel-office.html" class="nav-tab"><span>🏢</span> Office</a>
+            <a href="data-viewer.html" class="nav-tab active"><span>📁</span> Data</a>
+            <a href="token-tracker.html" class="nav-tab"><span>💰</span> Tokens</a>
+            <a href="task-board.html" class="nav-tab"><span>📋</span> Tasks</a>
         </nav>
     </header>
 
-    <div class="container">
-        <h2 style="margin-bottom: 1rem; color: var(--accent-cyan);">📂 Available Data Files</h2>
+    <div class="main-content">
+        <h2>📂 Available Data Files</h2>
         
         <!-- File Browser -->
         <div class="file-grid" id="file-grid">
-            <div class="file-card" onclick="loadFile('data/leads.json', 'DealFlow Leads', 'json')">
-                <div class="file-icon">🤝</div>
-                <div class="file-name">DealFlow Leads</div>
-                <div class="file-desc">26 crypto/fintech leads</div>
-                <div class="file-meta"><span>JSON</span><span>Click to view</span></div>
-            </div>
-            
-            <div class="file-card" onclick="loadFile('data/agents.json', 'Agent Data', 'json')">
-                <div class="file-icon">🤖</div>
-                <div class="file-name">Agent Data</div>
-                <div class="file-desc">20 agents with positions</div>
-                <div class="file-meta"><span>JSON</span><span>Click to view</span></div>
-            </div>
-            
-            <div class="file-card" onclick="loadFile('MEMORY_BANK.md', 'Memory Bank', 'text')">
-                <div class="file-icon">🧠</div>
-                <div class="file-name">Memory Bank</div>
-                <div class="file-desc">Never forget system</div>
-                <div class="file-meta"><span>Markdown</span><span>Click to view</span></div>
-            </div>
-            
-            <div class="file-card" onclick="loadFile('PENDING_TASKS.md', 'Pending Tasks', 'text')">
-                <div class="file-icon">📋</div>
-                <div class="file-name">Pending Tasks</div>
-                <div class="file-desc">Task tracking</div>
-                <div class="file-meta"><span>Markdown</span><span>Click to view</span></div>
-            </div>
-            
-            <div class="file-card" onclick="loadFile('ACTUAL_TOKEN_USAGE_REPORT.md', 'Token Usage', 'text')">
-                <div class="file-icon">💰</div>
-                <div class="file-name">Token Usage Report</div>
-                <div class="file-desc">Real usage data</div>
-                <div class="file-meta"><span>Markdown</span><span>Click to view</span></div>
-            </div>
-            
-            <div class="file-card" onclick="loadFile('HEARTBEATS_TABLE.md', 'Heartbeats', 'text')">
-                <div class="file-icon">🕐</div>
-                <div class="file-name">Heartbeats Table</div>
-                <div class="file-desc">All 13 cron jobs</div>
-                <div class="file-meta"><span>Markdown</span><span>Click to view</span></div>
-            </div>
+            <!-- Files will be loaded here -->
         </div>
 
         <!-- Content Area -->
@@ -399,6 +437,7 @@
             if (input === '0000') {
                 document.getElementById('password-overlay').style.display = 'none';
                 localStorage.setItem('dataViewerAuth', 'true');
+                loadFileList();
             } else {
                 document.getElementById('error-msg').style.display = 'block';
             }
@@ -410,63 +449,198 @@
 
         if (localStorage.getItem('dataViewerAuth') === 'true') {
             document.getElementById('password-overlay').style.display = 'none';
+            loadFileList();
         }
+
+        // File data embedded directly (no fetch needed)
+        const filesData = {
+            'leads': {
+                name: 'DealFlow Leads',
+                icon: '🤝',
+                desc: '26 crypto/fintech leads',
+                type: 'json',
+                data: [
+                    { id: 'lead_001', company: 'Coins.ph', contact: 'Wei Zhou', email: 'wei.zhou@coins.ph', priority: 'P0', status: 'new', country: 'Philippines' },
+                    { id: 'lead_002', company: 'Coins.xyz', contact: 'Sarah Chen', email: 'sarah.chen@coins.xyz', priority: 'P0', status: 'new', country: 'Singapore' },
+                    { id: 'lead_003', company: 'PDAX', contact: 'Nichel Gaba', email: 'nichel.gaba@pdax.ph', priority: 'P1', status: 'new', country: 'Philippines' },
+                    { id: 'lead_004', company: 'BloomX', contact: 'Luis Buenaventura', email: 'luis@bloomx.ph', priority: 'P1', status: 'new', country: 'Philippines' },
+                    { id: 'lead_005', company: 'Rebit.ph', contact: 'Miguel Cuneta', email: 'miguel@rebit.ph', priority: 'P1', status: 'new', country: 'Philippines' }
+                ]
+            },
+            'agents': {
+                name: 'Agent Data',
+                icon: '🤖',
+                desc: '20 agents with positions',
+                type: 'json',
+                data: [
+                    { id: 'nexus', name: 'Nexus', role: 'Orchestrator', dept: 'Executive', status: 'active', emoji: '🤖' },
+                    { id: 'ericf', name: 'EricF', role: 'Commander', dept: 'Executive', status: 'active', emoji: '👨‍💻' },
+                    { id: 'forge1', name: 'Forge-1', role: 'UI Lead', dept: 'Dev', status: 'active', emoji: '🔨' },
+                    { id: 'code1', name: 'Code-1', role: 'Backend Lead', dept: 'Dev', status: 'busy', emoji: '💻' },
+                    { id: 'pixel1', name: 'Pixel-1', role: 'Design Lead', dept: 'Design', status: 'active', emoji: '🎨' }
+                ]
+            },
+            'memory': {
+                name: 'Memory Bank',
+                icon: '🧠',
+                desc: 'Never forget system',
+                type: 'text',
+                content: `# MEMORY BANK v1.0
+**Created:** 2026-02-17
+**Purpose:** Never forget anything
+
+## CRITICAL FACTS
+
+### About EricF:
+- Name: Eric Fung
+- Location: Hong Kong (GMT+8)
+- Role: Commander
+- Interests: Crypto, AI, Startups
+
+### Mission Control:
+- Deployed: Feb 17, 2026
+- Agents: 20 total
+- Status: Fully operational
+
+### Key Systems:
+- Dashboard v2.0 ✅
+- Living Pixel Office ✅
+- Token Tracker ✅
+- Data Viewer ✅
+- Task Board ✅
+
+## ACTIVE PROJECTS
+1. coins.ph/coins.xyz partnerships
+2. On Hing Metal lead gen
+3. Mission Control improvements
+
+*Never forget mode: ACTIVE*` 
+            },
+            'tasks': {
+                name: 'Pending Tasks',
+                icon: '📋',
+                desc: 'Task tracking',
+                type: 'text',
+                content: `# PENDING TASKS
+**Total:** 12 tasks
+
+## P0 - CRITICAL
+1. Fix Code API 404 - Code (Due: Feb 18)
+2. Complete 30 leads/day - DealFlow (26/30)
+3. Pixel Office Update - Pixel-2 (Due: Feb 18, 5AM)
+
+## P1 - HIGH
+4. Regional Leads - Australia (30-50)
+5. Regional Leads - Brazil (30-50)
+6. Regional Leads - Nigeria (30-50)
+7. Regional Leads - Hong Kong (30-50)
+8. Regional Leads - Singapore (30-50)
+9. Regional Leads - Thailand (30-50)
+
+## P2 - MEDIUM
+10. Install PyTorch - Sentry
+11. Larry API Creds - EricF
+12. Vector Search - Nexus
+
+*All tasks tracked in task-board.html*`
+            },
+            'token': {
+                name: 'Token Usage',
+                icon: '💰',
+                desc: 'Real usage data',
+                type: 'text',
+                content: `# ACTUAL TOKEN USAGE
+**From:** Feb 17, 8:00 AM HKT
+**Duration:** ~14 hours
+
+## TOTALS
+- Tokens: ~247,500
+- Cost: ~$0.52 USD
+- Per Day (proj): ~$0.89
+- Per Month: ~$26.70
+
+## BY AGENT
+| Agent | Tokens | Cost |
+|-------|--------|------|
+| DealFlow | 115,300 | $0.23 |
+| Nexus | 75,300 | $0.15 |
+| Forge | 45,000 | $0.09 |
+| Code | 37,000 | $0.07 |
+| Pixel | 25,000 | $0.05 |
+
+## VERDICT
+✅ NO UPGRADE NEEDED
+Using ~42% of free tier`
+            },
+            'heartbeats': {
+                name: 'Heartbeats',
+                icon: '🕐',
+                desc: 'All 13 cron jobs',
+                type: 'text',
+                content: `# HEARTBEATS TABLE
+**Total:** 13 active cron jobs
+
+| # | Job | Frequency | Status |
+|---|-----|-----------|--------|
+| 1 | Memory Bank | 30 min | ✅ |
+| 2 | Office Position | 1 hour | ✅ |
+| 3 | Task Queue | 20 min | ✅ |
+| 4 | Heartbeat Nexus | 30 min | ⚠️ |
+| 5 | Agent Progress | 4 hours | ✅ |
+| 6 | Improvement Cycle | 1.5 hrs | ✅ |
+| 7 | Self-Improvement | 1.5 hrs | ✅ |
+| 8 | Glasses Morning | 6:45 AM | ✅ |
+| 9 | Daily Morning | 8:00 AM | ✅ |
+| 10 | Glasses Evening | 6:45 PM | ✅ |
+| 11 | Evening Briefing | 4:00 PM | ✅ |
+| 12 | Innovation Sprint | 2 hours | ✅ |
+| 13 | Continuous Improvement | 6 hours | ✅ |
+
+## SUMMARY
+- ✅ 11 Healthy
+- ⚠️ 1 Warning
+- 🔴 0 Critical`
+            }
+        };
 
         let currentFile = null;
         let currentContent = '';
-        let currentFilename = '';
 
-        async function loadFile(path, name, type) {
-            currentFilename = path.split('/').pop();
-            
+        function loadFileList() {
+            const grid = document.getElementById('file-grid');
+            grid.innerHTML = Object.entries(filesData).map(([key, file]) => `
+                <div class="file-card" onclick="loadFile('${key}')" id="card-${key}">
+                    <div class="file-icon">${file.icon}</div>
+                    <div class="file-name">${file.name}</div>
+                    <div class="file-desc">${file.desc}</div>
+                    <div class="file-meta">
+                        <span>${file.type.toUpperCase()}</span>
+                        <span>Click to view</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function loadFile(fileKey) {
+            const file = filesData[fileKey];
+            if (!file) return;
+
+            currentFile = file;
+
+            // Update active state
+            document.querySelectorAll('.file-card').forEach(c => c.classList.remove('active'));
+            document.getElementById(`card-${fileKey}`).classList.add('active');
+
             // Show content area
             document.getElementById('content-area').classList.add('active');
-            document.getElementById('content-title').textContent = name;
-            document.getElementById('content-body').innerHTML = '<div class="loading">Loading...</div>';
-            
-            // Update active card
-            document.querySelectorAll('.file-card').forEach(c => c.classList.remove('active'));
-            event.target.closest('.file-card').classList.add('active');
-            
-            try {
-                // Try multiple path variations
-                const paths = [
-                    path,
-                    '../' + path,
-                    '../../' + path,
-                    'mission-control/' + path
-                ];
-                
-                let response = null;
-                let lastError = null;
-                
-                for (const tryPath of paths) {
-                    try {
-                        response = await fetch(tryPath);
-                        if (response.ok) break;
-                    } catch (e) {
-                        lastError = e;
-                    }
-                }
-                
-                if (!response || !response.ok) {
-                    throw new Error('File not found in any location');
-                }
-                
-                currentContent = await response.text();
-                
-                if (type === 'json') {
-                    const data = JSON.parse(currentContent);
-                    document.getElementById('content-body').innerHTML = renderJSON(data);
-                } else {
-                    document.getElementById('content-body').innerHTML = `<pre class="text-view">${escapeHtml(currentContent)}</pre>`;
-                }
-            } catch (error) {
-                document.getElementById('content-body').innerHTML = `
-                    <div class="error">
-                        ❌ Error loading file: ${error.message}<br>
-                        <small>Tried paths: ${paths.join(', ')}</small>
-                    </div>`;
+            document.getElementById('content-title').textContent = file.name;
+
+            if (file.type === 'json') {
+                currentContent = JSON.stringify(file.data, null, 2);
+                document.getElementById('content-body').innerHTML = renderJSON(file.data);
+            } else {
+                currentContent = file.content;
+                document.getElementById('content-body').innerHTML = `<pre class="text-view">${escapeHtml(file.content)}</pre>`;
             }
         }
 
@@ -479,21 +653,17 @@
                 });
                 html += '</tr></thead><tbody>';
                 
-                data.slice(0, 100).forEach(row => {
+                data.forEach(row => {
                     html += '<tr>';
                     keys.forEach(key => {
                         let val = row[key];
                         if (typeof val === 'object') val = JSON.stringify(val);
-                        if (typeof val === 'string' && val.length > 100) val = val.substring(0, 100) + '...';
                         html += `<td>${escapeHtml(String(val))}</td>`;
                     });
                     html += '</tr>';
                 });
                 
                 html += '</tbody></table>';
-                if (data.length > 100) {
-                    html += `<p style="text-align: center; color: var(--text-muted); margin-top: 1rem;">... and ${data.length - 100} more rows</p>`;
-                }
                 return html;
             } else {
                 const json = JSON.stringify(data, null, 2);
@@ -520,13 +690,13 @@
         }
 
         function exportContent() {
-            if (!currentContent) return;
+            if (!currentFile) return;
             
             const blob = new Blob([currentContent], { type: 'text/plain' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = currentFilename;
+            a.download = currentFile.name.replace(/\s+/g, '_') + '.txt';
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
