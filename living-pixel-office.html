@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mission Control - Living Pixel Office v3</title>
+    <title>Mission Control - Isometric Pixel Office v4</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap');
         
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         :root {
-            --bg: #2d1b4e;
+            --bg: #0f0f1a;
             --panel: #f4e4c1;
             --neon-cyan: #00ffff;
             --neon-pink: #ff6b9d;
@@ -18,6 +18,7 @@
             --neon-yellow: #fcc419;
             --neon-purple: #a855f7;
             --neon-orange: #ff922b;
+            --iso-bg: #1a1a2e;
         }
         
         body {
@@ -30,20 +31,21 @@
         
         .container {
             display: grid;
-            grid-template-columns: 1fr 400px;
+            grid-template-columns: 1fr 420px;
             height: 100vh;
         }
         
         /* Office Canvas Area */
         .office-area {
             position: relative;
-            background: linear-gradient(180deg, #1a0f2e 0%, #2d1b4e 100%);
+            background: linear-gradient(180deg, #0d0d1a 0%, #1a1a2e 50%, #16213e 100%);
             overflow: hidden;
         }
         
         #office-canvas {
             width: 100%;
             height: 100%;
+            image-rendering: pixelated;
         }
         
         .office-header {
@@ -52,23 +54,111 @@
             left: 50%;
             transform: translateX(-50%);
             text-align: center;
-            background: rgba(0,0,0,0.8);
-            padding: 10px 20px;
-            border-radius: 10px;
+            background: rgba(0,0,0,0.9);
+            padding: 12px 24px;
+            border-radius: 12px;
             border: 2px solid var(--neon-cyan);
             z-index: 10;
+            box-shadow: 0 0 20px rgba(0,255,255,0.3);
         }
         
         .office-header h1 {
             font-family: 'Press Start 2P', cursive;
-            font-size: 0.8rem;
+            font-size: 0.7rem;
             color: var(--neon-cyan);
-            margin-bottom: 5px;
+            margin-bottom: 8px;
+            text-shadow: 0 0 10px var(--neon-cyan);
         }
         
         .last-updated {
-            font-size: 0.7rem;
+            font-size: 0.75rem;
             color: #888;
+        }
+        
+        /* Standup Button */
+        .standup-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, var(--neon-pink), #c92a2a);
+            border: 2px solid var(--neon-pink);
+            border-radius: 8px;
+            color: white;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.6rem;
+            cursor: pointer;
+            z-index: 20;
+            box-shadow: 0 0 20px rgba(255,107,157,0.4);
+            transition: all 0.3s;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 20px rgba(255,107,157,0.4); }
+            50% { box-shadow: 0 0 40px rgba(255,107,157,0.7); }
+        }
+        
+        .standup-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(255,107,157,0.6);
+        }
+        
+        .standup-btn:disabled {
+            background: #444;
+            border-color: #666;
+            animation: none;
+            cursor: not-allowed;
+        }
+        
+        /* Meeting Status */
+        .meeting-status {
+            position: absolute;
+            top: 60px;
+            right: 10px;
+            padding: 8px 16px;
+            background: rgba(0,0,0,0.9);
+            border: 1px solid var(--neon-cyan);
+            border-radius: 6px;
+            font-size: 0.8rem;
+            color: var(--neon-cyan);
+            z-index: 20;
+            display: none;
+        }
+        
+        .meeting-status.active {
+            display: block;
+            animation: blink 1s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        /* Speech Bubbles */
+        .speech-bubble {
+            position: absolute;
+            background: rgba(0, 212, 255, 0.95);
+            color: #000;
+            padding: 8px 12px;
+            border-radius: 12px;
+            font-size: 11px;
+            max-width: 180px;
+            z-index: 100;
+            font-family: 'VT323', monospace;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            pointer-events: none;
+        }
+        
+        .speech-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 20px;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-top: 8px solid rgba(0, 212, 255, 0.95);
         }
         
         /* Sidebar */
@@ -88,7 +178,7 @@
         
         .sidebar-header h2 {
             font-family: 'Press Start 2P', cursive;
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             color: var(--neon-cyan);
         }
         
@@ -168,180 +258,6 @@
             font-weight: bold;
         }
         
-        /* Timeline */
-        .timeline-item {
-            position: relative;
-            padding-left: 30px;
-            padding-bottom: 20px;
-            border-left: 2px solid var(--neon-cyan);
-            margin-left: 10px;
-        }
-        
-        .timeline-item::before {
-            content: '';
-            position: absolute;
-            left: -6px;
-            top: 0;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: var(--neon-cyan);
-        }
-        
-        .timeline-item.completed::before {
-            background: var(--neon-green);
-        }
-        
-        .timeline-item.scheduled::before {
-            background: var(--neon-yellow);
-        }
-        
-        .timeline-time {
-            font-size: 0.75rem;
-            color: var(--neon-cyan);
-        }
-        
-        .timeline-title {
-            font-weight: bold;
-            margin: 5px 0;
-        }
-        
-        .timeline-desc {
-            font-size: 0.8rem;
-            color: #aaa;
-        }
-        
-        /* Audit Log */
-        .audit-item {
-            padding: 10px;
-            margin-bottom: 8px;
-            background: rgba(255,255,255,0.05);
-            border-radius: 8px;
-            border-left: 3px solid var(--neon-green);
-        }
-        
-        .audit-item.warning {
-            border-left-color: var(--neon-yellow);
-        }
-        
-        .audit-item.error {
-            border-left-color: var(--neon-pink);
-        }
-        
-        .audit-time {
-            font-size: 0.7rem;
-            color: #666;
-        }
-        
-        .audit-agent {
-            color: var(--neon-green);
-            font-weight: bold;
-        }
-        
-        .audit-action {
-            margin-top: 5px;
-            font-size: 0.85rem;
-        }
-        
-        /* Hierarchy Table */
-        .hierarchy-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.8rem;
-        }
-        
-        .hierarchy-table th {
-            background: rgba(0,255,255,0.1);
-            padding: 10px;
-            text-align: left;
-            border-bottom: 2px solid var(--neon-cyan);
-            color: var(--neon-cyan);
-        }
-        
-        .hierarchy-table td {
-            padding: 8px 10px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-        
-        .hierarchy-table tr:hover {
-            background: rgba(255,255,255,0.05);
-        }
-        
-        .hierarchy-emoji {
-            font-size: 1.2rem;
-            margin-right: 5px;
-        }
-        
-        /* Work Cards */
-        .work-card {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 10px;
-            transition: all 0.2s;
-        }
-        
-        .work-card:hover {
-            border-color: var(--neon-cyan);
-            background: rgba(0,255,255,0.05);
-        }
-        
-        .work-card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-        
-        .work-card-title {
-            font-weight: bold;
-            color: var(--neon-cyan);
-        }
-        
-        .work-card-status {
-            padding: 3px 8px;
-            border-radius: 10px;
-            font-size: 0.7rem;
-            background: rgba(81, 207, 102, 0.2);
-            color: var(--neon-green);
-        }
-        
-        .work-card-status.pending {
-            background: rgba(251, 191, 36, 0.2);
-            color: var(--neon-yellow);
-        }
-        
-        .work-card-desc {
-            font-size: 0.85rem;
-            color: #aaa;
-            margin-bottom: 10px;
-        }
-        
-        .work-card-meta {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.75rem;
-            color: #666;
-        }
-        
-        .work-card-link {
-            display: inline-block;
-            margin-top: 10px;
-            padding: 5px 10px;
-            background: rgba(0,255,255,0.1);
-            border: 1px solid var(--neon-cyan);
-            border-radius: 5px;
-            color: var(--neon-cyan);
-            text-decoration: none;
-            font-size: 0.8rem;
-            transition: all 0.2s;
-        }
-        
-        .work-card-link:hover {
-            background: rgba(0,255,255,0.2);
-        }
-        
         /* Agent Status Panel */
         .agent-status-item {
             display: flex;
@@ -352,6 +268,11 @@
             background: rgba(255,255,255,0.03);
             border-radius: 5px;
             font-size: 0.8rem;
+            transition: all 0.2s;
+        }
+        
+        .agent-status-item:hover {
+            background: rgba(0,255,255,0.1);
         }
         
         .agent-emoji {
@@ -379,8 +300,28 @@
         }
         
         .status-dot.busy { background: var(--neon-yellow); }
-        .status-dot.meeting { background: var(--neon-cyan); }
+        .status-dot.meeting { background: var(--neon-pink); animation: blink 1s infinite; }
         .status-dot.resting { background: #666; }
+        
+        /* Meeting Log */
+        .meeting-log {
+            background: rgba(255,107,157,0.1);
+            border: 1px solid var(--neon-pink);
+            border-radius: 8px;
+            padding: 10px;
+            margin-top: 10px;
+            font-size: 0.8rem;
+        }
+        
+        .meeting-log h4 {
+            color: var(--neon-pink);
+            margin-bottom: 8px;
+        }
+        
+        .meeting-topic {
+            padding: 5px 0;
+            border-bottom: 1px solid rgba(255,107,157,0.2);
+        }
     </style>
 </head>
 <body>
@@ -388,13 +329,24 @@
         <!-- Office Canvas -->
         <div class="office-area">
             <canvas id="office-canvas"></canvas>
+            
             <div class="office-header">
                 <h1>🏢 MISSION CONTROL HQ</h1>
                 <div class="last-updated" id="last-updated">Last updated: Just now</div>
             </div>
+            
+            <!-- Standup Button -->
+            <button class="standup-btn" id="standup-btn" onclick="startStandup()">
+                🎤 CALL STANDUP
+            </button>
+            
+            <!-- Meeting Status -->
+            <div class="meeting-status" id="meeting-status">
+                🎤 STANDUP IN PROGRESS
+            </div>
         </div>
         
-        <!-- Sidebar with Multiple Tabs -->
+        <!-- Sidebar -->
         <div class="sidebar">
             <div class="sidebar-header">
                 <h2>📊 COMMAND CENTER</h2>
@@ -403,315 +355,426 @@
             <!-- Tabs -->
             <div class="tabs">
                 <button class="tab active" onclick="switchTab('activity')">📡 Activity</button>
-                <button class="tab" onclick="switchTab('timeline')">📅 Timeline</button>
-                <button class="tab" onclick="switchTab('audit')">✅ Audit</button>
-                <button class="tab" onclick="switchTab('hierarchy')">👑 Hierarchy</button>
-                <button class="tab" onclick="switchTab('workcards')">📋 Work Cards</button>
+                <button class="tab" onclick="switchTab('agents')">🤖 Agents</button>
+                <button class="tab" onclick="switchTab('meeting')">🎤 Meeting</button>
             </div>
             
             <!-- ACTIVITY TAB -->
             <div id="activity-tab" class="tab-content active">
                 <div id="activity-feed">
                     <div class="activity-item">
-                        <span class="activity-time">20:44:00</span>
-                        <span class="activity-text">Dashboard v2.0 polished and deployed</span>
+                        <span class="activity-time">21:09:00</span>
+                        <span class="activity-text"><span class="activity-agents">Nexus</span> updated pixel office v4</span>
                     </div>
                     <div class="activity-item">
-                        <span class="activity-time">20:32:00</span>
-                        <span class="activity-text"><span class="activity-agents">DealFlow</span> found 20 high-quality leads</span>
+                        <span class="activity-time">21:04:00</span>
+                        <span class="activity-text"><span class="activity-agents">DealFlow</span> found 15 On Hing Metal leads</span>
                     </div>
                     <div class="activity-item">
-                        <span class="activity-time">20:30:00</span>
-                        <span class="activity-text"><span class="activity-agents">Pixel</span> created living pixel office</span>
+                        <span class="activity-time">21:01:00</span>
+                        <span class="activity-text"><span class="activity-agents">Nexus</span> filed new regional tasks</span>
                     </div>
                     <div class="activity-item">
-                        <span class="activity-time">19:50:00</span>
-                        <span class="activity-text">GitHub + Vercel auto-deployment active</span>
+                        <span class="activity-time">20:52:00</span>
+                        <span class="activity-text"><span class="activity-agents">Forge</span> created data viewer</span>
                     </div>
                 </div>
             </div>
             
-            <!-- TIMELINE TAB -->
-            <div id="timeline-tab" class="tab-content">
-                <h3 style="color: var(--neon-cyan); margin-bottom: 15px; font-size: 0.9rem;">📅 TASK TIMELINE</h3>
+            <!-- AGENTS TAB -->
+            <div id="agents-tab" class="tab-content">
+                <h3 style="color: var(--neon-cyan); margin-bottom: 15px; font-size: 0.9rem;">🤖 AGENT STATUS</h3>
                 
-                <div class="timeline-item completed">
-                    <div class="timeline-time">✓ COMPLETED - Feb 17, 8:30 PM</div>
-                    <div class="timeline-title">Deploy Mission Control v2.0</div>
-                    <div class="timeline-desc">Polished UI, stats, agent cards deployed</div>
-                </div>
-                
-                <div class="timeline-item completed">
-                    <div class="timeline-time">✓ COMPLETED - Feb 17, 8:25 PM</div>
-                    <div class="timeline-title">Find 20 Quality Leads</div>
-                    <div class="timeline-desc">DealFlow: PDAX, GCash, Maya, Brankas contacts</div>
-                </div>
-                
-                <div class="timeline-item completed">
-                    <div class="timeline-time">✓ COMPLETED - Feb 17, 7:50 PM</div>
-                    <div class="timeline-title">Setup GitHub + Vercel</div>
-                    <div class="timeline-desc">Auto-deployment pipeline configured</div>
-                </div>
-                
-                <div class="timeline-item scheduled">
-                    <div class="timeline-time">⏰ SCHEDULED - Feb 18, 6:45 AM</div>
-                    <div class="timeline-title">Glasses Daily Briefing</div>
-                    <div class="timeline-desc">Crypto, stocks, news intelligence report</div>
-                </div>
-                
-                <div class="timeline-item scheduled">
-                    <div class="timeline-time">⏰ SCHEDULED - Feb 18, 8:00 AM</div>
-                    <div class="timeline-title">Nexus Daily Briefing</div>
-                    <div class="timeline-desc">System status, task review, planning</div>
-                </div>
-                
-                <div class="timeline-item scheduled">
-                    <div class="timeline-time">⏰ DEADLINE - Feb 18, 12:00 PM</div>
-                    <div class="timeline-title">Final Deployment Deadline</div>
-                    <div class="timeline-desc">All components must be complete</div>
+                <div id="agent-list">
+                    <!-- Populated by JS -->
                 </div>
             </div>
             
-            <!-- AUDIT TAB -->
-            <div id="audit-tab" class="tab-content">
-                <h3 style="color: var(--neon-green); margin-bottom: 15px; font-size: 0.9rem;">✅ AUDIT LOG</h3>
+            <!-- MEETING TAB -->
+            <div id="meeting-tab" class="tab-content">
+                <h3 style="color: var(--neon-pink); margin-bottom: 15px; font-size: 0.9rem;">🎤 STANDUP MEETING</h3>
                 
-                <div class="audit-item">
-                    <div class="audit-time">20:32:00 - Feb 17</div>
-                    <div class="audit-action">
-                        <span class="audit-agent">Audit</span> reviewed <strong>DealFlow leads</strong>
-                    </div>
-                    <div style="margin-top: 5px; font-size: 0.8rem; color: var(--neon-green);">✓ APPROVED - 20 leads meet quality criteria</div>
+                <p style="font-size: 0.85rem; color: #888; margin-bottom: 15px;">
+                    Click "CALL STANDUP" to gather all agents for a team meeting. 
+                    Agents will discuss improvements and share ideas.
+                </p>
+                
+                <div class="meeting-log" id="meeting-log" style="display: none;">
+                    <h4>📋 Meeting Topics</h4>
+                    <div id="meeting-topics"></div>
                 </div>
                 
-                <div class="audit-item warning">
-                    <div class="audit-time">19:10:00 - Feb 17</div>
-                    <div class="audit-action">
-                        <span class="audit-agent">Audit</span> reviewed <strong>Code backend</strong>
-                    </div>
-                    <div style="margin-top: 5px; font-size: 0.8rem; color: var(--neon-yellow);">⚠️ ISSUES FOUND - API 404 errors, needs fix</div>
-                </div>
-                
-                <div class="audit-item">
-                    <div class="audit-time">19:07:00 - Feb 17</div>
-                    <div class="audit-action">
-                        <span class="audit-agent">Audit</span> reviewed <strong>DealFlow database</strong>
-                    </div>
-                    <div style="margin-top: 5px; font-size: 0.8rem; color: var(--neon-green);">✓ APPROVED - Schema valid, 6 leads populated</div>
-                </div>
-                
-                <div class="audit-item">
-                    <div class="audit-time">18:30:00 - Feb 17</div>
-                    <div class="audit-action">
-                        <span class="audit-agent">Audit</span> reviewed <strong>Forge UI components</strong>
-                    </div>
-                    <div style="margin-top: 5px; font-size: 0.8rem; color: var(--neon-green);">✓ APPROVED - All components delivered</div>
-                </div>
-                
-                <div class="audit-item error">
-                    <div class="audit-time">17:00:00 - Feb 17</div>
-                    <div class="audit-action">
-                        <span class="audit-agent">Audit</span> detected <strong>System Alert</strong>
-                    </div>
-                    <div style="margin-top: 5px; font-size: 0.8rem; color: var(--neon-pink);">❌ Token usage at 92% - session compression needed</div>
-                </div>
-            </div>
-            
-            <!-- HIERARCHY TAB -->
-            <div id="hierarchy-tab" class="tab-content">
-                <h3 style="color: var(--neon-yellow); margin-bottom: 15px; font-size: 0.9rem;">👑 AGENT HIERARCHY</h3>
-                
-                <table class="hierarchy-table">
-                    <thead>
-                        <tr>
-                            <th>Agent</th>
-                            <th>Role</th>
-                            <th>Dept</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr style="background: rgba(255,42,109,0.1);">
-                            <td><span class="hierarchy-emoji">👨‍💻</span>EricF</td>
-                            <td>Commander</td>
-                            <td>Executive</td>
-                            <td style="color: var(--neon-green);">● Active</td>
-                        </tr>
-                        <tr style="background: rgba(255,42,109,0.1);">
-                            <td><span class="hierarchy-emoji">🤖</span>Nexus</td>
-                            <td>Orchestrator</td>
-                            <td>Executive</td>
-                            <td style="color: var(--neon-green);">● Active</td>
-                        </tr>
-                        <tr>
-                            <td><span class="hierarchy-emoji">🔨</span>Forge</td>
-                            <td>UI/Frontend Lead</td>
-                            <td>Dev</td>
-                            <td style="color: var(--neon-green);">● Active</td>
-                        </tr>
-                        <tr>
-                            <td><span class="hierarchy-emoji">💻</span>Code</td>
-                            <td>Backend Lead</td>
-                            <td>Dev</td>
-                            <td style="color: var(--neon-yellow);">● Busy</td>
-                        </tr>
-                        <tr>
-                            <td><span class="hierarchy-emoji">🎨</span>Pixel</td>
-                            <td>Design Lead</td>
-                            <td>Dev</td>
-                            <td style="color: var(--neon-green);">● Active</td>
-                        </tr>
-                        <tr>
-                            <td><span class="hierarchy-emoji">🔍</span>Glasses</td>
-                            <td>Research Lead</td>
-                            <td>Content</td>
-                            <td style="color: var(--neon-green);">● Active</td>
-                        </tr>
-                        <tr>
-                            <td><span class="hierarchy-emoji">✍️</span>Quill</td>
-                            <td>Content Lead</td>
-                            <td>Content</td>
-                            <td style="color: var(--neon-green);">● Active</td>
-                        </tr>
-                        <tr>
-                            <td><span class="hierarchy-emoji">📊</span>Gary</td>
-                            <td>Marketing Lead</td>
-                            <td>Growth</td>
-                            <td style="color: var(--neon-green);">● Active</td>
-                        </tr>
-                        <tr>
-                            <td><span class="hierarchy-emoji">📱</span>Larry</td>
-                            <td>Social Lead</td>
-                            <td>Growth</td>
-                            <td style="color: var(--neon-green);">● Active</td>
-                        </tr>
-                        <tr>
-                            <td><span class="hierarchy-emoji">⚙️</span>Sentry</td>
-                            <td>DevOps Lead</td>
-                            <td>Ops</td>
-                            <td style="color: var(--neon-green);">● Active</td>
-                        </tr>
-                        <tr>
-                            <td><span class="hierarchy-emoji">✅</span>Audit</td>
-                            <td>QA Lead</td>
-                            <td>Ops</td>
-                            <td style="color: var(--neon-green);">● Active</td>
-                        </tr>
-                        <tr>
-                            <td><span class="hierarchy-emoji">🔒</span>Cipher</td>
-                            <td>Security Lead</td>
-                            <td>Ops</td>
-                            <td style="color: var(--neon-green);">● Active</td>
-                        </tr>
-                        <tr>
-                            <td><span class="hierarchy-emoji">🤝</span>DealFlow</td>
-                            <td>BD Lead</td>
-                            <td>Business Dev</td>
-                            <td style="color: var(--neon-yellow);">● Busy</td>
-                        </tr>
-                        <tr>
-                            <td><span class="hierarchy-emoji">📞</span>ColdCall</td>
-                            <td>Outreach Lead</td>
-                            <td>Business Dev</td>
-                            <td style="color: var(--neon-green);">● Active</td>
-                        </tr>
-                        <tr>
-                            <td><span class="hierarchy-emoji">🕵️</span>Scout</td>
-                            <td>Intel Lead</td>
-                            <td>Business Dev</td>
-                            <td style="color: var(--neon-green);">● Active</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            
-            <!-- WORK CARDS TAB -->
-            <div id="workcards-tab" class="tab-content">
-                <h3 style="color: var(--neon-purple); margin-bottom: 15px; font-size: 0.9rem;">📋 WORK CARDS & DELIVERABLES</h3>
-                
-                <div class="work-card">
-                    <div class="work-card-header">
-                        <span class="work-card-title">🎨 UI Component Library</span>
-                        <span class="work-card-status">✓ Complete</span>
-                    </div>
-                    <div class="work-card-desc">Complete UI system with 20+ components, theme system, animations</div>
-                    <div class="work-card-meta">
-                        <span>By: Forge</span>
-                        <span>Size: 61KB</span>
-                    </div>
-                    <a href="ui-components.html" class="work-card-link" target="_blank">View Files →</a>
-                </div>
-                
-                <div class="work-card">
-                    <div class="work-card-header">
-                        <span class="work-card-title">⚙️ Backend API System</span>
-                        <span class="work-card-status pending">⚠ In Review</span>
-                    </div>
-                    <div class="work-card-desc">REST API with 4 endpoints, WebSocket support, file watchers</div>
-                    <div class="work-card-meta">
-                        <span>By: Code</span>
-                        <span>Tests: 18/18</span>
-                    </div>
-                    <a href="api/server.js" class="work-card-link" target="_blank">View API Code →</a>
-                </div>
-                
-                <div class="work-card">
-                    <div class="work-card-header">
-                        <span class="work-card-title">🤝 Lead Database</span>
-                        <span class="work-card-status">✓ Complete</span>
-                    </div>
-                    <div class="work-card-desc">26 high-quality leads with complete contact info, pipeline stages</div>
-                    <div class="work-card-meta">
-                        <span>By: DealFlow</span>
-                        <span>Leads: 26</span>
-                    </div>
-                    <a href="../agents/dealflow/leads.json" class="work-card-link" target="_blank">View Leads →</a>
-                </div>
-                
-                <div class="work-card">
-                    <div class="work-card-header">
-                        <span class="work-card-title">🏢 Living Pixel Office</span>
-                        <span class="work-card-status">✓ Complete</span>
-                    </div>
-                    <div class="work-card-desc">Animated office with walking agents, meeting table, real-time logs</div>
-                    <div class="work-card-meta">
-                        <span>By: Pixel/Nexus</span>
-                        <span>Agents: 14</span>
-                    </div>
-                    <a href="living-pixel-office.html" class="work-card-link" target="_blank">View Office →</a>
-                </div>
-                
-                <div class="work-card">
-                    <div class="work-card-header">
-                        <span class="work-card-title">✍️ Content Strategy</span>
-                        <span class="work-card-status">✓ Complete</span>
-                    </div>
-                    <div class="work-card-desc">Twitter thread drafts, content calendar, 5 content pillars</div>
-                    <div class="work-card-meta">
-                        <span>By: Quill/Gary</span>
-                        <span>Posts: 7</span>
-                    </div>
-                    <a href="../agents/quill/drafts/" class="work-card-link" target="_blank">View Content →</a>
-                </div>
-                
-                <div class="work-card">
-                    <div class="work-card-header">
-                        <span class="work-card-title">📊 Mission Control Dashboard</span>
-                        <span class="work-card-status">✓ Complete</span>
-                    </div>
-                    <div class="work-card-desc">Polished v2.0 with stats, agent cards, activity feed, multiple views</div>
-                    <div class="work-card-meta">
-                        <span>By: Forge/Nexus</span>
-                        <span>Files: 20+</span>
-                    </div>
-                    <a href="index.html" class="work-card-link" target="_blank">View Dashboard →</a>
+                <div style="margin-top: 20px; padding: 15px; background: rgba(255,255,255,0.05); border-radius: 8px;">
+                    <h4 style="color: var(--neon-cyan); margin-bottom: 10px;">💡 Discussion Topics</h4>
+                    <ul style="font-size: 0.8rem; color: #aaa; padding-left: 20px;">
+                        <li>API optimization strategies</li>
+                        <li>Lead research best practices</li>
+                        <li>Dashboard UX improvements</li>
+                        <li>Token usage efficiency</li>
+                        <li>Partnership outreach tactics</li>
+                        <li>Code review feedback</li>
+                    </ul>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // Tab switching
+        // Agent data with isometric positions
+        const agents = [
+            { id: 'nexus', name: 'Nexus', emoji: '🤖', role: 'Orchestrator', x: 500, y: 200, color: '#ff2a6d', status: 'working', activity: 'Monitoring systems' },
+            { id: 'ericf', name: 'EricF', emoji: '👨‍💻', role: 'Commander', x: 700, y: 200, color: '#ff2a6d', status: 'working', activity: 'Strategic oversight' },
+            { id: 'forge', name: 'Forge', emoji: '🔨', role: 'UI Lead', x: 200, y: 350, color: '#ff922b', status: 'working', activity: 'Polishing UI' },
+            { id: 'code', name: 'Code', emoji: '💻', role: 'Backend', x: 350, y: 350, color: '#51cf66', status: 'busy', activity: 'Fixing API errors' },
+            { id: 'pixel', name: 'Pixel', emoji: '🎨', role: 'Design', x: 500, y: 350, color: '#a855f7', status: 'working', activity: 'Creating avatars' },
+            { id: 'glasses', name: 'Glasses', emoji: '🔍', role: 'Research', x: 650, y: 350, color: '#00ffff', status: 'resting', activity: 'Resting' },
+            { id: 'quill', name: 'Quill', emoji: '✍️', role: 'Content', x: 800, y: 350, color: '#fcc419', status: 'resting', activity: 'Resting' },
+            { id: 'gary', name: 'Gary', emoji: '📊', role: 'Marketing', x: 200, y: 500, color: '#ff922b', status: 'resting', activity: 'Resting' },
+            { id: 'larry', name: 'Larry', emoji: '📱', role: 'Social', x: 350, y: 500, color: '#51cf66', status: 'resting', activity: 'Resting' },
+            { id: 'sentry', name: 'Sentry', emoji: '⚙️', role: 'DevOps', x: 500, y: 500, color: '#00ffff', status: 'working', activity: 'Monitoring' },
+            { id: 'audit', name: 'Audit', emoji: '✅', role: 'QA', x: 650, y: 500, color: '#fcc419', status: 'working', activity: 'Reviewing code' },
+            { id: 'cipher', name: 'Cipher', emoji: '🔒', role: 'Security', x: 800, y: 500, color: '#a855f7', status: 'working', activity: 'Security check' },
+            { id: 'dealflow', name: 'DealFlow', emoji: '🤝', role: 'BD Lead', x: 350, y: 650, color: '#ff922b', status: 'busy', activity: 'Finding leads' },
+            { id: 'coldcall', name: 'ColdCall', emoji: '📞', role: 'Outreach', x: 500, y: 650, color: '#51cf66', status: 'working', activity: 'Prep outreach' },
+            { id: 'scout', name: 'Scout', emoji: '🕵️', role: 'Intel', x: 650, y: 650, color: '#00ffff', status: 'working', activity: 'Research' }
+        ];
+
+        // Meeting table position (center)
+        const meetingTable = { x: 500, y: 425, radius: 100 };
+        
+        let isStandupActive = false;
+        let meetingStartTime = null;
+        let animationId = null;
+        let agentPositions = {};
+
+        // Initialize canvas
+        const canvas = document.getElementById('office-canvas');
+        const ctx = canvas.getContext('2d');
+        
+        function resizeCanvas() {
+            canvas.width = canvas.parentElement.clientWidth;
+            canvas.height = canvas.parentElement.clientHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        // Isometric projection
+        function toIso(x, y) {
+            const isoX = (x - y) * 0.866 + canvas.width / 2;
+            const isoY = (x + y) * 0.5 + 100;
+            return { x: isoX, y: isoY };
+        }
+
+        // Draw isometric office
+        function drawOffice() {
+            ctx.fillStyle = '#0f0f1a';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw grid floor
+            ctx.strokeStyle = 'rgba(0, 255, 255, 0.1)';
+            ctx.lineWidth = 1;
+            for (let i = -10; i < 20; i++) {
+                const start1 = toIso(i * 50, -500);
+                const end1 = toIso(i * 50, 500);
+                ctx.beginPath();
+                ctx.moveTo(start1.x, start1.y);
+                ctx.lineTo(end1.x, end1.y);
+                ctx.stroke();
+                
+                const start2 = toIso(-500, i * 50);
+                const end2 = toIso(500, i * 50);
+                ctx.beginPath();
+                ctx.moveTo(start2.x, start2.y);
+                ctx.lineTo(end2.x, end2.y);
+                ctx.stroke();
+            }
+            
+            // Draw meeting table (center)
+            const tablePos = toIso(meetingTable.x, meetingTable.y);
+            ctx.fillStyle = 'rgba(255, 107, 157, 0.3)';
+            ctx.strokeStyle = '#ff6b9d';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.ellipse(tablePos.x, tablePos.y, 60, 30, 0, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.stroke();
+            
+            // Table label
+            ctx.fillStyle = '#ff6b9d';
+            ctx.font = '10px "Press Start 2P"';
+            ctx.textAlign = 'center';
+            ctx.fillText('MEETING TABLE', tablePos.x, tablePos.y + 5);
+            
+            // Draw desks
+            agents.forEach(agent => {
+                if (!isStandupActive || agent.status !== 'meeting') {
+                    drawDesk(agent);
+                }
+            });
+            
+            // Draw agents
+            agents.forEach(agent => {
+                drawAgent(agent);
+            });
+            
+            // Draw connections if in meeting
+            if (isStandupActive) {
+                drawMeetingConnections();
+            }
+        }
+
+        function drawDesk(agent) {
+            const pos = toIso(agent.x, agent.y);
+            
+            // Desk shadow
+            ctx.fillStyle = 'rgba(0,0,0,0.3)';
+            ctx.beginPath();
+            ctx.ellipse(pos.x + 5, pos.y + 35, 25, 12, 0, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Desk top
+            ctx.fillStyle = 'rgba(0, 212, 255, 0.2)';
+            ctx.strokeStyle = agent.color;
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.ellipse(pos.x, pos.y + 30, 25, 12, 0, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.stroke();
+            
+            // Computer
+            ctx.fillStyle = '#1a1a2e';
+            ctx.fillRect(pos.x - 12, pos.y + 10, 24, 18);
+            ctx.strokeStyle = agent.color;
+            ctx.lineWidth = 1;
+            ctx.strokeRect(pos.x - 12, pos.y + 10, 24, 18);
+            
+            // Screen glow
+            ctx.fillStyle = agent.color;
+            ctx.globalAlpha = 0.3;
+            ctx.fillRect(pos.x - 10, pos.y + 12, 20, 14);
+            ctx.globalAlpha = 1;
+        }
+
+        function drawAgent(agent) {
+            const pos = toIso(agent.x, agent.y);
+            const bounce = Math.sin(Date.now() / 500 + agents.indexOf(agent)) * 2;
+            
+            // Shadow
+            ctx.fillStyle = 'rgba(0,0,0,0.4)';
+            ctx.beginPath();
+            ctx.ellipse(pos.x, pos.y + 25, 12, 6, 0, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Body (pixel style)
+            ctx.fillStyle = agent.color;
+            const bodyY = pos.y + bounce;
+            
+            // Body block
+            ctx.fillRect(pos.x - 10, bodyY, 20, 20);
+            
+            // Head
+            ctx.fillStyle = '#f4e4c1';
+            ctx.fillRect(pos.x - 8, bodyY - 12, 16, 12);
+            
+            // Eyes
+            ctx.fillStyle = '#000';
+            ctx.fillRect(pos.x - 5, bodyY - 8, 3, 3);
+            ctx.fillRect(pos.x + 2, bodyY - 8, 3, 3);
+            
+            // Status indicator
+            ctx.fillStyle = agent.status === 'working' ? '#51cf66' : 
+                           agent.status === 'busy' ? '#fcc419' : 
+                           agent.status === 'meeting' ? '#ff6b9d' : '#666';
+            ctx.beginPath();
+            ctx.arc(pos.x + 12, bodyY - 5, 3, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Label
+            ctx.fillStyle = '#fff';
+            ctx.font = 'bold 11px "VT323"';
+            ctx.textAlign = 'center';
+            ctx.fillText(agent.name, pos.x, bodyY + 35);
+            
+            // Activity
+            ctx.fillStyle = '#888';
+            ctx.font = '9px "VT323"';
+            ctx.fillText(agent.activity.substring(0, 20), pos.x, bodyY + 46);
+        }
+
+        function drawMeetingConnections() {
+            const tablePos = toIso(meetingTable.x, meetingTable.y);
+            
+            agents.filter(a => a.status === 'meeting').forEach(agent => {
+                const agentPos = toIso(agent.x, agent.y);
+                
+                ctx.strokeStyle = 'rgba(255, 107, 157, 0.3)';
+                ctx.lineWidth = 1;
+                ctx.setLineDash([5, 5]);
+                ctx.beginPath();
+                ctx.moveTo(agentPos.x, agentPos.y);
+                ctx.lineTo(tablePos.x, tablePos.y);
+                ctx.stroke();
+                ctx.setLineDash([]);
+            });
+        }
+
+        // Animation loop
+        function animate() {
+            drawOffice();
+            animationId = requestAnimationFrame(animate);
+        }
+        animate();
+
+        // Standup meeting functionality
+        const discussionTopics = [
+            "How can we optimize API response times?",
+            "What new features should we prioritize?",
+            "Any blockers preventing task completion?",
+            "Best practices for lead research?",
+            "How to optimize token usage?",
+            "Ideas for better dashboard UX?",
+            "Partnership outreach strategies",
+            "Code review feedback",
+            "Design system improvements",
+            "Automation opportunities"
+        ];
+
+        function startStandup() {
+            if (isStandupActive) return;
+            
+            isStandupActive = true;
+            meetingStartTime = Date.now();
+            
+            document.getElementById('standup-btn').disabled = true;
+            document.getElementById('standup-btn').textContent = '🎤 MEETING IN PROGRESS...';
+            document.getElementById('meeting-status').classList.add('active');
+            
+            logActivity('🎤 STANDUP MEETING CALLED! All agents gathering...');
+            
+            // Move agents to meeting table
+            agents.forEach((agent, index) => {
+                agentPositions[agent.id] = { x: agent.x, y: agent.y };
+                
+                const angle = (Math.PI * 2 / agents.length) * index;
+                const radius = 80;
+                
+                agent.targetX = meetingTable.x + Math.cos(angle) * radius;
+                agent.targetY = meetingTable.y + Math.sin(angle) * radius;
+                agent.status = 'meeting';
+                agent.activity = 'In standup';
+                
+                // Animate to position
+                animateAgentToMeeting(agent);
+                
+                // Show speech bubble
+                setTimeout(() => {
+                    showSpeechBubble(agent);
+                }, 2000 + (index * 800));
+            });
+            
+            updateAgentList();
+            showMeetingLog();
+            
+            // End meeting after 3 minutes
+            setTimeout(() => {
+                endStandup();
+            }, 180000);
+        }
+
+        function animateAgentToMeeting(agent) {
+            const startX = agent.x;
+            const startY = agent.y;
+            const endX = agent.targetX;
+            const endY = agent.targetY;
+            const duration = 1500;
+            const startTime = Date.now();
+            
+            function step() {
+                const elapsed = Date.now() - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const ease = 1 - Math.pow(1 - progress, 3);
+                
+                agent.x = startX + (endX - startX) * ease;
+                agent.y = startY + (endY - startY) * ease;
+                
+                if (progress < 1) {
+                    requestAnimationFrame(step);
+                }
+            }
+            step();
+        }
+
+        function showSpeechBubble(agent) {
+            const topic = discussionTopics[Math.floor(Math.random() * discussionTopics.length)];
+            const pos = toIso(agent.x, agent.y);
+            
+            const bubble = document.createElement('div');
+            bubble.className = 'speech-bubble';
+            bubble.style.left = (pos.x + canvas.parentElement.offsetLeft + 30) + 'px';
+            bubble.style.top = (pos.y + canvas.parentElement.offsetTop - 60) + 'px';
+            bubble.innerHTML = `<strong>${agent.name}:</strong> ${topic}`;
+            
+            document.body.appendChild(bubble);
+            
+            logActivity(`💬 ${agent.name}: "${topic.substring(0, 40)}..."`);
+            
+            setTimeout(() => bubble.remove(), 5000);
+        }
+
+        function endStandup() {
+            logActivity('✅ Standup meeting complete! Agents returning to desks.');
+            
+            agents.forEach(agent => {
+                const originalPos = agentPositions[agent.id];
+                if (originalPos) {
+                    animateAgentReturn(agent, originalPos);
+                }
+                agent.status = 'working';
+                agent.activity = 'Working';
+            });
+            
+            isStandupActive = false;
+            document.getElementById('standup-btn').disabled = false;
+            document.getElementById('standup-btn').textContent = '🎤 CALL STANDUP';
+            document.getElementById('meeting-status').classList.remove('active');
+            document.getElementById('meeting-log').style.display = 'none';
+            
+            updateAgentList();
+        }
+
+        function animateAgentReturn(agent, targetPos) {
+            const startX = agent.x;
+            const startY = agent.y;
+            const duration = 1500;
+            const startTime = Date.now();
+            
+            function step() {
+                const elapsed = Date.now() - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const ease = 1 - Math.pow(1 - progress, 3);
+                
+                agent.x = startX + (targetPos.x - startX) * ease;
+                agent.y = startY + (targetPos.y - startY) * ease;
+                
+                if (progress < 1) {
+                    requestAnimationFrame(step);
+                }
+            }
+            step();
+        }
+
+        function showMeetingLog() {
+            const log = document.getElementById('meeting-log');
+            const topicsDiv = document.getElementById('meeting-topics');
+            
+            topicsDiv.innerHTML = discussionTopics.slice(0, 6).map(topic => 
+                `<div class="meeting-topic">• ${topic}</div>`
+            ).join('');
+            
+            log.style.display = 'block';
+        }
+
+        // UI Functions
         function switchTab(tabName) {
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
             document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
@@ -720,16 +783,48 @@
             document.getElementById(tabName + '-tab').classList.add('active');
         }
 
-        // Update last updated time
+        function logActivity(text) {
+            const feed = document.getElementById('activity-feed');
+            const time = new Date().toLocaleTimeString('en-US', { hour12: false });
+            
+            const item = document.createElement('div');
+            item.className = 'activity-item';
+            item.innerHTML = `
+                <span class="activity-time">${time}</span>
+                <span class="activity-text">${text}</span>
+            `;
+            
+            feed.insertBefore(item, feed.firstChild);
+            
+            // Keep only last 20 items
+            while (feed.children.length > 20) {
+                feed.removeChild(feed.lastChild);
+            }
+        }
+
+        function updateAgentList() {
+            const list = document.getElementById('agent-list');
+            list.innerHTML = agents.map(agent => `
+                <div class="agent-status-item">
+                    <span class="agent-emoji">${agent.emoji}</span>
+                    <div class="agent-info">
+                        <div class="agent-name" style="color: ${agent.color}">${agent.name}</div>
+                        <div class="agent-task">${agent.activity}</div>
+                    </div>
+                    <div class="status-dot ${agent.status}"></div>
+                </div>
+            `).join('');
+        }
+
         function updateTime() {
             const now = new Date();
             document.getElementById('last-updated').textContent = 
                 'Last updated: ' + now.toLocaleTimeString();
         }
+        
         setInterval(updateTime, 1000);
         updateTime();
+        updateAgentList();
     </script>
-    
-    <script src="js/animated-office.js"></script>
 </body>
 </html>
