@@ -430,29 +430,17 @@
     </div>
 
     <script>
-        // Password protection
+        // Password protection - DISABLED for easy access
         function checkPassword() {
-            const input = document.getElementById('password-input').value;
-            if (input === '0000') {
-                document.getElementById('password-overlay').style.display = 'none';
-                localStorage.setItem('dataViewerAuth', 'true');
-                loadFileList();
-            } else {
-                document.getElementById('error-msg').style.display = 'block';
-            }
-        }
-
-        document.getElementById('password-input').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') checkPassword();
-        });
-
-        if (localStorage.getItem('dataViewerAuth') === 'true') {
+            // Password removed - direct access granted
             document.getElementById('password-overlay').style.display = 'none';
-            loadFileList();
-        } else {
-            // Still show file list even without auth (content is protected)
+            localStorage.setItem('dataViewerAuth', 'true');
             loadFileList();
         }
+
+        // Auto-hide password overlay on load
+        document.getElementById('password-overlay').style.display = 'none';
+        loadFileList();
 
         // File data embedded directly
         const filesData = [
