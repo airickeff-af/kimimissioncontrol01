@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mission Control HQ | Token Tracking</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #111118;
+            --bg-card: #15151d;
+            --bg-elevated: #1e1e2a;
+            --accent-cyan: #00d4ff;
+            --accent-pink: #ff2a6d;
+            --accent-purple: #a855f7;
+            --accent-green: #22c55e;
+            --accent-yellow: #fbbf24;
+            --accent-orange: #f97316;
+            --text-primary: #fafafa;
+            --text-secondary: #a1a1aa;
+            --text-muted: #71717a;
+            --border: #27272a;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+            z-index: 0;
+            animation: gridMove 20s linear infinite;
+        }
+        
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(60px, 60px); }
+        }
+        
+        .header {
+            background: rgba(17, 17, 24, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            padding: 0 2rem;
+            height: 70px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .logo {
+            width: 42px;
+            height: 42px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.3);
+            animation: pulse 3s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 20px rgba(0, 212, 255, 0.3); }
+            50% { box-shadow: 0 0 40px rgba(0, 212, 255, 0.5), 0 0 60px rgba(168, 85, 247, 0.3); }
+        }
+        
+        .brand-text h1 {
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+        
+        .brand-text span {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .main-content {
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        /* Token Stats Bar */
+        .token-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .token-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            transition: all 0.3s;
+        }
+        
+        .token-card:hover {
+            border-color: var(--accent-cyan);
+            transform: translateY(-2px);
+        }
+        
+        .token-card.warning {
+            border-color: var(--accent-yellow);
+        }
+        
+        .token-card.critical {
+            border-color: var(--accent-pink);
+        }
+        
+        .token-label {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .token-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+        
+        .token-subtitle {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+        
+        .cost-value {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--accent-green);
+        }
+        
+        /* Progress Bar */
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 4px;
+            margin-top: 0.75rem;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
+            border-radius: 4px;
+            transition: width 0.3s;
+        }
+        
+        .progress-fill.warning {
+            background: linear-gradient(90deg, var(--accent-yellow), var(--accent-orange));
+        }
+        
+        .progress-fill.critical {
+            background: linear-gradient(90deg, var(--accent-pink), #ff0000);
+        }
+        
+        /* Agent Token Grid */
+        .agent-token-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .agent-token-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.25rem;
+            transition: all 0.3s;
+        }
+        
+        .agent-token-card:hover {
+            border-color: var(--accent-cyan);
+            transform: translateY(-2px);
+        }
+        
+        .agent-token-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .agent-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+        
+        .agent-meta {
+            flex: 1;
+        }
+        
+        .agent-name {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+        
+        .agent-role {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+        
+        .token-metrics {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+        }
+        
+        .metric {
+            text-align: center;
+        }
+        
+        .metric-value {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--accent-cyan);
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .metric-label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+        
+        .metric.cost {
+            color: var(--accent-green);
+        }
+        
+        /* Session List */
+        .session-list {
+            margin-top: 2rem;
+        }
+        
+        .session-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--bg-elevated);
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+            border-left: 3px solid var(--accent-cyan);
+        }
+        
+        .session-item:hover {
+            background: rgba(255,255,255,0.05);
+        }
+        
+        .session-info {
+            flex: 1;
+        }
+        
+        .session-name {
+            font-weight: 500;
+        }
+        
+        .session-time {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+        
+        .session-tokens {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--accent-cyan);
+        }
+        
+        .session-cost {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--accent-green);
+            min-width: 80px;
+            text-align: right;
+        }
+        
+        /* Total Cost Banner */
+        .total-banner {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(168, 85, 247, 0.1));
+            border: 1px solid var(--accent-cyan);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-top: 2rem;
+            text-align: center;
+        }
+        
+        .total-label {
+            font-size: 1rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+        
+        .total-value {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .total-subtitle {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .token-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .token-stats {
+                grid-template-columns: 1fr;
+            }
+            .token-metrics {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="brand">
+            <div class="logo">📊</div>
+            <div class="brand-text">
+                <h1>Token Tracker</h1>
+                <span>Usage & Cost Monitoring</span>
+            </div>
+        </div>
+        
+        <a href="index.html" style="color: var(--text-secondary); text-decoration: none; font-size: 0.875rem;">← Back to Dashboard</a>
+    </header>
+    
+    <main class="main-content">
+        <!-- Token Stats Overview -->
+        <div class="token-stats">
+            <div class="token-card">
+                <div class="token-label">🤖 Total Agents</div>
+                <div class="token-value">14</div>
+                <div class="token-subtitle">Active sessions</div>
+            </div>
+            
+            <div class="token-card">
+                <div class="token-label">📝 Total Tokens</div>
+                <div class="token-value">196.5K</div>
+                <div class="token-subtitle">75% of 262K limit</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 75%;"></div>
+                </div>
+            </div>
+            
+            <div class="token-card">
+                <div class="token-label">💰 Total Cost</div>
+                <div class="cost-value">$0.42</div>
+                <div class="token-subtitle">Today's estimated cost</div>
+            </div>
+            
+            <div class="token-card">
+                <div class="token-label">⏱️ Avg per Agent</div>
+                <div class="token-value">14K</div>
+                <div class="token-subtitle">~$0.03 per agent</div>
+            </div>
+        </div>
+        
+        <!-- Agent Token Usage -->
+        <h2 style="margin-bottom: 1rem; color: var(--accent-cyan);">🤖 Agent Token Usage</h2>
+        
+        <div class="agent-token-grid">
+            <!-- Nexus -->
+            <div class="agent-token-card">
+                <div class="agent-token-header">
+                    <div class="agent-avatar" style="background: linear-gradient(135deg, #ff2a6d, #c92a2a);">🤖</div>
+                    <div class="agent-meta">
+                        <div class="agent-name">Nexus</div>
+                        <div class="agent-role">Orchestrator</div>
+                    </div>
+                </div>
+                
+                <div class="token-metrics">
+                    <div class="metric">
+                        <div class="metric-value">75K</div>
+                        <div class="metric-label">TOKENS</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value metric cost">$0.15</div>
+                        <div class="metric-label">COST</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">15</div>
+                        <div class="metric-label">TASKS</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- DealFlow -->
+            <div class="agent-token-card">
+                <div class="agent-token-header">
+                    <div class="agent-avatar" style="background: linear-gradient(135deg, #f97316, #c2410c);">🤝</div>
+                    <div class="agent-meta">
+                        <div class="agent-name">DealFlow</div>
+                        <div class="agent-role">Lead Generation</div>
+                    </div>
+                </div>
+                
+                <div class="token-metrics">
+                    <div class="metric">
+                        <div class="metric-value">115K</div>
+                        <div class="metric-label">TOKENS</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value metric cost">$0.23</div>
+                        <div class="metric-label">COST</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">2</div>
+                        <div class="metric-label">TASKS</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Code -->
+            <div class="agent-token-card">
+                <div class="agent-token-header">
+                    <div class="agent-avatar" style="background: linear-gradient(135deg, #22c55e, #16a34a);">💻</div>
+                    <div class="agent-meta">
+                        <div class="agent-name">Code</div>
+                        <div class="agent-role">Backend</div>
+                    </div>
+                </div>
+                
+                <div class="token-metrics">
+                    <div class="metric">
+                        <div class="metric-value">37K</div>
+                        <div class="metric-label">TOKENS</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value metric cost">$0.07</div>
+                        <div class="metric-label">COST</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">6</div>
+                        <div class="metric-label">TASKS</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Forge -->
+            <div class="agent-token-card">
+                <div class="agent-token-header">
+                    <div class="agent-avatar" style="background: linear-gradient(135deg, #f97316, #ea580c);">🔨</div>
+                    <div class="agent-meta">
+                        <div class="agent-name">Forge</div>
+                        <div class="agent-role">UI/Frontend</div>
+                    </div>
+                </div>
+                
+                <div class="token-metrics">
+                    <div class="metric">
+                        <div class="metric-value">45K</div>
+                        <div class="metric-label">TOKENS</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value metric cost">$0.09</div>
+                        <div class="metric-label">COST</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">8</div>
+                        <div class="metric-label">TASKS</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Pixel -->
+            <div class="agent-token-card">
+                <div class="agent-token-header">
+                    <div class="agent-avatar" style="background: linear-gradient(135deg, #a855f7, #7c3aed);">🎨</div>
+                    <div class="agent-meta">
+                        <div class="agent-name">Pixel</div>
+                        <div class="agent-role">Designer</div>
+                    </div>
+                </div>
+                
+                <div class="token-metrics">
+                    <div class="metric">
+                        <div class="metric-value">25K</div>
+                        <div class="metric-label">TOKENS</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value metric cost">$0.05</div>
+                        <div class="metric-label">COST</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">5</div>
+                        <div class="metric-label">TASKS</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Audit -->
+            <div class="agent-token-card">
+                <div class="agent-token-header">
+                    <div class="agent-avatar" style="background: linear-gradient(135deg, #fbbf24, #f59e0b);">✅</div>
+                    <div class="agent-meta">
+                        <div class="agent-name">Audit</div>
+                        <div class="agent-role">QA</div>
+                    </div>
+                </div>
+                
+                <div class="token-metrics">
+                    <div class="metric">
+                        <div class="metric-value">24K</div>
+                        <div class="metric-label">TOKENS</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value metric cost">$0.05</div>
+                        <div class="metric-label">COST</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">6</div>
+                        <div class="metric-label">REVIEWS</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Recent Sessions -->
+        <div class="session-list">
+            <h2 style="margin: 2rem 0 1rem; color: var(--accent-cyan);">📝 Recent Sessions</h2>
+            
+            <div class="session-item">
+                <div class="session-info">
+                    <div class="session-name">DealFlow - Lead Research</div>
+                    <div class="session-time">20:32:00 - 5m 39s runtime</div>
+                </div>
+                <div class="session-tokens">115.3K tokens</div>
+                <div class="session-cost">$0.23</div>
+            </div>
+            
+            <div class="session-item">
+                <div class="session-info">
+                    <div class="session-name">Nexus - Self Improvement</div>
+                    <div class="session-time">20:48:00 - 43s runtime</div>
+                </div>
+                <div class="session-tokens">25.3K tokens</div>
+                <div class="session-cost">$0.05</div>
+            </div>
+            
+            <div class="session-item">
+                <div class="session-info">
+                    <div class="session-name">Forge - Dashboard Polish</div>
+                    <div class="session-time">20:15:00 - 2m 15s runtime</div>
+                </div>
+                <div class="session-tokens">18.5K tokens</div>
+                <div class="session-cost">$0.04</div>
+            </div>
+            
+            <div class="session-item">
+                <div class="session-info">
+                    <div class="session-name">Pixel - Office Creation</div>
+                    <div class="session-time">20:05:00 - 3m 22s runtime</div>
+                </div>
+                <div class="session-tokens">22.1K tokens</div>
+                <div class="session-cost">$0.04</div>
+            </div>
+        </div>
+        
+        <!-- Total Cost Banner -->
+        <div class="total-banner">
+            <div class="total-label">💰 Total Cost Today</div>
+            <div class="total-value">$0.42</div>
+            <div class="total-subtitle">196,532 tokens across 14 agents • ~$0.03 per agent</div>
+        </div>
+    </main>
+</body>
+</html>
