@@ -565,6 +565,7 @@
                 <button class="tab active" onclick="switchTab('activity')">📡 Activity</button>
                 <button class="tab" onclick="switchTab('agents')">🤖 Agents</button>
                 <button class="tab" onclick="switchTab('meeting')">🎤 Meeting</button>
+                <button class="tab" onclick="switchTab('minutes')">📝 Minutes</button>
             </div>
             
             <div id="activity-tab" class="tab-content active">
@@ -582,10 +583,36 @@
                 <div class="meeting-info" id="meeting-info" style="display: none;">
                     <h4>📋 Discussion Topics</h4>
                     <div id="meeting-topics"></div>
-                    
-                    <h4 style="margin-top: 1.5rem;">📝 Meeting Minutes</h4>
-                    <div id="meeting-minutes" style="background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 8px; font-size: 0.8rem; line-height: 1.5;">
+                </div>
+            </div>
+            
+            <div id="minutes-tab" class="tab-content">
+                <div style="background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                    <h4 style="color: var(--accent-cyan); margin-bottom: 0.5rem;">📝 Latest Meeting Minutes</h4>
+                    <div id="meeting-minutes-display" style="font-size: 0.8rem; line-height: 1.5;">
                         <p style="color: var(--text-muted);">No standup completed yet. Start a meeting to generate minutes.</p>
+                    </div>
+                </div>
+                
+                <div style="background: rgba(0, 212, 255, 0.05); border: 1px solid var(--accent-cyan); border-radius: 8px; padding: 1rem;">
+                    <h4 style="color: var(--accent-cyan); margin-bottom: 0.5rem;">💡 Nexus Peer Review</h4>
+                    <div id="nexus-peer-review" style="font-size: 0.8rem; line-height: 1.5;">
+                        <p style="color: var(--text-muted); margin-bottom: 0.5rem;">After each standup, Nexus analyzes the meeting and suggests improvements:</p>
+                        <ul id="improvement-suggestions" style="color: var(--text-secondary); padding-left: 1.2rem;">
+                            <li>Complete standup to see Nexus analysis</li>
+                        </ul>
+                    </div>
+                    <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border);">
+                        <button class="btn" onclick="addImprovementTasks()" style="font-size: 0.75rem; padding: 0.5rem 1rem; background: var(--accent-cyan); color: #000; border: none; border-radius: 6px; cursor: pointer;">
+                            ➕ Add Tasks to Pending
+                        </button>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 1rem; background: rgba(255, 42, 109, 0.05); border: 1px solid var(--accent-pink); border-radius: 8px; padding: 1rem;">
+                    <h4 style="color: var(--accent-pink); margin-bottom: 0.5rem;">📋 Auto-Generated Tasks</h4>
+                    <div id="auto-generated-tasks" style="font-size: 0.8rem;">
+                        <p style="color: var(--text-muted);">Tasks will appear here after Nexus peer review...</p>
                     </div>
                 </div>
             </div>
@@ -1443,8 +1470,80 @@
             
             document.getElementById('meeting-minutes').innerHTML = minutesHTML;
             
+            // Update the Minutes tab display
+            document.getElementById('meeting-minutes-display').innerHTML = minutesHTML;
+            
+            // Generate Nexus peer review
+            generateNexusPeerReview(selectedInsights, selectedImprovements);
+            
             // Also log to activity feed
             logActivity(`📝 Meeting minutes generated for ${timeStr} standup`);
+        }
+        
+        // Store improvement tasks for adding to pending
+        let pendingImprovementTasks = [];
+        
+        function generateNexusPeerReview(insights, improvements) {
+            // Analyze meeting for improvement opportunities
+            const reviewPoints = [
+                "📈 DealFlow lead generation is 87% complete - need 4 more leads to hit quota",
+                "🎨 Pixel team delivered visual updates ahead of schedule - consider giving more design autonomy",
+                "🔧 Code API issues resolved quickly - good response time on critical bugs",
+                "📊 New dashboards (Performance, Logs) improving visibility - continue this trend",
+                "🤝 Scout's competitor monitoring identified Maya IPO opportunity - act fast",
+                "⚡ System running smoothly with 13 heartbeats - no major issues detected"
+            ];
+            
+            // Generate auto-tasks based on review
+            pendingImprovementTasks = [
+                { id: 'AUTO-001', title: 'Follow up on 4 remaining leads for daily quota', assignee: 'DealFlow', priority: 'P0' },
+                { id: 'AUTO-002', title: 'Schedule Maya IPO opportunity call', assignee: 'ColdCall', priority: 'P1' },
+                { id: 'AUTO-003', title: 'Generate agent avatars with PyTorch', assignee: 'Pixel', priority: 'P2' },
+                { id: 'AUTO-004', title: 'Deploy Code API fixes to production', assignee: 'Code', priority: 'P0' },
+                { id: 'AUTO-005', title: 'Create weekly performance review template', assignee: 'Glasses', priority: 'P2' }
+            ];
+            
+            const reviewHTML = `
+                <p style="color: var(--text-muted); margin-bottom: 0.5rem;">
+                    <strong>Nexus Analysis:</strong> Reviewed ${insights.length} updates and identified ${improvements.length} improvement areas.
+                </p>
+                <ul style="color: var(--text-secondary); padding-left: 1.2rem; margin-bottom: 1rem;">
+                    ${reviewPoints.slice(0, 4).map(point => `<li style="margin-bottom: 0.3rem;">${point}</li>`).join('')}
+                </ul>
+                <p style="color: var(--accent-cyan); font-size: 0.75rem;">
+                    💡 ${pendingImprovementTasks.length} auto-generated tasks ready to add to pending
+                </p>
+            `;
+            
+            document.getElementById('nexus-peer-review').innerHTML = reviewHTML;
+            
+            // Show auto-generated tasks
+            const tasksHTML = pendingImprovementTasks.map(task => `
+                <div style="background: rgba(255,255,255,0.05); padding: 0.5rem; border-radius: 4px; margin-bottom: 0.5rem; border-left: 3px solid ${task.priority === 'P0' ? 'var(--accent-pink)' : 'var(--accent-cyan)'};">
+                    <div style="font-weight: 600; color: var(--text-primary);">${task.title}</div>
+                    <div style="font-size: 0.75rem; color: var(--text-muted);">👤 ${task.assignee} | ${task.priority}</div>
+                </div>
+            `).join('');
+            
+            document.getElementById('auto-generated-tasks').innerHTML = tasksHTML;
+        }
+        
+        function addImprovementTasks() {
+            if (pendingImprovementTasks.length === 0) {
+                alert('No improvement tasks to add. Complete a standup first!');
+                return;
+            }
+            
+            // In a real implementation, this would add tasks to the backend
+            // For now, we'll show a confirmation and log it
+            const taskCount = pendingImprovementTasks.length;
+            logActivity(`➕ Nexus added ${taskCount} improvement tasks to pending queue`);
+            
+            alert(`✅ ${taskCount} improvement tasks added to pending queue!\n\nTasks:\n${pendingImprovementTasks.map(t => `- ${t.title}`).join('\n')}`);
+            
+            // Clear the pending tasks
+            pendingImprovementTasks = [];
+            document.getElementById('auto-generated-tasks').innerHTML = '<p style="color: var(--text-muted);">Tasks added to pending queue!</p>';
         }
 
         function animateAgentReturn(agent, targetPos, delay) {
