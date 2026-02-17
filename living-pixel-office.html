@@ -570,8 +570,14 @@
         </div>
     </div>
 
+    <!-- Enhanced Standup Memory System -->
+    <script src="js/standup-memory.js"></script>
+    
     <script>
-        // All 20 agents with fixed positions
+        // Initialize standup manager
+        const standupManager = new StandupManager();
+        
+        // All 20 agents with fixed positions and memory tracking
         const agents = [
             // EXECUTIVE BALCONY (Top)
             { id: 'ericf', name: 'EricF', emoji: '👨‍💻', role: 'Commander', x: 250, y: 80, color: '#ff2a6d', status: 'working', activity: 'Strategic oversight', desk: 'Command A', dept: 'Executive' },
@@ -917,18 +923,20 @@
         }
         animate();
 
-        // Standup functionality
+        // Enhanced standup functionality with memory tracking
         const discussionTopics = [
-            "How can we optimize API response times?",
-            "What new features should we prioritize?",
-            "Any blockers preventing task completion?",
-            "Best practices for lead research?",
-            "How to optimize token usage?",
-            "Ideas for better dashboard UX?",
-            "Partnership outreach strategies",
-            "Code review feedback",
-            "Design system improvements",
-            "Automation opportunities"
+            "Reviewing my past 24h work...",
+            "I completed 3 tasks yesterday with good quality",
+            "My quality score improved after the last standup",
+            "I have an idea to optimize our workflow",
+            "I should collaborate with Pixel on the design",
+            "I learned something that could help Code team",
+            "My API response times improved by 20%",
+            "I found a pattern we could automate",
+            "I should document this for future reference",
+            "My work quality is trending upward",
+            "I completed the lead research ahead of schedule",
+            "I have feedback on the new dashboard UX"
         ];
 
         function startStandup() {
@@ -940,8 +948,18 @@
             document.getElementById('standup-btn').classList.remove('pulse');
             document.getElementById('meeting-status').classList.add('active');
             
-            logActivity('🎤 STANDUP CALLED! All 20 agents gathering...');
+            logActivity('🎤 STANDUP CALLED! All 20 agents gathering for 24h review...');
             
+            // Record pre-meeting activities
+            agents.forEach(agent => {
+                const memory = standupManager.getOrCreateMemory(agent.id);
+                memory.recordActivity(agent.activity, agent.status === 'busy' ? 'good' : 'excellent');
+            });
+            
+            // Start the meeting
+            const meeting = standupManager.startMeeting(agents);
+            
+            // Move agents to meeting table
             agents.forEach((agent, index) => {
                 agentPositions[agent.id] = { x: agent.x, y: agent.y };
                 
@@ -951,18 +969,57 @@
                 agent.targetX = meetingTable.x + Math.cos(angle) * radius;
                 agent.targetY = meetingTable.y + Math.sin(angle) * radius;
                 agent.status = 'meeting';
-                agent.activity = 'In standup';
+                agent.activity = 'Reviewing 24h work';
                 
                 animateAgentToMeeting(agent);
                 
-                setTimeout(() => showSpeechBubble(agent), 2000 + (index * 500));
+                // Show speech bubble with report
+                setTimeout(() => showAgentReport(agent, meeting), 2000 + (index * 600));
             });
             
             updateStats();
             updateAgentList();
-            showMeetingLog();
+            showMeetingLog(meeting);
             
-            setTimeout(() => endStandup(), 180000);
+            // End after 3 minutes
+            setTimeout(() => endStandup(meeting), 180000);
+        }
+
+        function showAgentReport(agent, meeting) {
+            const memory = standupManager.getOrCreateMemory(agent.id);
+            const stats = standupManager.getAgentStats(agent.id);
+            const report = meeting.reports.find(r => r.agentId === agent.id);
+            
+            // Generate report message
+            let message = "";
+            if (stats.recentActivities > 0) {
+                message = `Completed ${stats.recentActivities} tasks. Quality: ${stats.qualityScore}%. `;
+                if (stats.qualityScore > 80) message += "Excelling! ";
+                else if (stats.qualityScore < 60) message += "Need to improve. ";
+            } else {
+                message = "Ready to tackle new challenges. ";
+            }
+            
+            // Add insight
+            const idea = memory.generateIdea();
+            message += idea;
+            
+            const pos = toIso(agent.x, agent.y);
+            
+            const bubble = document.createElement('div');
+            bubble.className = 'speech-bubble';
+            bubble.style.left = (pos.x + canvas.parentElement.offsetLeft + 20) + 'px';
+            bubble.style.top = (pos.y + canvas.parentElement.offsetTop - 50) + 'px';
+            bubble.style.maxWidth = '220px';
+            bubble.innerHTML = `
+                <strong style="color: ${agent.color}">${agent.name}:</strong><br>
+                <small style="opacity:0.8">${message.substring(0, 80)}...</small>
+            `;
+            
+            document.body.appendChild(bubble);
+            logActivity(`📊 ${agent.name}: ${stats.recentActivities} tasks, ${stats.qualityScore}% quality`);
+            
+            setTimeout(() => bubble.remove(), 6000);
         }
 
         function animateAgentToMeeting(agent) {
@@ -1000,13 +1057,45 @@
         }
 
         function endStandup() {
-            logActivity('✅ Standup complete! Agents returning to desks.');
+            const completedMeeting = standupManager.endMeeting();
             
+            // Generate improvements
+            const improvements = completedMeeting ? completedMeeting.improvements : [];
+            
+            logActivity('✅ Standup complete! Processing insights and improvements...');
+            
+            // Show improvements
+            if (improvements.length > 0) {
+                improvements.slice(0, 3).forEach((imp, i) => {
+                    setTimeout(() => {
+                        logActivity(`💡 Improvement: ${imp.source1} + ${imp.source2} = ${imp.improvement.substring(0, 40)}...`);
+                    }, i * 1000);
+                });
+            }
+            
+            // Update agent quality scores
             agents.forEach(agent => {
+                const stats = standupManager.getAgentStats(agent.id);
+                if (stats) {
+                    // Boost quality for attending standup
+                    const memory = standupManager.getOrCreateMemory(agent.id);
+                    memory.qualityScore = Math.min(100, memory.qualityScore + 3);
+                    
+                    // Update activity based on insights
+                    if (stats.qualityScore > 85) {
+                        agent.activity = 'High performance mode';
+                    } else if (stats.qualityScore > 70) {
+                        agent.activity = 'Improving workflow';
+                    } else {
+                        agent.activity = 'Implementing feedback';
+                    }
+                }
+                
+                // Return to desk
                 const originalPos = agentPositions[agent.id];
                 if (originalPos) animateAgentReturn(agent, originalPos);
+                
                 agent.status = 'working';
-                agent.activity = 'Working';
             });
             
             isStandupActive = false;
@@ -1015,6 +1104,14 @@
             document.getElementById('standup-btn').classList.add('pulse');
             document.getElementById('meeting-status').classList.remove('active');
             document.getElementById('meeting-info').style.display = 'none';
+            
+            // Show summary
+            setTimeout(() => {
+                const summary = completedMeeting ? standupManager.getMeetingSummary(completedMeeting.id) : null;
+                if (summary) {
+                    logActivity(`📈 Standup Summary: ${summary.ideasGenerated} ideas, ${summary.improvements.length} improvements identified`);
+                }
+            }, 2000);
             
             updateStats();
             updateAgentList();
@@ -1037,12 +1134,30 @@
             step();
         }
 
-        function showMeetingLog() {
+        function showMeetingLog(meeting) {
             document.getElementById('meeting-info').style.display = 'block';
-            document.getElementById('meeting-topics').innerHTML = 
-                discussionTopics.slice(0, 6).map(t => 
-                    `<div class="topic-item">• ${t}</div>`
-                ).join('');
+            
+            let html = '<h4 style="color: var(--accent-pink); margin-bottom: 12px;">📊 24-Hour Reviews</h4>';
+            
+            // Show agent reports
+            meeting.reports.slice(0, 5).forEach(report => {
+                html += `
+                    <div class="topic-item" style="padding: 8px 0; border-bottom: 1px solid var(--border);">
+                        <strong style="color: ${agents.find(a => a.id === report.agentId)?.color || '#fff'}">
+                            ${report.agentName}
+                        </strong>: 
+                        ${report.past24h.taskCount} tasks, ${report.past24h.qualityScore}% quality
+                    </div>
+                `;
+            });
+            
+            // Show ideas
+            html += '<h4 style="color: var(--accent-cyan); margin: 16px 0 12px;">💡 Ideas Generated</h4>';
+            meeting.ideas.slice(0, 4).forEach(idea => {
+                html += `<div class="topic-item" style="padding: 6px 0; font-size: 0.85rem;">• ${idea.agent}: ${idea.idea.substring(0, 50)}...</div>`;
+            });
+            
+            document.getElementById('meeting-topics').innerHTML = html;
         }
 
         // UI Functions
@@ -1088,9 +1203,9 @@
         }
 
         // Initial setup
-        logActivity('🏢 Pixel Office v5 loaded with 20 agents');
-        logActivity('🌱 Minecraft-style plants added');
-        logActivity('🎤 Standup meeting feature ready');
+        logActivity('🏢 Pixel Office v6 loaded with 20 agents');
+        logActivity('🧠 Memory tracking system active');
+        logActivity('🎤 Enhanced standup with 24h reviews ready');
         updateStats();
         updateAgentList();
     </script>

@@ -1,0 +1,219 @@
+// Enhanced Standup Meeting System with Memory & Quality Tracking
+// Agents record activities, review past 24h, and generate improvements
+
+class AgentMemory {
+    constructor(agentId) {
+        this.agentId = agentId;
+        this.activities = [];
+        this.qualityScore = 70; // Base quality score
+        this.ideas = [];
+        this.lastReview = null;
+    }
+
+    recordActivity(activity, quality = 'good') {
+        const entry = {
+            timestamp: new Date().toISOString(),
+            activity: activity,
+            quality: quality,
+            impact: this.calculateImpact(quality)
+        };
+        this.activities.push(entry);
+        
+        // Update quality score
+        if (quality === 'excellent') this.qualityScore = Math.min(100, this.qualityScore + 2);
+        else if (quality === 'good') this.qualityScore = Math.min(100, this.qualityScore + 1);
+        else if (quality === 'poor') this.qualityScore = Math.max(0, this.qualityScore - 2);
+        
+        return entry;
+    }
+
+    calculateImpact(quality) {
+        const impacts = { excellent: 3, good: 2, average: 1, poor: -1 };
+        return impacts[quality] || 1;
+    }
+
+    getPast24Hours() {
+        const cutoff = new Date(Date.now() - 24 * 60 * 60 * 1000);
+        return this.activities.filter(a => new Date(a.timestamp) > cutoff);
+    }
+
+    generateInsights() {
+        const recent = this.getPast24Hours();
+        const insights = [];
+        
+        if (recent.length === 0) {
+            insights.push("No recorded activity in past 24h");
+        } else {
+            const completed = recent.filter(a => a.quality !== 'poor').length;
+            insights.push(`Completed ${completed}/${recent.length} tasks successfully`);
+            
+            if (this.qualityScore > 85) {
+                insights.push("Quality score excellent - maintain momentum");
+            } else if (this.qualityScore < 60) {
+                insights.push("Quality needs improvement - review processes");
+            }
+        }
+        
+        return insights;
+    }
+
+    generateIdea() {
+        const ideas = [
+            "Could we automate this repetitive task?",
+            "What if we tried a different approach?",
+            "I should collaborate with another agent on this",
+            "There's a pattern here we could optimize",
+            "This could be a template for future work",
+            "I learned something that could help others",
+            "The quality could improve with better tools",
+            "I should document this for the team"
+        ];
+        
+        const idea = ideas[Math.floor(Math.random() * ideas.length)];
+        this.ideas.push({
+            timestamp: new Date().toISOString(),
+            idea: idea,
+            implemented: false
+        });
+        
+        return idea;
+    }
+}
+
+// Standup Meeting Manager
+class StandupManager {
+    constructor() {
+        this.memories = new Map();
+        this.meetingHistory = [];
+        this.isActive = false;
+    }
+
+    getOrCreateMemory(agentId) {
+        if (!this.memories.has(agentId)) {
+            this.memories.set(agentId, new AgentMemory(agentId));
+        }
+        return this.memories.get(agentId);
+    }
+
+    startMeeting(agents) {
+        this.isActive = true;
+        const meetingId = 'standup_' + Date.now();
+        
+        const meeting = {
+            id: meetingId,
+            startTime: new Date().toISOString(),
+            agents: agents.map(a => a.id),
+            reports: [],
+            ideas: [],
+            improvements: []
+        };
+        
+        // Each agent prepares their report
+        agents.forEach(agent => {
+            const memory = this.getOrCreateMemory(agent.id);
+            const report = this.generateAgentReport(agent, memory);
+            meeting.reports.push(report);
+            
+            // Generate new idea
+            const idea = memory.generateIdea();
+            meeting.ideas.push({
+                agent: agent.name,
+                idea: idea
+            });
+        });
+        
+        // Cross-pollinate ideas between agents
+        this.crossPollinateIdeas(meeting);
+        
+        this.meetingHistory.push(meeting);
+        return meeting;
+    }
+
+    generateAgentReport(agent, memory) {
+        const past24h = memory.getPast24Hours();
+        const insights = memory.generateInsights();
+        
+        return {
+            agentId: agent.id,
+            agentName: agent.name,
+            past24h: {
+                taskCount: past24h.length,
+                activities: past24h.slice(-3).map(a => a.activity),
+                qualityScore: memory.qualityScore
+            },
+            insights: insights,
+            status: agent.status,
+            desk: agent.desk
+        };
+    }
+
+    crossPollinateIdeas(meeting) {
+        // Agents share ideas and create improvements
+        const improvements = [];
+        
+        for (let i = 0; i < meeting.ideas.length; i++) {
+            for (let j = i + 1; j < meeting.ideas.length; j++) {
+                if (Math.random() > 0.7) { // 30% chance of synergy
+                    improvements.push({
+                        source1: meeting.ideas[i].agent,
+                        source2: meeting.ideas[j].agent,
+                        improvement: `Combined idea: ${meeting.ideas[i].idea} + ${meeting.ideas[j].idea}`,
+                        impact: 'medium'
+                    });
+                }
+            }
+        }
+        
+        meeting.improvements = improvements;
+    }
+
+    endMeeting() {
+        this.isActive = false;
+        
+        // Record meeting outcomes
+        const lastMeeting = this.meetingHistory[this.meetingHistory.length - 1];
+        if (lastMeeting) {
+            lastMeeting.endTime = new Date().toISOString();
+            lastMeeting.duration = Date.now() - new Date(lastMeeting.startTime).getTime();
+        }
+        
+        return lastMeeting;
+    }
+
+    getMeetingSummary(meetingId) {
+        const meeting = this.meetingHistory.find(m => m.id === meetingId);
+        if (!meeting) return null;
+        
+        return {
+            date: meeting.startTime,
+            agentsPresent: meeting.agents.length,
+            ideasGenerated: meeting.ideas.length,
+            improvements: meeting.improvements,
+            topInsights: meeting.reports
+                .sort((a, b) => b.past24h.qualityScore - a.past24h.qualityScore)
+                .slice(0, 3)
+                .map(r => `${r.agentName}: ${r.insights[0]}`)
+        };
+    }
+
+    getAgentStats(agentId) {
+        const memory = this.memories.get(agentId);
+        if (!memory) return null;
+        
+        const allActivities = memory.activities;
+        const recent = memory.getPast24Hours();
+        
+        return {
+            totalActivities: allActivities.length,
+            recentActivities: recent.length,
+            qualityScore: memory.qualityScore,
+            ideasGenerated: memory.ideas.length,
+            trend: recent.length > 3 ? 'improving' : recent.length > 0 ? 'stable' : 'needs attention'
+        };
+    }
+}
+
+// Export for use in main office script
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = { StandupManager, AgentMemory };
+}
