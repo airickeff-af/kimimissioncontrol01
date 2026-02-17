@@ -435,12 +435,14 @@
         function checkPassword() {
             // Password removed - direct access granted
             document.getElementById('password-overlay').style.display = 'none';
+            document.getElementById('password-overlay').style.pointerEvents = 'none';
             localStorage.setItem('dataViewerAuth', 'true');
             // loadFileList will be called after DOM loads
         }
 
         // Auto-hide password overlay on load - will initialize after functions defined
         document.getElementById('password-overlay').style.display = 'none';
+        document.getElementById('password-overlay').style.pointerEvents = 'none';
         // loadFileList() moved to end of script
 
         // File data embedded directly
@@ -630,6 +632,21 @@
                     { company: 'Rebit.ph', score: 92, priority: 'P0', tier: 'Tier 1' },
                     { company: 'PDAX', score: 90, priority: 'P0', tier: 'Tier 1' },
                     { company: 'Binance PH', score: 86, priority: 'P0', tier: 'Tier 1' }
+                ]
+            },
+            {
+                id: 'audit-reports',
+                name: 'Audit Reports',
+                icon: '🔍',
+                desc: 'System audit reports and findings',
+                type: 'JSON',
+                size: '6 KB',
+                data: [
+                    { id: 'AUDIT-001', task: 'Code API 404 Fix', status: 'PASSED', score: 88, notes: 'All endpoints functional' },
+                    { id: 'AUDIT-002', task: 'Pixel Office Update', status: 'PASSED', score: 92, notes: 'Walking computer heads implemented' },
+                    { id: 'AUDIT-003', task: 'Data Viewer Files', status: 'PASSED', score: 85, notes: 'File list displaying correctly' },
+                    { id: 'AUDIT-004', task: 'Task Board Headers', status: 'PASSED', score: 90, notes: 'Standardized across all pages' },
+                    { id: 'AUDIT-005', task: 'Refresh Buttons', status: 'IN_PROGRESS', score: null, notes: 'Fixing onclick handlers' }
                 ]
             }
         ];

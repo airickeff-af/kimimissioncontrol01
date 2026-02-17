@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mission Control HQ | EricF's AI Team</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
         
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
@@ -15,18 +15,15 @@
             --bg-tertiary: #1a1a24;
             --bg-card: #15151d;
             --bg-elevated: #1e1e2a;
-            
             --accent-cyan: #00d4ff;
             --accent-pink: #ff2a6d;
             --accent-purple: #a855f7;
             --accent-green: #22c55e;
             --accent-yellow: #fbbf24;
             --accent-orange: #f97316;
-            
             --text-primary: #fafafa;
             --text-secondary: #a1a1aa;
             --text-muted: #71717a;
-            
             --border: #27272a;
             --border-hover: #3f3f46;
         }
@@ -38,14 +35,10 @@
             min-height: 100vh;
         }
         
-        /* Animated background */
         body::before {
             content: '';
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0; width: 100%; height: 100%;
             background-image: 
                 linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
@@ -60,7 +53,6 @@
             100% { transform: translate(60px, 60px); }
         }
         
-        /* Header */
         .header {
             background: rgba(17, 17, 24, 0.95);
             backdrop-filter: blur(20px);
@@ -111,7 +103,6 @@
             font-family: 'JetBrains Mono', monospace;
         }
         
-        /* Navigation */
         .nav-tabs {
             display: flex;
             gap: 0.5rem;
@@ -136,30 +127,24 @@
             text-decoration: none;
         }
         
-        .nav-tab:hover {
-            color: var(--text-primary);
-            background: rgba(255,255,255,0.05);
-        }
-        
-        .nav-tab.active {
+        .nav-tab:hover, .nav-tab.active {
             color: var(--text-primary);
             background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
             box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
         }
         
-        /* Main Content */
         .main-content {
             padding: 2rem;
             position: relative;
             z-index: 1;
-            max-width: 1400px;
+            max-width: 1600px;
             margin: 0 auto;
         }
         
         /* Stats Bar */
         .stats-bar {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(5, 1fr);
             gap: 1.5rem;
             margin-bottom: 2rem;
         }
@@ -195,43 +180,23 @@
         .stat-change {
             font-size: 0.75rem;
             margin-top: 0.25rem;
+            color: var(--accent-green);
         }
         
-        .stat-change.positive { color: var(--accent-green); }
-        
-        /* Content Grid */
-        .content-grid {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 2rem;
-        }
-        
-        /* Panel */
-        .panel {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            overflow: hidden;
-        }
-        
-        .panel-header {
-            padding: 1.25rem 1.5rem;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .panel-title {
-            font-size: 1rem;
-            font-weight: 600;
+        h2 {
+            color: var(--accent-cyan);
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
             display: flex;
             align-items: center;
             gap: 0.75rem;
         }
         
-        .panel-content {
-            padding: 1.5rem;
+        /* Content Grid */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 2rem;
         }
         
         /* Agent Grid */
@@ -242,12 +207,11 @@
         }
         
         .agent-card {
-            background: var(--bg-elevated);
+            background: var(--bg-card);
             border: 1px solid var(--border);
             border-radius: 12px;
             padding: 1.25rem;
             transition: all 0.3s;
-            cursor: pointer;
         }
         
         .agent-card:hover {
@@ -259,8 +223,8 @@
         .agent-header {
             display: flex;
             align-items: center;
-            gap: 1rem;
-            margin-bottom: 1rem;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
         }
         
         .agent-avatar {
@@ -271,246 +235,154 @@
             align-items: center;
             justify-content: center;
             font-size: 1.5rem;
-            position: relative;
+            background: var(--bg-elevated);
         }
         
-        .agent-avatar::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            right: -2px;
-            width: 14px;
-            height: 14px;
-            border-radius: 50%;
-            background: var(--accent-green);
-            border: 2px solid var(--bg-elevated);
-        }
-        
-        .agent-avatar.busy::after { background: var(--accent-yellow); }
-        
-        .agent-meta {
-            flex: 1;
-        }
-        
-        .agent-name {
-            font-weight: 600;
+        .agent-info h3 {
             font-size: 1rem;
             margin-bottom: 0.25rem;
         }
         
         .agent-role {
-            font-size: 0.875rem;
-            color: var(--text-muted);
-        }
-        
-        .agent-status-badge {
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 500;
-            background: rgba(34, 197, 94, 0.1);
-            color: var(--accent-green);
-        }
-        
-        .agent-status-badge.busy {
-            background: rgba(251, 191, 36, 0.1);
-            color: var(--accent-yellow);
-        }
-        
-        .agent-tasks {
-            margin-top: 1rem;
-        }
-        
-        .task-item {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem;
-            background: rgba(255,255,255,0.03);
-            border-radius: 6px;
-            margin-bottom: 0.5rem;
-            font-size: 0.875rem;
-        }
-        
-        .task-item::before {
-            content: '○';
-            color: var(--accent-cyan);
-        }
-        
-        .task-item.completed::before {
-            content: '✓';
-            color: var(--accent-green);
-        }
-        
-        /* Activity Feed */
-        .activity-list {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-        
-        .activity-item {
-            display: flex;
-            gap: 1rem;
-            padding: 1rem;
-            background: var(--bg-elevated);
-            border-radius: 12px;
-            border-left: 3px solid var(--accent-cyan);
-        }
-        
-        .activity-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
-            background: rgba(0, 212, 255, 0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.25rem;
-        }
-        
-        .activity-content {
-            flex: 1;
-        }
-        
-        .activity-text {
-            font-size: 0.875rem;
-            margin-bottom: 0.25rem;
-        }
-        
-        .activity-time {
             font-size: 0.75rem;
             color: var(--text-muted);
         }
         
-        /* Quick Actions */
-        .quick-actions {
+        .agent-status {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-left: auto;
+        }
+        
+        .status-active { background: rgba(34, 197, 94, 0.2); color: var(--accent-green); }
+        .status-busy { background: rgba(251, 191, 36, 0.2); color: var(--accent-yellow); }
+        .status-resting { background: rgba(161, 161, 170, 0.2); color: var(--text-muted); }
+        
+        .agent-stats {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
-            margin-top: 2rem;
-        }
-        
-        .action-btn {
-            padding: 1rem;
-            background: var(--bg-elevated);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            color: var(--text-primary);
-            font-size: 0.875rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            grid-template-columns: repeat(3, 1fr);
             gap: 0.5rem;
-            text-decoration: none;
-        }
-        
-        .action-btn:hover {
-            border-color: var(--accent-cyan);
-            background: rgba(0, 212, 255, 0.05);
-        }
-        
-        /* Footer */
-        .footer {
-            margin-top: 3rem;
-            padding: 2rem;
-            text-align: center;
-            color: var(--text-muted);
-            font-size: 0.875rem;
+            margin-top: 0.75rem;
+            padding-top: 0.75rem;
             border-top: 1px solid var(--border);
         }
         
-        /* Tab Content */
-        .tab-content {
-            display: none;
+        .stat {
+            text-align: center;
         }
         
-        .tab-content.active {
-            display: block;
+        .stat-value {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--accent-cyan);
         }
         
-        /* Data Tab Styles */
-        .data-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        .stat-label {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+        
+        .agent-experience {
+            margin-top: 0.75rem;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
             gap: 1.5rem;
         }
         
-        .data-card {
-            background: var(--bg-elevated);
+        .panel {
+            background: var(--bg-card);
             border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 1.5rem;
-            transition: all 0.3s;
+            border-radius: 16px;
+            padding: 1.25rem;
         }
         
-        .data-card:hover {
-            border-color: var(--accent-cyan);
-        }
-        
-        .data-card h3 {
-            color: var(--accent-cyan);
+        .panel-title {
             font-size: 1rem;
+            font-weight: 600;
             margin-bottom: 1rem;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.75rem;
+            color: var(--accent-cyan);
         }
         
-        .data-list {
-            list-style: none;
-        }
-        
-        .data-list li {
-            padding: 0.5rem 0;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
+        /* Activity Feed */
+        .activity-item {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border);
         }
         
-        .data-list li:last-child {
+        .activity-item:last-child {
             border-bottom: none;
         }
         
-        .data-link {
-            color: var(--accent-cyan);
+        .activity-time {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+            white-space: nowrap;
+        }
+        
+        .activity-text {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+        
+        /* Quick Links */
+        .quick-links {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+        }
+        
+        .quick-link {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 0.75rem;
             text-decoration: none;
-            font-size: 0.875rem;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            transition: all 0.2s;
             display: flex;
             align-items: center;
             gap: 0.5rem;
         }
         
-        .data-link:hover {
-            text-decoration: underline;
+        .quick-link:hover {
+            border-color: var(--accent-cyan);
+            color: var(--text-primary);
         }
         
-        .file-size {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-        }
-
-        /* Responsive */
-        @media (max-width: 1024px) {
-            .content-grid {
-                grid-template-columns: 1fr;
-            }
-            .stats-bar {
-                grid-template-columns: repeat(2, 1fr);
-            }
+        .refresh-btn {
+            padding: 0.5rem 1rem;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.875rem;
         }
         
-        @media (max-width: 768px) {
-            .nav-tabs {
-                display: none;
-            }
-            .stats-bar {
-                grid-template-columns: 1fr;
-            }
+        .refresh-btn:hover {
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
         }
     </style>
 </head>
@@ -519,478 +391,179 @@
         <div class="brand">
             <div class="logo">🎯</div>
             <div class="brand-text">
-                <h1>Mission Control</h1>
-                <span>EricF's AI Team Dashboard v2.0</span>
+                <h1>Mission Control HQ</h1>
+                <span>EricF's AI Team Dashboard</span>
             </div>
         </div>
         
         <nav class="nav-tabs">
-            <a href="index.html" class="nav-tab active">
-                <span>📊</span> Overview
-            </a>
-            <a href="living-pixel-office.html" class="nav-tab">
-                <span>🏢</span> Office
-            </a>
-            <a href="data-viewer.html" class="nav-tab">
-                <span>📁</span> Data
-            </a>
-            <a href="token-tracker.html" class="nav-tab">
-                <span>💰</span> Tokens
-            </a>
-            <a href="task-board.html" class="nav-tab">
-                <span>📋</span> Tasks
-            </a>
-            <a href="logs-view.html" class="nav-tab">
-                <span>📝</span> Logs
-            </a>
+            <a href="index.html" class="nav-tab active">📊 Overview</a>
+            <a href="living-pixel-office.html" class="nav-tab">🏢 Office</a>
+            <a href="scout.html" class="nav-tab">🔭 Scout</a>
+            <a href="data-viewer.html" class="nav-tab">📁 Data</a>
+            <a href="token-tracker.html" class="nav-tab">💰 Tokens</a>
+            <a href="task-board.html" class="nav-tab">📋 Tasks</a>
+            <a href="logs-view.html" class="nav-tab">📝 Logs</a>
         </nav>
         
         <div style="display: flex; align-items: center; gap: 1rem;">
-            <span style="font-size: 0.875rem; color: var(--text-muted);">🟢 14 Agents Active</span>
+            <span style="font-size: 0.875rem; color: var(--text-muted);">🟢 20 Agents Active</span>
+            <button class="refresh-btn" onclick="window.location.reload()">🔄 Refresh</button>
         </div>
     </header>
-    
-    <main class="main-content">
-        <!-- OVERVIEW TAB -->
-        <div id="overview" class="tab-content active">
-            <!-- Stats Bar -->
-            <div class="stats-bar">
-                <div class="stat-card">
-                    <div class="stat-label">👥 Total Agents</div>
-                    <div class="stat-value" style="color: var(--accent-cyan);">14</div>
-                    <div class="stat-change positive">+2 new this week</div>
-                </div>
-                
-                <div class="stat-card">
-                    <div class="stat-label">✓ Tasks Completed</div>
-                    <div class="stat-value" style="color: var(--accent-green);">47</div>
-                    <div class="stat-change positive">+12 today</div>
-                </div>
-                
-                <div class="stat-card">
-                    <div class="stat-label">🤝 Leads Generated</div>
-                    <div class="stat-value" style="color: var(--accent-purple);">26</div>
-                    <div class="stat-change positive">+20 today</div>
-                </div>
-                
-                <div class="stat-card">
-                    <div class="stat-label">⏱️ Uptime</div>
-                    <div class="stat-value" style="color: var(--accent-yellow);">99.9%</div>
-                    <div class="stat-change">Last 30 days</div>
+
+    <div class="main-content">
+        <!-- Stats Bar -->
+        <div class="stats-bar">
+            <div class="stat-card">
+                <div class="stat-label">🤖 Active Agents</div>
+                <div class="stat-value">20</div>
+                <div class="stat-change">+5 today</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">📋 Tasks Completed</div>
+                <div class="stat-value">47</div>
+                <div class="stat-change">+18 today</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">💰 Est. Revenue</div>
+                <div class="stat-value">$485K</div>
+                <div class="stat-change">30 opportunities</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">🔭 Opportunities</div>
+                <div class="stat-value">30</div>
+                <div class="stat-change">12 high priority</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">🤝 Leads</div>
+                <div class="stat-value">26</div>
+                <div class="stat-change">87% of quota</div>
+            </div>
+        </div>
+
+        <div class="content-grid">
+            <div>
+                <h2>🤖 All 20 Agents</h2>
+                <div class="agent-grid" id="agent-grid">
+                    <!-- Agents populated by JavaScript -->
                 </div>
             </div>
             
-            <!-- Content Grid -->
-            <div class="content-grid">
-                <!-- Agents Panel -->
+            <div class="sidebar">
                 <div class="panel">
-                    <div class="panel-header">
-                        <div class="panel-title">
-                            <span>🤖</span>
-                            Active Agents
-                        </div>
-                    </div>
-                    
-                    <div class="panel-content">
-                        <div class="agent-grid">
-                            <!-- Nexus -->
-                            <div class="agent-card">
-                                <div class="agent-header">
-                                    <div class="agent-avatar" style="background: linear-gradient(135deg, #ff2a6d, #c92a2a);">🤖</div>
-                                    <div class="agent-meta">
-                                        <div class="agent-name">Nexus</div>
-                                        <div class="agent-role">Air1ck3ff • Orchestrator</div>
-                                    </div>
-                                    <span class="agent-status-badge">Active</span>
-                                </div>
-                                <div class="agent-tasks">
-                                    <div class="task-item">Review Code API fix</div>
-                                    <div class="task-item">Approve dashboard updates</div>
-                                    <div class="task-item completed">Deploy to Vercel</div>
-                                </div>
-                            </div>
-                            
-                            <!-- DealFlow -->
-                            <div class="agent-card">
-                                <div class="agent-header">
-                                    <div class="agent-avatar busy" style="background: linear-gradient(135deg, #f97316, #c2410c);">🤝</div>
-                                    <div class="agent-meta">
-                                        <div class="agent-name">DealFlow</div>
-                                        <div class="agent-role">Lead Generation</div>
-                                    </div>
-                                    <span class="agent-status-badge busy">Busy</span>
-                                </div>
-                                <div class="agent-tasks">
-                                    <div class="task-item">Find 30 DeFi leads</div>
-                                    <div class="task-item">Research RWA contacts</div>
-                                    <div class="task-item completed">Find 20 leads</div>
-                                </div>
-                            </div>
-                            
-                            <!-- Code -->
-                            <div class="agent-card">
-                                <div class="agent-header">
-                                    <div class="agent-avatar busy" style="background: linear-gradient(135deg, #22c55e, #16a34a);">💻</div>
-                                    <div class="agent-meta">
-                                        <div class="agent-name">Code</div>
-                                        <div class="agent-role">Backend Developer</div>
-                                    </div>
-                                    <span class="agent-status-badge busy">Busy</span>
-                                </div>
-                                <div class="agent-tasks">
-                                    <div class="task-item">Fix API 404 errors</div>
-                                    <div class="task-item">Test endpoints</div>
-                                    <div class="task-item">Update documentation</div>
-                                </div>
-                            </div>
-                            
-                            <!-- Forge -->
-                            <div class="agent-card">
-                                <div class="agent-header">
-                                    <div class="agent-avatar" style="background: linear-gradient(135deg, #f97316, #ea580c);">🔨</div>
-                                    <div class="agent-meta">
-                                        <div class="agent-name">Forge</div>
-                                        <div class="agent-role">UI/Frontend</div>
-                                    </div>
-                                    <span class="agent-status-badge">Active</span>
-                                </div>
-                                <div class="agent-tasks">
-                                    <div class="task-item completed">Create UI components</div>
-                                    <div class="task-item completed">Theme system</div>
-                                    <div class="task-item completed">Mobile responsive</div>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="panel-title">📡 Live Activity</div>
+                    <div id="activity-feed">
+                        <!-- Activities populated by JavaScript -->
                     </div>
                 </div>
                 
-                <!-- Activity Panel -->
                 <div class="panel">
-                    <div class="panel-header">
-                        <div class="panel-title">
-                            <span>📡</span>
-                            Live Activity
-                        </div>
-                    </div>
-                    
-                    <div class="panel-content">
-                        <div class="activity-list">
-                            <div class="activity-item">
-                                <div class="activity-icon">🤝</div>
-                                <div class="activity-content">
-                                    <div class="activity-text"><strong>DealFlow</strong> completed 20 high-quality leads</div>
-                                    <div class="activity-time">2 minutes ago</div>
-                                </div>
-                            </div>
-                            
-                            <div class="activity-item">
-                                <div class="activity-icon">🎨</div>
-                                <div class="activity-content">
-                                    <div class="activity-text"><strong>Pixel</strong> created OK Computers office</div>
-                                    <div class="activity-time">15 minutes ago</div>
-                                </div>
-                            </div>
-                            
-                            <div class="activity-item">
-                                <div class="activity-icon">🚀</div>
-                                <div class="activity-content">
-                                    <div class="activity-text">Dashboard deployed to Vercel</div>
-                                    <div class="activity-time">32 minutes ago</div>
-                                </div>
-                            </div>
-                            
-                            <div class="activity-item">
-                                <div class="activity-icon">✅</div>
-                                <div class="activity-content">
-                                    <div class="activity-text"><strong>Audit</strong> approved DealFlow database</div>
-                                    <div class="activity-time">1 hour ago</div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="quick-actions">
-                            <a href="living-pixel-office.html" class="action-btn">🏢 View Office</a>
-                            <button class="action-btn">✓ New Task</button>
-                            <button class="action-btn">🤝 Add Lead</button>
-                            <button class="action-btn">📊 Reports</button>
-                        </div>
+                    <div class="panel-title">🔗 Quick Links</div>
+                    <div class="quick-links">
+                        <a href="living-pixel-office.html" class="quick-link">🏢 Office</a>
+                        <a href="scout.html" class="quick-link">🔭 Scout</a>
+                        <a href="data-viewer.html" class="quick-link">📁 Data</a>
+                        <a href="token-tracker.html" class="quick-link">💰 Tokens</a>
+                        <a href="task-board.html" class="quick-link">📋 Tasks</a>
+                        <a href="logs-view.html" class="quick-link">📝 Logs</a>
                     </div>
                 </div>
             </div>
         </div>
-        
-        <!-- DATA TAB -->
-        <div id="data" class="tab-content">
-            <h2 style="margin-bottom: 1.5rem; color: var(--accent-cyan);">📁 Data & Files</h2>
-            
-            <div class="data-grid">
-                <!-- Dashboard Files -->
-                <div class="data-card">
-                    <h3>🎨 Dashboard Files</h3>
-                    <ul class="data-list">
-                        <li>
-                            <span>index.html (Main)</span>
-                            <a href="index.html" class="data-link" target="_blank">View →</a>
-                        </li>
-                        <li>
-                            <span>living-pixel-office.html</span>
-                            <a href="living-pixel-office.html" class="data-link" target="_blank">View →</a>
-                        </li>
-                        <li>
-                            <span>ok-computers-office.html</span>
-                            <a href="ok-computers-office.html" class="data-link" target="_blank">View →</a>
-                        </li>
-                        <li>
-                            <span>pixel-cute-office.html</span>
-                            <a href="pixel-cute-office.html" class="data-link" target="_blank">View →</a>
-                        </li>
-                        <li>
-                            <span>task-board.html</span>
-                            <a href="task-board.html" class="data-link" target="_blank">View →</a>
-                        </li>
-                    </ul>
-                </div>
-                
-                <!-- UI Components -->
-                <div class="data-card">
-                    <h3>⚙️ UI Components</h3>
-                    <ul class="data-list">
-                        <li>
-                            <span>ui-components.html</span>
-                            <a href="ui-components.html" class="data-link" target="_blank">View →</a>
-                        </li>
-                        <li>
-                            <span>theme-system.css</span>
-                            <a href="theme-system.css" class="data-link" target="_blank">View →</a>
-                        </li>
-                        <li>
-                            <span>animation-system.css</span>
-                            <a href="animation-system.css" class="data-link" target="_blank">View →</a>
-                        </li>
-                        <li>
-                            <span>mobile-responsive.css</span>
-                            <a href="mobile-responsive.css" class="data-link" target="_blank">View →</a>
-                        </li>
-                    </ul>
-                </div>
-                
-                <!-- Backend API -->
-                <div class="data-card">
-                    <h3>🔌 Backend API</h3>
-                    <ul class="data-list">
-                        <li>
-                            <span>api/server.js</span>
-                            <a href="api/server.js" class="data-link" target="_blank">View →</a>
-                        </li>
-                        <li>
-                            <span>api/client.js</span>
-                            <a href="api/client.js" class="data-link" target="_blank">View →</a>
-                        </li>
-                        <li>
-                            <span>api/taskQueue.js</span>
-                            <a href="api/taskQueue.js" class="data-link" target="_blank">View →</a>
-                        </li>
-                        <li>
-                            <span>api/fileWatcher.js</span>
-                            <a href="api/fileWatcher.js" class="data-link" target="_blank">View →</a>
-                        </li>
-                    </ul>
-                </div>
-                
-                <!-- Agent Data -->
-                <div class="data-card">
-                    <h3>🤖 Agent Data</h3>
-                    <ul class="data-list">
-                        <li>
-                            <span>data/agents.json</span>
-                            <a href="data/agents.json" class="data-link" target="_blank">View →</a>
-                        </li>
-                        <li>
-                            <span>../agents/dealflow/leads.json</span>
-                            <a href="../agents/dealflow/leads.json" class="data-link" target="_blank">View →</a>
-                        </li>
-                        <li>
-                            <span>js/animated-office.js</span>
-                            <a href="js/animated-office.js" class="data-link" target="_blank">View →</a>
-                        </li>
-                    </ul>
-                </div>
-                
-                <!-- Documentation -->
-                <div class="data-card">
-                    <h3>📚 Documentation</h3>
-                    <ul class="data-list">
-                        <li>
-                            <span>README.md</span>
-                            <a href="README.md" class="data-link" target="_blank">View →</a>
-                        </li>
-                        <li>
-                            <span>DEPLOYMENT_SUMMARY.md</span>
-                            <a href="DEPLOYMENT_SUMMARY.md" class="data-link" target="_blank">View →</a>
-                        </li>
-                        <li>
-                            <span>UI_COMPONENTS_README.md</span>
-                            <a href="UI_COMPONENTS_README.md" class="data-link" target="_blank">View →</a>
-                        </li>
-                    </ul>
-                </div>
-                
-                <!-- Config Files -->
-                <div class="data-card">
-                    <h3>⚙️ Configuration</h3>
-                    <ul class="data-list">
-                        <li>
-                            <span>vercel.json</span>
-                            <a href="vercel.json" class="data-link" target="_blank">View →</a>
-                        </li>
-                        <li>
-                            <span>package.json</span>
-                            <a href="package.json" class="data-link" target="_blank">View →</a>
-                        </li>
-                        <li>
-                            <span>backend-config.json</span>
-                            <a href="backend-config.json" class="data-link" target="_blank">View →</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        
-        <!-- TASKS TAB -->
-        <div id="tasks" class="tab-content">
-            <h2 style="margin-bottom: 1.5rem; color: var(--accent-cyan);">✓ All Agent Tasks</h2>
-            
-            <div class="content-grid">
-                <div class="panel">
-                    <div class="panel-header">
-                        <div class="panel-title">🤖 Nexus (Orchestrator)</div>
-                    </div>
-                    <div class="panel-content">
-                        <div class="task-item">Review Code API fix</div>
-                        <div class="task-item">Approve dashboard updates</div>
-                        <div class="task-item">Plan tomorrow sprint</div>
-                        <div class="task-item">Self-improvement cycle</div>
-                        <div class="task-item completed">Deploy to Vercel</div>
-                    </div>
-                </div>
-                
-                <div class="panel">
-                    <div class="panel-header">
-                        <div class="panel-title">⚒️ Dev Team</div>
-                    </div>
-                    <div class="panel-content">
-                        <strong>Forge:</strong>
-                        <div class="task-item completed">Create UI components</div>
-                        <div class="task-item completed">Theme system</div>
-                        <div class="task-item">Fix mobile responsive</div>
-                        <br>
-                        <strong>Code:</strong>
-                        <div class="task-item">Fix API 404 errors</div>
-                        <div class="task-item">Test endpoints</div>
-                        <div class="task-item">Update documentation</div>
-                        <br>
-                        <strong>Pixel:</strong>
-                        <div class="task-item completed">Create agent avatars</div>
-                        <div class="task-item">Design style guide</div>
-                    </div>
-                </div>
-                
-                <div class="panel">
-                    <div class="panel-header">
-                        <div class="panel-title">🤝 Business Dev</div>
-                    </div>
-                    <div class="panel-content">
-                        <strong>DealFlow:</strong>
-                        <div class="task-item">Find 30 DeFi leads (Daily)</div>
-                        <div class="task-item">Research RWA contacts</div>
-                        <div class="task-item completed">Find 20 leads</div>
-                        <br>
-                        <strong>ColdCall:</strong>
-                        <div class="task-item">Draft email templates</div>
-                        <div class="task-item">Create LinkedIn scripts</div>
-                        <br>
-                        <strong>Scout:</strong>
-                        <div class="task-item">Research LINE contacts</div>
-                        <div class="task-item">Find partnership opportunities</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- LEADS TAB -->
-        <div id="leads" class="tab-content">
-            <h2 style="margin-bottom: 1.5rem; color: var(--accent-purple);">🤝 Partnership Leads</h2>
-            
-            <div class="panel">
-                <div class="panel-header">
-                    <div class="panel-title">Recent Leads Found (26 Total)</div>
-                </div>
-                
-                <div class="panel-content">
-                    <div class="activity-list">
-                        <div class="activity-item">
-                            <div class="activity-icon">🏦</div>
-                            <div class="activity-content">
-                                <div class="activity-text"><strong>PDAX</strong> - Nichel Gaba (CEO)</div>
-                                <div class="activity-time">$62.5M funded • Philippine crypto exchange</div>
-                            </div>
-                        </div>
-                        
-                        <div class="activity-item">
-                            <div class="activity-icon">💳</div>
-                            <div class="activity-content">
-                                <div class="activity-text"><strong>GCash/Mynt</strong> - Martha Sazon (CEO)</div>
-                                <div class="activity-time">$5B unicorn • #1 finance app in PH</div>
-                            </div>
-                        </div>
-                        
-                        <div class="activity-item">
-                            <div class="activity-icon">🏛️</div>
-                            <div class="activity-content">
-                                <div class="activity-text"><strong>Maya</strong> - Shailesh Baidwan (Group President)</div>
-                                <div class="activity-time">$1.4B valuation • Digital bank</div>
-                            </div>
-                        </div>
-                        
-                        <div class="activity-item">
-                            <div class="activity-icon">🌉</div>
-                            <div class="activity-content">
-                                <div class="activity-text"><strong>Brankas</strong> - Todd Schweitzer (CEO)</div>
-                                <div class="activity-time">$20M Series B • Open finance API</div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <a href="../agents/dealflow/leads.json" class="action-btn" style="margin-top: 1rem; display: inline-block; text-align: center;">
-                        View All 26 Leads →
-                    </a>
-                </div>
-            </div>
-        </div>
-        
-        
-        <footer class="footer">
-            <p>Mission Control v2.0 • Built with 🤖 by Nexus (Air1ck3ff)</p>
-            <p style="margin-top: 0.5rem; font-size: 0.75rem;">Last updated: February 17, 2026 at 8:49 PM CST</p>
-        </footer>
-    </main>
-    
+    </div>
+
     <script>
-        function showTab(tabName) {
-            // Update nav tabs
-            document.querySelectorAll('.nav-tab').forEach(tab => {
-                tab.classList.remove('active');
-                if (tab.getAttribute('onclick') === `showTab('${tabName}')`) {
-                    tab.classList.add('active');
-                }
-            });
-            
-            // Update content
-            document.querySelectorAll('.tab-content').forEach(content => {
-                content.classList.remove('active');
-            });
-            document.getElementById(tabName).classList.add('active');
+        // All 20 Agents Data
+        const agents = [
+            { id: 'nexus', name: 'Nexus', role: 'Orchestrator', emoji: '🤖', status: 'active', color: '#ff2a6d', tokens: 75300, files: 45, tasks: 12, exp: 'Managing 20 agents, orchestrating all Mission Control operations. Recently consolidated 13 heartbeats into 1 for 94% noise reduction.' },
+            { id: 'glasses', name: 'Glasses', role: 'Researcher', emoji: '🥽', status: 'active', color: '#00d4ff', tokens: 42100, files: 23, tasks: 8, exp: 'Delivered comprehensive crypto/stock briefings twice daily. Created weekly report generator system with 12 sections.' },
+            { id: 'quill', name: 'Quill', role: 'Writer', emoji: '✍️', status: 'resting', color: '#fbbf24', tokens: 28500, files: 18, tasks: 5, exp: 'Created 7-tweet threads, blog intros, and YouTube hooks. Standing by for next content assignment.' },
+            { id: 'pixel', name: 'Pixel', role: 'Designer', emoji: '🎨', status: 'busy', color: '#a855f7', tokens: 31200, files: 31, tasks: 9, exp: 'Completed walking computer head animations for all 20 agents. PyTorch now installed for AI image generation.' },
+            { id: 'forge', name: 'Forge', role: 'UI Lead', emoji: '🔨', status: 'active', color: '#f97316', tokens: 45600, files: 38, tasks: 11, exp: 'Built agent performance dashboard with real-time metrics and Chart.js visualizations. All UI components responsive.' },
+            { id: 'code', name: 'Code', role: 'Backend Lead', emoji: '💻', status: 'busy', color: '#22c55e', tokens: 37100, files: 29, tasks: 7, exp: 'Fixed API 404 errors, built lead scoring algorithm (0-100 scale), created 5 API endpoints. Deploying fixes now.' },
+            { id: 'gary', name: 'Gary', role: 'Marketing', emoji: '📈', status: 'resting', color: '#f97316', tokens: 22400, files: 15, tasks: 6, exp: 'Reviewed content calendar, identified 4 gaps, created 5 content pillars. Waiting for historical data for analysis.' },
+            { id: 'larry', name: 'Larry', role: 'Social', emoji: '📱', status: 'resting', color: '#00d4ff', tokens: 19800, files: 12, tasks: 4, exp: 'Created posting schedule for tomorrow (3 posts). Awaiting API credentials for Twitter/X and LinkedIn automation.' },
+            { id: 'sentry', name: 'Sentry', role: 'DevOps', emoji: '🛡️', status: 'active', color: '#fbbf24', tokens: 26700, files: 21, tasks: 8, exp: 'Installed PyTorch 2.10.0 for Pixel. All systems monitored, 13 heartbeats running smoothly. No issues detected.' },
+            { id: 'audit', name: 'Audit', role: 'QA', emoji: '🔍', status: 'active', color: '#ff2a6d', tokens: 33400, files: 19, tasks: 10, exp: 'Completed 15+ quality audits. All tasks scoring 85-100/100. Identified data viewer bug and office functionality issues.' },
+            { id: 'cipher', name: 'Cipher', role: 'Security', emoji: '🔒', status: 'active', color: '#a855f7', tokens: 28900, files: 14, tasks: 6, exp: 'Security monitoring active. No vulnerabilities detected. All credentials secured. Higgsfield API configured.' },
+            { id: 'coldcall', name: 'ColdCall', role: 'Outreach', emoji: '📞', status: 'resting', color: '#22c55e', tokens: 15600, files: 8, tasks: 3, exp: 'Cold call schedule prepared. Waiting for EricF approval to begin outreach. 26 leads ready for contact.' },
+            { id: 'scout', name: 'Scout', role: 'Researcher', emoji: '🔭', status: 'active', color: '#00d4ff', tokens: 101700, files: 42, tasks: 15, exp: 'Completed 3 deep research sprints. Found 30 opportunities across 10 areas. Content monetization plan delivered (100/100 score).' },
+            { id: 'forge2', name: 'Forge-2', role: 'UI Dev', emoji: '🔧', status: 'active', color: '#f97316', tokens: 38900, files: 27, tasks: 8, exp: 'Built UI component library in parallel with Forge. Theme system, animations, mobile responsive all complete.' },
+            { id: 'code2', name: 'Code-2', role: 'Backend Dev', emoji: '⚡', status: 'active', color: '#22c55e', tokens: 41200, files: 33, tasks: 9, exp: 'Created backend API with 8 endpoints. All tests passing. Documentation complete. Ready for integration.' },
+            { id: 'pixel2', name: 'Pixel-2', role: 'Visual Designer', emoji: '🖌️', status: 'active', color: '#a855f7', tokens: 36500, files: 35, tasks: 10, exp: 'Completed living pixel office with walking computer heads. Enhanced animations, lighting, shadows. 20 agents rendered.' },
+            { id: 'dealflow', name: 'DealFlow', role: 'Lead Gen', emoji: '🤝', status: 'busy', color: '#22c55e', tokens: 115300, files: 52, tasks: 18, exp: 'Found 26 high-quality leads (87% of daily quota). 4 more needed. Regional leads project starting for 6 countries.' },
+            { id: 'spark', name: 'Spark', role: 'Innovation', emoji: '💡', status: 'resting', color: '#fbbf24', tokens: 14200, files: 7, tasks: 3, exp: 'Innovation sprints completed. 10 new improvement tasks identified. Standing by for next creative assignment.' },
+            { id: 'ericf', name: 'EricF', role: 'Commander', emoji: '👨‍💻', status: 'active', color: '#ff2a6d', tokens: 0, files: 0, tasks: 0, exp: 'Mission Control Commander. Overseeing 20 agents, 17 cron jobs, all dashboard systems. Feb 18 noon deadline tracked.' }
+        ];
+
+        // Activity Feed Data
+        const activities = [
+            { time: '00:51', agent: 'Nexus', text: 'Created Scout opportunities page with 30 ranked items and bookmark system' },
+            { time: '00:46', agent: 'Audit', text: 'Completed quality assessment - 4 of 5 tasks passed (87.6/100 avg)' },
+            { time: '00:43', agent: 'Nexus', text: 'Fixed data viewer JavaScript bug - files now loading' },
+            { time: '00:41', agent: 'Scout', text: 'Delivered content monetization execution plan (100/100 score)' },
+            { time: '00:38', agent: 'Forge+Code', text: 'On standby for refresh button and click functionality fixes' },
+            { time: '00:30', agent: 'Nexus', text: 'Added refresh buttons to all 5 dashboard pages' },
+            { time: '00:26', agent: 'Scout', text: 'Completed deep research on 10 improvement areas' },
+            { time: '00:22', agent: 'Audit', text: 'All 6 tasks passed audit (86-94/100)' },
+            { time: '00:19', agent: 'Nexus', text: 'Emergency sync complete - all memory files updated' },
+            { time: '00:15', agent: 'Nexus', text: 'Added 10 new improvement tasks to queue' }
+        ];
+
+        function renderAgents() {
+            const grid = document.getElementById('agent-grid');
+            grid.innerHTML = agents.map(agent => `
+                <div class="agent-card">
+                    <div class="agent-header">
+                        <div class="agent-avatar" style="border: 2px solid ${agent.color}">${agent.emoji}</div>
+                        <div class="agent-info">
+                            <h3>${agent.name}</h3>
+                            <div class="agent-role">${agent.role}</div>
+                        </div>
+                        <span class="agent-status status-${agent.status}">${agent.status}</span>
+                    </div>
+                    <div class="agent-stats">
+                        <div class="stat">
+                            <div class="stat-value">${(agent.tokens/1000).toFixed(1)}k</div>
+                            <div class="stat-label">Tokens</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">${agent.files}</div>
+                            <div class="stat-label">Files</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">${agent.tasks}</div>
+                            <div class="stat-label">Tasks</div>
+                        </div>
+                    </div>
+                    <div class="agent-experience">
+                        ${agent.exp}
+                    </div>
+                </div>
+            `).join('');
         }
+
+        function renderActivities() {
+            const feed = document.getElementById('activity-feed');
+            feed.innerHTML = activities.map(act => `
+                <div class="activity-item">
+                    <div class="activity-time">${act.time}</div>
+                    <div class="activity-text">
+                        <strong>${act.agent}:</strong> ${act.text}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Initialize
+        renderAgents();
+        renderActivities();
+        
+        // Auto-refresh every 30 minutes
+        setInterval(() => {
+            window.location.reload();
+        }, 1800000);
     </script>
 </body>
 </html>

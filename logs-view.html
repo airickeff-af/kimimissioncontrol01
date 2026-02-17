@@ -230,18 +230,20 @@
             white-space: nowrap;
         }
         
-        .refresh-btn {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            padding: 1rem 1.5rem;
-            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
-            border: none;
-            border-radius: 12px;
-            color: #000;
-            font-weight: 600;
+        .btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: transparent;
+            color: var(--text-secondary);
             cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
+            font-size: 0.875rem;
+            transition: all 0.2s;
+        }
+        
+        .btn:hover {
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
         }
     </style>
 </head>
