@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mission Control - Pixel Cute Office</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap');
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --bg: #2d1b4e;
+            --panel: #f4e4c1;
+            --neon-cyan: #00ffff;
+            --neon-pink: #ff6b9d;
+            --neon-green: #51cf66;
+            --neon-yellow: #fcc419;
+            --neon-purple: #a855f7;
+            --neon-orange: #ff922b;
+            --text: #2c1810;
+            --text-light: #f4e4c1;
+        }
+        
+        body {
+            font-family: 'VT323', monospace;
+            background: var(--bg);
+            min-height: 100vh;
+            overflow: hidden;
+            image-rendering: pixelated;
+        }
+        
+        /* Cute pixel pattern background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                repeating-linear-gradient(0deg, transparent, transparent 4px, rgba(255,255,255,0.03) 4px, rgba(255,255,255,0.03) 8px),
+                repeating-linear-gradient(90deg, transparent, transparent 4px, rgba(255,255,255,0.03) 4px, rgba(255,255,255,0.03) 8px);
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .office {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            padding: 20px;
+            z-index: 1;
+            overflow-y: auto;
+        }
+        
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: linear-gradient(180deg, #5c3d7a, #3d2652);
+            border: 4px solid #2d1b4e;
+            border-radius: 16px;
+            box-shadow: 0 8px 0 #1a0f2e, inset 0 2px 0 rgba(255,255,255,0.1);
+        }
+        
+        .header h1 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 1.5rem;
+            color: var(--neon-yellow);
+            text-shadow: 4px 4px 0 #2d1b4e;
+            margin-bottom: 10px;
+        }
+        
+        .header .subtitle {
+            color: var(--panel);
+            font-size: 1.2rem;
+        }
+        
+        /* Leaders Section - Top Floor */
+        .executive-floor {
+            background: linear-gradient(180deg, rgba(92, 61, 122, 0.3), transparent);
+            border: 3px solid var(--neon-yellow);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 40px;
+            position: relative;
+        }
+        
+        .executive-floor::before {
+            content: '👑 EXECUTIVE FLOOR';
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--bg);
+            padding: 5px 20px;
+            color: var(--neon-yellow);
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.7rem;
+            border: 2px solid var(--neon-yellow);
+            border-radius: 10px;
+        }
+        
+        .leaders-row {
+            display: flex;
+            justify-content: center;
+            gap: 80px;
+        }
+        
+        /* Department Sections */
+        .department-section {
+            background: rgba(244, 228, 193, 0.1);
+            border: 3px solid var(--panel);
+            border-radius: 20px;
+            padding: 40px 20px 20px;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        .dept-label {
+            position: absolute;
+            top: -15px;
+            left: 20px;
+            background: var(--bg);
+            padding: 5px 15px;
+            color: var(--panel);
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.6rem;
+            border: 2px solid var(--panel);
+            border-radius: 8px;
+        }
+        
+        .agents-row {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+        
+        /* Pixel Computer Avatar - Cute Style */
+        .agent-station {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+        
+        .pixel-computer {
+            width: 80px;
+            height: 100px;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .pixel-computer:hover {
+            transform: translateY(-5px);
+        }
+        
+        /* Monitor/Head */
+        .monitor {
+            width: 60px;
+            height: 50px;
+            background: #2a2a3e;
+            border: 3px solid;
+            border-radius: 8px;
+            position: relative;
+            margin: 0 auto;
+            box-shadow: 
+                0 0 10px currentColor,
+                inset 0 2px 0 rgba(255,255,255,0.2);
+        }
+        
+        /* Different monitor styles for different agents */
+        .monitor.cyan { border-color: var(--neon-cyan); color: var(--neon-cyan); }
+        .monitor.pink { border-color: var(--neon-pink); color: var(--neon-pink); }
+        .monitor.green { border-color: var(--neon-green); color: var(--neon-green); }
+        .monitor.yellow { border-color: var(--neon-yellow); color: var(--neon-yellow); }
+        .monitor.purple { border-color: var(--neon-purple); color: var(--neon-purple); }
+        .monitor.orange { border-color: var(--neon-orange); color: var(--neon-orange); }
+        
+        /* Screen face */
+        .screen-face {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.5rem;
+            filter: drop-shadow(0 0 5px currentColor);
+        }
+        
+        /* Computer body/base */
+        .computer-body {
+            width: 45px;
+            height: 30px;
+            background: linear-gradient(180deg, #3d3d5c, #2a2a3e);
+            border: 2px solid;
+            margin: 5px auto 0;
+            border-radius: 5px;
+            position: relative;
+        }
+        
+        .computer-body.cyan { border-color: var(--neon-cyan); }
+        .computer-body.pink { border-color: var(--neon-pink); }
+        .computer-body.green { border-color: var(--neon-green); }
+        .computer-body.yellow { border-color: var(--neon-yellow); }
+        .computer-body.purple { border-color: var(--neon-purple); }
+        .computer-body.orange { border-color: var(--neon-orange); }
+        
+        /* Keyboard */
+        .keyboard {
+            width: 55px;
+            height: 12px;
+            background: #4a4a6a;
+            border: 1px solid #6a6a8a;
+            margin: 3px auto 0;
+            border-radius: 3px;
+            box-shadow: 0 2px 0 rgba(0,0,0,0.3);
+        }
+        
+        /* Cables */
+        .cables {
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 3px;
+            height: 15px;
+            background: currentColor;
+            opacity: 0.6;
+        }
+        
+        /* Desk */
+        .desk {
+            width: 100px;
+            height: 8px;
+            background: linear-gradient(180deg, #8b7355, #6b5345);
+            border-radius: 4px;
+            margin-top: 15px;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.3);
+        }
+        
+        /* Agent Label */
+        .agent-label {
+            margin-top: 15px;
+            text-align: center;
+            background: rgba(0,0,0,0.5);
+            padding: 8px 12px;
+            border-radius: 10px;
+            border: 2px solid;
+            min-width: 90px;
+        }
+        
+        .agent-label.cyan { border-color: var(--neon-cyan); }
+        .agent-label.pink { border-color: var(--neon-pink); }
+        .agent-label.green { border-color: var(--neon-green); }
+        .agent-label.yellow { border-color: var(--neon-yellow); }
+        .agent-label.purple { border-color: var(--neon-purple); }
+        .agent-label.orange { border-color: var(--neon-orange); }
+        
+        .agent-name {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.5rem;
+            color: var(--text-light);
+            margin-bottom: 3px;
+        }
+        
+        .agent-role {
+            font-size: 0.8rem;
+            color: #aaa;
+        }
+        
+        /* Status indicator */
+        .status-dot {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--neon-green);
+            border: 2px solid #2d1b4e;
+            box-shadow: 0 0 10px var(--neon-green);
+            animation: blink 2s infinite;
+        }
+        
+        .status-dot.busy {
+            background: var(--neon-yellow);
+            box-shadow: 0 0 10px var(--neon-yellow);
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        /* Floating animation */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-3px); }
+        }
+        
+        .pixel-computer {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        .pixel-computer:nth-child(2) { animation-delay: 0.5s; }
+        .pixel-computer:nth-child(3) { animation-delay: 1s; }
+        .pixel-computer:nth-child(4) { animation-delay: 1.5s; }
+    </style>
+</head>
+<body>
+    <div class="office">
+        <!-- Header -->
+        <div class="header">
+            <h1>🏢 MISSION CONTROL</h1>
+            <div class="subtitle">Pixel Cute Office Environment</div>
+        </div>
+        
+        <!-- Executive Floor - Leaders -->
+        <div class="executive-floor">
+            <div class="leaders-row">
+                <!-- Nexus -->
+                <div class="agent-station">
+                    <div class="pixel-computer">
+                        <div class="status-dot"></div>
+                        <div class="monitor cyan">
+                            <div class="screen-face">🤖</div>
+                        </div>
+                        <div class="computer-body cyan"></div>
+                        <div class="keyboard"></div>
+                        <div class="cables" style="color: var(--neon-cyan)"></div>
+                    </div>
+                    <div class="desk"></div>
+                    
+                    <div class="agent-label cyan">
+                        <div class="agent-name">NEXUS</div>
+                        <div class="agent-role">Air1ck3ff</div>
+                    </div>
+                </div>
+                
+                <!-- EricF -->
+                <div class="agent-station">
+                    <div class="pixel-computer">
+                        <div class="status-dot"></div>
+                        <div class="monitor pink">
+                            <div class="screen-face">👨‍💻</div>
+                        </div>
+                        <div class="computer-body pink"></div>
+                        <div class="keyboard"></div>
+                        <div class="cables" style="color: var(--neon-pink)"></div>
+                    </div>
+                    <div class="desk"></div>
+                    
+                    <div class="agent-label pink">
+                        <div class="agent-name">ERICF</div>
+                        <div class="agent-role">Commander</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- DEV TEAM -->
+        <div class="department-section">
+            <div class="dept-label">⚒️ DEV TEAM</div>
+            
+            <div class="agents-row">
+                <!-- Forge -->
+                <div class="agent-station">
+                    <div class="pixel-computer">
+                        <div class="status-dot"></div>
+                        <div class="monitor orange">
+                            <div class="screen-face">🔨</div>
+                        </div>
+                        <div class="computer-body orange"></div>
+                        <div class="keyboard"></div>
+                        <div class="cables" style="color: var(--neon-orange)"></div>
+                    </div>
+                    <div class="desk"></div>
+                    
+                    <div class="agent-label orange">
+                        <div class="agent-name">FORGE</div>
+                        <div class="agent-role">UI/Frontend</div>
+                    </div>
+                </div>
+                
+                <!-- Code -->
+                <div class="agent-station">
+                    <div class="pixel-computer">
+                        <div class="status-dot busy"></div>
+                        <div class="monitor green">
+                            <div class="screen-face">💻</div>
+                        </div>
+                        <div class="computer-body green"></div>
+                        <div class="keyboard"></div>
+                        <div class="cables" style="color: var(--neon-green)"></div>
+                    </div>
+                    <div class="desk"></div>
+                    
+                    <div class="agent-label green">
+                        <div class="agent-name">CODE</div>
+                        <div class="agent-role">Backend</div>
+                    </div>
+                </div>
+                
+                <!-- Pixel -->
+                <div class="agent-station">
+                    <div class="pixel-computer">
+                        <div class="status-dot"></div>
+                        <div class="monitor purple">
+                            <div class="screen-face">🎨</div>
+                        </div>
+                        <div class="computer-body purple"></div>
+                        <div class="keyboard"></div>
+                        <div class="cables" style="color: var(--neon-purple)"></div>
+                    </div>
+                    <div class="desk"></div>
+                    
+                    <div class="agent-label purple">
+                        <div class="agent-name">PIXEL</div>
+                        <div class="agent-role">Designer</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- CONTENT TEAM -->
+        <div class="department-section">
+            <div class="dept-label">✍️ CONTENT TEAM</div>
+            
+            <div class="agents-row">
+                <!-- Glasses -->
+                <div class="agent-station">
+                    <div class="pixel-computer">
+                        <div class="status-dot"></div>
+                        <div class="monitor cyan">
+                            <div class="screen-face">🔍</div>
+                        </div>
+                        <div class="computer-body cyan"></div>
+                        <div class="keyboard"></div>
+                        <div class="cables" style="color: var(--neon-cyan)"></div>
+                    </div>
+                    <div class="desk"></div>
+                    
+                    <div class="agent-label cyan">
+                        <div class="agent-name">GLASSES</div>
+                        <div class="agent-role">Research</div>
+                    </div>
+                </div>
+                
+                <!-- Quill -->
+                <div class="agent-station">
+                    <div class="pixel-computer">
+                        <div class="status-dot"></div>
+                        <div class="monitor yellow">
+                            <div class="screen-face">✍️</div>
+                        </div>
+                        <div class="computer-body yellow"></div>
+                        <div class="keyboard"></div>
+                        <div class="cables" style="color: var(--neon-yellow)"></div>
+                    </div>
+                    <div class="desk"></div>
+                    
+                    <div class="agent-label yellow">
+                        <div class="agent-name">QUILL</div>
+                        <div class="agent-role">Writer</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- GROWTH TEAM -->
+        <div class="department-section">
+            <div class="dept-label">📈 GROWTH TEAM</div>
+            
+            <div class="agents-row">
+                <!-- Gary -->
+                <div class="agent-station">
+                    <div class="pixel-computer">
+                        <div class="status-dot"></div>
+                        <div class="monitor green">
+                            <div class="screen-face">📊</div>
+                        </div>
+                        <div class="computer-body green"></div>
+                        <div class="keyboard"></div>
+                        <div class="cables" style="color: var(--neon-green)"></div>
+                    </div>
+                    <div class="desk"></div>
+                    
+                    <div class="agent-label green">
+                        <div class="agent-name">GARY</div>
+                        <div class="agent-role">Marketing</div>
+                    </div>
+                </div>
+                
+                <!-- Larry -->
+                <div class="agent-station">
+                    <div class="pixel-computer">
+                        <div class="status-dot"></div>
+                        <div class="monitor pink">
+                            <div class="screen-face">📱</div>
+                        </div>
+                        <div class="computer-body pink"></div>
+                        <div class="keyboard"></div>
+                        <div class="cables" style="color: var(--neon-pink)"></div>
+                    </div>
+                    <div class="desk"></div>
+                    
+                    <div class="agent-label pink">
+                        <div class="agent-name">LARRY</div>
+                        <div class="agent-role">Social</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- OPS TEAM -->
+        <div class="department-section">
+            <div class="dept-label">⚙️ OPS TEAM</div>
+            
+            <div class="agents-row">
+                <!-- Sentry -->
+                <div class="agent-station">
+                    <div class="pixel-computer">
+                        <div class="status-dot"></div>
+                        <div class="monitor cyan">
+                            <div class="screen-face">⚙️</div>
+                        </div>
+                        <div class="computer-body cyan"></div>
+                        <div class="keyboard"></div>
+                        <div class="cables" style="color: var(--neon-cyan)"></div>
+                    </div>
+                    <div class="desk"></div>
+                    
+                    <div class="agent-label cyan">
+                        <div class="agent-name">SENTRY</div>
+                        <div class="agent-role">DevOps</div>
+                    </div>
+                </div>
+                
+                <!-- Audit -->
+                <div class="agent-station">
+                    <div class="pixel-computer">
+                        <div class="status-dot"></div>
+                        <div class="monitor yellow">
+                            <div class="screen-face">✅</div>
+                        </div>
+                        <div class="computer-body yellow"></div>
+                        <div class="keyboard"></div>
+                        <div class="cables" style="color: var(--neon-yellow)"></div>
+                    </div>
+                    <div class="desk"></div>
+                    
+                    <div class="agent-label yellow">
+                        <div class="agent-name">AUDIT</div>
+                        <div class="agent-role">QA</div>
+                    </div>
+                </div>
+                
+                <!-- Cipher -->
+                <div class="agent-station">
+                    <div class="pixel-computer">
+                        <div class="status-dot"></div>
+                        <div class="monitor purple">
+                            <div class="screen-face">🔒</div>
+                        </div>
+                        <div class="computer-body purple"></div>
+                        <div class="keyboard"></div>
+                        <div class="cables" style="color: var(--neon-purple)"></div>
+                    </div>
+                    <div class="desk"></div>
+                    
+                    <div class="agent-label purple">
+                        <div class="agent-name">CIPHER</div>
+                        <div class="agent-role">Security</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- BD TEAM -->
+        <div class="department-section">
+            <div class="dept-label">🤝 BD TEAM</div>
+            
+            <div class="agents-row">
+                <!-- DealFlow -->
+                <div class="agent-station">
+                    <div class="pixel-computer">
+                        <div class="status-dot busy"></div>
+                        <div class="monitor orange">
+                            <div class="screen-face">🤝</div>
+                        </div>
+                        <div class="computer-body orange"></div>
+                        <div class="keyboard"></div>
+                        <div class="cables" style="color: var(--neon-orange)"></div>
+                    </div>
+                    <div class="desk"></div>
+                    
+                    <div class="agent-label orange">
+                        <div class="agent-name">DEALFLOW</div>
+                        <div class="agent-role">Lead Gen</div>
+                    </div>
+                </div>
+                
+                <!-- ColdCall -->
+                <div class="agent-station">
+                    <div class="pixel-computer">
+                        <div class="status-dot"></div>
+                        <div class="monitor pink">
+                            <div class="screen-face">📞</div>
+                        </div>
+                        <div class="computer-body pink"></div>
+                        <div class="keyboard"></div>
+                        <div class="cables" style="color: var(--neon-pink)"></div>
+                    </div>
+                    <div class="desk"></div>
+                    
+                    <div class="agent-label pink">
+                        <div class="agent-name">COLDCALL</div>
+                        <div class="agent-role">Outreach</div>
+                    </div>
+                </div>
+                
+                <!-- Scout -->
+                <div class="agent-station">
+                    <div class="pixel-computer">
+                        <div class="status-dot"></div>
+                        <div class="monitor cyan">
+                            <div class="screen-face">🕵️</div>
+                        </div>
+                        <div class="computer-body cyan"></div>
+                        <div class="keyboard"></div>
+                        <div class="cables" style="color: var(--neon-cyan)"></div>
+                    </div>
+                    <div class="desk"></div>
+                    
+                    <div class="agent-label cyan">
+                        <div class="agent-name">SCOUT</div>
+                        <div class="agent-role">Intel</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
