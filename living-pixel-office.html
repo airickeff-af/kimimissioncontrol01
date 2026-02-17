@@ -584,11 +584,26 @@
                     <h4>📋 Discussion Topics</h4>
                     <div id="meeting-topics"></div>
                 </div>
+                <!-- Conclusions Section -->
+                <div id="meeting-conclusions" style="background: rgba(0, 212, 255, 0.05); border: 1px solid var(--accent-cyan); border-radius: 8px; padding: 1rem; margin-top: 1rem; display: none;">
+                    <h4 style="color: var(--accent-cyan); margin-bottom: 0.5rem;">🎯 Meeting Conclusions</h4>
+                    <div id="conclusions-content" style="font-size: 0.8rem; line-height: 1.5; color: var(--text-secondary);">
+                        <p>Complete a standup to see conclusions...</p>
+                    </div>
+                </div>
+                
+                <!-- Next Standup Topics Section -->
+                <div id="next-standup-topics" style="background: rgba(251, 191, 36, 0.05); border: 1px solid var(--accent-yellow); border-radius: 8px; padding: 1rem; margin-top: 1rem; display: none;">
+                    <h4 style="color: var(--accent-yellow); margin-bottom: 0.5rem;">📅 Topics for Next Standup</h4>
+                    <div id="next-topics-content" style="font-size: 0.8rem; line-height: 1.5; color: var(--text-secondary);">
+                        <p>Complete a standup to generate next topics...</p>
+                    </div>
+                </div>
             </div>
             
             <div id="minutes-tab" class="tab-content">
                 <div style="background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
-                    <h4 style="color: var(--accent-cyan); margin-bottom: 0.5rem;">📝 Latest Meeting Minutes</h4>
+                    <h4 style="color: var(--accent-cyan); margin-bottom: 0.5rem;">📝 Meeting Minutes</h4>
                     <div id="meeting-minutes-display" style="font-size: 0.8rem; line-height: 1.5;">
                         <p style="color: var(--text-muted);">No standup completed yet. Start a meeting to generate minutes.</p>
                     </div>
@@ -603,9 +618,10 @@
                         </ul>
                     </div>
                     <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border);">
-                        <button class="btn" onclick="addImprovementTasks()" style="font-size: 0.75rem; padding: 0.5rem 1rem; background: var(--accent-cyan); color: #000; border: none; border-radius: 6px; cursor: pointer;">
+                        <button class="btn" id="add-tasks-btn" onclick="addImprovementTasks()" style="font-size: 0.75rem; padding: 0.5rem 1rem; background: var(--accent-cyan); color: #000; border: none; border-radius: 6px; cursor: pointer;">
                             ➕ Add Tasks to Pending
                         </button>
+                        <span id="add-tasks-status" style="margin-left: 1rem; font-size: 0.75rem; color: var(--accent-green); display: none;">✅ Tasks added!</span>
                     </div>
                 </div>
                 
@@ -1468,10 +1484,37 @@
                 </div>
             `;
             
-            document.getElementById('meeting-minutes').innerHTML = minutesHTML;
-            
             // Update the Minutes tab display
             document.getElementById('meeting-minutes-display').innerHTML = minutesHTML;
+            
+            // Show meeting info sections
+            document.getElementById('meeting-info').style.display = 'block';
+            document.getElementById('meeting-conclusions').style.display = 'block';
+            document.getElementById('next-standup-topics').style.display = 'block';
+            
+            // Generate conclusions for Meeting tab
+            const conclusionsHTML = `
+                <ul style="margin: 0; padding-left: 1.2rem;">
+                    <li style="margin-bottom: 0.5rem;">✅ <strong>Lead Generation:</strong> 26/30 leads found (87% complete) - 4 more needed</li>
+                    <li style="margin-bottom: 0.5rem;">✅ <strong>System Status:</strong> All 20 agents operational, 13 heartbeats active</li>
+                    <li style="margin-bottom: 0.5rem;">✅ <strong>Deliverables:</strong> 18 tasks completed today (100% of target)</li>
+                    <li style="margin-bottom: 0.5rem;">⚠️ <strong>Critical:</strong> Code API 404 errors need deployment before noon deadline</li>
+                    <li>💡 <strong>Opportunity:</strong> Maya IPO identified - schedule outreach call</li>
+                </ul>
+            `;
+            document.getElementById('conclusions-content').innerHTML = conclusionsHTML;
+            
+            // Generate next standup topics
+            const nextTopicsHTML = `
+                <ul style="margin: 0; padding-left: 1.2rem;">
+                    <li style="margin-bottom: 0.5rem;">📊 <strong>Lead Quota:</strong> Did we reach 30 leads/day?</li>
+                    <li style="margin-bottom: 0.5rem;">🔧 <strong>Code API:</strong> Are 404 errors fixed and deployed?</li>
+                    <li style="margin-bottom: 0.5rem;">🎨 <strong>Pixel:</strong> Agent avatar generation progress with PyTorch</li>
+                    <li style="margin-bottom: 0.5rem;">📈 <strong>New Tasks:</strong> Progress on 10 improvement tasks assigned</li>
+                    <li>🤝 <strong>Maya IPO:</strong> Outreach call scheduled and executed?</li>
+                </ul>
+            `;
+            document.getElementById('next-topics-content').innerHTML = nextTopicsHTML;
             
             // Generate Nexus peer review
             generateNexusPeerReview(selectedInsights, selectedImprovements);
@@ -1539,11 +1582,39 @@
             const taskCount = pendingImprovementTasks.length;
             logActivity(`➕ Nexus added ${taskCount} improvement tasks to pending queue`);
             
+            // Show success status
+            const statusEl = document.getElementById('add-tasks-status');
+            const btnEl = document.getElementById('add-tasks-btn');
+            
+            if (statusEl) {
+                statusEl.style.display = 'inline';
+                statusEl.textContent = `✅ ${taskCount} tasks added!`;
+            }
+            
+            if (btnEl) {
+                btnEl.textContent = '✓ Added!';
+                btnEl.style.background = 'var(--accent-green)';
+                btnEl.disabled = true;
+            }
+            
+            // Show alert with details
             alert(`✅ ${taskCount} improvement tasks added to pending queue!\n\nTasks:\n${pendingImprovementTasks.map(t => `- ${t.title}`).join('\n')}`);
             
             // Clear the pending tasks
             pendingImprovementTasks = [];
-            document.getElementById('auto-generated-tasks').innerHTML = '<p style="color: var(--text-muted);">Tasks added to pending queue!</p>';
+            document.getElementById('auto-generated-tasks').innerHTML = '<p style="color: var(--text-muted);">✅ Tasks added to pending queue!</p>';
+            
+            // Reset button after 3 seconds
+            setTimeout(() => {
+                if (btnEl) {
+                    btnEl.textContent = '➕ Add Tasks to Pending';
+                    btnEl.style.background = 'var(--accent-cyan)';
+                    btnEl.disabled = false;
+                }
+                if (statusEl) {
+                    statusEl.style.display = 'none';
+                }
+            }, 3000);
         }
 
         function animateAgentReturn(agent, targetPos, delay) {
