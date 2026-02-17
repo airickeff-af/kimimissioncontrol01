@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent Dashboard | Mission Control</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #111118;
+            --bg-card: #15151d;
+            --bg-elevated: #1e1e2a;
+            --accent-cyan: #00d4ff;
+            --accent-pink: #ff2a6d;
+            --accent-purple: #a855f7;
+            --accent-green: #22c55e;
+            --accent-yellow: #fbbf24;
+            --text-primary: #fafafa;
+            --text-secondary: #a1a1aa;
+            --text-muted: #71717a;
+            --border: #27272a;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .header {
+            background: rgba(17, 17, 24, 0.95);
+            border-bottom: 1px solid var(--border);
+            padding: 0 2rem;
+            height: 70px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .logo {
+            width: 42px;
+            height: 42px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+        
+        .nav-tabs {
+            display: flex;
+            gap: 0.5rem;
+            background: rgba(255,255,255,0.05);
+            padding: 0.5rem;
+            border-radius: 12px;
+        }
+        
+        .nav-tab {
+            padding: 0.75rem 1.25rem;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .nav-tab:hover, .nav-tab.active {
+            color: var(--text-primary);
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+        }
+        
+        .main-content {
+            padding: 2rem;
+            max-width: 1600px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 2rem;
+        }
+        
+        h2 {
+            color: var(--accent-cyan);
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+        
+        /* Agent Grid */
+        .agent-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1rem;
+        }
+        
+        .agent-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.25rem;
+            transition: all 0.2s;
+        }
+        
+        .agent-card:hover {
+            border-color: var(--accent-cyan);
+            transform: translateY(-2px);
+        }
+        
+        .agent-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .agent-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            background: var(--bg-elevated);
+        }
+        
+        .agent-info h3 {
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        .agent-role {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+        
+        .agent-status {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-left: auto;
+        }
+        
+        .status-active { background: rgba(34, 197, 94, 0.2); color: var(--accent-green); }
+        .status-busy { background: rgba(251, 191, 36, 0.2); color: var(--accent-yellow); }
+        .status-resting { background: rgba(161, 161, 170, 0.2); color: var(--text-muted); }
+        
+        .agent-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+            padding-top: 0.75rem;
+            border-top: 1px solid var(--border);
+        }
+        
+        .stat {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--accent-cyan);
+        }
+        
+        .stat-label {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+        
+        .agent-experience {
+            margin-top: 0.75rem;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+        
+        /* Activity Feed */
+        .activity-panel {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            height: fit-content;
+            position: sticky;
+            top: 90px;
+        }
+        
+        .activity-item {
+            display: flex;
+            gap: 0.75rem;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+        
+        .activity-time {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+            white-space: nowrap;
+        }
+        
+        .activity-text {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+        
+        .refresh-btn {
+            width: 100%;
+            padding: 0.75rem;
+            margin-top: 1rem;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .refresh-btn:hover {
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="brand">
+            <div class="logo">🤖</div>
+            <div>
+                <h1 style="font-size: 1.25rem;">All Agents</h1>
+                <span style="font-size: 0.75rem; color: var(--text-muted);">Mission Control HQ</span>
+            </div>
+        </div>
+        
+        <nav class="nav-tabs">
+            <a href="index.html" class="nav-tab">📊 Overview</a>
+            <a href="living-pixel-office.html" class="nav-tab">🏢 Office</a>
+            <a href="data-viewer.html" class="nav-tab">📁 Data</a>
+            <a href="token-tracker.html" class="nav-tab">💰 Tokens</a>
+            <a href="task-board.html" class="nav-tab">📋 Tasks</a>
+            <a href="logs-view.html" class="nav-tab">📝 Logs</a>
+        </nav>
+        
+        <div style="display: flex; align-items: center; gap: 1rem;">
+            <span style="font-size: 0.875rem; color: var(--text-muted);">🟢 20 Agents Active</span>
+            <button class="refresh-btn" onclick="location.reload()" style="width: auto; padding: 0.5rem 1rem; margin: 0;">🔄 Refresh</button>
+        </div>
+    </header>
+
+    <div class="main-content">
+        <div>
+            <h2>🤖 All 20 Agents</h2>
+            <div class="agent-grid" id="agent-grid">
+                <!-- Agents populated by JavaScript -->
+            </div>
+        </div>
+        
+        <div class="activity-panel">
+            <h2>📡 Live Activity Feed</h2>
+            <div id="activity-feed">
+                <!-- Activities populated by JavaScript -->
+            </div>
+            <button class="refresh-btn" onclick="loadActivities()">🔄 Load More Activities</button>
+        </div>
+    </div>
+
+    <script>
+        // All 20 Agents Data
+        const agents = [
+            { id: 'nexus', name: 'Nexus', role: 'Orchestrator', emoji: '🤖', status: 'active', color: '#ff2a6d', tokens: 75300, files: 45, tasks: 12, exp: 'Managing 20 agents, orchestrating all Mission Control operations. Recently consolidated 13 heartbeats into 1 for 94% noise reduction.' },
+            { id: 'glasses', name: 'Glasses', role: 'Researcher', emoji: '🥽', status: 'active', color: '#00d4ff', tokens: 42100, files: 23, tasks: 8, exp: 'Delivered comprehensive crypto/stock briefings twice daily. Created weekly report generator system with 12 sections.' },
+            { id: 'quill', name: 'Quill', role: 'Writer', emoji: '✍️', status: 'resting', color: '#fbbf24', tokens: 28500, files: 18, tasks: 5, exp: 'Created 7-tweet threads, blog intros, and YouTube hooks. Standing by for next content assignment.' },
+            { id: 'pixel', name: 'Pixel', role: 'Designer', emoji: '🎨', status: 'busy', color: '#a855f7', tokens: 31200, files: 31, tasks: 9, exp: 'Completed walking computer head animations for all 20 agents. PyTorch now installed for AI image generation.' },
+            { id: 'forge', name: 'Forge', role: 'UI Lead', emoji: '🔨', status: 'active', color: '#f97316', tokens: 45600, files: 38, tasks: 11, exp: 'Built agent performance dashboard with real-time metrics and Chart.js visualizations. All UI components responsive.' },
+            { id: 'code', name: 'Code', role: 'Backend Lead', emoji: '💻', status: 'busy', color: '#22c55e', tokens: 37100, files: 29, tasks: 7, exp: 'Fixed API 404 errors, built lead scoring algorithm (0-100 scale), created 5 API endpoints. Deploying fixes now.' },
+            { id: 'gary', name: 'Gary', role: 'Marketing', emoji: '📈', status: 'resting', color: '#f97316', tokens: 22400, files: 15, tasks: 6, exp: 'Reviewed content calendar, identified 4 gaps, created 5 content pillars. Waiting for historical data for analysis.' },
+            { id: 'larry', name: 'Larry', role: 'Social', emoji: '📱', status: 'resting', color: '#00d4ff', tokens: 19800, files: 12, tasks: 4, exp: 'Created posting schedule for tomorrow (3 posts). Awaiting API credentials for Twitter/X and LinkedIn automation.' },
+            { id: 'sentry', name: 'Sentry', role: 'DevOps', emoji: '🛡️', status: 'active', color: '#fbbf24', tokens: 26700, files: 21, tasks: 8, exp: 'Installed PyTorch 2.10.0 for Pixel. All systems monitored, 13 heartbeats running smoothly. No issues detected.' },
+            { id: 'audit', name: 'Audit', role: 'QA', emoji: '🔍', status: 'active', color: '#ff2a6d', tokens: 33400, files: 19, tasks: 10, exp: 'Completed 15+ quality audits. All tasks scoring 85-100/100. Identified data viewer bug and office functionality issues.' },
+            { id: 'cipher', name: 'Cipher', role: 'Security', emoji: '🔒', status: 'active', color: '#a855f7', tokens: 28900, files: 14, tasks: 6, exp: 'Security monitoring active. No vulnerabilities detected. All credentials secured. Higgsfield API configured.' },
+            { id: 'coldcall', name: 'ColdCall', role: 'Outreach', emoji: '📞', status: 'resting', color: '#22c55e', tokens: 15600, files: 8, tasks: 3, exp: 'Cold call schedule prepared. Waiting for EricF approval to begin outreach. 26 leads ready for contact.' },
+            { id: 'scout', name: 'Scout', role: 'Researcher', emoji: '🔭', status: 'active', color: '#00d4ff', tokens: 101700, files: 42, tasks: 15, exp: 'Completed 3 deep research sprints. Found 30 opportunities across 10 areas. Content monetization plan delivered (100/100 score).' },
+            { id: 'forge2', name: 'Forge-2', role: 'UI Dev', emoji: '🔧', status: 'active', color: '#f97316', tokens: 38900, files: 27, tasks: 8, exp: 'Built UI component library in parallel with Forge. Theme system, animations, mobile responsive all complete.' },
+            { id: 'code2', name: 'Code-2', role: 'Backend Dev', emoji: '⚡', status: 'active', color: '#22c55e', tokens: 41200, files: 33, tasks: 9, exp: 'Created backend API with 8 endpoints. All tests passing. Documentation complete. Ready for integration.' },
+            { id: 'pixel2', name: 'Pixel-2', role: 'Visual Designer', emoji: '🖌️', status: 'active', color: '#a855f7', tokens: 36500, files: 35, tasks: 10, exp: 'Completed living pixel office with walking computer heads. Enhanced animations, lighting, shadows. 20 agents rendered.' },
+            { id: 'dealflow', name: 'DealFlow', role: 'Lead Gen', emoji: '🤝', status: 'busy', color: '#22c55e', tokens: 115300, files: 52, tasks: 18, exp: 'Found 26 high-quality leads (87% of daily quota). 4 more needed. Regional leads project starting for 6 countries.' },
+            { id: 'spark', name: 'Spark', role: 'Innovation', emoji: '💡', status: 'resting', color: '#fbbf24', tokens: 14200, files: 7, tasks: 3, exp: 'Innovation sprints completed. 10 new improvement tasks identified. Standing by for next creative assignment.' },
+            { id: 'ericf', name: 'EricF', role: 'Commander', emoji: '👨‍💻', status: 'active', color: '#ff2a6d', tokens: 0, files: 0, tasks: 0, exp: 'Mission Control Commander. Overseeing 20 agents, 17 cron jobs, all dashboard systems. Feb 18 noon deadline tracked.' }
+        ];
+
+        // Activity Feed Data (20+ activities)
+        const activities = [
+            { time: '00:46', agent: 'Audit', text: 'Completed quality assessment - 3 Scout reports passed (91-94/100)' },
+            { time: '00:43', agent: 'Nexus', text: 'Fixed data viewer JavaScript bug - files now loading' },
+            { time: '00:41', agent: 'Scout', text: 'Delivered content monetization execution plan (100/100 score)' },
+            { time: '00:38', agent: 'Forge+Code', text: 'On standby for refresh button and click functionality fixes' },
+            { time: '00:36', agent: 'Audit', text: 'Identified data viewer bug - function call order error' },
+            { time: '00:30', agent: 'Nexus', text: 'Added refresh buttons to all 5 dashboard pages' },
+            { time: '00:26', agent: 'Scout', text: 'Completed deep research on 10 improvement areas' },
+            { time: '00:22', agent: 'Audit', text: 'All 6 tasks passed audit (86-94/100)' },
+            { time: '00:19', agent: 'Nexus', text: 'Emergency sync complete - all memory files updated' },
+            { time: '00:15', agent: 'Nexus', text: 'Added 10 new improvement tasks to queue' },
+            { time: '00:11', agent: 'Scout', text: 'Completed competitor monitoring system (93/100)' },
+            { time: '00:08', agent: 'Forge', text: 'Delivered agent performance dashboard (92/100)' },
+            { time: '00:05', agent: 'Glasses', text: 'Completed weekly report generator (91/100)' },
+            { time: '00:02', agent: 'Code', text: 'Completed lead scoring algorithm (91/100)' },
+            { time: '23:55', agent: 'Nexus', text: 'Standardized all dashboard headers' },
+            { time: '23:50', agent: 'Sentry', text: 'Installed PyTorch 2.10.0 - Pixel can now generate images' },
+            { time: '23:47', agent: 'Scout', text: 'Completed competitor monitoring system' },
+            { time: '23:45', agent: 'Pixel-2', text: 'Completed walking computer head animations' },
+            { time: '23:43', agent: 'Nexus', text: 'Assigned 10 new improvement tasks to agents' },
+            { time: '23:38', agent: 'Nexus', text: 'Improvement cycle #4 complete - system stable' },
+            { time: '23:36', agent: 'Audit', text: 'All 4 critical tasks passed audit (85-92/100)' },
+            { time: '23:35', agent: 'Nexus', text: 'Enhanced Audit Bot with EricF quality standards' },
+            { time: '23:32', agent: 'Nexus', text: 'Changed heartbeat #13 from 6hr to 4hr intervals' },
+            { time: '23:30', agent: 'Nexus', text: 'Memory bank update - all tasks tracked' }
+        ];
+
+        function renderAgents() {
+            const grid = document.getElementById('agent-grid');
+            grid.innerHTML = agents.map(agent => `
+                <div class="agent-card">
+                    <div class="agent-header">
+                        <div class="agent-avatar" style="border: 2px solid ${agent.color}">${agent.emoji}</div>
+                        <div class="agent-info">
+                            <h3>${agent.name}</h3>
+                            <div class="agent-role">${agent.role}</div>
+                        </div>
+                        <span class="agent-status status-${agent.status}">${agent.status}</span>
+                    </div>
+                    <div class="agent-stats">
+                        <div class="stat">
+                            <div class="stat-value">${(agent.tokens/1000).toFixed(1)}k</div>
+                            <div class="stat-label">Tokens</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">${agent.files}</div>
+                            <div class="stat-label">Files</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">${agent.tasks}</div>
+                            <div class="stat-label">Tasks</div>
+                        </div>
+                    </div>
+                    <div class="agent-experience">
+                        ${agent.exp}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderActivities() {
+            const feed = document.getElementById('activity-feed');
+            feed.innerHTML = activities.map(act => `
+                <div class="activity-item">
+                    <div class="activity-time">${act.time}</div>
+                    <div class="activity-text">
+                        <strong>${act.agent}:</strong> ${act.text}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function loadActivities() {
+            // In real implementation, this would fetch more activities
+            alert('Loading more activities... (In production, this would fetch from API)');
+        }
+
+        // Initialize
+        renderAgents();
+        renderActivities();
+        
+        // Auto-refresh every 30 minutes
+        setInterval(() => {
+            location.reload();
+        }, 1800000);
+    </script>
+</body>
+</html>
