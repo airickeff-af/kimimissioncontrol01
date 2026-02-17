@@ -598,29 +598,30 @@
             <div id="agentBars"></div>
         </div>
         
-        <!-- Cost Analysis -->
-        <div class="cost-analysis">
+        // Cost Analysis - UPDATED
+        const costAnalysis = document.querySelector('.cost-analysis');
+        costAnalysis.innerHTML = `
             <div class="cost-card">
                 <div class="cost-icon">💵</div>
-                <div class="cost-value" style="color: var(--accent-green);">$0.52</div>
-                <div class="cost-label">Today</div>
-                <div class="cost-change positive">↓ 12% vs yesterday</div>
+                <div class="cost-value" style="color: var(--accent-green);">$0.89</div>
+                <div class="cost-label">Last 6 Hours</div>
+                <div class="cost-change positive">↑ Active period</div>
             </div>
             
             <div class="cost-card">
                 <div class="cost-icon">📅</div>
-                <div class="cost-value" style="color: var(--accent-cyan);">$3.24</div>
-                <div class="cost-label">This Week</div>
-                <div class="cost-change positive">↓ 8% vs last week</div>
+                <div class="cost-value" style="color: var(--accent-cyan);">$1.42</div>
+                <div class="cost-label">Today</div>
+                <div class="cost-change positive">↑ High activity</div>
             </div>
             
             <div class="cost-card">
                 <div class="cost-icon">📊</div>
-                <div class="cost-value" style="color: var(--accent-purple);">$12.80</div>
-                <div class="cost-label">This Month</div>
-                <div class="cost-change positive">↓ 15% vs last month</div>
+                <div class="cost-value" style="color: var(--accent-purple);">$8.52</div>
+                <div class="cost-label">This Week</div>
+                <div class="cost-change positive">↑ 23% vs last week</div>
             </div>
-        </div>
+        `;
         
         <!-- Session Timeline -->
         <div class="timeline-section">
@@ -635,34 +636,36 @@
         <!-- Total Banner -->
         <div class="total-banner">
             <div class="total-label">💰 Total Mission Control Cost</div>
-            <div class="total-value">$0.52</div>
-            <div class="total-subtitle">247,532 tokens across 20 agents • ~$0.026 per agent • Trending down 📉</div>
+            <div class="total-value">$1.42</div>
+            <div class="total-subtitle">713,400 tokens across 20 agents • ~$0.071 per agent • Last updated: Feb 18, 1:02 AM</div>
         </div>
     </main>
     
     <script>
-        // Agent data
+        // Data timestamp
+        const lastUpdated = 'Feb 18, 2026 1:02 AM HKT';
+        // Agent data - UPDATED Feb 18, 1:02 AM HKT
         const agents = [
-            { name: 'DealFlow', emoji: '🤝', role: 'BD Lead', tokens: 115300, cost: 0.23, color: '#f97316', tasks: 2 },
-            { name: 'Nexus', emoji: '🤖', role: 'Orchestrator', tokens: 75300, cost: 0.15, color: '#ff2a6d', tasks: 15 },
-            { name: 'Forge', emoji: '🔨', role: 'UI Lead', tokens: 45000, cost: 0.09, color: '#f97316', tasks: 8 },
-            { name: 'Code', emoji: '💻', role: 'Backend', tokens: 37000, cost: 0.07, color: '#22c55e', tasks: 6 },
-            { name: 'Pixel', emoji: '🎨', role: 'Design', tokens: 25000, cost: 0.05, color: '#a855f7', tasks: 5 },
-            { name: 'Audit', emoji: '✅', role: 'QA', tokens: 24000, cost: 0.05, color: '#fbbf24', tasks: 6 },
-            { name: 'ColdCall', emoji: '📞', role: 'Outreach', tokens: 12000, cost: 0.02, color: '#22c55e', tasks: 3 },
-            { name: 'Scout', emoji: '🕵️', role: 'Intel', tokens: 8000, cost: 0.02, color: '#00d4ff', tasks: 2 },
-            { name: 'Glasses', emoji: '🔍', role: 'Research', tokens: 6000, cost: 0.01, color: '#00d4ff', tasks: 1 },
-            { name: 'Quill', emoji: '✍️', role: 'Content', tokens: 4500, cost: 0.01, color: '#fbbf24', tasks: 2 },
-            { name: 'Gary', emoji: '📊', role: 'Marketing', tokens: 3200, cost: 0.01, color: '#f97316', tasks: 2 },
-            { name: 'Larry', emoji: '📱', role: 'Social', tokens: 2800, cost: 0.01, color: '#22c55e', tasks: 2 },
-            { name: 'Sentry', emoji: '⚙️', role: 'DevOps', tokens: 2100, cost: 0.00, color: '#00d4ff', tasks: 4 },
-            { name: 'Cipher', emoji: '🔒', role: 'Security', tokens: 1800, cost: 0.00, color: '#a855f7', tasks: 3 },
-            { name: 'Forge-2', emoji: '🔨', role: 'UI Dev', tokens: 1500, cost: 0.00, color: '#f97316', tasks: 2 },
-            { name: 'Forge-3', emoji: '🔨', role: 'UI Dev', tokens: 1200, cost: 0.00, color: '#f97316', tasks: 1 },
-            { name: 'Code-2', emoji: '💻', role: 'Backend', tokens: 1000, cost: 0.00, color: '#22c55e', tasks: 1 },
-            { name: 'Code-3', emoji: '💻', role: 'Backend', tokens: 800, cost: 0.00, color: '#22c55e', tasks: 1 },
-            { name: 'Pixel-2', emoji: '🎨', role: 'Design', tokens: 600, cost: 0.00, color: '#a855f7', tasks: 1 },
-            { name: 'Pixel-3', emoji: '🎨', role: 'Design', tokens: 430, cost: 0.00, color: '#a855f7', tasks: 1 }
+            { name: 'DealFlow', emoji: '🤝', role: 'BD Lead', tokens: 115300, cost: 0.23, color: '#f97316', tasks: 18 },
+            { name: 'Scout', emoji: '🔭', role: 'Researcher', tokens: 101700, cost: 0.20, color: '#00d4ff', tasks: 15 },
+            { name: 'Nexus', emoji: '🤖', role: 'Orchestrator', tokens: 75300, cost: 0.15, color: '#ff2a6d', tasks: 12 },
+            { name: 'Forge', emoji: '🔨', role: 'UI Lead', tokens: 45600, cost: 0.09, color: '#f97316', tasks: 11 },
+            { name: 'Code', emoji: '💻', role: 'Backend Lead', tokens: 37100, cost: 0.07, color: '#22c55e', tasks: 7 },
+            { name: 'Pixel', emoji: '🎨', role: 'Designer', tokens: 31200, cost: 0.06, color: '#a855f7', tasks: 9 },
+            { name: 'Audit', emoji: '🔍', role: 'QA', tokens: 33400, cost: 0.07, color: '#ff2a6d', tasks: 10 },
+            { name: 'Cipher', emoji: '🔒', role: 'Security', tokens: 28900, cost: 0.06, color: '#a855f7', tasks: 6 },
+            { name: 'Glasses', emoji: '🥽', role: 'Researcher', tokens: 42100, cost: 0.08, color: '#00d4ff', tasks: 8 },
+            { name: 'Sentry', emoji: '🛡️', role: 'DevOps', tokens: 26700, cost: 0.05, color: '#fbbf24', tasks: 8 },
+            { name: 'Quill', emoji: '✍️', role: 'Writer', tokens: 28500, cost: 0.06, color: '#fbbf24', tasks: 5 },
+            { name: 'Gary', emoji: '📈', role: 'Marketing', tokens: 22400, cost: 0.04, color: '#f97316', tasks: 6 },
+            { name: 'Larry', emoji: '📱', role: 'Social', tokens: 19800, cost: 0.04, color: '#00d4ff', tasks: 4 },
+            { name: 'ColdCall', emoji: '📞', role: 'Outreach', tokens: 15600, cost: 0.03, color: '#22c55e', tasks: 3 },
+            { name: 'Spark', emoji: '💡', role: 'Innovation', tokens: 14200, cost: 0.03, color: '#fbbf24', tasks: 3 },
+            { name: 'Forge-2', emoji: '🔧', role: 'UI Dev', tokens: 38900, cost: 0.08, color: '#f97316', tasks: 8 },
+            { name: 'Code-2', emoji: '⚡', role: 'Backend Dev', tokens: 41200, cost: 0.08, color: '#22c55e', tasks: 9 },
+            { name: 'Pixel-2', emoji: '🖌️', role: 'Visual Designer', tokens: 36500, cost: 0.07, color: '#a855f7', tasks: 10 },
+            { name: 'Forge-3', emoji: '🔨', role: 'UI Dev', tokens: 22400, cost: 0.04, color: '#f97316', tasks: 5 },
+            { name: 'Code-3', emoji: '💻', role: 'Backend Dev', tokens: 19800, cost: 0.04, color: '#22c55e', tasks: 4 }
         ];
         
         // Usage trend chart
