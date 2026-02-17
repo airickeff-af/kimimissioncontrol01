@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scout | Opportunities & Research</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #111118;
+            --bg-card: #15151d;
+            --bg-elevated: #1e1e2a;
+            --accent-cyan: #00d4ff;
+            --accent-pink: #ff2a6d;
+            --accent-purple: #a855f7;
+            --accent-green: #22c55e;
+            --accent-yellow: #fbbf24;
+            --accent-orange: #f97316;
+            --text-primary: #fafafa;
+            --text-secondary: #a1a1aa;
+            --text-muted: #71717a;
+            --border: #27272a;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .header {
+            background: rgba(17, 17, 24, 0.95);
+            border-bottom: 1px solid var(--border);
+            padding: 0 2rem;
+            height: 70px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .logo {
+            width: 42px;
+            height: 42px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+        
+        .nav-tabs {
+            display: flex;
+            gap: 0.5rem;
+            background: rgba(255,255,255,0.05);
+            padding: 0.5rem;
+            border-radius: 12px;
+        }
+        
+        .nav-tab {
+            padding: 0.75rem 1.25rem;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .nav-tab:hover, .nav-tab.active {
+            color: var(--text-primary);
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+        }
+        
+        .main-content {
+            padding: 2rem;
+            max-width: 1600px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 2rem;
+        }
+        
+        h2 {
+            color: var(--accent-cyan);
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+        
+        /* Filter Bar */
+        .filter-bar {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .filter-btn:hover, .filter-btn.active {
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
+        }
+        
+        /* Opportunity Cards */
+        .opportunity-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .opportunity-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.25rem;
+            transition: all 0.2s;
+            position: relative;
+        }
+        
+        .opportunity-card:hover {
+            border-color: var(--accent-cyan);
+            transform: translateX(4px);
+        }
+        
+        .opportunity-card.priority-high {
+            border-left: 4px solid var(--accent-pink);
+        }
+        
+        .opportunity-card.priority-medium {
+            border-left: 4px solid var(--accent-yellow);
+        }
+        
+        .opportunity-card.priority-low {
+            border-left: 4px solid var(--accent-green);
+        }
+        
+        .opp-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.75rem;
+        }
+        
+        .opp-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .opp-priority {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .priority-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .priority-p0 { background: rgba(255, 42, 109, 0.2); color: var(--accent-pink); }
+        .priority-p1 { background: rgba(251, 191, 36, 0.2); color: var(--accent-yellow); }
+        .priority-p2 { background: rgba(34, 197, 94, 0.2); color: var(--accent-green); }
+        
+        .bookmark-btn {
+            background: transparent;
+            border: none;
+            font-size: 1.25rem;
+            cursor: pointer;
+            opacity: 0.5;
+            transition: all 0.2s;
+            padding: 0.25rem;
+        }
+        
+        .bookmark-btn:hover, .bookmark-btn.bookmarked {
+            opacity: 1;
+            transform: scale(1.2);
+        }
+        
+        .bookmark-btn.bookmarked {
+            color: var(--accent-pink);
+        }
+        
+        .opp-desc {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 0.75rem;
+        }
+        
+        .opp-meta {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+        
+        .opp-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        
+        .opp-tags {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+            flex-wrap: wrap;
+        }
+        
+        .tag {
+            padding: 0.25rem 0.5rem;
+            background: var(--bg-elevated);
+            border-radius: 4px;
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        .sidebar-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.25rem;
+        }
+        
+        .sidebar-title {
+            font-size: 1rem;
+            color: var(--accent-cyan);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .bookmarked-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            background: var(--bg-elevated);
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .bookmarked-item:hover {
+            border: 1px solid var(--accent-pink);
+        }
+        
+        .bookmarked-item .emoji {
+            font-size: 1.25rem;
+        }
+        
+        .bookmarked-item .info {
+            flex: 1;
+        }
+        
+        .bookmarked-item .name {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+        
+        .bookmarked-item .priority {
+            font-size: 0.7rem;
+            color: var(--accent-pink);
+        }
+        
+        .remove-bookmark {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 0.25rem;
+        }
+        
+        .remove-bookmark:hover {
+            color: var(--accent-pink);
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+        }
+        
+        .stat-box {
+            background: var(--bg-elevated);
+            padding: 0.75rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .stat-box .value {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--accent-cyan);
+        }
+        
+        .stat-box .label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="brand">
+            <div class="logo">🔭</div>
+            <div>
+                <h1 style="font-size: 1.25rem;">Scout</h1>
+                <span style="font-size: 0.75rem; color: var(--text-muted);">Opportunities & Research</span>
+            </div>
+        </div>
+        
+        <nav class="nav-tabs">
+            <a href="index.html" class="nav-tab">📊 Overview</a>
+            <a href="agents.html" class="nav-tab">🤖 Agents</a>
+            <a href="living-pixel-office.html" class="nav-tab">🏢 Office</a>
+            <a href="data-viewer.html" class="nav-tab">📁 Data</a>
+            <a href="token-tracker.html" class="nav-tab">💰 Tokens</a>
+            <a href="task-board.html" class="nav-tab">📋 Tasks</a>
+        </nav>
+        
+        <div style="display: flex; align-items: center; gap: 1rem;">
+            <span style="font-size: 0.875rem; color: var(--text-muted);">🔭 30 Opportunities Found</span>
+            <button class="filter-btn" onclick="location.reload()">🔄 Refresh</button>
+        </div>
+    </header>
+
+    <div class="main-content">
+        <div>
+            <h2>🔭 Opportunities (Ranked by Priority)</h2>
+            
+            <div class="filter-bar">
+                <button class="filter-btn active" onclick="filterOpps('all')">All (30)</button>
+                <button class="filter-btn" onclick="filterOpps('high')">🔴 High Priority (12)</button>
+                <button class="filter-btn" onclick="filterOpps('medium')">🟡 Medium (10)</button>
+                <button class="filter-btn" onclick="filterOpps('low')">🟢 Low (8)</button>
+                <button class="filter-btn" onclick="filterOpps('bookmarked')">🔖 Bookmarked</button>
+            </div>
+            
+            <div class="opportunity-list" id="opportunity-list">
+                <!-- Opportunities populated by JavaScript -->
+            </div>
+        </div>
+        
+        <div class="sidebar">
+            <div class="sidebar-section">
+                <div class="sidebar-title">🔖 Priority Bookmarks</div>
+                <div id="bookmarked-list">
+                    <div class="empty-state">Click ⭐ on opportunities to bookmark them here</div>
+                </div>
+            </div>
+            
+            <div class="sidebar-section">
+                <div class="sidebar-title">📊 Opportunity Stats</div>
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <div class="value">12</div>
+                        <div class="label">High Priority</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="value">$50K</div>
+                        <div class="label">Est. Revenue</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="value">8</div>
+                        <div class="label">Quick Wins</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="value">5</div>
+                        <div class="label">Researching</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="sidebar-section">
+                <div class="sidebar-title">🏷️ Top Categories</div>
+                <div class="opp-tags">
+                    <span class="tag">🎥 Content (8)</span>
+                    <span class="tag">💰 DeFi (6)</span>
+                    <span class="tag">🤖 AI (5)</span>
+                    <span class="tag">📊 Data (4)</span>
+                    <span class="tag">🌐 Web3 (4)</span>
+                    <span class="tag">📱 SaaS (3)</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Opportunities Data - Ranked by Priority
+        const opportunities = [
+            { id: 1, emoji: '🎥', title: 'X/Twitter Content Monetization', desc: 'Build 10K followers, enable ad revenue sharing. Post 3x daily with AI-assisted content. Revenue: $500-2000/mo.', priority: 'P0', effort: 'Low', impact: 'High', time: '3 months', roi: '$15K/year', tags: ['Content', 'Social', 'Passive'], category: 'high' },
+            { id: 2, emoji: '📧', title: 'Newsletter Sponsorships', desc: 'Launch weekly newsletter, grow to 5K subscribers. Sponsorships at $200-500/issue. Target: 4 sponsors/month.', priority: 'P0', effort: 'Medium', impact: 'High', time: '6 months', roi: '$24K/year', tags: ['Content', 'Email', 'Sponsors'], category: 'high' },
+            { id: 3, emoji: '🤖', title: 'AI Consulting Services', desc: 'Offer Mission Control setup for businesses. $1.5K-15K per project. Target: 2 clients/month.', priority: 'P0', effort: 'Low', impact: 'High', time: 'Immediate', roi: '$50K/year', tags: ['AI', 'Consulting', 'Services'], category: 'high' },
+            { id: 4, emoji: '🎬', title: 'YouTube Channel Growth', desc: 'Weekly AI/tech content. Monetize at 1K subs. CPM $3-8. Target: 50K views/month.', priority: 'P0', effort: 'High', impact: 'High', time: '6 months', roi: '$18K/year', tags: ['Video', 'Content', 'Long-term'], category: 'high' },
+            { id: 5, emoji: '🛍️', title: 'Digital Products Store', desc: 'Sell Notion templates, prompt packs, AI tools. $20-200 per product. Target: 100 sales/month.', priority: 'P1', effort: 'Medium', impact: 'High', time: '2 months', roi: '$30K/year', tags: ['Products', 'Passive', 'Scalable'], category: 'high' },
+            { id: 6, emoji: '🔗', title: 'Affiliate Marketing Program', desc: 'Promote AI tools, crypto exchanges. 10-50% commission. Target: $5K/month in referrals.', priority: 'P1', effort: 'Low', impact: 'Medium', time: '3 months', roi: '$20K/year', tags: ['Affiliate', 'Passive', 'Marketing'], category: 'high' },
+            { id: 7, emoji: '💱', title: 'Crypto Arbitrage Bot', desc: 'Automated arbitrage across exchanges. 0.5-2% per trade. Requires $10K capital.', priority: 'P1', effort: 'Medium', impact: 'High', time: '1 month', roi: '$40K/year', tags: ['Crypto', 'DeFi', 'Automation'], category: 'high' },
+            { id: 8, emoji: '📱', title: 'Micro-SaaS: Lead Scoring Tool', desc: 'Build simple lead scoring API. $29-99/month. Target: 100 paying users.', priority: 'P1', effort: 'High', impact: 'High', time: '3 months', roi: '$60K/year', tags: ['SaaS', 'Product', 'Recurring'], category: 'high' },
+            { id: 9, emoji: '🎓', title: 'Online Course Creation', desc: 'Create AI/automation course. $100-500 per student. Target: 200 students/year.', priority: 'P1', effort: 'High', impact: 'Medium', time: '2 months', roi: '$40K/year', tags: ['Education', 'Course', 'One-time'], category: 'medium' },
+            { id: 10, emoji: '📊', title: 'Data Analytics Service', desc: 'Offer analytics dashboards for SMBs. $500-2000/month per client.', priority: 'P1', effort: 'Medium', impact: 'Medium', time: '1 month', roi: '$36K/year', tags: ['Data', 'Services', 'Recurring'], category: 'medium' },
+            { id: 11, emoji: '🤝', title: 'Partnership: coins.ph', desc: 'Strategic partnership with Philippines crypto exchange. Revenue share model.', priority: 'P0', effort: 'Low', impact: 'High', time: '2 weeks', roi: 'TBD', tags: ['Partnership', 'Crypto', 'Strategic'], category: 'high' },
+            { id: 12, emoji: '🤝', title: 'Partnership: Coins.xyz', desc: 'Global crypto platform partnership. API integration + referral program.', priority: 'P0', effort: 'Low', impact: 'High', time: '2 weeks', roi: 'TBD', tags: ['Partnership', 'Crypto', 'Global'], category: 'high' },
+            { id: 13, emoji: '📝', title: 'Medium Partner Program', desc: 'Monetize Medium articles. Requires 100 followers. $50-500/article.', priority: 'P2', effort: 'Low', impact: 'Low', time: '1 month', roi: '$3K/year', tags: ['Writing', 'Content', 'Passive'], category: 'low' },
+            { id: 14, emoji: '🎙️', title: 'Podcast Sponsorships', desc: 'Start AI/tech podcast. $500-2000/episode at 10K downloads.', priority: 'P2', effort: 'High', impact: 'Medium', time: '6 months', roi: '$24K/year', tags: ['Audio', 'Content', 'Long-term'], category: 'medium' },
+            { id: 15, emoji: '📚', title: 'E-book Publishing', desc: 'Write AI/automation guide. $10-30 per sale. Amazon KDP distribution.', priority: 'P2', effort: 'Medium', impact: 'Low', time: '2 months', roi: '$5K/year', tags: ['Writing', 'Product', 'Passive'], category: 'low' },
+            { id: 16, emoji: '🎨', title: 'NFT Collection Launch', desc: 'Create utility NFTs for Mission Control. 1000 supply, 0.05 ETH mint.', priority: 'P2', effort: 'High', impact: 'Medium', time: '3 months', roi: '$50K', tags: ['NFT', 'Crypto', 'Community'], category: 'medium' },
+            { id: 17, emoji: '🏢', title: 'Co-working Space Partnership', desc: 'Offer Mission Control to co-working spaces. $500/month per location.', priority: 'P2', effort: 'Low', impact: 'Medium', time: '1 month', roi: '$12K/year', tags: ['B2B', 'Partnership', 'Local'], category: 'medium' },
+            { id: 18, emoji: '🎪', title: 'Speaking Engagements', desc: 'Speak at AI/crypto conferences. $1000-5000 per talk.', priority: 'P2', effort: 'Low', impact: 'Medium', time: 'Ongoing', roi: '$20K/year', tags: ['Speaking', 'Authority', 'Network'], category: 'medium' },
+            { id: 19, emoji: '💼', title: 'Freelance AI Development', desc: 'Custom AI agents for clients. $100-300/hour. 10 hours/week.', priority: 'P1', effort: 'Medium', impact: 'High', time: 'Immediate', roi: '$75K/year', tags: ['Services', 'AI', 'Active'], category: 'high' },
+            { id: 20, emoji: '📈', title: 'Stock Trading Algorithm', desc: 'Build algo trading bot. Requires $25K capital. 10-20% annual returns.', priority: 'P2', effort: 'High', impact: 'Medium', time: '3 months', roi: '$5K/year', tags: ['Trading', 'Finance', 'Automation'], category: 'low' },
+            { id: 21, emoji: '🌐', title: 'Web3 Community Building', desc: 'Build Discord/Telegram community. Monetize via premium access.', priority: 'P2', effort: 'Medium', impact: 'Low', time: '6 months', roi: '$10K/year', tags: ['Community', 'Web3', 'Long-term'], category: 'low' },
+            { id: 22, emoji: '📦', title: 'Dropshipping AI Tools', desc: 'Curate and sell AI tools. 20-40% margin. No inventory needed.', priority: 'P2', effort: 'Low', impact: 'Low', time: '1 month', roi: '$8K/year', tags: ['E-commerce', 'AI', 'Dropship'], category: 'low' },
+            { id: 23, emoji: '🎮', title: 'Gaming Content + NFTs', desc: 'Gaming streams with NFT rewards. Hybrid content + crypto model.', priority: 'P2', effort: 'High', impact: 'Low', time: '6 months', roi: '$15K/year', tags: ['Gaming', 'Content', 'NFT'], category: 'low' },
+            { id: 24, emoji: '🔒', title: 'Security Audit Services', desc: 'Smart contract audits for crypto projects. $5000-20000 per audit.', priority: 'P1', effort: 'High', impact: 'High', time: 'Immediate', roi: '$60K/year', tags: ['Security', 'Crypto', 'Services'], category: 'high' },
+            { id: 25, emoji: '📊', title: 'Analytics Newsletter', desc: 'Premium crypto/AI analytics. $20/month subscription. 500 subscribers.', priority: 'P1', effort: 'Medium', impact: 'Medium', time: '3 months', roi: '$120K/year', tags: ['Newsletter', 'Premium', 'Recurring'], category: 'medium' },
+            { id: 26, emoji: '🏆', title: 'Hackathon Prize Hunting', desc: 'Enter AI/Web3 hackathons. $1000-50000 prizes. 4-6 per year.', priority: 'P2', effort: 'Medium', impact: 'Medium', time: 'Ongoing', roi: '$30K/year', tags: ['Competition', 'Prizes', 'Network'], category: 'medium' },
+            { id: 27, emoji: '🤖', title: 'AI Agent Marketplace', desc: 'Build marketplace for custom agents. Take 10-20% commission.', priority: 'P1', effort: 'High', impact: 'High', time: '6 months', roi: '$100K/year', tags: ['Marketplace', 'AI', 'Platform'], category: 'high' },
+            { id: 28, emoji: '📱', title: 'Mobile App Development', desc: 'Build productivity/AI apps. $0.99-4.99 per download.', priority: 'P2', effort: 'High', impact: 'Medium', time: '4 months', roi: '$25K/year', tags: ['Mobile', 'App', 'Product'], category: 'medium' },
+            { id: 29, emoji: '🎨', title: 'Design Templates Marketplace', desc: 'Sell Figma/Canva templates. $10-50 per template.', priority: 'P2', effort: 'Medium', impact: 'Low', time: '2 months', roi: '$8K/year', tags: ['Design', 'Templates', 'Passive'], category: 'low' },
+            { id: 30, emoji: '🔧', title: 'API Integration Services', desc: 'Custom API integrations for businesses. $2000-10000 per project.', priority: 'P1', effort: 'Medium', impact: 'High', time: 'Immediate', roi: '$80K/year', tags: ['API', 'Services', 'B2B'], category: 'high' }
+        ];
+
+        // Bookmarked items storage
+        let bookmarkedIds = JSON.parse(localStorage.getItem('scoutBookmarks') || '[]');
+
+        function renderOpportunities(filter = 'all') {
+            const list = document.getElementById('opportunity-list');
+            let filtered = opportunities;
+            
+            if (filter === 'high') filtered = opportunities.filter(o => o.priority === 'P0');
+            else if (filter === 'medium') filtered = opportunities.filter(o => o.priority === 'P1');
+            else if (filter === 'low') filtered = opportunities.filter(o => o.priority === 'P2');
+            else if (filter === 'bookmarked') filtered = opportunities.filter(o => bookmarkedIds.includes(o.id));
+            
+            list.innerHTML = filtered.map(opp => {
+                const isBookmarked = bookmarkedIds.includes(opp.id);
+                const priorityClass = opp.priority === 'P0' ? 'priority-high' : opp.priority === 'P1' ? 'priority-medium' : 'priority-low';
+                
+                return `
+                    <div class="opportunity-card ${priorityClass}" id="opp-${opp.id}">
+                        <div class="opp-header">
+                            <div class="opp-title">
+                                ${opp.emoji} ${opp.title}
+                            </div>
+                            <div class="opp-priority">
+                                <span class="priority-badge priority-${opp.priority.toLowerCase()}">${opp.priority}</span>
+                                <button class="bookmark-btn ${isBookmarked ? 'bookmarked' : ''}" 
+                                        onclick="toggleBookmark(${opp.id})"
+                                        title="${isBookmarked ? 'Remove bookmark' : 'Bookmark for priority'}">
+                                    ${isBookmarked ? '🔖' : '⭐'}
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="opp-desc">${opp.desc}</div>
+                        
+                        <div class="opp-meta">
+                            <span>⏱️ ${opp.time}</span>
+                            <span>💪 ${opp.effort}</span>
+                            <span>📈 ${opp.impact}</span>
+                            <span>💰 ${opp.roi}</span>
+                        </div>
+                        
+                        <div class="opp-tags">
+                            ${opp.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderBookmarks() {
+            const list = document.getElementById('bookmarked-list');
+            const bookmarkedOpps = opportunities.filter(o => bookmarkedIds.includes(o.id));
+            
+            if (bookmarkedOpps.length === 0) {
+                list.innerHTML = '<div class="empty-state">Click ⭐ on opportunities to bookmark them here</div>';
+                return;
+            }
+            
+            list.innerHTML = bookmarkedOpps.map(opp => `
+                <div class="bookmarked-item" onclick="scrollToOpp(${opp.id})">
+                    <span class="emoji">${opp.emoji}</span>
+                    <div class="info">
+                        <div class="name">${opp.title}</div>
+                        <div class="priority">${opp.priority} • ${opp.roi}</div>
+                    </div>
+                    <button class="remove-bookmark" onclick="event.stopPropagation(); toggleBookmark(${opp.id})">✕</button>
+                </div>
+            `).join('');
+        }
+
+        function toggleBookmark(id) {
+            if (bookmarkedIds.includes(id)) {
+                bookmarkedIds = bookmarkedIds.filter(bid => bid !== id);
+            } else {
+                bookmarkedIds.push(id);
+            }
+            localStorage.setItem('scoutBookmarks', JSON.stringify(bookmarkedIds));
+            renderOpportunities();
+            renderBookmarks();
+        }
+
+        function scrollToOpp(id) {
+            const element = document.getElementById(`opp-${id}`);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                element.style.border = '2px solid var(--accent-pink)';
+                setTimeout(() => {
+                    element.style.border = '';
+                }, 2000);
+            }
+        }
+
+        function filterOpps(type) {
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            renderOpportunities(type);
+        }
+
+        // Initialize
+        renderOpportunities();
+        renderBookmarks();
+        
+        // Auto-refresh every 30 minutes
+        setInterval(() => {
+            location.reload();
+        }, 1800000);
+    </script>
+</body>
+</html>
