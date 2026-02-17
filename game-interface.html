@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mission Control HQ</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;500;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --neon-red: #ff2a6d;
+            --neon-blue: #05d9e8;
+            --neon-purple: #d300f9;
+            --neon-green: #00ff9f;
+            --neon-yellow: #f9f871;
+            --dark-bg: #0a0a0f;
+            --panel-bg: rgba(16, 16, 32, 0.95);
+            --grid-color: rgba(5, 217, 232, 0.1);
+        }
+        
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: var(--dark-bg);
+            color: #fff;
+            overflow: hidden;
+            height: 100vh;
+        }
+        
+        /* Scanline Effect */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 0, 0, 0.1),
+                rgba(0, 0, 0, 0.1) 1px,
+                transparent 1px,
+                transparent 2px
+            );
+            pointer-events: none;
+            z-index: 1000;
+            opacity: 0.3;
+        }
+        
+        /* Game Container */
+        .game-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        
+        /* CRT Flicker Animation */
+        @keyframes flicker {
+            0% { opacity: 0.97; }
+            5% { opacity: 0.95; }
+            10% { opacity: 0.97; }
+            15% { opacity: 0.94; }
+            20% { opacity: 0.97; }
+            100% { opacity: 0.97; }
+        }
+        
+        /* Header Bar */
+        .header-bar {
+            background: linear-gradient(180deg, rgba(10, 10, 20, 0.98) 0%, rgba(20, 20, 40, 0.95) 100%);
+            padding: 12px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--neon-blue);
+            box-shadow: 0 0 20px rgba(5, 217, 232, 0.3);
+            z-index: 100;
+            position: relative;
+        }
+        
+        .header-bar::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--neon-blue), transparent);
+            animation: scanline 3s linear infinite;
+        }
+        
+        @keyframes scanline {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        .game-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 900;
+            letter-spacing: 3px;
+            background: linear-gradient(90deg, var(--neon-red), var(--neon-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(255, 42, 109, 0.5);
+            position: relative;
+        }
+        
+        .game-title::before {
+            content: '◈';
+            margin-right: 10px;
+            color: var(--neon-blue);
+            -webkit-text-fill-color: var(--neon-blue);
+        }
+        
+        .status-indicators {
+            display: flex;
+            gap: 20px;
+            font-size: 0.9rem;
+        }
+        
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(5, 217, 232, 0.1);
+            padding: 6px 12px;
+            border-radius: 4px;
+            border: 1px solid rgba(5, 217, 232, 0.3);
+        }
+        
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        
+        .status-dot.online { 
+            background: var(--neon-green); 
+            box-shadow: 0 0 15px var(--neon-green);
+        }
+        .status-dot.active { 
+            background: var(--neon-blue); 
+            box-shadow: 0 0 15px var(--neon-blue);
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(0.9); }
+        }
+        
+        /* Main Game Area */
+        .game-world {
+            flex: 1;
+            position: relative;
+            overflow-x: auto;
+            overflow-y: hidden;
+            background: 
+                linear-gradient(180deg, #0a0a15 0%, #0f0f20 50%, #0a0a15 100%);
+        }
+        
+        /* Grid Background */
+        .game-world::before {
+            content: '';
+            position: absolute;
+            width: 3000px;
+            height: 100%;
+            background-image: 
+                linear-gradient(var(--grid-color) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+        }
+        
+        /* Side-scrolling Office */
+        .office-scene {
+            width: 3000px;
+            height: 100%;
+            position: relative;
+        }
+        
+        /* Animated Background Lines */
+        .bg-lines {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        
+        .bg-line {
+            position: absolute;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--neon-blue), transparent);
+            opacity: 0.3;
+            animation: moveLine 8s linear infinite;
+        }
+        
+        @keyframes moveLine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(3000px); }
+        }
+        
+        /* Windows with City View */
+        .window {
+            position: absolute;
+            width: 250px;
+            height: 350px;
+            background: linear-gradient(180deg, #050510 0%, #0a1a30 100%);
+            border: 3px solid #1a1a3e;
+            border-radius: 5px;
+            top: 30px;
+            overflow: hidden;
+        }
+        
+        .window::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(ellipse at 30% 80%, rgba(255, 200, 100, 0.4) 0%, transparent 40%),
+                radial-gradient(ellipse at 70% 70%, rgba(100, 200, 255, 0.4) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 90%, rgba(255, 100, 200, 0.3) 0%, transparent 40%);
+            animation: cityGlow 4s ease-in-out infinite alternate;
+        }
+        
+        @keyframes cityGlow {
+            0% { opacity: 0.6; }
+            100% { opacity: 1; }
+        }
+        
+        .window-frame {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 2px solid rgba(5, 217, 232, 0.3);
+            pointer-events: none;
+        }
+        
+        .window-1 { left: 150px; }
+        .window-2 { left: 450px; }
+        .window-3 { left: 2650px; }
+        
+        /* Floor with Grid */
+        .floor {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 220px;
+            background: 
+                linear-gradient(180deg, #1a1a2e 0%, #0f0f1a 100%);
+            border-top: 2px solid var(--neon-blue);
+            box-shadow: 0 -10px 30px rgba(5, 217, 232, 0.1);
+        }
+        
+        .floor-grid {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(90deg, rgba(5, 217, 232, 0.1) 1px, transparent 1px);
+            background-size: 100px 100%;
+            transform: perspective(500px) rotateX(60deg);
+            transform-origin: bottom;
+        }
+        
+        /* Desk Stations */
+        .desk-station {
+            position: absolute;
+            bottom: 180px;
+            width: 300px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .desk-station:hover {
+            transform: translateY(-15px);
+            z-index: 10;
+        }
+        
+        .desk {
+            width: 100%;
+            height: 90px;
+            background: linear-gradient(180deg, #2a2a4e 0%, #1a1a3e 100%);
+            border-radius: 8px;
+            border: 2px solid #3a3a5e;
+            position: relative;
+            box-shadow: 
+                0 10px 30px rgba(0, 0, 0, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+        
+        .desk::before {
+            content: '';
+            position: absolute;
+            top: -8px;
+            left: 15px;
+            right: 15px;
+            height: 8px;
+            background: linear-gradient(180deg, #4a4a6e, #3a3a5e);
+            border-radius: 4px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .desk-glow {
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            height: 40px;
+            background: radial-gradient(ellipse, var(--glow-color, var(--neon-blue)) 0%, transparent 70%);
+            opacity: 0.3;
+            filter: blur(20px);
+        }
+        
+        /* Agent Avatar */
+        .agent-avatar {
+            position: absolute;
+            bottom: 90px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+        }
+        
+        .agent-sprite {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.8rem;
+            border: 3px solid;
+            box-shadow: 
+                0 0 30px rgba(0, 0, 0, 0.5),
+                inset 0 0 20px rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .agent-sprite::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                45deg,
+                transparent 30%,
+                rgba(255, 255, 255, 0.1) 50%,
+                transparent 70%
+            );
+            animation: shimmer 3s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+        
+        .agent-sprite:hover {
+            transform: scale(1.15);
+            box-shadow: 0 0 40px currentColor;
+        }
+        
+        /* Agent Colors */
+        .agent-sprite.nexus { 
+            background: linear-gradient(135deg, #ff2a6d, #d300f9);
+            border-color: #ff2a6d;
+            color: #fff;
+            --glow-color: #ff2a6d;
+        }
+        
+        .agent-sprite.glasses { 
+            background: linear-gradient(135deg, #05d9e8, #00a8e8);
+            border-color: #05d9e8;
+            color: #fff;
+            --glow-color: #05d9e8;
+        }
+        
+        .agent-sprite.quill { 
+            background: linear-gradient(135deg, #ff9f43, #ff6b35);
+            border-color: #ff9f43;
+            color: #fff;
+            --glow-color: #ff9f43;
+        }
+        
+        .agent-sprite.pixel { 
+            background: linear-gradient(135deg, #a55eea, #8854d0);
+            border-color: #a55eea;
+            color: #fff;
+            --glow-color: #a55eea;
+        }
+        
+        .agent-sprite.gary { 
+            background: linear-gradient(135deg, #00ff9f, #00cc7a);
+            border-color: #00ff9f;
+            color: #000;
+            --glow-color: #00ff9f;
+        }
+        
+        .agent-sprite.larry { 
+            background: linear-gradient(135deg, #f9f871, #f9d71c);
+            border-color: #f9f871;
+            color: #000;
+            --glow-color: #f9f871;
+        }
+        
+        .agent-sprite.sentry { 
+            background: linear-gradient(135deg, #74b9ff, #0984e3);
+            border-color: #74b9ff;
+            color: #fff;
+            --glow-color: #74b9ff;
+        }
+        
+        .agent-sprite.audit { 
+            background: linear-gradient(135deg, #fdcb6e, #f39c12);
+            border-color: #fdcb6e;
+            color: #000;
+            --glow-color: #fdcb6e;
+        }
+        
+        .agent-sprite.cipher { 
+            background: linear-gradient(135deg, #636e72, #2d3436);
+            border-color: #b2bec3;
+            color: #fff;
+            --glow-color: #b2bec3;
+        }
+        
+        .agent-name {
+            margin-top: 12px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 6px 15px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-shadow: 0 0 10px currentColor;
+            letter-spacing: 1px;
+        }
+        
+        .agent-role {
+            font-size: 0.75rem;
+            color: #888;
+            margin-top: 4px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        /* Status Ring */
+        .agent-status-ring {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--neon-green);
+            border: 3px solid #fff;
+            box-shadow: 0 0 15px var(--neon-green);
+            animation: pulse 2s infinite;
+            z-index: 10;
+        }
+        
+        /* Commander Station */
+        .commander-station {
+            position: absolute;
+            bottom: 180px;
+            left: 80px;
+            width: 400px;
+        }
+        
+        .commander-desk {
+            width: 100%;
+            height: 110px;
+            background: linear-gradient(180deg, #3a2a1e 0%, #2a1a0e 100%);
+            border-radius: 10px;
+            border: 3px solid var(--neon-red);
+            box-shadow: 
+                0 0 40px rgba(255, 42, 109, 0.3),
+                inset 0 0 30px rgba(255, 42, 109, 0.1);
+            position: relative;
+        }
+        
+        .commander-desk::after {
+            content: 'COMMAND CENTER';
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.7rem;
+            letter-spacing: 3px;
+            color: var(--neon-red);
+            text-shadow: 0 0 10px var(--neon-red);
+        }
+        
+        /* Positioning */
+        .station-nexus { left: 80px; }
+        .station-glasses { left: 550px; }
+        .station-quill { left: 900px; }
+        .station-pixel { left: 1250px; }
+        .station-gary { left: 1600px; }
+        .station-larry { left: 1950px; }
+        .station-sentry { left: 2300px; }
+        .station-audit { left: 2600px; }
+        .station-cipher { left: 2870px; }
+        
+        /* Dialogue Box */
+        .dialogue-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 300px;
+            background: linear-gradient(180deg, rgba(16, 16, 32, 0.98) 0%, rgba(10, 10, 20, 0.99) 100%);
+            border-top: 3px solid var(--neon-red);
+            padding: 25px;
+            z-index: 200;
+            min-height: 200px;
+            box-shadow: 0 -10px 40px rgba(255, 42, 109, 0.2);
+        }
+        
+        .dialogue-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--neon-red), transparent);
+            animation: scanline 2s linear infinite;
+        }
+        
+        .dialogue-box {
+            display: flex;
+            gap: 25px;
+            align-items: flex-start;
+        }
+        
+        .speaker-avatar {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3.5rem;
+            border: 4px solid;
+            flex-shrink: 0;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .speaker-avatar.nexus { 
+            background: linear-gradient(135deg, #ff2a6d, #d300f9);
+            border-color: #ff2a6d;
+            box-shadow: 0 0 30px rgba(255, 42, 109, 0.4);
+        }
+        
+        .dialogue-content {
+            flex: 1;
+        }
+        
+        .speaker-name {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--neon-red);
+            margin-bottom: 12px;
+            text-shadow: 0 0 15px rgba(255, 42, 109, 0.5);
+            letter-spacing: 2px;
+        }
+        
+        .dialogue-text {
+            font-size: 1.15rem;
+            line-height: 1.7;
+            color: #fff;
+            min-height: 70px;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.1);
+        }
+        
+        .dialogue-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+        
+        .action-btn {
+            padding: 10px 25px;
+            background: transparent;
+            border: 2px solid var(--neon-blue);
+            border-radius: 5px;
+            color: var(--neon-blue);
+            cursor: pointer;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        }
+        
+        .action-btn:hover {
+            background: var(--neon-blue);
+            color: #000;
+            box-shadow: 0 0 20px var(--neon-blue);
+            transform: translateY(-2px);
+        }
+        
+        .action-btn.primary {
+            background: linear-gradient(135deg, var(--neon-red), var(--neon-purple));
+            border-color: transparent;
+            color: #fff;
+        }
+        
+        .action-btn.primary:hover {
+            box-shadow: 0 0 25px rgba(255, 42, 109, 0.5);
+        }
+        
+        /* Side Panel */
+        .side-panel {
+            position: fixed;
+            right: 0;
+            top: 50px;
+            bottom: 200px;
+            width: 300px;
+            background: rgba(10, 10, 20, 0.95);
+            border-left: 2px solid var(--neon-blue);
+            padding: 20px;
+            overflow-y: auto;
+            z-index: 150;
+        }
+        
+        .side-panel-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            color: var(--neon-blue);
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(5, 217, 232, 0.3);
+            letter-spacing: 2px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .conversation-log {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .chat-bubble {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 12px;
+            border-radius: 8px;
+            border-left: 3px solid;
+            font-size: 0.9rem;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .chat-bubble:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateX(-5px);
+        }
+        
+        .chat-bubble.nexus { border-color: var(--neon-red); }
+        .chat-bubble.glasses { border-color: var(--neon-blue); }
+        .chat-bubble.quill { border-color: #ff9f43; }
+        .chat-bubble.pixel { border-color: #a55eea; }
+        .chat-bubble.gary { border-color: var(--neon-green); }
+        .chat-bubble.larry { border-color: #f9f871; }
+        
+        .chat-sender {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: 0.75rem;
+            margin-bottom: 6px;
+            opacity: 0.9;
+            letter-spacing: 1px;
+        }
+        
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #0a0a0f;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--neon-blue);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--neon-red);
+        }
+        
+        /* Floating Particles */
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--neon-blue);
+            border-radius: 50%;
+            opacity: 0.5;
+            animation: float 10s infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0) translateX(0); opacity: 0; }
+            10% { opacity: 0.5; }
+            90% { opacity: 0.5; }
+            100% { transform: translateY(-100vh) translateX(100px); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <!-- Header -->
+        <div class="header-bar">
+            <div class="game-title">MISSION CONTROL HQ</div>
+            <div class="status-indicators">
+                <div class="status-item">
+                    <span class="status-dot online"></span>
+                    <span>9 AGENTS ONLINE</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-dot active"></span>
+                    <span>SYSTEM OPERATIONAL</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Game World -->
+        <div class="game-world" id="gameWorld">
+            <div class="office-scene">
+                <!-- Background Lines -->
+                <div class="bg-lines">
+                    <div class="bg-line" style="top: 20%; animation-delay: 0s;"></div>
+                    <div class="bg-line" style="top: 40%; animation-delay: 2s;"></div>
+                    <div class="bg-line" style="top: 60%; animation-delay: 4s;"></div>
+                </div>
+                
+                <!-- Windows -->
+                <div class="window window-1"><div class="window-frame"></div></div>
+                <div class="window window-2"><div class="window-frame"></div></div>
+                <div class="window window-3"><div class="window-frame"></div></div>
+                
+                <!-- Floor -->
+                <div class="floor"><div class="floor-grid"></div></div>
+                
+                <!-- Commander Station -->
+                <div class="commander-station">
+                    <div class="commander-desk"></div>
+                    <div style="position: absolute; bottom: 110px; left: 20%;">
+                        <div class="agent-avatar">
+                            <div class="agent-sprite nexus">◈</div>
+                            <div class="agent-status-ring"></div>
+                            <div class="agent-name">AIR1CK3FF</div>
+                            <div class="agent-role">NEXUS</div>
+                        </div>
+                    </div>
+                    <div style="position: absolute; bottom: 110px; left: 60%;">
+                        <div class="agent-avatar">
+                            <div class="agent-sprite" style="background: linear-gradient(135deg, #ff6b35, #f9ca24); border-color: #ff6b35; --glow-color: #ff6b35;">👤</div>
+                            <div class="agent-name" style="color: #ff6b35;">ERICF</div>
+                            <div class="agent-role">COMMANDER</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Agent Stations -->
+                <div class="desk-station station-glasses">
+                    <div class="desk"><div class="desk-glow" style="--glow-color: var(--neon-blue);"></div></div>
+                    <div class="agent-avatar">
+                        <div class="agent-sprite glasses">🔍</div>
+                        <div class="agent-status-ring"></div>
+                        <div class="agent-name" style="color: var(--neon-blue);">GLASSES</div>
+                        <div class="agent-role">RESEARCHER</div>
+                    </div>
+                </div>
+                
+                <div class="desk-station station-quill">
+                    <div class="desk"><div class="desk-glow" style="--glow-color: #ff9f43;"></div></div>
+                    <div class="agent-avatar">
+                        <div class="agent-sprite quill">✍️</div>
+                        <div class="agent-status-ring"></div>
+                        <div class="agent-name" style="color: #ff9f43;">QUILL</div>
+                        <div class="agent-role">WRITER</div>
+                    </div>
+                </div>
+                
+                <div class="desk-station station-pixel">
+                    <div class="desk"><div class="desk-glow" style="--glow-color: #a55eea;"></div></div>
+                    <div class="agent-avatar">
+                        <div class="agent-sprite pixel">🎨</div>
+                        <div class="agent-status-ring"></div>
+                        <div class="agent-name" style="color: #a55eea;">PIXEL</div>
+                        <div class="agent-role">DESIGNER</div>
+                    </div>
+                </div>
+                
+                <div class="desk-station station-gary">
+                    <div class="desk"><div class="desk-glow" style="--glow-color: var(--neon-green);"></div></div>
+                    <div class="agent-avatar">
+                        <div class="agent-sprite gary">📢</div>
+                        <div class="agent-status-ring"></div>
+                        <div class="agent-name" style="color: var(--neon-green);">GARY</div>
+                        <div class="agent-role">MARKETING</div>
+                    </div>
+                </div>
+                
+                <div class="desk-station station-larry">
+                    <div class="desk"><div class="desk-glow" style="--glow-color: #f9f871;"></div></div>
+                    <div class="agent-avatar">
+                        <div class="agent-sprite larry">📲</div>
+                        <div class="agent-status-ring"></div>
+                        <div class="agent-name" style="color: #f9f871;">LARRY</div>
+                        <div class="agent-role">SOCIAL</div>
+                    </div>
+                </div>
+                
+                <div class="desk-station station-sentry">
+                    <div class="desk"><div class="desk-glow" style="--glow-color: #74b9ff;"></div></div>
+                    <div class="agent-avatar">
+                        <div class="agent-sprite sentry">⚙️</div>
+                        <div class="agent-status-ring"></div>
+                        <div class="agent-name" style="color: #74b9ff;">SENTRY</div>
+                        <div class="agent-role">DEVOPS</div>
+                    </div>
+                </div>
+                
+                <div class="desk-station station-audit">
+                    <div class="desk"><div class="desk-glow" style="--glow-color: #fdcb6e;"></div></div>
+                    <div class="agent-avatar">
+                        <div class="agent-sprite audit">✅</div>
+                        <div class="agent-status-ring"></div>
+                        <div class="agent-name" style="color: #fdcb6e;">AUDIT</div>
+                        <div class="agent-role">QA</div>
+                    </div>
+                </div>
+                
+                <div class="desk-station station-cipher">
+                    <div class="desk"><div class="desk-glow" style="--glow-color: #b2bec3;"></div></div>
+                    <div class="agent-avatar">
+                        <div class="agent-sprite cipher">🔒</div>
+                        <div class="agent-status-ring"></div>
+                        <div class="agent-name" style="color: #b2bec3;">CIPHER</div>
+                        <div class="agent-role">SECURITY</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Side Panel -->
+        <div class="side-panel">
+            <div class="side-panel-title">💬 AGENT COMMS</div>
+            <div class="conversation-log" id="conversationLog">
+                <div class="chat-bubble nexus">
+                    <div class="chat-sender">AIR1CK3FF</div>
+                    Morning team. Glasses, what's the intel?
+                </div>
+                
+                <div class="chat-bubble glasses">
+                    <div class="chat-sender">GLASSES</div>
+                    Crypto markets consolidating. BTC at 67K. Big news: OpenAI hired OpenClaw founder!
+                </div>
+                
+                <div class="chat-bubble gary">
+                    <div class="chat-sender">GARY</div>
+                    That's our angle for today. AI talent war is heating up.
+                </div>
+                
+                <div class="chat-bubble quill">
+                    <div class="chat-sender">QUILL</div>
+                    I can spin that into a thread. 5 tweets?
+                </div>
+                
+                <div class="chat-bubble larry">
+                    <div class="chat-sender">LARRY</div>
+                    Post at 2 PM. Peak engagement window.
+                </div>
+            </div>
+        </div>
+        
+        
+        <!-- Dialogue Box -->
+        <div class="dialogue-container">
+            <div class="dialogue-box">
+                <div class="speaker-avatar nexus">◈</div>
+                
+                <div class="dialogue-content">
+                    <div class="speaker-name">AIR1CK3FF (NEXUS)</div>
+                    <div class="dialogue-text" id="dialogueText">
+                        Welcome to Mission Control HQ, Commander. All systems are operational and your team is standing by. The office is yours to explore.
+                    </div>
+                    
+                    <div class="dialogue-actions">
+                        <button class="action-btn" onclick="nextDialogue()">Next →</button>
+                        <button class="action-btn primary" onclick="delegateTask()">Delegate Task</button>
+                        <button class="action-btn" onclick="checkStatus()">Check Status</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+    <script>
+        window.onload = function() {
+            document.getElementById('gameWorld').scrollLeft = 0;
+        };
+        
+        const dialogues = [
+            {
+                speaker: "AIR1CK3FF (NEXUS)",
+                avatar: "nexus",
+                text: "Welcome to Mission Control HQ, Commander. All systems are operational and your team is standing by. The office is yours to explore."
+            },
+            {
+                speaker: "AIR1CK3FF (NEXUS)",
+                avatar: "nexus",
+                text: "Glasses has the latest market intel. Quill is ready with his coffee. Pixel is sketching ideas. Everyone awaits your orders."
+            },
+            {
+                speaker: "AIR1CK3FF (NEXUS)",
+                avatar: "nexus",
+                text: "What would you like to accomplish today, Commander?"
+            }
+        ];
+        
+        let currentDialogue = 0;
+        
+        function nextDialogue() {
+            currentDialogue = (currentDialogue + 1) % dialogues.length;
+            updateDialogue();
+        }
+        
+        function updateDialogue() {
+            const d = dialogues[currentDialogue];
+            document.querySelector('.speaker-name').textContent = d.speaker;
+            document.querySelector('.speaker-avatar').className = 'speaker-avatar ' + d.avatar;
+            document.getElementById('dialogueText').textContent = d.text;
+        }
+        
+        function delegateTask() {
+            document.getElementById('dialogueText').textContent = 
+                "I'll coordinate the team. What type of task do you need? Research, content creation, design, or marketing?";
+        }
+        
+        function checkStatus() {
+            document.getElementById('dialogueText').textContent = 
+                "All 9 agents are online and operational. System health: Excellent. No pending tasks. Ready for mission assignment.";
+        }
+        
+        document.querySelectorAll('.agent-avatar').forEach(avatar => {
+            avatar.addEventListener('click', function() {
+                const name = this.querySelector('.agent-name').textContent;
+                document.getElementById('dialogueText').textContent = 
+                    `You clicked on ${name}. They would respond to your request here.`;
+            });
+        });
+    </script>
+</body>
+</html>

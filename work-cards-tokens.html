@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent Work Cards with Token Usage | Mission Control</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'JetBrains Mono', monospace;
+            background: #0a0a0f;
+            color: #00ff9f;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .header {
+            border-bottom: 2px solid #00ff9f;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        
+        h1 { color: #ff6b6b; font-size: 1.8rem; margin-bottom: 10px; }
+        
+        .subtitle { color: #666; font-size: 0.9rem; }
+        
+        .stats-summary {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .summary-card {
+            background: rgba(0, 255, 159, 0.05);
+            border: 1px solid #333;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .summary-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #ff6b6b;
+        }
+        
+        .summary-label {
+            color: #888;
+            font-size: 0.85rem;
+            margin-top: 5px;
+        }
+        
+        .section { margin-bottom: 30px; }
+        
+        .section-title {
+            color: #ff6b6b;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            border-left: 4px solid #ff6b6b;
+            padding-left: 10px;
+        }
+        
+        .work-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 15px;
+        }
+        
+        .work-card {
+            background: rgba(0, 255, 159, 0.03);
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.3s;
+        }
+        
+        .work-card:hover {
+            border-color: #00ff9f;
+            transform: translateY(-3px);
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+        
+        .agent-info { display: flex; align-items: center; gap: 12px; }
+        
+        .agent-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .avatar-nexus { background: linear-gradient(135deg, #ff6b6b, #c92a2a); }
+        .avatar-forge { background: linear-gradient(135deg, #4dabf7, #1971c2); }
+        .avatar-code { background: linear-gradient(135deg, #69db7c, #2f9e44); }
+        .avatar-audit { background: linear-gradient(135deg, #ffc078, #e67700); }
+        .avatar-spark { background: linear-gradient(135deg, #ffd43b, #ff6b6b); }
+        .avatar-pixel2 { background: linear-gradient(135deg, #da77f2, #9c36b5); }
+        .avatar-code2 { background: linear-gradient(135deg, #40c057, #2b8a3e); }
+        .avatar-forge2 { background: linear-gradient(135deg, #339af0, #1864ab); }
+        
+        .agent-name-section h3 {
+            color: #fff;
+            font-size: 1.1rem;
+            margin-bottom: 3px;
+        }
+        
+        .agent-role { color: #888; font-size: 0.8rem; }
+        
+        .status-badge {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+        
+        .status-active { background: rgba(0, 255, 159, 0.2); color: #00ff9f; }
+        .status-working { background: rgba(255, 193, 7, 0.2); color: #ffc107; }
+        .status-completed { background: rgba(40, 167, 69, 0.2); color: #28a745; }
+        
+        .current-task {
+            background: rgba(0, 0, 0, 0.3);
+            border-left: 3px solid #00ff9f;
+            padding: 12px;
+            margin-bottom: 15px;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .task-label { color: #666; font-size: 0.75rem; text-transform: uppercase; margin-bottom: 5px; }
+        .task-value { color: #fff; font-size: 0.95rem; line-height: 1.4; }
+        
+        .token-section {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 15px;
+        }
+        
+        .token-title {
+            color: #888;
+            font-size: 0.8rem;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .token-bar {
+            width: 100%;
+            height: 8px;
+            background: #222;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+        
+        .token-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00ff9f, #00d9e8);
+            border-radius: 4px;
+        }
+        
+        .token-stats {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: #666;
+        }
+        
+        .token-value { color: #fff; }
+        
+        .heartbeat-info {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #333;
+            font-size: 0.75rem;
+            color: #666;
+        }
+        
+        .cost-estimate {
+            color: #ffaa00;
+            font-size: 0.8rem;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>◈ AGENT WORK CARDS + TOKEN USAGE</h1>
+        <div class="subtitle">Real-Time Status, Tasks & Resource Consumption</div>
+    </div>
+    
+    <div class="stats-summary">
+        <div class="summary-card">
+            <div class="summary-value">17</div>
+            <div class="summary-label">Total Agents</div>
+        </div>
+        <div class="summary-card">
+            <div class="summary-value">847K</div>
+            <div class="summary-label">Total Tokens Used</div>
+        </div>
+        <div class="summary-card">
+            <div class="summary-value">$0.85</div>
+            <div class="summary-label">Est. Cost</div>
+        </div>
+        <div class="summary-card">
+            <div class="summary-value">65%</div>
+            <div class="summary-label">Avg Token Usage</div>
+        </div>
+    </div>
+    
+    <!-- CORE TEAM -->
+    <div class="section">
+        <div class="section-title">🚀 CORE TEAM (High Activity)</div>
+        
+        <div class="work-grid">
+            <!-- NEXUS -->
+            <div class="work-card">
+                <div class="card-header">
+                    <div class="agent-info">
+                        <div class="agent-avatar avatar-nexus">◈</div>
+                        <div class="agent-name-section">
+                            <h3>NEXUS (Air1ck3ff)</h3>
+                            <div class="agent-role">Orchestrator</div>
+                        </div>
+                    </div>
+                    <span class="status-badge status-active">ACTIVE</span>
+                </div>
+                
+                <div class="current-task">
+                    <div class="task-label">Current Task</div>
+                    <div class="task-value">Managing 17 agents, coordinating parallel work, accelerating to Feb 18</div>
+                </div>
+                
+                <div class="token-section">
+                    <div class="token-title">
+                        <span>Token Usage (Main Session)</span>
+                        <span class="token-value">169K / 262K</span>
+                    </div>
+                    <div class="token-bar">
+                        <div class="token-fill" style="width: 65%"></div>
+                    </div>
+                    
+                    <div class="token-stats">
+                        <span>Context: 262K max</span>
+                        <span>65% used</span>
+                    </div>
+                    
+                    <div class="cost-estimate">Est. Session Cost: ~$0.17</div>
+                </div>
+                
+                <div class="heartbeat-info">
+                    <span>⏱️ Every 15 min</span>
+                    <span>17.5K tokens/check</span>
+                </div>
+            </div>
+            
+            <!-- FORGE -->
+            <div class="work-card">
+                <div class="card-header">
+                    <div class="agent-info">
+                        <div class="agent-avatar avatar-forge">⚒️</div>
+                        <div class="agent-name-section">
+                            <h3>FORGE</h3>
+                            <div class="agent-role">UX Developer</div>
+                        </div>
+                    </div>
+                    <span class="status-badge status-completed">P0 DONE</span>
+                </div>
+                
+                <div class="current-task">
+                    <div class="task-label">Current Task</div>
+                    <div class="task-value">P1 Navigation + P2 Theme (parallel work)</div>
+                </div>
+                
+                <div class="token-section">
+                    <div class="token-title">
+                        <span>Token Usage (Session)</span>
+                        <span class="token-value">84K / 262K</span>
+                    </div>
+                    
+                    <div class="token-bar">
+                        <div class="token-fill" style="width: 32%"></div>
+                    </div>
+                    
+                    <div class="token-stats">
+                        <span>Delivered: Design System + Cards</span>
+                        <span>32% used</span>
+                    </div>
+                    
+                    <div class="cost-estimate">Est. Cost: ~$0.08</div>
+                </div>
+                
+                <div class="heartbeat-info">
+                    <span>⏱️ Every 20 min</span>
+                    <span>Session: forge-restarted</span>
+                </div>
+            </div>
+            
+            <!-- CODE -->
+            <div class="work-card">
+                <div class="card-header">
+                    <div class="agent-info">
+                        <div class="agent-avatar avatar-code">⚒️</div>
+                        <div class="agent-name-section">
+                            <h3>CODE</h3>
+                            <div class="agent-role">Backend Developer</div>
+                        </div>
+                    </div>
+                    <span class="status-badge status-working">WORKING</span>
+                </div>
+                
+                <div class="current-task">
+                    <div class="task-label">Current Task</div>
+                    <div class="task-value">Backend API + WebSocket (parallel with Code-2)</div>
+                </div>
+                
+                <div class="token-section">
+                    <div class="token-title">
+                        <span>Token Usage (Session)</span>
+                        <span class="token-value">39K / 262K</span>
+                    </div>
+                    
+                    <div class="token-bar">
+                        <div class="token-fill" style="width: 15%"></div>
+                    </div>
+                    
+                    <div class="token-stats">
+                        <span>API: Port 3001 operational</span>
+                        <span>15% used</span>
+                    </div>
+                    
+                    <div class="cost-estimate">Est. Cost: ~$0.04</div>
+                </div>
+                
+                <div class="heartbeat-info">
+                    <span>⏱️ Every 20 min</span>
+                    <span>17.8K tokens/check</span>
+                </div>
+            </div>
+            
+            <!-- SPARK -->
+            <div class="work-card">
+                <div class="card-header">
+                    <div class="agent-info">
+                        <div class="agent-avatar avatar-spark">⚡</div>
+                        <div class="agent-name-section">
+                            <h3>SPARK</h3>
+                            <div class="agent-role">Integration Specialist</div>
+                        </div>
+                    </div>
+                    <span class="status-badge status-completed">DONE ✅</span>
+                </div>
+                
+                <div class="current-task">
+                    <div class="task-label">Current Task</div>
+                    <div class="task-value">Integration COMPLETE - Dashboard v2.1 live with real API data!</div>
+                </div>
+                
+                <div class="token-section">
+                    <div class="token-title">
+                        <span>Token Usage (Session)</span>
+                        <span class="token-value">67K / 262K</span>
+                    </div>
+                    
+                    <div class="token-bar">
+                        <div class="token-fill" style="width: 26%"></div>
+                    </div>
+                    
+                    <div class="token-stats">
+                        <span>Runtime: 4m 45s</span>
+                        <span>26% used</span>
+                    </div>
+                    
+                    <div class="cost-estimate">Est. Cost: ~$0.07</div>
+                </div>
+                
+                <div class="heartbeat-info">
+                    <span>⏱️ Task Complete</span>
+                    <span>67.4K tokens total</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+    <!-- NEW AGENTS (PARALLEL WORKERS) -->
+    <div class="section">
+        <div class="section-title">⚡ NEW AGENTS (Just Spawned for Parallel Work)</div>
+        
+        <div class="work-grid">
+            <!-- PIXEL-2 -->
+            <div class="work-card">
+                <div class="card-header">
+                    <div class="agent-info">
+                        <div class="agent-avatar avatar-pixel2">🎨</div>
+                        <div class="agent-name-section">
+                            <h3>PIXEL-2</h3>
+                            <div class="agent-role">Image Generation (Parallel)</div>
+                        </div>
+                    </div>
+                    <span class="status-badge status-working">WORKING</span>
+                </div>
+                
+                <div class="current-task">
+                    <div class="task-label">Current Task</div>
+                    <div class="task-value">Generate Higgsfield avatars for marketing team (Gary, Larry, Scout, DealFlow, ColdCall)</div>
+                </div>
+                
+                <div class="token-section">
+                    <div class="token-title">
+                        <span>Token Usage</span>
+                        <span class="token-value">0K / 262K</span>
+                    </div>
+                    
+                    <div class="token-bar">
+                        <div class="token-fill" style="width: 0%"></div>
+                    </div>
+                    
+                    <div class="token-stats">
+                        <span>Just spawned</span>
+                        <span>0% used</span>
+                    </div>
+                    
+                    <div class="cost-estimate">Est. Cost: ~$0.00 (starting)</div>
+                </div>
+                
+                <div class="heartbeat-info">
+                    <span>⏱️ Report every 30 min</span>
+                    <span>Higgsfield API ready</span>
+                </div>
+            </div>
+            
+            
+            <!-- CODE-2 -->
+            <div class="work-card">
+                <div class="card-header">
+                    <div class="agent-info">
+                        <div class="agent-avatar avatar-code2">💻</div>
+                        <div class="agent-name-section">
+                            <h3>CODE-2</h3>
+                            <div class="agent-role">Backend API (Parallel)</div>
+                        </div>
+                    </div>
+                    <span class="status-badge status-working">WORKING</span>
+                </div>
+                
+                <div class="current-task">
+                    <div class="task-label">Current Task</div>
+                    <div class="task-value">File Watcher API + Task Queue API (parallel with Code)</div>
+                </div>
+                
+                <div class="token-section">
+                    <div class="token-title">
+                        <span>Token Usage</span>
+                        <span class="token-value">0K / 262K</span>
+                    </div>
+                    
+                    <div class="token-bar">
+                        <div class="token-fill" style="width: 0%"></div>
+                    </div>
+                    
+                    <div class="token-stats">
+                        <span>Just spawned</span>
+                        <span>0% used</span>
+                    </div>
+                    
+                    <div class="cost-estimate">Est. Cost: ~$0.00 (starting)</div>
+                </div>
+                
+                <div class="heartbeat-info">
+                    <span>⏱️ Report every 30 min</span>
+                    <span>Backend specialist</span>
+                </div>
+            </div>
+            
+            
+            <!-- FORGE-2 -->
+            <div class="work-card">
+                <div class="card-header">
+                    <div class="agent-info">
+                        <div class="agent-avatar avatar-forge2">🎨</div>
+                        <div class="agent-name-section">
+                            <h3>FORGE-2</h3>
+                            <div class="agent-role">UI Components (Parallel)</div>
+                        </div>
+                    </div>
+                    <span class="status-badge status-working">WORKING</span>
+                </div>
+                
+                <div class="current-task">
+                    <div class="task-label">Current Task</div>
+                    <div class="task-value">Sidebar Navigation + Dashboard Layout + Interactive Elements (parallel with Forge)</div>
+                </div>
+                
+                <div class="token-section">
+                    <div class="token-title">
+                        <span>Token Usage</span>
+                        <span class="token-value">0K / 262K</span>
+                    </div>
+                    
+                    <div class="token-bar">
+                        <div class="token-fill" style="width: 0%"></div>
+                    </div>
+                    
+                    <div class="token-stats">
+                        <span>Just spawned</span>
+                        <span>0% used</span>
+                    </div>
+                    
+                    <div class="cost-estimate">Est. Cost: ~$0.00 (starting)</div>
+                </div>
+                
+                <div class="heartbeat-info">
+                    <span>⏱️ Report every 30 min</span>
+                    <span>UI specialist</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div style="margin-top: 40px; padding: 20px; background: rgba(0,0,0,0.3); border-radius: 8px; text-align: center; color: #666;">
+        <div style="color: #00ff9f; font-size: 1.1rem; margin-bottom: 10px;">🚀 ACCELERATING TO FEB 18 NOON</div>
+        <div>17 Agents Working in Parallel | Dashboard v2.1 Live | Integration Complete</div>
+    </div>
+</body>
+</html>

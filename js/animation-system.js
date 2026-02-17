@@ -1,0 +1,539 @@
+/**
+ * ═══════════════════════════════════════════════════════════════
+ * MISSION CONTROL - ANIMATION SYSTEM MODULE
+ * Author: Forge-3 (Advanced UI Specialist)
+ * Date: 2026-02-17
+ * 
+ * Features:
+ * - Page transition management
+ * - Loading state animations
+ * - Micro-interaction triggers
+ * - Scroll-based animations
+ * - Stagger animation utilities
+ * ═══════════════════════════════════════════════════════════════
+ */
+
+const MC_Animation = {
+    // Configuration
+    config: {
+        defaultDuration: 300,
+        defaultEasing: 'cubic-bezier(0.4, 0.0, 0.2, 1)',
+        staggerDelay: 50,
+        scrollThreshold: 0.1
+    },
+    
+    // State
+    state: {
+        isAnimating: false,
+        observers: new Map(),
+        loadingElements: new Set()
+    },
+    
+    /**
+     * Initialize the animation system
+     */
+    init() {
+        this.setupScrollAnimations();
+        this.setupPageTransitions();
+        console.log('✨ Animation system initialized');
+    },
+    
+    /**
+     * ═══════════════════════════════════════════════════════════════
+     * PAGE TRANSITIONS
+     * ═══════════════════════════════════════════════════════════════
+     */
+    
+    /**
+     * Navigate to a new page with transition
+     */
+    navigate(url, options = {}) {
+        const { transition = 'fade', duration = 300 } = options;
+        
+        this.state.isAnimating = true;
+        
+        // Create transition overlay
+        const overlay = document.createElement('div');
+        overlay.className = `page-transition-overlay transition-${transition}`;
+        overlay.style.cssText = `
+            position: fixed;
+            inset: 0;
+            background: var(--mc-bg-primary);
+            z-index: 9999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity ${duration}ms ${this.config.defaultEasing};
+        `;
+        
+        document.body.appendChild(overlay);
+        
+        // Fade out current page
+        requestAnimationFrame(() => {
+            overlay.style.opacity = '1';
+        });
+        
+        // Navigate after transition
+        setTimeout(() => {
+            window.location.href = url;
+        }, duration);
+    },
+    
+    /**
+     * Setup page load animations
+     */
+    setupPageTransitions() {
+        // Add entrance animation to main content
+        const main = document.querySelector('.main, main, .dashboard');
+        if (main) {
+            main.classList.add('page-transition-fade');
+        }
+        
+        // Animate cards on load
+        this.stagger('.card, .stat-card, .agent-card', {
+            animation: 'fadeInUp',
+            delay: 50
+        });
+    },
+    
+    /**
+     * ═══════════════════════════════════════════════════════════════
+     * LOADING ANIMATIONS
+     * ═══════════════════════════════════════════════════════════════
+     */
+    
+    /**
+     * Show loading state on an element
+     */
+    showLoading(selector, options = {}) {
+        const { type = 'spinner', text = 'Loading...' } = options;
+        const element = typeof selector === 'string' 
+            ? document.querySelector(selector) 
+            : selector;
+        
+        if (!element) return;
+        
+        // Store original content
+        element.dataset.originalContent = element.innerHTML;
+        this.state.loadingElements.add(element);
+        
+        // Create loading content
+        let loadingHTML = '';
+        switch (type) {
+            case 'spinner':
+                loadingHTML = `
+                    <div class="loading-container" style="
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        justify-content: center;
+                        gap: 12px;
+                        padding: 24px;
+                    ">
+                        <div class="loading-spinner"></div>
+                        <span style="color: var(--mc-text-muted); font-size: 0.875rem;">${text}</span>
+                    </div>
+                `;
+                break;
+            case 'dots':
+                loadingHTML = `
+                    <div class="loading-container" style="
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        justify-content: center;
+                        gap: 12px;
+                        padding: 24px;
+                    ">
+                        <div class="loading-dots">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                        <span style="color: var(--mc-text-muted); font-size: 0.875rem;">${text}</span>
+                    </div>
+                `;
+                break;
+            case 'skeleton':
+                loadingHTML = this.createSkeleton(element);
+                break;
+        }
+        
+        element.innerHTML = loadingHTML;
+        element.classList.add('is-loading');
+    },
+    
+    /**
+     * Hide loading state
+     */
+    hideLoading(selector) {
+        const element = typeof selector === 'string' 
+            ? document.querySelector(selector) 
+            : selector;
+        
+        if (!element || !this.state.loadingElements.has(element)) return;
+        
+        // Restore original content
+        if (element.dataset.originalContent) {
+            element.innerHTML = element.dataset.originalContent;
+        }
+        
+        this.state.loadingElements.delete(element);
+        element.classList.remove('is-loading');
+    },
+    
+    /**
+     * Create skeleton loading HTML
+     */
+    createSkeleton(element) {
+        const width = element.offsetWidth;
+        const height = element.offsetHeight;
+        
+        return `
+            <div class="skeleton-container" style="padding: 16px;">
+                <div class="skeleton skeleton-text" style="width: 60%;"></div>
+                <div class="skeleton skeleton-text"></div>
+                <div class="skeleton skeleton-text" style="width: 80%;"></div>
+                <div class="skeleton skeleton-text" style="width: 40%;"></div>
+            </div>
+        `;
+    },
+    
+    /**
+     * ═══════════════════════════════════════════════════════════════
+     * MICRO-INTERACTIONS
+     * ═══════════════════════════════════════════════════════════════
+     */
+    
+    /**
+     * Add ripple effect to button
+     */
+    addRipple(event, element) {
+        const ripple = document.createElement('span');
+        const rect = element.getBoundingClientRect();
+        const size = Math.max(rect.width, rect.height);
+        const x = event.clientX - rect.left - size / 2;
+        const y = event.clientY - rect.top - size / 2;
+        
+        ripple.style.cssText = `
+            position: absolute;
+            width: ${size}px;
+            height: ${size}px;
+            left: ${x}px;
+            top: ${y}px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: scale(0);
+            animation: ripple-effect 0.6s ease-out;
+            pointer-events: none;
+        `;
+        
+        element.style.position = 'relative';
+        element.style.overflow = 'hidden';
+        element.appendChild(ripple);
+        
+        setTimeout(() => ripple.remove(), 600);
+    },
+    
+    /**
+     * Shake an element (for errors)
+     */
+    shake(selector) {
+        const element = typeof selector === 'string' 
+            ? document.querySelector(selector) 
+            : selector;
+        
+        if (!element) return;
+        
+        element.classList.add('shake');
+        setTimeout(() => element.classList.remove('shake'), 500);
+    },
+    
+    /**
+     * Pulse an element
+     */
+    pulse(selector, duration = 2000) {
+        const element = typeof selector === 'string' 
+            ? document.querySelector(selector) 
+            : selector;
+        
+        if (!element) return;
+        
+        element.classList.add('pulse');
+        setTimeout(() => element.classList.remove('pulse'), duration);
+    },
+    
+    /**
+     * Bounce in animation
+     */
+    bounceIn(selector) {
+        const element = typeof selector === 'string' 
+            ? document.querySelector(selector) 
+            : selector;
+        
+        if (!element) return;
+        
+        element.classList.add('bounce-in');
+        setTimeout(() => element.classList.remove('bounce-in'), 600);
+    },
+    
+    /**
+     * Show notification toast
+     */
+    showToast(message, options = {}) {
+        const { 
+            type = 'info', 
+            duration = 3000,
+            position = 'top-right'
+        } = options;
+        
+        // Create toast container if not exists
+        let container = document.querySelector('.toast-container');
+        if (!container) {
+            container = document.createElement('div');
+            container.className = 'toast-container';
+            container.style.cssText = `
+                position: fixed;
+                ${position.includes('top') ? 'top: 20px' : 'bottom: 20px'};
+                ${position.includes('right') ? 'right: 20px' : 'left: 20px'};
+                z-index: 10000;
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+            `;
+            document.body.appendChild(container);
+        }
+        
+        // Create toast
+        const toast = document.createElement('div');
+        toast.className = `notification-toast toast-${type}`;
+        toast.style.cssText = `
+            background: var(--mc-bg-card);
+            border: 1px solid var(--mc-border-default);
+            border-left: 3px solid var(--mc-accent-${type === 'error' ? 'red' : type === 'success' ? 'green' : 'primary'});
+            border-radius: 8px;
+            padding: 12px 16px;
+            min-width: 280px;
+            max-width: 400px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        `;
+        
+        const icons = {
+            info: 'ℹ️',
+            success: '✅',
+            warning: '⚠️',
+            error: '❌'
+        };
+        
+        toast.innerHTML = `
+            <span>${icons[type] || icons.info}</span>
+            <span style="flex: 1; font-size: 0.9rem;">${message}</span>
+            <button onclick="this.parentElement.remove()" style="
+                background: none;
+                border: none;
+                color: var(--mc-text-muted);
+                cursor: pointer;
+                font-size: 1.2rem;
+                padding: 0;
+                width: 24px;
+                height: 24px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            ">×</button>
+        `;
+        
+        container.appendChild(toast);
+        
+        // Auto-remove
+        setTimeout(() => {
+            toast.classList.add('hiding');
+            setTimeout(() => toast.remove(), 300);
+        }, duration);
+    },
+    
+    /**
+     * ═══════════════════════════════════════════════════════════════
+     * SCROLL ANIMATIONS
+     * ═══════════════════════════════════════════════════════════════
+     */
+    
+    /**
+     * Setup scroll-based reveal animations
+     */
+    setupScrollAnimations() {
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: this.config.scrollThreshold
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('revealed');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+        
+        // Observe all scroll-reveal elements
+        document.querySelectorAll('.scroll-reveal').forEach(el => {
+            observer.observe(el);
+        });
+        
+        this.state.observers.set('scroll', observer);
+    },
+    
+    /**
+     * Add scroll reveal to elements
+     */
+    scrollReveal(selector, options = {}) {
+        const { animation = 'fadeInUp', delay = 0 } = options;
+        const elements = document.querySelectorAll(selector);
+        
+        elements.forEach((el, index) => {
+            el.classList.add('scroll-reveal');
+            el.style.animationDelay = `${delay + (index * 50)}ms`;
+        });
+    },
+    
+    /**
+     * ═══════════════════════════════════════════════════════════════
+     * STAGGER ANIMATIONS
+     * ═══════════════════════════════════════════════════════════════
+     */
+    
+    /**
+     * Apply staggered animation to multiple elements
+     */
+    stagger(selector, options = {}) {
+        const { 
+            animation = 'fadeInUp', 
+            delay = 50,
+            duration = 500
+        } = options;
+        
+        const elements = document.querySelectorAll(selector);
+        
+        elements.forEach((el, index) => {
+            el.style.opacity = '0';
+            el.style.animation = `${animation} ${duration}ms ${this.config.defaultEasing} forwards`;
+            el.style.animationDelay = `${index * delay}ms`;
+        });
+    },
+    
+    /**
+     * Animate a counter number
+     */
+    animateCounter(selector, targetValue, options = {}) {
+        const { duration = 1000, suffix = '' } = options;
+        const element = typeof selector === 'string' 
+            ? document.querySelector(selector) 
+            : selector;
+        
+        if (!element) return;
+        
+        const startTime = performance.now();
+        const startValue = 0;
+        
+        const updateCounter = (currentTime) => {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            
+            // Easing function (ease-out)
+            const easeOut = 1 - Math.pow(1 - progress, 3);
+            const currentValue = Math.floor(startValue + (targetValue - startValue) * easeOut);
+            
+            element.textContent = currentValue.toLocaleString() + suffix;
+            
+            if (progress < 1) {
+                requestAnimationFrame(updateCounter);
+            }
+        };
+        
+        requestAnimationFrame(updateCounter);
+    },
+    
+    /**
+     * Progress bar animation
+     */
+    animateProgress(selector, targetPercent, options = {}) {
+        const { duration = 1000 } = options;
+        const element = typeof selector === 'string' 
+            ? document.querySelector(selector) 
+            : selector;
+        
+        if (!element) return;
+        
+        element.style.width = '0%';
+        element.style.transition = `width ${duration}ms ${this.config.defaultEasing}`;
+        
+        requestAnimationFrame(() => {
+            element.style.width = `${targetPercent}%`;
+        });
+    },
+    
+    /**
+     * ═══════════════════════════════════════════════════════════════
+     * UTILITY FUNCTIONS
+     * ═══════════════════════════════════════════════════════════════
+     */
+    
+    /**
+     * Wait for animation to complete
+     */
+    async waitForAnimation(element) {
+        return new Promise(resolve => {
+            const onEnd = () => {
+                element.removeEventListener('animationend', onEnd);
+                element.removeEventListener('transitionend', onEnd);
+                resolve();
+            };
+            element.addEventListener('animationend', onEnd);
+            element.addEventListener('transitionend', onEnd);
+        });
+    },
+    
+    /**
+     * Add CSS keyframes dynamically
+     */
+    addKeyframes(name, keyframes) {
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes ${name} {
+                ${keyframes}
+            }
+        `;
+        document.head.appendChild(style);
+    },
+    
+    /**
+     * Clean up observers and animations
+     */
+    destroy() {
+        this.state.observers.forEach(observer => observer.disconnect());
+        this.state.observers.clear();
+        this.state.loadingElements.clear();
+    }
+};
+
+// Add ripple keyframes
+MC_Animation.addKeyframes('ripple-effect', `
+    to {
+        transform: scale(4);
+        opacity: 0;
+    }
+`);
+
+// Auto-initialize
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => MC_Animation.init());
+} else {
+    MC_Animation.init();
+}
+
+// Expose globally
+window.MC_Animation = MC_Animation;

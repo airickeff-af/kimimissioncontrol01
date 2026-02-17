@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mission Control HQ | EricF's AI Team</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #111118;
+            --bg-card: #16161f;
+            --accent-cyan: #00d4ff;
+            --accent-purple: #a855f7;
+            --accent-green: #00ff9f;
+            --accent-red: #ff6b6b;
+            --accent-yellow: #ffc107;
+            --text-primary: #ffffff;
+            --text-secondary: #a1a1aa;
+            --text-muted: #71717a;
+            --border-color: #27272a;
+            --shadow-glow: 0 0 30px rgba(0, 212, 255, 0.2);
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow: hidden;
+        }
+        
+        /* Header */
+        .header {
+            background: linear-gradient(180deg, rgba(17, 17, 24, 0.98) 0%, rgba(10, 10, 15, 0.95) 100%);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 0 1.5rem;
+            height: 70px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .logo {
+            width: 42px;
+            height: 42px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 800;
+            box-shadow: var(--shadow-glow);
+            animation: pulse-glow 3s ease-in-out infinite;
+        }
+        
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 30px rgba(0, 212, 255, 0.3); }
+            50% { box-shadow: 0 0 50px rgba(168, 85, 247, 0.4); }
+        }
+        
+        .brand-text h1 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, #fff, var(--accent-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .brand-text span {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        /* Tab Navigation */
+        .tab-nav {
+            display: flex;
+            gap: 0.5rem;
+            background: rgba(255,255,255,0.03);
+            padding: 0.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .tab-btn {
+            padding: 0.75rem 1.25rem;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            white-space: nowrap;
+        }
+        
+        .tab-btn:hover {
+            color: var(--text-primary);
+            background: rgba(255,255,255,0.05);
+            transform: translateY(-1px);
+        }
+        
+        .tab-btn.active {
+            color: var(--text-primary);
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            box-shadow: 0 4px 20px rgba(0, 212, 255, 0.4);
+        }
+        
+        .tab-btn .icon {
+            font-size: 1.1rem;
+            transition: transform 0.3s;
+        }
+        
+        .tab-btn:hover .icon {
+            transform: scale(1.1);
+        }
+        
+        .tab-btn.active .icon {
+            animation: bounce-icon 0.5s ease;
+        }
+        
+        @keyframes bounce-icon {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+        
+        /* Mobile Menu Toggle */
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+        
+        /* Status Pill */
+        .status-pill {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(0, 255, 159, 0.1);
+            border: 1px solid rgba(0, 255, 159, 0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            color: var(--accent-green);
+        }
+        
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent-green);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(0.9); }
+        }
+        
+        /* Main Content */
+        .main-content {
+            height: calc(100vh - 70px - 50px);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .tab-panel {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+                        visibility 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                        transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateX(20px);
+            overflow: hidden;
+        }
+        
+        .tab-panel.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(0);
+        }
+        
+        /* Iframe containers */
+        .tab-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: var(--bg-primary);
+        }
+        
+        /* Loading overlay */
+        .tab-loading {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-primary);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+        
+        .tab-loading.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid var(--border-color);
+            border-top-color: var(--accent-cyan);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .loading-text {
+            margin-top: 1rem;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+        
+        /* Status Bar */
+        .status-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(180deg, rgba(17, 17, 24, 0.98) 0%, rgba(10, 10, 15, 1) 100%);
+            border-top: 1px solid var(--border-color);
+            padding: 0.75rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            z-index: 100;
+            height: 50px;
+        }
+        
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .status-item .status-dot {
+            width: 6px;
+            height: 6px;
+        }
+        
+        .agent-count {
+            color: var(--accent-cyan);
+            font-weight: 600;
+        }
+        
+        .countdown {
+            color: var(--accent-yellow);
+            font-weight: 600;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .countdown.urgent {
+            color: var(--accent-red);
+            animation: urgent-pulse 1s infinite;
+        }
+        
+        @keyframes urgent-pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 1024px) {
+            .tab-btn {
+                padding: 0.6rem 1rem;
+                font-size: 0.8rem;
+            }
+            
+            .tab-btn .icon {
+                font-size: 1rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header {
+                padding: 0 1rem;
+                height: 60px;
+            }
+            
+            .brand-text h1 {
+                font-size: 1rem;
+            }
+            
+            .brand-text span {
+                display: none;
+            }
+            
+            .logo {
+                width: 36px;
+                height: 36px;
+                font-size: 1.2rem;
+            }
+            
+            .tab-nav {
+                position: fixed;
+                bottom: 50px;
+                left: 0;
+                right: 0;
+                top: auto;
+                flex-direction: row;
+                justify-content: space-around;
+                padding: 0.5rem;
+                border-radius: 0;
+                border-top: 1px solid var(--border-color);
+                background: var(--bg-secondary);
+                z-index: 101;
+            }
+            
+            .tab-btn {
+                flex: 1;
+                justify-content: center;
+                padding: 0.5rem;
+                font-size: 0.7rem;
+                flex-direction: column;
+                gap: 0.25rem;
+            }
+            
+            .tab-btn .icon {
+                font-size: 1.25rem;
+            }
+            
+            .tab-btn span:not(.icon) {
+                display: none;
+            }
+            
+            .tab-btn.active span:not(.icon) {
+                display: block;
+            }
+            
+            .status-pill {
+                display: none;
+            }
+            
+            .main-content {
+                height: calc(100vh - 60px - 50px - 60px);
+            }
+            
+            .status-bar {
+                padding: 0.5rem 1rem;
+                font-size: 0.7rem;
+            }
+            
+            .status-item:nth-child(2),
+            .status-item:nth-child(4) {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .tab-btn {
+                padding: 0.4rem;
+            }
+            
+            .tab-btn .icon {
+                font-size: 1.1rem;
+            }
+        }
+        
+        /* Tab indicator animation */
+        .tab-indicator {
+            position: absolute;
+            bottom: -1px;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 2px 2px 0 0;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="brand">
+            <div class="logo">🎯</div>
+            <div class="brand-text">
+                <h1>Mission Control</h1>
+                <span>EricF's AI Team Dashboard</span>
+            </div>
+        </div>
+        
+        <nav class="tab-nav" id="tabNav">
+            <button class="tab-btn active" data-tab="pixel" data-src="kairosoft-style.html">
+                <span class="icon">👾</span>
+                <span>Pixel Office</span>
+            </button>
+            <button class="tab-btn" data-tab="cards" data-src="work-cards.html">
+                <span class="icon">📋</span>
+                <span>Work Cards</span>
+            </button>
+            <button class="tab-btn" data-tab="mission" data-src="mission-board.html">
+                <span class="icon">📊</span>
+                <span>Mission Board</span>
+            </button>
+            <button class="tab-btn" data-tab="timeline" data-src="timeline-view.html">
+                <span class="icon">📅</span>
+                <span>Timeline</span>
+            </button>
+        </nav>
+        
+        <div class="header-actions">
+            <div class="status-pill">
+                <span class="status-dot"></span>
+                <span>20 Agents Active</span>
+            </div>
+        </div>
+    </header>
+    
+    <main class="main-content">
+        <!-- Pixel Office Tab -->
+        <div class="tab-panel active" id="pixel-panel" data-loaded="true">
+            <div class="tab-loading" id="pixel-loading">
+                <div class="loading-spinner"></div>
+                <div class="loading-text">Loading Pixel Office...</div>
+            </div>
+            <iframe class="tab-iframe" src="kairosoft-style.html" id="pixel-iframe" onload="hideLoading('pixel')"></iframe>
+        </div>
+        
+        <!-- Work Cards Tab -->
+        <div class="tab-panel" id="cards-panel" data-loaded="false">
+            <div class="tab-loading" id="cards-loading">
+                <div class="loading-spinner"></div>
+                <div class="loading-text">Loading Work Cards...</div>
+            </div>
+            <iframe class="tab-iframe" data-src="work-cards.html" id="cards-iframe" onload="hideLoading('cards')"></iframe>
+        </div>
+        
+        <!-- Mission Board Tab -->
+        <div class="tab-panel" id="mission-panel" data-loaded="false">
+            <div class="tab-loading" id="mission-loading">
+                <div class="loading-spinner"></div>
+                <div class="loading-text">Loading Mission Board...</div>
+            </div>
+            <iframe class="tab-iframe" data-src="mission-board.html" id="mission-iframe" onload="hideLoading('mission')"></iframe>
+        </div>
+        
+        <!-- Timeline Tab -->
+        <div class="tab-panel" id="timeline-panel" data-loaded="false">
+            <div class="tab-loading" id="timeline-loading">
+                <div class="loading-spinner"></div>
+                <div class="loading-text">Loading Timeline...</div>
+            </div>
+            <iframe class="tab-iframe" data-src="timeline-view.html" id="timeline-iframe" onload="hideLoading('timeline')"></iframe>
+        </div>
+    </main>
+    
+    <footer class="status-bar">
+        <div class="status-item">
+            <span class="status-dot"></span>
+            <span>System Operational</span>
+        </div>
+        <div class="status-item">
+            <span>🤖 <span class="agent-count">20</span> Agents</span>
+        </div>
+        <div class="status-item">
+            <span>⏰ Deadline: <span id="countdown" class="countdown">--h --m</span></span>
+        </div>
+        <div class="status-item">
+            <span>🌐 honest-olives-lick.loca.lt</span>
+        </div>
+    </footer>
+    
+    <script>
+        // Tab switching with lazy loading
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const tabId = btn.dataset.tab;
+                const panel = document.getElementById(tabId + '-panel');
+                const iframe = document.getElementById(tabId + '-iframe');
+                
+                // Remove active from all
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+                
+                // Add active to clicked
+                btn.classList.add('active');
+                panel.classList.add('active');
+                
+                // Lazy load iframe if not loaded
+                if (panel.dataset.loaded === 'false' && iframe.dataset.src) {
+                    showLoading(tabId);
+                    iframe.src = iframe.dataset.src;
+                    panel.dataset.loaded = 'true';
+                }
+                
+                // Save active tab to localStorage
+                localStorage.setItem('activeTab', tabId);
+            });
+        });
+        
+        // Loading handlers
+        function showLoading(tabId) {
+            const loading = document.getElementById(tabId + '-loading');
+            if (loading) loading.classList.add('show');
+        }
+        
+        function hideLoading(tabId) {
+            const loading = document.getElementById(tabId + '-loading');
+            if (loading) {
+                setTimeout(() => {
+                    loading.classList.remove('show');
+                }, 300);
+            }
+        }
+        
+        // Countdown timer
+        function updateCountdown() {
+            const now = new Date();
+            const deadline = new Date('2026-02-18T10:00:00+08:00');
+            const diff = deadline - now;
+            
+            const countdownEl = document.getElementById('countdown');
+            
+            if (diff > 0) {
+                const hours = Math.floor(diff / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                countdownEl.textContent = `${hours}h ${minutes}m`;
+                
+                // Add urgent styling if less than 4 hours
+                if (hours < 4) {
+                    countdownEl.classList.add('urgent');
+                }
+            } else {
+                countdownEl.textContent = 'DEADLINE REACHED';
+                countdownEl.classList.add('urgent');
+            }
+        }
+        
+        updateCountdown();
+        setInterval(updateCountdown, 60000);
+        
+        // Restore active tab from localStorage
+        const savedTab = localStorage.getItem('activeTab');
+        if (savedTab) {
+            const btn = document.querySelector(`[data-tab="${savedTab}"]`);
+            if (btn && savedTab !== 'pixel') {
+                btn.click();
+            }
+        }
+        
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.altKey) {
+                const tabs = ['pixel', 'cards', 'mission', 'timeline'];
+                const currentIndex = tabs.findIndex(t => 
+                    document.getElementById(t + '-panel').classList.contains('active')
+                );
+                
+                let newIndex;
+                if (e.key === 'ArrowRight') {
+                    newIndex = (currentIndex + 1) % tabs.length;
+                } else if (e.key === 'ArrowLeft') {
+                    newIndex = (currentIndex - 1 + tabs.length) % tabs.length;
+                }
+                
+                if (newIndex !== undefined) {
+                    document.querySelector(`[data-tab="${tabs[newIndex]}"]`).click();
+                }
+            }
+        });
+        
+        // Handle iframe load errors
+        window.addEventListener('error', (e) => {
+            console.error('Dashboard error:', e);
+        });
+        
+        // Preload adjacent tabs after initial load
+        setTimeout(() => {
+            const tabs = ['cards', 'mission', 'timeline'];
+            tabs.forEach((tab, index) => {
+                setTimeout(() => {
+                    const panel = document.getElementById(tab + '-panel');
+                    const iframe = document.getElementById(tab + '-iframe');
+                    if (panel.dataset.loaded === 'false' && iframe.dataset.src) {
+                        // Preload in background
+                        iframe.src = iframe.dataset.src;
+                        panel.dataset.loaded = 'true';
+                    }
+                }, (index + 1) * 2000);
+            });
+        }, 3000);
+    </script>
+</body>
+</html>

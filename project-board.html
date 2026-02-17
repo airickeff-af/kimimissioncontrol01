@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forge + Code Project Board | Mission Control</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'JetBrains Mono', monospace;
+            background: #0a0a0f;
+            color: #00ff9f;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .header {
+            border-bottom: 2px solid #00ff9f;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            color: #ff6b6b;
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .legend {
+            display: flex;
+            gap: 20px;
+            margin: 20px 0;
+            font-size: 0.85rem;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .priority-p0 { color: #ff4444; font-weight: bold; }
+        .priority-p1 { color: #ffaa00; font-weight: bold; }
+        .priority-p2 { color: #00ff9f; }
+        .priority-p3 { color: #888; }
+        
+        .board {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .column {
+            background: rgba(0, 255, 159, 0.03);
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 15px;
+        }
+        
+        .column-header {
+            font-weight: bold;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid;
+            font-size: 0.95rem;
+        }
+        
+        .col-todo { border-color: #666; }
+        .col-progress { border-color: #ffaa00; }
+        .col-review { border-color: #00aaff; }
+        .col-done { border-color: #00ff9f; }
+        
+        .task-card {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid #444;
+            border-radius: 6px;
+            padding: 12px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .task-card:hover {
+            border-color: #00ff9f;
+            transform: translateY(-2px);
+        }
+        
+        .task-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        
+        .task-id {
+            font-size: 0.75rem;
+            color: #666;
+        }
+        
+        .task-priority {
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+        
+        .p0 { background: rgba(255, 68, 68, 0.2); color: #ff4444; }
+        .p1 { background: rgba(255, 170, 0, 0.2); color: #ffaa00; }
+        .p2 { background: rgba(0, 255, 159, 0.2); color: #00ff9f; }
+        .p3 { background: rgba(136, 136, 136, 0.2); color: #888; }
+        
+        .task-title {
+            font-size: 0.9rem;
+            color: #fff;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+        
+        .task-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: #666;
+        }
+        
+        .task-assignee {
+            color: #00d9e8;
+        }
+        
+        .task-deadline {
+            color: #ffaa00;
+        }
+        
+        .task-deadline.urgent {
+            color: #ff4444;
+            font-weight: bold;
+        }
+        
+        .timeline {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        .timeline h2 {
+            color: #ff6b6b;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+        
+        .timeline-item {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 15px;
+            padding-left: 20px;
+            border-left: 2px solid #333;
+        }
+        
+        .timeline-item.active {
+            border-left-color: #ffaa00;
+        }
+        
+        .timeline-item.completed {
+            border-left-color: #00ff9f;
+        }
+        
+        .timeline-date {
+            min-width: 100px;
+            color: #888;
+            font-size: 0.85rem;
+        }
+        
+        .timeline-content {
+            flex: 1;
+        }
+        
+        .timeline-title {
+            color: #fff;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .timeline-desc {
+            color: #666;
+            font-size: 0.85rem;
+        }
+        
+        .sprint-header {
+            background: rgba(255, 107, 107, 0.1);
+            border: 1px solid #ff6b6b;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .sprint-title {
+            color: #ff6b6b;
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .sprint-info {
+            display: flex;
+            gap: 30px;
+            font-size: 0.9rem;
+        }
+        
+        .sprint-info span {
+            color: #888;
+        }
+        
+        .sprint-info strong {
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>⚒️ FORGE + CODE PROJECT BOARD</h1>
+        <div class="subtitle">Dashboard Development Sprint | Priority & Deadline Tracking</div>
+        <div class="legend">
+            <div class="legend-item">
+                <span class="priority-p0">P0</span>
+                <span>Critical (Today)</span>
+            </div>
+            <div class="legend-item">
+                <span class="priority-p1">P1</span>
+                <span>High (This Week)</span>
+            </div>
+            <div class="legend-item">
+                <span class="priority-p2">P2</span>
+                <span>Medium (Next Week)</span>
+            </div>
+            <div class="legend-item">
+                <span class="priority-p3">P3</span>
+                <span>Low (Future)</span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="sprint-header">
+        <div class="sprint-title">🎯 SPRINT 1: Core Dashboard (Feb 17-21)</div>
+        <div class="sprint-info">
+            <span>Total Tasks: <strong>16</strong></span>
+            <span>Completed: <strong>2</strong></span>
+            <span>In Progress: <strong>0</strong></span>
+            <span>Deadline: <strong>Feb 21, 5PM</strong></span>
+        </div>
+    </div>
+    
+    <div class="board">
+        <!-- TODO COLUMN -->
+        <div class="column">
+            <div class="column-header col-todo">📋 TODO (14)</div>
+            
+            <div class="task-card">
+                <div class="task-header">
+                    <span class="task-id">F-003</span>
+                    <span class="task-priority p1">P1</span>
+                </div>
+                <div class="task-title">Sidebar Navigation & Layout</div>
+                <div class="task-meta">
+                    <span class="task-assignee">⚒️ Forge</span>
+                    <span class="task-deadline">Wed 5PM</span>
+                </div>
+            </div>
+            
+            <div class="task-card">
+                <div class="task-header">
+                    <span class="task-id">F-004</span>
+                    <span class="task-priority p1">P1</span>
+                </div>
+                <div class="task-title">Interactive Elements (hover, clicks, animations)</div>
+                <div class="task-meta">
+                    <span class="task-assignee">⚒️ Forge</span>
+                    <span class="task-deadline">Thu 5PM</span>
+                </div>
+            </div>
+            
+            <div class="task-card">
+                <div class="task-header">
+                    <span class="task-id">C-001</span>
+                    <span class="task-priority p0">P0</span>
+                </div>
+                <div class="task-title">API: /api/agents endpoint (list all agents)</div>
+                <div class="task-meta">
+                    <span class="task-assignee">⚒️ Code</span>
+                    <span class="task-deadline urgent">Today 5PM</span>
+                </div>
+            </div>
+            
+            <div class="task-card">
+                <div class="task-header">
+                    <span class="task-id">C-002</span>
+                    <span class="task-priority p0">P0</span>
+                </div>
+                <div class="task-title">Agent Data Collector (scan workspaces)</div>
+                <div class="task-meta">
+                    <span class="task-assignee">⚒️ Code</span>
+                    <span class="task-deadline urgent">Today 5PM</span>
+                </div>
+            </div>
+            
+            <div class="task-card">
+                <div class="task-header">
+                    <span class="task-id">C-003</span>
+                    <span class="task-priority p1">P1</span>
+                </div>
+                <div class="task-title">API: /api/agents/:id endpoint (single agent)</div>
+                <div class="task-meta">
+                    <span class="task-assignee">⚒️ Code</span>
+                    <span class="task-deadline">Wed 5PM</span>
+                </div>
+            </div>
+            
+            <div class="task-card">
+                <div class="task-header">
+                    <span class="task-id">C-004</span>
+                    <span class="task-priority p1">P1</span>
+                </div>
+                <div class="task-title">File Watcher (detect new outputs)</div>
+                <div class="task-meta">
+                    <span class="task-assignee">⚒️ Code</span>
+                    <span class="task-deadline">Wed 5PM</span>
+                </div>
+            </div>
+            
+            <!-- MORE TASKS -->
+            <div class="task-card">
+                <div class="task-header">
+                    <span class="task-id">F-005</span>
+                    <span class="task-priority p2">P2</span>
+                </div>
+                <div class="task-title">Dark/Light Theme Toggle</div>
+                <div class="task-meta">
+                    <span class="task-assignee">⚒️ Forge</span>
+                    <span class="task-deadline">Fri 5PM</span>
+                </div>
+            </div>
+            
+            <div class="task-card">
+                <div class="task-header">
+                    <span class="task-id">C-005</span>
+                    <span class="task-priority p2">P2</span>
+                </div>
+                <div class="task-title">WebSocket Server (real-time updates)</div>
+                <div class="task-meta">
+                    <span class="task-assignee">⚒️ Code</span>
+                    <span class="task-deadline">Fri 5PM</span>
+                </div>
+            </div>
+            
+            <div class="task-card">
+                <div class="task-header">
+                    <span class="task-id">F-006</span>
+                    <span class="task-priority p2">P2</span>
+                </div>
+                <div class="task-title">Mobile Responsive Layout</div>
+                <div class="task-meta">
+                    <span class="task-assignee">⚒️ Forge</span>
+                    <span class="task-deadline">Fri 5PM</span>
+                </div>
+            </div>
+            
+            <div class="task-card">
+                <div class="task-header">
+                    <span class="task-id">C-006</span>
+                    <span class="task-priority p2">P2</span>
+                </div>
+                <div class="task-title">API: /api/tasks endpoint</div>
+                <div class="task-meta">
+                    <span class="task-assignee">⚒️ Code</span>
+                    <span class="task-deadline">Fri 5PM</span>
+                </div>
+            </div>
+            
+            <div class="task-card">
+                <div class="task-header">
+                    <span class="task-id">F-007</span>
+                    <span class="task-priority p3">P3</span>
+                </div>
+                <div class="task-title">Loading States & Skeletons</div>
+                <div class="task-meta">
+                    <span class="task-assignee">⚒️ Forge</span>
+                    <span class="task-deadline">Next Week</span>
+                </div>
+            </div>
+            
+            <div class="task-card">
+                <div class="task-header">
+                    <span class="task-id">C-007</span>
+                    <span class="task-priority p3">P3</span>
+                </div>
+                <div class="task-title">JSON Data Store & Backup</div>
+                <div class="task-meta">
+                    <span class="task-assignee">⚒️ Code</span>
+                    <span class="task-deadline">Next Week</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- IN PROGRESS COLUMN -->
+        <div class="column">
+            <div class="column-header col-progress">🔄 IN PROGRESS (0)</div>
+            <div style="color: #666; text-align: center; padding: 40px 0; font-size: 0.9rem;">
+                No tasks in progress yet.
+                <br><br>
+                Assign P0 tasks to start!
+            </div>
+        </div>
+        
+        <!-- REVIEW COLUMN -->
+        <div class="column">
+            <div class="column-header col-review">👀 REVIEW (0)</div>
+            <div style="color: #666; text-align: center; padding: 40px 0; font-size: 0.9rem;">
+                No tasks awaiting review.
+            </div>
+        </div>
+        
+        <!-- DONE COLUMN -->
+        <div class="column">
+            <div class="column-header col-done">✅ DONE (2)</div>
+            
+            <div class="task-card" style="border-color: #00ff9f; opacity: 0.8;">
+                <div class="task-header">
+                    <span class="task-id">F-001</span>
+                    <span class="task-priority p0">P0 ✓</span>
+                </div>
+                <div class="task-title">Design System (colors, typography, spacing)</div>
+                <div class="task-meta">
+                    <span class="task-assignee">⚒️ Forge</span>
+                    <span style="color: #00ff9f;">10:52 AM</span>
+                </div>
+            </div>
+            
+            <div class="task-card" style="border-color: #00ff9f; opacity: 0.8;">
+                <div class="task-header">
+                    <span class="task-id">F-002</span>
+                    <span class="task-priority p0">P0 ✓</span>
+                </div>
+                <div class="task-title">Agent Card Component (avatar, status, knowledge bar)</div>
+                <div class="task-meta">
+                    <span class="task-assignee">⚒️ Forge</span>
+                    <span style="color: #00ff9f;">10:55 AM</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+    <div class="timeline">
+        <h2>📅 SPRINT TIMELINE</h2>
+        
+        <div class="timeline-item active">
+            <div class="timeline-date">Feb 17 (Today)</div>
+            <div class="timeline-content">
+                <div class="timeline-title">🚀 SPRINT KICKOFF</div>
+                <div class="timeline-desc">P0 Tasks: Design System, Agent Cards, API endpoints, Data Collector</div>
+            </div>
+        </div>
+        
+        <div class="timeline-item">
+            <div class="timeline-date">Feb 18 (Wed)</div>
+            <div class="timeline-content">
+                <div class="timeline-title">📊 P1 TASKS</div>
+                <div class="timeline-desc">Navigation, Single Agent API, File Watcher, Interactive Elements</div>
+            </div>
+        </div>
+        
+        <div class="timeline-item">
+            <div class="timeline-date">Feb 19 (Thu)</div>
+            <div class="timeline-content">
+                <div class="timeline-title">🔗 INTEGRATION</div>
+                <div class="timeline-desc">Connect Frontend + Backend, Testing, Bug Fixes</div>
+            </div>
+        </div>
+        
+        <div class="timeline-item">
+            <div class="timeline-date">Feb 20 (Fri)</div>
+            <div class="timeline-content">
+                <div class="timeline-title">✨ P2 TASKS & POLISH</div>
+                <div class="timeline-desc">Themes, WebSocket, Mobile, Tasks API, Final Testing</div>
+            </div>
+        </div>
+        
+        <div class="timeline-item">
+            <div class="timeline-date">Feb 21 (Fri)</div>
+            <div class="timeline-content">
+                <div class="timeline-title">🎯 SPRINT REVIEW & DEMO</div>
+                <div class="timeline-desc">Show completed dashboard to EricF, Plan Sprint 2</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mission Control Dashboard | Nexus</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --bg-tertiary: #1a1a25;
+            --accent-primary: #00d4ff;
+            --accent-secondary: #7c3aed;
+            --accent-success: #10b981;
+            --accent-warning: #f59e0b;
+            --accent-danger: #ef4444;
+            --text-primary: #ffffff;
+            --text-secondary: #a1a1aa;
+            --text-muted: #71717a;
+            --border: #27272a;
+        }
+        
+        body {
+            font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', monospace;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        /* Header */
+        .header {
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        .logo-text h1 {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+        
+        .logo-text span {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+        }
+        
+        .status-bar {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+        
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+        
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent-success);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        /* Main Layout */
+        .container {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            min-height: calc(100vh - 73px);
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border);
+            padding: 1.5rem 1rem;
+        }
+        
+        .nav-section {
+            margin-bottom: 2rem;
+        }
+        
+        .nav-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 0.75rem;
+            letter-spacing: 0.05em;
+        }
+        
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.625rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 0.25rem;
+            font-size: 0.875rem;
+        }
+        
+        .nav-item:hover {
+            background: var(--bg-tertiary);
+        }
+        
+        .nav-item.active {
+            background: var(--accent-secondary);
+            color: white;
+        }
+        
+        .nav-icon {
+            width: 20px;
+            text-align: center;
+        }
+        
+        /* Main Content */
+        .main {
+            padding: 2rem;
+            overflow-y: auto;
+        }
+        
+        /* Overview Cards */
+        .overview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--accent-primary);
+        }
+        
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+        
+        .stat-title {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+        
+        .stat-icon {
+            font-size: 1.5rem;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+        
+        .stat-change {
+            font-size: 0.75rem;
+            color: var(--accent-success);
+        }
+        
+        /* Agent Status Section */
+        .section {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+        }
+        
+        .section-header {
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .section-title {
+            font-size: 1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .section-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .btn:hover {
+            background: var(--accent-secondary);
+            border-color: var(--accent-secondary);
+        }
+        
+        .btn-primary {
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
+            color: var(--bg-primary);
+        }
+        
+        /* Agent Cards */
+        .agent-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+            padding: 1.5rem;
+        }
+        
+        .agent-card {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1.25rem;
+            transition: all 0.2s;
+        }
+        
+        .agent-card:hover {
+            border-color: var(--accent-primary);
+        }
+        
+        .agent-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .agent-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            background: var(--bg-secondary);
+            border: 2px solid var(--border);
+        }
+        
+        .agent-card.online .agent-avatar {
+            border-color: var(--accent-success);
+            box-shadow: 0 0 10px rgba(16, 185, 129, 0.3);
+        }
+        
+        .agent-card.busy .agent-avatar {
+            border-color: var(--accent-warning);
+            box-shadow: 0 0 10px rgba(245, 158, 11, 0.3);
+        }
+        
+        .agent-info h3 {
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        .agent-info span {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+        
+        .agent-status {
+            margin-left: auto;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .agent-status.online {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--accent-success);
+        }
+        
+        .agent-status.busy {
+            background: rgba(245, 158, 11, 0.2);
+            color: var(--accent-warning);
+        }
+        
+        .agent-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+        }
+        
+        .agent-stat {
+            text-align: center;
+        }
+        
+        .agent-stat-value {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--accent-primary);
+        }
+        
+        .agent-stat-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+        
+        /* Activity Log */
+        .activity-list {
+            padding: 0 1.5rem 1.5rem;
+        }
+        
+        .activity-item {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+        
+        .activity-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            background: var(--bg-tertiary);
+            flex-shrink: 0;
+        }
+        
+        .activity-content {
+            flex: 1;
+        }
+        
+        .activity-title {
+            font-size: 0.875rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        .activity-meta {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+        
+        .activity-time {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+        
+        /* Task Queue */
+        .task-list {
+            padding: 0 1.5rem 1.5rem;
+        }
+        
+        .task-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--bg-tertiary);
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+            border: 1px solid var(--border);
+        }
+        
+        .task-priority {
+            width: 4px;
+            height: 40px;
+            border-radius: 2px;
+        }
+        
+        .task-priority.high { background: var(--accent-danger); }
+        .task-priority.medium { background: var(--accent-warning); }
+        .task-priority.low { background: var(--accent-success); }
+        
+        .task-content {
+            flex: 1;
+        }
+        
+        .task-title {
+            font-size: 0.875rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        .task-assignee {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+        
+        .task-status {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .task-status.pending {
+            background: rgba(245, 158, 11, 0.2);
+            color: var(--accent-warning);
+        }
+        
+        .task-status.running {
+            background: rgba(0, 212, 255, 0.2);
+            color: var(--accent-primary);
+        }
+        
+        /* Terminal/Log View */
+        .terminal {
+            background: #000;
+            border-radius: 8px;
+            padding: 1rem;
+            font-family: 'SF Mono', monospace;
+            font-size: 0.8125rem;
+            line-height: 1.6;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .terminal-line {
+            margin-bottom: 0.25rem;
+        }
+        
+        .terminal-timestamp {
+            color: var(--text-muted);
+        }
+        
+        .terminal-agent {
+            color: var(--accent-primary);
+        }
+        
+        .terminal-info {
+            color: var(--accent-success);
+        }
+        
+        .terminal-warn {
+            color: var(--accent-warning);
+        }
+        
+        .terminal-error {
+            color: var(--accent-danger);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                display: none;
+            }
+            
+            .overview-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .agent-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+            <div class="logo-icon">◈</div>
+            <div class="logo-text">
+                <h1>Mission Control</h1>
+                <span>Nexus Dashboard v1.0</span>
+            </div>
+        </div>
+        <div class="status-bar">
+            <div class="status-item">
+                <span class="status-dot"></span>
+                <span>System Online</span>
+            </div>
+            <div class="status-item">
+                <span>🕐</span>
+                <span id="clock">--:--:--</span>
+            </div>
+        </div>
+    </header>
+    
+    <div class="container">
+        <aside class="sidebar">
+            <div class="nav-section">
+                <div class="nav-title">Overview</div>
+                <div class="nav-item active">
+                    <span class="nav-icon">📊</span>
+                    <span>Dashboard</span>
+                </div>
+                <div class="nav-item">
+                    <span class="nav-icon">🤖</span>
+                    <span>Agents</span>
+                </div>
+                <div class="nav-item">
+                    <span class="nav-icon">📋</span>
+                    <span>Tasks</span>
+                </div>
+                <div class="nav-item">
+                    <span class="nav-icon">📈</span>
+                    <span>Analytics</span>
+                </div>
+            </div>
+            
+            <div class="nav-section">
+                <div class="nav-title">System</div>
+                <div class="nav-item">
+                    <span class="nav-icon">📝</span>
+                    <span>Logs</span>
+                </div>
+                <div class="nav-item">
+                    <span class="nav-icon">⚙️</span>
+                    <span>Settings</span>
+                </div>
+                <div class="nav-item">
+                    <span class="nav-icon">📚</span>
+                    <span>Documentation</span>
+                </div>
+            </div>
+            
+            <div class="nav-section">
+                <div class="nav-title">Commander</div>
+                <div class="nav-item">
+                    <span class="nav-icon">👤</span>
+                    <span>EricF Profile</span>
+                </div>
+                <div class="nav-item">
+                    <span class="nav-icon">💬</span>
+                    <span>Messages</span>
+                </div>
+            </div>
+        </aside>
+        
+        <main class="main">
+            <!-- Overview Stats -->
+            <div class="overview-grid">
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <span class="stat-title">Active Agents</span>
+                        <span class="stat-icon">🤖</span>
+                    </div>
+                    <div class="stat-value">4</div>
+                    <div class="stat-change">All systems operational</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <span class="stat-title">Tasks Completed</span>
+                        <span class="stat-icon">✅</span>
+                    </div>
+                    <div class="stat-value">3</div>
+                    <div class="stat-change">Today</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <span class="stat-title">Pending Tasks</span>
+                        <span class="stat-icon">⏳</span>
+                    </div>
+                    <div class="stat-value">0</div>
+                    <div class="stat-change">Queue clear</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <span class="stat-title">Uptime</span>
+                        <span class="stat-icon">⏱️</span>
+                    </div>
+                    <div class="stat-value" id="uptime">00:00</div>
+                    <div class="stat-change">Since deployment</div>
+                </div>
+            </div>
+            
+            <!-- Agent Status -->
+            <div class="section">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <span>🤖</span>
+                        Agent Status
+                    </h2>
+                    <div class="section-actions">
+                        <button class="btn">Refresh</button>
+                        <button class="btn btn-primary">Spawn Agent</button>
+                    </div>
+                </div>
+                
+                <div class="agent-grid">
+                    <!-- Nexus -->
+                    <div class="agent-card online">
+                        <div class="agent-header">
+                            <div class="agent-avatar">◈</div>
+                            <div class="agent-info">
+                                <h3>Nexus</h3>
+                                <span>Orchestrator / Air1ck3ff</span>
+                            </div>
+                            <span class="agent-status online">● Online</span>
+                        </div>
+                        <div class="agent-stats">
+                            <div class="agent-stat">
+                                <div class="agent-stat-value">12</div>
+                                <div class="agent-stat-label">Tasks Routed</div>
+                            </div>
+                            <div class="agent-stat">
+                                <div class="agent-stat-value">4</div>
+                                <div class="agent-stat-label">Agents Managed</div>
+                            </div>
+                            <div class="agent-stat">
+                                <div class="agent-stat-value">99%</div>
+                                <div class="agent-stat-label">Uptime</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Forge -->
+                    <div class="agent-card online">
+                        <div class="agent-header">
+                            <div class="agent-avatar">⚒️</div>
+                            <div class="agent-info">
+                                <h3>Forge</h3>
+                                <span>Coder / Developer</span>
+                            </div>
+                            <span class="agent-status online">● Online</span>
+                        </div>
+                        <div class="agent-stats">
+                            <div class="agent-stat">
+                                <div class="agent-stat-value">0</div>
+                                <div class="agent-stat-label">Tasks Done</div>
+                            </div>
+                            <div class="agent-stat">
+                                <div class="agent-stat-value">0</div>
+                                <div class="agent-stat-label">Lines Written</div>
+                            </div>
+                            <div class="agent-stat">
+                                <div class="agent-stat-value">0</div>
+                                <div class="agent-stat-label">Bugs Fixed</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Scout -->
+                    <div class="agent-card online">
+                        <div class="agent-header">
+                            <div class="agent-avatar">🔍</div>
+                            <div class="agent-info">
+                                <h3>Scout</h3>
+                                <span>Researcher / Intel</span>
+                            </div>
+                            <span class="agent-status online">● Online</span>
+                        </div>
+                        <div class="agent-stats">
+                            <div class="agent-stat">
+                                <div class="agent-stat-value">0</div>
+                                <div class="agent-stat-label">Searches</div>
+                            </div>
+                            <div class="agent-stat">
+                                <div class="agent-stat-value">0</div>
+                                <div class="agent-stat-label">Reports</div>
+                            </div>
+                            <div class="agent-stat">
+                                <div class="agent-stat-value">0</div>
+                                <div class="agent-stat-label">Sources</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Buzz -->
+                    <div class="agent-card online">
+                        <div class="agent-header">
+                            <div class="agent-avatar">📢</div>
+                            <div class="agent-info">
+                                <h3>Buzz</h3>
+                                <span>Social / Content</span>
+                            </div>
+                            <span class="agent-status online">● Online</span>
+                        </div>
+                        <div class="agent-stats">
+                            <div class="agent-stat">
+                                <div class="agent-stat-value">0</div>
+                                <div class="agent-stat-label">Posts Created</div>
+                            </div>
+                            <div class="agent-stat">
+                                <div class="agent-stat-value">0</div>
+                                <div class="agent-stat-label">Threads</div>
+                            </div>
+                            <div class="agent-stat">
+                                <div class="agent-stat-value">0</div>
+                                <div class="agent-stat-label">Engagement</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Recent Activity -->
+            <div class="section">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <span>📋</span>
+                        Recent Activity
+                    </h2>
+                    <div class="section-actions">
+                        <button class="btn">View All</button>
+                    </div>
+                </div>
+                
+                <div class="activity-list">
+                    <div class="activity-item">
+                        <div class="activity-icon">🎯</div>
+                        <div class="activity-content">
+                            <div class="activity-title">Mission Control system deployed</div>
+                            <div class="activity-meta">All agents spawned and online • Nexus</div>
+                        </div>
+                        <div class="activity-time">10 min ago</div>
+                    </div>
+                    
+                    <div class="activity-item">
+                        <div class="activity-icon">🤖</div>
+                        <div class="activity-content">
+                            <div class="activity-title">Buzz agent initialized</div>
+                            <div class="activity-meta">Social content agent ready • Buzz</div>
+                        </div>
+                        <div class="activity-time">12 min ago</div>
+                    </div>
+                    
+                    <div class="activity-item">
+                        <div class="activity-icon">🔍</div>
+                        <div class="activity-content">
+                            <div class="activity-title">Scout agent initialized</div>
+                            <div class="activity-meta">Research agent ready • Scout</div>
+                        </div>
+                        <div class="activity-time">12 min ago</div>
+                    </div>
+                    
+                    <div class="activity-item">
+                        <div class="activity-icon">⚒️</div>
+                        <div class="activity-content">
+                            <div class="activity-title">Forge agent initialized</div>
+                            <div class="activity-meta">Code agent ready • Forge</div>
+                        </div>
+                        <div class="activity-time">13 min ago</div>
+                    </div>
+                    
+                    <div class="activity-item">
+                        <div class="activity-icon">✅</div>
+                        <div class="activity-content">
+                            <div class="activity-title">Telegram bot paired</div>
+                            <div class="activity-meta">@Air1ck3ffbot connected • Nexus</div>
+                        </div>
+                        <div class="activity-time">1 hour ago</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Task Queue -->
+            <div class="section">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <span>⏳</span>
+                        Task Queue
+                    </h2>
+                    <div class="section-actions">
+                        <button class="btn">History</button>
+                    </div>
+                </div>
+                
+                <div class="task-list">
+                    <div style="text-align: center; padding: 3rem; color: var(--text-muted);">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">✨</div>
+                        <div>No pending tasks</div>
+                        <div style="font-size: 0.875rem; margin-top: 0.5rem;">All agents are standing by</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Live Logs -->
+            <div class="section">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <span>📝</span>
+                        Live Logs
+                    </h2>
+                    <div class="section-actions">
+                        <button class="btn">Pause</button>
+                        <button class="btn">Clear</button>
+                        <button class="btn">Export</button>
+                    </div>
+                </div>
+                
+                <div style="padding: 0 1.5rem 1.5rem;">
+                    <div class="terminal" id="terminal">
+                        <div class="terminal-line">
+                            <span class="terminal-timestamp">[06:45:00]</span>
+                            <span class="terminal-agent">[Nexus]</span>
+                            <span class="terminal-info">INFO</span>
+                            Mission Control dashboard initialized
+                        </div>
+                        <div class="terminal-line">
+                            <span class="terminal-timestamp">[06:44:00]</span>
+                            <span class="terminal-agent">[Buzz]</span>
+                            <span class="terminal-info">INFO</span>
+                            Agent initialized and ready
+                        </div>
+                        <div class="terminal-line">
+                            <span class="terminal-timestamp">[06:44:00]</span>
+                            <span class="terminal-agent">[Scout]</span>
+                            <span class="terminal-info">INFO</span>
+                            Agent initialized and ready
+                        </div>
+                        <div class="terminal-line">
+                            <span class="terminal-timestamp">[06:43:00]</span>
+                            <span class="terminal-agent">[Forge]</span>
+                            <span class="terminal-info">INFO</span>
+                            Agent initialized and ready
+                        </div>
+                        <div class="terminal-line">
+                            <span class="terminal-timestamp">[06:42:00]</span>
+                            <span class="terminal-agent">[Nexus]</span>
+                            <span class="terminal-info">INFO</span>
+            Spawning specialist agents...
+                        </div>
+                        <div class="terminal-line">
+                            <span class="terminal-timestamp">[06:30:00]</span>
+                            <span class="terminal-agent">[Nexus]</span>
+                            <span class="terminal-info">INFO</span>
+                            Telegram bot @Air1ck3ffbot connected
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script>
+        // Clock
+        function updateClock() {
+            const now = new Date();
+            const time = now.toLocaleTimeString('en-US', { 
+                hour12: false,
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+            document.getElementById('clock').textContent = time;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+        
+        // Uptime counter
+        let uptimeSeconds = 0;
+        function updateUptime() {
+            uptimeSeconds++;
+            const hours = Math.floor(uptimeSeconds / 3600);
+            const minutes = Math.floor((uptimeSeconds % 3600) / 60);
+            const seconds = uptimeSeconds % 60;
+            document.getElementById('uptime').textContent = 
+                `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+        }
+        setInterval(updateUptime, 60000); // Update every minute
+        updateUptime();
+        
+        // Simulate live log updates
+        const logMessages = [
+            { agent: 'Nexus', level: 'INFO', msg: 'Heartbeat check completed' },
+            { agent: 'Scout', level: 'INFO', msg: 'Monitoring for research triggers' },
+            { agent: 'Forge', level: 'INFO', msg: 'Awaiting code assignments' },
+            { agent: 'Buzz', level: 'INFO', msg: 'Content templates loaded' },
+        ];
+        
+        function addLogEntry() {
+            const terminal = document.getElementById('terminal');
+            const msg = logMessages[Math.floor(Math.random() * logMessages.length)];
+            const now = new Date();
+            const time = now.toLocaleTimeString('en-US', { 
+                hour12: false,
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+            
+            const line = document.createElement('div');
+            line.className = 'terminal-line';
+            line.innerHTML = `
+                <span class="terminal-timestamp">[${time}]</span>
+                <span class="terminal-agent">[${msg.agent}]</span>
+                <span class="terminal-info">${msg.level}</span>
+                ${msg.msg}
+            `;
+            
+            terminal.appendChild(line);
+            terminal.scrollTop = terminal.scrollHeight;
+            
+            // Keep only last 50 lines
+            while (terminal.children.length > 50) {
+                terminal.removeChild(terminal.firstChild);
+            }
+        }
+        
+        // Add new log entry every 10-30 seconds
+        function scheduleLogEntry() {
+            const delay = Math.random() * 20000 + 10000;
+            setTimeout(() => {
+                addLogEntry();
+                scheduleLogEntry();
+            }, delay);
+        }
+        scheduleLogEntry();
+    </script>
+</body>
+</html>

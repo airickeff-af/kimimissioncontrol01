@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Mission Control | Advanced UI Systems</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- UI Systems -->
+    <link rel="stylesheet" href="theme-system.css">
+    <link rel="stylesheet" href="animation-system.css">
+    <link rel="stylesheet" href="mobile-responsive.css">
+    <link rel="stylesheet" href="ui-components.css">
+    
+    <style>
+        /* Demo-specific styles */
+        .demo-section {
+            margin-bottom: var(--mc-space-12);
+        }
+        
+        .demo-section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: var(--mc-space-6);
+            color: var(--mc-text-primary);
+            display: flex;
+            align-items: center;
+            gap: var(--mc-space-3);
+        }
+        
+        .demo-section-title::before {
+            content: '';
+            width: 4px;
+            height: 24px;
+            background: linear-gradient(180deg, var(--mc-accent-cyan), var(--mc-accent-purple));
+            border-radius: var(--mc-radius-full);
+        }
+        
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--mc-space-5);
+        }
+        
+        .demo-card {
+            background: var(--mc-bg-card);
+            border: 1px solid var(--mc-border-default);
+            border-radius: var(--mc-radius-xl);
+            padding: var(--mc-space-6);
+        }
+        
+        .demo-card-title {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--mc-text-secondary);
+            margin-bottom: var(--mc-space-4);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        /* Animation demo boxes */
+        .anim-demo-box {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--mc-accent-cyan), var(--mc-accent-purple));
+            border-radius: var(--mc-radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        /* Theme preview boxes */
+        .theme-preview {
+            padding: var(--mc-space-4);
+            border-radius: var(--mc-radius-lg);
+            border: 1px solid var(--mc-border-default);
+        }
+        
+        .theme-preview-primary { background: var(--mc-bg-primary); }
+        .theme-preview-secondary { background: var(--mc-bg-secondary); }
+        .theme-preview-card { background: var(--mc-bg-card); }
+        .theme-preview-elevated { background: var(--mc-bg-elevated); }
+        
+        /* Mobile preview */
+        .mobile-preview {
+            max-width: 375px;
+            margin: 0 auto;
+            border: 8px solid var(--mc-bg-elevated);
+            border-radius: 40px;
+            overflow: hidden;
+            background: var(--mc-bg-primary);
+        }
+        
+        .mobile-preview-header {
+            height: 40px;
+            background: var(--mc-bg-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            color: var(--mc-text-muted);
+        }
+        
+        /* Code block */
+        .code-block {
+            background: var(--mc-bg-secondary);
+            border: 1px solid var(--mc-border-default);
+            border-radius: var(--mc-radius-lg);
+            padding: var(--mc-space-4);
+            font-family: var(--mc-font-mono);
+            font-size: 0.8125rem;
+            color: var(--mc-text-secondary);
+            overflow-x: auto;
+        }
+        
+        .code-block .comment { color: var(--mc-text-muted); }
+        .code-block .keyword { color: var(--mc-accent-purple); }
+        .code-block .string { color: var(--mc-accent-green); }
+        .code-block .tag { color: var(--mc-accent-cyan); }
+        
+        /* Status indicators */
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--mc-space-4);
+        }
+        
+        .status-item {
+            text-align: center;
+            padding: var(--mc-space-4);
+            background: var(--mc-bg-secondary);
+            border-radius: var(--mc-radius-lg);
+        }
+        
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin: 0 auto var(--mc-space-2);
+        }
+        
+        .status-online { background: var(--mc-status-online); box-shadow: 0 0 8px var(--mc-accent-green-glow); }
+        .status-busy { background: var(--mc-status-busy); }
+        .status-offline { background: var(--mc-status-offline); }
+    </style>
+</head>
+<body class="mc-body">
+    <!-- Mobile Menu Button -->
+    <button class="mc-mobile-menu-btn" data-mobile-menu aria-label="Open menu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+    </button>
+    
+    <!-- Sidebar Overlay -->
+    <div class="mc-sidebar-overlay"></div>
+    
+    <!-- Sidebar -->
+    <aside class="mc-sidebar" id="mc-sidebar">
+        <div class="mc-sidebar-header">
+            <div class="mc-sidebar-logo">MC</div>
+            <div class="mc-sidebar-brand">
+                <h1>Mission Control</h1>
+                <span>v2.0.0</span>
+            </div>
+        </div>
+        
+        <button class="mc-sidebar-toggle" id="mc-sidebar-toggle" aria-label="Toggle sidebar">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+        </button>
+        
+        <nav class="mc-sidebar-nav">
+            <div class="mc-nav-section">
+                <div class="mc-nav-section-title">Systems</div>
+                <a href="#theme" class="mc-nav-item active">
+                    <span class="mc-nav-icon">🎨</span>
+                    <span class="mc-nav-text">Theme System</span>
+                </a>
+                <a href="#animation" class="mc-nav-item">
+                    <span class="mc-nav-icon">✨</span>
+                    <span class="mc-nav-text">Animations</span>
+                </a>
+                <a href="#mobile" class="mc-nav-item">
+                    <span class="mc-nav-icon">📱</span>
+                    <span class="mc-nav-text">Mobile</span>
+                </a>
+            </div>
+            
+            <div class="mc-nav-section">
+                <div class="mc-nav-section-title">Components</div>
+                <a href="#buttons" class="mc-nav-item">
+                    <span class="mc-nav-icon">🔘</span>
+                    <span class="mc-nav-text">Buttons</span>
+                </a>
+                <a href="#cards" class="mc-nav-item">
+                    <span class="mc-nav-icon">🃏</span>
+                    <span class="mc-nav-text">Cards</span>
+                </a>
+            </div>
+        </nav>
+        
+        <div class="mc-quick-actions">
+            <button class="mc-quick-action-btn primary" data-theme-toggle>
+                <span data-theme-icon>☀️</span>
+                <span>Toggle Theme</span>
+            </button>
+        </div>
+    </aside>
+    
+    <!-- Main Content -->
+    <main class="mc-main-content">
+        <!-- Top Header -->
+        <header class="mc-top-header">
+            <h1 class="mc-header-title">Advanced UI Systems</h1>
+            <div class="mc-header-actions">
+                <button class="mc-btn mc-btn-secondary mc-btn-icon mc-tooltip" data-tooltip="Notifications">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                        <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                    </svg>
+                </button>
+                <div class="mc-dropdown">
+                    <button class="mc-btn mc-btn-secondary" data-dropdown-trigger>
+                        <span>⚙️</span>
+                        <span>Settings</span>
+                    </button>
+                    <div class="mc-dropdown-menu">
+                        <div class="mc-dropdown-item">Profile</div>
+                        <div class="mc-dropdown-item">Preferences</div>
+                        <div class="mc-dropdown-divider"></div>
+                        <div class="mc-dropdown-item">Logout</div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Dashboard -->
+        <div class="mc-dashboard">
+            
+            <!-- Theme System Section -->
+            <section class="demo-section mc-scroll-reveal" id="theme">
+                <h2 class="demo-section-title">Theme System</h2>
+                
+                <div class="demo-grid">
+                    <!-- Theme Toggle Demo -->
+                    <div class="demo-card">
+                        <div class="demo-card-title">Theme Toggle</div>
+                        <div style="display: flex; flex-direction: column; gap: var(--mc-space-4);">
+                            <label class="mc-theme-toggle">
+                                <input type="checkbox" class="mc-theme-toggle-input" id="theme-toggle-checkbox">
+                                <div class="mc-theme-toggle-track">
+                                    <div class="mc-theme-toggle-thumb"></div>
+                                </div>
+                                <span class="mc-theme-toggle-label">Dark Mode</span>
+                            </label>
+                            
+                            <button class="mc-theme-toggle-icon" data-theme-toggle aria-label="Toggle theme">
+                                <span data-theme-icon>☀️</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Color Preview -->
+                    <div class="demo-card">
+                        <div class="demo-card-title">Theme Colors</div>
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--mc-space-3);">
+                            <div class="theme-preview theme-preview-primary">
+                                <div style="font-size: 0.75rem; color: var(--mc-text-muted);">Primary</div>
+                            </div>
+                            <div class="theme-preview theme-preview-secondary">
+                                <div style="font-size: 0.75rem; color: var(--mc-text-muted);">Secondary</div>
+                            </div>
+                            <div class="theme-preview theme-preview-card">
+                                <div style="font-size: 0.75rem; color: var(--mc-text-muted);">Card</div>
+                            </div>
+                            <div class="theme-preview theme-preview-elevated">
+                                <div style="font-size: 0.75rem; color: var(--mc-text-muted);">Elevated</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Glassmorphism -->
+                    <div class="demo-card">
+                        <div class="demo-card-title">Glass Effect</div>
+                        <div class="mc-glass" style="padding: var(--mc-space-4); border-radius: var(--mc-radius-lg);">
+                            <p style="color: var(--mc-text-secondary); font-size: 0.875rem;">
+                                This card uses the glassmorphism effect that adapts to the current theme.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Animation System Section -->
+            <section class="demo-section mc-scroll-reveal" id="animation">
+                <h2 class="demo-section-title">Animation System</h2>
+                
+                <div class="demo-grid">
+                    <!-- Micro-interactions -->
+                    <div class="demo-card">
+                        <div class="demo-card-title">Micro-interactions</div>
+                        <div style="display: flex; gap: var(--mc-space-4); flex-wrap: wrap;">
+                            <div class="anim-demo-box mc-hover-lift" title="Hover Lift">🚀</div>
+                            <div class="anim-demo-box mc-hover-scale" title="Hover Scale">⚡</div>
+                            <div class="anim-demo-box mc-hover-glow" title="Hover Glow">💫</div>
+                            <div class="anim-demo-box mc-ripple" title="Click Ripple">👆</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Loading States -->
+                    <div class="demo-card">
+                        <div class="demo-card-title">Loading States</div>
+                        <div style="display: flex; gap: var(--mc-space-6); align-items: center; flex-wrap: wrap;">
+                            <div>
+                                <div class="mc-spinner mc-spinner-sm"></div>
+                                <div style="font-size: 0.75rem; color: var(--mc-text-muted); margin-top: var(--mc-space-2);">Small</div>
+                            </div>
+                            <div>
+                                <div class="mc-spinner"></div>
+                                <div style="font-size: 0.75rem; color: var(--mc-text-muted); margin-top: var(--mc-space-2);">Default</div>
+                            </div>
+                            <div>
+                                <div class="mc-spinner mc-spinner-lg"></div>
+                                <div style="font-size: 0.75rem; color: var(--mc-text-muted); margin-top: var(--mc-space-2);">Large</div>
+                            </div>
+                            <div>
+                                <div class="mc-dots">
+                                    <span></span><span></span><span></span>
+                                </div>
+                                <div style="font-size: 0.75rem; color: var(--mc-text-muted); margin-top: var(--mc-space-2);">Dots</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Special Effects -->
+                    <div class="demo-card">
+                        <div class="demo-card-title">Special Effects</div>
+                        <div style="display: flex; gap: var(--mc-space-4); flex-wrap: wrap;">
+                            <div class="anim-demo-box mc-pulse" title="Pulse">💓</div>
+                            <div class="anim-demo-box mc-float" title="Float">🎈</div>
+                            <div class="anim-demo-box mc-glow-pulse" title="Glow Pulse">🌟</div>
+                            <div class="anim-demo-box mc-wiggle" title="Hover Wiggle">🎉</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Page Transitions -->
+                    <div class="demo-card">
+                        <div class="demo-card-title">Page Transitions</div>
+                        <div style="display: flex; gap: var(--mc-space-3); flex-wrap: wrap;">
+                            <button class="mc-btn mc-btn-secondary" onclick="triggerAnim('mc-fade-in')">Fade In</button>
+                            <button class="mc-btn mc-btn-secondary" onclick="triggerAnim('mc-fade-in-up')">Fade Up</button>
+                            <button class="mc-btn mc-btn-secondary" onclick="triggerAnim('mc-slide-in-left')">Slide Left</button>
+                            <button class="mc-btn mc-btn-secondary" onclick="triggerAnim('mc-bounce-in')">Bounce In</button>
+                        </div>
+                        <div id="anim-target" class="anim-demo-box mc-mt-4" style="margin-top: var(--mc-space-4);">
+                            🎯
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Mobile Responsive Section -->
+            <section class="demo-section mc-scroll-reveal" id="mobile">
+                <h2 class="demo-section-title">Mobile Responsive</h2>
+                
+                <div class="demo-grid">
+                    <!-- Breakpoint Info -->
+                    <div class="demo-card">
+                        <div class="demo-card-title">Breakpoints</div>
+                        <div class="code-block">
+<span class="comment">/* Mobile First */</span>
+<span class="tag">sm</span>: 640px   <span class="comment">/* Small tablets */</span>
+<span class="tag">md</span>: 768px   <span class="comment">/* Tablets */</span>
+<span class="tag">lg</span>: 1024px  <span class="comment">/* Laptops */</span>
+<span class="tag">xl</span>: 1280px  <span class="comment">/* Desktops */</span>
+<span class="tag">2xl</span>: 1536px <span class="comment">/* Large screens */</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Touch Optimizations -->
+                    <div class="demo-card">
+                        <div class="demo-card-title">Touch Optimizations</div>
+                        <div style="display: flex; flex-direction: column; gap: var(--mc-space-3);">
+                            <button class="mc-btn mc-btn-primary mc-touch-target">
+                                44px Touch Target
+                            </button>
+                            <div style="font-size: 0.875rem; color: var(--mc-text-secondary);">
+                                ✓ Safe area insets<br>
+                                ✓ Bottom navigation<br>
+                                ✓ Swipe gestures<br>
+                                ✓ Edge swipe to open
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Current Viewport -->
+                    <div class="demo-card">
+                        <div class="demo-card-title">Current Viewport</div>
+                        <div id="viewport-info" style="font-family: var(--mc-font-mono); font-size: 0.875rem;">
+                            <div>Width: <span id="vp-width">-</span>px</div>
+                            <div>Height: <span id="vp-height">-</span>px</div>
+                            <div>Device: <span id="vp-device">-</span></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Component Showcase -->
+            <section class="demo-section mc-scroll-reveal" id="buttons">
+                <h2 class="demo-section-title">Component Showcase</h2>
+                
+                <div class="demo-grid">
+                    <!-- Buttons -->
+                    <div class="demo-card">
+                        <div class="demo-card-title">Buttons</div>
+                        <div style="display: flex; flex-direction: column; gap: var(--mc-space-3);">
+                            <button class="mc-btn mc-btn-primary mc-ripple">Primary Button</button>
+                            <button class="mc-btn mc-btn-secondary">Secondary Button</button>
+                            <button class="mc-btn mc-btn-ghost">Ghost Button</button>
+                            <button class="mc-btn mc-btn-primary" disabled>Disabled Button</button>
+                            <button class="mc-btn mc-btn-primary mc-btn-loading">Loading...</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Cards -->
+                    <div class="demo-card" id="cards">
+                        <div class="demo-card-title">Interactive Cards</div>
+                        <div class="mc-stat-card mc-hover-lift" style="margin-bottom: var(--mc-space-4);">
+                            <div class="mc-stat-icon cyan">📊</div>
+                            <div class="mc-stat-value" data-animate-number="2847" data-suffix="+">0</div>
+                            <div class="mc-stat-label">Total Tasks</div>
+                            <div class="mc-stat-change positive">
+                                <span>↑</span> 12.5%
+                            </div>
+                        </div>
+                        
+                        <div class="mc-card mc-card-stack">
+                            <div class="mc-card-header">
+                                <div>
+                                    <div class="mc-card-title">Stack Card</div>
+                                    <div class="mc-card-subtitle">With depth effect</div>
+                                </div>
+                            </div>
+                            <p style="color: var(--mc-text-secondary); font-size: 0.875rem;">
+                                Hover over this card to see the stack effect with multiple layers.
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <!-- Progress & Status -->
+                    <div class="demo-card">
+                        <div class="demo-card-title">Progress & Status</div>
+                        <div style="display: flex; flex-direction: column; gap: var(--mc-space-4);">
+                            <div>
+                                <div style="display: flex; justify-content: space-between; margin-bottom: var(--mc-space-2);">
+                                    <span style="font-size: 0.875rem;">System Load</span>
+                                    <span style="font-size: 0.875rem; color: var(--mc-accent-cyan);">73%</span>
+                                </div>
+                                <div class="mc-progress">
+                                    <div class="mc-progress-bar" style="width: 73%;"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="status-grid">
+                                <div class="status-item">
+                                    <div class="status-indicator status-online mc-agent-online"></div>
+                                    <div style="font-size: 0.75rem; color: var(--mc-text-muted);">Online</div>
+                                </div>
+                                <div class="status-item">
+                                    <div class="status-indicator status-busy"></div>
+                                    <div style="font-size: 0.75rem; color: var(--mc-text-muted);">Busy</div>
+                                </div>
+                                <div class="status-item">
+                                    <div class="status-indicator status-offline"></div>
+                                    <div style="font-size: 0.75rem; color: var(--mc-text-muted);">Offline</div>
+                                </div>
+                            </div>
+                            
+                            <div style="display: flex; gap: var(--mc-space-2); flex-wrap: wrap;">
+                                <span class="mc-badge mc-badge-cyan">Active</span>
+                                <span class="mc-badge mc-badge-purple">Beta</span>
+                                <span class="mc-badge mc-badge-green">Success</span>
+                                <span class="mc-badge mc-badge-orange">Warning</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Toggle & Input -->
+                    <div class="demo-card">
+                        <div class="demo-card-title">Controls</div>
+                        <div style="display: flex; flex-direction: column; gap: var(--mc-space-4);">
+                            <label class="mc-toggle">
+                                <input type="checkbox" checked>
+                                <div class="mc-toggle-switch"></div>
+                                <span style="font-size: 0.875rem; color: var(--mc-text-secondary);">Enable Notifications</span>
+                            </label>
+                            
+                            <label class="mc-toggle">
+                                <input type="checkbox">
+                                <div class="mc-toggle-switch"></div>
+                                <span style="font-size: 0.875rem; color: var(--mc-text-secondary);">Auto-refresh</span>
+                            </label>
+                            
+                            <div class="mc-dropdown" style="width: 100%;">
+                                <button class="mc-btn mc-btn-secondary" style="width: 100%;" data-dropdown-trigger>
+                                    <span>Select Option</span>
+                                    <span>▼</span>
+                                </button>
+                                <div class="mc-dropdown-menu" style="width: 100%;">
+                                    <div class="mc-dropdown-item">Option 1</div>
+                                    <div class="mc-dropdown-item">Option 2</div>
+                                    <div class="mc-dropdown-item">Option 3</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Footer -->
+            <footer style="text-align: center; padding: var(--mc-space-8) 0; color: var(--mc-text-muted); font-size: 0.875rem;">
+                <p>Mission Control UI Systems v2.0.0</p>
+                <p style="margin-top: var(--mc-space-2);">Built by Forge • Reference: Kairosoft Games + Linear.app</p>
+            </footer>
+        </div>
+    </main>
+    
+    <!-- Mobile Bottom Navigation -->
+    <nav class="mc-mobile-nav">
+        <div class="mc-mobile-nav-items">
+            <a href="#theme" class="mc-mobile-nav-item active">
+                <span>🎨</span>
+                <span>Theme</span>
+            </a>
+            <a href="#animation" class="mc-mobile-nav-item">
+                <span>✨</span>
+                <span>Animate</span>
+            </a>
+            <a href="#mobile" class="mc-mobile-nav-item">
+                <span>📱</span>
+                <span>Mobile</span>
+            </a>
+            <a href="#buttons" class="mc-mobile-nav-item">
+                <span>🔘</span>
+                <span>UI</span>
+            </a>
+        </div>
+    </nav>
+    
+    <!-- Scripts -->
+    <script src="mc-ui-system.js"></script>
+    <script src="ui-components.js"></script>
+    <script>
+        // Animation trigger helper
+        function triggerAnim(animationClass) {
+            const target = document.getElementById('anim-target');
+            target.className = 'anim-demo-box mc-mt-4';
+            void target.offsetWidth; // Force reflow
+            target.classList.add(animationClass);
+        }
+        
+        // Viewport info updater
+        function updateViewportInfo() {
+            document.getElementById('vp-width').textContent = window.innerWidth;
+            document.getElementById('vp-height').textContent = window.innerHeight;
+            
+            let device = 'Mobile';
+            if (window.innerWidth >= 1536) device = '2XL Desktop';
+            else if (window.innerWidth >= 1280) device = 'XL Desktop';
+            else if (window.innerWidth >= 1024) device = 'Desktop';
+            else if (window.innerWidth >= 768) device = 'Tablet';
+            else if (window.innerWidth >= 640) device = 'Large Mobile';
+            
+            document.getElementById('vp-device').textContent = device;
+        }
+        
+        window.addEventListener('resize', updateViewportInfo);
+        updateViewportInfo();
+        
+        // Theme toggle checkbox sync
+        const checkbox = document.getElementById('theme-toggle-checkbox');
+        if (checkbox) {
+            checkbox.checked = MC.getTheme() === 'dark';
+            checkbox.addEventListener('change', () => {
+                MC.toggleTheme();
+            });
+            
+            // Sync when theme changes from other controls
+            MC.theme.onChange((theme) => {
+                checkbox.checked = theme === 'dark';
+            });
+        }
+        
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    
+                    // Update active states
+                    document.querySelectorAll('.mc-nav-item, .mc-mobile-nav-item').forEach(item => {
+                        item.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                    
+                    // Close mobile sidebar if open
+                    if (MC.mobile) {
+                        MC.closeSidebar();
+                    }
+                }
+            });
+        });
+        
+        // Update active nav on scroll
+        const sections = document.querySelectorAll('.demo-section');
+        const navItems = document.querySelectorAll('.mc-nav-item, .mc-mobile-nav-item');
+        
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (scrollY >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            navItems.forEach(item => {
+                item.classList.remove('active');
+                if (item.getAttribute('href') === `#${current}`) {
+                    item.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1489 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" data-scheme="cyberpunk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#0a0a0f">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Mission Control | Advanced Dashboard v3.0</title>
+    
+    <!-- Design System -->
+    <link rel="stylesheet" href="css/theme-system.css">
+    <link rel="stylesheet" href="css/animation-system.css">
+    <link rel="stylesheet" href="css/mobile-responsive.css">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ═══════════════════════════════════════════════════════════════
+           BASE STYLES
+           ═══════════════════════════════════════════════════════════════ */
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            /* Typography */
+            --mc-font-primary: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --mc-font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+            --mc-font-display: 'Space Grotesk', 'Inter', sans-serif;
+        }
+        
+        body {
+            font-family: var(--mc-font-primary);
+            background: var(--mc-bg-primary);
+            color: var(--mc-text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        /* Animated Background Grid */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(var(--mc-grid-color) 1px, transparent 1px),
+                linear-gradient(90deg, var(--mc-grid-color) 1px, transparent 1px);
+            background-size: var(--mc-grid-size) var(--mc-grid-size);
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        /* ═══════════════════════════════════════════════════════════════
+           HEADER
+           ═══════════════════════════════════════════════════════════════ */
+        
+        .header {
+            background: rgba(17, 17, 24, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--mc-border-default);
+            padding: 0 2rem;
+            height: 70px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .logo {
+            width: 42px;
+            height: 42px;
+            background: linear-gradient(135deg, var(--mc-accent-primary), var(--mc-accent-secondary));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 800;
+            box-shadow: 0 0 30px var(--mc-accent-primary-glow);
+            animation: glow-pulse 3s ease-in-out infinite;
+        }
+        
+        .brand-text h1 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+        
+        .brand-text span {
+            font-size: 0.75rem;
+            color: var(--mc-text-muted);
+            font-family: var(--mc-font-mono);
+        }
+        
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .status-pill {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            border-radius: 100px;
+            font-size: 0.875rem;
+            color: var(--mc-status-online);
+        }
+        
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--mc-status-online);
+            animation: pulse 2s infinite;
+        }
+        
+        .time-display {
+            font-family: var(--mc-font-mono);
+            font-size: 0.875rem;
+            color: var(--mc-text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .user-avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--mc-accent-orange), var(--mc-accent-pink));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .user-avatar:hover {
+            transform: scale(1.1);
+        }
+        
+        /* ═══════════════════════════════════════════════════════════════
+           LAYOUT
+           ═══════════════════════════════════════════════════════════════ */
+        
+        .container {
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            min-height: calc(100vh - 70px);
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            background: var(--mc-bg-secondary);
+            border-right: 1px solid var(--mc-border-default);
+            padding: 1.5rem 1rem;
+            overflow-y: auto;
+            position: sticky;
+            top: 70px;
+            height: calc(100vh - 70px);
+        }
+        
+        .nav-section {
+            margin-bottom: 2rem;
+        }
+        
+        .nav-title {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            color: var(--mc-text-muted);
+            margin-bottom: 0.75rem;
+            letter-spacing: 0.1em;
+            font-weight: 600;
+            padding-left: 0.75rem;
+        }
+        
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.875rem;
+            padding: 0.75rem 1rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 0.25rem;
+            font-size: 0.9rem;
+            color: var(--mc-text-secondary);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .nav-item:hover {
+            background: var(--mc-bg-hover);
+            color: var(--mc-text-primary);
+        }
+        
+        .nav-item.active {
+            background: linear-gradient(90deg, rgba(0, 212, 255, 0.1), transparent);
+            color: var(--mc-accent-primary);
+        }
+        
+        .nav-item.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: var(--mc-accent-primary);
+        }
+        
+        .nav-icon {
+            width: 20px;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+        
+        .nav-badge {
+            margin-left: auto;
+            background: var(--mc-accent-pink);
+            color: white;
+            font-size: 0.7rem;
+            padding: 0.15rem 0.5rem;
+            border-radius: 100px;
+            font-weight: 600;
+        }
+        
+        /* Main Content */
+        .main {
+            padding: 2rem;
+            overflow-y: auto;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* ═══════════════════════════════════════════════════════════════
+           WELCOME BANNER
+           ═══════════════════════════════════════════════════════════════ */
+        
+        .welcome-banner {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(168, 85, 247, 0.1));
+            border: 1px solid var(--mc-border-default);
+            border-radius: 16px;
+            padding: 1.5rem 2rem;
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 0.5s ease-out;
+        }
+        
+        .welcome-banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--mc-accent-primary), transparent);
+        }
+        
+        .welcome-text h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+        
+        .welcome-text p {
+            color: var(--mc-text-secondary);
+            font-size: 0.95rem;
+        }
+        
+        .welcome-actions {
+            display: flex;
+            gap: 0.75rem;
+        }
+        
+        .btn {
+            padding: 0.625rem 1.25rem;
+            border-radius: 10px;
+            border: 1px solid var(--mc-border-default);
+            background: var(--mc-bg-tertiary);
+            color: var(--mc-text-primary);
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: inherit;
+        }
+        
+        .btn:hover {
+            background: var(--mc-bg-hover);
+            border-color: var(--mc-border-hover);
+            transform: translateY(-1px);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--mc-accent-primary), var(--mc-accent-secondary));
+            border-color: transparent;
+            color: white;
+            box-shadow: 0 4px 20px var(--mc-accent-primary-glow);
+        }
+        
+        .btn-primary:hover {
+            box-shadow: 0 6px 30px var(--mc-accent-primary-glow);
+            transform: translateY(-2px);
+        }
+        
+        .btn:active {
+            transform: scale(0.98);
+        }
+        
+        /* ═══════════════════════════════════════════════════════════════
+           STATS GRID
+           ═══════════════════════════════════════════════════════════════ */
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: var(--mc-bg-card);
+            border: 1px solid var(--mc-border-default);
+            border-radius: 14px;
+            padding: 1.25rem;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 0.5s ease-out backwards;
+        }
+        
+        .stat-card:nth-child(1) { animation-delay: 0.1s; }
+        .stat-card:nth-child(2) { animation-delay: 0.2s; }
+        .stat-card:nth-child(3) { animation-delay: 0.3s; }
+        .stat-card:nth-child(4) { animation-delay: 0.4s; }
+        
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--mc-accent-primary), var(--mc-accent-secondary));
+            opacity: 0.5;
+            transition: opacity 0.3s;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--mc-border-hover);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        .stat-card:hover::before {
+            opacity: 1;
+        }
+        
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+        
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--mc-text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 500;
+        }
+        
+        .stat-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+            font-family: var(--mc-font-mono);
+        }
+        
+        .stat-change {
+            font-size: 0.8rem;
+            color: var(--mc-accent-green);
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        
+        /* ═══════════════════════════════════════════════════════════════
+           CARDS
+           ═══════════════════════════════════════════════════════════════ */
+        
+        .section-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .card {
+            background: var(--mc-bg-card);
+            border: 1px solid var(--mc-border-default);
+            border-radius: 16px;
+            overflow: hidden;
+            animation: fadeInUp 0.5s ease-out backwards;
+            animation-delay: 0.5s;
+        }
+        
+        .card-header {
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid var(--mc-border-default);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .card-title {
+            font-size: 1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .card-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .btn-icon {
+            width: 34px;
+            height: 34px;
+            border-radius: 8px;
+            border: 1px solid var(--mc-border-default);
+            background: transparent;
+            color: var(--mc-text-secondary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+        
+        .btn-icon:hover {
+            background: var(--mc-bg-hover);
+            color: var(--mc-text-primary);
+        }
+        
+        /* ═══════════════════════════════════════════════════════════════
+           AGENT CARDS
+           ═══════════════════════════════════════════════════════════════ */
+        
+        .agent-list {
+            padding: 1rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1rem;
+        }
+        
+        .agent-card {
+            background: var(--mc-bg-card);
+            border: 1px solid var(--mc-border-default);
+            border-radius: 16px;
+            padding: 1.25rem;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        
+        .agent-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--agent-color, var(--mc-accent-primary)), transparent);
+            opacity: 0.7;
+        }
+        
+        .agent-card:hover {
+            border-color: var(--mc-border-hover);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+        
+        .agent-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .agent-avatar-wrapper {
+            position: relative;
+            flex-shrink: 0;
+        }
+        
+        .agent-avatar {
+            width: 56px;
+            height: 56px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            background: linear-gradient(135deg, var(--agent-color, var(--mc-accent-primary)), var(--agent-color-secondary, var(--mc-accent-secondary)));
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .agent-status-dot {
+            position: absolute;
+            bottom: -2px;
+            right: -2px;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: var(--mc-status-online);
+            border: 3px solid var(--mc-bg-card);
+            box-shadow: 0 0 10px var(--mc-status-online);
+        }
+        
+        .agent-status-dot.pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        .agent-info {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .agent-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+        
+        .agent-role {
+            font-size: 0.875rem;
+            color: var(--agent-color, var(--mc-accent-primary));
+            font-weight: 500;
+        }
+        
+        .agent-knowledge {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--mc-border-default);
+        }
+        
+        .knowledge-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        
+        .knowledge-label {
+            font-size: 0.75rem;
+            color: var(--mc-text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+        
+        .knowledge-value {
+            font-family: var(--mc-font-mono);
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--agent-color, var(--mc-accent-primary));
+        }
+        
+        .knowledge-bar {
+            height: 6px;
+            background: var(--mc-bg-tertiary);
+            border-radius: 9999px;
+            overflow: hidden;
+        }
+        
+        .knowledge-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--agent-color, var(--mc-accent-primary)), var(--agent-color-secondary, var(--mc-accent-secondary)));
+            border-radius: 9999px;
+            transition: width 1s ease-out;
+            position: relative;
+        }
+        
+        .knowledge-bar-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+        
+        .agent-skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+        }
+        
+        .skill-tag {
+            padding: 0.25rem 0.5rem;
+            background: var(--mc-bg-tertiary);
+            border: 1px solid var(--mc-border-default);
+            border-radius: 6px;
+            font-size: 0.75rem;
+            color: var(--mc-text-secondary);
+        }
+        
+        .agent-stats-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.75rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--mc-border-default);
+        }
+        
+        .agent-stat-item {
+            text-align: center;
+        }
+        
+        .agent-stat-value {
+            font-family: var(--mc-font-mono);
+            font-size: 1.1rem;
+            font-weight: 600;
+            display: block;
+        }
+        
+        .agent-stat-label {
+            font-size: 0.7rem;
+            color: var(--mc-text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        /* Agent Color Variants */
+        .agent-card[data-agent="nexus"] { --agent-color: #ff2a6d; --agent-color-secondary: #d300f9; }
+        .agent-card[data-agent="forge"] { --agent-color: #f97316; --agent-color-secondary: #fbbf24; }
+        .agent-card[data-agent="scout"] { --agent-color: #06b6d4; --agent-color-secondary: #3b82f6; }
+        .agent-card[data-agent="buzz"] { --agent-color: #22c55e; --agent-color-secondary: #10b981; }
+        .agent-card[data-agent="glasses"] { --agent-color: #4dabf7; --agent-color-secondary: #339af0; }
+        .agent-card[data-agent="quill"] { --agent-color: #ffa94d; --agent-color-secondary: #ff922b; }
+        .agent-card[data-agent="pixel"] { --agent-color: #da77f2; --agent-color-secondary: #be4bdb; }
+        .agent-card[data-agent="gary"] { --agent-color: #69db7c; --agent-color-secondary: #51cf66; }
+        .agent-card[data-agent="larry"] { --agent-color: #ffd43b; --agent-color-secondary: #fcc419; }
+        .agent-card[data-agent="sentry"] { --agent-color: #74c0fc; --agent-color-secondary: #4dabf7; }
+        .agent-card[data-agent="audit"] { --agent-color: #ffc078; --agent-color-secondary: #ffa94d; }
+        .agent-card[data-agent="cipher"] { --agent-color: #adb5bd; --agent-color-secondary: #868e96; }
+        
+        /* ═══════════════════════════════════════════════════════════════
+           TERMINAL
+           ═══════════════════════════════════════════════════════════════ */
+        
+        .terminal-container {
+            background: #050508;
+            border-radius: 12px;
+            margin: 1rem;
+            overflow: hidden;
+            border: 1px solid var(--mc-border-default);
+        }
+        
+        .terminal-header {
+            background: var(--mc-bg-tertiary);
+            padding: 0.75rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            border-bottom: 1px solid var(--mc-border-default);
+        }
+        
+        .terminal-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        
+        .terminal-dot.red { background: var(--mc-accent-red); }
+        .terminal-dot.yellow { background: var(--mc-accent-yellow); }
+        .terminal-dot.green { background: var(--mc-accent-green); }
+        
+        .terminal-title {
+            margin-left: 0.5rem;
+            font-size: 0.8rem;
+            color: var(--mc-text-muted);
+            font-family: var(--mc-font-mono);
+        }
+        
+        .terminal {
+            padding: 1rem;
+            font-family: var(--mc-font-mono);
+            font-size: 0.8125rem;
+            line-height: 1.7;
+            max-height: 250px;
+            overflow-y: auto;
+        }
+        
+        .terminal-line {
+            margin-bottom: 0.375rem;
+            display: flex;
+            gap: 0.75rem;
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateX(-10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .terminal-time {
+            color: var(--mc-text-muted);
+            flex-shrink: 0;
+        }
+        
+        .terminal-agent {
+            color: var(--mc-accent-primary);
+            flex-shrink: 0;
+        }
+        
+        .terminal-level {
+            padding: 0 0.5rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+        
+        .terminal-level.info {
+            background: rgba(0, 212, 255, 0.15);
+            color: var(--mc-accent-cyan);
+        }
+        
+        .terminal-level.success {
+            background: rgba(34, 197, 94, 0.15);
+            color: var(--mc-accent-green);
+        }
+        
+        .terminal-level.warn {
+            background: rgba(234, 179, 8, 0.15);
+            color: var(--mc-accent-yellow);
+        }
+        
+        .terminal-level.error {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--mc-accent-red);
+        }
+        
+        .terminal-msg {
+            color: var(--mc-text-secondary);
+        }
+        
+        /* ═══════════════════════════════════════════════════════════════
+           ACTIVITY FEED
+           ═══════════════════════════════════════════════════════════════ */
+        
+        .activity-list {
+            padding: 1rem;
+        }
+        
+        .activity-item {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem;
+            border-radius: 12px;
+            transition: all 0.2s;
+            margin-bottom: 0.5rem;
+            animation: fadeInUp 0.3s ease-out backwards;
+        }
+        
+        .activity-item:hover {
+            background: var(--mc-bg-tertiary);
+        }
+        
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            background: var(--mc-bg-tertiary);
+            flex-shrink: 0;
+        }
+        
+        .activity-content {
+            flex: 1;
+        }
+        
+        .activity-title {
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+        
+        .activity-meta {
+            font-size: 0.8rem;
+            color: var(--mc-text-muted);
+        }
+        
+        .activity-time {
+            font-size: 0.75rem;
+            color: var(--mc-text-muted);
+            font-family: var(--mc-font-mono);
+        }
+        
+        /* ═══════════════════════════════════════════════════════════════
+           QUICK ACTIONS
+           ═══════════════════════════════════════════════════════════════ */
+        
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+            padding: 1rem;
+        }
+        
+        .quick-action {
+            padding: 1.25rem;
+            background: var(--mc-bg-tertiary);
+            border: 1px solid var(--mc-border-default);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+        
+        .quick-action:hover {
+            background: var(--mc-bg-hover);
+            border-color: var(--mc-border-hover);
+            transform: translateY(-2px);
+        }
+        
+        .quick-action-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .quick-action-label {
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        /* ═══════════════════════════════════════════════════════════════
+           EMPTY STATE
+           ═══════════════════════════════════════════════════════════════ */
+        
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: var(--mc-text-muted);
+        }
+        
+        .empty-state-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+        
+        /* ═══════════════════════════════════════════════════════════════
+           RESPONSIVE STYLES
+           ═══════════════════════════════════════════════════════════════ */
+        
+        @media (max-width: 1200px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .section-grid {
+                grid-template-columns: 1fr;
+            }
+            .agent-list {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header {
+                padding: 0 1rem;
+            }
+            
+            .container {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                display: none;
+            }
+            
+            .main {
+                padding: 1rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.75rem;
+            }
+            
+            .stat-card {
+                padding: 1rem;
+            }
+            
+            .stat-value {
+                font-size: 1.5rem;
+            }
+            
+            .welcome-banner {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+                padding: 1.25rem;
+            }
+            
+            .welcome-text h2 {
+                font-size: 1.25rem;
+            }
+            
+            .agent-list {
+                grid-template-columns: 1fr;
+                padding: 0.75rem;
+            }
+            
+            .terminal-container {
+                margin: 0.75rem;
+            }
+            
+            .terminal {
+                font-size: 0.75rem;
+                padding: 0.75rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .quick-actions {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Mobile Header -->
+    <header class="mobile-header show-mobile-only">
+        <button class="mobile-menu-btn" onclick="MC_Mobile.openSidebar()" aria-label="Open menu">
+            ☰
+        </button>
+        <div class="mobile-brand">
+            <span style="font-weight: 700; font-size: 1.1rem;">Mission Control</span>
+        </div>
+        <button class="mobile-menu-btn" onclick="MC_Mobile.showQuickActions()" aria-label="Quick actions">
+            ⚡
+        </button>
+    </header>
+    
+    <!-- Mobile Sidebar Overlay -->
+    <div class="mobile-sidebar-overlay" onclick="MC_Mobile.closeSidebar()"></div>
+    
+    <!-- Mobile Sidebar -->
+    <aside class="mobile-sidebar">
+        <div class="mobile-sidebar-header">
+            <div class="brand">
+                <div class="logo">◈</div>
+                <div class="brand-text">
+                    <h1>Mission Control</h1>
+                </div>
+            </div>
+            <button class="mobile-sidebar-close" onclick="MC_Mobile.closeSidebar()">×</button>
+        </div>
+        <nav style="padding: 1rem;">
+            <div class="nav-section">
+                <div class="nav-title">Command Center</div>
+                <div class="nav-item active" onclick="MC_Mobile.closeSidebar()">
+                    <span class="nav-icon">◈</span>
+                    <span>Dashboard</span>
+                </div>
+                <div class="nav-item" onclick="MC_Mobile.closeSidebar()">
+                    <span class="nav-icon">🤖</span>
+                    <span>Agents</span>
+                </div>
+                <div class="nav-item" onclick="MC_Mobile.closeSidebar()">
+                    <span class="nav-icon">📋</span>
+                    <span>Tasks</span>
+                </div>
+                <div class="nav-item" onclick="MC_Mobile.closeSidebar()">
+                    <span class="nav-icon">📊</span>
+                    <span>Analytics</span>
+                </div>
+            </div>
+            <div class="nav-section">
+                <div class="nav-title">Settings</div>
+                <div class="nav-item" onclick="MC_Theme.toggleTheme(); MC_Mobile.closeSidebar();">
+                    <span class="nav-icon">🎨</span>
+                    <span>Toggle Theme</span>
+                </div>
+                <div class="nav-item" onclick="MC_Theme.cycleScheme(); MC_Mobile.closeSidebar();">
+                    <span class="nav-icon">🌈</span>
+                    <span>Change Colors</span>
+                </div>
+            </div>
+        </nav>
+    </aside>
+
+    <!-- Desktop Header -->
+    <header class="header hide-mobile">
+        <div class="brand">
+            <div class="logo">◈</div>
+            <div class="brand-text">
+                <h1>Mission Control</h1>
+                <span>ADVANCED DASHBOARD v3.0</span>
+            </div>
+        </div>
+        <div class="header-actions">
+            <!-- Theme Toggle -->
+            <button class="theme-toggle" onclick="MC_Theme.toggleTheme()" title="Toggle Theme">
+                <div class="theme-toggle-slider">
+                    <span class="theme-toggle-icon">🌙</span>
+                </div>
+            </button>
+            
+            <div class="status-pill">
+                <span class="status-dot"></span>
+                <span>All Systems Online</span>
+            </div>
+            
+            <div class="time-display">
+                <span>🕐</span>
+                <span id="clock">--:--:--</span>
+            </div>
+            
+            <div class="user-avatar">EF</div>
+        </div>
+    </header>
+    
+    <div class="container">
+        <!-- Desktop Sidebar -->
+        <aside class="sidebar hide-mobile">
+            <div class="nav-section">
+                <div class="nav-title">Command Center</div>
+                <div class="nav-item active">
+                    <span class="nav-icon">◈</span>
+                    <span>Dashboard</span>
+                </div>
+                <div class="nav-item">
+                    <span class="nav-icon">🤖</span>
+                    <span>Agents</span>
+                    <span class="nav-badge">14</span>
+                </div>
+                <div class="nav-item">
+                    <span class="nav-icon">📋</span>
+                    <span>Tasks</span>
+                </div>
+                <div class="nav-item">
+                    <span class="nav-icon">📊</span>
+                    <span>Analytics</span>
+                </div>
+            </div>
+            
+            <div class="nav-section">
+                <div class="nav-title">Appearance</div>
+                <div class="nav-item" onclick="MC_Theme.toggleTheme()">
+                    <span class="nav-icon">🎨</span>
+                    <span>Toggle Dark/Light</span>
+                </div>
+                <div class="nav-item" onclick="MC_Theme.cycleScheme()">
+                    <span class="nav-icon">🌈</span>
+                    <span>Cycle Color Scheme</span>
+                </div>
+            </div>
+            
+            <div class="nav-section">
+                <div class="nav-title">Operations</div>
+                <div class="nav-item">
+                    <span class="nav-icon">📝</span>
+                    <span>System Logs</span>
+                </div>
+                <div class="nav-item">
+                    <span class="nav-icon">⚙️</span>
+                    <span>Settings</span>
+                </div>
+            </div>
+        </aside>
+        
+        <main class="main">
+            <!-- Welcome Banner -->
+            <div class="welcome-banner">
+                <div class="welcome-text">
+                    <h2 id="welcome-message">Welcome, Commander</h2>
+                    <p id="welcome-submessage">14 agents active. All systems operational.</p>
+                </div>
+                <div class="welcome-actions">
+                    <button class="btn" onclick="MC_Dashboard.refreshAll()">
+                        <span>🔄</span>
+                        Refresh
+                    </button>
+                    <button class="btn btn-primary" onclick="MC_Animation.showToast('New Mission - Coming Soon')">
+                        <span>⚡</span>
+                        New Mission
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <span class="stat-label">Active Agents</span>
+                        <div class="stat-icon">🤖</div>
+                    </div>
+                    <div class="stat-value" id="stat-agents">14</div>
+                    <div class="stat-change">
+                        <span>●</span>
+                        <span>All online</span>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <span class="stat-label">Tasks Completed</span>
+                        <div class="stat-icon">✅</div>
+                    </div>
+                    <div class="stat-value" id="stat-tasks">47</div>
+                    <div class="stat-change">
+                        <span>↑</span>
+                        <span>+12 today</span>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <span class="stat-label">Pending Tasks</span>
+                        <div class="stat-icon">⏳</div>
+                    </div>
+                    <div class="stat-value" id="stat-pending">3</div>
+                    <div class="stat-change">
+                        <span>●</span>
+                        <span>In progress</span>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <span class="stat-label">System Uptime</span>
+                        <div class="stat-icon">⏱️</div>
+                    </div>
+                    <div class="stat-value">98.5%</div>
+                    <div class="stat-change">
+                        <span>●</span>
+                        <span>Operational</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Main Grid -->
+            <div class="section-grid">
+                <!-- Agent Status -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <span>🤖</span>
+                            Agent Status
+                        </h3>
+                        <div class="card-actions">
+                            <button class="btn-icon" onclick="MC_Dashboard.loadAgents()" title="Refresh">🔄</button>
+                        </div>
+                    </div>
+                    <div class="agent-list" id="agent-list">
+                        <!-- Agents will be loaded here -->
+                    </div>
+                </div>
+                
+                <!-- Quick Actions -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <span>⚡</span>
+                            Quick Actions
+                        </h3>
+                    </div>
+                    <div class="quick-actions">
+                        <div class="quick-action" onclick="MC_Animation.showToast('Spawn Agent - Coming Soon')">
+                            <div class="quick-action-icon">🤖</div>
+                            <div class="quick-action-label">Spawn Agent</div>
+                        </div>
+                        <div class="quick-action" onclick="MC_Animation.showToast('Create Task - Coming Soon')">
+                            <div class="quick-action-icon">📋</div>
+                            <div class="quick-action-label">Create Task</div>
+                        </div>
+                        <div class="quick-action" onclick="MC_Animation.showToast('Research - Coming Soon')">
+                            <div class="quick-action-icon">🔍</div>
+                            <div class="quick-action-label">Research</div>
+                        </div>
+                        <div class="quick-action" onclick="MC_Animation.showToast('Reports - Coming Soon')">
+                            <div class="quick-action-icon">📊</div>
+                            <div class="quick-action-label">Reports</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Terminal -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <span>📝</span>
+                        System Logs
+                    </h3>
+                    <div class="card-actions">
+                        <button class="btn-icon" onclick="MC_Dashboard.clearLogs()" title="Clear">🗑️</button>
+                    </div>
+                </div>
+                <div class="terminal-container">
+                    <div class="terminal-header">
+                        <div class="terminal-dot red"></div>
+                        <div class="terminal-dot yellow"></div>
+                        <div class="terminal-dot green"></div>
+                        <span class="terminal-title">nexus@mission-control:~$ tail -f /var/log/system.log</span>
+                    </div>
+                    <div class="terminal" id="terminal">
+                        <div class="terminal-line">
+                            <span class="terminal-time">[--:--:--]</span>
+                            <span class="terminal-agent">[SYSTEM]</span>
+                            <span class="terminal-level info">INFO</span>
+                            <span class="terminal-msg">Dashboard v3.0 initialized...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Scripts -->
+    <script src="js/theme-system.js"></script>
+    <script src="js/animation-system.js"></script>
+    <script src="js/mobile-responsive.js"></script>
+    
+    <script>
+        /**
+         * ═══════════════════════════════════════════════════════════════
+         * MISSION CONTROL DASHBOARD v3.0
+         * Integrated with Theme, Animation, and Mobile systems
+         * ═══════════════════════════════════════════════════════════════
+         */
+        
+        const MC_Dashboard = {
+            agents: [
+                { id: 'nexus', name: 'Nexus', role: 'Orchestrator', status: 'online', tasksActive: 2, tasksCompleted: 156, knowledge: 95 },
+                { id: 'forge', name: 'Forge', role: 'Developer', status: 'busy', tasksActive: 3, tasksCompleted: 89, knowledge: 92 },
+                { id: 'forge-2', name: 'Forge-2', role: 'UI Components', status: 'busy', tasksActive: 2, tasksCompleted: 45, knowledge: 88 },
+                { id: 'forge-3', name: 'Forge-3', role: 'Advanced UI', status: 'online', tasksActive: 1, tasksCompleted: 32, knowledge: 85 },
+                { id: 'scout', name: 'Scout', role: 'Researcher', status: 'online', tasksActive: 1, tasksCompleted: 78, knowledge: 90 },
+                { id: 'glasses', name: 'Glasses', role: 'Researcher', status: 'online', tasksActive: 0, tasksCompleted: 134, knowledge: 94 },
+                { id: 'buzz', name: 'Buzz', role: 'Social', status: 'online', tasksActive: 1, tasksCompleted: 67, knowledge: 87 },
+                { id: 'larry', name: 'Larry', role: 'Social', status: 'online', tasksActive: 0, tasksCompleted: 92, knowledge: 89 },
+                { id: 'gary', name: 'Gary', role: 'Marketing', status: 'online', tasksActive: 1, tasksCompleted: 56, knowledge: 86 },
+                { id: 'quill', name: 'Quill', role: 'Writer', status: 'online', tasksActive: 0, tasksCompleted: 123, knowledge: 93 },
+                { id: 'pixel', name: 'Pixel', role: 'Designer', status: 'busy', tasksActive: 2, tasksCompleted: 71, knowledge: 91 },
+                { id: 'sentry', name: 'Sentry', role: 'Security', status: 'online', tasksActive: 0, tasksCompleted: 45, knowledge: 88 },
+                { id: 'audit', name: 'Audit', role: 'QA', status: 'online', tasksActive: 0, tasksCompleted: 38, knowledge: 85 },
+                { id: 'cipher', name: 'Cipher', role: 'Security', status: 'online', tasksActive: 0, tasksCompleted: 52, knowledge: 87 }
+            ],
+            
+            init() {
+                this.renderAgents();
+                this.startClock();
+                this.addLog('SYSTEM', 'INFO', 'Mission Control Dashboard v3.0 initialized');
+                this.addLog('THEME', 'INFO', `Theme: ${MC_Theme.state.theme}, Scheme: ${MC_Theme.state.scheme}`);
+                
+                // Animate counters
+                MC_Animation.animateCounter('#stat-agents', 14, { suffix: '' });
+                MC_Animation.animateCounter('#stat-tasks', 47, { suffix: '' });
+                MC_Animation.animateCounter('#stat-pending', 3, { suffix: '' });
+            },
+            
+            renderAgents() {
+                const container = document.getElementById('agent-list');
+                if (!container) return;
+                
+                container.innerHTML = this.agents.map((agent, index) => {
+                    const isBusy = agent.status === 'busy';
+                    const icon = this.getAgentIcon(agent.role);
+                    
+                    return `
+                        <div class="agent-card" data-agent="${agent.id}" style="animation: fadeInUp 0.5s ease-out ${index * 0.05}s backwards;">
+                            <div class="agent-header">
+                                <div class="agent-avatar-wrapper">
+                                    <div class="agent-avatar">${icon}</div>
+                                    <div class="agent-status-dot ${isBusy ? 'pulse' : ''}"></div>
+                                </div>
+                                <div class="agent-info">
+                                    <div class="agent-name">${agent.name}</div>
+                                    <div class="agent-role">${agent.role}</div>
+                                </div>
+                            </div>
+                            
+                            <div class="agent-knowledge">
+                                <div class="knowledge-header">
+                                    <span class="knowledge-label">Activity Level</span>
+                                    <span class="knowledge-value">${agent.knowledge}%</span>
+                                </div>
+                                <div class="knowledge-bar">
+                                    <div class="knowledge-bar-fill" style="width: ${agent.knowledge}%;"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="agent-skills">
+                                <span class="skill-tag">${agent.role}</span>
+                                <span class="skill-tag">AI Agent</span>
+                                <span class="skill-tag">${agent.status}</span>
+                            </div>
+                            
+                            <div class="agent-stats-row">
+                                <div class="agent-stat-item">
+                                    <span class="agent-stat-value">${agent.tasksActive}</span>
+                                    <span class="agent-stat-label">Active</span>
+                                </div>
+                                <div class="agent-stat-item">
+                                    <span class="agent-stat-value">${agent.tasksCompleted}</span>
+                                    <span class="agent-stat-label">Done</span>
+                                </div>
+                                <div class="agent-stat-item">
+                                    <span class="agent-stat-value" style="color: ${isBusy ? 'var(--mc-accent-yellow)' : 'var(--mc-accent-green)'};">${isBusy ? 'Busy' : 'Online'}</span>
+                                    <span class="agent-stat-label">Status</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            },
+            
+            getAgentIcon(role) {
+                const icons = {
+                    'Orchestrator': '◈',
+                    'Developer': '⚒️',
+                    'UI Components': '🔧',
+                    'Advanced UI': '🎨',
+                    'Researcher': '🔍',
+                    'Social': '📢',
+                    'Marketing': '📈',
+                    'Writer': '✍️',
+                    'Designer': '🖼️',
+                    'Security': '🔒',
+                    'QA': '✅'
+                };
+                return icons[role] || '🤖';
+            },
+            
+            refreshAll() {
+                MC_Animation.showLoading('.main', { type: 'dots', text: 'Refreshing...' });
+                
+                setTimeout(() => {
+                    MC_Animation.hideLoading('.main');
+                    this.renderAgents();
+                    this.addLog('SYSTEM', 'SUCCESS', 'Dashboard refreshed');
+                    MC_Animation.showToast('Dashboard refreshed!', { type: 'success' });
+                }, 1000);
+            },
+            
+            loadAgents() {
+                MC_Animation.showLoading('#agent-list', { type: 'spinner' });
+                
+                setTimeout(() => {
+                    MC_Animation.hideLoading('#agent-list');
+                    this.renderAgents();
+                    this.addLog('SYSTEM', 'INFO', 'Agent list refreshed');
+                }, 800);
+            },
+            
+            addLog(agent, level, message) {
+                const terminal = document.getElementById('terminal');
+                if (!terminal) return;
+                
+                const now = new Date();
+                const time = now.toLocaleTimeString('en-US', { 
+                    hour12: false,
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit'
+                });
+                
+                const line = document.createElement('div');
+                line.className = 'terminal-line';
+                line.innerHTML = `
+                    <span class="terminal-time">[${time}]</span>
+                    <span class="terminal-agent">[${agent}]</span>
+                    <span class="terminal-level ${level.toLowerCase()}">${level}</span>
+                    <span class="terminal-msg">${message}</span>
+                `;
+                
+                terminal.appendChild(line);
+                terminal.scrollTop = terminal.scrollHeight;
+                
+                // Keep only last 50 lines
+                while (terminal.children.length > 50) {
+                    terminal.removeChild(terminal.firstChild);
+                }
+            },
+            
+            clearLogs() {
+                const terminal = document.getElementById('terminal');
+                if (terminal) {
+                    terminal.innerHTML = '';
+                    this.addLog('SYSTEM', 'INFO', 'Logs cleared');
+                }
+            },
+            
+            startClock() {
+                const updateClock = () => {
+                    const clock = document.getElementById('clock');
+                    if (clock) {
+                        const now = new Date();
+                        clock.textContent = now.toLocaleTimeString('en-US', { 
+                            hour12: false,
+                            hour: '2-digit',
+                            minute: '2-digit',
+                            second: '2-digit'
+                        });
+                    }
+                };
+                
+                updateClock();
+                setInterval(updateClock, 1000);
+            }
+        };
+        
+        // Initialize when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => MC_Dashboard.init());
+        } else {
+            MC_Dashboard.init();
+        }
+        
+        // Expose globally
+        window.MC_Dashboard = MC_Dashboard;
+    </script>
+</body>
+</html>

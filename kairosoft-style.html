@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mission Control - Pixel Office</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            image-rendering: pixelated;
+        }
+        
+        :root {
+            --bg-color: #2d1b4e;
+            --panel-bg: #f4e4c1;
+            --panel-border: #8b7355;
+            --text-dark: #2c1810;
+            --text-light: #f4e4c1;
+            --accent: #ff6b6b;
+            --accent-green: #51cf66;
+            --accent-blue: #339af0;
+            --accent-yellow: #fcc419;
+        }
+        
+        body {
+            font-family: 'VT323', monospace;
+            background: var(--bg-color);
+            color: var(--text-dark);
+            min-height: 100vh;
+            overflow: hidden;
+        }
+        
+        /* Pixel Art Pattern Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.1) 2px, rgba(0,0,0,0.1) 4px),
+                repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0,0,0,0.1) 2px, rgba(0,0,0,0.1) 4px);
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        /* Main Container */
+        .game-container {
+            position: relative;
+            z-index: 1;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 15px;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Header - Game Title Style */
+        .game-header {
+            background: linear-gradient(180deg, #5c3d7a 0%, #3d2652 100%);
+            border: 4px solid #2d1b4e;
+            border-radius: 8px;
+            padding: 12px 20px;
+            margin-bottom: 12px;
+            box-shadow: 
+                0 4px 0 #1a0f2e,
+                inset 0 2px 0 rgba(255,255,255,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .game-title {
+            font-family: 'Press Start 2P', cursive;
+            font-size: clamp(0.7rem, 2vw, 1rem);
+            color: var(--accent-yellow);
+            text-shadow: 3px 3px 0 #2d1b4e;
+            letter-spacing: 2px;
+        }
+        
+        .game-stats {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .stat-box {
+            background: var(--panel-bg);
+            border: 3px solid var(--panel-border);
+            border-radius: 4px;
+            padding: 6px 12px;
+            font-size: 1rem;
+            min-width: 70px;
+            text-align: center;
+        }
+        
+        .stat-label {
+            color: #8b7355;
+            font-size: 0.8rem;
+        }
+        
+        .stat-value {
+            color: var(--text-dark);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        /* Main Game Area */
+        .game-main {
+            flex: 1;
+            display: grid;
+            grid-template-columns: 1fr 280px;
+            gap: 12px;
+            min-height: 0;
+        }
+        
+        /* Office View - Isometric Style */
+        .office-view {
+            background: linear-gradient(180deg, #4a3728 0%, #3d2d20 100%);
+            border: 4px solid #2d1b4e;
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: inset 0 0 50px rgba(0,0,0,0.3);
+            min-height: 0;
+        }
+        
+        .office-grid {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+        
+        /* Agent Characters (Chibi Style) */
+        .agent-chibi {
+            position: absolute;
+            width: 50px;
+            height: 70px;
+            cursor: pointer;
+            transition: transform 0.2s;
+            animation: bounce 2s infinite;
+        }
+        
+        .agent-chibi:hover {
+            transform: translateY(-5px) scale(1.1);
+            z-index: 100;
+        }
+        
+        .agent-chibi:nth-child(2n) { animation-delay: 0.5s; }
+        .agent-chibi:nth-child(3n) { animation-delay: 1s; }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-3px); }
+        }
+        
+        /* Chibi Sprite Construction */
+        .chibi-head {
+            width: 42px;
+            height: 38px;
+            background: #fdbf60;
+            border-radius: 50%;
+            position: relative;
+            margin: 0 auto;
+            border: 2px solid #2c1810;
+        }
+        
+        .chibi-eyes {
+            position: absolute;
+            top: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 6px;
+        }
+        
+        .chibi-eye {
+            width: 8px;
+            height: 10px;
+            background: #2c1810;
+            border-radius: 50%;
+        }
+        
+        .chibi-mouth {
+            position: absolute;
+            bottom: 6px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 6px;
+            height: 3px;
+            background: #2c1810;
+            border-radius: 0 0 6px 6px;
+        }
+        
+        .chibi-body {
+            width: 34px;
+            height: 24px;
+            margin: -4px auto 0;
+            border-radius: 8px 8px 4px 4px;
+            border: 2px solid #2c1810;
+            position: relative;
+        }
+        
+        .chibi-symbol {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 12px;
+        }
+        
+        /* Agent Colors */
+        .agent-nexus .chibi-body { background: #ff6b6b; }
+        .agent-glasses .chibi-body { background: #4dabf7; }
+        .agent-quill .chibi-body { background: #ffa94d; }
+        .agent-pixel .chibi-body { background: #da77f2; }
+        .agent-gary .chibi-body { background: #69db7c; }
+        .agent-larry .chibi-body { background: #ffd43b; }
+        .agent-sentry .chibi-body { background: #74c0fc; }
+        .agent-audit .chibi-body { background: #ffc078; }
+        .agent-cipher .chibi-body { background: #adb5bd; }
+        .agent-forge .chibi-body { background: #ff8787; }
+        .agent-code .chibi-body { background: #38d9a9; }
+        .agent-dealflow .chibi-body { background: #e599f7; }
+        .agent-coldcall .chibi-body { background: #66d9e8; }
+        .agent-scout .chibi-body { background: #ffa8a8; }
+        
+        .chibi-legs {
+            display: flex;
+            justify-content: center;
+            gap: 4px;
+            margin-top: -2px;
+        }
+        
+        .chibi-leg {
+            width: 6px;
+            height: 10px;
+            background: #2c1810;
+            border-radius: 0 0 3px 3px;
+        }
+        
+        .chibi-name {
+            position: absolute;
+            bottom: -16px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--panel-bg);
+            padding: 1px 6px;
+            border-radius: 3px;
+            font-size: 0.7rem;
+            white-space: nowrap;
+            border: 2px solid var(--panel-border);
+        }
+        
+        /* Agent Positions - Responsive */
+        .pos-nexus { top: 25%; left: 8%; }
+        .pos-glasses { top: 15%; left: 22%; }
+        .pos-quill { top: 30%; left: 36%; }
+        .pos-pixel { top: 20%; left: 50%; }
+        .pos-gary { top: 35%; left: 64%; }
+        .pos-larry { top: 25%; left: 78%; }
+        .pos-sentry { top: 55%; left: 15%; }
+        .pos-audit { top: 60%; left: 42%; }
+        .pos-cipher { top: 50%; left: 68%; }
+        .pos-forge { top: 70%; left: 30%; }
+        .pos-code { top: 75%; left: 55%; }
+        .pos-dealflow { top: 45%; left: 88%; }
+        .pos-coldcall { top: 80%; left: 8%; }
+        .pos-scout { top: 85%; left: 78%; }
+        
+        /* Side Panel */
+        .side-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            min-height: 0;
+        }
+        
+        .panel-box {
+            background: var(--panel-bg);
+            border: 4px solid var(--panel-border);
+            border-radius: 8px;
+            padding: 12px;
+            box-shadow: 
+                0 4px 0 #5c4a3a,
+                inset 0 2px 0 rgba(255,255,255,0.5);
+            overflow-y: auto;
+        }
+        
+        .panel-box:first-child {
+            flex: 1;
+        }
+        
+        .panel-title {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.6rem;
+            color: var(--panel-border);
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--panel-border);
+        }
+        
+        /* Agent List */
+        .agent-list-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px;
+            margin: 4px 0;
+            background: rgba(255,255,255,0.5);
+            border-radius: 4px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .agent-list-item:hover {
+            border-color: var(--panel-border);
+            transform: translateX(3px);
+        }
+        
+        .agent-icon {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            border: 2px solid #2c1810;
+            flex-shrink: 0;
+        }
+        
+        .agent-info {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .agent-name-small {
+            font-weight: bold;
+            font-size: 1rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .agent-task {
+            font-size: 0.8rem;
+            color: #666;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .agent-hp-bar {
+            width: 50px;
+            height: 8px;
+            background: #ddd;
+            border: 2px solid #2c1810;
+            border-radius: 4px;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        
+        .agent-hp-fill {
+            height: 100%;
+            background: var(--accent-green);
+            transition: width 0.3s;
+        }
+        
+        /* Task Panel */
+        .task-item {
+            background: rgba(255,255,255,0.7);
+            border: 2px solid var(--panel-border);
+            border-radius: 4px;
+            padding: 8px;
+            margin: 6px 0;
+            font-size: 0.9rem;
+        }
+        
+        .task-status {
+            display: inline-block;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            margin-left: 6px;
+        }
+        
+        .status-done { background: var(--accent-green); color: white; }
+        .status-progress { background: var(--accent-blue); color: white; }
+        .status-pending { background: #adb5bd; color: white; }
+        
+        /* Bottom Menu */
+        .bottom-menu {
+            display: flex;
+            gap: 10px;
+            margin-top: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .menu-btn {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.55rem;
+            padding: 12px 18px;
+            background: linear-gradient(180deg, #69db7c 0%, #51cf66 100%);
+            border: 3px solid #2d1b4e;
+            border-radius: 6px;
+            cursor: pointer;
+            box-shadow: 0 4px 0 #2d1b4e;
+            transition: all 0.1s;
+            color: var(--text-dark);
+        }
+        
+        .menu-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 0 #2d1b4e;
+        }
+        
+        .menu-btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 0 0 #2d1b4e;
+        }
+        
+        .menu-btn.secondary {
+            background: linear-gradient(180deg, #74c0fc 0%, #339af0 100%);
+        }
+        
+        /* Responsive */
+        @media (max-width: 900px) {
+            .game-main {
+                grid-template-columns: 1fr;
+                grid-template-rows: 1fr auto;
+            }
+            
+            .side-panel {
+                flex-direction: row;
+                gap: 10px;
+            }
+            
+            .panel-box {
+                flex: 1;
+                max-height: 200px;
+            }
+            
+            .agent-chibi {
+                transform: scale(0.85);
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .game-container {
+                padding: 10px;
+            }
+            
+            .game-header {
+                padding: 10px 15px;
+            }
+            
+            .game-title {
+                font-size: 0.6rem;
+            }
+            
+            .game-stats {
+                gap: 8px;
+            }
+            
+            .stat-box {
+                padding: 4px 8px;
+                min-width: 55px;
+            }
+            
+            .agent-chibi {
+                transform: scale(0.7);
+            }
+            
+            .side-panel {
+                flex-direction: column;
+            }
+            
+            .panel-box {
+                max-height: 150px;
+            }
+            
+            .bottom-menu {
+                gap: 6px;
+            }
+            
+            .menu-btn {
+                padding: 8px 12px;
+                font-size: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <!-- Header -->
+        <div class="game-header">
+            <div class="game-title">◈ MISSION CONTROL HQ</div>
+            <div class="game-stats">
+                <div class="stat-box">
+                    <div class="stat-label">DAY</div>
+                    <div class="stat-value">1</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">AGENTS</div>
+                    <div class="stat-value">14/14</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">FUNDS</div>
+                    <div class="stat-value">∞</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Game Area -->
+        <div class="game-main">
+            <!-- Office View -->
+            <div class="office-view">
+                <div class="office-grid"></div>
+                
+                <!-- Agent Chibis -->
+                <div class="agent-chibi agent-nexus pos-nexus">
+                    <div class="chibi-head">
+                        <div class="chibi-eyes">
+                            <div class="chibi-eye"></div>
+                            <div class="chibi-eye"></div>
+                        </div>
+                        <div class="chibi-mouth"></div>
+                    </div>
+                    <div class="chibi-body">
+                        <div class="chibi-symbol">◈</div>
+                    </div>
+                    <div class="chibi-legs">
+                        <div class="chibi-leg"></div>
+                        <div class="chibi-leg"></div>
+                    </div>
+                    <div class="chibi-name">Nexus</div>
+                </div>
+                
+                <div class="agent-chibi agent-glasses pos-glasses">
+                    <div class="chibi-head">
+                        <div class="chibi-eyes">
+                            <div class="chibi-eye"></div>
+                            <div class="chibi-eye"></div>
+                        </div>
+                        <div class="chibi-mouth"></div>
+                    </div>
+                    <div class="chibi-body">
+                        <div class="chibi-symbol">🔍</div>
+                    </div>
+                    <div class="chibi-legs">
+                        <div class="chibi-leg"></div>
+                        <div class="chibi-leg"></div>
+                    </div>
+                    <div class="chibi-name">Glasses</div>
+                </div>
+                
+                <div class="agent-chibi agent-quill pos-quill">
+                    <div class="chibi-head">
+                        <div class="chibi-eyes">
+                            <div class="chibi-eye"></div>
+                            <div class="chibi-eye"></div>
+                        </div>
+                        <div class="chibi-mouth"></div>
+                    </div>
+                    <div class="chibi-body">
+                        <div class="chibi-symbol">✍️</div>
+                    </div>
+                    <div class="chibi-legs">
+                        <div class="chibi-leg"></div>
+                        <div class="chibi-leg"></div>
+                    </div>
+                    <div class="chibi-name">Quill</div>
+                </div>
+                
+                <div class="agent-chibi agent-pixel pos-pixel">
+                    <div class="chibi-head">
+                        <div class="chibi-eyes">
+                            <div class="chibi-eye"></div>
+                            <div class="chibi-eye"></div>
+                        </div>
+                        <div class="chibi-mouth"></div>
+                    </div>
+                    <div class="chibi-body">
+                        <div class="chibi-symbol">🎨</div>
+                    </div>
+                    <div class="chibi-legs">
+                        <div class="chibi-leg"></div>
+                        <div class="chibi-leg"></div>
+                    </div>
+                    <div class="chibi-name">Pixel</div>
+                </div>
+                
+                <div class="agent-chibi agent-gary pos-gary">
+                    <div class="chibi-head">
+                        <div class="chibi-eyes">
+                            <div class="chibi-eye"></div>
+                            <div class="chibi-eye"></div>
+                        </div>
+                        <div class="chibi-mouth"></div>
+                    </div>
+                    <div class="chibi-body">
+                        <div class="chibi-symbol">📢</div>
+                    </div>
+                    <div class="chibi-legs">
+                        <div class="chibi-leg"></div>
+                        <div class="chibi-leg"></div>
+                    </div>
+                    <div class="chibi-name">Gary</div>
+                </div>
+                
+                <div class="agent-chibi agent-larry pos-larry">
+                    <div class="chibi-head">
+                        <div class="chibi-eyes">
+                            <div class="chibi-eye"></div>
+                            <div class="chibi-eye"></div>
+                        </div>
+                        <div class="chibi-mouth"></div>
+                    </div>
+                    <div class="chibi-body">
+                        <div class="chibi-symbol">📲</div>
+                    </div>
+                    <div class="chibi-legs">
+                        <div class="chibi-leg"></div>
+                        <div class="chibi-leg"></div>
+                    </div>
+                    <div class="chibi-name">Larry</div>
+                </div>
+                
+                <div class="agent-chibi agent-sentry pos-sentry">
+                    <div class="chibi-head">
+                        <div class="chibi-eyes">
+                            <div class="chibi-eye"></div>
+                            <div class="chibi-eye"></div>
+                        </div>
+                        <div class="chibi-mouth"></div>
+                    </div>
+                    <div class="chibi-body">
+                        <div class="chibi-symbol">⚙️</div>
+                    </div>
+                    <div class="chibi-legs">
+                        <div class="chibi-leg"></div>
+                        <div class="chibi-leg"></div>
+                    </div>
+                    <div class="chibi-name">Sentry</div>
+                </div>
+                
+                <div class="agent-chibi agent-audit pos-audit">
+                    <div class="chibi-head">
+                        <div class="chibi-eyes">
+                            <div class="chibi-eye"></div>
+                            <div class="chibi-eye"></div>
+                        </div>
+                        <div class="chibi-mouth"></div>
+                    </div>
+                    <div class="chibi-body">
+                        <div class="chibi-symbol">✅</div>
+                    </div>
+                    <div class="chibi-legs">
+                        <div class="chibi-leg"></div>
+                        <div class="chibi-leg"></div>
+                    </div>
+                    <div class="chibi-name">Audit</div>
+                </div>
+                
+                <div class="agent-chibi agent-cipher pos-cipher">
+                    <div class="chibi-head">
+                        <div class="chibi-eyes">
+                            <div class="chibi-eye"></div>
+                            <div class="chibi-eye"></div>
+                        </div>
+                        <div class="chibi-mouth"></div>
+                    </div>
+                    <div class="chibi-body">
+                        <div class="chibi-symbol">🔒</div>
+                    </div>
+                    <div class="chibi-legs">
+                        <div class="chibi-leg"></div>
+                        <div class="chibi-leg"></div>
+                    </div>
+                    <div class="chibi-name">Cipher</div>
+                </div>
+                
+                <div class="agent-chibi agent-forge pos-forge">
+                    <div class="chibi-head">
+                        <div class="chibi-eyes">
+                            <div class="chibi-eye"></div>
+                            <div class="chibi-eye"></div>
+                        </div>
+                        <div class="chibi-mouth"></div>
+                    </div>
+                    <div class="chibi-body">
+                        <div class="chibi-symbol">⚒️</div>
+                    </div>
+                    <div class="chibi-legs">
+                        <div class="chibi-leg"></div>
+                        <div class="chibi-leg"></div>
+                    </div>
+                    <div class="chibi-name">Forge</div>
+                </div>
+                
+                <div class="agent-chibi agent-code pos-code">
+                    <div class="chibi-head">
+                        <div class="chibi-eyes">
+                            <div class="chibi-eye"></div>
+                            <div class="chibi-eye"></div>
+                        </div>
+                        <div class="chibi-mouth"></div>
+                    </div>
+                    <div class="chibi-body">
+                        <div class="chibi-symbol">💻</div>
+                    </div>
+                    <div class="chibi-legs">
+                        <div class="chibi-leg"></div>
+                        <div class="chibi-leg"></div>
+                    </div>
+                    <div class="chibi-name">Code</div>
+                </div>
+                
+                <div class="agent-chibi agent-dealflow pos-dealflow">
+                    <div class="chibi-head">
+                        <div class="chibi-eyes">
+                            <div class="chibi-eye"></div>
+                            <div class="chibi-eye"></div>
+                        </div>
+                        <div class="chibi-mouth"></div>
+                    </div>
+                    <div class="chibi-body">
+                        <div class="chibi-symbol">🤝</div>
+                    </div>
+                    <div class="chibi-legs">
+                        <div class="chibi-leg"></div>
+                        <div class="chibi-leg"></div>
+                    </div>
+                    <div class="chibi-name">DealFlow</div>
+                </div>
+                
+                <div class="agent-chibi agent-coldcall pos-coldcall">
+                    <div class="chibi-head">
+                        <div class="chibi-eyes">
+                            <div class="chibi-eye"></div>
+                            <div class="chibi-eye"></div>
+                        </div>
+                        <div class="chibi-mouth"></div>
+                    </div>
+                    <div class="chibi-body">
+                        <div class="chibi-symbol">📞</div>
+                    </div>
+                    <div class="chibi-legs">
+                        <div class="chibi-leg"></div>
+                        <div class="chibi-leg"></div>
+                    </div>
+                    <div class="chibi-name">ColdCall</div>
+                </div>
+                
+                <div class="agent-chibi agent-scout pos-scout">
+                    <div class="chibi-head">
+                        <div class="chibi-eyes">
+                            <div class="chibi-eye"></div>
+                            <div class="chibi-eye"></div>
+                        </div>
+                        <div class="chibi-mouth"></div>
+                    </div>
+                    <div class="chibi-body">
+                        <div class="chibi-symbol">💰</div>
+                    </div>
+                    <div class="chibi-legs">
+                        <div class="chibi-leg"></div>
+                        <div class="chibi-leg"></div>
+                    </div>
+                    <div class="chibi-name">Scout</div>
+                </div>
+            </div>
+            
+            <!-- Side Panel -->
+            <div class="side-panel">
+                <!-- Agent Status -->
+                <div class="panel-box">
+                    <div class="panel-title">AGENT STATUS</div>
+                    
+                    <div class="agent-list-item">
+                        <div class="agent-icon" style="background: #ff6b6b;">◈</div>
+                        <div class="agent-info">
+                            <div class="agent-name-small">Nexus</div>
+                            <div class="agent-task">Orchestrating</div>
+                        </div>
+                        <div class="agent-hp-bar">
+                            <div class="agent-hp-fill" style="width: 95%;"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="agent-list-item">
+                        <div class="agent-icon" style="background: #ff8787;">⚒️</div>
+                        <div class="agent-info">
+                            <div class="agent-name-small">Forge</div>
+                            <div class="agent-task">UI Development</div>
+                        </div>
+                        <div class="agent-hp-bar">
+                            <div class="agent-hp-fill" style="width: 88%;"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="agent-list-item">
+                        <div class="agent-icon" style="background: #38d9a9;">💻</div>
+                        <div class="agent-info">
+                            <div class="agent-name-small">Code</div>
+                            <div class="agent-task">Backend API</div>
+                        </div>
+                        <div class="agent-hp-bar">
+                            <div class="agent-hp-fill" style="width: 82%;"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="agent-list-item">
+                        <div class="agent-icon" style="background: #4dabf7;">🔍</div>
+                        <div class="agent-info">
+                            <div class="agent-name-small">Glasses</div>
+                            <div class="agent-task">Researching</div>
+                        </div>
+                        <div class="agent-hp-bar">
+                            <div class="agent-hp-fill" style="width: 80%;"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="agent-list-item">
+                        <div class="agent-icon" style="background: #ffa94d;">✍️</div>
+                        <div class="agent-info">
+                            <div class="agent-name-small">Quill</div>
+                            <div class="agent-task">Writing</div>
+                        </div>
+                        <div class="agent-hp-bar">
+                            <div class="agent-hp-fill" style="width: 90%;"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="agent-list-item">
+                        <div class="agent-icon" style="background: #da77f2;">🎨</div>
+                        <div class="agent-info">
+                            <div class="agent-name-small">Pixel</div>
+                            <div class="agent-task">Designing</div>
+                        </div>
+                        <div class="agent-hp-bar">
+                            <div class="agent-hp-fill" style="width: 75%;"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Tasks -->
+                <div class="panel-box">
+                    <div class="panel-title">ACTIVE TASKS</div>
+                    
+                    <div class="task-item">
+                        Dashboard Integration
+                        <span class="task-status status-progress">IN PROGRESS</span>
+                    </div>
+                    
+                    <div class="task-item">
+                        API Development
+                        <span class="task-status status-progress">IN PROGRESS</span>
+                    </div>
+                    
+                    <div class="task-item">
+                        QA Review
+                        <span class="task-status status-done">DONE</span>
+                    </div>
+                    
+                    <div class="task-item">
+                        Design System
+                        <span class="task-status status-done">DONE</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Bottom Menu -->
+        <div class="bottom-menu">
+            <button class="menu-btn">DELEGATE TASK</button>
+            <button class="menu-btn secondary">CHECK STATUS</button>
+            <button class="menu-btn secondary">AGENT LIST</button>
+            <button class="menu-btn secondary">SETTINGS</button>
+        </div>
+    </div>
+    
+    <script>
+        // Add click handlers for chibi agents
+        document.querySelectorAll('.agent-chibi').forEach(agent => {
+            agent.addEventListener('click', () => {
+                const name = agent.querySelector('.chibi-name').textContent;
+                // Could trigger a custom event or show details
+                console.log(`Clicked on ${name}`);
+            });
+        });
+        
+        // Add click handlers for menu buttons
+        document.querySelectorAll('.menu-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                console.log(`Menu: ${btn.textContent}`);
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mission Control - Activity Monitor</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'JetBrains Mono', monospace;
+            background: #0a0a0f;
+            color: #00ff9f;
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .header {
+            border-bottom: 2px solid #00ff9f;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .header h1 {
+            color: #ff2a6d;
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+        
+        .header .subtitle {
+            color: #888;
+            font-size: 0.85rem;
+        }
+        
+        .timestamp {
+            color: #666;
+            font-size: 0.8rem;
+            margin-top: 5px;
+        }
+        
+        .section {
+            margin-bottom: 25px;
+            border: 1px solid #333;
+            background: rgba(0, 255, 159, 0.02);
+        }
+        
+        .section-header {
+            background: #1a1a2e;
+            padding: 10px 15px;
+            border-bottom: 1px solid #333;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .section-title {
+            color: #ff2a6d;
+            font-weight: bold;
+            font-size: 1rem;
+        }
+        
+        .section-status {
+            font-size: 0.8rem;
+            padding: 3px 10px;
+            border-radius: 3px;
+        }
+        
+        .status-active {
+            background: rgba(0, 255, 159, 0.2);
+            color: #00ff9f;
+        }
+        
+        .status-busy {
+            background: rgba(255, 193, 7, 0.2);
+            color: #ffc107;
+        }
+        
+        .status-idle {
+            background: rgba(108, 117, 125, 0.2);
+            color: #6c757d;
+        }
+        
+        .section-content {
+            padding: 15px;
+        }
+        
+        .menu-item {
+            padding: 8px 0;
+            border-bottom: 1px solid #222;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+        
+        .menu-item:last-child {
+            border-bottom: none;
+        }
+        
+        .menu-label {
+            color: #05d9e8;
+            min-width: 150px;
+        }
+        
+        .menu-value {
+            color: #fff;
+            flex: 1;
+            text-align: right;
+        }
+        
+        .task-list {
+            margin-top: 10px;
+        }
+        
+        .task-item {
+            padding: 8px 12px;
+            margin: 5px 0;
+            background: rgba(255, 255, 255, 0.03);
+            border-left: 3px solid;
+            font-size: 0.9rem;
+        }
+        
+        .task-pending {
+            border-color: #ffc107;
+            color: #ffc107;
+        }
+        
+        .task-progress {
+            border-color: #05d9e8;
+            color: #05d9e8;
+        }
+        
+        .task-complete {
+            border-color: #00ff9f;
+            color: #00ff9f;
+        }
+        
+        .agent-card {
+            margin: 10px 0;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid #333;
+        }
+        
+        .agent-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        
+        .agent-name {
+            color: #ff2a6d;
+            font-weight: bold;
+        }
+        
+        .agent-role {
+            color: #666;
+            font-size: 0.8rem;
+        }
+        
+        .agent-status {
+            font-size: 0.75rem;
+            padding: 2px 8px;
+            border-radius: 3px;
+        }
+        
+        .agent-current-task {
+            color: #ccc;
+            font-size: 0.9rem;
+            margin: 5px 0;
+        }
+        
+        .agent-queue {
+            color: #888;
+            font-size: 0.8rem;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .stat-box {
+            text-align: center;
+            padding: 15px;
+            background: rgba(0, 255, 159, 0.05);
+            border: 1px solid #333;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            color: #ff2a6d;
+            font-weight: bold;
+        }
+        
+        .stat-label {
+            color: #888;
+            font-size: 0.8rem;
+            margin-top: 5px;
+        }
+        
+        .log-entry {
+            padding: 5px 0;
+            font-size: 0.85rem;
+            color: #aaa;
+            border-bottom: 1px solid #222;
+        }
+        
+        .log-time {
+            color: #666;
+            margin-right: 10px;
+        }
+        
+        .log-agent {
+            color: #05d9e8;
+            margin-right: 10px;
+        }
+        
+        .divider {
+            border-top: 1px solid #333;
+            margin: 20px 0;
+        }
+        
+        .footer {
+            text-align: center;
+            color: #666;
+            font-size: 0.8rem;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #333;
+        }
+        
+        .highlight {
+            color: #ff2a6d;
+        }
+        
+        .code {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>◈ MISSION CONTROL - ACTIVITY MONITOR</h1>
+        <div class="subtitle">Real-time system status and agent activity</div>
+        <div class="timestamp">Last Updated: 2026-02-17 07:25:00 CST | System Uptime: 1h 28m</div>
+    </div>
+
+    <!-- NEXUS (Air1ck3ff) Status -->
+    <div class="section">
+        <div class="section-header">
+            <span class="section-title">◈ NEXUS (AIR1CK3FF) - ORCHESTRATOR</span>
+            <span class="section-status status-busy">BUSY</span>
+        </div>
+        <div class="section-content">
+            <div class="menu-item">
+                <span class="menu-label">Current Activity:</span>
+                <span class="menu-value">Coordinating agent tasks, monitoring system</span>
+            </div>
+            <div class="menu-item">
+                <span class="menu-label">Active Tasks:</span>
+                <span class="menu-value">8 agents managed, 24 tasks assigned</span>
+            </div>
+            <div class="menu-item">
+                <span class="menu-label">Pending Reviews:</span>
+                <span class="menu-value">3 task completions awaiting review</span>
+            </div>
+            <div class="menu-item">
+                <span class="menu-label">Next Report:</span>
+                <span class="menu-value">11:30 AM (4 hours)</span>
+            </div>
+            <div class="menu-item">
+                <span class="menu-label">Location:</span>
+                <span class="menu-value">Command Center (with EricF)</span>
+            </div>
+            
+            <div class="task-list">
+                <div style="color: #888; margin-bottom: 8px;">MY TASK QUEUE:</div>
+                <div class="task-item task-progress">[IN PROGRESS] Monitor agent task completion</div>
+                <div class="task-item task-pending">[PENDING] 11:30 AM progress report to EricF</div>
+                <div class="task-item task-pending">[PENDING] Review Glasses' research findings</div>
+                <div class="task-item task-pending">[PENDING] Coordinate content pipeline (Quill→Pixel)</div>
+                <div class="task-item task-pending">[PENDING] 08:00 AM daily briefing</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AGENT STATUS OVERVIEW -->
+    <div class="section">
+        <div class="section-header">
+            <span class="section-title">🤖 AGENT STATUS OVERVIEW</span>
+            <span class="section-status status-active">9/9 ONLINE</span>
+        </div>
+        <div class="section-content">
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="stat-number">24</div>
+                    <div class="stat-label">TOTAL TASKS</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number" style="color: #ffc107;">18</div>
+                    <div class="stat-label">IN PROGRESS</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number" style="color: #00ff9f;">6</div>
+                    <div class="stat-label">COMPLETED</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CORE CONTENT TEAM -->
+    <div class="section">
+        <div class="section-header">
+            <span class="section-title">📚 CORE CONTENT TEAM</span>
+            <span class="section-status status-active">3 ACTIVE</span>
+        </div>
+        <div class="section-content">
+            <div class="agent-card">
+                <div class="agent-header">
+                    <div>
+                        <span class="agent-name">🔍 GLASSES</span>
+                        <span class="agent-role">Researcher</span>
+                    </div>
+                    <span class="agent-status status-busy">BUSY</span>
+                </div>
+                <div class="agent-current-task">Researching trending AI tools and frameworks</div>
+                <div class="agent-queue">Queue: 2 pending (crypto projects, briefing prep)</div>
+            </div>
+
+            <div class="agent-card">
+                <div class="agent-header">
+                    <div>
+                        <span class="agent-name">✍️ QUILL</span>
+                        <span class="agent-role">Writer</span>
+                    </div>
+                    <span class="agent-status status-busy">BUSY</span>
+                </div>
+                <div class="agent-current-task">Writing "5 AI tools" Twitter thread</div>
+                <div class="agent-queue">Queue: 2 pending (blog draft, YouTube hooks)</div>
+            </div>
+
+            <div class="agent-card">
+                <div class="agent-header">
+                    <div>
+                        <span class="agent-name">🎨 PIXEL</span>
+                        <span class="agent-role">Designer</span>
+                    </div>
+                    <span class="agent-status status-busy">BUSY</span>
+                </div>
+                <div class="agent-current-task">Designing "AI Tools" video thumbnail</div>
+                <div class="agent-queue">Queue: 2 pending (social graphics, mood board)</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MARKETING TEAM -->
+    <div class="section">
+        <div class="section-header">
+            <span class="section-title">📢 MARKETING & GROWTH</span>
+            <span class="section-status status-active">2 ACTIVE</span>
+        </div>
+        <div class="section-content">
+            <div class="agent-card">
+                <div class="agent-header">
+                    <div>
+                        <span class="agent-name">📊 GARY</span>
+                        <span class="agent-role">Marketing Lead</span>
+                    </div>
+                    <span class="agent-status status-busy">BUSY</span>
+                </div>
+                <div class="agent-current-task">Reviewing content calendar</div>
+                <div class="agent-queue">Queue: 2 pending (performance analysis, campaign planning)</div>
+            </div>
+
+            <div class="agent-card">
+                <div class="agent-header">
+                    <div>
+                        <span class="agent-name">📲 LARRY</span>
+                        <span class="agent-role">Social Media</span>
+                    </div>
+                    <span class="agent-status status-busy">BUSY</span>
+                </div>
+                <div class="agent-current-task">Scheduling tomorrow's posts (9 AM, 2 PM, 6 PM)</div>
+                <div class="agent-queue">Queue: 2 pending (engagement monitoring, hashtag research)</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- BACKEND OPERATIONS -->
+    <div class="section">
+        <div class="section-header">
+            <span class="section-title">⚙️ BACKEND & OPERATIONS</span>
+            <span class="section-status status-active">3 ACTIVE</span>
+        </div>
+        <div class="section-content">
+            <div class="agent-card">
+                <div class="agent-header">
+                    <div>
+                        <span class="agent-name">⚙️ SENTRY</span>
+                        <span class="agent-role">DevOps</span>
+                    </div>
+                    <span class="agent-status status-active">MONITORING</span>
+                </div>
+                <div class="agent-current-task">System health monitoring (all green)</div>
+                <div class="agent-queue">Queue: 2 pending (health report, optimization)</div>
+            </div>
+
+            <div class="agent-card">
+                <div class="agent-header">
+                    <div>
+                        <span class="agent-name">✅ AUDIT</span>
+                        <span class="agent-role">QA</span>
+                    </div>
+                    <span class="agent-status status-active">MONITORING</span>
+                </div>
+                <div class="agent-current-task">Quality monitoring (baseline: 100% pass)</div>
+                <div class="agent-queue">Queue: 2 pending (spot-check, weekly audit)</div>
+            </div>
+
+            <div class="agent-card">
+                <div class="agent-header">
+                    <div>
+                        <span class="agent-name">🔒 CIPHER</span>
+                        <span class="agent-role">Security</span>
+                    </div>
+                    <span class="agent-status status-active">SECURE</span>
+                </div>
+                <div class="agent-current-task">Security monitoring (perimeter secure)</div>
+                <div class="agent-queue">Queue: 2 pending (log review, incident prep)</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCHEDULED EVENTS -->
+    <div class="section">
+        <div class="section-header">
+            <span class="section-title">📅 UPCOMING EVENTS</span>
+            <span class="section-status status-active">4 SCHEDULED</span>
+        </div>
+        <div class="section-content">
+            <div class="menu-item">
+                <span class="menu-label">08:00 AM:</span>
+                <span class="menu-value">Nexus Daily Briefing</span>
+            </div>
+            <div class="menu-item">
+                <span class="menu-label">11:30 AM:</span>
+                <span class="menu-value">Progress Report to EricF</span>
+            </div>
+            <div class="menu-item">
+                <span class="menu-label">02:00 PM:</span>
+                <span class="menu-value">Content Collaboration Session</span>
+            </div>
+            <div class="menu-item">
+                <span class="menu-label">04:00 PM:</span>
+                <span class="menu-value">Marketing Strategy Meeting</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- RECENT ACTIVITY LOG -->
+    <div class="section">
+        <div class="section-header">
+            <span class="section-title">📝 RECENT ACTIVITY LOG</span>
+            <span class="section-status">LAST 10</span>
+        </div>
+        <div class="section-content">
+            <div class="log-entry">
+                <span class="log-time">07:23</span>
+                <span class="log-agent">[NEXUS]</span>
+                Assigned tasks to all 8 agents - 24 total tasks distributed
+            </div>
+            <div class="log-entry">
+                <span class="log-time">07:22</span>
+                <span class="log-agent">[SYSTEM]</span>
+                Dynamic office position system activated - hourly updates enabled
+            </div>
+            <div class="log-entry">
+                <span class="log-time">07:10</span>
+                <span class="log-agent">[SYSTEM]</span>
+                All 9 agents spawned and initialized successfully
+            </div>
+            <div class="log-entry">
+                <span class="log-time">07:05</span>
+                <span class="log-agent">[GLASSES]</span>
+                Delivered daily briefing - crypto/NFT/stock/news intel provided
+            </div>
+            <div class="log-entry">
+                <span class="log-time">06:45</span>
+                <span class="log-agent">[SYSTEM]</span>
+                Morning briefing cron triggered - Glasses activated
+            </div>
+            <div class="log-entry">
+                <span class="log-time">06:30</span>
+                <span class="log-agent">[NEXUS]</span>
+                System check complete - all agents standing by
+            </div>
+        </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- SYSTEM INFO -->
+    <div class="section">
+        <div class="section-header">
+            <span class="section-title">ℹ️ SYSTEM INFORMATION</span>
+        </div>
+        <div class="section-content">
+            <div class="menu-item">
+                <span class="menu-label">Version:</span>
+                <span class="menu-value">Mission Control v1.0</span>
+            </div>
+            <div class="menu-item">
+                <span class="menu-label">Total Agents:</span>
+                <span class="menu-value">9 active, 0 offline</span>
+            </div>
+            <div class="menu-item">
+                <span class="menu-label">Tasks Today:</span>
+                <span class="menu-value">24 assigned, 6 completed, 18 in progress</span>
+            </div>
+            <div class="menu-item">
+                <span class="menu-label">Office State:</span>
+                <span class="menu-value">Morning Briefing → Deep Work Transition</span>
+            </div>
+            <div class="menu-item">
+                <span class="menu-label">Next Heartbeat:</span>
+                <span class="menu-value">07:30 (all agents)</span>
+            </div>
+            <div class="menu-item">
+                <span class="menu-label">Dashboard URL:</span>
+                <span class="menu-value code">http://localhost:8080</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        Mission Control System | Commander: EricF | Orchestrator: Air1ck3ff (Nexus)<br>
+        Type 'help' for commands | Auto-refresh every 60 seconds
+    </div>
+</body>
+</html>

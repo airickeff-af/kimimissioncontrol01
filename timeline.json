@@ -1,0 +1,250 @@
+{
+  "timeline": {
+    "project": "Mission Control Dashboard",
+    "version": "2.0",
+    "start_date": "2026-02-17",
+    "sprint_duration": "2 days (ACCELERATED)",
+    "phases": [
+      {
+        "phase": 1,
+        "name": "Foundation",
+        "dates": "Feb 17 (Day 1) - PARALLEL WORK",
+        "status": "in_progress",
+        "tasks": [
+          {
+            "id": "F-001",
+            "agent": "Forge",
+            "task": "Design System (colors, typography, spacing)",
+            "priority": "P0",
+            "deadline": "Today 5PM",
+            "status": "completed",
+            "deliverables": [
+              "design-tokens.json",
+              "theme.css"
+            ]
+          },
+          {
+            "id": "F-002",
+            "agent": "Forge",
+            "task": "Agent Card Component",
+            "priority": "P0",
+            "deadline": "Today 5PM",
+            "status": "completed",
+            "deliverables": [
+              "AgentCard.jsx",
+              "agent-card.css"
+            ]
+          },
+          {
+            "id": "C-001",
+            "agent": "Code",
+            "task": "API: /api/agents endpoint",
+            "priority": "P0",
+            "deadline": "Today 5PM",
+            "status": "in_progress",
+            "deliverables": [
+              "api.js",
+              "agents.json"
+            ]
+          },
+          {
+            "id": "C-002",
+            "agent": "Code",
+            "task": "Agent Data Collector",
+            "priority": "P0",
+            "deadline": "Today 5PM",
+            "status": "pending",
+            "deliverables": [
+              "data-collector.py",
+              "agent-scanner.js"
+            ]
+          }
+        ]
+      },
+      {
+        "phase": 2,
+        "name": "Navigation & Data",
+        "dates": "Feb 17 (Day 1) - PARALLEL WORK",
+        "status": "pending",
+        "tasks": [
+          {
+            "id": "F-003",
+            "agent": "Forge",
+            "task": "Sidebar Navigation & Layout",
+            "priority": "P1",
+            "deadline": "Wed 5PM",
+            "status": "pending",
+            "deliverables": [
+              "Sidebar.jsx",
+              "Layout.css"
+            ]
+          },
+          {
+            "id": "C-003",
+            "agent": "Code",
+            "task": "API: /api/agents/:id endpoint",
+            "priority": "P1",
+            "deadline": "Wed 5PM",
+            "status": "pending",
+            "deliverables": [
+              "api.js update"
+            ]
+          },
+          {
+            "id": "C-004",
+            "agent": "Code",
+            "task": "File Watcher (detect new outputs)",
+            "priority": "P1",
+            "deadline": "Wed 5PM",
+            "status": "pending",
+            "deliverables": [
+              "file-watcher.py"
+            ]
+          }
+        ]
+      },
+      {
+        "phase": 3,
+        "name": "Integration",
+        "dates": "Feb 18 (Day 2) - Integration",
+        "status": "pending",
+        "tasks": [
+          {
+            "id": "INT-001",
+            "agents": [
+              "Forge",
+              "Code"
+            ],
+            "task": "Connect Frontend + Backend",
+            "priority": "P1",
+            "deadline": "Thu 5PM",
+            "status": "pending",
+            "deliverables": [
+              "integration.js",
+              "api-client.js"
+            ]
+          },
+          {
+            "id": "INT-002",
+            "agents": [
+              "Forge",
+              "Code"
+            ],
+            "task": "Testing & Bug Fixes",
+            "priority": "P1",
+            "deadline": "Thu 5PM",
+            "status": "pending",
+            "deliverables": [
+              "test-suite.js",
+              "bug-fixes.md"
+            ]
+          }
+        ]
+      },
+      {
+        "phase": 4,
+        "name": "Polish & Features",
+        "dates": "Feb 18 (Day 2) - Deploy",
+        "status": "pending",
+        "tasks": [
+          {
+            "id": "F-005",
+            "agent": "Forge",
+            "task": "Dark/Light Theme Toggle",
+            "priority": "P2",
+            "deadline": "Fri 5PM",
+            "status": "pending",
+            "deliverables": [
+              "ThemeToggle.jsx"
+            ]
+          },
+          {
+            "id": "F-006",
+            "agent": "Forge",
+            "task": "Mobile Responsive Layout",
+            "priority": "P2",
+            "deadline": "Fri 5PM",
+            "status": "pending",
+            "deliverables": [
+              "responsive.css"
+            ]
+          },
+          {
+            "id": "C-005",
+            "agent": "Code",
+            "task": "WebSocket Server (real-time)",
+            "priority": "P2",
+            "deadline": "Fri 5PM",
+            "status": "pending",
+            "deliverables": [
+              "websocket-server.js"
+            ]
+          },
+          {
+            "id": "C-006",
+            "agent": "Code",
+            "task": "API: /api/tasks endpoint",
+            "priority": "P2",
+            "deadline": "Fri 5PM",
+            "status": "pending",
+            "deliverables": [
+              "tasks-api.js"
+            ]
+          }
+        ]
+      },
+      {
+        "phase": 5,
+        "name": "Demo & Review",
+        "dates": "Feb 18 (Day 2) - COMPLETE",
+        "status": "pending",
+        "tasks": [
+          {
+            "id": "DEMO-001",
+            "agents": [
+              "Forge",
+              "Code",
+              "Nexus"
+            ],
+            "task": "Sprint Review Demo",
+            "priority": "P0",
+            "deadline": "Fri 5PM",
+            "status": "pending",
+            "deliverables": [
+              "demo-presentation",
+              "live-dashboard"
+            ]
+          },
+          {
+            "id": "DEMO-002",
+            "agent": "Nexus",
+            "task": "Plan Sprint 2",
+            "priority": "P1",
+            "deadline": "Fri EOD",
+            "status": "pending",
+            "deliverables": [
+              "sprint-2-plan.md"
+            ]
+          }
+        ]
+      }
+    ],
+    "milestones": [
+      {
+        "date": "Feb 17 5PM",
+        "milestone": "P0 Tasks Complete",
+        "description": "Design system, agent cards, basic API"
+      },
+      {
+        "date": "Feb 19 5PM",
+        "milestone": "Integration Complete",
+        "description": "Frontend connected to backend"
+      },
+      {
+        "date": "Feb 21 5PM",
+        "milestone": "Sprint 1 Demo",
+        "description": "Full dashboard v2.0 presentation"
+      }
+    ]
+  }
+}

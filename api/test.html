@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mission Control API Test</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0f0f0f;
+      color: #e0e0e0;
+      padding: 2rem;
+    }
+    
+    h1 {
+      color: #00d4ff;
+      margin-bottom: 0.5rem;
+    }
+    
+    .subtitle {
+      color: #666;
+      margin-bottom: 2rem;
+    }
+    
+    .test-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+      gap: 1.5rem;
+    }
+    
+    .test-card {
+      background: #1a1a1a;
+      border: 1px solid #333;
+      border-radius: 12px;
+      padding: 1.5rem;
+    }
+    
+    .test-card h2 {
+      color: #00d4ff;
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+    
+    .status.ok {
+      background: rgba(0, 255, 136, 0.1);
+      color: #00ff88;
+    }
+    
+    .status.error {
+      background: rgba(255, 68, 68, 0.1);
+      color: #ff4444;
+    }
+    
+    .status.pending {
+      background: rgba(255, 193, 7, 0.1);
+      color: #ffc107;
+    }
+    
+    button {
+      background: #00d4ff;
+      color: #0f0f0f;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    button:hover {
+      background: #00a8cc;
+      transform: translateY(-1px);
+    }
+    
+    .result {
+      margin-top: 1rem;
+      padding: 1rem;
+      background: #0f0f0f;
+      border-radius: 8px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.875rem;
+      max-height: 200px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+    }
+    
+    .endpoint {
+      color: #888;
+      font-size: 0.8rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .task-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem;
+      background: #0f0f0f;
+      border-radius: 8px;
+      margin-bottom: 0.5rem;
+    }
+    
+    .priority {
+      width: 4px;
+      height: 24px;
+      border-radius: 2px;
+    }
+    
+    .priority.p0 { background: #ff4444; }
+    .priority.p1 { background: #ff8800; }
+    .priority.p2 { background: #00d4ff; }
+    .priority.p3 { background: #888; }
+    
+    .loading {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 2px solid #333;
+      border-top-color: #00d4ff;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <h1>🚀 Mission Control API Test</h1>
+  <p class="subtitle">Testing File Watcher & Task Queue APIs</p>
+  
+  <div class="test-grid">
+    <!-- Health Check -->
+    <div class="test-card">
+      <h2>🔍 Health Check</h2>
+      <p class="endpoint">GET /api/health</p>
+      <div id="health-status" class="status pending">
+        <span class="loading"></span> Checking...
+      </div>
+      <pre id="health-result" class="result">Waiting...</pre>
+    </div>
+    
+    <!-- Agents API -->
+    <div class="test-card">
+      <h2>🤖 Agents API</h2>
+      <p class="endpoint">GET /api/agents</p>
+      <button onclick="testAgents()">Test Agents</button>
+      <pre id="agents-result" class="result">Click to test...</pre>
+    </div>
+    
+    <!-- Task Queue API -->
+    <div class="test-card">
+      <h2>📋 Task Queue API</h2>
+      <p class="endpoint">GET /api/tasks</p>
+      <button onclick="testTasks()">Test Tasks</button>
+      <div id="tasks-result"></div>
+    </div>
+    
+    <!-- Create Task -->
+    <div class="test-card">
+      <h2>➕ Create Task</h2>
+      <p class="endpoint">POST /api/tasks</p>
+      <input type="text" id="task-desc" placeholder="Task description" 
+             style="width: 100%; padding: 0.5rem; margin-bottom: 0.5rem; background: #0f0f0f; border: 1px solid #333; color: #fff; border-radius: 4px;">
+      <select id="task-priority" style="width: 100%; padding: 0.5rem; margin-bottom: 0.5rem; background: #0f0f0f; border: 1px solid #333; color: #fff; border-radius: 4px;">
+        <option value="P0">P0 - Critical</option>
+        <option value="P1">P1 - High</option>
+        <option value="P2" selected>P2 - Medium</option>
+        <option value="P3">P3 - Low</option>
+      </select>
+      <button onclick="createTask()">Create Task</button>
+      <pre id="create-result" class="result"></pre>
+    </div>
+    
+    <!-- File Watcher -->
+    <div class="test-card">
+      <h2>📁 File Watcher</h2>
+      <p class="endpoint">GET /api/files/watch</p>
+      <button onclick="testFileWatcher()">Test File Watcher</button>
+      <pre id="file-result" class="result">Click to test...</pre>
+    </div>
+    
+    <!-- Task Stats -->
+    <div class="test-card">
+      <h2>📊 Task Statistics</h2>
+      <p class="endpoint">GET /api/tasks/stats</p>
+      <button onclick="testTaskStats()">Get Stats</button>
+      <pre id="stats-result" class="result">Click to test...</pre>
+    </div>
+  
+  </div>
+  
+  <script>
+    const API_BASE = 'http://localhost:3001';
+    
+    // Health check on load
+    async function checkHealth() {
+      try {
+        const response = await fetch(`${API_BASE}/api/health`);
+        const data = await response.json();
+        
+        const statusEl = document.getElementById('health-status');
+        const resultEl = document.getElementById('health-result');
+        
+        if (data.status === 'ok') {
+          statusEl.className = 'status ok';
+          statusEl.innerHTML = '✅ API Online';
+          resultEl.textContent = JSON.stringify(data, null, 2);
+        } else {
+          statusEl.className = 'status error';
+          statusEl.innerHTML = '❌ API Error';
+        }
+      } catch (e) {
+        const statusEl = document.getElementById('health-status');
+        statusEl.className = 'status error';
+        statusEl.innerHTML = '❌ Connection Failed';
+        document.getElementById('health-result').textContent = e.message;
+      }
+    }
+    
+    async function testAgents() {
+      const resultEl = document.getElementById('agents-result');
+      resultEl.textContent = 'Loading...';
+      
+      try {
+        const response = await fetch(`${API_BASE}/api/agents`);
+        const data = await response.json();
+        resultEl.textContent = `Found ${data.length} agents:\n` + 
+          data.map(a => `• ${a.name} (${a.role}) - ${a.status}`).join('\n');
+      } catch (e) {
+        resultEl.textContent = 'Error: ' + e.message;
+      }
+    }
+    
+    async function testTasks() {
+      const resultEl = document.getElementById('tasks-result');
+      resultEl.innerHTML = '<div class="loading"></div>';
+      
+      try {
+        const response = await fetch(`${API_BASE}/api/tasks`);
+        const data = await response.json();
+        
+        if (data.tasks && data.tasks.length > 0) {
+          resultEl.innerHTML = data.tasks.slice(0, 5).map(task => `
+            <div class="task-item">
+              <div class="priority ${task.priority.toLowerCase()}"></div>
+              <div>
+                <div>${task.description}</div>
+                <small style="color: #666;">${task.status} • ${task.assignedTo}</small>
+              </div>
+            </div>
+          `).join('');
+        } else {
+          resultEl.innerHTML = '<p>No tasks found</p>';
+        }
+      } catch (e) {
+        resultEl.innerHTML = 'Error: ' + e.message;
+      }
+    }
+    
+    async function createTask() {
+      const desc = document.getElementById('task-desc').value;
+      const priority = document.getElementById('task-priority').value;
+      const resultEl = document.getElementById('create-result');
+      
+      if (!desc) {
+        resultEl.textContent = 'Please enter a description';
+        return;
+      }
+      
+      resultEl.textContent = 'Creating...';
+      
+      try {
+        const response = await fetch(`${API_BASE}/api/tasks`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            description: desc,
+            priority: priority,
+            assignedTo: 'test-user'
+          })
+        });
+        
+        const data = await response.json();
+        resultEl.textContent = 'Created: ' + JSON.stringify(data, null, 2);
+        document.getElementById('task-desc').value = '';
+      } catch (e) {
+        resultEl.textContent = 'Error: ' + e.message;
+      }
+    }
+    
+    async function testFileWatcher() {
+      const resultEl = document.getElementById('file-result');
+      resultEl.textContent = 'Loading...';
+      
+      try {
+        const response = await fetch(`${API_BASE}/api/files/watch`);
+        const data = await response.json();
+        resultEl.textContent = JSON.stringify(data, null, 2);
+      } catch (e) {
+        resultEl.textContent = 'Error: ' + e.message;
+      }
+    }
+    
+    async function testTaskStats() {
+      const resultEl = document.getElementById('stats-result');
+      resultEl.textContent = 'Loading...';
+      
+      try {
+        const response = await fetch(`${API_BASE}/api/tasks/stats`);
+        const data = await response.json();
+        resultEl.textContent = JSON.stringify(data, null, 2);
+      } catch (e) {
+        resultEl.textContent = 'Error: ' + e.message;
+      }
+    }
+    
+    // Run health check on load
+    checkHealth();
+  </script>
+</body>
+</html>

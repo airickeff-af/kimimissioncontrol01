@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent Card Component | Mission Control</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        /* ═══════════════════════════════════════════════════════════════
+           AGENT CARD COMPONENT v2.0
+           Features: Avatar, Status Indicator, Knowledge Bar, Animations
+           Author: Forge (UX Developer)
+           Date: 2026-02-17
+           ═══════════════════════════════════════════════════════════════ */
+        
+        :root {
+            /* Colors */
+            --mc-bg-primary: #0a0a0f;
+            --mc-bg-secondary: #111118;
+            --mc-bg-tertiary: #1a1a24;
+            --mc-bg-card: #15151d;
+            --mc-bg-hover: #252532;
+            
+            --mc-accent-cyan: #00d4ff;
+            --mc-accent-purple: #a855f7;
+            --mc-accent-pink: #ec4899;
+            --mc-accent-orange: #f97316;
+            --mc-accent-amber: #fbbf24;
+            --mc-accent-green: #22c55e;
+            --mc-accent-yellow: #eab308;
+            --mc-accent-red: #ef4444;
+            
+            /* Agent Colors */
+            --mc-agent-nexus: #ff2a6d;
+            --mc-agent-forge: #f97316;
+            --mc-agent-scout: #06b6d4;
+            --mc-agent-buzz: #22c55e;
+            --mc-agent-glasses: #4dabf7;
+            --mc-agent-quill: #ffa94d;
+            --mc-agent-pixel: #da77f2;
+            --mc-agent-gary: #69db7c;
+            --mc-agent-larry: #ffd43b;
+            --mc-agent-sentry: #74c0fc;
+            --mc-agent-audit: #ffc078;
+            --mc-agent-cipher: #adb5bd;
+            
+            --mc-text-primary: #fafafa;
+            --mc-text-secondary: #a1a1aa;
+            --mc-text-muted: #71717a;
+            
+            --mc-border-default: #27272a;
+            --mc-border-hover: #3f3f46;
+            
+            /* Status Colors */
+            --mc-status-online: #22c55e;
+            --mc-status-busy: #eab308;
+            --mc-status-offline: #71717a;
+            --mc-status-error: #ef4444;
+            
+            /* Typography */
+            --mc-font-primary: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --mc-font-mono: 'JetBrains Mono', monospace;
+            
+            /* Spacing */
+            --mc-space-1: 0.25rem;
+            --mc-space-2: 0.5rem;
+            --mc-space-3: 0.75rem;
+            --mc-space-4: 1rem;
+            --mc-space-5: 1.25rem;
+            --mc-space-6: 1.5rem;
+            
+            /* Radius */
+            --mc-radius-md: 8px;
+            --mc-radius-lg: 12px;
+            --mc-radius-xl: 16px;
+            --mc-radius-full: 9999px;
+            
+            /* Transitions */
+            --mc-transition-fast: 150ms ease;
+            --mc-transition-base: 200ms ease;
+            --mc-transition-slow: 300ms ease;
+        }
+        
+        body {
+            font-family: var(--mc-font-primary);
+            background: var(--mc-bg-primary);
+            color: var(--mc-text-primary);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        
+        /* ═══════════════════════════════════════════════════════════════
+           AGENT CARD COMPONENT
+           ═══════════════════════════════════════════════════════════════ */
+        
+        .agent-card {
+            background: var(--mc-bg-card);
+            border: 1px solid var(--mc-border-default);
+            border-radius: var(--mc-radius-xl);
+            padding: var(--mc-space-5);
+            transition: all var(--mc-transition-base);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            max-width: 320px;
+        }
+        
+        .agent-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--agent-color, var(--mc-accent-cyan)), transparent);
+            opacity: 0.7;
+        }
+        
+        .agent-card:hover {
+            border-color: var(--mc-border-hover);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+        
+        .agent-card:hover::before {
+            opacity: 1;
+        }
+        
+        /* Agent Header with Avatar */
+        .agent-header {
+            display: flex;
+            align-items: center;
+            gap: var(--mc-space-4);
+            margin-bottom: var(--mc-space-4);
+        }
+        
+        /* Avatar Container */
+        .agent-avatar-wrapper {
+            position: relative;
+            flex-shrink: 0;
+        }
+        
+        .agent-avatar {
+            width: 64px;
+            height: 64px;
+            border-radius: var(--mc-radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            background: linear-gradient(135deg, var(--agent-color, var(--mc-accent-cyan)), var(--agent-color-secondary, var(--mc-accent-purple)));
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Avatar glow effect on hover */
+        .agent-card:hover .agent-avatar {
+            box-shadow: 0 0 30px var(--agent-glow, rgba(0, 212, 255, 0.4));
+        }
+        
+        /* Status Indicator */
+        .agent-status-ring {
+            position: absolute;
+            inset: -3px;
+            border-radius: calc(var(--mc-radius-lg) + 3px);
+            padding: 3px;
+            background: conic-gradient(
+                from 0deg,
+                var(--status-color, var(--mc-status-online)) 0deg,
+                var(--status-color, var(--mc-status-online)) calc(var(--status-percent, 100) * 3.6deg),
+                transparent calc(var(--status-percent, 100) * 3.6deg),
+                transparent 360deg
+            );
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0.8;
+            transition: opacity var(--mc-transition-base);
+        }
+        
+        .agent-card:hover .agent-status-ring {
+            opacity: 1;
+        }
+        
+        /* Status Dot */
+        .agent-status-dot {
+            position: absolute;
+            bottom: -2px;
+            right: -2px;
+            width: 16px;
+            height: 16px;
+            border-radius: var(--mc-radius-full);
+            background: var(--status-color, var(--mc-status-online));
+            border: 3px solid var(--mc-bg-card);
+            box-shadow: 0 0 10px var(--status-color, var(--mc-status-online));
+        }
+        
+        .agent-status-dot.pulse {
+            animation: status-pulse 2s infinite;
+        }
+        
+        @keyframes status-pulse {
+            0%, 100% { 
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% { 
+                transform: scale(1.2);
+                opacity: 0.7;
+            }
+        }
+        
+        /* Agent Info */
+        .agent-info {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .agent-name {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--mc-text-primary);
+            margin-bottom: var(--mc-space-1);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .agent-role {
+            font-size: 0.875rem;
+            color: var(--agent-color, var(--mc-accent-cyan));
+            font-weight: 500;
+            margin-bottom: var(--mc-space-1);
+        }
+        
+        .agent-codename {
+            font-family: var(--mc-font-mono);
+            font-size: 0.75rem;
+            color: var(--mc-text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        /* Status Badge */
+        .agent-status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--mc-space-2);
+            padding: var(--mc-space-1) var(--mc-space-3);
+            border-radius: var(--mc-radius-full);
+            font-size: 0.75rem;
+            font-weight: 500;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--status-color, var(--mc-text-secondary));
+        }
+        
+        .agent-status-badge::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: var(--mc-radius-full);
+            background: var(--status-color, var(--mc-text-muted));
+        }
+        
+        /* Knowledge Bar Section */
+        .agent-knowledge {
+            margin-top: var(--mc-space-4);
+            padding-top: var(--mc-space-4);
+            border-top: 1px solid var(--mc-border-default);
+        }
+        
+        .knowledge-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--mc-space-2);
+        }
+        
+        .knowledge-label {
+            font-size: 0.75rem;
+            color: var(--mc-text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+        
+        .knowledge-value {
+            font-family: var(--mc-font-mono);
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--agent-color, var(--mc-accent-cyan));
+        }
+        
+        /* Knowledge Bar Container */
+        .knowledge-bar-container {
+            display: flex;
+            flex-direction: column;
+            gap: var(--mc-space-2);
+        }
+        
+        /* Main Knowledge Bar */
+        .knowledge-bar {
+            height: 8px;
+            background: var(--mc-bg-tertiary);
+            border-radius: var(--mc-radius-full);
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .knowledge-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--agent-color, var(--mc-accent-cyan)), var(--agent-color-secondary, var(--mc-accent-purple)));
+            border-radius: var(--mc-radius-full);
+            transition: width 1s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Shimmer effect on knowledge bar */
+        .knowledge-bar-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+        
+        /* Skill Tags */
+        .agent-skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--mc-space-2);
+            margin-top: var(--mc-space-3);
+        }
+        
+        .skill-tag {
+            padding: var(--mc-space-1) var(--mc-space-2);
+            background: var(--mc-bg-tertiary);
+            border: 1px solid var(--mc-border-default);
+            border-radius: var(--mc-radius-md);
+            font-size: 0.75rem;
+            color: var(--mc-text-secondary);
+            transition: all var(--mc-transition-fast);
+        }
+        
+        .skill-tag:hover {
+            background: var(--mc-bg-hover);
+            border-color: var(--agent-color, var(--mc-border-hover));
+            color: var(--mc-text-primary);
+        }
+        
+        /* Stats Row */
+        .agent-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--mc-space-3);
+            margin-top: var(--mc-space-4);
+            padding-top: var(--mc-space-4);
+            border-top: 1px solid var(--mc-border-default);
+        }
+        
+        .agent-stat {
+            text-align: center;
+        }
+        
+        .agent-stat-value {
+            font-family: var(--mc-font-mono);
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--mc-text-primary);
+            display: block;
+        }
+        
+        .agent-stat-label {
+            font-size: 0.7rem;
+            color: var(--mc-text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        /* Compact Variant */
+        .agent-card.compact {
+            padding: var(--mc-space-4);
+            max-width: 280px;
+        }
+        
+        .agent-card.compact .agent-avatar {
+            width: 48px;
+            height: 48px;
+            font-size: 1.5rem;
+        }
+        
+        .agent-card.compact .agent-name {
+            font-size: 1rem;
+        }
+        
+        .agent-card.compact .agent-role {
+            font-size: 0.8rem;
+        }
+        
+        .agent-card.compact .agent-knowledge,
+        .agent-card.compact .agent-skills {
+            display: none;
+        }
+        
+        /* List Variant */
+        .agent-card.list {
+            display: flex;
+            align-items: center;
+            max-width: 100%;
+            padding: var(--mc-space-4);
+        }
+        
+        .agent-card.list .agent-header {
+            flex: 1;
+            margin-bottom: 0;
+            margin-right: var(--mc-space-4);
+        }
+        
+        .agent-card.list .agent-knowledge {
+            width: 200px;
+            margin-top: 0;
+            padding-top: 0;
+            border-top: none;
+            border-left: 1px solid var(--mc-border-default);
+            padding-left: var(--mc-space-4);
+        }
+        
+        .agent-card.list .agent-stats {
+            display: none;
+        }
+        
+        /* ═══════════════════════════════════════════════════════════════
+           AGENT COLOR VARIANTS
+           ═══════════════════════════════════════════════════════════════ */
+        
+        .agent-card[data-agent="nexus"] {
+            --agent-color: var(--mc-agent-nexus);
+            --agent-color-secondary: #d300f9;
+            --agent-glow: rgba(255, 42, 109, 0.4);
+        }
+        
+        .agent-card[data-agent="forge"] {
+            --agent-color: var(--mc-agent-forge);
+            --agent-color-secondary: var(--mc-accent-amber);
+            --agent-glow: rgba(249, 115, 22, 0.4);
+        }
+        
+        .agent-card[data-agent="scout"] {
+            --agent-color: var(--mc-agent-scout);
+            --agent-color-secondary: #3b82f6;
+            --agent-glow: rgba(6, 182, 212, 0.4);
+        }
+        
+        .agent-card[data-agent="buzz"] {
+            --agent-color: var(--mc-agent-buzz);
+            --agent-color-secondary: #10b981;
+            --agent-glow: rgba(34, 197, 94, 0.4);
+        }
+        
+        .agent-card[data-agent="glasses"] {
+            --agent-color: var(--mc-agent-glasses);
+            --agent-color-secondary: #339af0;
+            --agent-glow: rgba(77, 171, 247, 0.4);
+        }
+        
+        .agent-card[data-agent="quill"] {
+            --agent-color: var(--mc-agent-quill);
+            --agent-color-secondary: #ff922b;
+            --agent-glow: rgba(255, 169, 77, 0.4);
+        }
+        
+        .agent-card[data-agent="pixel"] {
+            --agent-color: var(--mc-agent-pixel);
+            --agent-color-secondary: #be4bdb;
+            --agent-glow: rgba(218, 119, 242, 0.4);
+        }
+        
+        .agent-card[data-agent="gary"] {
+            --agent-color: var(--mc-agent-gary);
+            --agent-color-secondary: #51cf66;
+            --agent-glow: rgba(105, 219, 124, 0.4);
+        }
+        
+        .agent-card[data-agent="larry"] {
+            --agent-color: var(--mc-agent-larry);
+            --agent-color-secondary: #fcc419;
+            --agent-glow: rgba(255, 212, 59, 0.4);
+        }
+        
+        /* ═══════════════════════════════════════════════════════════════
+           STATUS COLOR VARIANTS
+           ═══════════════════════════════════════════════════════════════ */
+        
+        .agent-card[data-status="online"] {
+            --status-color: var(--mc-status-online);
+            --status-percent: 100;
+        }
+        
+        .agent-card[data-status="busy"] {
+            --status-color: var(--mc-status-busy);
+            --status-percent: 75;
+        }
+        
+        .agent-card[data-status="offline"] {
+            --status-color: var(--mc-status-offline);
+            --status-percent: 25;
+        }
+        
+        .agent-card[data-status="error"] {
+            --status-color: var(--mc-status-error);
+            --status-percent: 50;
+        }
+        
+        /* ═══════════════════════════════════════════════════════════════
+           DEMO PAGE STYLES
+           ═══════════════════════════════════════════════════════════════ */
+        
+        .demo-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .demo-header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--mc-accent-cyan), var(--mc-accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+        
+        .demo-header p {
+            color: var(--mc-text-secondary);
+            font-size: 1.1rem;
+        }
+        
+        .demo-section {
+            margin-bottom: 4rem;
+        }
+        
+        .demo-section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--mc-border-default);
+        }
+        
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .demo-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            align-items: flex-start;
+        }
+        
+        .code-block {
+            background: var(--mc-bg-secondary);
+            border: 1px solid var(--mc-border-default);
+            border-radius: var(--mc-radius-lg);
+            padding: 1.5rem;
+            font-family: var(--mc-font-mono);
+            font-size: 0.875rem;
+            overflow-x: auto;
+            margin-top: 2rem;
+        }
+        
+        .code-block .comment { color: var(--mc-text-muted); }
+        .code-block .tag { color: var(--mc-accent-cyan); }
+        .code-block .attr { color: var(--mc-accent-purple); }
+        .code-block .value { color: var(--mc-accent-amber); }
+    </style>
+</head>
+<body>
+    <header class="demo-header">
+        <h1>◈ Agent Card Component v2.0</h1>
+        <p>Reusable agent card with avatar, status indicator, and knowledge bar</p>
+    </header>
+
+    <!-- STANDARD VARIANTS -->
+    <section class="demo-section">
+        <h2 class="demo-section-title">Standard Cards</h2>
+        
+        <div class="demo-grid">
+            <!-- Nexus Card -->
+            <div class="agent-card" data-agent="nexus" data-status="online">
+                <div class="agent-header">
+                    <div class="agent-avatar-wrapper">
+                        <div class="agent-status-ring"></div>
+                        <div class="agent-avatar">◈</div>
+                        <div class="agent-status-dot pulse"></div>
+                    </div>
+                    <div class="agent-info">
+                        <div class="agent-name">Nexus</div>
+                        <div class="agent-role">Orchestrator</div>
+                        <div class="agent-codename">Air1ck3ff</div>
+                    </div>
+                </div>
+                
+                <div class="agent-knowledge">
+                    <div class="knowledge-header">
+                        <span class="knowledge-label">Knowledge Level</span>
+                        <span class="knowledge-value">95%</span>
+                    </div>
+                    <div class="knowledge-bar-container">
+                        <div class="knowledge-bar">
+                            <div class="knowledge-bar-fill" style="width: 95%;"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="agent-skills">
+                    <span class="skill-tag">Coordination</span>
+                    <span class="skill-tag">Strategy</span>
+                    <span class="skill-tag">Routing</span>
+                </div>
+                
+                <div class="agent-stats">
+                    <div class="agent-stat">
+                        <span class="agent-stat-value">12</span>
+                        <span class="agent-stat-label">Tasks</span>
+                    </div>
+                    <div class="agent-stat">
+                        <span class="agent-stat-value">4</span>
+                        <span class="agent-stat-label">Agents</span>
+                    </div>
+                    <div class="agent-stat">
+                        <span class="agent-stat-value">98%</span>
+                        <span class="agent-stat-label">Uptime</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Forge Card -->
+            <div class="agent-card" data-agent="forge" data-status="busy">
+                <div class="agent-header">
+                    <div class="agent-avatar-wrapper">
+                        <div class="agent-status-ring"></div>
+                        <div class="agent-avatar">⚒️</div>
+                        <div class="agent-status-dot pulse"></div>
+                    </div>
+                    <div class="agent-info">
+                        <div class="agent-name">Forge</div>
+                        <div class="agent-role">Developer</div>
+                        <div class="agent-codename">The Builder</div>
+                    </div>
+                </div>
+                
+                <div class="agent-knowledge">
+                    <div class="knowledge-header">
+                        <span class="knowledge-label">Knowledge Level</span>
+                        <span class="knowledge-value">88%</span>
+                    </div>
+                    <div class="knowledge-bar-container">
+                        <div class="knowledge-bar">
+                            <div class="knowledge-bar-fill" style="width: 88%;"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="agent-skills">
+                    <span class="skill-tag">HTML/CSS</span>
+                    <span class="skill-tag">JavaScript</span>
+                    <span class="skill-tag">UI/UX</span>
+                </div>
+                
+                <div class="agent-stats">
+                    <div class="agent-stat">
+                        <span class="agent-stat-value">3</span>
+                        <span class="agent-stat-label">Active</span>
+                    </div>
+                    <div class="agent-stat">
+                        <span class="agent-stat-value">800</span>
+                        <span class="agent-stat-label">Lines</span>
+                    </div>
+                    <div class="agent-stat">
+                        <span class="agent-stat-value">2</span>
+                        <span class="agent-stat-label">Files</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Scout Card -->
+            <div class="agent-card" data-agent="scout" data-status="online">
+                <div class="agent-header">
+                    <div class="agent-avatar-wrapper">
+                        <div class="agent-status-ring"></div>
+                        <div class="agent-avatar">🔍</div>
+                        <div class="agent-status-dot"></div>
+                    </div>
+                    <div class="agent-info">
+                        <div class="agent-name">Scout</div>
+                        <div class="agent-role">Researcher</div>
+                        <div class="agent-codename">Intel</div>
+                    </div>
+                </div>
+                
+                <div class="agent-knowledge">
+                    <div class="knowledge-header">
+                        <span class="knowledge-label">Knowledge Level</span>
+                        <span class="knowledge-value">92%</span>
+                    </div>
+                    <div class="knowledge-bar-container">
+                        <div class="knowledge-bar">
+                            <div class="knowledge-bar-fill" style="width: 92%;"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="agent-skills">
+                    <span class="skill-tag">Research</span>
+                    <span class="skill-tag">Analysis</span>
+                    <span class="skill-tag">Reporting</span>
+                </div>
+                
+                <div class="agent-stats">
+                    <div class="agent-stat">
+                        <span class="agent-stat-value">15</span>
+                        <span class="agent-stat-label">Searches</span>
+                    </div>
+                    <div class="agent-stat">
+                        <span class="agent-stat-value">3</span>
+                        <span class="agent-stat-label">Reports</span>
+                    </div>
+                    <div class="agent-stat">
+                        <span class="agent-stat-value">100%</span>
+                        <span class="agent-stat-label">Accuracy</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Buzz Card -->
+            <div class="agent-card" data-agent="buzz" data-status="online">
+                <div class="agent-header">
+                    <div class="agent-avatar-wrapper">
+                        <div class="agent-status-ring"></div>
+                        <div class="agent-avatar">📢</div>
+                        <div class="agent-status-dot"></div>
+                    </div>
+                    <div class="agent-info">
+                        <div class="agent-name">Buzz</div>
+                        <div class="agent-role">Social Media</div>
+                        <div class="agent-codename">Amplifier</div>
+                    </div>
+                </div>
+                
+                <div class="agent-knowledge">
+                    <div class="knowledge-header">
+                        <span class="knowledge-label">Knowledge Level</span>
+                        <span class="knowledge-value">85%</span>
+                    </div>
+                    <div class="knowledge-bar-container">
+                        <div class="knowledge-bar">
+                            <div class="knowledge-bar-fill" style="width: 85%;"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="agent-skills">
+                    <span class="skill-tag">Content</span>
+                    <span class="skill-tag">Engagement</span>
+                    <span class="skill-tag">Scheduling</span>
+                </div>
+                
+                <div class="agent-stats">
+                    <div class="agent-stat">
+                        <span class="agent-stat-value">24</span>
+                        <span class="agent-stat-label">Posts</span>
+                    </div>
+                    <div class="agent-stat">
+                        <span class="agent-stat-value">1.2K</span>
+                        <span class="agent-stat-label">Reach</span>
+                    </div>
+                    <div class="agent-stat">
+                        <span class="agent-stat-value">89%</span>
+                        <span class="agent-stat-label">Engage</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- COMPACT VARIANTS -->
+    <section class="demo-section">
+        <h2 class="demo-section-title">Compact Variant</h2>
+        
+        <div class="demo-row">
+            <div class="agent-card compact" data-agent="glasses" data-status="online">
+                <div class="agent-header">
+                    <div class="agent-avatar-wrapper">
+                        <div class="agent-status-ring"></div>
+                        <div class="agent-avatar">🔍</div>
+                        <div class="agent-status-dot"></div>
+                    </div>
+                    <div class="agent-info">
+                        <div class="agent-name">Glasses</div>
+                        <div class="agent-role">Researcher</div>
+                        <span class="agent-status-badge">Online</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="agent-card compact" data-agent="quill" data-status="busy">
+                <div class="agent-header">
+                    <div class="agent-avatar-wrapper">
+                        <div class="agent-status-ring"></div>
+                        <div class="agent-avatar">✍️</div>
+                        <div class="agent-status-dot pulse"></div>
+                    </div>
+                    <div class="agent-info">
+                        <div class="agent-name">Quill</div>
+                        <div class="agent-role">Writer</div>
+                        <span class="agent-status-badge">Working</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="agent-card compact" data-agent="pixel" data-status="online">
+                <div class="agent-header">
+                    <div class="agent-avatar-wrapper">
+                        <div class="agent-status-ring"></div>
+                        <div class="agent-avatar">🎨</div>
+                        <div class="agent-status-dot"></div>
+                    </div>
+                    <div class="agent-info">
+                        <div class="agent-name">Pixel</div>
+                        <div class="agent-role">Designer</div>
+                        <span class="agent-status-badge">Online</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- LIST VARIANTS -->
+    <section class="demo-section">
+        <h2 class="demo-section-title">List Variant</h2>
+        
+        <div style="display: flex; flex-direction: column; gap: 1rem;">
+            <div class="agent-card list" data-agent="gary" data-status="online">
+                <div class="agent-header">
+                    <div class="agent-avatar-wrapper">
+                        <div class="agent-status-ring"></div>
+                        <div class="agent-avatar">📢</div>
+                        <div class="agent-status-dot"></div>
+                    </div>
+                    <div class="agent-info">
+                        <div class="agent-name">Gary</div>
+                        <div class="agent-role">Marketing Lead</div>
+                        <div class="agent-codename">Growth Hacker</div>
+                    </div>
+                </div>
+                
+                <div class="agent-knowledge">
+                    <div class="knowledge-header">
+                        <span class="knowledge-label">Knowledge</span>
+                        <span class="knowledge-value">90%</span>
+                    </div>
+                    <div class="knowledge-bar-container">
+                        <div class="knowledge-bar">
+                            <div class="knowledge-bar-fill" style="width: 90%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="agent-card list" data-agent="larry" data-status="busy">
+                <div class="agent-header">
+                    <div class="agent-avatar-wrapper">
+                        <div class="agent-status-ring"></div>
+                        <div class="agent-avatar">📲</div>
+                        <div class="agent-status-dot pulse"></div>
+                    </div>
+                    <div class="agent-info">
+                        <div class="agent-name">Larry</div>
+                        <div class="agent-role">Social Manager</div>
+                        <div class="agent-codename">Community</div>
+                    </div>
+                </div>
+                
+                <div class="agent-knowledge">
+                    <div class="knowledge-header">
+                        <span class="knowledge-label">Knowledge</span>
+                        <span class="knowledge-value">87%</span>
+                    </div>
+                    <div class="knowledge-bar-container">
+                        <div class="knowledge-bar">
+                            <div class="knowledge-bar-fill" style="width: 87%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- USAGE CODE -->
+    <section class="demo-section">
+        <h2 class="demo-section-title">Usage</h2>
+        
+        <div class="code-block">
+<span class="comment">&lt;!-- Standard Agent Card --&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"agent-card"</span> <span class="attr">data-agent</span>=<span class="value">"forge"</span> <span class="attr">data-status</span>=<span class="value">"busy"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"agent-header"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"agent-avatar-wrapper"</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"agent-status-ring"</span><span class="tag">&gt;&lt;/div&gt;</span>
+      <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"agent-avatar"</span><span class="tag">&gt;</span>⚒️<span class="tag">&lt;/div&gt;</span>
+      <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"agent-status-dot pulse"</span><span class="tag">&gt;&lt;/div&gt;</span>
+    <span class="tag">&lt;/div&gt;</span>
+    <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"agent-info"</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"agent-name"</span><span class="tag">&gt;</span>Forge<span class="tag">&lt;/div&gt;</span>
+      <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"agent-role"</span><span class="tag">&gt;</span>Developer<span class="tag">&lt;/div&gt;</span>
+    <span class="tag">&lt;/div&gt;</span>
+  <span class="tag">&lt;/div&gt;</span>
+  
+  <span class="comment">&lt;!-- Knowledge Bar --&gt;</span>
+  <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"agent-knowledge"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"knowledge-bar"</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"knowledge-bar-fill"</span> <span class="attr">style</span>=<span class="value">"width: 88%;"</span><span class="tag">&gt;&lt;/div&gt;</span>
+    <span class="tag">&lt;/div&gt;</span>
+  <span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;/div&gt;</span>
+        </div>
+    </section>
+
+    <footer style="text-align: center; padding: 2rem; border-top: 1px solid var(--mc-border-default); margin-top: 3rem; color: var(--mc-text-muted);">
+        <p>Agent Card Component v2.0 | Created by Forge | Mission Control Dashboard</p>
+    </footer>
+</body>
+</html>

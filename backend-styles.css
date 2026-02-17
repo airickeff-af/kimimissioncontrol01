@@ -1,0 +1,103 @@
+
+/* Mission Control Connection Status */
+#connection-status {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: bold;
+    z-index: 10000;
+    transition: all 0.3s ease;
+}
+
+.status-connected {
+    background: #4ade80;
+    color: #064e3b;
+}
+
+.status-disconnected {
+    background: #f87171;
+    color: #7f1d1d;
+}
+
+.status-connecting {
+    background: #fbbf24;
+    color: #78350f;
+}
+
+/* Agent card update animation */
+.agent-card.updated {
+    animation: pulse-update 1s ease;
+}
+
+@keyframes pulse-update {
+    0% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.7); }
+    70% { box-shadow: 0 0 0 10px rgba(74, 222, 128, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0); }
+}
+
+/* Toast notifications */
+.toast {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 15px 20px;
+    border-radius: 8px;
+    background: #1f2937;
+    color: white;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    transform: translateX(400px);
+    transition: transform 0.3s ease;
+    z-index: 10001;
+    max-width: 300px;
+}
+
+.toast.show {
+    transform: translateX(0);
+}
+
+.toast-title {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.toast-message {
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+.toast-info { border-left: 4px solid #3b82f6; }
+.toast-success { border-left: 4px solid #4ade80; }
+.toast-warning { border-left: 4px solid #fbbf24; }
+.toast-error { border-left: 4px solid #f87171; }
+
+/* Activity log */
+.activity-log {
+    max-height: 300px;
+    overflow-y: auto;
+    font-family: monospace;
+    font-size: 12px;
+}
+
+.activity-entry {
+    padding: 5px;
+    border-bottom: 1px solid #374151;
+    display: flex;
+    gap: 10px;
+}
+
+.activity-time {
+    color: #9ca3af;
+    min-width: 80px;
+}
+
+.activity-agent {
+    color: #60a5fa;
+    min-width: 100px;
+}
+
+.activity-action {
+    color: #e5e7eb;
+}

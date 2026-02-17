@@ -1,0 +1,89 @@
+# Mission Control - Live Logs Dashboard
+**Created:** 2026-02-17 7:11 PM
+
+---
+
+## 📊 REAL-TIME LOGS
+
+### 🔄 Office Position Updates
+```
+[19:02:03] Position update: wind_down in break_area - Wind down - Casual conversations
+[18:01:44] Position update: wrap_up in individual - End of day wrap-up
+[17:00:32] Position update: strategy_planning in command - Strategic planning
+[16:00:45] Position update: review_qa in qa_station - Review and QA session
+[15:00:41] Position update: marketing_planning in marketing_bay - Marketing planning
+[14:00:30] Position update: deep_work_afternoon in individual - Deep work
+[13:00:12] Position update: deep_work_afternoon in individual - Deep work
+[12:01:28] Position update: lunch_break in break_area - Lunch break
+[11:01:24] Position update: collaboration_content in content_corner - Content collaboration
+[10:00:20] Position update: deep_work_morning in individual - Deep work
+[09:00:23] Position update: deep_work_morning in individual - Deep work
+[08:01:31] Position update: default in individual - Default positions
+```
+
+### 🌐 API Server Logs
+```
+[INFO] API server started on http://0.0.0.0:8080
+[INFO] 127.0.0.1 [17/Feb/2026:12:05:49] "GET /api/health" 200
+[INFO] 127.0.0.1 [17/Feb/2026:12:06:01] "GET /api/health" 200
+```
+
+### 🤖 Agent Activity
+```
+[19:10:00] Audit: Completed DealFlow review - APPROVED
+[19:10:00] Audit: Completed Code review - FAILED (needs fix)
+[19:09:00] Code: Submitted backend finalization
+[19:07:00] DealFlow: Submitted database setup - 6 leads
+[19:05:00] Nexus: Spawned Forge-2 for acceleration
+[19:02:00] Office: State changed to wind_down
+[18:56:00] System: Heartbeat check - all clear
+[18:30:00] Task Queue: All clear - 10 tasks completed
+```
+
+### ⚠️ Alerts & Issues
+```
+[19:10:15] ALERT: Code backend failed audit
+[19:10:15] ISSUE: API returning 404 errors
+[19:10:15] ACTION: Spawned fix task for Code
+[19:02:00] INFO: Deployment pipeline tested
+[18:17:00] INFO: Main session tokens recovered to 41K
+```
+
+---
+
+## 📈 LOG STATISTICS
+
+| Log Type | Entries Today | Last Update |
+|----------|---------------|-------------|
+| Office Positions | 12 | 19:02 |
+| API Requests | 2 | 12:06 |
+| Agent Activity | 8 | 19:10 |
+| System Alerts | 5 | 19:10 |
+
+---
+
+## 🔍 LOG FILES LOCATION
+
+```
+/mission-control/logs/
+├── office_positions.log       # Hourly position updates
+├── agent_activity.log         # Agent task completions
+├── system_alerts.log          # Errors and warnings
+└── deployment.log            # Deployment events
+
+/backend/logs/
+├── api_server.log            # API requests/responses
+├── api_test.log              # Test results
+└── websocket_server.log      # WebSocket events
+```
+
+---
+
+## 🔄 AUTO-REFRESH
+
+This dashboard updates every 5 minutes.
+Last update: 2026-02-17 7:11 PM
+
+---
+
+*Live logs maintained by Nexus (Air1ck3ff)*

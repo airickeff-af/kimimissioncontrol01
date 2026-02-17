@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mission Control Board | EricF Command Center</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #111118;
+            --bg-card: #16161f;
+            --accent-cyan: #00d4ff;
+            --accent-purple: #a855f7;
+            --accent-green: #00ff9f;
+            --accent-red: #ff6b6b;
+            --accent-yellow: #ffc107;
+            --accent-blue: #339af0;
+            --text-primary: #ffffff;
+            --text-secondary: #a1a1aa;
+            --text-muted: #71717a;
+            --border-color: #27272a;
+        }
+        
+        body {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--bg-primary);
+            color: var(--accent-green);
+            min-height: 100vh;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+        
+        .header {
+            border-bottom: 2px solid var(--accent-green);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            color: var(--accent-red);
+            font-size: clamp(1.3rem, 4vw, 2rem);
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+        
+        .timestamp {
+            color: #444;
+            font-size: 0.8rem;
+            margin-top: 10px;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: rgba(0, 255, 159, 0.05);
+            border: 1px solid var(--border-color);
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        
+        .stat-card:hover {
+            border-color: var(--accent-green);
+            transform: translateY(-2px);
+        }
+        
+        .stat-number {
+            font-size: clamp(2rem, 5vw, 2.5rem);
+            font-weight: bold;
+            color: var(--accent-red);
+        }
+        
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+        
+        .section {
+            margin-bottom: 30px;
+        }
+        
+        .section-title {
+            color: var(--accent-red);
+            font-size: clamp(1rem, 3vw, 1.3rem);
+            margin-bottom: 15px;
+            border-left: 4px solid var(--accent-red);
+            padding-left: 10px;
+        }
+        
+        .agent-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 15px;
+        }
+        
+        @media (max-width: 400px) {
+            .agent-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .agent-card {
+            background: rgba(0, 255, 159, 0.03);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 15px;
+            transition: all 0.3s;
+        }
+        
+        .agent-card:hover {
+            border-color: var(--accent-green);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 255, 159, 0.1);
+        }
+        
+        .agent-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            gap: 10px;
+        }
+        
+        .agent-name {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: var(--text-primary);
+        }
+        
+        .agent-role {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+        
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+        
+        .status-active {
+            background: rgba(0, 255, 159, 0.2);
+            color: var(--accent-green);
+        }
+        
+        .status-working {
+            background: rgba(255, 193, 7, 0.2);
+            color: var(--accent-yellow);
+        }
+        
+        .status-standby {
+            background: rgba(108, 117, 125, 0.2);
+            color: #6c757d;
+        }
+        
+        .status-completed {
+            background: rgba(40, 167, 69, 0.2);
+            color: #28a745;
+        }
+        
+        .agent-task {
+            color: #ccc;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+        
+        .agent-meta {
+            display: flex;
+            gap: 15px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            flex-wrap: wrap;
+        }
+        
+        .knowledge-bar {
+            width: 100%;
+            height: 6px;
+            background: #222;
+            border-radius: 3px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+        
+        .knowledge-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-green), var(--accent-cyan));
+            border-radius: 3px;
+            transition: width 0.5s ease;
+        }
+        
+        .task-list {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 15px;
+        }
+        
+        .task-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border-color);
+            gap: 12px;
+        }
+        
+        .task-item:last-child {
+            border-bottom: none;
+        }
+        
+        .task-status {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        
+        .task-done {
+            background: var(--accent-green);
+            box-shadow: 0 0 10px var(--accent-green);
+        }
+        
+        .task-progress {
+            background: var(--accent-yellow);
+            animation: pulse-yellow 2s infinite;
+        }
+        
+        @keyframes pulse-yellow {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+        
+        .task-pending {
+            background: #666;
+        }
+        
+        .task-text {
+            flex: 1;
+            color: #ccc;
+            font-size: 0.9rem;
+        }
+        
+        .task-agent {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            white-space: nowrap;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .agent-card {
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>◈ MISSION CONTROL BOARD</h1>
+        <div class="subtitle">EricF Command Center - Real-Time Agent Status</div>
+        <div class="timestamp">Last Updated: 2026-02-17 07:03 PM (Asia/Shanghai)</div>
+    </div>
+    
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-number">20</div>
+            <div class="stat-label">Total Agents</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">17</div>
+            <div class="stat-label">Active Now</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">3</div>
+            <div class="stat-label">New Deployed</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">2</div>
+            <div class="stat-label">Pending Tasks</div>
+        </div>
+    </div>
+    
+    <div class="section">
+        <div class="section-title">🚀 CORE TEAM (High Frequency - 15-20min)</div>
+        <div class="agent-grid">
+            <div class="agent-card">
+                <div class="agent-header">
+                    <div>
+                        <div class="agent-name">◈ NEXUS (Air1ck3ff)</div>
+                        <div class="agent-role">Orchestrator</div>
+                    </div>
+                    <span class="status-badge status-active">ACTIVE</span>
+                </div>
+                <div class="agent-task">Managing 20 agents, coordinating all operations</div>
+                <div class="agent-meta">
+                    <span>42.7 KB</span>
+                    <span>12 files</span>
+                    <span>Exp: 8.5</span>
+                </div>
+                <div class="knowledge-bar">
+                    <div class="knowledge-fill" style="width: 100%"></div>
+                </div>
+            </div>
+            
+            <div class="agent-card">
+                <div class="agent-header">
+                    <div>
+                        <div class="agent-name">⚒️ FORGE</div>
+                        <div class="agent-role">UX Developer</div>
+                    </div>
+                    <span class="status-badge status-working">WORKING</span>
+                </div>
+                <div class="agent-task">Dashboard Final Integration - UI polish, mobile responsive</div>
+                <div class="agent-meta">
+                    <span>23.2 KB</span>
+                    <span>4 files</span>
+                    <span>Exp: 4.5</span>
+                </div>
+                <div class="knowledge-bar">
+                    <div class="knowledge-fill" style="width: 75%"></div>
+                </div>
+            </div>
+            
+            <div class="agent-card">
+                <div class="agent-header">
+                    <div>
+                        <div class="agent-name">⚒️ CODE</div>
+                        <div class="agent-role">Backend Developer</div>
+                    </div>
+                    <span class="status-badge status-working">WORKING</span>
+                </div>
+                <div class="agent-task">Building dashboard API/backend with Forge</div>
+                <div class="agent-meta">
+                    <span>0.0 KB</span>
+                    <span>0 files</span>
+                    <span>Exp: 0.0</span>
+                </div>
+                <div class="knowledge-bar">
+                    <div class="knowledge-fill" style="width: 30%"></div>
+                </div>
+            </div>
+            
+            <div class="agent-card">
+                <div class="agent-header">
+                    <div>
+                        <div class="agent-name">✅ AUDIT</div>
+                        <div class="agent-role">Quality Assurance</div>
+                    </div>
+                    <span class="status-badge status-active">ACTIVE</span>
+                </div>
+                <div class="agent-task">QA reviews - monitoring for new tasks</div>
+                <div class="agent-meta">
+                    <span>19.0 KB</span>
+                    <span>3 files</span>
+                    <span>Exp: 2.2</span>
+                </div>
+                <div class="knowledge-bar">
+                    <div class="knowledge-fill" style="width: 80%"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="section">
+        <div class="section-title">🆕 NEW AGENTS (Just Deployed)</div>
+        <div class="agent-grid">
+            <div class="agent-card">
+                <div class="agent-header">
+                    <div>
+                        <div class="agent-name">🤝 DEALFLOW</div>
+                        <div class="agent-role">BD Lead Generator</div>
+                    </div>
+                    <span class="status-badge status-completed">COMPLETED</span>
+                </div>
+                <div class="agent-task">Delivered 30+ qualified leads for coins.ph/coins.xyz</div>
+                <div class="agent-meta">
+                    <span>Target: Exchanges, DeFi, Payment Processors</span>
+                </div>
+            </div>
+            
+            <div class="agent-card">
+                <div class="agent-header">
+                    <div>
+                        <div class="agent-name">📞 COLDCALL</div>
+                        <div class="agent-role">Meeting Booker</div>
+                    </div>
+                    <span class="status-badge status-active">STANDBY</span>
+                </div>
+                <div class="agent-task">Waiting for leads from DealFlow</div>
+                <div class="agent-meta">
+                    <span>Ready: LinkedIn/Twitter outreach</span>
+                </div>
+            </div>
+            
+            <div class="agent-card">
+                <div class="agent-header">
+                    <div>
+                        <div class="agent-name">💰 SCOUT</div>
+                        <div class="agent-role">Opportunity Hunter</div>
+                    </div>
+                    <span class="status-badge status-completed">COMPLETED</span>
+                </div>
+                <div class="agent-task">Creator monetization report delivered</div>
+                <div class="agent-meta">
+                    <span>OKX Affiliate, Airdrops, Web3 Jobs</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="section">
+        <div class="section-title">👥 SPECIALIST TEAM (3hr Heartbeats)</div>
+        <div class="agent-grid">
+            <div class="agent-card">
+                <div class="agent-header">
+                    <div>
+                        <div class="agent-name">🔍 GLASSES</div>
+                        <div class="agent-role">Researcher</div>
+                    </div>
+                    <span class="status-badge status-active">ACTIVE</span>
+                </div>
+                <div class="agent-task">Daily crypto briefings, market research</div>
+                <div class="agent-meta">
+                    <span>15.7 KB</span>
+                    <span>2 files</span>
+                </div>
+            </div>
+            
+            <div class="agent-card">
+                <div class="agent-header">
+                    <div>
+                        <div class="agent-name">✍️ QUILL</div>
+                        <div class="agent-role">Writer</div>
+                    </div>
+                    <span class="status-badge status-active">ACTIVE</span>
+                </div>
+                <div class="agent-task">Content creation, social copy</div>
+                <div class="agent-meta">
+                    <span>12.7 KB</span>
+                    <span>2 files</span>
+                </div>
+            </div>
+            
+            <div class="agent-card">
+                <div class="agent-header">
+                    <div>
+                        <div class="agent-name">🎨 PIXEL</div>
+                        <div class="agent-role">Visual Designer</div>
+                    </div>
+                    <span class="status-badge status-active">ACTIVE</span>
+                </div>
+                <div class="agent-task">Graphics, thumbnails, visual assets</div>
+                <div class="agent-meta">
+                    <span>21.5 KB</span>
+                    <span>6 files</span>
+                </div>
+            </div>
+            
+            <div class="agent-card">
+                <div class="agent-header">
+                    <div>
+                        <div class="agent-name">📢 GARY</div>
+                        <div class="agent-role">Marketing Lead</div>
+                    </div>
+                    <span class="status-badge status-active">ACTIVE</span>
+                </div>
+                <div class="agent-task">Campaigns, growth strategies</div>
+                <div class="agent-meta">
+                    <span>10.5 KB</span>
+                    <span>3 files</span>
+                </div>
+            </div>
+            
+            <div class="agent-card">
+                <div class="agent-header">
+                    <div>
+                        <div class="agent-name">📲 LARRY</div>
+                        <div class="agent-role">Social Media</div>
+                    </div>
+                    <span class="status-badge status-active">ACTIVE</span>
+                </div>
+                <div class="agent-task">Posting schedule, engagement</div>
+                <div class="agent-meta">
+                    <span>8.3 KB</span>
+                    <span>3 files</span>
+                </div>
+            </div>
+            
+            <div class="agent-card">
+                <div class="agent-header">
+                    <div>
+                        <div class="agent-name">⚙️ SENTRY</div>
+                        <div class="agent-role">DevOps</div>
+                    </div>
+                    <span class="status-badge status-active">ACTIVE</span>
+                </div>
+                <div class="agent-task">System monitoring, infrastructure</div>
+                <div class="agent-meta">
+                    <span>7.5 KB</span>
+                    <span>3 files</span>
+                </div>
+            </div>
+            
+            <div class="agent-card">
+                <div class="agent-header">
+                    <div>
+                        <div class="agent-name">🔒 CIPHER</div>
+                        <div class="agent-role">Security</div>
+                    </div>
+                    <span class="status-badge status-active">ACTIVE</span>
+                </div>
+                <div class="agent-task">Security monitoring, threat detection</div>
+                <div class="agent-meta">
+                    <span>7.0 KB</span>
+                    <span>5 files</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="section">
+        <div class="section-title">📋 RECENT COMPLETIONS</div>
+        <div class="task-list">
+            <div class="task-item">
+                <div class="task-status task-done"></div>
+                <div class="task-text">Dashboard Final Integration - All tabs working, mobile responsive</div>
+                <div class="task-agent">Forge</div>
+            </div>            
+            <div class="task-item">
+                <div class="task-status task-done"></div>
+                <div class="task-text">Creator monetization report - OKX affiliate, airdrops, Web3 jobs</div>
+                <div class="task-agent">Scout</div>
+            </div>
+            <div class="task-item">
+                <div class="task-status task-done"></div>
+                <div class="task-text">QA review completed - 4/5 outputs approved</div>
+                <div class="task-agent">Audit</div>
+            </div>
+            <div class="task-item">
+                <div class="task-status task-done"></div>
+                <div class="task-text">Dashboard v2.0 UX improvements deployed</div>
+                <div class="task-agent">Forge</div>
+            </div>
+            <div class="task-item">
+                <div class="task-status task-progress"></div>
+                <div class="task-text">Partnership lead generation for coins.ph/coins.xyz</div>
+                <div class="task-agent">DealFlow</div>
+            </div>
+            <div class="task-item">
+                <div class="task-status task-progress"></div>
+                <div class="task-text">Dashboard API/backend development</div>
+                <div class="task-agent">Code + Forge</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

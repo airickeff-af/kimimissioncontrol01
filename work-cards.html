@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent Work Cards | Mission Control</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #111118;
+            --bg-card: #16161f;
+            --accent-cyan: #00d4ff;
+            --accent-purple: #a855f7;
+            --accent-green: #00ff9f;
+            --accent-red: #ff6b6b;
+            --accent-yellow: #ffc107;
+            --accent-blue: #339af0;
+            --accent-orange: #ffa94d;
+            --text-primary: #ffffff;
+            --text-secondary: #a1a1aa;
+            --text-muted: #71717a;
+            --border-color: #27272a;
+        }
+        
+        body {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--bg-primary);
+            color: var(--accent-green);
+            min-height: 100vh;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+        
+        .header {
+            border-bottom: 2px solid var(--accent-green);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            color: var(--accent-red);
+            font-size: clamp(1.3rem, 4vw, 1.8rem);
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+        
+        .timestamp {
+            color: #444;
+            font-size: 0.8rem;
+            margin-top: 10px;
+        }
+        
+        .section {
+            margin-bottom: 30px;
+        }
+        
+        .section-title {
+            color: var(--accent-red);
+            font-size: clamp(1rem, 3vw, 1.2rem);
+            margin-bottom: 15px;
+            border-left: 4px solid var(--accent-red);
+            padding-left: 10px;
+        }
+        
+        .work-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 15px;
+        }
+        
+        @media (max-width: 400px) {
+            .work-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .work-card {
+            background: rgba(0, 255, 159, 0.03);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .work-card:hover {
+            border-color: var(--accent-green);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 255, 159, 0.1);
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+            gap: 10px;
+        }
+        
+        .agent-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .agent-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+        
+        .avatar-nexus { background: linear-gradient(135deg, #ff6b6b, #c92a2a); }
+        .avatar-forge { background: linear-gradient(135deg, #4dabf7, #1971c2); }
+        .avatar-code { background: linear-gradient(135deg, #69db7c, #2f9e44); }
+        .avatar-audit { background: linear-gradient(135deg, #ffc078, #e67700); }
+        .avatar-glasses { background: linear-gradient(135deg, #74c0fc, #1971c2); }
+        .avatar-quill { background: linear-gradient(135deg, #ffa94d, #d9480f); }
+        .avatar-pixel { background: linear-gradient(135deg, #da77f2, #9c36b5); }
+        .avatar-gary { background: linear-gradient(135deg, #69db7c, #2f9e44); }
+        .avatar-larry { background: linear-gradient(135deg, #ffd43b, #f08c00); }
+        .avatar-sentry { background: linear-gradient(135deg, #74c0fc, #1971c2); }
+        .avatar-cipher { background: linear-gradient(135deg, #adb5bd, #495057); }
+        .avatar-dealflow { background: linear-gradient(135deg, #ff6b6b, #a855f7); }
+        .avatar-coldcall { background: linear-gradient(135deg, #00d9e8, #00ff9f); }
+        .avatar-scout { background: linear-gradient(135deg, #ffd43b, #ff6b6b); }
+        
+        .agent-name-section h3 {
+            color: var(--text-primary);
+            font-size: 1.1rem;
+            margin-bottom: 3px;
+        }
+        
+        .agent-role {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+        
+        .status-badge {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+        
+        .status-active {
+            background: rgba(0, 255, 159, 0.2);
+            color: var(--accent-green);
+        }
+        
+        .status-working {
+            background: rgba(255, 193, 7, 0.2);
+            color: var(--accent-yellow);
+        }
+        
+        .status-standby {
+            background: rgba(108, 117, 125, 0.2);
+            color: #6c757d;
+        }
+        
+        .status-completed {
+            background: rgba(40, 167, 69, 0.2);
+            color: #28a745;
+        }
+        
+        .current-task {
+            background: rgba(0, 0, 0, 0.3);
+            border-left: 3px solid var(--accent-green);
+            padding: 12px;
+            margin-bottom: 15px;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .task-label {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+        
+        .task-value {
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+        
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .stat-box {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 10px;
+            border-radius: 6px;
+            text-align: center;
+        }
+        
+        .stat-value {
+            color: var(--text-primary);
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+        
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 0.7rem;
+            margin-top: 3px;
+        }
+        
+        .progress-section {
+            margin-bottom: 15px;
+        }
+        
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+            font-size: 0.8rem;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #222;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-green), var(--accent-cyan));
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+        
+        .recent-outputs {
+            margin-top: auto;
+            padding-top: 15px;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .outputs-title {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            margin-bottom: 8px;
+        }
+        
+        .output-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 0;
+            font-size: 0.85rem;
+            color: #ccc;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .output-item:last-child {
+            border-bottom: none;
+        }
+        
+        .output-icon {
+            color: var(--accent-green);
+        }
+        
+        .heartbeat-info {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid var(--border-color);
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+        
+        .heartbeat-fast {
+            color: var(--accent-red);
+        }
+        
+        .heartbeat-normal {
+            color: var(--accent-green);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+            
+            .work-card {
+                padding: 15px;
+            }
+            
+            .agent-avatar {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+            }
+            
+            .agent-name-section h3 {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>◈ AGENT WORK CARDS</h1>
+        <div class="subtitle">Real-Time Status & Deliverables</div>
+        <div class="timestamp">Last Updated: Tuesday, February 17, 2026 — 7:03 PM (Asia/Shanghai)</div>
+    </div>
+    
+    <!-- CORE TEAM -->
+    <div class="section">
+        <div class="section-title">🚀 CORE TEAM (15-20min Heartbeats)</div>
+        <div class="work-grid">
+            <!-- NEXUS -->
+            <div class="work-card">
+                <div class="card-header">
+                    <div class="agent-info">
+                        <div class="agent-avatar avatar-nexus">◈</div>
+                        <div class="agent-name-section">
+                            <h3>NEXUS (Air1ck3ff)</h3>
+                            <div class="agent-role">Orchestrator</div>
+                        </div>
+                    </div>
+                    <span class="status-badge status-active">ACTIVE</span>
+                </div>
+                
+                <div class="current-task">
+                    <div class="task-label">Current Task</div>
+                    <div class="task-value">Managing 20 agents, coordinating all operations, reviewing tasks every 15 minutes</div>
+                </div>
+                
+                <div class="stats-row">
+                    <div class="stat-box">
+                        <div class="stat-value">42.7</div>
+                        <div class="stat-label">KB Knowledge</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value">12</div>
+                        <div class="stat-label">Files</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value">8.5</div>
+                        <div class="stat-label">Experience</div>
+                    </div>
+                </div>
+                
+                <div class="progress-section">
+                    <div class="progress-header">
+                        <span>System Load</span>
+                        <span>85%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 85%"></div>
+                    </div>
+                </div>
+                
+                <div class="recent-outputs">
+                    <div class="outputs-title">Recent Outputs</div>
+                    <div class="output-item">
+                        <span class="output-icon">📊</span>
+                        <span>Project board with priorities/deadlines</span>
+                    </div>
+                    <div class="output-item">
+                        <span class="output-icon">🎯</span>
+                        <span>Mission board with 20 agents</span>
+                    </div>
+                    <div class="output-item">
+                        <span class="output-icon">⚙️</span>
+                        <span>20 cron jobs configured</span>
+                    </div>
+                </div>
+                
+                <div class="heartbeat-info">
+                    <span class="heartbeat-fast">⏱️ Every 15 min</span>
+                    <span>Next: 7:18 PM</span>
+                </div>
+            </div>
+            
+            <!-- FORGE -->
+            <div class="work-card">
+                <div class="card-header">
+                    <div class="agent-info">
+                        <div class="agent-avatar avatar-forge">⚒️</div>
+                        <div class="agent-name-section">
+                            <h3>FORGE</h3>
+                            <div class="agent-role">UX Developer</div>
+                        </div>
+                    </div>
+                    <span class="status-badge status-working">WORKING</span>
+                </div>
+                
+                <div class="current-task">
+                    <div class="task-label">Current Task</div>
+                    <div class="task-value">Dashboard Final Integration - Polishing UI, smooth transitions, mobile responsiveness (P0)</div>
+                </div>
+                
+                <div class="stats-row">
+                    <div class="stat-box">
+                        <div class="stat-value">23.2</div>
+                        <div class="stat-label">KB Knowledge</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value">4</div>
+                        <div class="stat-label">Files</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value">4.5</div>
+                        <div class="stat-label">Experience</div>
+                    </div>
+                </div>
+                
+                <div class="progress-section">
+                    <div class="progress-header">
+                        <span>Sprint Progress</span>
+                        <span>75%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 75%"></div>
+                    </div>
+                </div>
+                
+                <div class="recent-outputs">
+                    <div class="outputs-title">Recent Outputs</div>
+                    <div class="output-item">
+                        <span class="output-icon">🎨</span>
+                        <span>Dashboard v2.0 UX improvements</span>
+                    </div>
+                    <div class="output-item">
+                        <span class="output-icon">💻</span>
+                        <span>forge-workspace.html</span>
+                    </div>
+                </div>
+                
+                <div class="heartbeat-info">
+                    <span class="heartbeat-fast">⏱️ Every 20 min</span>
+                    <span>Next: 7:23 PM</span>
+                </div>
+            </div>
+            
+            <!-- CODE -->
+            <div class="work-card">
+                <div class="card-header">
+                    <div class="agent-info">
+                        <div class="agent-avatar avatar-code">⚒️</div>
+                        <div class="agent-name-section">
+                            <h3>CODE</h3>
+                            <div class="agent-role">Backend Developer</div>
+                        </div>
+                    </div>
+                    <span class="status-badge status-working">WORKING</span>
+                </div>
+                
+                <div class="current-task">
+                    <div class="task-label">Current Task</div>
+                    <div class="task-value">Building dashboard API - /api/agents endpoint + Data Collector (P0)</div>
+                </div>
+                
+                <div class="stats-row">
+                    <div class="stat-box">
+                        <div class="stat-value">0.0</div>
+                        <div class="stat-label">KB Knowledge</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value">0</div>
+                        <div class="stat-label">Files</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value">0.0</div>
+                        <div class="stat-label">Experience</div>
+                    </div>
+                </div>
+                
+                <div class="progress-section">
+                    <div class="progress-header">
+                        <span>Sprint Progress</span>
+                        <span>30%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 30%"></div>
+                    </div>
+                </div>
+                
+                <div class="recent-outputs">
+                    <div class="outputs-title">Recent Outputs</div>
+                    <div class="output-item">
+                        <span class="output-icon">📁</span>
+                        <span>Workspace initialized</span>
+                    </div>
+                    <div class="output-item">
+                        <span class="output-icon">📝</span>
+                        <span>SOUL.md created</span>
+                    </div>
+                </div>
+                
+                <div class="heartbeat-info">
+                    <span class="heartbeat-fast">⏱️ Every 20 min</span>
+                    <span>Next: 7:23 PM</span>
+                </div>
+            </div>
+            
+            <!-- AUDIT -->
+            <div class="work-card">
+                <div class="card-header">
+                    <div class="agent-info">
+                        <div class="agent-avatar avatar-audit">✅</div>
+                        <div class="agent-name-section">
+                            <h3>AUDIT</h3>
+                            <div class="agent-role">Quality Assurance</div>
+                        </div>
+                    </div>
+                    <span class="status-badge status-active">ACTIVE</span>
+                </div>
+                
+                <div class="current-task">
+                    <div class="task-label">Current Task</div>
+                    <div class="task-value">QA reviews - monitoring for new tasks, awaiting dashboard completion</div>
+                </div>
+                
+                <div class="stats-row">
+                    <div class="stat-box">
+                        <div class="stat-value">19.0</div>
+                        <div class="stat-label">KB Knowledge</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value">3</div>
+                        <div class="stat-label">Files</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value">2.2</div>
+                        <div class="stat-label">Experience</div>
+                    </div>
+                </div>
+                
+                <div class="progress-section">
+                    <div class="progress-header">
+                        <span>QA Approval Rate</span>
+                        <span>80%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 80%"></div>
+                    </div>
+                </div>
+                
+                <div class="recent-outputs">
+                    <div class="outputs-title">Recent Outputs</div>
+                    <div class="output-item">
+                        <span class="output-icon">📋</span>
+                        <span>QA Review Report (4 approved, 1 revision)</span>
+                    </div>
+                    <div class="output-item">
+                        <span class="output-icon">✅</span>
+                        <span>Quality standards documentation</span>
+                    </div>
+                </div>
+                
+                <div class="heartbeat-info">
+                    <span class="heartbeat-fast">⏱️ Every 20 min</span>
+                    <span>Next: 7:23 PM</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- NEW AGENTS -->
+    <div class="section">
+        <div class="section-title">🆕 NEW AGENTS (Just Deployed)</div>
+        
+        <div class="work-grid">
+            <!-- DEALFLOW -->
+            <div class="work-card">
+                <div class="card-header">
+                    <div class="agent-info">
+                        <div class="agent-avatar avatar-dealflow">🤝</div>
+                        <div class="agent-name-section">
+                            <h3>DEALFLOW</h3>
+                            <div class="agent-role">BD Lead Generator</div>
+                        </div>
+                    </div>
+                    <span class="status-badge status-completed">COMPLETED</span>
+                </div>
+                
+                <div class="current-task">
+                    <div class="task-label">Current Task</div>
+                    <div class="task-value">Delivered 30+ qualified leads for coins.ph/coins.xyz partnerships</div>
+                </div>
+                
+                <div class="recent-outputs">
+                    <div class="outputs-title">Deliverables</div>
+                    <div class="output-item">
+                        <span class="output-icon">📊</span>
+                        <span>30+ qualified partnership targets</span>
+                    </div>
+                    <div class="output-item">
+                        <span class="output-icon">🎯</span>
+                        <span>Pitch deck outline (15 slides)</span>
+                    </div>
+                    <div class="output-item">
+                        <span class="output-icon">✉️</span>
+                        <span>10 outreach templates</span>
+                    </div>
+                </div>
+                
+                <div class="heartbeat-info">
+                    <span class="heartbeat-normal">⏱️ On Demand</span>
+                    <span>Status: Awaiting next assignment</span>
+                </div>
+            </div>
+            
+            <!-- COLDCALL -->
+            <div class="work-card">
+                <div class="card-header">
+                    <div class="agent-info">
+                        <div class="agent-avatar avatar-coldcall">📞</div>
+                        <div class="agent-name-section">
+                            <h3>COLDCALL</h3>
+                            <div class="agent-role">Meeting Booker</div>
+                        </div>
+                    </div>
+                    <span class="status-badge status-active">ACTIVE</span>
+                </div>
+                
+                <div class="current-task">
+                    <div class="task-label">Current Task</div>
+                    <div class="task-value">Ready to receive leads from DealFlow and book meetings</div>
+                </div>
+                
+                <div class="recent-outputs">
+                    <div class="outputs-title">Templates Created</div>
+                    <div class="output-item">
+                        <span class="output-icon">💼</span>
+                        <span>LinkedIn connection + follow-ups (6)</span>
+                    </div>
+                    <div class="output-item">
+                        <span class="output-icon">🐦</span>
+                        <span>Twitter/X cold DMs (6)</span>
+                    </div>
+                    <div class="output-item">
+                        <span class="output-icon">📧</span>
+                        <span>3-email sequence</span>
+                    </div>
+                </div>
+                
+                <div class="heartbeat-info">
+                    <span class="heartbeat-normal">⏱️ On Demand</span>
+                    <span>Status: Standing by</span>
+                </div>
+            </div>
+            
+            <!-- SCOUT -->
+            <div class="work-card">
+                <div class="card-header">
+                    <div class="agent-info">
+                        <div class="agent-avatar avatar-scout">💰</div>
+                        <div class="agent-name-section">
+                            <h3>SCOUT</h3>
+                            <div class="agent-role">Opportunity Hunter</div>
+                        </div>
+                    </div>
+                    <span class="status-badge status-completed">COMPLETED</span>
+                </div>
+                
+                <div class="current-task">
+                    <div class="task-label">Current Task</div>
+                    <div class="task-value">Delivered creator monetization & trading opportunities report</div>
+                </div>
+                
+                <div class="recent-outputs">
+                    <div class="outputs-title">Key Findings</div>
+                    <div class="output-item">
+                        <span class="output-icon">💎</span>
+                        <span>OKX Affiliate: 50% lifetime commission</span>
+                    </div>
+                    <div class="output-item">
+                        <span class="output-icon">🪂</span>
+                        <span>Airdrops: Linea, Scroll, LayerZero</span>
+                    </div>
+                    <div class="output-item">
+                        <span class="output-icon">💼</span>
+                        <span>1,765+ Web3 BD jobs</span>
+                    </div>
+                </div>
+                
+                <div class="heartbeat-info">
+                    <span class="heartbeat-normal">⏱️ On Demand</span>
+                    <span>Status: Report delivered</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- SPECIALIST TEAM -->
+    <div class="section">
+        <div class="section-title">👥 SPECIALIST TEAM (3hr Heartbeats)</div>
+        
+        <div class="work-grid">
+            <!-- GLASSES -->
+            <div class="work-card">
+                <div class="card-header">
+                    <div class="agent-info">
+                        <div class="agent-avatar avatar-glasses">🔍</div>
+                        <div class="agent-name-section">
+                            <h3>GLASSES</h3>
+                            <div class="agent-role">Researcher</div>
+                        </div>
+                    </div>
+                    <span class="status-badge status-active">ACTIVE</span>
+                </div>
+                
+                <div class="current-task">
+                    <div class="task-label">Current Task</div>
+                    <div class="task-value">Daily crypto briefings, market research, AI tools research</div>
+                </div>
+                
+                <div class="stats-row">
+                    <div class="stat-box">
+                        <div class="stat-value">15.7</div>
+                        <div class="stat-label">KB</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value">2</div>
+                        <div class="stat-label">Files</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value">1.5</div>
+                        <div class="stat-label">Exp</div>
+                    </div>
+                </div>
+                
+                <div class="heartbeat-info">
+                    <span class="heartbeat-normal">⏱️ Every 3hr</span>
+                    <span>Next: 10:00 PM</span>
+                </div>
+            </div>
+            
+            
+            <!-- QUILL -->
+            <div class="work-card">
+                <div class="card-header">
+                    <div class="agent-info">
+                        <div class="agent-avatar avatar-quill">✍️</div>
+                        <div class="agent-name-section">
+                            <h3>QUILL</h3>
+                            <div class="agent-role">Writer</div>
+                        </div>
+                    </div>
+                    <span class="status-badge status-active">ACTIVE</span>
+                </div>
+                
+                <div class="current-task">
+                    <div class="task-label">Current Task</div>
+                    <div class="task-value">Content creation, Twitter threads, scripts, social copy</div>
+                </div>
+                
+                <div class="stats-row">
+                    <div class="stat-box">
+                        <div class="stat-value">12.7</div>
+                        <div class="stat-label">KB</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value">2</div>
+                        <div class="stat-label">Files</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value">1.5</div>
+                        <div class="stat-label">Exp</div>
+                    </div>
+                </div>
+                
+                <div class="recent-outputs">
+                    <div class="output-item">
+                        <span class="output-icon">🐦</span>
+                        <span>Twitter thread (7 tweets)</span>
+                    </div>
+                </div>
+                
+                <div class="heartbeat-info">
+                    <span class="heartbeat-normal">⏱️ Every 3hr</span>
+                    <span>Next: 10:00 PM</span>
+                </div>
+            </div>
+            
+            
+            <!-- PIXEL -->
+            <div class="work-card">
+                <div class="card-header">
+                    <div class="agent-info">
+                        <div class="agent-avatar avatar-pixel">🎨</div>
+                        <div class="agent-name-section">
+                            <h3>PIXEL</h3>
+                            <div class="agent-role">Visual Designer</div>
+                        </div>
+                    </div>
+                    <span class="status-badge status-active">ACTIVE</span>
+                </div>
+                
+                <div class="current-task">
+                    <div class="task-label">Current Task</div>
+                    <div class="task-value">Graphics, thumbnails, visual assets, design specs</div>
+                </div>
+                
+                <div class="stats-row">
+                    <div class="stat-box">
+                        <div class="stat-value">21.5</div>
+                        <div class="stat-label">KB</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value">6</div>
+                        <div class="stat-label">Files</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value">3.4</div>
+                        <div class="stat-label">Exp</div>
+                    </div>
+                </div>
+                
+                <div class="recent-outputs">
+                    <div class="output-item">
+                        <span class="output-icon">🖼️</span>
+                        <span>AI Tools thumbnail specs</span>
+                    </div>
+                </div>
+                
+                <div class="heartbeat-info">
+                    <span class="heartbeat-normal">⏱️ Every 3hr</span>
+                    <span>Next: 10:00 PM</span>
+                </div>
+            </div>
+            
+            
+            <!-- GARY -->
+            <div class="work-card">
+                <div class="card-header">
+                    <div class="agent-info">
+                        <div class="agent-avatar avatar-gary">📢</div>
+                        <div class="agent-name-section">
+                            <h3>GARY</h3>
+                            <div class="agent-role">Marketing Lead</div>
+                        </div>
+                    </div>
+                    <span class="status-badge status-active">ACTIVE</span>
+                </div>
+                
+                <div class="current-task">
+                    <div class="task-label">Current Task</div>
+                    <div class="task-value">Campaigns, growth strategies, content calendar</div>
+                </div>
+                
+                <div class="stats-row">
+                    <div class="stat-box">
+                        <div class="stat-value">10.5</div>
+                        <div class="stat-label">KB</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value">3</div>
+                        <div class="stat-label">Files</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value">1.7</div>
+                        <div class="stat-label">Exp</div>
+                    </div>
+                </div>
+                
+                <div class="recent-outputs">
+                    <div class="output-item">
+                        <span class="output-icon">📅</span>
+                        <span>Content calendar review</span>
+                    </div>
+                </div>
+                
+                <div class="heartbeat-info">
+                    <span class="heartbeat-normal">⏱️ Every 3hr</span>
+                    <span>Next: 10:00 PM</span>
+                </div>
+            </div>
+            
+            
+            <!-- LARRY -->
+            <div class="work-card">
+                <div class="card-header">
+                    <div class="agent-info">
+                        <div class="agent-avatar avatar-larry">📲</div>
+                        <div class="agent-name-section">
+                            <h3>LARRY</h3>
+                            <div class="agent-role">Social Media</div>
+                        </div>
+                    </div>
+                    <span class="status-badge status-active">ACTIVE</span>
+                </div>
+                
+                <div class="current-task">
+                    <div class="task-label">Current Task</div>
+                    <div class="task-value">Posting schedule, engagement, social monitoring</div>
+                </div>
+                
+                <div class="stats-row">
+                    <div class="stat-box">
+                        <div class="stat-value">8.3</div>
+                        <div class="stat-label">KB</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value">3</div>
+                        <div class="stat-label">Files</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value">1.6</div>
+                        <div class="stat-label">Exp</div>
+                    </div>
+                </div>
+                
+                <div class="recent-outputs">
+                    <div class="output-item">
+                        <span class="output-icon">📅</span>
+                        <span>Tomorrow's posting schedule</span>
+                    </div>
+                </div>
+                
+                <div class="heartbeat-info">
+                    <span class="heartbeat-normal">⏱️ Every 3hr</span>
+                    <span>Next: 10:00 PM</span>
+                </div>
+            </div>
+            
+            
+            <!-- SENTRY -->
+            <div class="work-card">
+                <div class="card-header">
+                    <div class="agent-info">
+                        <div class="agent-avatar avatar-sentry">⚙️</div>
+                        <div class="agent-name-section">
+                            <h3>SENTRY</h3>
+                            <div class="agent-role">DevOps</div>
+                        </div>
+                    </div>
+                    <span class="status-badge status-active">ACTIVE</span>
+                </div>
+                
+                <div class="current-task">
+                    <div class="task-label">Current Task</div>
+                    <div class="task-value">System monitoring, infrastructure, cron management</div>
+                </div>
+                
+                <div class="stats-row">
+                    <div class="stat-box">
+                        <div class="stat-value">7.5</div>
+                        <div class="stat-label">KB</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value">3</div>
+                        <div class="stat-label">Files</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value">1.6</div>
+                        <div class="stat-label">Exp</div>
+                    </div>
+                </div>
+                
+                <div class="heartbeat-info">
+                    <span class="heartbeat-normal">⏱️ Every 3hr</span>
+                    <span>Next: 10:00 PM</span>
+                </div>
+            </div>
+            
+            
+            <!-- CIPHER -->
+            <div class="work-card">
+                <div class="card-header">
+                    <div class="agent-info">
+                        <div class="agent-avatar avatar-cipher">🔒</div>
+                        <div class="agent-name-section">
+                            <h3>CIPHER</h3>
+                            <div class="agent-role">Security</div>
+                        </div>
+                    </div>
+                    <span class="status-badge status-active">ACTIVE</span>
+                </div>
+                
+                <div class="current-task">
+                    <div class="task-label">Current Task</div>
+                    <div class="task-value">Security monitoring, threat detection, system protection</div>
+                </div>
+                
+                <div class="stats-row">
+                    <div class="stat-box">
+                        <div class="stat-value">7.0</div>
+                        <div class="stat-label">KB</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value">5</div>
+                        <div class="stat-label">Files</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value">2.7</div>
+                        <div class="stat-label">Exp</div>
+                    </div>
+                </div>
+                
+                <div class="heartbeat-info">
+                    <span class="heartbeat-normal">⏱️ Every 3hr</span>
+                    <span>Next: 10:00 PM</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
