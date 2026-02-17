@@ -54,10 +54,7 @@
             width: 90%;
         }
         
-        .password-box h2 {
-            color: var(--accent-cyan);
-            margin-bottom: 0.5rem;
-        }
+        .password-box h2 { color: var(--accent-cyan); margin-bottom: 0.5rem; }
         
         .password-box input {
             width: 100%;
@@ -110,7 +107,38 @@
             font-size: 1.5rem;
         }
         
-        /* File Browser */
+        .nav-tabs {
+            display: flex;
+            gap: 0.5rem;
+            background: rgba(255,255,255,0.05);
+            padding: 0.5rem;
+            border-radius: 12px;
+        }
+        
+        .nav-tab {
+            padding: 0.75rem 1.25rem;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+        
+        .nav-tab:hover {
+            color: var(--text-primary);
+            background: rgba(255,255,255,0.05);
+        }
+        
+        .nav-tab.active {
+            color: var(--text-primary);
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
+        }
+        
         .container {
             max-width: 1400px;
             margin: 0 auto;
@@ -119,7 +147,7 @@
         
         .file-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 1rem;
             margin-bottom: 2rem;
         }
@@ -166,12 +194,16 @@
             color: var(--text-muted);
         }
         
-        /* Content Area */
         .content-area {
             background: var(--bg-card);
             border: 1px solid var(--border);
             border-radius: 12px;
             overflow: hidden;
+            display: none;
+        }
+        
+        .content-area.active {
+            display: block;
         }
         
         .content-header {
@@ -220,7 +252,6 @@
             overflow-y: auto;
         }
         
-        /* Table View */
         .data-table {
             width: 100%;
             border-collapse: collapse;
@@ -240,7 +271,6 @@
             border-bottom: 1px solid var(--border);
         }
         
-        /* Text/Markdown View */
         .text-view {
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.875rem;
@@ -249,7 +279,6 @@
             color: var(--text-primary);
         }
         
-        /* JSON View */
         .json-view {
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.875rem;
@@ -260,16 +289,13 @@
         .json-string { color: var(--accent-green); }
         .json-number { color: var(--accent-yellow); }
         
-        /* Loading/Error */
         .loading, .error {
             text-align: center;
             padding: 3rem;
             color: var(--text-muted);
         }
         
-        .error {
-            color: var(--accent-pink);
-        }
+        .error { color: var(--accent-pink); }
     </style>
 </head>
 <body>
@@ -293,15 +319,66 @@
                 <span style="font-size: 0.875rem; color: var(--text-muted);">Mission Control Data Repository</span>
             </div>
         </div>
-        <a href="index.html" style="color: var(--text-secondary); text-decoration: none;">← Back to Dashboard</a>
+        
+        <nav class="nav-tabs">
+            <a href="index.html" class="nav-tab">📊 Overview</a>
+            <a href="living-pixel-office.html" class="nav-tab">🏢 Office</a>
+            <a href="data-viewer.html" class="nav-tab active">📁 Data</a>
+            <a href="token-tracker.html" class="nav-tab">💰 Tokens</a>
+            <a href="task-board.html" class="nav-tab">📋 Tasks</a>
+        </nav>
     </header>
 
     <div class="container">
+        <h2 style="margin-bottom: 1rem; color: var(--accent-cyan);">📂 Available Data Files</h2>
+        
         <!-- File Browser -->
-        <div class="file-grid" id="file-grid"></div>
+        <div class="file-grid" id="file-grid">
+            <div class="file-card" onclick="loadFile('data/leads.json', 'DealFlow Leads', 'json')">
+                <div class="file-icon">🤝</div>
+                <div class="file-name">DealFlow Leads</div>
+                <div class="file-desc">26 crypto/fintech leads</div>
+                <div class="file-meta"><span>JSON</span><span>Click to view</span></div>
+            </div>
+            
+            <div class="file-card" onclick="loadFile('data/agents.json', 'Agent Data', 'json')">
+                <div class="file-icon">🤖</div>
+                <div class="file-name">Agent Data</div>
+                <div class="file-desc">20 agents with positions</div>
+                <div class="file-meta"><span>JSON</span><span>Click to view</span></div>
+            </div>
+            
+            <div class="file-card" onclick="loadFile('MEMORY_BANK.md', 'Memory Bank', 'text')">
+                <div class="file-icon">🧠</div>
+                <div class="file-name">Memory Bank</div>
+                <div class="file-desc">Never forget system</div>
+                <div class="file-meta"><span>Markdown</span><span>Click to view</span></div>
+            </div>
+            
+            <div class="file-card" onclick="loadFile('PENDING_TASKS.md', 'Pending Tasks', 'text')">
+                <div class="file-icon">📋</div>
+                <div class="file-name">Pending Tasks</div>
+                <div class="file-desc">Task tracking</div>
+                <div class="file-meta"><span>Markdown</span><span>Click to view</span></div>
+            </div>
+            
+            <div class="file-card" onclick="loadFile('ACTUAL_TOKEN_USAGE_REPORT.md', 'Token Usage', 'text')">
+                <div class="file-icon">💰</div>
+                <div class="file-name">Token Usage Report</div>
+                <div class="file-desc">Real usage data</div>
+                <div class="file-meta"><span>Markdown</span><span>Click to view</span></div>
+            </div>
+            
+            <div class="file-card" onclick="loadFile('HEARTBEATS_TABLE.md', 'Heartbeats', 'text')">
+                <div class="file-icon">🕐</div>
+                <div class="file-name">Heartbeats Table</div>
+                <div class="file-desc">All 13 cron jobs</div>
+                <div class="file-meta"><span>Markdown</span><span>Click to view</span></div>
+            </div>
+        </div>
 
         <!-- Content Area -->
-        <div class="content-area" id="content-area" style="display: none;">
+        <div class="content-area" id="content-area">
             <div class="content-header">
                 <div class="content-title" id="content-title">Select a file</div>
                 <div class="content-actions">
@@ -310,7 +387,7 @@
                 </div>
             </div>
             <div class="content-body" id="content-body">
-                <div class="loading">Select a file to view</div>
+                <div class="loading">Select a file to view its contents</div>
             </div>
         </div>
     </div>
@@ -322,7 +399,6 @@
             if (input === '0000') {
                 document.getElementById('password-overlay').style.display = 'none';
                 localStorage.setItem('dataViewerAuth', 'true');
-                loadFileList();
             } else {
                 document.getElementById('error-msg').style.display = 'block';
             }
@@ -336,80 +412,66 @@
             document.getElementById('password-overlay').style.display = 'none';
         }
 
-        // File definitions
-        const files = [
-            { id: 'leads', name: 'DealFlow Leads', icon: '🤝', desc: '26 crypto/fintech leads', path: 'data/leads.json', type: 'json' },
-            { id: 'onhing', name: 'On Hing Metal Leads', icon: '🔩', desc: '15 manufacturing leads', path: 'data/onhing_metal_leads.json', type: 'json' },
-            { id: 'agents', name: 'Agent Data', icon: '🤖', desc: '20 agents with positions', path: 'data/agents.json', type: 'json' },
-            { id: 'memory', name: 'Memory Bank', icon: '🧠', desc: 'Never forget system', path: 'MEMORY_BANK.md', type: 'text' },
-            { id: 'tasks', name: 'Pending Tasks', icon: '📋', desc: 'Task tracking', path: 'PENDING_TASKS.md', type: 'text' },
-            { id: 'token', name: 'Token Usage', icon: '💰', desc: 'Real usage data', path: 'ACTUAL_TOKEN_USAGE_REPORT.md', type: 'text' },
-            { id: 'speed', name: 'Speed Optimization', icon: '⚡', desc: 'Performance guide', path: 'SPEED_OPTIMIZATION_PROTOCOL.md', type: 'text' },
-            { id: 'skills', name: 'OpenClaw Skills', icon: '🛠️', desc: '53 available skills', path: 'AVAILABLE_OPENCLAW_SKILLS.md', type: 'text' },
-            { id: 'money', name: 'Money Opportunities', icon: '💸', desc: '8 low-lift ideas', path: 'agents/scout/LOW_LIFT_MONEY_OPPORTUNITIES.md', type: 'text' },
-            { id: 'research', name: 'NFT/DeFi Research', icon: '🔍', desc: '2 influential people', path: 'agents/scout/RESEARCH_NFT_DEFI_RWA.md', type: 'text' },
-            { id: 'heartbeats', name: 'Heartbeats Table', icon: '🕐', desc: 'All cron jobs', path: 'HEARTBEATS_TABLE.md', type: 'text' },
-            { id: 'data_index', name: 'Data Index', icon: '📇', desc: 'Files listing', path: 'DATA_INDEX.md', type: 'text' }
-        ];
-
         let currentFile = null;
         let currentContent = '';
+        let currentFilename = '';
 
-        function loadFileList() {
-            const grid = document.getElementById('file-grid');
-            grid.innerHTML = files.map(f => `
-                <div class="file-card" onclick="loadFile('${f.id}')" id="card-${f.id}">
-                    <div class="file-icon">${f.icon}</div>
-                    <div class="file-name">${f.name}</div>
-                    <div class="file-desc">${f.desc}</div>
-                    <div class="file-meta">
-                        <span>${f.type.toUpperCase()}</span>
-                        <span>Click to view</span>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        async function loadFile(fileId) {
-            const file = files.find(f => f.id === fileId);
-            if (!file) return;
-
-            currentFile = file;
-
-            // Update active state
-            document.querySelectorAll('.file-card').forEach(c => c.classList.remove('active'));
-            document.getElementById(`card-${fileId}`).classList.add('active');
-
+        async function loadFile(path, name, type) {
+            currentFilename = path.split('/').pop();
+            
             // Show content area
-            document.getElementById('content-area').style.display = 'block';
-            document.getElementById('content-title').textContent = file.name;
+            document.getElementById('content-area').classList.add('active');
+            document.getElementById('content-title').textContent = name;
             document.getElementById('content-body').innerHTML = '<div class="loading">Loading...</div>';
-
+            
+            // Update active card
+            document.querySelectorAll('.file-card').forEach(c => c.classList.remove('active'));
+            event.target.closest('.file-card').classList.add('active');
+            
             try {
-                const response = await fetch(file.path);
-                if (!response.ok) throw new Error('File not found');
+                // Try multiple path variations
+                const paths = [
+                    path,
+                    '../' + path,
+                    '../../' + path,
+                    'mission-control/' + path
+                ];
+                
+                let response = null;
+                let lastError = null;
+                
+                for (const tryPath of paths) {
+                    try {
+                        response = await fetch(tryPath);
+                        if (response.ok) break;
+                    } catch (e) {
+                        lastError = e;
+                    }
+                }
+                
+                if (!response || !response.ok) {
+                    throw new Error('File not found in any location');
+                }
                 
                 currentContent = await response.text();
                 
-                if (file.type === 'json') {
+                if (type === 'json') {
                     const data = JSON.parse(currentContent);
                     document.getElementById('content-body').innerHTML = renderJSON(data);
                 } else {
-                    // Markdown/text - convert to HTML
                     document.getElementById('content-body').innerHTML = `<pre class="text-view">${escapeHtml(currentContent)}</pre>`;
                 }
             } catch (error) {
                 document.getElementById('content-body').innerHTML = `
                     <div class="error">
                         ❌ Error loading file: ${error.message}<br>
-                        <small>Path: ${file.path}</small>
+                        <small>Tried paths: ${paths.join(', ')}</small>
                     </div>`;
             }
         }
 
         function renderJSON(data) {
             if (Array.isArray(data) && data.length > 0) {
-                // Table view for arrays
                 const keys = Object.keys(data[0]);
                 let html = '<table class="data-table"><thead><tr>';
                 keys.forEach(key => {
@@ -429,10 +491,11 @@
                 });
                 
                 html += '</tbody></table>';
-                if (data.length > 100) html += `<p style="text-align: center; color: var(--text-muted); margin-top: 1rem;">... and ${data.length - 100} more rows</p>`;
+                if (data.length > 100) {
+                    html += `<p style="text-align: center; color: var(--text-muted); margin-top: 1rem;">... and ${data.length - 100} more rows</p>`;
+                }
                 return html;
             } else {
-                // Pretty print JSON
                 const json = JSON.stringify(data, null, 2);
                 return `<pre class="json-view">${highlightJSON(json)}</pre>`;
             }
@@ -457,22 +520,17 @@
         }
 
         function exportContent() {
-            if (!currentFile) return;
+            if (!currentContent) return;
             
             const blob = new Blob([currentContent], { type: 'text/plain' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = currentFile.path.split('/').pop();
+            a.download = currentFilename;
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
-        }
-
-        // Load on startup
-        if (localStorage.getItem('dataViewerAuth') === 'true') {
-            loadFileList();
         }
     </script>
 </body>
