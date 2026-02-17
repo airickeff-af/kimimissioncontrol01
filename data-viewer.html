@@ -30,18 +30,67 @@
             min-height: 100vh;
         }
         
+        /* Password Overlay */
+        #password-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 10, 15, 0.98);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .password-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 3rem;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+        }
+        
+        .password-box h2 {
+            color: var(--accent-cyan);
+            margin-bottom: 0.5rem;
+        }
+        
+        .password-box input {
+            width: 100%;
+            padding: 1rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            text-align: center;
+            letter-spacing: 0.5rem;
+            margin: 1rem 0;
+        }
+        
+        .password-box button {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            border: none;
+            border-radius: 8px;
+            color: #000;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        
+        /* Header */
         .header {
             background: rgba(17, 17, 24, 0.95);
-            backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--border);
-            padding: 0 2rem;
-            height: 70px;
+            padding: 1rem 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
         }
         
         .brand {
@@ -59,92 +108,65 @@
             align-items: center;
             justify-content: center;
             font-size: 1.5rem;
-            box-shadow: 0 0 30px rgba(0, 212, 255, 0.3);
-            animation: pulse 3s ease-in-out infinite;
         }
         
-        @keyframes pulse {
-            0%, 100% { box-shadow: 0 0 20px rgba(0, 212, 255, 0.3); }
-            50% { box-shadow: 0 0 40px rgba(0, 212, 255, 0.5), 0 0 60px rgba(168, 85, 247, 0.3); }
-        }
-        
-        .brand-text h1 {
-            font-size: 1.25rem;
-            font-weight: 700;
-            letter-spacing: -0.02em;
-        }
-        
-        .brand-text span {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            font-family: 'JetBrains Mono', monospace;
-        }
-        
-        .nav-tabs {
-            display: flex;
-            gap: 0.5rem;
-            background: rgba(255,255,255,0.05);
-            padding: 0.5rem;
-            border-radius: 12px;
-        }
-        
-        .nav-tab {
-            padding: 0.75rem 1.25rem;
-            border: none;
-            background: transparent;
-            color: var(--text-secondary);
-            font-size: 0.875rem;
-            font-weight: 500;
-            cursor: pointer;
-            border-radius: 8px;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            text-decoration: none;
-        }
-        
-        .nav-tab:hover {
-            color: var(--text-primary);
-            background: rgba(255,255,255,0.05);
-        }
-        
-        .nav-tab.active {
-            color: var(--text-primary);
-            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
-            box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
-        }
-        
+        /* File Browser */
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             padding: 2rem;
         }
         
-        .file-selector {
-            display: flex;
+        .file-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 1rem;
             margin-bottom: 2rem;
-            flex-wrap: wrap;
         }
         
-        .file-btn {
-            padding: 0.75rem 1.5rem;
+        .file-card {
             background: var(--bg-card);
             border: 1px solid var(--border);
-            border-radius: 8px;
-            color: var(--text-secondary);
+            border-radius: 12px;
+            padding: 1.5rem;
             cursor: pointer;
             transition: all 0.2s;
-            font-size: 0.875rem;
         }
         
-        .file-btn:hover, .file-btn.active {
+        .file-card:hover {
             border-color: var(--accent-cyan);
-            color: var(--accent-cyan);
-            background: rgba(0, 212, 255, 0.1);
+            transform: translateY(-2px);
         }
         
+        .file-card.active {
+            border-color: var(--accent-cyan);
+            background: rgba(0, 212, 255, 0.05);
+        }
+        
+        .file-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .file-name {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+        
+        .file-desc {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+        
+        .file-meta {
+            display: flex;
+            gap: 1rem;
+            margin-top: 0.75rem;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+        
+        /* Content Area */
         .content-area {
             background: var(--bg-card);
             border: 1px solid var(--border);
@@ -163,27 +185,30 @@
         
         .content-title {
             font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
         }
         
-        .view-toggle {
+        .content-actions {
             display: flex;
             gap: 0.5rem;
         }
         
-        .toggle-btn {
+        .btn {
             padding: 0.5rem 1rem;
-            background: transparent;
             border: 1px solid var(--border);
             border-radius: 6px;
+            background: transparent;
             color: var(--text-secondary);
             cursor: pointer;
-            font-size: 0.75rem;
+            font-size: 0.875rem;
+            transition: all 0.2s;
         }
         
-        .toggle-btn.active {
+        .btn:hover {
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
+        }
+        
+        .btn-primary {
             background: var(--accent-cyan);
             color: #000;
             border-color: var(--accent-cyan);
@@ -191,7 +216,7 @@
         
         .content-body {
             padding: 1.5rem;
-            max-height: 70vh;
+            max-height: 60vh;
             overflow-y: auto;
         }
         
@@ -208,31 +233,20 @@
             border-bottom: 2px solid var(--border);
             color: var(--accent-cyan);
             font-weight: 600;
-            position: sticky;
-            top: 0;
-            background: var(--bg-card);
         }
         
         .data-table td {
             padding: 0.75rem;
             border-bottom: 1px solid var(--border);
-            vertical-align: top;
         }
         
-        .data-table tr:hover {
-            background: rgba(255,255,255,0.03);
-        }
-        
-        .priority-p0 { color: var(--accent-pink); font-weight: 600; }
-        .priority-p1 { color: var(--accent-yellow); font-weight: 600; }
-        .priority-p2 { color: var(--accent-cyan); }
-        
-        .status-new { 
-            display: inline-block;
-            padding: 0.25rem 0.5rem;
-            background: rgba(0, 212, 255, 0.1);
-            border-radius: 4px;
-            font-size: 0.75rem;
+        /* Text/Markdown View */
+        .text-view {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            color: var(--text-primary);
         }
         
         /* JSON View */
@@ -240,344 +254,226 @@
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.875rem;
             line-height: 1.6;
-            white-space: pre-wrap;
-            word-break: break-word;
         }
         
         .json-key { color: var(--accent-cyan); }
         .json-string { color: var(--accent-green); }
         .json-number { color: var(--accent-yellow); }
-        .json-boolean { color: var(--accent-pink); }
         
-        /* Card View */
-        .card-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 1rem;
-        }
-        
-        .data-card {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 1rem;
-        }
-        
-        .data-card:hover {
-            border-color: var(--accent-cyan);
-        }
-        
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 0.75rem;
-            padding-bottom: 0.75rem;
-            border-bottom: 1px solid var(--border);
-        }
-        
-        .card-title {
-            font-weight: 600;
-            color: var(--accent-cyan);
-        }
-        
-        .card-body {
-            font-size: 0.875rem;
-        }
-        
-        .card-field {
-            margin-bottom: 0.5rem;
-        }
-        
-        .card-label {
-            color: var(--text-muted);
-            font-size: 0.75rem;
-        }
-        
-        .card-value {
-            color: var(--text-primary);
-        }
-        
-        .loading {
+        /* Loading/Error */
+        .loading, .error {
             text-align: center;
             padding: 3rem;
             color: var(--text-muted);
         }
         
         .error {
-            text-align: center;
-            padding: 3rem;
             color: var(--accent-pink);
         }
     </style>
 </head>
 <body>
-    <!-- Password Protection Overlay -->
-    <div id="password-overlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10, 10, 15, 0.98); z-index: 1000; display: flex; align-items: center; justify-content: center;">
-        <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 3rem; text-align: center; max-width: 400px; width: 90%;">
-            <div style="font-size: 4rem; margin-bottom: 1rem;">🔒</div>
-            <h2 style="margin-bottom: 0.5rem; color: var(--accent-cyan);">Data Viewer</h2>
-            <p style="color: var(--text-muted); margin-bottom: 2rem;">Enter password to access sensitive data</p>
-            <input type="password" id="password-input" placeholder="Enter password" style="width: 100%; padding: 1rem; background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 8px; color: var(--text-primary); font-size: 1rem; text-align: center; letter-spacing: 0.5rem; margin-bottom: 1rem;">
-            <button onclick="checkPassword()" style="width: 100%; padding: 1rem; background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple)); border: none; border-radius: 8px; color: #000; font-weight: 600; cursor: pointer; font-size: 1rem;">Unlock</button>
+    <!-- Password Overlay -->
+    <div id="password-overlay">
+        <div class="password-box">
+            <div style="font-size: 4rem;">🔒</div>
+            <h2>Data Viewer</h2>
+            <p style="color: var(--text-muted); margin-bottom: 1rem;">Enter password to access</p>
+            <input type="password" id="password-input" placeholder="0000">
+            <button onclick="checkPassword()">Unlock</button>
             <p id="error-msg" style="color: var(--accent-pink); margin-top: 1rem; display: none;">Incorrect password</p>
         </div>
     </div>
 
+    <header class="header">
+        <div class="brand">
+            <div class="logo">📁</div>
+            <div>
+                <h1 style="font-size: 1.25rem;">Data Viewer</h1>
+                <span style="font-size: 0.875rem; color: var(--text-muted);">Mission Control Data Repository</span>
+            </div>
+        </div>
+        <a href="index.html" style="color: var(--text-secondary); text-decoration: none;">← Back to Dashboard</a>
+    </header>
+
+    <div class="container">
+        <!-- File Browser -->
+        <div class="file-grid" id="file-grid"></div>
+
+        <!-- Content Area -->
+        <div class="content-area" id="content-area" style="display: none;">
+            <div class="content-header">
+                <div class="content-title" id="content-title">Select a file</div>
+                <div class="content-actions">
+                    <button class="btn" onclick="copyContent()">📋 Copy</button>
+                    <button class="btn btn-primary" onclick="exportContent()">💾 Export</button>
+                </div>
+            </div>
+            <div class="content-body" id="content-body">
+                <div class="loading">Select a file to view</div>
+            </div>
+        </div>
+    </div>
+
     <script>
+        // Password protection
         function checkPassword() {
             const input = document.getElementById('password-input').value;
             if (input === '0000') {
                 document.getElementById('password-overlay').style.display = 'none';
                 localStorage.setItem('dataViewerAuth', 'true');
+                loadFileList();
             } else {
                 document.getElementById('error-msg').style.display = 'block';
-                document.getElementById('password-input').value = '';
             }
         }
-        
-        // Check if already authenticated
-        if (localStorage.getItem('dataViewerAuth') === 'true') {
-            document.getElementById('password-overlay').style.display = 'none';
-        }
-        
-        // Allow Enter key
+
         document.getElementById('password-input').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') checkPassword();
         });
-    </script>
 
-    <header class="header">
-        <div class="brand">
-            <div class="logo">🎯</div>
-            <div class="brand-text">
-                <h1>Mission Control</h1>
-                <span>EricF's AI Team Dashboard v2.0</span>
-            </div>
-        </div>
-        
-        <nav class="nav-tabs">
-            <a href="index.html" class="nav-tab">
-                <span>📊</span> Overview
-            </a>
-            <a href="living-pixel-office.html" class="nav-tab">
-                <span>🏢</span> Office
-            </a>
-            <a href="data-viewer.html" class="nav-tab active">
-                <span>📁</span> Data
-            </a>
-            <a href="token-tracker.html" class="nav-tab">
-                <span>💰</span> Tokens
-            </a>
-        </nav>
-        
-        <div style="display: flex; align-items: center; gap: 1rem;">
-            <span style="font-size: 0.875rem; color: var(--text-muted);">🟢 14 Agents Active</span>
-        </div>
-    </header>
-    
-    <div class="container">
-        <!-- File Selector -->
-        <div class="file-selector">
-            <button class="file-btn active" onclick="loadFile('data/leads.json', 'leads')">🤝 DealFlow Leads</button>
-            <button class="file-btn" onclick="loadFile('data/agents.json', 'agents')">🤖 Agent Data</button>
-            <button class="file-btn" onclick="loadFile('../agents/dealflow/LEAD_INTAKE.md', 'markdown')">📄 Lead Intake Process</button>
-            <button class="file-btn" onclick="loadFile('DEPLOYMENT_SUMMARY.md', 'markdown')">🚀 Deployment Summary</button>
-            <button class="file-btn" onclick="loadFile('README.md', 'markdown')">📚 README</button>
-        </div>
-        
-        <!-- Content Area -->
-        <div class="content-area">
-            <div class="content-header">
-                <div class="content-title">
-                    <span id="current-file">DealFlow Leads</span>
-                </div>
-                <div class="view-toggle">
-                    <button class="toggle-btn active" onclick="setView('table')">Table</button>
-                    <button class="toggle-btn" onclick="setView('cards')">Cards</button>
-                    <button class="toggle-btn" onclick="setView('json')">JSON</button>
-                </div>
-            </div>
-            
-            <div class="content-body" id="content">
-                <div class="loading">Loading data...</div>
-            </div>
-        </div>
-    </div>
+        if (localStorage.getItem('dataViewerAuth') === 'true') {
+            document.getElementById('password-overlay').style.display = 'none';
+        }
 
-    <script>
-        let currentData = null;
-        let currentView = 'table';
-        
-        async function loadFile(filename, type) {
-            // Update active button
-            document.querySelectorAll('.file-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-            
-            // Update title
-            document.getElementById('current-file').textContent = event.target.textContent;
-            
-            // Show loading
-            document.getElementById('content').innerHTML = '<div class="loading">Loading data...</div>';
-            
+        // File definitions
+        const files = [
+            { id: 'leads', name: 'DealFlow Leads', icon: '🤝', desc: '26 crypto/fintech leads', path: 'data/leads.json', type: 'json' },
+            { id: 'onhing', name: 'On Hing Metal Leads', icon: '🔩', desc: '15 manufacturing leads', path: 'data/onhing_metal_leads.json', type: 'json' },
+            { id: 'agents', name: 'Agent Data', icon: '🤖', desc: '20 agents with positions', path: 'data/agents.json', type: 'json' },
+            { id: 'memory', name: 'Memory Bank', icon: '🧠', desc: 'Never forget system', path: 'MEMORY_BANK.md', type: 'text' },
+            { id: 'tasks', name: 'Pending Tasks', icon: '📋', desc: 'Task tracking', path: 'PENDING_TASKS.md', type: 'text' },
+            { id: 'token', name: 'Token Usage', icon: '💰', desc: 'Real usage data', path: 'ACTUAL_TOKEN_USAGE_REPORT.md', type: 'text' },
+            { id: 'speed', name: 'Speed Optimization', icon: '⚡', desc: 'Performance guide', path: 'SPEED_OPTIMIZATION_PROTOCOL.md', type: 'text' },
+            { id: 'skills', name: 'OpenClaw Skills', icon: '🛠️', desc: '53 available skills', path: 'AVAILABLE_OPENCLAW_SKILLS.md', type: 'text' },
+            { id: 'money', name: 'Money Opportunities', icon: '💸', desc: '8 low-lift ideas', path: 'agents/scout/LOW_LIFT_MONEY_OPPORTUNITIES.md', type: 'text' },
+            { id: 'research', name: 'NFT/DeFi Research', icon: '🔍', desc: '2 influential people', path: 'agents/scout/RESEARCH_NFT_DEFI_RWA.md', type: 'text' },
+            { id: 'heartbeats', name: 'Heartbeats Table', icon: '🕐', desc: 'All cron jobs', path: 'HEARTBEATS_TABLE.md', type: 'text' },
+            { id: 'data_index', name: 'Data Index', icon: '📇', desc: 'Files listing', path: 'DATA_INDEX.md', type: 'text' }
+        ];
+
+        let currentFile = null;
+        let currentContent = '';
+
+        function loadFileList() {
+            const grid = document.getElementById('file-grid');
+            grid.innerHTML = files.map(f => `
+                <div class="file-card" onclick="loadFile('${f.id}')" id="card-${f.id}">
+                    <div class="file-icon">${f.icon}</div>
+                    <div class="file-name">${f.name}</div>
+                    <div class="file-desc">${f.desc}</div>
+                    <div class="file-meta">
+                        <span>${f.type.toUpperCase()}</span>
+                        <span>Click to view</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        async function loadFile(fileId) {
+            const file = files.find(f => f.id === fileId);
+            if (!file) return;
+
+            currentFile = file;
+
+            // Update active state
+            document.querySelectorAll('.file-card').forEach(c => c.classList.remove('active'));
+            document.getElementById(`card-${fileId}`).classList.add('active');
+
+            // Show content area
+            document.getElementById('content-area').style.display = 'block';
+            document.getElementById('content-title').textContent = file.name;
+            document.getElementById('content-body').innerHTML = '<div class="loading">Loading...</div>';
+
             try {
-                const response = await fetch(filename);
+                const response = await fetch(file.path);
                 if (!response.ok) throw new Error('File not found');
                 
-                const text = await response.text();
+                currentContent = await response.text();
                 
-                if (type === 'json' || filename.endsWith('.json')) {
-                    currentData = JSON.parse(text);
-                    renderData();
+                if (file.type === 'json') {
+                    const data = JSON.parse(currentContent);
+                    document.getElementById('content-body').innerHTML = renderJSON(data);
                 } else {
-                    // Markdown or text
-                    document.getElementById('content').innerHTML = `
-                        <div style="font-family: 'JetBrains Mono', monospace; white-space: pre-wrap; line-height: 1.6;">${escapeHtml(text)}</div>
-                    `;
+                    // Markdown/text - convert to HTML
+                    document.getElementById('content-body').innerHTML = `<pre class="text-view">${escapeHtml(currentContent)}</pre>`;
                 }
             } catch (error) {
-                document.getElementById('content').innerHTML = `
+                document.getElementById('content-body').innerHTML = `
                     <div class="error">
                         ❌ Error loading file: ${error.message}<br>
-                        <small>File: ${filename}</small>
-                    </div>
-                `;
+                        <small>Path: ${file.path}</small>
+                    </div>`;
             }
         }
-        
-        function setView(view) {
-            currentView = view;
-            document.querySelectorAll('.toggle-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-            if (currentData) renderData();
-        }
-        
-        function renderData() {
-            const content = document.getElementById('content');
-            
-            if (currentView === 'table') {
-                content.innerHTML = renderTable(currentData);
-            } else if (currentView === 'cards') {
-                content.innerHTML = renderCards(currentData);
-            } else {
-                content.innerHTML = renderJSON(currentData);
-            }
-        }
-        
-        function renderTable(data) {
-            if (!Array.isArray(data) || data.length === 0) {
-                return '<div class="error">No data to display</div>';
-            }
-            
-            const keys = Object.keys(data[0]);
-            
-            let html = '<table class="data-table"><thead><tr>';
-            keys.forEach(key => {
-                html += `<th>${key.toUpperCase()}</th>`;
-            });
-            html += '</tr></thead><tbody>';
-            
-            data.forEach(row => {
-                html += '<tr>';
-                keys.forEach(key => {
-                    let value = row[key];
-                    let className = '';
-                    
-                    if (key === 'priority') {
-                        className = `priority-${value.toLowerCase()}`;
-                    }
-                    if (key === 'status' && value === 'new') {
-                        className = 'status-new';
-                    }
-                    
-                    if (typeof value === 'string' && value.length > 100) {
-                        value = value.substring(0, 100) + '...';
-                    }
-                    
-                    html += `<td class="${className}">${escapeHtml(String(value))}</td>`;
-                });
-                html += '</tr>';
-            });
-            
-            html += '</tbody></table>';
-            return html;
-        }
-        
-        function renderCards(data) {
-            if (!Array.isArray(data)) {
-                return '<div class="error">Cannot display as cards</div>';
-            }
-            
-            let html = '<div class="card-grid">';
-            
-            data.forEach(item => {
-                html += '<div class="data-card">';
-                html += `<div class="card-header">
-                    <span class="card-title">${escapeHtml(item.company || item.name || item.id || 'Item')}</span>
-                    <span class="priority-${(item.priority || 'p2').toLowerCase()}">${item.priority || ''}</span>
-                </div>`;
-                html += '<div class="card-body">';
-                
-                Object.entries(item).forEach(([key, value]) => {
-                    if (key !== 'company' && key !== 'name' && key !== 'id' && key !== 'priority') {
-                        let displayValue = value;
-                        if (typeof value === 'string' && value.length > 150) {
-                            displayValue = value.substring(0, 150) + '...';
-                        }
-                        html += `<div class="card-field">
-                            <div class="card-label">${key}</div>
-                            <div class="card-value">${escapeHtml(String(displayValue))}</div>
-                        </div>`;
-                    }
-                });
-                
-                html += '</div></div>';
-            });
-            
-            html += '</div>';
-            return html;
-        }
-        
+
         function renderJSON(data) {
-            const json = JSON.stringify(data, null, 2);
-            const highlighted = json
+            if (Array.isArray(data) && data.length > 0) {
+                // Table view for arrays
+                const keys = Object.keys(data[0]);
+                let html = '<table class="data-table"><thead><tr>';
+                keys.forEach(key => {
+                    html += `<th>${key.toUpperCase()}</th>`;
+                });
+                html += '</tr></thead><tbody>';
+                
+                data.slice(0, 100).forEach(row => {
+                    html += '<tr>';
+                    keys.forEach(key => {
+                        let val = row[key];
+                        if (typeof val === 'object') val = JSON.stringify(val);
+                        if (typeof val === 'string' && val.length > 100) val = val.substring(0, 100) + '...';
+                        html += `<td>${escapeHtml(String(val))}</td>`;
+                    });
+                    html += '</tr>';
+                });
+                
+                html += '</tbody></table>';
+                if (data.length > 100) html += `<p style="text-align: center; color: var(--text-muted); margin-top: 1rem;">... and ${data.length - 100} more rows</p>`;
+                return html;
+            } else {
+                // Pretty print JSON
+                const json = JSON.stringify(data, null, 2);
+                return `<pre class="json-view">${highlightJSON(json)}</pre>`;
+            }
+        }
+
+        function highlightJSON(json) {
+            return json
                 .replace(/"([^"]+)":/g, '<span class="json-key">"$1":</span>')
                 .replace(/: "([^"]+)"/g, ': <span class="json-string">"$1"</span>')
-                .replace(/: (\d+)/g, ': <span class="json-number">$1</span>')
-                .replace(/: (true|false)/g, ': <span class="json-boolean">$1</span>');
-            
-            return `<div class="json-view">${highlighted}</div>
-                <button onclick="copyJSON()" style="margin-top: 1rem; padding: 0.5rem 1rem; background: var(--accent-cyan); border: none; border-radius: 6px; color: #000; cursor: pointer;">Copy JSON</button>`;
+                .replace(/: (\d+)/g, ': <span class="json-number">$1</span>');
         }
-        
+
         function escapeHtml(text) {
             const div = document.createElement('div');
             div.textContent = text;
             return div.innerHTML;
         }
-        
-        function copyJSON() {
-            navigator.clipboard.writeText(JSON.stringify(currentData, null, 2));
-            alert('JSON copied to clipboard!');
+
+        function copyContent() {
+            navigator.clipboard.writeText(currentContent);
+            alert('Content copied to clipboard!');
         }
-        
-        // Load default file
-        window.onload = () => {
-            fetch('data/leads.json')
-                .then(r => r.json())
-                .then(data => {
-                    currentData = data;
-                    renderData();
-                })
-                .catch(e => {
-                    document.getElementById('content').innerHTML = `
-                        <div class="error">
-                            ❌ Error loading leads.json<br>
-                            <small>${e.message}</small>
-                        </div>
-                    `;
-                });
-        };
+
+        function exportContent() {
+            if (!currentFile) return;
+            
+            const blob = new Blob([currentContent], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = currentFile.path.split('/').pop();
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // Load on startup
+        if (localStorage.getItem('dataViewerAuth') === 'true') {
+            loadFileList();
+        }
     </script>
 </body>
 </html>
