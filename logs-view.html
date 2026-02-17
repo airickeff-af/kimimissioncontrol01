@@ -282,29 +282,33 @@
     </header>
 
     <div class="main-content">
-        <h2>📝 Real-Time AI Activity Logs</h2>
+        <h2>📝 AI Activity Logs</h2>
         
         <div class="stats-bar">
             <div class="stat-card">
-                <div class="stat-value" style="color: var(--accent-cyan);" id="total-entries">156</div>
-                <div class="stat-label">Total Entries (24h)</div>
+                <div class="stat-value" style="color: var(--accent-cyan);" id="total-entries">487</div>
+                <div class="stat-label">Total Entries (All Time)</div>
             </div>
             <div class="stat-card">
-                <div class="stat-value" style="color: var(--accent-green);" id="user-messages">23</div>
+                <div class="stat-value" style="color: var(--accent-green);" id="user-messages">89</div>
                 <div class="stat-label">EricF Messages</div>
             </div>
             <div class="stat-card">
-                <div class="stat-value" style="color: var(--accent-purple);" id="agent-responses">133</div>
+                <div class="stat-value" style="color: var(--accent-purple);" id="agent-responses">398</div>
                 <div class="stat-label">Agent Responses</div>
             </div>
             <div class="stat-card">
-                <div class="stat-value" style="color: var(--accent-yellow);" id="tasks-created">18</div>
+                <div class="stat-value" style="color: var(--accent-yellow);" id="tasks-created">47</div>
                 <div class="stat-label">Tasks Created</div>
             </div>
         </div>
 
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-            <span style="color: var(--text-muted); font-size: 0.875rem;" id="showing-text">Showing most recent 100 entries</span>
+            <div style="display: flex; gap: 1rem;">
+                <span style="color: var(--text-muted); font-size: 0.875rem;" id="showing-text">Showing most recent 100 entries</span>
+                <span style="color: var(--text-muted); font-size: 0.875rem;">|</span>
+                <span style="color: var(--accent-cyan); font-size: 0.875rem;">📊 All Time Activity</span>
+            </div>
             <button class="btn" id="expand-btn" onclick="toggleExpand()">📂 Show All Logs</button>
         </div>
 
