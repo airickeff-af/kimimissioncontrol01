@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mission Control - Isometric Pixel Office v4</title>
+    <title>Mission Control - Isometric Pixel Office v5</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap');
         
@@ -35,7 +35,6 @@
             height: 100vh;
         }
         
-        /* Office Canvas Area */
         .office-area {
             position: relative;
             background: linear-gradient(180deg, #0d0d1a 0%, #1a1a2e 50%, #16213e 100%);
@@ -75,7 +74,6 @@
             color: #888;
         }
         
-        /* Standup Button */
         .standup-btn {
             position: absolute;
             top: 10px;
@@ -99,11 +97,7 @@
             50% { box-shadow: 0 0 40px rgba(255,107,157,0.7); }
         }
         
-        .standup-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 30px rgba(255,107,157,0.6);
-        }
-        
+        .standup-btn:hover { transform: scale(1.05); }
         .standup-btn:disabled {
             background: #444;
             border-color: #666;
@@ -111,7 +105,6 @@
             cursor: not-allowed;
         }
         
-        /* Meeting Status */
         .meeting-status {
             position: absolute;
             top: 60px;
@@ -125,18 +118,9 @@
             z-index: 20;
             display: none;
         }
+        .meeting-status.active { display: block; animation: blink 1s infinite; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
         
-        .meeting-status.active {
-            display: block;
-            animation: blink 1s infinite;
-        }
-        
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-        
-        /* Speech Bubbles */
         .speech-bubble {
             position: absolute;
             background: rgba(0, 212, 255, 0.95);
@@ -150,7 +134,6 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
             pointer-events: none;
         }
-        
         .speech-bubble::after {
             content: '';
             position: absolute;
@@ -161,7 +144,6 @@
             border-top: 8px solid rgba(0, 212, 255, 0.95);
         }
         
-        /* Sidebar */
         .sidebar {
             background: rgba(0,0,0,0.95);
             border-left: 3px solid var(--neon-cyan);
@@ -169,27 +151,22 @@
             flex-direction: column;
             overflow: hidden;
         }
-        
         .sidebar-header {
             padding: 15px;
             background: linear-gradient(90deg, rgba(0,255,255,0.1), transparent);
             border-bottom: 2px solid var(--neon-cyan);
         }
-        
         .sidebar-header h2 {
             font-family: 'Press Start 2P', cursive;
             font-size: 0.65rem;
             color: var(--neon-cyan);
         }
-        
-        /* Tabs */
         .tabs {
             display: flex;
             flex-wrap: wrap;
             border-bottom: 1px solid var(--neon-cyan);
             background: rgba(0,0,0,0.5);
         }
-        
         .tab {
             flex: 1;
             min-width: 80px;
@@ -203,30 +180,20 @@
             transition: all 0.2s;
             text-align: center;
         }
-        
-        .tab:hover {
-            background: rgba(0,255,255,0.1);
-        }
-        
+        .tab:hover { background: rgba(0,255,255,0.1); }
         .tab.active {
             background: rgba(0,255,255,0.2);
             color: var(--neon-cyan);
             border-bottom: 2px solid var(--neon-cyan);
         }
-        
-        /* Tab Content */
         .tab-content {
             flex: 1;
             overflow-y: auto;
             padding: 10px;
             display: none;
         }
+        .tab-content.active { display: block; }
         
-        .tab-content.active {
-            display: block;
-        }
-        
-        /* Activity Feed */
         .activity-item {
             padding: 10px;
             margin-bottom: 8px;
@@ -236,29 +203,14 @@
             font-size: 0.85rem;
             animation: slideIn 0.3s ease;
         }
-        
         @keyframes slideIn {
             from { opacity: 0; transform: translateX(-10px); }
             to { opacity: 1; transform: translateX(0); }
         }
+        .activity-time { font-size: 0.7rem; color: #666; display: block; margin-bottom: 3px; }
+        .activity-text { color: var(--panel); }
+        .activity-agents { color: var(--neon-cyan); font-weight: bold; }
         
-        .activity-time {
-            font-size: 0.7rem;
-            color: #666;
-            display: block;
-            margin-bottom: 3px;
-        }
-        
-        .activity-text {
-            color: var(--panel);
-        }
-        
-        .activity-agents {
-            color: var(--neon-cyan);
-            font-weight: bold;
-        }
-        
-        /* Agent Status Panel */
         .agent-status-item {
             display: flex;
             align-items: center;
@@ -270,40 +222,21 @@
             font-size: 0.8rem;
             transition: all 0.2s;
         }
-        
-        .agent-status-item:hover {
-            background: rgba(0,255,255,0.1);
-        }
-        
-        .agent-emoji {
-            font-size: 1.2rem;
-        }
-        
-        .agent-info {
-            flex: 1;
-        }
-        
-        .agent-name {
-            font-weight: bold;
-        }
-        
-        .agent-task {
-            font-size: 0.75rem;
-            color: #888;
-        }
-        
+        .agent-status-item:hover { background: rgba(0,255,255,0.1); }
+        .agent-emoji { font-size: 1.2rem; }
+        .agent-info { flex: 1; }
+        .agent-name { font-weight: bold; }
+        .agent-task { font-size: 0.75rem; color: #888; }
         .status-dot {
             width: 8px;
             height: 8px;
             border-radius: 50%;
             background: var(--neon-green);
         }
-        
         .status-dot.busy { background: var(--neon-yellow); }
         .status-dot.meeting { background: var(--neon-pink); animation: blink 1s infinite; }
         .status-dot.resting { background: #666; }
         
-        /* Meeting Log */
         .meeting-log {
             background: rgba(255,107,157,0.1);
             border: 1px solid var(--neon-pink);
@@ -312,142 +245,115 @@
             margin-top: 10px;
             font-size: 0.8rem;
         }
-        
-        .meeting-log h4 {
-            color: var(--neon-pink);
-            margin-bottom: 8px;
-        }
-        
-        .meeting-topic {
-            padding: 5px 0;
-            border-bottom: 1px solid rgba(255,107,157,0.2);
-        }
+        .meeting-log h4 { color: var(--neon-pink); margin-bottom: 8px; }
+        .meeting-topic { padding: 5px 0; border-bottom: 1px solid rgba(255,107,157,0.2); }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- Office Canvas -->
         <div class="office-area">
             <canvas id="office-canvas"></canvas>
-            
             <div class="office-header">
                 <h1>🏢 MISSION CONTROL HQ</h1>
                 <div class="last-updated" id="last-updated">Last updated: Just now</div>
             </div>
             
-            <!-- Standup Button -->
             <button class="standup-btn" id="standup-btn" onclick="startStandup()">
                 🎤 CALL STANDUP
             </button>
             
-            <!-- Meeting Status -->
             <div class="meeting-status" id="meeting-status">
                 🎤 STANDUP IN PROGRESS
             </div>
         </div>
         
-        <!-- Sidebar -->
         <div class="sidebar">
             <div class="sidebar-header">
                 <h2>📊 COMMAND CENTER</h2>
             </div>
             
-            <!-- Tabs -->
             <div class="tabs">
                 <button class="tab active" onclick="switchTab('activity')">📡 Activity</button>
                 <button class="tab" onclick="switchTab('agents')">🤖 Agents</button>
                 <button class="tab" onclick="switchTab('meeting')">🎤 Meeting</button>
             </div>
             
-            <!-- ACTIVITY TAB -->
             <div id="activity-tab" class="tab-content active">
                 <div id="activity-feed">
+                    <div class="activity-item">
+                        <span class="activity-time">21:18:00</span>
+                        <span class="activity-text"><span class="activity-agents">Nexus</span> updated office v5 with 20 agents</span>
+                    </div>
                     <div class="activity-item">
                         <span class="activity-time">21:09:00</span>
                         <span class="activity-text"><span class="activity-agents">Nexus</span> updated pixel office v4</span>
                     </div>
-                    <div class="activity-item">
-                        <span class="activity-time">21:04:00</span>
-                        <span class="activity-text"><span class="activity-agents">DealFlow</span> found 15 On Hing Metal leads</span>
-                    </div>
-                    <div class="activity-item">
-                        <span class="activity-time">21:01:00</span>
-                        <span class="activity-text"><span class="activity-agents">Nexus</span> filed new regional tasks</span>
-                    </div>
-                    <div class="activity-item">
-                        <span class="activity-time">20:52:00</span>
-                        <span class="activity-text"><span class="activity-agents">Forge</span> created data viewer</span>
-                    </div>
                 </div>
             </div>
             
-            <!-- AGENTS TAB -->
             <div id="agents-tab" class="tab-content">
-                <h3 style="color: var(--neon-cyan); margin-bottom: 15px; font-size: 0.9rem;">🤖 AGENT STATUS</h3>
-                
-                <div id="agent-list">
-                    <!-- Populated by JS -->
-                </div>
+                <h3 style="color: var(--neon-cyan); margin-bottom: 15px; font-size: 0.9rem;">🤖 AGENT STATUS (20 TOTAL)</h3>
+                <div id="agent-list"></div>
             </div>
             
-            <!-- MEETING TAB -->
             <div id="meeting-tab" class="tab-content">
                 <h3 style="color: var(--neon-pink); margin-bottom: 15px; font-size: 0.9rem;">🎤 STANDUP MEETING</h3>
-                
-                <p style="font-size: 0.85rem; color: #888; margin-bottom: 15px;">
-                    Click "CALL STANDUP" to gather all agents for a team meeting. 
-                    Agents will discuss improvements and share ideas.
-                </p>
-                
+                <p style="font-size: 0.85rem; color: #888; margin-bottom: 15px;">Click "CALL STANDUP" to gather all 20 agents for a team meeting.</p>
                 <div class="meeting-log" id="meeting-log" style="display: none;">
                     <h4>📋 Meeting Topics</h4>
                     <div id="meeting-topics"></div>
-                </div>
-                
-                <div style="margin-top: 20px; padding: 15px; background: rgba(255,255,255,0.05); border-radius: 8px;">
-                    <h4 style="color: var(--neon-cyan); margin-bottom: 10px;">💡 Discussion Topics</h4>
-                    <ul style="font-size: 0.8rem; color: #aaa; padding-left: 20px;">
-                        <li>API optimization strategies</li>
-                        <li>Lead research best practices</li>
-                        <li>Dashboard UX improvements</li>
-                        <li>Token usage efficiency</li>
-                        <li>Partnership outreach tactics</li>
-                        <li>Code review feedback</li>
-                    </ul>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // Agent data with isometric positions
+        // All 20 agents with fixed desk positions
+        // EricF and Nexus at top (command balcony)
+        // 3 Forge, 3 Code in dev area
+        // Others in their departments
         const agents = [
-            { id: 'nexus', name: 'Nexus', emoji: '🤖', role: 'Orchestrator', x: 500, y: 200, color: '#ff2a6d', status: 'working', activity: 'Monitoring systems' },
-            { id: 'ericf', name: 'EricF', emoji: '👨‍💻', role: 'Commander', x: 700, y: 200, color: '#ff2a6d', status: 'working', activity: 'Strategic oversight' },
-            { id: 'forge', name: 'Forge', emoji: '🔨', role: 'UI Lead', x: 200, y: 350, color: '#ff922b', status: 'working', activity: 'Polishing UI' },
-            { id: 'code', name: 'Code', emoji: '💻', role: 'Backend', x: 350, y: 350, color: '#51cf66', status: 'busy', activity: 'Fixing API errors' },
-            { id: 'pixel', name: 'Pixel', emoji: '🎨', role: 'Design', x: 500, y: 350, color: '#a855f7', status: 'working', activity: 'Creating avatars' },
-            { id: 'glasses', name: 'Glasses', emoji: '🔍', role: 'Research', x: 650, y: 350, color: '#00ffff', status: 'resting', activity: 'Resting' },
-            { id: 'quill', name: 'Quill', emoji: '✍️', role: 'Content', x: 800, y: 350, color: '#fcc419', status: 'resting', activity: 'Resting' },
-            { id: 'gary', name: 'Gary', emoji: '📊', role: 'Marketing', x: 200, y: 500, color: '#ff922b', status: 'resting', activity: 'Resting' },
-            { id: 'larry', name: 'Larry', emoji: '📱', role: 'Social', x: 350, y: 500, color: '#51cf66', status: 'resting', activity: 'Resting' },
-            { id: 'sentry', name: 'Sentry', emoji: '⚙️', role: 'DevOps', x: 500, y: 500, color: '#00ffff', status: 'working', activity: 'Monitoring' },
-            { id: 'audit', name: 'Audit', emoji: '✅', role: 'QA', x: 650, y: 500, color: '#fcc419', status: 'working', activity: 'Reviewing code' },
-            { id: 'cipher', name: 'Cipher', emoji: '🔒', role: 'Security', x: 800, y: 500, color: '#a855f7', status: 'working', activity: 'Security check' },
-            { id: 'dealflow', name: 'DealFlow', emoji: '🤝', role: 'BD Lead', x: 350, y: 650, color: '#ff922b', status: 'busy', activity: 'Finding leads' },
-            { id: 'coldcall', name: 'ColdCall', emoji: '📞', role: 'Outreach', x: 500, y: 650, color: '#51cf66', status: 'working', activity: 'Prep outreach' },
-            { id: 'scout', name: 'Scout', emoji: '🕵️', role: 'Intel', x: 650, y: 650, color: '#00ffff', status: 'working', activity: 'Research' }
+            // EXECUTIVE BALCONY (Top - watching over everyone)
+            { id: 'ericf', name: 'EricF', emoji: '👨‍💻', role: 'Commander', x: 300, y: 100, color: '#ff2a6d', status: 'working', activity: 'Strategic oversight', desk: 'Command Desk A', dept: 'Executive' },
+            { id: 'nexus', name: 'Nexus', emoji: '🤖', role: 'Orchestrator', x: 500, y: 100, color: '#ff2a6d', status: 'working', activity: 'Monitoring systems', desk: 'Command Desk B', dept: 'Executive' },
+            
+            // DEV TEAM - 3 Forge, 3 Code (Left side)
+            { id: 'forge1', name: 'Forge-1', emoji: '🔨', role: 'UI Lead', x: 100, y: 250, color: '#ff922b', status: 'working', activity: 'Component library', desk: 'Forge Station 1', dept: 'Dev' },
+            { id: 'forge2', name: 'Forge-2', emoji: '🔨', role: 'UI Dev', x: 200, y: 250, color: '#ff922b', status: 'working', activity: 'Mobile responsive', desk: 'Forge Station 2', dept: 'Dev' },
+            { id: 'forge3', name: 'Forge-3', emoji: '🔨', role: 'UI Dev', x: 300, y: 250, color: '#ff922b', status: 'working', activity: 'Animations', desk: 'Forge Station 3', dept: 'Dev' },
+            { id: 'code1', name: 'Code-1', emoji: '💻', role: 'Backend Lead', x: 100, y: 350, color: '#51cf66', status: 'busy', activity: 'API endpoints', desk: 'Code Terminal 1', dept: 'Dev' },
+            { id: 'code2', name: 'Code-2', emoji: '💻', role: 'Backend Dev', x: 200, y: 350, color: '#51cf66', status: 'working', activity: 'Database', desk: 'Code Terminal 2', dept: 'Dev' },
+            { id: 'code3', name: 'Code-3', emoji: '💻', role: 'Backend Dev', x: 300, y: 350, color: '#51cf66', status: 'working', activity: 'Testing', desk: 'Code Terminal 3', dept: 'Dev' },
+            
+            // DESIGN TEAM (Near dev)
+            { id: 'pixel1', name: 'Pixel-1', emoji: '🎨', role: 'Design Lead', x: 450, y: 250, color: '#a855f7', status: 'working', activity: 'Avatar design', desk: 'Design Station 1', dept: 'Design' },
+            { id: 'pixel2', name: 'Pixel-2', emoji: '🎨', role: 'Designer', x: 550, y: 250, color: '#a855f7', status: 'working', activity: 'Style guide', desk: 'Design Station 2', dept: 'Design' },
+            { id: 'pixel3', name: 'Pixel-3', emoji: '🎨', role: 'Designer', x: 650, y: 250, color: '#a855f7', status: 'working', activity: 'Assets', desk: 'Design Station 3', dept: 'Design' },
+            
+            // CONTENT TEAM (Right side)
+            { id: 'glasses', name: 'Glasses', emoji: '🔍', role: 'Research Lead', x: 750, y: 250, color: '#00ffff', status: 'resting', activity: 'Resting', desk: 'Research Desk', dept: 'Content' },
+            { id: 'quill', name: 'Quill', emoji: '✍️', role: 'Content Lead', x: 850, y: 250, color: '#fcc419', status: 'resting', activity: 'Resting', desk: 'Content Pod', dept: 'Content' },
+            
+            // GROWTH TEAM (Middle right)
+            { id: 'gary', name: 'Gary', emoji: '📊', role: 'Marketing Lead', x: 750, y: 350, color: '#ff922b', status: 'resting', activity: 'Resting', desk: 'Marketing Desk', dept: 'Growth' },
+            { id: 'larry', name: 'Larry', emoji: '📱', role: 'Social Lead', x: 850, y: 350, color: '#51cf66', status: 'resting', activity: 'Resting', desk: 'Social Hub', dept: 'Growth' },
+            
+            // OPS TEAM (Bottom left)
+            { id: 'sentry', name: 'Sentry', emoji: '⚙️', role: 'DevOps Lead', x: 200, y: 500, color: '#00ffff', status: 'working', activity: 'Monitoring', desk: 'Ops Center', dept: 'Ops' },
+            { id: 'audit', name: 'Audit', emoji: '✅', role: 'QA Lead', x: 350, y: 500, color: '#fcc419', status: 'working', activity: 'Code review', desk: 'QA Station', dept: 'Ops' },
+            { id: 'cipher', name: 'Cipher', emoji: '🔒', role: 'Security Lead', x: 500, y: 500, color: '#a855f7', status: 'working', activity: 'Security check', desk: 'Security Post', dept: 'Ops' },
+            
+            // BUSINESS DEV TEAM (Bottom right)
+            { id: 'dealflow', name: 'DealFlow', emoji: '🤝', role: 'BD Lead', x: 700, y: 500, color: '#ff922b', status: 'busy', activity: 'Finding leads', desk: 'BD Desk', dept: 'Business Dev' },
+            { id: 'coldcall', name: 'ColdCall', emoji: '📞', role: 'Outreach Lead', x: 850, y: 500, color: '#51cf66', status: 'working', activity: 'Prep outreach', desk: 'Outreach Station', dept: 'Business Dev' }
         ];
 
-        // Meeting table position (center)
-        const meetingTable = { x: 500, y: 425, radius: 100 };
+        // Meeting table position (center of office)
+        const meetingTable = { x: 500, y: 350, radius: 120 };
         
         let isStandupActive = false;
-        let meetingStartTime = null;
-        let animationId = null;
         let agentPositions = {};
 
-        // Initialize canvas
         const canvas = document.getElementById('office-canvas');
         const ctx = canvas.getContext('2d');
         
@@ -460,59 +366,49 @@
 
         // Isometric projection
         function toIso(x, y) {
-            const isoX = (x - y) * 0.866 + canvas.width / 2;
-            const isoY = (x + y) * 0.5 + 100;
+            const scale = 0.7;
+            const isoX = (x - y) * 0.866 * scale + canvas.width / 2;
+            const isoY = (x + y) * 0.5 * scale + 80;
             return { x: isoX, y: isoY };
         }
 
-        // Draw isometric office
         function drawOffice() {
             ctx.fillStyle = '#0f0f1a';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             
             // Draw grid floor
-            ctx.strokeStyle = 'rgba(0, 255, 255, 0.1)';
+            ctx.strokeStyle = 'rgba(0, 255, 255, 0.08)';
             ctx.lineWidth = 1;
-            for (let i = -10; i < 20; i++) {
-                const start1 = toIso(i * 50, -500);
-                const end1 = toIso(i * 50, 500);
+            for (let i = -15; i < 25; i++) {
+                const start1 = toIso(i * 60, -800);
+                const end1 = toIso(i * 60, 800);
                 ctx.beginPath();
                 ctx.moveTo(start1.x, start1.y);
                 ctx.lineTo(end1.x, end1.y);
                 ctx.stroke();
                 
-                const start2 = toIso(-500, i * 50);
-                const end2 = toIso(500, i * 50);
+                const start2 = toIso(-800, i * 60);
+                const end2 = toIso(800, i * 60);
                 ctx.beginPath();
                 ctx.moveTo(start2.x, start2.y);
                 ctx.lineTo(end2.x, end2.y);
                 ctx.stroke();
             }
             
-            // Draw meeting table (center)
-            const tablePos = toIso(meetingTable.x, meetingTable.y);
-            ctx.fillStyle = 'rgba(255, 107, 157, 0.3)';
-            ctx.strokeStyle = '#ff6b9d';
-            ctx.lineWidth = 2;
-            ctx.beginPath();
-            ctx.ellipse(tablePos.x, tablePos.y, 60, 30, 0, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.stroke();
+            // Draw Command Balcony (top - EricF & Nexus)
+            drawBalcony();
             
-            // Table label
-            ctx.fillStyle = '#ff6b9d';
-            ctx.font = '10px "Press Start 2P"';
-            ctx.textAlign = 'center';
-            ctx.fillText('MEETING TABLE', tablePos.x, tablePos.y + 5);
+            // Draw Meeting Table (center)
+            drawMeetingTable();
             
-            // Draw desks
+            // Draw all fixed desks
             agents.forEach(agent => {
                 if (!isStandupActive || agent.status !== 'meeting') {
                     drawDesk(agent);
                 }
             });
             
-            // Draw agents
+            // Draw all agents
             agents.forEach(agent => {
                 drawAgent(agent);
             });
@@ -523,82 +419,184 @@
             }
         }
 
+        function drawBalcony() {
+            // Executive command balcony at top
+            const balconyY = 80;
+            
+            // Balcony floor
+            const bl1 = toIso(200, balconyY);
+            const bl2 = toIso(600, balconyY);
+            const bl3 = toIso(650, balconyY + 50);
+            const bl4 = toIso(150, balconyY + 50);
+            
+            ctx.fillStyle = 'rgba(255, 42, 109, 0.15)';
+            ctx.strokeStyle = '#ff2a6d';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(bl1.x, bl1.y);
+            ctx.lineTo(bl2.x, bl2.y);
+            ctx.lineTo(bl3.x, bl3.y);
+            ctx.lineTo(bl4.x, bl4.y);
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+            
+            // Balcony label
+            ctx.fillStyle = '#ff2a6d';
+            ctx.font = '10px "Press Start 2P"';
+            ctx.textAlign = 'center';
+            const centerBalcony = toIso(400, balconyY + 25);
+            ctx.fillText('COMMAND BALCONY', centerBalcony.x, centerBalcony.y);
+            
+            // Railing
+            ctx.strokeStyle = 'rgba(255, 42, 109, 0.5)';
+            ctx.lineWidth = 1;
+            for (let i = 0; i <= 10; i++) {
+                const x = 150 + (i * 50);
+                const railTop = toIso(x, balconyY);
+                const railBottom = toIso(x, balconyY + 30);
+                ctx.beginPath();
+                ctx.moveTo(railTop.x, railTop.y);
+                ctx.lineTo(railBottom.x, railBottom.y);
+                ctx.stroke();
+            }
+        }
+
+        function drawMeetingTable() {
+            const tablePos = toIso(meetingTable.x, meetingTable.y);
+            
+            // Table shadow
+            ctx.fillStyle = 'rgba(0,0,0,0.3)';
+            ctx.beginPath();
+            ctx.ellipse(tablePos.x + 5, tablePos.y + 10, 70, 35, 0, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Table top
+            ctx.fillStyle = 'rgba(255, 107, 157, 0.25)';
+            ctx.strokeStyle = '#ff6b9d';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.ellipse(tablePos.x, tablePos.y, 70, 35, 0, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.stroke();
+            
+            // Table center
+            ctx.fillStyle = 'rgba(255, 107, 157, 0.4)';
+            ctx.beginPath();
+            ctx.ellipse(tablePos.x, tablePos.y, 40, 20, 0, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Table label
+            ctx.fillStyle = '#ff6b9d';
+            ctx.font = '9px "Press Start 2P"';
+            ctx.textAlign = 'center';
+            ctx.fillText('MEETING TABLE', tablePos.x, tablePos.y + 4);
+        }
+
         function drawDesk(agent) {
             const pos = toIso(agent.x, agent.y);
             
             // Desk shadow
             ctx.fillStyle = 'rgba(0,0,0,0.3)';
             ctx.beginPath();
-            ctx.ellipse(pos.x + 5, pos.y + 35, 25, 12, 0, 0, Math.PI * 2);
+            ctx.ellipse(pos.x + 3, pos.y + 25, 22, 10, 0, 0, Math.PI * 2);
             ctx.fill();
             
             // Desk top
-            ctx.fillStyle = 'rgba(0, 212, 255, 0.2)';
+            ctx.fillStyle = 'rgba(0, 212, 255, 0.15)';
             ctx.strokeStyle = agent.color;
-            ctx.lineWidth = 2;
+            ctx.lineWidth = 1;
             ctx.beginPath();
-            ctx.ellipse(pos.x, pos.y + 30, 25, 12, 0, 0, Math.PI * 2);
+            ctx.ellipse(pos.x, pos.y + 22, 22, 10, 0, 0, Math.PI * 2);
             ctx.fill();
             ctx.stroke();
             
-            // Computer
+            // Computer monitor (pixel style)
             ctx.fillStyle = '#1a1a2e';
-            ctx.fillRect(pos.x - 12, pos.y + 10, 24, 18);
+            ctx.fillRect(pos.x - 10, pos.y + 5, 20, 15);
             ctx.strokeStyle = agent.color;
             ctx.lineWidth = 1;
-            ctx.strokeRect(pos.x - 12, pos.y + 10, 24, 18);
+            ctx.strokeRect(pos.x - 10, pos.y + 5, 20, 15);
             
             // Screen glow
             ctx.fillStyle = agent.color;
-            ctx.globalAlpha = 0.3;
-            ctx.fillRect(pos.x - 10, pos.y + 12, 20, 14);
+            ctx.globalAlpha = 0.4;
+            ctx.fillRect(pos.x - 8, pos.y + 7, 16, 11);
             ctx.globalAlpha = 1;
+            
+            // Computer stand
+            ctx.fillStyle = '#444';
+            ctx.fillRect(pos.x - 2, pos.y + 20, 4, 4);
+            
+            // Desk label
+            ctx.fillStyle = 'rgba(255,255,255,0.5)';
+            ctx.font = '7px "VT323"';
+            ctx.textAlign = 'center';
+            ctx.fillText(agent.desk.substring(0, 15), pos.x, pos.y + 38);
         }
 
         function drawAgent(agent) {
             const pos = toIso(agent.x, agent.y);
-            const bounce = Math.sin(Date.now() / 500 + agents.indexOf(agent)) * 2;
+            const bounce = Math.sin(Date.now() / 500 + agents.indexOf(agent)) * 1.5;
             
             // Shadow
             ctx.fillStyle = 'rgba(0,0,0,0.4)';
             ctx.beginPath();
-            ctx.ellipse(pos.x, pos.y + 25, 12, 6, 0, 0, Math.PI * 2);
+            ctx.ellipse(pos.x, pos.y + 18, 10, 5, 0, 0, Math.PI * 2);
             ctx.fill();
             
             // Body (pixel style)
-            ctx.fillStyle = agent.color;
             const bodyY = pos.y + bounce;
             
             // Body block
-            ctx.fillRect(pos.x - 10, bodyY, 20, 20);
+            ctx.fillStyle = agent.color;
+            ctx.fillRect(pos.x - 8, bodyY, 16, 16);
+            
+            // Body outline
+            ctx.strokeStyle = 'rgba(255,255,255,0.3)';
+            ctx.lineWidth = 1;
+            ctx.strokeRect(pos.x - 8, bodyY, 16, 16);
             
             // Head
             ctx.fillStyle = '#f4e4c1';
-            ctx.fillRect(pos.x - 8, bodyY - 12, 16, 12);
+            ctx.fillRect(pos.x - 6, bodyY - 10, 12, 10);
+            
+            // Head outline
+            ctx.strokeStyle = 'rgba(0,0,0,0.3)';
+            ctx.strokeRect(pos.x - 6, bodyY - 10, 12, 10);
             
             // Eyes
             ctx.fillStyle = '#000';
-            ctx.fillRect(pos.x - 5, bodyY - 8, 3, 3);
-            ctx.fillRect(pos.x + 2, bodyY - 8, 3, 3);
+            ctx.fillRect(pos.x - 4, bodyY - 7, 2, 2);
+            ctx.fillRect(pos.x + 2, bodyY - 7, 2, 2);
             
-            // Status indicator
-            ctx.fillStyle = agent.status === 'working' ? '#51cf66' : 
-                           agent.status === 'busy' ? '#fcc419' : 
-                           agent.status === 'meeting' ? '#ff6b9d' : '#666';
+            // Status indicator (floating above head)
+            const statusColor = agent.status === 'working' ? '#51cf66' : 
+                               agent.status === 'busy' ? '#fcc419' : 
+                               agent.status === 'meeting' ? '#ff6b9d' : '#666';
+            ctx.fillStyle = statusColor;
             ctx.beginPath();
-            ctx.arc(pos.x + 12, bodyY - 5, 3, 0, Math.PI * 2);
+            ctx.arc(pos.x + 10, bodyY - 12, 3, 0, Math.PI * 2);
             ctx.fill();
             
-            // Label
-            ctx.fillStyle = '#fff';
-            ctx.font = 'bold 11px "VT323"';
-            ctx.textAlign = 'center';
-            ctx.fillText(agent.name, pos.x, bodyY + 35);
+            // Status glow for meeting
+            if (agent.status === 'meeting') {
+                ctx.fillStyle = 'rgba(255, 107, 157, 0.3)';
+                ctx.beginPath();
+                ctx.arc(pos.x + 10, bodyY - 12, 6, 0, Math.PI * 2);
+                ctx.fill();
+            }
             
-            // Activity
+            // Name label
+            ctx.fillStyle = '#fff';
+            ctx.font = 'bold 10px "VT323"';
+            ctx.textAlign = 'center';
+            ctx.fillText(agent.name, pos.x, bodyY + 28);
+            
+            // Activity label
             ctx.fillStyle = '#888';
-            ctx.font = '9px "VT323"';
-            ctx.fillText(agent.activity.substring(0, 20), pos.x, bodyY + 46);
+            ctx.font = '8px "VT323"';
+            ctx.fillText(agent.activity.substring(0, 18), pos.x, bodyY + 38);
         }
 
         function drawMeetingConnections() {
@@ -607,9 +605,9 @@
             agents.filter(a => a.status === 'meeting').forEach(agent => {
                 const agentPos = toIso(agent.x, agent.y);
                 
-                ctx.strokeStyle = 'rgba(255, 107, 157, 0.3)';
+                ctx.strokeStyle = 'rgba(255, 107, 157, 0.25)';
                 ctx.lineWidth = 1;
-                ctx.setLineDash([5, 5]);
+                ctx.setLineDash([4, 4]);
                 ctx.beginPath();
                 ctx.moveTo(agentPos.x, agentPos.y);
                 ctx.lineTo(tablePos.x, tablePos.y);
@@ -621,11 +619,11 @@
         // Animation loop
         function animate() {
             drawOffice();
-            animationId = requestAnimationFrame(animate);
+            requestAnimationFrame(animate);
         }
         animate();
 
-        // Standup meeting functionality
+        // Standup meeting
         const discussionTopics = [
             "How can we optimize API response times?",
             "What new features should we prioritize?",
@@ -636,46 +634,44 @@
             "Partnership outreach strategies",
             "Code review feedback",
             "Design system improvements",
-            "Automation opportunities"
+            "Automation opportunities",
+            "Regional expansion ideas",
+            "Customer feedback insights"
         ];
 
         function startStandup() {
             if (isStandupActive) return;
             
             isStandupActive = true;
-            meetingStartTime = Date.now();
-            
             document.getElementById('standup-btn').disabled = true;
             document.getElementById('standup-btn').textContent = '🎤 MEETING IN PROGRESS...';
             document.getElementById('meeting-status').classList.add('active');
             
-            logActivity('🎤 STANDUP MEETING CALLED! All agents gathering...');
+            logActivity('🎤 STANDUP CALLED! All 20 agents gathering at meeting table...');
             
-            // Move agents to meeting table
+            // Move all agents to meeting table
             agents.forEach((agent, index) => {
                 agentPositions[agent.id] = { x: agent.x, y: agent.y };
                 
                 const angle = (Math.PI * 2 / agents.length) * index;
-                const radius = 80;
+                const radius = 90;
                 
                 agent.targetX = meetingTable.x + Math.cos(angle) * radius;
                 agent.targetY = meetingTable.y + Math.sin(angle) * radius;
                 agent.status = 'meeting';
                 agent.activity = 'In standup';
                 
-                // Animate to position
                 animateAgentToMeeting(agent);
                 
-                // Show speech bubble
                 setTimeout(() => {
                     showSpeechBubble(agent);
-                }, 2000 + (index * 800));
+                }, 2000 + (index * 600));
             });
             
             updateAgentList();
             showMeetingLog();
             
-            // End meeting after 3 minutes
+            // End after 3 minutes
             setTimeout(() => {
                 endStandup();
             }, 180000);
@@ -710,19 +706,19 @@
             
             const bubble = document.createElement('div');
             bubble.className = 'speech-bubble';
-            bubble.style.left = (pos.x + canvas.parentElement.offsetLeft + 30) + 'px';
-            bubble.style.top = (pos.y + canvas.parentElement.offsetTop - 60) + 'px';
+            bubble.style.left = (pos.x + canvas.parentElement.offsetLeft + 20) + 'px';
+            bubble.style.top = (pos.y + canvas.parentElement.offsetTop - 50) + 'px';
             bubble.innerHTML = `<strong>${agent.name}:</strong> ${topic}`;
             
             document.body.appendChild(bubble);
             
-            logActivity(`💬 ${agent.name}: "${topic.substring(0, 40)}..."`);
+            logActivity(`💬 ${agent.name}: "${topic.substring(0, 35)}..."`);
             
             setTimeout(() => bubble.remove(), 5000);
         }
 
         function endStandup() {
-            logActivity('✅ Standup meeting complete! Agents returning to desks.');
+            logActivity('✅ Standup complete! All 20 agents returning to fixed desks.');
             
             agents.forEach(agent => {
                 const originalPos = agentPositions[agent.id];
@@ -778,7 +774,6 @@
         function switchTab(tabName) {
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
             document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-            
             event.target.classList.add('active');
             document.getElementById(tabName + '-tab').classList.add('active');
         }
@@ -795,8 +790,6 @@
             `;
             
             feed.insertBefore(item, feed.firstChild);
-            
-            // Keep only last 20 items
             while (feed.children.length > 20) {
                 feed.removeChild(feed.lastChild);
             }
@@ -809,7 +802,7 @@
                     <span class="agent-emoji">${agent.emoji}</span>
                     <div class="agent-info">
                         <div class="agent-name" style="color: ${agent.color}">${agent.name}</div>
-                        <div class="agent-task">${agent.activity}</div>
+                        <div class="agent-task">${agent.desk} | ${agent.activity}</div>
                     </div>
                     <div class="status-dot ${agent.status}"></div>
                 </div>
