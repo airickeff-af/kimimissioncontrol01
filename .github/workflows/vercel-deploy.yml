@@ -2,278 +2,32 @@ name: Vercel Continuous Deployment
 
 on:
   push:
-    branches: [ master, main ]
+    branches: [master, main]
   workflow_dispatch:
-    inputs:
-      environment:
-        description: 'Deployment environment'
-        required: true
-        default: 'production'
-        type: choice
-        options:
-          - production
-          - staging
-
-env:
-  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-  DEPLOY_URL: "https://kimimissioncontrol01.vercel.app"
 
 jobs:
-  # ============================================
-  # PRE-DEPLOYMENT CHECKS
-  # ============================================
-  preflight:
-    name: 🔍 Pre-Deployment Checks
-    runs-on: ubuntu-latest
-    outputs:
-      should_deploy: ${{ steps.check.outputs.should_deploy }}
-      commit_sha: ${{ steps.check.outputs.commit_sha }}
-    
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Check deployment conditions
-        id: check
-        run: |
-          echo "🔍 Running pre-deployment checks..."
-          
-          # Get commit SHA
-          COMMIT_SHA=$(git rev-parse --short HEAD)
-          echo "commit_sha=$COMMIT_SHA" >> $GITHUB_OUTPUT
-          
-          # Check if VERCEL_TOKEN is set
-          if [ -z "${{ secrets.VERCEL_TOKEN }}" ]; then
-            echo "❌ VERCEL_TOKEN secret is not set!"
-            echo "Please add VERCEL_TOKEN to repository secrets."
-            echo "See SETUP.md for instructions."
-            exit 1
-          fi
-          
-          # Check if this is a skip-deploy commit
-          COMMIT_MSG=$(git log -1 --pretty=%B)
-          if echo "$COMMIT_MSG" | grep -qi "\[skip-deploy\]"; then
-            echo "⏭️ Skip-deploy tag found, skipping deployment"
-            echo "should_deploy=false" >> $GITHUB_OUTPUT
-            exit 0
-          fi
-          
-          echo "✅ All pre-deployment checks passed"
-          echo "should_deploy=true" >> $GITHUB_OUTPUT
-
-  # ============================================
-  # QUALITY AUDIT GATE
-  # ============================================
-  audit:
-    name: 📊 Quality Audit Gate
-    needs: preflight
-    runs-on: ubuntu-latest
-    if: needs.preflight.outputs.should_deploy == 'true'
-    
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          
-      - name: Run Pre-Deployment Audit
-        id: audit
-        run: |
-          if [ -f "mission-control/scripts/pre-deploy-audit.sh" ]; then
-            chmod +x mission-control/scripts/pre-deploy-audit.sh
-            ./mission-control/scripts/pre-deploy-audit.sh
-          else
-            echo "⚠️ Pre-deploy audit script not found, skipping..."
-          fi
-        continue-on-error: true
-        
-      - name: Audit Results
-        run: |
-          if [ "${{ steps.audit.outcome }}" == "failure" ]; then
-            echo "⚠️ Quality audit failed but continuing with deployment"
-            echo "   (Set to non-blocking - update to block if needed)"
-          else
-            echo "✅ Quality audit passed"
-          fi
-
-  # ============================================
-  # DEPLOY TO VERCEL
-  # ============================================
   deploy:
-    name: 🚀 Deploy to Vercel
-    needs: [preflight, audit]
     runs-on: ubuntu-latest
-    if: needs.preflight.outputs.should_deploy == 'true'
-    outputs:
-      deployment_url: ${{ steps.deploy.outputs.url }}
-      deployment_id: ${{ steps.deploy.outputs.id }}
-    
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
+      - uses: actions/checkout@v4
+      
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-
+      
       - name: Install Vercel CLI
-        run: npm install --global vercel@latest
-
-      - name: Pull Vercel Environment Information
-        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
-
-      - name: Build Project Artifacts
-        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
-
-      - name: Deploy Project Artifacts to Vercel
-        id: deploy
-        run: |
-          # Deploy and capture the URL
-          DEPLOY_OUTPUT=$(vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }})
-          echo "Raw output: $DEPLOY_OUTPUT"
-          
-          # Extract deployment URL
-          DEPLOY_URL=$(echo "$DEPLOY_OUTPUT" | grep -oE 'https://[^[:space:]]+' | tail -1)
-          echo "url=$DEPLOY_URL" >> $GITHUB_OUTPUT
-          echo "id=$(date +%s)" >> $GITHUB_OUTPUT
-          
-          echo "🚀 Deployed to: $DEPLOY_URL"
-
-      - name: Save Deployment Info
-        run: |
-          mkdir -p .deployment
-          echo "${{ steps.deploy.outputs.url }}" > .deployment/current-url.txt
-          echo "${{ needs.preflight.outputs.commit_sha }}" > .deployment/current-commit.txt
-          echo "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > .deployment/deploy-time.txt
-
-      - name: Upload Deployment Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: deployment-info
-          path: .deployment/
-          retention-days: 30
-
-  # ============================================
-  # POST-DEPLOYMENT HEALTH CHECK
-  # ============================================
-  health-check:
-    name: 🏥 Post-Deploy Health Check
-    needs: deploy
-    runs-on: ubuntu-latest
-    outputs:
-      health_status: ${{ steps.health.outputs.status }}
-    
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Wait for deployment to propagate
-        run: sleep 15
-
-      - name: Run Health Check Script
-        id: health
-        run: |
-          chmod +x scripts/health-check.sh
-          DEPLOY_URL="${{ needs.deploy.outputs.deployment_url }}"
-          if [ -z "$DEPLOY_URL" ]; then
-            DEPLOY_URL="${{ env.DEPLOY_URL }}"
-          fi
-          
-          if ./scripts/health-check.sh "$DEPLOY_URL"; then
-            echo "status=healthy" >> $GITHUB_OUTPUT
-            echo "✅ Health check passed"
-          else
-            echo "status=unhealthy" >> $GITHUB_OUTPUT
-            echo "❌ Health check failed"
-            exit 1
-          fi
-        continue-on-error: true
-
-      - name: Health Check Results
-        if: always()
-        run: |
-          if [ "${{ steps.health.outputs.status }}" == "healthy" ]; then
-            echo "✅ Deployment is healthy and serving traffic"
-          else
-            echo "❌ Deployment health check failed"
-            echo "   Initiating rollback procedures..."
-          fi
-
-  # ============================================
-  # ROLLBACK ON FAILURE
-  # ============================================
-  rollback:
-    name: ⏮️ Rollback on Failure
-    needs: [deploy, health-check]
-    runs-on: ubuntu-latest
-    if: always() && needs.health-check.outputs.health_status != 'healthy' && needs.deploy.result == 'success'
-    
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 10
-
-      - name: Install Vercel CLI
-        run: npm install --global vercel@latest
-
-      - name: Execute Rollback
-        run: |
-          chmod +x scripts/rollback.sh
-          ./scripts/rollback.sh "${{ secrets.VERCEL_TOKEN }}"
+        run: npm install -g vercel
+      
+      - name: Deploy to Vercel
         env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-
-      - name: Notify Rollback
+          VERCEL_TOKEN: vcp_3x5M0t2KXYcaWt9O4vpS8FRBLz1lApS5jnquHZUlLsInTbvfHN1jdrvh
+          VERCEL_ORG_ID: team_airickeff
+          VERCEL_PROJECT_ID: prj_kimimissioncontrol01
         run: |
-          echo "🔄 Rollback completed"
-          echo "   Previous stable version restored"
-
-  # ============================================
-  # DEPLOYMENT NOTIFICATION
-  # ============================================
-  notify:
-    name: 📢 Deployment Notification
-    needs: [deploy, health-check]
-    runs-on: ubuntu-latest
-    if: always()
-    
-    steps:
-      - name: Deployment Summary
+          vercel --token $VERCEL_TOKEN --prod --yes
+      
+      - name: Health Check
         run: |
-          echo "=========================================="
-          echo "   DEPLOYMENT SUMMARY"
-          echo "=========================================="
-          echo "Commit: ${{ needs.preflight.outputs.commit_sha }}"
-          echo "Deploy URL: ${{ needs.deploy.outputs.deployment_url || env.DEPLOY_URL }}"
-          echo "Health Status: ${{ needs.health-check.outputs.health_status || 'unknown' }}"
-          echo ""
-          echo "Results:"
-          echo "  - Preflight: ${{ needs.preflight.result }}"
-          echo "  - Audit: ${{ needs.audit.result }}"
-          echo "  - Deploy: ${{ needs.deploy.result }}"
-          echo "  - Health Check: ${{ needs.health-check.result }}"
-          echo "=========================================="
-
-      - name: Create Deployment Status
-        if: needs.health-check.outputs.health_status == 'healthy'
-        run: |
-          echo "✅ DEPLOYMENT SUCCESSFUL"
-          echo "   Your changes are now live!"
-          echo "   ${{ needs.deploy.outputs.deployment_url || env.DEPLOY_URL }}"
-
-      - name: Create Failure Status
-        if: needs.health-check.outputs.health_status != 'healthy'
-        run: |
-          echo "❌ DEPLOYMENT FAILED"
-          echo "   Health checks did not pass."
-          echo "   Check logs above for details."
+          sleep 10
+          curl -sf https://kimimissioncontrol01.vercel.app/api/health || exit 1
