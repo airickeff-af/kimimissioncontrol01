@@ -312,6 +312,41 @@
     </style>
 </head>
 <body>
+    <!-- Password Protection Overlay -->
+    <div id="password-overlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10, 10, 15, 0.98); z-index: 1000; display: flex; align-items: center; justify-content: center;">
+        <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 3rem; text-align: center; max-width: 400px; width: 90%;">
+            <div style="font-size: 4rem; margin-bottom: 1rem;">🔒</div>
+            <h2 style="margin-bottom: 0.5rem; color: var(--accent-cyan);">Data Viewer</h2>
+            <p style="color: var(--text-muted); margin-bottom: 2rem;">Enter password to access sensitive data</p>
+            <input type="password" id="password-input" placeholder="Enter password" style="width: 100%; padding: 1rem; background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 8px; color: var(--text-primary); font-size: 1rem; text-align: center; letter-spacing: 0.5rem; margin-bottom: 1rem;">
+            <button onclick="checkPassword()" style="width: 100%; padding: 1rem; background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple)); border: none; border-radius: 8px; color: #000; font-weight: 600; cursor: pointer; font-size: 1rem;">Unlock</button>
+            <p id="error-msg" style="color: var(--accent-pink); margin-top: 1rem; display: none;">Incorrect password</p>
+        </div>
+    </div>
+
+    <script>
+        function checkPassword() {
+            const input = document.getElementById('password-input').value;
+            if (input === '0000') {
+                document.getElementById('password-overlay').style.display = 'none';
+                localStorage.setItem('dataViewerAuth', 'true');
+            } else {
+                document.getElementById('error-msg').style.display = 'block';
+                document.getElementById('password-input').value = '';
+            }
+        }
+        
+        // Check if already authenticated
+        if (localStorage.getItem('dataViewerAuth') === 'true') {
+            document.getElementById('password-overlay').style.display = 'none';
+        }
+        
+        // Allow Enter key
+        document.getElementById('password-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') checkPassword();
+        });
+    </script>
+
     <header class="header">
         <div class="brand">
             <div class="logo">🎯</div>
