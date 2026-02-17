@@ -1,0 +1,2517 @@
+{
+  "summary": {
+    "totalLeads": 26,
+    "averageScore": 47,
+    "tierDistribution": {
+      "P0": 0,
+      "P1": 2,
+      "P2": 7,
+      "P3": 16,
+      "Cold": 1
+    },
+    "categoryAverages": {
+      "companySizeFunding": 48,
+      "partnershipPotential": 50,
+      "contactAccessibility": 23,
+      "marketRelevance": 68
+    },
+    "topLeads": [
+      {
+        "company": "PDAX",
+        "contact": "Nichel Gaba",
+        "score": 70,
+        "tier": "P1",
+        "action": "Contact within 3 days"
+      },
+      {
+        "company": "Coins.ph",
+        "contact": "Wei Zhou",
+        "score": 68,
+        "tier": "P1",
+        "action": "Contact within 3 days"
+      },
+      {
+        "company": "Angkas",
+        "contact": "George Royeca",
+        "score": 56,
+        "tier": "P2",
+        "action": "Contact within 1 week"
+      },
+      {
+        "company": "GCash (Mynt)",
+        "contact": "Martha Sazon",
+        "score": 56,
+        "tier": "P2",
+        "action": "Contact within 1 week"
+      },
+      {
+        "company": "Xendit Group",
+        "contact": "Moses Lo",
+        "score": 55,
+        "tier": "P2",
+        "action": "Contact within 1 week"
+      }
+    ],
+    "scoredAt": "2026-02-17T21:31:34.358Z",
+    "algorithmVersion": "2.0.0"
+  },
+  "scoredLeads": [
+    {
+      "leadId": "lead_003",
+      "company": "PDAX",
+      "contactName": "Nichel Gaba",
+      "title": "Founder & CEO",
+      "totalScore": 70,
+      "priorityTier": "P1",
+      "actionRequired": "Contact within 3 days",
+      "scoredAt": "2026-02-17T21:31:34.356Z",
+      "algorithmVersion": "2.0.0",
+      "breakdown": {
+        "companySizeFunding": {
+          "score": 87,
+          "weight": 0.25,
+          "weighted": 22,
+          "details": {
+            "funding": {
+              "score": 90,
+              "weight": 0.4
+            },
+            "companySize": {
+              "score": 75,
+              "weight": 0.35
+            },
+            "marketPresence": {
+              "score": 100,
+              "weight": 0.25
+            }
+          }
+        },
+        "partnershipPotential": {
+          "score": 70,
+          "weight": 0.3,
+          "weighted": 21,
+          "details": {
+            "partnershipType": {
+              "score": 100,
+              "weight": 0.4,
+              "type": "integration"
+            },
+            "dealSizePotential": {
+              "score": 45,
+              "weight": 0.35,
+              "size": "unknown"
+            },
+            "strategicFit": {
+              "score": 55,
+              "weight": 0.25
+            }
+          }
+        },
+        "contactAccessibility": {
+          "score": 35,
+          "weight": 0.25,
+          "weighted": 9,
+          "details": {
+            "totalPoints": 35,
+            "seniorityMultiplier": 1,
+            "channelsAvailable": 2,
+            "channels": [
+              "email_unverified",
+              "linkedin_personal"
+            ]
+          }
+        },
+        "marketRelevance": {
+          "score": 90,
+          "weight": 0.2,
+          "weighted": 18,
+          "details": {
+            "industry": {
+              "score": 100,
+              "weight": 0.5,
+              "type": "crypto_exchange"
+            },
+            "geography": {
+              "score": 100,
+              "weight": 0.3,
+              "region": "philippines"
+            },
+            "timing": {
+              "score": 50,
+              "weight": 0.2,
+              "type": "unknown"
+            }
+          }
+        }
+      },
+      "recommendations": [
+        "Research company partnerships and integration opportunities",
+        "Find alternative contact channels - limited accessibility",
+        "Strong market fit - emphasize regional expertise in outreach"
+      ]
+    },
+    {
+      "leadId": "lead_001",
+      "company": "Coins.ph",
+      "contactName": "Wei Zhou",
+      "title": "CEO & Founder",
+      "totalScore": 68,
+      "priorityTier": "P1",
+      "actionRequired": "Contact within 3 days",
+      "scoredAt": "2026-02-17T21:31:34.355Z",
+      "algorithmVersion": "2.0.0",
+      "breakdown": {
+        "companySizeFunding": {
+          "score": 73,
+          "weight": 0.25,
+          "weighted": 18,
+          "details": {
+            "funding": {
+              "score": 70,
+              "weight": 0.4
+            },
+            "companySize": {
+              "score": 100,
+              "weight": 0.35
+            },
+            "marketPresence": {
+              "score": 40,
+              "weight": 0.25
+            }
+          }
+        },
+        "partnershipPotential": {
+          "score": 68,
+          "weight": 0.3,
+          "weighted": 20,
+          "details": {
+            "partnershipType": {
+              "score": 100,
+              "weight": 0.4,
+              "type": "integration"
+            },
+            "dealSizePotential": {
+              "score": 45,
+              "weight": 0.35,
+              "size": "unknown"
+            },
+            "strategicFit": {
+              "score": 50,
+              "weight": 0.25
+            }
+          }
+        },
+        "contactAccessibility": {
+          "score": 40,
+          "weight": 0.25,
+          "weighted": 10,
+          "details": {
+            "totalPoints": 40,
+            "seniorityMultiplier": 1,
+            "channelsAvailable": 3,
+            "channels": [
+              "email_unverified",
+              "linkedin_company",
+              "twitter"
+            ]
+          }
+        },
+        "marketRelevance": {
+          "score": 97,
+          "weight": 0.2,
+          "weighted": 19,
+          "details": {
+            "industry": {
+              "score": 100,
+              "weight": 0.5,
+              "type": "crypto_exchange"
+            },
+            "geography": {
+              "score": 100,
+              "weight": 0.3,
+              "region": "philippines"
+            },
+            "timing": {
+              "score": 85,
+              "weight": 0.2,
+              "type": "expansion"
+            }
+          }
+        }
+      },
+      "recommendations": [
+        "Research company partnerships and integration opportunities",
+        "Find alternative contact channels - limited accessibility",
+        "Connect via LinkedIn for warm introduction",
+        "Strong market fit - emphasize regional expertise in outreach",
+        "Timing is optimal - company in active growth/expansion mode"
+      ]
+    },
+    {
+      "leadId": "lead_012",
+      "company": "Angkas",
+      "contactName": "George Royeca",
+      "title": "CEO",
+      "totalScore": 56,
+      "priorityTier": "P2",
+      "actionRequired": "Contact within 1 week",
+      "scoredAt": "2026-02-17T21:31:34.357Z",
+      "algorithmVersion": "2.0.0",
+      "breakdown": {
+        "companySizeFunding": {
+          "score": 59,
+          "weight": 0.25,
+          "weighted": 15,
+          "details": {
+            "funding": {
+              "score": 35,
+              "weight": 0.4
+            },
+            "companySize": {
+              "score": 100,
+              "weight": 0.35
+            },
+            "marketPresence": {
+              "score": 40,
+              "weight": 0.25
+            }
+          }
+        },
+        "partnershipPotential": {
+          "score": 44,
+          "weight": 0.3,
+          "weighted": 13,
+          "details": {
+            "partnershipType": {
+              "score": 40,
+              "weight": 0.4,
+              "type": "unknown"
+            },
+            "dealSizePotential": {
+              "score": 45,
+              "weight": 0.35,
+              "size": "unknown"
+            },
+            "strategicFit": {
+              "score": 50,
+              "weight": 0.25
+            }
+          }
+        },
+        "contactAccessibility": {
+          "score": 50,
+          "weight": 0.25,
+          "weighted": 13,
+          "details": {
+            "totalPoints": 50,
+            "seniorityMultiplier": 1,
+            "channelsAvailable": 3,
+            "channels": [
+              "email_unverified",
+              "linkedin_personal",
+              "phone"
+            ]
+          }
+        },
+        "marketRelevance": {
+          "score": 78,
+          "weight": 0.2,
+          "weighted": 16,
+          "details": {
+            "industry": {
+              "score": 75,
+              "weight": 0.5,
+              "type": "fintech"
+            },
+            "geography": {
+              "score": 100,
+              "weight": 0.3,
+              "region": "philippines"
+            },
+            "timing": {
+              "score": 50,
+              "weight": 0.2,
+              "type": "unknown"
+            }
+          }
+        }
+      },
+      "recommendations": [
+        "Look for recent funding announcements or Crunchbase data",
+        "Research company partnerships and integration opportunities"
+      ]
+    },
+    {
+      "leadId": "lead_016",
+      "company": "GCash (Mynt)",
+      "contactName": "Martha Sazon",
+      "title": "President & CEO",
+      "totalScore": 56,
+      "priorityTier": "P2",
+      "actionRequired": "Contact within 1 week",
+      "scoredAt": "2026-02-17T21:31:34.357Z",
+      "algorithmVersion": "2.0.0",
+      "breakdown": {
+        "companySizeFunding": {
+          "score": 60,
+          "weight": 0.25,
+          "weighted": 15,
+          "details": {
+            "funding": {
+              "score": 90,
+              "weight": 0.4
+            },
+            "companySize": {
+              "score": 40,
+              "weight": 0.35
+            },
+            "marketPresence": {
+              "score": 40,
+              "weight": 0.25
+            }
+          }
+        },
+        "partnershipPotential": {
+          "score": 44,
+          "weight": 0.3,
+          "weighted": 13,
+          "details": {
+            "partnershipType": {
+              "score": 40,
+              "weight": 0.4,
+              "type": "unknown"
+            },
+            "dealSizePotential": {
+              "score": 45,
+              "weight": 0.35,
+              "size": "unknown"
+            },
+            "strategicFit": {
+              "score": 50,
+              "weight": 0.25
+            }
+          }
+        },
+        "contactAccessibility": {
+          "score": 50,
+          "weight": 0.25,
+          "weighted": 13,
+          "details": {
+            "totalPoints": 50,
+            "seniorityMultiplier": 1,
+            "channelsAvailable": 3,
+            "channels": [
+              "email_unverified",
+              "linkedin_personal",
+              "phone"
+            ]
+          }
+        },
+        "marketRelevance": {
+          "score": 78,
+          "weight": 0.2,
+          "weighted": 16,
+          "details": {
+            "industry": {
+              "score": 75,
+              "weight": 0.5,
+              "type": "fintech"
+            },
+            "geography": {
+              "score": 100,
+              "weight": 0.3,
+              "region": "philippines"
+            },
+            "timing": {
+              "score": 50,
+              "weight": 0.2,
+              "type": "unknown"
+            }
+          }
+        }
+      },
+      "recommendations": [
+        "Research company partnerships and integration opportunities"
+      ]
+    },
+    {
+      "leadId": "lead_011",
+      "company": "Xendit Group",
+      "contactName": "Moses Lo",
+      "title": "CEO & Co-Founder",
+      "totalScore": 55,
+      "priorityTier": "P2",
+      "actionRequired": "Contact within 1 week",
+      "scoredAt": "2026-02-17T21:31:34.357Z",
+      "algorithmVersion": "2.0.0",
+      "breakdown": {
+        "companySizeFunding": {
+          "score": 38,
+          "weight": 0.25,
+          "weighted": 10,
+          "details": {
+            "funding": {
+              "score": 35,
+              "weight": 0.4
+            },
+            "companySize": {
+              "score": 40,
+              "weight": 0.35
+            },
+            "marketPresence": {
+              "score": 40,
+              "weight": 0.25
+            }
+          }
+        },
+        "partnershipPotential": {
+          "score": 47,
+          "weight": 0.3,
+          "weighted": 14,
+          "details": {
+            "partnershipType": {
+              "score": 40,
+              "weight": 0.4,
+              "type": "unknown"
+            },
+            "dealSizePotential": {
+              "score": 45,
+              "weight": 0.35,
+              "size": "unknown"
+            },
+            "strategicFit": {
+              "score": 60,
+              "weight": 0.25
+            }
+          }
+        },
+        "contactAccessibility": {
+          "score": 50,
+          "weight": 0.25,
+          "weighted": 13,
+          "details": {
+            "totalPoints": 50,
+            "seniorityMultiplier": 1,
+            "channelsAvailable": 3,
+            "channels": [
+              "email_unverified",
+              "linkedin_personal",
+              "phone"
+            ]
+          }
+        },
+        "marketRelevance": {
+          "score": 92,
+          "weight": 0.2,
+          "weighted": 18,
+          "details": {
+            "industry": {
+              "score": 90,
+              "weight": 0.5,
+              "type": "payments"
+            },
+            "geography": {
+              "score": 100,
+              "weight": 0.3,
+              "region": "philippines"
+            },
+            "timing": {
+              "score": 85,
+              "weight": 0.2,
+              "type": "expansion"
+            }
+          }
+        }
+      },
+      "recommendations": [
+        "Research company funding history and growth trajectory",
+        "Look for recent funding announcements or Crunchbase data",
+        "Strong market fit - emphasize regional expertise in outreach",
+        "Timing is optimal - company in active growth/expansion mode"
+      ]
+    },
+    {
+      "leadId": "lead_014",
+      "company": "Dragonpay",
+      "contactName": "Robertson Chiang",
+      "title": "Founder, CEO & CTO",
+      "totalScore": 55,
+      "priorityTier": "P2",
+      "actionRequired": "Contact within 1 week",
+      "scoredAt": "2026-02-17T21:31:34.357Z",
+      "algorithmVersion": "2.0.0",
+      "breakdown": {
+        "companySizeFunding": {
+          "score": 38,
+          "weight": 0.25,
+          "weighted": 10,
+          "details": {
+            "funding": {
+              "score": 35,
+              "weight": 0.4
+            },
+            "companySize": {
+              "score": 40,
+              "weight": 0.35
+            },
+            "marketPresence": {
+              "score": 40,
+              "weight": 0.25
+            }
+          }
+        },
+        "partnershipPotential": {
+          "score": 67,
+          "weight": 0.3,
+          "weighted": 20,
+          "details": {
+            "partnershipType": {
+              "score": 90,
+              "weight": 0.4,
+              "type": "strategic"
+            },
+            "dealSizePotential": {
+              "score": 45,
+              "weight": 0.35,
+              "size": "unknown"
+            },
+            "strategicFit": {
+              "score": 60,
+              "weight": 0.25
+            }
+          }
+        },
+        "contactAccessibility": {
+          "score": 35,
+          "weight": 0.25,
+          "weighted": 9,
+          "details": {
+            "totalPoints": 35,
+            "seniorityMultiplier": 1,
+            "channelsAvailable": 2,
+            "channels": [
+              "email_unverified",
+              "linkedin_personal"
+            ]
+          }
+        },
+        "marketRelevance": {
+          "score": 85,
+          "weight": 0.2,
+          "weighted": 17,
+          "details": {
+            "industry": {
+              "score": 90,
+              "weight": 0.5,
+              "type": "payments"
+            },
+            "geography": {
+              "score": 100,
+              "weight": 0.3,
+              "region": "philippines"
+            },
+            "timing": {
+              "score": 50,
+              "weight": 0.2,
+              "type": "unknown"
+            }
+          }
+        }
+      },
+      "recommendations": [
+        "Research company funding history and growth trajectory",
+        "Look for recent funding announcements or Crunchbase data",
+        "Find alternative contact channels - limited accessibility",
+        "Strong market fit - emphasize regional expertise in outreach"
+      ]
+    },
+    {
+      "leadId": "lead_008",
+      "company": "Tala Philippines",
+      "contactName": "Shivani Siroya",
+      "title": "Founder & CEO",
+      "totalScore": 51,
+      "priorityTier": "P2",
+      "actionRequired": "Contact within 1 week",
+      "scoredAt": "2026-02-17T21:31:34.356Z",
+      "algorithmVersion": "2.0.0",
+      "breakdown": {
+        "companySizeFunding": {
+          "score": 64,
+          "weight": 0.25,
+          "weighted": 16,
+          "details": {
+            "funding": {
+              "score": 100,
+              "weight": 0.4
+            },
+            "companySize": {
+              "score": 40,
+              "weight": 0.35
+            },
+            "marketPresence": {
+              "score": 40,
+              "weight": 0.25
+            }
+          }
+        },
+        "partnershipPotential": {
+          "score": 44,
+          "weight": 0.3,
+          "weighted": 13,
+          "details": {
+            "partnershipType": {
+              "score": 40,
+              "weight": 0.4,
+              "type": "unknown"
+            },
+            "dealSizePotential": {
+              "score": 45,
+              "weight": 0.35,
+              "size": "unknown"
+            },
+            "strategicFit": {
+              "score": 50,
+              "weight": 0.25
+            }
+          }
+        },
+        "contactAccessibility": {
+          "score": 35,
+          "weight": 0.25,
+          "weighted": 9,
+          "details": {
+            "totalPoints": 35,
+            "seniorityMultiplier": 1,
+            "channelsAvailable": 2,
+            "channels": [
+              "email_unverified",
+              "linkedin_personal"
+            ]
+          }
+        },
+        "marketRelevance": {
+          "score": 63,
+          "weight": 0.2,
+          "weighted": 13,
+          "details": {
+            "industry": {
+              "score": 75,
+              "weight": 0.5,
+              "type": "fintech"
+            },
+            "geography": {
+              "score": 50,
+              "weight": 0.3,
+              "region": "other"
+            },
+            "timing": {
+              "score": 50,
+              "weight": 0.2,
+              "type": "unknown"
+            }
+          }
+        }
+      },
+      "recommendations": [
+        "Research company partnerships and integration opportunities",
+        "Find alternative contact channels - limited accessibility"
+      ]
+    },
+    {
+      "leadId": "lead_013",
+      "company": "GoTyme Bank",
+      "contactName": "Albert Tinio",
+      "title": "Co-CEO & Co-Founder",
+      "totalScore": 51,
+      "priorityTier": "P2",
+      "actionRequired": "Contact within 1 week",
+      "scoredAt": "2026-02-17T21:31:34.357Z",
+      "algorithmVersion": "2.0.0",
+      "breakdown": {
+        "companySizeFunding": {
+          "score": 38,
+          "weight": 0.25,
+          "weighted": 10,
+          "details": {
+            "funding": {
+              "score": 35,
+              "weight": 0.4
+            },
+            "companySize": {
+              "score": 40,
+              "weight": 0.35
+            },
+            "marketPresence": {
+              "score": 40,
+              "weight": 0.25
+            }
+          }
+        },
+        "partnershipPotential": {
+          "score": 67,
+          "weight": 0.3,
+          "weighted": 20,
+          "details": {
+            "partnershipType": {
+              "score": 90,
+              "weight": 0.4,
+              "type": "strategic"
+            },
+            "dealSizePotential": {
+              "score": 45,
+              "weight": 0.35,
+              "size": "unknown"
+            },
+            "strategicFit": {
+              "score": 60,
+              "weight": 0.25
+            }
+          }
+        },
+        "contactAccessibility": {
+          "score": 35,
+          "weight": 0.25,
+          "weighted": 9,
+          "details": {
+            "totalPoints": 35,
+            "seniorityMultiplier": 1,
+            "channelsAvailable": 2,
+            "channels": [
+              "email_unverified",
+              "linkedin_personal"
+            ]
+          }
+        },
+        "marketRelevance": {
+          "score": 63,
+          "weight": 0.2,
+          "weighted": 13,
+          "details": {
+            "industry": {
+              "score": 75,
+              "weight": 0.5,
+              "type": "fintech"
+            },
+            "geography": {
+              "score": 50,
+              "weight": 0.3,
+              "region": "other"
+            },
+            "timing": {
+              "score": 50,
+              "weight": 0.2,
+              "type": "unknown"
+            }
+          }
+        }
+      },
+      "recommendations": [
+        "Research company funding history and growth trajectory",
+        "Look for recent funding announcements or Crunchbase data",
+        "Find alternative contact channels - limited accessibility"
+      ]
+    },
+    {
+      "leadId": "lead_009",
+      "company": "PayMongo",
+      "contactName": "Jojo Malolos",
+      "title": "CEO",
+      "totalScore": 50,
+      "priorityTier": "P2",
+      "actionRequired": "Contact within 1 week",
+      "scoredAt": "2026-02-17T21:31:34.357Z",
+      "algorithmVersion": "2.0.0",
+      "breakdown": {
+        "companySizeFunding": {
+          "score": 38,
+          "weight": 0.25,
+          "weighted": 10,
+          "details": {
+            "funding": {
+              "score": 35,
+              "weight": 0.4
+            },
+            "companySize": {
+              "score": 40,
+              "weight": 0.35
+            },
+            "marketPresence": {
+              "score": 40,
+              "weight": 0.25
+            }
+          }
+        },
+        "partnershipPotential": {
+          "score": 47,
+          "weight": 0.3,
+          "weighted": 14,
+          "details": {
+            "partnershipType": {
+              "score": 40,
+              "weight": 0.4,
+              "type": "unknown"
+            },
+            "dealSizePotential": {
+              "score": 45,
+              "weight": 0.35,
+              "size": "unknown"
+            },
+            "strategicFit": {
+              "score": 60,
+              "weight": 0.25
+            }
+          }
+        },
+        "contactAccessibility": {
+          "score": 50,
+          "weight": 0.25,
+          "weighted": 13,
+          "details": {
+            "totalPoints": 50,
+            "seniorityMultiplier": 1,
+            "channelsAvailable": 3,
+            "channels": [
+              "email_unverified",
+              "linkedin_personal",
+              "phone"
+            ]
+          }
+        },
+        "marketRelevance": {
+          "score": 70,
+          "weight": 0.2,
+          "weighted": 14,
+          "details": {
+            "industry": {
+              "score": 90,
+              "weight": 0.5,
+              "type": "payments"
+            },
+            "geography": {
+              "score": 50,
+              "weight": 0.3,
+              "region": "other"
+            },
+            "timing": {
+              "score": 50,
+              "weight": 0.2,
+              "type": "unknown"
+            }
+          }
+        }
+      },
+      "recommendations": [
+        "Research company funding history and growth trajectory",
+        "Look for recent funding announcements or Crunchbase data"
+      ]
+    },
+    {
+      "leadId": "lead_005",
+      "company": "Rebit.ph",
+      "contactName": "Miguel Cuneta",
+      "title": "Co-Founder & Chief Community Officer",
+      "totalScore": 48,
+      "priorityTier": "P3",
+      "actionRequired": "Contact within 2 weeks",
+      "scoredAt": "2026-02-17T21:31:34.356Z",
+      "algorithmVersion": "2.0.0",
+      "breakdown": {
+        "companySizeFunding": {
+          "score": 50,
+          "weight": 0.25,
+          "weighted": 13,
+          "details": {
+            "funding": {
+              "score": 35,
+              "weight": 0.4
+            },
+            "companySize": {
+              "score": 75,
+              "weight": 0.35
+            },
+            "marketPresence": {
+              "score": 40,
+              "weight": 0.25
+            }
+          }
+        },
+        "partnershipPotential": {
+          "score": 44,
+          "weight": 0.3,
+          "weighted": 13,
+          "details": {
+            "partnershipType": {
+              "score": 40,
+              "weight": 0.4,
+              "type": "unknown"
+            },
+            "dealSizePotential": {
+              "score": 45,
+              "weight": 0.35,
+              "size": "unknown"
+            },
+            "strategicFit": {
+              "score": 50,
+              "weight": 0.25
+            }
+          }
+        },
+        "contactAccessibility": {
+          "score": 20,
+          "weight": 0.25,
+          "weighted": 5,
+          "details": {
+            "totalPoints": 20,
+            "seniorityMultiplier": 1,
+            "channelsAvailable": 1,
+            "channels": [
+              "linkedin_personal"
+            ]
+          }
+        },
+        "marketRelevance": {
+          "score": 85,
+          "weight": 0.2,
+          "weighted": 17,
+          "details": {
+            "industry": {
+              "score": 90,
+              "weight": 0.5,
+              "type": "payments"
+            },
+            "geography": {
+              "score": 100,
+              "weight": 0.3,
+              "region": "philippines"
+            },
+            "timing": {
+              "score": 50,
+              "weight": 0.2,
+              "type": "unknown"
+            }
+          }
+        }
+      },
+      "recommendations": [
+        "Look for recent funding announcements or Crunchbase data",
+        "Research company partnerships and integration opportunities",
+        "Find alternative contact channels - limited accessibility",
+        "Priority: Find verified email address",
+        "Strong market fit - emphasize regional expertise in outreach"
+      ]
+    },
+    {
+      "leadId": "lead_002",
+      "company": "Coins.xyz",
+      "contactName": "Wei Zhou",
+      "title": "CEO & Founder",
+      "totalScore": 46,
+      "priorityTier": "P3",
+      "actionRequired": "Contact within 2 weeks",
+      "scoredAt": "2026-02-17T21:31:34.356Z",
+      "algorithmVersion": "2.0.0",
+      "breakdown": {
+        "companySizeFunding": {
+          "score": 38,
+          "weight": 0.25,
+          "weighted": 10,
+          "details": {
+            "funding": {
+              "score": 35,
+              "weight": 0.4
+            },
+            "companySize": {
+              "score": 40,
+              "weight": 0.35
+            },
+            "marketPresence": {
+              "score": 40,
+              "weight": 0.25
+            }
+          }
+        },
+        "partnershipPotential": {
+          "score": 61,
+          "weight": 0.3,
+          "weighted": 18,
+          "details": {
+            "partnershipType": {
+              "score": 40,
+              "weight": 0.4,
+              "type": "unknown"
+            },
+            "dealSizePotential": {
+              "score": 85,
+              "weight": 0.35,
+              "size": "large"
+            },
+            "strategicFit": {
+              "score": 60,
+              "weight": 0.25
+            }
+          }
+        },
+        "contactAccessibility": {
+          "score": 10,
+          "weight": 0.25,
+          "weighted": 3,
+          "details": {
+            "totalPoints": 10,
+            "seniorityMultiplier": 1,
+            "channelsAvailable": 1,
+            "channels": [
+              "linkedin_company"
+            ]
+          }
+        },
+        "marketRelevance": {
+          "score": 77,
+          "weight": 0.2,
+          "weighted": 15,
+          "details": {
+            "industry": {
+              "score": 90,
+              "weight": 0.5,
+              "type": "payments"
+            },
+            "geography": {
+              "score": 50,
+              "weight": 0.3,
+              "region": "other"
+            },
+            "timing": {
+              "score": 85,
+              "weight": 0.2,
+              "type": "expansion"
+            }
+          }
+        }
+      },
+      "recommendations": [
+        "Research company funding history and growth trajectory",
+        "Look for recent funding announcements or Crunchbase data",
+        "Find alternative contact channels - limited accessibility",
+        "Priority: Find verified email address",
+        "Connect via LinkedIn for warm introduction",
+        "Timing is optimal - company in active growth/expansion mode"
+      ]
+    },
+    {
+      "leadId": "lead_004",
+      "company": "BloomX",
+      "contactName": "Luis Buenaventura II",
+      "title": "Co-Founder (former CSO) / NOW Head of GCrypto at GCash",
+      "totalScore": 46,
+      "priorityTier": "P3",
+      "actionRequired": "Contact within 2 weeks",
+      "scoredAt": "2026-02-17T21:31:34.356Z",
+      "algorithmVersion": "2.0.0",
+      "breakdown": {
+        "companySizeFunding": {
+          "score": 50,
+          "weight": 0.25,
+          "weighted": 13,
+          "details": {
+            "funding": {
+              "score": 35,
+              "weight": 0.4
+            },
+            "companySize": {
+              "score": 75,
+              "weight": 0.35
+            },
+            "marketPresence": {
+              "score": 40,
+              "weight": 0.25
+            }
+          }
+        },
+        "partnershipPotential": {
+          "score": 44,
+          "weight": 0.3,
+          "weighted": 13,
+          "details": {
+            "partnershipType": {
+              "score": 40,
+              "weight": 0.4,
+              "type": "unknown"
+            },
+            "dealSizePotential": {
+              "score": 45,
+              "weight": 0.35,
+              "size": "unknown"
+            },
+            "strategicFit": {
+              "score": 50,
+              "weight": 0.25
+            }
+          }
+        },
+        "contactAccessibility": {
+          "score": 35,
+          "weight": 0.25,
+          "weighted": 9,
+          "details": {
+            "totalPoints": 35,
+            "seniorityMultiplier": 1,
+            "channelsAvailable": 2,
+            "channels": [
+              "linkedin_personal",
+              "twitter"
+            ]
+          }
+        },
+        "marketRelevance": {
+          "score": 60,
+          "weight": 0.2,
+          "weighted": 12,
+          "details": {
+            "industry": {
+              "score": 40,
+              "weight": 0.5,
+              "type": "other"
+            },
+            "geography": {
+              "score": 100,
+              "weight": 0.3,
+              "region": "philippines"
+            },
+            "timing": {
+              "score": 50,
+              "weight": 0.2,
+              "type": "unknown"
+            }
+          }
+        }
+      },
+      "recommendations": [
+        "Look for recent funding announcements or Crunchbase data",
+        "Research company partnerships and integration opportunities",
+        "Find alternative contact channels - limited accessibility",
+        "Priority: Find verified email address"
+      ]
+    },
+    {
+      "leadId": "lead_006",
+      "company": "Binance Philippines",
+      "contactName": "Kenneth Stern",
+      "title": "Former General Manager",
+      "totalScore": 46,
+      "priorityTier": "P3",
+      "actionRequired": "Contact within 2 weeks",
+      "scoredAt": "2026-02-17T21:31:34.356Z",
+      "algorithmVersion": "2.0.0",
+      "breakdown": {
+        "companySizeFunding": {
+          "score": 85,
+          "weight": 0.25,
+          "weighted": 21,
+          "details": {
+            "funding": {
+              "score": 100,
+              "weight": 0.4
+            },
+            "companySize": {
+              "score": 100,
+              "weight": 0.35
+            },
+            "marketPresence": {
+              "score": 40,
+              "weight": 0.25
+            }
+          }
+        },
+        "partnershipPotential": {
+          "score": 44,
+          "weight": 0.3,
+          "weighted": 13,
+          "details": {
+            "partnershipType": {
+              "score": 40,
+              "weight": 0.4,
+              "type": "unknown"
+            },
+            "dealSizePotential": {
+              "score": 45,
+              "weight": 0.35,
+              "size": "unknown"
+            },
+            "strategicFit": {
+              "score": 50,
+              "weight": 0.25
+            }
+          }
+        },
+        "contactAccessibility": {
+          "score": 0,
+          "weight": 0.25,
+          "weighted": 0,
+          "details": {
+            "totalPoints": 0,
+            "seniorityMultiplier": 0.8,
+            "channelsAvailable": 0,
+            "channels": []
+          }
+        },
+        "marketRelevance": {
+          "score": 60,
+          "weight": 0.2,
+          "weighted": 12,
+          "details": {
+            "industry": {
+              "score": 40,
+              "weight": 0.5,
+              "type": "other"
+            },
+            "geography": {
+              "score": 100,
+              "weight": 0.3,
+              "region": "philippines"
+            },
+            "timing": {
+              "score": 50,
+              "weight": 0.2,
+              "type": "unknown"
+            }
+          }
+        }
+      },
+      "recommendations": [
+        "Research company partnerships and integration opportunities",
+        "Find alternative contact channels - limited accessibility",
+        "Priority: Find verified email address",
+        "Connect via LinkedIn for warm introduction"
+      ]
+    },
+    {
+      "leadId": "lead_007",
+      "company": "Maya",
+      "contactName": "Shailesh Baidwan",
+      "title": "Group President & Co-Founder",
+      "totalScore": 45,
+      "priorityTier": "P3",
+      "actionRequired": "Contact within 2 weeks",
+      "scoredAt": "2026-02-17T21:31:34.356Z",
+      "algorithmVersion": "2.0.0",
+      "breakdown": {
+        "companySizeFunding": {
+          "score": 38,
+          "weight": 0.25,
+          "weighted": 10,
+          "details": {
+            "funding": {
+              "score": 35,
+              "weight": 0.4
+            },
+            "companySize": {
+              "score": 40,
+              "weight": 0.35
+            },
+            "marketPresence": {
+              "score": 40,
+              "weight": 0.25
+            }
+          }
+        },
+        "partnershipPotential": {
+          "score": 44,
+          "weight": 0.3,
+          "weighted": 13,
+          "details": {
+            "partnershipType": {
+              "score": 40,
+              "weight": 0.4,
+              "type": "unknown"
+            },
+            "dealSizePotential": {
+              "score": 45,
+              "weight": 0.35,
+              "size": "unknown"
+            },
+            "strategicFit": {
+              "score": 50,
+              "weight": 0.25
+            }
+          }
+        },
+        "contactAccessibility": {
+          "score": 35,
+          "weight": 0.25,
+          "weighted": 9,
+          "details": {
+            "totalPoints": 35,
+            "seniorityMultiplier": 1,
+            "channelsAvailable": 2,
+            "channels": [
+              "email_unverified",
+              "linkedin_personal"
+            ]
+          }
+        },
+        "marketRelevance": {
+          "score": 70,
+          "weight": 0.2,
+          "weighted": 14,
+          "details": {
+            "industry": {
+              "score": 90,
+              "weight": 0.5,
+              "type": "payments"
+            },
+            "geography": {
+              "score": 50,
+              "weight": 0.3,
+              "region": "other"
+            },
+            "timing": {
+              "score": 50,
+              "weight": 0.2,
+              "type": "unknown"
+            }
+          }
+        }
+      },
+      "recommendations": [
+        "Research company funding history and growth trajectory",
+        "Look for recent funding announcements or Crunchbase data",
+        "Research company partnerships and integration opportunities",
+        "Find alternative contact channels - limited accessibility"
+      ]
+    },
+    {
+      "leadId": "lead_017",
+      "company": "Moneybees Forex",
+      "contactName": "TBD",
+      "title": "CEO",
+      "totalScore": 45,
+      "priorityTier": "P3",
+      "actionRequired": "Contact within 2 weeks",
+      "scoredAt": "2026-02-17T21:31:34.357Z",
+      "algorithmVersion": "2.0.0",
+      "breakdown": {
+        "companySizeFunding": {
+          "score": 38,
+          "weight": 0.25,
+          "weighted": 10,
+          "details": {
+            "funding": {
+              "score": 35,
+              "weight": 0.4
+            },
+            "companySize": {
+              "score": 40,
+              "weight": 0.35
+            },
+            "marketPresence": {
+              "score": 40,
+              "weight": 0.25
+            }
+          }
+        },
+        "partnershipPotential": {
+          "score": 68,
+          "weight": 0.3,
+          "weighted": 20,
+          "details": {
+            "partnershipType": {
+              "score": 100,
+              "weight": 0.4,
+              "type": "integration"
+            },
+            "dealSizePotential": {
+              "score": 45,
+              "weight": 0.35,
+              "size": "unknown"
+            },
+            "strategicFit": {
+              "score": 50,
+              "weight": 0.25
+            }
+          }
+        },
+        "contactAccessibility": {
+          "score": 0,
+          "weight": 0.25,
+          "weighted": 0,
+          "details": {
+            "totalPoints": 0,
+            "seniorityMultiplier": 1,
+            "channelsAvailable": 0,
+            "channels": []
+          }
+        },
+        "marketRelevance": {
+          "score": 75,
+          "weight": 0.2,
+          "weighted": 15,
+          "details": {
+            "industry": {
+              "score": 100,
+              "weight": 0.5,
+              "type": "crypto_exchange"
+            },
+            "geography": {
+              "score": 50,
+              "weight": 0.3,
+              "region": "other"
+            },
+            "timing": {
+              "score": 50,
+              "weight": 0.2,
+              "type": "unknown"
+            }
+          }
+        }
+      },
+      "recommendations": [
+        "Research company funding history and growth trajectory",
+        "Look for recent funding announcements or Crunchbase data",
+        "Research company partnerships and integration opportunities",
+        "Find alternative contact channels - limited accessibility",
+        "Priority: Find verified email address",
+        "Connect via LinkedIn for warm introduction"
+      ]
+    },
+    {
+      "leadId": "lead_010",
+      "company": "Xendit Philippines",
+      "contactName": "Yang Yang Zhang",
+      "title": "Managing Director - Philippines",
+      "totalScore": 44,
+      "priorityTier": "P3",
+      "actionRequired": "Contact within 2 weeks",
+      "scoredAt": "2026-02-17T21:31:34.357Z",
+      "algorithmVersion": "2.0.0",
+      "breakdown": {
+        "companySizeFunding": {
+          "score": 38,
+          "weight": 0.25,
+          "weighted": 10,
+          "details": {
+            "funding": {
+              "score": 35,
+              "weight": 0.4
+            },
+            "companySize": {
+              "score": 40,
+              "weight": 0.35
+            },
+            "marketPresence": {
+              "score": 40,
+              "weight": 0.25
+            }
+          }
+        },
+        "partnershipPotential": {
+          "score": 44,
+          "weight": 0.3,
+          "weighted": 13,
+          "details": {
+            "partnershipType": {
+              "score": 40,
+              "weight": 0.4,
+              "type": "unknown"
+            },
+            "dealSizePotential": {
+              "score": 45,
+              "weight": 0.35,
+              "size": "unknown"
+            },
+            "strategicFit": {
+              "score": 50,
+              "weight": 0.25
+            }
+          }
+        },
+        "contactAccessibility": {
+          "score": 19,
+          "weight": 0.25,
+          "weighted": 5,
+          "details": {
+            "totalPoints": 20,
+            "seniorityMultiplier": 0.95,
+            "channelsAvailable": 1,
+            "channels": [
+              "linkedin_personal"
+            ]
+          }
+        },
+        "marketRelevance": {
+          "score": 85,
+          "weight": 0.2,
+          "weighted": 17,
+          "details": {
+            "industry": {
+              "score": 90,
+              "weight": 0.5,
+              "type": "payments"
+            },
+            "geography": {
+              "score": 100,
+              "weight": 0.3,
+              "region": "philippines"
+            },
+            "timing": {
+              "score": 50,
+              "weight": 0.2,
+              "type": "unknown"
+            }
+          }
+        }
+      },
+      "recommendations": [
+        "Research company funding history and growth trajectory",
+        "Look for recent funding announcements or Crunchbase data",
+        "Research company partnerships and integration opportunities",
+        "Find alternative contact channels - limited accessibility",
+        "Priority: Find verified email address",
+        "Strong market fit - emphasize regional expertise in outreach"
+      ]
+    },
+    {
+      "leadId": "lead_015",
+      "company": "Satoshi Citadel Industries (SCI)",
+      "contactName": "John Bailon",
+      "title": "Co-Founder & CEO",
+      "totalScore": 43,
+      "priorityTier": "P3",
+      "actionRequired": "Contact within 2 weeks",
+      "scoredAt": "2026-02-17T21:31:34.357Z",
+      "algorithmVersion": "2.0.0",
+      "breakdown": {
+        "companySizeFunding": {
+          "score": 50,
+          "weight": 0.25,
+          "weighted": 13,
+          "details": {
+            "funding": {
+              "score": 35,
+              "weight": 0.4
+            },
+            "companySize": {
+              "score": 75,
+              "weight": 0.35
+            },
+            "marketPresence": {
+              "score": 40,
+              "weight": 0.25
+            }
+          }
+        },
+        "partnershipPotential": {
+          "score": 44,
+          "weight": 0.3,
+          "weighted": 13,
+          "details": {
+            "partnershipType": {
+              "score": 40,
+              "weight": 0.4,
+              "type": "unknown"
+            },
+            "dealSizePotential": {
+              "score": 45,
+              "weight": 0.35,
+              "size": "unknown"
+            },
+            "strategicFit": {
+              "score": 50,
+              "weight": 0.25
+            }
+          }
+        },
+        "contactAccessibility": {
+          "score": 35,
+          "weight": 0.25,
+          "weighted": 9,
+          "details": {
+            "totalPoints": 35,
+            "seniorityMultiplier": 1,
+            "channelsAvailable": 2,
+            "channels": [
+              "email_unverified",
+              "linkedin_personal"
+            ]
+          }
+        },
+        "marketRelevance": {
+          "score": 45,
+          "weight": 0.2,
+          "weighted": 9,
+          "details": {
+            "industry": {
+              "score": 40,
+              "weight": 0.5,
+              "type": "other"
+            },
+            "geography": {
+              "score": 50,
+              "weight": 0.3,
+              "region": "other"
+            },
+            "timing": {
+              "score": 50,
+              "weight": 0.2,
+              "type": "unknown"
+            }
+          }
+        }
+      },
+      "recommendations": [
+        "Look for recent funding announcements or Crunchbase data",
+        "Research company partnerships and integration opportunities",
+        "Find alternative contact channels - limited accessibility"
+      ]
+    },
+    {
+      "leadId": "lead_020",
+      "company": "Yield Guild Games",
+      "contactName": "Gabby Dizon",
+      "title": "Co-Founder",
+      "totalScore": 41,
+      "priorityTier": "P3",
+      "actionRequired": "Contact within 2 weeks",
+      "scoredAt": "2026-02-17T21:31:34.357Z",
+      "algorithmVersion": "2.0.0",
+      "breakdown": {
+        "companySizeFunding": {
+          "score": 59,
+          "weight": 0.25,
+          "weighted": 15,
+          "details": {
+            "funding": {
+              "score": 35,
+              "weight": 0.4
+            },
+            "companySize": {
+              "score": 100,
+              "weight": 0.35
+            },
+            "marketPresence": {
+              "score": 40,
+              "weight": 0.25
+            }
+          }
+        },
+        "partnershipPotential": {
+          "score": 44,
+          "weight": 0.3,
+          "weighted": 13,
+          "details": {
+            "partnershipType": {
+              "score": 40,
+              "weight": 0.4,
+              "type": "unknown"
+            },
+            "dealSizePotential": {
+              "score": 45,
+              "weight": 0.35,
+              "size": "unknown"
+            },
+            "strategicFit": {
+              "score": 50,
+              "weight": 0.25
+            }
+          }
+        },
+        "contactAccessibility": {
+          "score": 15,
+          "weight": 0.25,
+          "weighted": 4,
+          "details": {
+            "totalPoints": 15,
+            "seniorityMultiplier": 1,
+            "channelsAvailable": 1,
+            "channels": [
+              "twitter"
+            ]
+          }
+        },
+        "marketRelevance": {
+          "score": 45,
+          "weight": 0.2,
+          "weighted": 9,
+          "details": {
+            "industry": {
+              "score": 40,
+              "weight": 0.5,
+              "type": "other"
+            },
+            "geography": {
+              "score": 50,
+              "weight": 0.3,
+              "region": "other"
+            },
+            "timing": {
+              "score": 50,
+              "weight": 0.2,
+              "type": "unknown"
+            }
+          }
+        }
+      },
+      "recommendations": [
+        "Look for recent funding announcements or Crunchbase data",
+        "Research company partnerships and integration opportunities",
+        "Find alternative contact channels - limited accessibility",
+        "Priority: Find verified email address",
+        "Connect via LinkedIn for warm introduction"
+      ]
+    },
+    {
+      "leadId": "lead_019",
+      "company": "Bitbit.cash",
+      "contactName": "Jardine Gerodias",
+      "title": "Chairman",
+      "totalScore": 40,
+      "priorityTier": "P3",
+      "actionRequired": "Contact within 2 weeks",
+      "scoredAt": "2026-02-17T21:31:34.357Z",
+      "algorithmVersion": "2.0.0",
+      "breakdown": {
+        "companySizeFunding": {
+          "score": 38,
+          "weight": 0.25,
+          "weighted": 10,
+          "details": {
+            "funding": {
+              "score": 35,
+              "weight": 0.4
+            },
+            "companySize": {
+              "score": 40,
+              "weight": 0.35
+            },
+            "marketPresence": {
+              "score": 40,
+              "weight": 0.25
+            }
+          }
+        },
+        "partnershipPotential": {
+          "score": 44,
+          "weight": 0.3,
+          "weighted": 13,
+          "details": {
+            "partnershipType": {
+              "score": 40,
+              "weight": 0.4,
+              "type": "unknown"
+            },
+            "dealSizePotential": {
+              "score": 45,
+              "weight": 0.35,
+              "size": "unknown"
+            },
+            "strategicFit": {
+              "score": 50,
+              "weight": 0.25
+            }
+          }
+        },
+        "contactAccessibility": {
+          "score": 15,
+          "weight": 0.25,
+          "weighted": 4,
+          "details": {
+            "totalPoints": 20,
+            "seniorityMultiplier": 0.75,
+            "channelsAvailable": 1,
+            "channels": [
+              "linkedin_personal"
+            ]
+          }
+        },
+        "marketRelevance": {
+          "score": 68,
+          "weight": 0.2,
+          "weighted": 14,
+          "details": {
+            "industry": {
+              "score": 85,
+              "weight": 0.5,
+              "type": "crypto_wallet"
+            },
+            "geography": {
+              "score": 50,
+              "weight": 0.3,
+              "region": "other"
+            },
+            "timing": {
+              "score": 50,
+              "weight": 0.2,
+              "type": "unknown"
+            }
+          }
+        }
+      },
+      "recommendations": [
+        "Research company funding history and growth trajectory",
+        "Look for recent funding announcements or Crunchbase data",
+        "Research company partnerships and integration opportunities",
+        "Find alternative contact channels - limited accessibility",
+        "Priority: Find verified email address"
+      ]
+    },
+    {
+      "leadId": "lead_022",
+      "company": "Axie Infinity (Sky Mavis)",
+      "contactName": "Jeffrey Zirlin",
+      "title": "Co-Founder",
+      "totalScore": 40,
+      "priorityTier": "P3",
+      "actionRequired": "Contact within 2 weeks",
+      "scoredAt": "2026-02-17T21:31:34.357Z",
+      "algorithmVersion": "2.0.0",
+      "breakdown": {
+        "companySizeFunding": {
+          "score": 38,
+          "weight": 0.25,
+          "weighted": 10,
+          "details": {
+            "funding": {
+              "score": 35,
+              "weight": 0.4
+            },
+            "companySize": {
+              "score": 40,
+              "weight": 0.35
+            },
+            "marketPresence": {
+              "score": 40,
+              "weight": 0.25
+            }
+          }
+        },
+        "partnershipPotential": {
+          "score": 60,
+          "weight": 0.3,
+          "weighted": 18,
+          "details": {
+            "partnershipType": {
+              "score": 40,
+              "weight": 0.4,
+              "type": "unknown"
+            },
+            "dealSizePotential": {
+              "score": 85,
+              "weight": 0.35,
+              "size": "large"
+            },
+            "strategicFit": {
+              "score": 55,
+              "weight": 0.25
+            }
+          }
+        },
+        "contactAccessibility": {
+          "score": 15,
+          "weight": 0.25,
+          "weighted": 4,
+          "details": {
+            "totalPoints": 15,
+            "seniorityMultiplier": 1,
+            "channelsAvailable": 1,
+            "channels": [
+              "twitter"
+            ]
+          }
+        },
+        "marketRelevance": {
+          "score": 45,
+          "weight": 0.2,
+          "weighted": 9,
+          "details": {
+            "industry": {
+              "score": 40,
+              "weight": 0.5,
+              "type": "other"
+            },
+            "geography": {
+              "score": 50,
+              "weight": 0.3,
+              "region": "other"
+            },
+            "timing": {
+              "score": 50,
+              "weight": 0.2,
+              "type": "unknown"
+            }
+          }
+        }
+      },
+      "recommendations": [
+        "Research company funding history and growth trajectory",
+        "Look for recent funding announcements or Crunchbase data",
+        "Research company partnerships and integration opportunities",
+        "Find alternative contact channels - limited accessibility",
+        "Priority: Find verified email address",
+        "Connect via LinkedIn for warm introduction"
+      ]
+    },
+    {
+      "leadId": "lead_023",
+      "company": "SBC Wallet",
+      "contactName": "TBD",
+      "title": "CEO",
+      "totalScore": 39,
+      "priorityTier": "P3",
+      "actionRequired": "Contact within 2 weeks",
+      "scoredAt": "2026-02-17T21:31:34.357Z",
+      "algorithmVersion": "2.0.0",
+      "breakdown": {
+        "companySizeFunding": {
+          "score": 38,
+          "weight": 0.25,
+          "weighted": 10,
+          "details": {
+            "funding": {
+              "score": 35,
+              "weight": 0.4
+            },
+            "companySize": {
+              "score": 40,
+              "weight": 0.35
+            },
+            "marketPresence": {
+              "score": 40,
+              "weight": 0.25
+            }
+          }
+        },
+        "partnershipPotential": {
+          "score": 44,
+          "weight": 0.3,
+          "weighted": 13,
+          "details": {
+            "partnershipType": {
+              "score": 40,
+              "weight": 0.4,
+              "type": "unknown"
+            },
+            "dealSizePotential": {
+              "score": 45,
+              "weight": 0.35,
+              "size": "unknown"
+            },
+            "strategicFit": {
+              "score": 50,
+              "weight": 0.25
+            }
+          }
+        },
+        "contactAccessibility": {
+          "score": 0,
+          "weight": 0.25,
+          "weighted": 0,
+          "details": {
+            "totalPoints": 0,
+            "seniorityMultiplier": 1,
+            "channelsAvailable": 0,
+            "channels": []
+          }
+        },
+        "marketRelevance": {
+          "score": 80,
+          "weight": 0.2,
+          "weighted": 16,
+          "details": {
+            "industry": {
+              "score": 85,
+              "weight": 0.5,
+              "type": "crypto_wallet"
+            },
+            "geography": {
+              "score": 90,
+              "weight": 0.3,
+              "region": "southeast_asia"
+            },
+            "timing": {
+              "score": 50,
+              "weight": 0.2,
+              "type": "unknown"
+            }
+          }
+        }
+      },
+      "recommendations": [
+        "Research company funding history and growth trajectory",
+        "Look for recent funding announcements or Crunchbase data",
+        "Research company partnerships and integration opportunities",
+        "Find alternative contact channels - limited accessibility",
+        "Priority: Find verified email address",
+        "Connect via LinkedIn for warm introduction",
+        "Strong market fit - emphasize regional expertise in outreach"
+      ]
+    },
+    {
+      "leadId": "lead_026",
+      "company": "Blockchain Council of the Philippines",
+      "contactName": "Luis Buenaventura II",
+      "title": "President",
+      "totalScore": 38,
+      "priorityTier": "P3",
+      "actionRequired": "Contact within 2 weeks",
+      "scoredAt": "2026-02-17T21:31:34.358Z",
+      "algorithmVersion": "2.0.0",
+      "breakdown": {
+        "companySizeFunding": {
+          "score": 38,
+          "weight": 0.25,
+          "weighted": 10,
+          "details": {
+            "funding": {
+              "score": 35,
+              "weight": 0.4
+            },
+            "companySize": {
+              "score": 40,
+              "weight": 0.35
+            },
+            "marketPresence": {
+              "score": 40,
+              "weight": 0.25
+            }
+          }
+        },
+        "partnershipPotential": {
+          "score": 44,
+          "weight": 0.3,
+          "weighted": 13,
+          "details": {
+            "partnershipType": {
+              "score": 40,
+              "weight": 0.4,
+              "type": "unknown"
+            },
+            "dealSizePotential": {
+              "score": 45,
+              "weight": 0.35,
+              "size": "unknown"
+            },
+            "strategicFit": {
+              "score": 50,
+              "weight": 0.25
+            }
+          }
+        },
+        "contactAccessibility": {
+          "score": 26,
+          "weight": 0.25,
+          "weighted": 7,
+          "details": {
+            "totalPoints": 35,
+            "seniorityMultiplier": 0.75,
+            "channelsAvailable": 2,
+            "channels": [
+              "linkedin_personal",
+              "twitter"
+            ]
+          }
+        },
+        "marketRelevance": {
+          "score": 45,
+          "weight": 0.2,
+          "weighted": 9,
+          "details": {
+            "industry": {
+              "score": 40,
+              "weight": 0.5,
+              "type": "other"
+            },
+            "geography": {
+              "score": 50,
+              "weight": 0.3,
+              "region": "other"
+            },
+            "timing": {
+              "score": 50,
+              "weight": 0.2,
+              "type": "unknown"
+            }
+          }
+        }
+      },
+      "recommendations": [
+        "Research company funding history and growth trajectory",
+        "Look for recent funding announcements or Crunchbase data",
+        "Research company partnerships and integration opportunities",
+        "Find alternative contact channels - limited accessibility",
+        "Priority: Find verified email address"
+      ]
+    },
+    {
+      "leadId": "lead_024",
+      "company": "Voyager Innovations (Maya)",
+      "contactName": "Orlando Vea",
+      "title": "Founder",
+      "totalScore": 37,
+      "priorityTier": "P3",
+      "actionRequired": "Contact within 2 weeks",
+      "scoredAt": "2026-02-17T21:31:34.357Z",
+      "algorithmVersion": "2.0.0",
+      "breakdown": {
+        "companySizeFunding": {
+          "score": 38,
+          "weight": 0.25,
+          "weighted": 10,
+          "details": {
+            "funding": {
+              "score": 35,
+              "weight": 0.4
+            },
+            "companySize": {
+              "score": 40,
+              "weight": 0.35
+            },
+            "marketPresence": {
+              "score": 40,
+              "weight": 0.25
+            }
+          }
+        },
+        "partnershipPotential": {
+          "score": 44,
+          "weight": 0.3,
+          "weighted": 13,
+          "details": {
+            "partnershipType": {
+              "score": 40,
+              "weight": 0.4,
+              "type": "unknown"
+            },
+            "dealSizePotential": {
+              "score": 45,
+              "weight": 0.35,
+              "size": "unknown"
+            },
+            "strategicFit": {
+              "score": 50,
+              "weight": 0.25
+            }
+          }
+        },
+        "contactAccessibility": {
+          "score": 0,
+          "weight": 0.25,
+          "weighted": 0,
+          "details": {
+            "totalPoints": 0,
+            "seniorityMultiplier": 1,
+            "channelsAvailable": 0,
+            "channels": []
+          }
+        },
+        "marketRelevance": {
+          "score": 70,
+          "weight": 0.2,
+          "weighted": 14,
+          "details": {
+            "industry": {
+              "score": 90,
+              "weight": 0.5,
+              "type": "payments"
+            },
+            "geography": {
+              "score": 50,
+              "weight": 0.3,
+              "region": "other"
+            },
+            "timing": {
+              "score": 50,
+              "weight": 0.2,
+              "type": "unknown"
+            }
+          }
+        }
+      },
+      "recommendations": [
+        "Research company funding history and growth trajectory",
+        "Look for recent funding announcements or Crunchbase data",
+        "Research company partnerships and integration opportunities",
+        "Find alternative contact channels - limited accessibility",
+        "Priority: Find verified email address",
+        "Connect via LinkedIn for warm introduction"
+      ]
+    },
+    {
+      "leadId": "lead_021",
+      "company": "BreederDAO",
+      "contactName": "Renz Chong",
+      "title": "CEO & Co-Founder",
+      "totalScore": 36,
+      "priorityTier": "P3",
+      "actionRequired": "Contact within 2 weeks",
+      "scoredAt": "2026-02-17T21:31:34.357Z",
+      "algorithmVersion": "2.0.0",
+      "breakdown": {
+        "companySizeFunding": {
+          "score": 52,
+          "weight": 0.25,
+          "weighted": 13,
+          "details": {
+            "funding": {
+              "score": 70,
+              "weight": 0.4
+            },
+            "companySize": {
+              "score": 40,
+              "weight": 0.35
+            },
+            "marketPresence": {
+              "score": 40,
+              "weight": 0.25
+            }
+          }
+        },
+        "partnershipPotential": {
+          "score": 46,
+          "weight": 0.3,
+          "weighted": 14,
+          "details": {
+            "partnershipType": {
+              "score": 40,
+              "weight": 0.4,
+              "type": "unknown"
+            },
+            "dealSizePotential": {
+              "score": 45,
+              "weight": 0.35,
+              "size": "unknown"
+            },
+            "strategicFit": {
+              "score": 55,
+              "weight": 0.25
+            }
+          }
+        },
+        "contactAccessibility": {
+          "score": 0,
+          "weight": 0.25,
+          "weighted": 0,
+          "details": {
+            "totalPoints": 0,
+            "seniorityMultiplier": 1,
+            "channelsAvailable": 0,
+            "channels": []
+          }
+        },
+        "marketRelevance": {
+          "score": 45,
+          "weight": 0.2,
+          "weighted": 9,
+          "details": {
+            "industry": {
+              "score": 40,
+              "weight": 0.5,
+              "type": "other"
+            },
+            "geography": {
+              "score": 50,
+              "weight": 0.3,
+              "region": "other"
+            },
+            "timing": {
+              "score": 50,
+              "weight": 0.2,
+              "type": "unknown"
+            }
+          }
+        }
+      },
+      "recommendations": [
+        "Research company partnerships and integration opportunities",
+        "Find alternative contact channels - limited accessibility",
+        "Priority: Find verified email address",
+        "Connect via LinkedIn for warm introduction"
+      ]
+    },
+    {
+      "leadId": "lead_025",
+      "company": "Fintech Philippines Association",
+      "contactName": "Amor Maclang",
+      "title": "Executive Director",
+      "totalScore": 36,
+      "priorityTier": "P3",
+      "actionRequired": "Contact within 2 weeks",
+      "scoredAt": "2026-02-17T21:31:34.358Z",
+      "algorithmVersion": "2.0.0",
+      "breakdown": {
+        "companySizeFunding": {
+          "score": 38,
+          "weight": 0.25,
+          "weighted": 10,
+          "details": {
+            "funding": {
+              "score": 35,
+              "weight": 0.4
+            },
+            "companySize": {
+              "score": 40,
+              "weight": 0.35
+            },
+            "marketPresence": {
+              "score": 40,
+              "weight": 0.25
+            }
+          }
+        },
+        "partnershipPotential": {
+          "score": 47,
+          "weight": 0.3,
+          "weighted": 14,
+          "details": {
+            "partnershipType": {
+              "score": 40,
+              "weight": 0.4,
+              "type": "unknown"
+            },
+            "dealSizePotential": {
+              "score": 45,
+              "weight": 0.35,
+              "size": "unknown"
+            },
+            "strategicFit": {
+              "score": 60,
+              "weight": 0.25
+            }
+          }
+        },
+        "contactAccessibility": {
+          "score": 0,
+          "weight": 0.25,
+          "weighted": 0,
+          "details": {
+            "totalPoints": 0,
+            "seniorityMultiplier": 0.95,
+            "channelsAvailable": 0,
+            "channels": []
+          }
+        },
+        "marketRelevance": {
+          "score": 63,
+          "weight": 0.2,
+          "weighted": 13,
+          "details": {
+            "industry": {
+              "score": 75,
+              "weight": 0.5,
+              "type": "fintech"
+            },
+            "geography": {
+              "score": 50,
+              "weight": 0.3,
+              "region": "other"
+            },
+            "timing": {
+              "score": 50,
+              "weight": 0.2,
+              "type": "unknown"
+            }
+          }
+        }
+      },
+      "recommendations": [
+        "Research company funding history and growth trajectory",
+        "Look for recent funding announcements or Crunchbase data",
+        "Find alternative contact channels - limited accessibility",
+        "Priority: Find verified email address",
+        "Connect via LinkedIn for warm introduction"
+      ]
+    },
+    {
+      "leadId": "lead_018",
+      "company": "Bloom Solutions",
+      "contactName": "Israel Keys",
+      "title": "Co-Founder",
+      "totalScore": 32,
+      "priorityTier": "Cold",
+      "actionRequired": "Nurture or archive",
+      "scoredAt": "2026-02-17T21:31:34.357Z",
+      "algorithmVersion": "2.0.0",
+      "breakdown": {
+        "companySizeFunding": {
+          "score": 38,
+          "weight": 0.25,
+          "weighted": 10,
+          "details": {
+            "funding": {
+              "score": 35,
+              "weight": 0.4
+            },
+            "companySize": {
+              "score": 40,
+              "weight": 0.35
+            },
+            "marketPresence": {
+              "score": 40,
+              "weight": 0.25
+            }
+          }
+        },
+        "partnershipPotential": {
+          "score": 44,
+          "weight": 0.3,
+          "weighted": 13,
+          "details": {
+            "partnershipType": {
+              "score": 40,
+              "weight": 0.4,
+              "type": "unknown"
+            },
+            "dealSizePotential": {
+              "score": 45,
+              "weight": 0.35,
+              "size": "unknown"
+            },
+            "strategicFit": {
+              "score": 50,
+              "weight": 0.25
+            }
+          }
+        },
+        "contactAccessibility": {
+          "score": 0,
+          "weight": 0.25,
+          "weighted": 0,
+          "details": {
+            "totalPoints": 0,
+            "seniorityMultiplier": 1,
+            "channelsAvailable": 0,
+            "channels": []
+          }
+        },
+        "marketRelevance": {
+          "score": 45,
+          "weight": 0.2,
+          "weighted": 9,
+          "details": {
+            "industry": {
+              "score": 40,
+              "weight": 0.5,
+              "type": "other"
+            },
+            "geography": {
+              "score": 50,
+              "weight": 0.3,
+              "region": "other"
+            },
+            "timing": {
+              "score": 50,
+              "weight": 0.2,
+              "type": "unknown"
+            }
+          }
+        }
+      },
+      "recommendations": [
+        "Research company funding history and growth trajectory",
+        "Look for recent funding announcements or Crunchbase data",
+        "Research company partnerships and integration opportunities",
+        "Find alternative contact channels - limited accessibility",
+        "Priority: Find verified email address",
+        "Connect via LinkedIn for warm introduction"
+      ]
+    }
+  ]
+}

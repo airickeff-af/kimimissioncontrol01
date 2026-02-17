@@ -1,0 +1,69 @@
+[2026-02-17T22:40:48.062Z] INFO: Starting single enrichment run...
+[2026-02-17T22:40:48.067Z] INFO: DRY RUN MODE - No changes will be saved
+[2026-02-17T22:40:50.122Z] INFO: Starting single enrichment run...
+[2026-02-17T22:40:50.125Z] INFO: Found 5 new lead(s) to enrich
+[2026-02-17T22:40:50.126Z] ENRICH: Processing batch 1/2
+[2026-02-17T22:40:50.126Z] ENRICH: Enriching: Nichel Gaba @ PDAX
+[2026-02-17T22:40:50.126Z] ENRICH: Enriching: Wei Zhou @ Coins.ph
+[2026-02-17T22:40:50.127Z] ENRICH: Enriching: George Royeca @ Angkas
+[2026-02-17T22:40:50.127Z] ERROR: Failed to enrich Nichel Gaba: Cannot read properties of undefined (reading 'toUpperCase')
+[2026-02-17T22:40:50.128Z] ERROR: Failed to enrich Wei Zhou: Cannot read properties of undefined (reading 'toUpperCase')
+[2026-02-17T22:40:50.128Z] ERROR: Failed to enrich George Royeca: Cannot read properties of undefined (reading 'toUpperCase')
+[2026-02-17T22:40:51.128Z] ENRICH: Processing batch 2/2
+[2026-02-17T22:40:51.128Z] ENRICH: Enriching: Martha Sazon @ GCash
+[2026-02-17T22:40:51.129Z] ENRICH: Enriching: Moses Lo @ Xendit
+[2026-02-17T22:40:51.129Z] ERROR: Failed to enrich Martha Sazon: Cannot read properties of undefined (reading 'toUpperCase')
+[2026-02-17T22:40:51.129Z] ERROR: Failed to enrich Moses Lo: Cannot read properties of undefined (reading 'toUpperCase')
+[2026-02-17T22:40:51.129Z] SUCCESS: Enrichment complete: 0 emails, 0 LinkedIn, 0 Twitter
+[2026-02-17T22:40:51.130Z] WARN: 5 lead(s) failed enrichment
+[2026-02-17T22:41:28.995Z] INFO: Starting single enrichment run...
+[2026-02-17T22:41:28.999Z] INFO: Found 5 new lead(s) to enrich
+[2026-02-17T22:41:28.999Z] ENRICH: Processing batch 1/2
+[2026-02-17T22:41:28.999Z] ENRICH: Enriching: Nichel Gaba @ PDAX
+[2026-02-17T22:41:29.000Z] ENRICH: Enriching: Wei Zhou @ Coins.ph
+[2026-02-17T22:41:29.000Z] ENRICH: Enriching: George Royeca @ Angkas
+[2026-02-17T22:41:29.001Z] ERROR: Failed to enrich Nichel Gaba: Cannot read properties of undefined (reading 'toUpperCase')
+[2026-02-17T22:41:29.001Z] ERROR: Failed to enrich Wei Zhou: Cannot read properties of undefined (reading 'toUpperCase')
+[2026-02-17T22:41:29.001Z] ERROR: Failed to enrich George Royeca: Cannot read properties of undefined (reading 'toUpperCase')
+[2026-02-17T22:41:30.002Z] ENRICH: Processing batch 2/2
+[2026-02-17T22:41:30.002Z] ENRICH: Enriching: Martha Sazon @ GCash
+[2026-02-17T22:41:30.003Z] ENRICH: Enriching: Moses Lo @ Xendit
+[2026-02-17T22:41:30.003Z] ERROR: Failed to enrich Martha Sazon: Cannot read properties of undefined (reading 'toUpperCase')
+[2026-02-17T22:41:30.003Z] ERROR: Failed to enrich Moses Lo: Cannot read properties of undefined (reading 'toUpperCase')
+[2026-02-17T22:41:30.003Z] SUCCESS: Enrichment complete: 0 emails, 0 LinkedIn, 0 Twitter
+[2026-02-17T22:41:30.003Z] WARN: 5 lead(s) failed enrichment
+[2026-02-17T22:41:56.434Z] INFO: Starting single enrichment run...
+[2026-02-17T22:41:56.438Z] INFO: Found 5 new lead(s) to enrich
+[2026-02-17T22:41:56.438Z] ENRICH: Processing batch 1/2
+[2026-02-17T22:41:56.438Z] ENRICH: Enriching: Nichel Gaba @ PDAX
+[2026-02-17T22:41:56.466Z] ENRICH: Enriching: Wei Zhou @ Coins.ph
+[2026-02-17T22:41:56.470Z] ENRICH: Enriching: George Royeca @ Angkas
+[2026-02-17T22:41:56.855Z] SUCCESS: Enriched Nichel Gaba: INSUFFICIENT (32% confidence)
+[2026-02-17T22:41:56.855Z] INFO:   📧 Email: nichel.gaba@pdax.ph
+[2026-02-17T22:41:56.874Z] SUCCESS: Enriched George Royeca: INSUFFICIENT (32% confidence)
+[2026-02-17T22:41:56.874Z] INFO:   📧 Email: george.royeca@angkas.com
+[2026-02-17T22:41:57.049Z] SUCCESS: Enriched Wei Zhou: INSUFFICIENT (24% confidence)
+[2026-02-17T22:41:57.049Z] INFO:   📧 Email: wei.zhou@coins.ph
+[2026-02-17T22:41:58.050Z] ENRICH: Processing batch 2/2
+[2026-02-17T22:41:58.051Z] ENRICH: Enriching: Martha Sazon @ GCash
+[2026-02-17T22:41:58.052Z] ENRICH: Enriching: Moses Lo @ Xendit
+[2026-02-17T22:41:59.655Z] SUCCESS: Enriched Moses Lo: INSUFFICIENT (26% confidence)
+[2026-02-17T22:41:59.655Z] INFO:   📧 Email: moses.lo@xendit.co
+[2026-02-17T22:41:59.655Z] INFO:   💼 LinkedIn: moseslo
+[2026-02-17T22:41:59.660Z] SUCCESS: Enriched Martha Sazon: INSUFFICIENT (24% confidence)
+[2026-02-17T22:41:59.660Z] INFO:   📧 Email: martha.sazon@gcash.com
+[2026-02-17T22:41:59.661Z] INFO:   💼 LinkedIn: marthasazon
+[2026-02-17T22:41:59.661Z] SUCCESS: Enrichment complete: 5 emails, 2 LinkedIn, 0 Twitter
+[2026-02-17T22:41:59.667Z] SUCCESS: Updated PENDING_TASKS.md with enrichment results
+[2026-02-17T22:42:46.729Z] WATCH: Starting watch mode (checking every 30s)...
+[2026-02-17T22:42:46.729Z] WATCH: Monitoring: /root/.openclaw/workspace/mission-control/data/leads.json
+[2026-02-17T22:42:46.732Z] INFO: No new leads to enrich
+[2026-02-17T22:43:13.418Z] INFO: Starting single enrichment run...
+[2026-02-17T22:43:13.420Z] INFO: Found 1 new lead(s) to enrich
+[2026-02-17T22:43:13.420Z] ENRICH: Processing batch 1/1
+[2026-02-17T22:43:13.420Z] ENRICH: Enriching: Kris Marszalek @ Crypto.com
+[2026-02-17T22:43:15.736Z] INFO:   📧 Email: kris.marszalek@crypto.com
+[2026-02-17T22:43:15.736Z] SUCCESS: Enriched Kris Marszalek: INSUFFICIENT (24% confidence)
+[2026-02-17T22:43:15.736Z] INFO:   💼 LinkedIn: krismarszalek
+[2026-02-17T22:43:15.737Z] SUCCESS: Enrichment complete: 1 emails, 1 LinkedIn, 0 Twitter
+[2026-02-17T22:43:15.740Z] SUCCESS: Updated PENDING_TASKS.md with enrichment results

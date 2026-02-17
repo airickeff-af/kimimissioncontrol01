@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scout Sentiment Dashboard - 2025-02-18</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0a0a0f;
+      color: #e0e0e0;
+      padding: 20px;
+    }
+    .container { max-width: 1200px; margin: 0 auto; }
+    h1 {
+      font-size: 28px;
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, #00d4ff, #7c3aed);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .subtitle { color: #888; margin-bottom: 24px; }
+    
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    
+    .card {
+      background: #12121a;
+      border: 1px solid #1e1e2e;
+      border-radius: 12px;
+      padding: 20px;
+    }
+    
+    .card h3 {
+      font-size: 14px;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 12px;
+    }
+    
+    .metric {
+      font-size: 36px;
+      font-weight: 700;
+    }
+    
+    .metric.positive { color: #22c55e; }
+    .metric.negative { color: #ef4444; }
+    .metric.neutral { color: #888; }
+    
+    .trend {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-top: 8px;
+    }
+    
+    .trend.bullish { background: rgba(34, 197, 94, 0.2); color: #22c55e; }
+    .trend.bearish { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
+    .trend.neutral { background: rgba(136, 136, 136, 0.2); color: #888; }
+    
+    .alert {
+      background: #1a1a2e;
+      border-left: 4px solid;
+      padding: 16px;
+      margin-bottom: 12px;
+      border-radius: 0 8px 8px 0;
+    }
+    
+    .alert.critical { border-color: #ef4444; }
+    .alert.negative { border-color: #f59e0b; }
+    .alert.positive { border-color: #22c55e; }
+    
+    .alert-title {
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    
+    .alert-time {
+      font-size: 12px;
+      color: #666;
+    }
+    
+    .entity-list {
+      list-style: none;
+    }
+    
+    .entity-list li {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid #1e1e2e;
+    }
+    
+    .entity-list li:last-child { border-bottom: none; }
+    
+    .entity-name {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .entity-badge {
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: #1e1e2e;
+      color: #888;
+    }
+    
+    .entity-sentiment {
+      font-weight: 600;
+    }
+    
+    .sentiment-bar {
+      height: 8px;
+      background: #1e1e2e;
+      border-radius: 4px;
+      overflow: hidden;
+      display: flex;
+      margin-top: 16px;
+    }
+    
+    .sentiment-bar .positive {
+      background: #22c55e;
+      height: 100%;
+    }
+    
+    .sentiment-bar .neutral {
+      background: #666;
+      height: 100%;
+    }
+    
+    .sentiment-bar .negative {
+      background: #ef4444;
+      height: 100%;
+    }
+    
+    .news-item {
+      padding: 12px;
+      background: #1a1a2e;
+      border-radius: 8px;
+      margin-bottom: 8px;
+    }
+    
+    .news-item .score {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    
+    .news-item.positive .score { background: rgba(34, 197, 94, 0.2); color: #22c55e; }
+    .news-item.negative .score { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
+    
+    .chart-container {
+      height: 200px;
+      margin-top: 16px;
+    }
+    
+    .mini-chart {
+      display: flex;
+      align-items: flex-end;
+      gap: 4px;
+      height: 100%;
+    }
+    
+    .mini-bar {
+      flex: 1;
+      background: #7c3aed;
+      border-radius: 4px 4px 0 0;
+      min-height: 4px;
+      position: relative;
+    }
+    
+    .mini-bar:hover::after {
+      content: attr(data-value);
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #333;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      white-space: nowrap;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>📊 Scout Sentiment Dashboard</h1>
+    <p class="subtitle">Daily intelligence briefing for 2025-02-18</p>
+    
+    <div class="grid">
+      <div class="card">
+        <h3>Overall Sentiment</h3>
+        <div class="metric neutral">-0.2</div>
+        <span class="trend neutral">NEUTRAL</span>
+      </div>
+      
+      <div class="card">
+        <h3>News Analyzed</h3>
+        <div class="metric neutral">15</div>
+        <div class="sentiment-bar">
+          <div class="positive" style="width: 20%"></div>
+          <div class="neutral" style="width: 47%"></div>
+          <div class="negative" style="width: 33%"></div>
+        </div>
+      </div>
+      
+      <div class="card">
+        <h3>Positive News</h3>
+        <div class="metric positive">20%</div>
+        <span style="color: #666; font-size: 14px;">3 articles</span>
+      </div>
+      
+      <div class="card">
+        <h3>Negative News</h3>
+        <div class="metric negative">33%</div>
+        <span style="color: #666; font-size: 14px;">5 articles</span>
+      </div>
+    </div>
+    
+    <div class="grid">
+      <div class="card">
+        <h3>🚨 Recent Alerts</h3>
+        
+            <div class="alert negative">
+              <div class="alert-title">Positive sentiment dropped by 20%</div>
+              <div class="alert-time">2/18/2026, 6:43:03 AM</div>
+            </div>
+          
+            <div class="alert positive">
+              <div class="alert-title">Negative sentiment dropped by 40%</div>
+              <div class="alert-time">2/18/2026, 6:43:03 AM</div>
+            </div>
+          
+            <div class="alert negative">
+              <div class="alert-title">Negative sentiment surged by 60%</div>
+              <div class="alert-time">2/18/2026, 6:43:03 AM</div>
+            </div>
+          
+            <div class="alert critical">
+              <div class="alert-title">High negative sentiment: 60% of news is negative</div>
+              <div class="alert-time">2/18/2026, 6:43:03 AM</div>
+            </div>
+          
+            <div class="alert positive">
+              <div class="alert-title">Positive sentiment surged by 20%</div>
+              <div class="alert-time">2/18/2026, 6:43:03 AM</div>
+            </div>
+          
+            <div class="alert positive">
+              <div class="alert-title">Negative sentiment dropped by 60%</div>
+              <div class="alert-time">2/18/2026, 6:43:03 AM</div>
+            </div>
+          
+            <div class="alert positive">
+              <div class="alert-title">Positive sentiment surged by 20%</div>
+              <div class="alert-time">2/18/2026, 6:43:03 AM</div>
+            </div>
+          
+            <div class="alert negative">
+              <div class="alert-title">Negative sentiment surged by 20%</div>
+              <div class="alert-time">2/18/2026, 6:43:03 AM</div>
+            </div>
+          
+            <div class="alert negative">
+              <div class="alert-title">Positive sentiment dropped by 60%</div>
+              <div class="alert-time">2/18/2026, 6:43:03 AM</div>
+            </div>
+          
+            <div class="alert positive">
+              <div class="alert-title">Positive sentiment surged by 20%</div>
+              <div class="alert-time">2/18/2026, 6:43:03 AM</div>
+            </div>
+          
+      </div>
+      
+      <div class="card">
+        <h3>🔥 Most Mentioned</h3>
+        <ul class="entity-list">
+          
+            <li>
+              <span class="entity-name">
+                solana
+                <span class="entity-badge">competitors</span>
+              </span>
+              <span class="entity-sentiment" style="color: #888">
+                0.0
+              </span>
+            </li>
+          
+            <li>
+              <span class="entity-name">
+                ethereum
+                <span class="entity-badge">competitors</span>
+              </span>
+              <span class="entity-sentiment" style="color: #ef4444">
+                -0.5
+              </span>
+            </li>
+          
+            <li>
+              <span class="entity-name">
+                sec
+                <span class="entity-badge">regulatory</span>
+              </span>
+              <span class="entity-sentiment" style="color: #ef4444">
+                -1.5
+              </span>
+            </li>
+          
+            <li>
+              <span class="entity-name">
+                coinbase
+                <span class="entity-badge">competitors</span>
+              </span>
+              <span class="entity-sentiment" style="color: #ef4444">
+                -2.0
+              </span>
+            </li>
+          
+            <li>
+              <span class="entity-name">
+                opensea
+                <span class="entity-badge">competitors</span>
+              </span>
+              <span class="entity-sentiment" style="color: #ef4444">
+                -1.0
+              </span>
+            </li>
+          
+        </ul>
+      </div>
+    </div>
+    
+    <div class="grid">
+      <div class="card">
+        <h3>📈 7-Day Trend</h3>
+        <div class="chart-container">
+          <div class="mini-chart">
+            
+          </div>
+        </div>
+      </div>
+      
+      <div class="card">
+        <h3>📰 Top Positive Stories</h3>
+        
+          <div class="news-item positive">
+            <span class="score">+1</span>
+            <p style="font-size: 14px; color: #ccc;">XRP surges 47.8% driven by DEX growth exceeding $400M monthly volume</p>
+            
+          </div>
+        
+          <div class="news-item positive">
+            <span class="score">+1</span>
+            <p style="font-size: 14px; color: #ccc;">RWA tokenization value surpasses $17B led by private credit growth</p>
+            
+          </div>
+        
+          <div class="news-item positive">
+            <span class="score">+1</span>
+            <p style="font-size: 14px; color: #ccc;">Solana TVL hits record $12.1B driven by memecoin activity</p>
+            <span style="font-size: 12px; color: #7c3aed;">🏷️ solana</span>
+          </div>
+        
+      </div>
+      
+      <div class="card">
+        <h3>⚠️ Top Negative Stories</h3>
+        
+          <div class="news-item negative">
+            <span class="score">-2</span>
+            <p style="font-size: 14px; color: #ccc;">SEC dismisses Coinbase lawsuit to facilitate regulatory reform</p>
+            <span style="font-size: 12px; color: #7c3aed;">🏷️ coinbase</span>
+          </div>
+        
+          <div class="news-item negative">
+            <span class="score">-1</span>
+            <p style="font-size: 14px; color: #ccc;">Crypto market rallies to $4.12T total cap after government shutdown resolution</p>
+            
+          </div>
+        
+          <div class="news-item negative">
+            <span class="score">-1</span>
+            <p style="font-size: 14px; color: #ccc;">SEC closes investigations into Uniswap Labs and OpenSea with no action</p>
+            <span style="font-size: 12px; color: #7c3aed;">🏷️ opensea, uniswap</span>
+          </div>
+        
+      </div>
+    </div>
+  </div>
+</body>
+</html>

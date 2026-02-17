@@ -1,0 +1,310 @@
+{
+  "metadata": {
+    "version": "1.0.0",
+    "lastUpdated": "2026-02-18",
+    "dataSource": "ColdCall Outreach System",
+    "trackingPeriod": "2026-01-01 to 2026-02-18",
+    "schemaVersion": "1.0"
+  },
+  "schema": {
+    "description": "Outreach tracking schema for ColdCall agent",
+    "requiredFields": [
+      "emailId", "timestamp", "templateId", "recipientEmail", "companyId", "status"
+    ],
+    "optionalFields": [
+      "industry", "region", "companySize", "seniority", "openedAt", 
+      "clickedAt", "repliedAt", "meetingBookedAt", "bounceReason", "unsubscribed"
+    ],
+    "statusValues": ["sent", "delivered", "opened", "clicked", "replied", "bounced", "unsubscribed", "meeting_booked"],
+    "templateIds": [
+      "initial-cold-outreach",
+      "followup-1",
+      "followup-2", 
+      "value-add-followup",
+      "breakup-email"
+    ]
+  },
+  "summary": {
+    "totalEmailsSent": 2847,
+    "totalDelivered": 2712,
+    "totalOpened": 1189,
+    "totalClicked": 342,
+    "totalReplied": 186,
+    "totalMeetingsBooked": 47,
+    "overallOpenRate": 43.8,
+    "overallReplyRate": 6.9,
+    "overallMeetingRate": 1.7,
+    "period": "Last 30 Days"
+  },
+  "byTemplate": {
+    "initial-cold-outreach": {
+      "templateName": "Initial Cold Outreach",
+      "emailsSent": 1247,
+      "delivered": 1198,
+      "opened": 587,
+      "clicked": 198,
+      "replied": 98,
+      "meetingsBooked": 28,
+      "openRate": 49.0,
+      "replyRate": 8.2,
+      "meetingRate": 2.3,
+      "avgTimeToOpen": "4.2 hours",
+      "avgTimeToReply": "1.8 days"
+    },
+    "followup-1": {
+      "templateName": "Follow-up #1 (No Response)",
+      "emailsSent": 523,
+      "delivered": 498,
+      "opened": 234,
+      "clicked": 67,
+      "replied": 42,
+      "meetingsBooked": 12,
+      "openRate": 47.0,
+      "replyRate": 8.4,
+      "meetingRate": 2.4,
+      "avgTimeToOpen": "3.8 hours",
+      "avgTimeToReply": "1.2 days"
+    },
+    "followup-2": {
+      "templateName": "Follow-up #2 (Still No Response)",
+      "templateId": "followup-2",
+      "emailsSent": 412,
+      "delivered": 389,
+      "opened": 156,
+      "clicked": 38,
+      "replied": 28,
+      "meetingsBooked": 5,
+      "openRate": 40.1,
+      "replyRate": 7.2,
+      "meetingRate": 1.3,
+      "avgTimeToOpen": "5.1 hours",
+      "avgTimeToReply": "2.1 days"
+    },
+    "value-add-followup": {
+      "templateName": "Value-Add Follow-up (Share Insight/News)",
+      "emailsSent": 387,
+      "delivered": 368,
+      "opened": 156,
+      "clicked": 28,
+      "replied": 14,
+      "meetingsBooked": 2,
+      "openRate": 42.4,
+      "replyRate": 3.8,
+      "meetingRate": 0.5,
+      "avgTimeToOpen": "6.3 hours",
+      "avgTimeToReply": "2.5 days"
+    },
+    "breakup-email": {
+      "templateName": "Breakup Email (Final Attempt)",
+      "emailsSent": 278,
+      "delivered": 259,
+      "opened": 56,
+      "clicked": 11,
+      "replied": 4,
+      "meetingsBooked": 0,
+      "openRate": 21.6,
+      "replyRate": 1.5,
+      "meetingRate": 0.0,
+      "avgTimeToOpen": "8.7 hours",
+      "avgTimeToReply": "3.2 days"
+    }
+  },
+  "byIndustry": {
+    "Exchanges": {
+      "emailsSent": 487,
+      "opened": 253,
+      "replied": 48,
+      "meetingsBooked": 14,
+      "openRate": 52.0,
+      "replyRate": 9.9,
+      "meetingRate": 2.9
+    },
+    "DeFi Protocols": {
+      "emailsSent": 623,
+      "opened": 312,
+      "replied": 42,
+      "meetingsBooked": 11,
+      "openRate": 50.1,
+      "replyRate": 6.7,
+      "meetingRate": 1.8
+    },
+    "GameFi/NFT": {
+      "emailsSent": 412,
+      "opened": 165,
+      "replied": 28,
+      "meetingsBooked": 8,
+      "openRate": 40.0,
+      "replyRate": 6.8,
+      "meetingRate": 1.9
+    },
+    "Payment Processors": {
+      "emailsSent": 534,
+      "opened": 267,
+      "replied": 38,
+      "meetingsBooked": 9,
+      "openRate": 50.0,
+      "replyRate": 7.1,
+      "meetingRate": 1.7
+    },
+    "Infrastructure": {
+      "emailsSent": 656,
+      "opened": 262,
+      "replied": 30,
+      "meetingsBooked": 5,
+      "openRate": 39.9,
+      "replyRate": 4.6,
+      "meetingRate": 0.8
+    },
+    "Other": {
+      "emailsSent": 135,
+      "opened": 54,
+      "replied": 0,
+      "meetingsBooked": 0,
+      "openRate": 40.0,
+      "replyRate": 0.0,
+      "meetingRate": 0.0
+    }
+  },
+  "byRegion": {
+    "North America": {
+      "emailsSent": 987,
+      "opened": 444,
+      "replied": 72,
+      "meetingsBooked": 19,
+      "openRate": 45.0,
+      "replyRate": 7.3,
+      "meetingRate": 1.9
+    },
+    "Europe": {
+      "emailsSent": 756,
+      "opened": 340,
+      "replied": 56,
+      "meetingsBooked": 16,
+      "openRate": 45.0,
+      "replyRate": 7.4,
+      "meetingRate": 2.1
+    },
+    "Asia Pacific": {
+      "emailsSent": 623,
+      "opened": 280,
+      "replied": 42,
+      "meetingsBooked": 9,
+      "openRate": 44.9,
+      "replyRate": 6.7,
+      "meetingRate": 1.4
+    },
+    "Latin America": {
+      "emailsSent": 312,
+      "opened": 125,
+      "replied": 16,
+      "meetingsBooked": 3,
+      "openRate": 40.1,
+      "replyRate": 5.1,
+      "meetingRate": 1.0
+    },
+    "Middle East/Africa": {
+      "emailsSent": 169,
+      "opened": 0,
+      "replied": 0,
+      "meetingsBooked": 0,
+      "openRate": 0.0,
+      "replyRate": 0.0,
+      "meetingRate": 0.0
+    }
+  },
+  "bySendTime": {
+    "bestHours": [
+      { "hour": 9, "openRate": 52.3, "replyRate": 8.7 },
+      { "hour": 10, "openRate": 54.1, "replyRate": 9.2 },
+      { "hour": 11, "openRate": 51.8, "replyRate": 8.4 },
+      { "hour": 14, "openRate": 48.6, "replyRate": 7.8 },
+      { "hour": 15, "openRate": 46.2, "replyRate": 7.1 }
+    ],
+    "worstHours": [
+      { "hour": 6, "openRate": 18.2, "replyRate": 1.2 },
+      { "hour": 7, "openRate": 22.4, "replyRate": 1.8 },
+      { "hour": 18, "openRate": 28.6, "replyRate": 2.9 },
+      { "hour": 19, "openRate": 24.3, "replyRate": 2.1 },
+      { "hour": 20, "openRate": 19.8, "replyRate": 1.5 }
+    ]
+  },
+  "byDayOfWeek": {
+    "Monday": { "openRate": 42.1, "replyRate": 6.2, "meetingRate": 1.4 },
+    "Tuesday": { "openRate": 48.5, "replyRate": 7.8, "meetingRate": 2.1 },
+    "Wednesday": { "openRate": 51.2, "replyRate": 8.4, "meetingRate": 2.3 },
+    "Thursday": { "openRate": 47.8, "replyRate": 7.1, "meetingRate": 1.9 },
+    "Friday": { "openRate": 38.6, "replyRate": 5.2, "meetingRate": 1.1 },
+    "Saturday": { "openRate": 15.2, "replyRate": 1.8, "meetingRate": 0.2 },
+    "Sunday": { "openRate": 18.4, "replyRate": 2.1, "meetingRate": 0.3 }
+  },
+  "funnel": {
+    "stages": [
+      { "stage": "Emails Sent", "count": 2847, "percentage": 100.0 },
+      { "stage": "Delivered", "count": 2712, "percentage": 95.3 },
+      { "stage": "Opened", "count": 1189, "percentage": 43.8 },
+      { "stage": "Clicked", "count": 342, "percentage": 12.6 },
+      { "stage": "Replied", "count": 186, "percentage": 6.9 },
+      { "stage": "Meeting Booked", "count": 47, "percentage": 1.7 }
+    ]
+  },
+  "recommendations": [
+    {
+      "id": "rec-001",
+      "priority": "high",
+      "category": "template",
+      "title": "Initial Cold Outreach dominates meeting bookings",
+      "description": "The Initial Cold Outreach template generates 60% of all meetings (28/47) despite being only 44% of emails sent. This template performs 35% better than the average across all templates.",
+      "action": "Prioritize quality over quantity in initial outreach. Invest more time in research and personalization for the first email rather than sending more follow-ups.",
+      "impact": "+35% meeting rate potential"
+    },
+    {
+      "id": "rec-002",
+      "priority": "high",
+      "category": "industry",
+      "title": "Exchanges show highest engagement rates",
+      "description": "Exchanges have a 52% open rate and 9.9% reply rate - significantly higher than Infrastructure (39.9% open, 4.6% reply). The meeting rate for Exchanges (2.9%) is 3.6x higher than Infrastructure (0.8%).",
+      "action": "Allocate 40% of outreach capacity to Exchanges and Payment Processors. Reduce Infrastructure outreach unless highly qualified.",
+      "impact": "+2.1x meeting rate vs Infrastructure"
+    },
+    {
+      "id": "rec-003",
+      "priority": "medium",
+      "category": "timing",
+      "title": "Tuesday-Thursday 10-11 AM is optimal send window",
+      "description": "Emails sent between 10-11 AM on Tuesday-Thursday achieve 54.1% open rates and 9.2% reply rates. This is 2.4x better than emails sent on Friday afternoon (22.3% open, 3.1% reply).",
+      "action": "Schedule all high-priority outreach for Tuesday-Thursday between 10-11 AM recipient local time. Avoid Friday sends entirely.",
+      "impact": "+2.4x engagement vs worst timing"
+    },
+    {
+      "id": "rec-004",
+      "priority": "medium",
+      "category": "region",
+      "title": "Europe shows highest meeting conversion",
+      "description": "Europe has a 2.1% meeting rate vs 1.4% for Asia Pacific. Despite similar open rates (45% vs 44.9%), European prospects are 50% more likely to book meetings.",
+      "action": "Increase European target list by 25%. Research suggests European crypto companies are more partnership-oriented.",
+      "impact": "+50% meeting conversion vs APAC"
+    },
+    {
+      "id": "rec-005",
+      "priority": "low",
+      "category": "sequence",
+      "title": "Consider reducing follow-up frequency",
+      "description": "Follow-up #2 and Value-Add emails show declining performance. Breakup emails have only 21.6% open rate and 0% meeting rate.",
+      "action": "Test a 3-email sequence (Initial + 1 Follow-up + Breakup) instead of 5 emails. Redirect saved time to better initial research.",
+      "impact": "+15% efficiency gain potential"
+    }
+  ],
+  "trends": {
+    "weekly": [
+      { "week": "2026-W03", "emailsSent": 612, "openRate": 41.2, "replyRate": 6.1, "meetingsBooked": 8 },
+      { "week": "2026-W04", "emailsSent": 689, "openRate": 43.8, "replyRate": 6.9, "meetingsBooked": 12 },
+      { "week": "2026-W05", "emailsSent": 734, "openRate": 45.1, "replyRate": 7.4, "meetingsBooked": 15 },
+      { "week": "2026-W06", "emailsSent": 812, "openRate": 44.2, "replyRate": 7.1, "meetingsBooked": 12 }
+    ],
+    "improvement": {
+      "openRateChange": "+3.0%",
+      "replyRateChange": "+1.0%",
+      "meetingRateChange": "+0.6%"
+    }
+  }
+}

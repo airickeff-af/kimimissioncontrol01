@@ -1,0 +1,1330 @@
+{
+  "lastUpdated": "2026-02-17T22:43:15.738Z",
+  "stats": {
+    "totalProcessed": 6,
+    "totalEnriched": 0,
+    "totalFailed": 0,
+    "byQuality": {
+      "high": 0,
+      "medium": 0,
+      "low": 0,
+      "insufficient": 6
+    }
+  },
+  "leads": [
+    {
+      "original": {
+        "id": "lead_001",
+        "name": "Nichel Gaba",
+        "company": "PDAX",
+        "title": "Founder & CEO",
+        "domain": "pdax.ph",
+        "region": "Philippines",
+        "industry": "Cryptocurrency Exchange",
+        "priority": "P1",
+        "score": 70
+      },
+      "enriched": {
+        "name": "Nichel Gaba",
+        "company": "PDAX",
+        "domain": "pdax.ph",
+        "title": "Founder & CEO"
+      },
+      "email": {
+        "person": {
+          "firstName": "Nichel",
+          "lastName": "Gaba",
+          "domain": "pdax.ph"
+        },
+        "discovered": [
+          {
+            "email": "nichel.gaba@pdax.ph",
+            "valid": true,
+            "score": 80,
+            "checks": {
+              "syntax": true,
+              "disposable": true,
+              "roleBased": true,
+              "mx": true,
+              "catchAll": false
+            },
+            "suggestions": [],
+            "verifiedAt": "2026-02-17T22:41:56.439Z",
+            "mxRecords": [
+              "pdax.in.tmes.trendmicro.com",
+              "alt2.aspmx.l.google.com",
+              "aspmx.l.google.com"
+            ]
+          },
+          {
+            "email": "nichelgaba@pdax.ph",
+            "valid": true,
+            "score": 80,
+            "checks": {
+              "syntax": true,
+              "disposable": true,
+              "roleBased": true,
+              "mx": true,
+              "catchAll": false
+            },
+            "suggestions": [],
+            "verifiedAt": "2026-02-17T22:41:56.440Z",
+            "mxRecords": [
+              "pdax.in.tmes.trendmicro.com",
+              "alt1.aspmx.l.google.com",
+              "alt2.aspmx.l.google.com"
+            ]
+          },
+          {
+            "email": "nichel_gaba@pdax.ph",
+            "valid": true,
+            "score": 80,
+            "checks": {
+              "syntax": true,
+              "disposable": true,
+              "roleBased": true,
+              "mx": true,
+              "catchAll": false
+            },
+            "suggestions": [],
+            "verifiedAt": "2026-02-17T22:41:56.440Z",
+            "mxRecords": [
+              "pdax.in.tmes.trendmicro.com",
+              "alt2.aspmx.l.google.com",
+              "aspmx.l.google.com"
+            ]
+          },
+          {
+            "email": "nichel-gaba@pdax.ph",
+            "valid": true,
+            "score": 80,
+            "checks": {
+              "syntax": true,
+              "disposable": true,
+              "roleBased": true,
+              "mx": true,
+              "catchAll": false
+            },
+            "suggestions": [],
+            "verifiedAt": "2026-02-17T22:41:56.639Z",
+            "mxRecords": [
+              "pdax.in.tmes.trendmicro.com",
+              "alt1.aspmx.l.google.com",
+              "alt2.aspmx.l.google.com"
+            ]
+          },
+          {
+            "email": "nichelg@pdax.ph",
+            "valid": true,
+            "score": 80,
+            "checks": {
+              "syntax": true,
+              "disposable": true,
+              "roleBased": true,
+              "mx": true,
+              "catchAll": false
+            },
+            "suggestions": [],
+            "verifiedAt": "2026-02-17T22:41:56.639Z",
+            "mxRecords": [
+              "pdax.in.tmes.trendmicro.com",
+              "alt2.aspmx.l.google.com",
+              "alt1.aspmx.l.google.com"
+            ]
+          }
+        ],
+        "verified": {
+          "email": "nichel.gaba@pdax.ph",
+          "valid": true,
+          "score": 80,
+          "checks": {
+            "syntax": true,
+            "disposable": true,
+            "roleBased": true,
+            "mx": true,
+            "catchAll": false
+          },
+          "suggestions": [],
+          "verifiedAt": "2026-02-17T22:41:56.439Z",
+          "mxRecords": [
+            "pdax.in.tmes.trendmicro.com",
+            "alt2.aspmx.l.google.com",
+            "aspmx.l.google.com"
+          ]
+        },
+        "confidence": 80,
+        "method": "pattern-verification",
+        "suggestions": [],
+        "discoveredAt": "2026-02-17T22:41:56.439Z"
+      },
+      "social": {
+        "person": {
+          "name": "Nichel Gaba",
+          "company": "PDAX",
+          "title": "Founder & CEO"
+        },
+        "profiles": {},
+        "discovered": [],
+        "confidence": 0,
+        "suggestions": [],
+        "discoveredAt": "2026-02-17T22:41:56.440Z"
+      },
+      "verification": {
+        "email": {
+          "email": "nichel.gaba@pdax.ph",
+          "valid": true,
+          "score": 80,
+          "checks": {
+            "syntax": true,
+            "disposable": true,
+            "roleBased": true,
+            "mx": true,
+            "catchAll": false
+          },
+          "suggestions": [],
+          "verifiedAt": "2026-02-17T22:41:56.740Z",
+          "mxRecords": [
+            "pdax.in.tmes.trendmicro.com",
+            "aspmx.l.google.com",
+            "alt1.aspmx.l.google.com"
+          ]
+        },
+        "social": null
+      },
+      "confidence": 32,
+      "completeness": 25,
+      "enrichmentTime": 417,
+      "suggestions": [],
+      "enrichedAt": "2026-02-17T22:41:56.855Z",
+      "quality": "insufficient"
+    },
+    {
+      "original": {
+        "id": "lead_002",
+        "name": "Wei Zhou",
+        "company": "Coins.ph",
+        "title": "CEO",
+        "domain": "coins.ph",
+        "region": "Philippines",
+        "industry": "Cryptocurrency Wallet",
+        "priority": "P1",
+        "score": 68
+      },
+      "enriched": {
+        "name": "Wei Zhou",
+        "company": "Coins.ph",
+        "domain": "coins.ph",
+        "title": "CEO"
+      },
+      "email": {
+        "person": {
+          "firstName": "Wei",
+          "lastName": "Zhou",
+          "domain": "coins.ph"
+        },
+        "discovered": [
+          {
+            "email": "wei.zhou@coins.ph",
+            "valid": true,
+            "score": 80,
+            "checks": {
+              "syntax": true,
+              "disposable": true,
+              "roleBased": true,
+              "mx": true,
+              "catchAll": false
+            },
+            "suggestions": [],
+            "verifiedAt": "2026-02-17T22:41:56.467Z",
+            "mxRecords": [
+              "aspmx.l.google.com",
+              "alt2.aspmx.l.google.com",
+              "alt1.aspmx.l.google.com"
+            ]
+          },
+          {
+            "email": "weizhou@coins.ph",
+            "valid": true,
+            "score": 80,
+            "checks": {
+              "syntax": true,
+              "disposable": true,
+              "roleBased": true,
+              "mx": true,
+              "catchAll": false
+            },
+            "suggestions": [],
+            "verifiedAt": "2026-02-17T22:41:56.467Z",
+            "mxRecords": [
+              "aspmx.l.google.com",
+              "alt1.aspmx.l.google.com",
+              "alt2.aspmx.l.google.com"
+            ]
+          },
+          {
+            "email": "wei_zhou@coins.ph",
+            "valid": true,
+            "score": 80,
+            "checks": {
+              "syntax": true,
+              "disposable": true,
+              "roleBased": true,
+              "mx": true,
+              "catchAll": false
+            },
+            "suggestions": [],
+            "verifiedAt": "2026-02-17T22:41:56.467Z",
+            "mxRecords": [
+              "aspmx.l.google.com",
+              "alt2.aspmx.l.google.com",
+              "alt1.aspmx.l.google.com"
+            ]
+          },
+          {
+            "email": "wei-zhou@coins.ph",
+            "valid": true,
+            "score": 80,
+            "checks": {
+              "syntax": true,
+              "disposable": true,
+              "roleBased": true,
+              "mx": true,
+              "catchAll": false
+            },
+            "suggestions": [],
+            "verifiedAt": "2026-02-17T22:41:56.581Z",
+            "mxRecords": [
+              "aspmx.l.google.com",
+              "alt2.aspmx.l.google.com",
+              "alt1.aspmx.l.google.com"
+            ]
+          },
+          {
+            "email": "weiz@coins.ph",
+            "valid": true,
+            "score": 80,
+            "checks": {
+              "syntax": true,
+              "disposable": true,
+              "roleBased": true,
+              "mx": true,
+              "catchAll": false
+            },
+            "suggestions": [],
+            "verifiedAt": "2026-02-17T22:41:56.581Z",
+            "mxRecords": [
+              "aspmx.l.google.com",
+              "alt1.aspmx.l.google.com",
+              "alt2.aspmx.l.google.com"
+            ]
+          }
+        ],
+        "verified": {
+          "email": "wei.zhou@coins.ph",
+          "valid": true,
+          "score": 80,
+          "checks": {
+            "syntax": true,
+            "disposable": true,
+            "roleBased": true,
+            "mx": true,
+            "catchAll": false
+          },
+          "suggestions": [],
+          "verifiedAt": "2026-02-17T22:41:56.467Z",
+          "mxRecords": [
+            "aspmx.l.google.com",
+            "alt2.aspmx.l.google.com",
+            "alt1.aspmx.l.google.com"
+          ]
+        },
+        "confidence": 80,
+        "method": "pattern-verification",
+        "suggestions": [],
+        "discoveredAt": "2026-02-17T22:41:56.467Z"
+      },
+      "social": {
+        "person": {
+          "name": "Wei Zhou",
+          "company": "Coins.ph",
+          "title": "CEO"
+        },
+        "profiles": {
+          "github": {
+            "platform": "github",
+            "found": true,
+            "handle": "weizhou",
+            "url": "https://github.com/weizhou",
+            "confidence": 40,
+            "checks": {},
+            "activity": {},
+            "suggestion": "Try manual search: https://github.com/search?q=Wei%20Zhou%20Coins.ph+type:user"
+          }
+        },
+        "discovered": [
+          {
+            "platform": "github",
+            "handle": "weizhou",
+            "url": "https://github.com/weizhou",
+            "confidence": 40
+          }
+        ],
+        "confidence": 40,
+        "suggestions": [],
+        "discoveredAt": "2026-02-17T22:41:56.467Z"
+      },
+      "verification": {
+        "email": {
+          "email": "wei.zhou@coins.ph",
+          "valid": true,
+          "score": 80,
+          "checks": {
+            "syntax": true,
+            "disposable": true,
+            "roleBased": true,
+            "mx": true,
+            "catchAll": false
+          },
+          "suggestions": [],
+          "verifiedAt": "2026-02-17T22:41:56.683Z",
+          "mxRecords": [
+            "aspmx.l.google.com",
+            "alt2.aspmx.l.google.com",
+            "alt1.aspmx.l.google.com"
+          ]
+        },
+        "social": {
+          "github": {
+            "platform": "github",
+            "username": "weizhou",
+            "valid": false,
+            "exists": true,
+            "active": false,
+            "score": 45,
+            "url": "https://github.com/weizhou",
+            "checks": {
+              "isPro": false
+            },
+            "activity": {
+              "hasRepos": false,
+              "hasContributions": false,
+              "hasBio": false,
+              "hasAvatar": true,
+              "recentActivity": null
+            },
+            "suggestions": [],
+            "verifiedAt": "2026-02-17T22:41:57.039Z"
+          }
+        }
+      },
+      "confidence": 24,
+      "completeness": 50,
+      "enrichmentTime": 582,
+      "suggestions": [],
+      "enrichedAt": "2026-02-17T22:41:57.049Z",
+      "quality": "insufficient"
+    },
+    {
+      "original": {
+        "id": "lead_003",
+        "name": "George Royeca",
+        "company": "Angkas",
+        "title": "CEO",
+        "domain": "angkas.com",
+        "region": "Philippines",
+        "industry": "Transportation",
+        "priority": "P2",
+        "score": 56
+      },
+      "enriched": {
+        "name": "George Royeca",
+        "company": "Angkas",
+        "domain": "angkas.com",
+        "title": "CEO"
+      },
+      "email": {
+        "person": {
+          "firstName": "George",
+          "lastName": "Royeca",
+          "domain": "angkas.com"
+        },
+        "discovered": [
+          {
+            "email": "george.royeca@angkas.com",
+            "valid": true,
+            "score": 80,
+            "checks": {
+              "syntax": true,
+              "disposable": true,
+              "roleBased": true,
+              "mx": true,
+              "catchAll": false
+            },
+            "suggestions": [],
+            "verifiedAt": "2026-02-17T22:41:56.470Z",
+            "mxRecords": [
+              "aspmx.l.google.com",
+              "alt1.aspmx.l.google.com",
+              "alt2.aspmx.l.google.com"
+            ]
+          },
+          {
+            "email": "georgeroyeca@angkas.com",
+            "valid": true,
+            "score": 80,
+            "checks": {
+              "syntax": true,
+              "disposable": true,
+              "roleBased": true,
+              "mx": true,
+              "catchAll": false
+            },
+            "suggestions": [],
+            "verifiedAt": "2026-02-17T22:41:56.471Z",
+            "mxRecords": [
+              "aspmx.l.google.com",
+              "alt2.aspmx.l.google.com",
+              "alt1.aspmx.l.google.com"
+            ]
+          },
+          {
+            "email": "george_royeca@angkas.com",
+            "valid": true,
+            "score": 80,
+            "checks": {
+              "syntax": true,
+              "disposable": true,
+              "roleBased": true,
+              "mx": true,
+              "catchAll": false
+            },
+            "suggestions": [],
+            "verifiedAt": "2026-02-17T22:41:56.471Z",
+            "mxRecords": [
+              "aspmx.l.google.com",
+              "alt2.aspmx.l.google.com",
+              "alt1.aspmx.l.google.com"
+            ]
+          },
+          {
+            "email": "george-royeca@angkas.com",
+            "valid": true,
+            "score": 80,
+            "checks": {
+              "syntax": true,
+              "disposable": true,
+              "roleBased": true,
+              "mx": true,
+              "catchAll": false
+            },
+            "suggestions": [],
+            "verifiedAt": "2026-02-17T22:41:56.581Z",
+            "mxRecords": [
+              "aspmx.l.google.com",
+              "alt1.aspmx.l.google.com",
+              "alt2.aspmx.l.google.com"
+            ]
+          },
+          {
+            "email": "georger@angkas.com",
+            "valid": true,
+            "score": 80,
+            "checks": {
+              "syntax": true,
+              "disposable": true,
+              "roleBased": true,
+              "mx": true,
+              "catchAll": false
+            },
+            "suggestions": [],
+            "verifiedAt": "2026-02-17T22:41:56.581Z",
+            "mxRecords": [
+              "aspmx.l.google.com",
+              "alt2.aspmx.l.google.com",
+              "alt1.aspmx.l.google.com"
+            ]
+          }
+        ],
+        "verified": {
+          "email": "george.royeca@angkas.com",
+          "valid": true,
+          "score": 80,
+          "checks": {
+            "syntax": true,
+            "disposable": true,
+            "roleBased": true,
+            "mx": true,
+            "catchAll": false
+          },
+          "suggestions": [],
+          "verifiedAt": "2026-02-17T22:41:56.470Z",
+          "mxRecords": [
+            "aspmx.l.google.com",
+            "alt1.aspmx.l.google.com",
+            "alt2.aspmx.l.google.com"
+          ]
+        },
+        "confidence": 80,
+        "method": "pattern-verification",
+        "suggestions": [],
+        "discoveredAt": "2026-02-17T22:41:56.470Z"
+      },
+      "social": {
+        "person": {
+          "name": "George Royeca",
+          "company": "Angkas",
+          "title": "CEO"
+        },
+        "profiles": {},
+        "discovered": [],
+        "confidence": 0,
+        "suggestions": [],
+        "discoveredAt": "2026-02-17T22:41:56.471Z"
+      },
+      "verification": {
+        "email": {
+          "email": "george.royeca@angkas.com",
+          "valid": true,
+          "score": 80,
+          "checks": {
+            "syntax": true,
+            "disposable": true,
+            "roleBased": true,
+            "mx": true,
+            "catchAll": false
+          },
+          "suggestions": [],
+          "verifiedAt": "2026-02-17T22:41:56.684Z",
+          "mxRecords": [
+            "aspmx.l.google.com",
+            "alt1.aspmx.l.google.com",
+            "alt2.aspmx.l.google.com"
+          ]
+        },
+        "social": null
+      },
+      "confidence": 32,
+      "completeness": 25,
+      "enrichmentTime": 404,
+      "suggestions": [],
+      "enrichedAt": "2026-02-17T22:41:56.874Z",
+      "quality": "insufficient"
+    },
+    {
+      "original": {
+        "id": "lead_004",
+        "name": "Martha Sazon",
+        "company": "GCash",
+        "title": "CEO",
+        "domain": "gcash.com",
+        "region": "Philippines",
+        "industry": "Fintech",
+        "priority": "P2",
+        "score": 56
+      },
+      "enriched": {
+        "name": "Martha Sazon",
+        "company": "GCash",
+        "domain": "gcash.com",
+        "title": "CEO"
+      },
+      "email": {
+        "person": {
+          "firstName": "Martha",
+          "lastName": "Sazon",
+          "domain": "gcash.com"
+        },
+        "discovered": [
+          {
+            "email": "martha.sazon@gcash.com",
+            "valid": true,
+            "score": 80,
+            "checks": {
+              "syntax": true,
+              "disposable": true,
+              "roleBased": true,
+              "mx": true,
+              "catchAll": false
+            },
+            "suggestions": [],
+            "verifiedAt": "2026-02-17T22:41:58.051Z",
+            "mxRecords": [
+              "aspmx.l.google.com",
+              "alt2.aspmx.l.google.com",
+              "alt1.aspmx.l.google.com"
+            ]
+          },
+          {
+            "email": "marthasazon@gcash.com",
+            "valid": true,
+            "score": 80,
+            "checks": {
+              "syntax": true,
+              "disposable": true,
+              "roleBased": true,
+              "mx": true,
+              "catchAll": false
+            },
+            "suggestions": [],
+            "verifiedAt": "2026-02-17T22:41:58.051Z",
+            "mxRecords": [
+              "aspmx.l.google.com",
+              "alt1.aspmx.l.google.com",
+              "alt2.aspmx.l.google.com"
+            ]
+          },
+          {
+            "email": "martha_sazon@gcash.com",
+            "valid": true,
+            "score": 80,
+            "checks": {
+              "syntax": true,
+              "disposable": true,
+              "roleBased": true,
+              "mx": true,
+              "catchAll": false
+            },
+            "suggestions": [],
+            "verifiedAt": "2026-02-17T22:41:58.051Z",
+            "mxRecords": [
+              "aspmx.l.google.com",
+              "alt2.aspmx.l.google.com",
+              "alt1.aspmx.l.google.com"
+            ]
+          },
+          {
+            "email": "martha-sazon@gcash.com",
+            "valid": true,
+            "score": 80,
+            "checks": {
+              "syntax": true,
+              "disposable": true,
+              "roleBased": true,
+              "mx": true,
+              "catchAll": false
+            },
+            "suggestions": [],
+            "verifiedAt": "2026-02-17T22:41:58.197Z",
+            "mxRecords": [
+              "aspmx.l.google.com",
+              "alt2.aspmx.l.google.com",
+              "alt1.aspmx.l.google.com"
+            ]
+          },
+          {
+            "email": "marthas@gcash.com",
+            "valid": true,
+            "score": 80,
+            "checks": {
+              "syntax": true,
+              "disposable": true,
+              "roleBased": true,
+              "mx": true,
+              "catchAll": false
+            },
+            "suggestions": [],
+            "verifiedAt": "2026-02-17T22:41:58.197Z",
+            "mxRecords": [
+              "aspmx.l.google.com",
+              "alt1.aspmx.l.google.com",
+              "alt2.aspmx.l.google.com"
+            ]
+          }
+        ],
+        "verified": {
+          "email": "martha.sazon@gcash.com",
+          "valid": true,
+          "score": 80,
+          "checks": {
+            "syntax": true,
+            "disposable": true,
+            "roleBased": true,
+            "mx": true,
+            "catchAll": false
+          },
+          "suggestions": [],
+          "verifiedAt": "2026-02-17T22:41:58.051Z",
+          "mxRecords": [
+            "aspmx.l.google.com",
+            "alt2.aspmx.l.google.com",
+            "alt1.aspmx.l.google.com"
+          ]
+        },
+        "confidence": 80,
+        "method": "pattern-verification",
+        "suggestions": [],
+        "discoveredAt": "2026-02-17T22:41:58.051Z"
+      },
+      "social": {
+        "person": {
+          "name": "Martha Sazon",
+          "company": "GCash",
+          "title": "CEO"
+        },
+        "profiles": {
+          "linkedin": {
+            "platform": "linkedin",
+            "found": true,
+            "handle": "marthasazon",
+            "url": "https://www.linkedin.com/in/marthasazon",
+            "confidence": 40,
+            "checks": {},
+            "activity": {},
+            "suggestion": "Try manual search: https://www.linkedin.com/search/results/people/?keywords=Martha%20Sazon%20GCash"
+          }
+        },
+        "discovered": [
+          {
+            "platform": "linkedin",
+            "handle": "marthasazon",
+            "url": "https://www.linkedin.com/in/marthasazon",
+            "confidence": 40
+          }
+        ],
+        "confidence": 40,
+        "suggestions": [],
+        "discoveredAt": "2026-02-17T22:41:58.051Z"
+      },
+      "verification": {
+        "email": {
+          "email": "martha.sazon@gcash.com",
+          "valid": true,
+          "score": 80,
+          "checks": {
+            "syntax": true,
+            "disposable": true,
+            "roleBased": true,
+            "mx": true,
+            "catchAll": false
+          },
+          "suggestions": [],
+          "verifiedAt": "2026-02-17T22:41:58.298Z",
+          "mxRecords": [
+            "aspmx.l.google.com",
+            "alt1.aspmx.l.google.com",
+            "alt2.aspmx.l.google.com"
+          ]
+        },
+        "social": {
+          "linkedin": {
+            "platform": "linkedin",
+            "identifier": "marthasazon",
+            "valid": false,
+            "exists": true,
+            "active": false,
+            "score": 40,
+            "url": "https://www.linkedin.com/in/marthasazon",
+            "checks": {
+              "premium": false
+            },
+            "activity": {
+              "hasPhoto": false,
+              "hasHeadline": false,
+              "hasExperience": false,
+              "hasConnections": false,
+              "hasActivity": false
+            },
+            "suggestions": [],
+            "verifiedAt": "2026-02-17T22:41:58.945Z"
+          }
+        }
+      },
+      "confidence": 24,
+      "completeness": 50,
+      "enrichmentTime": 1609,
+      "suggestions": [],
+      "enrichedAt": "2026-02-17T22:41:59.660Z",
+      "quality": "insufficient"
+    },
+    {
+      "original": {
+        "id": "lead_005",
+        "name": "Moses Lo",
+        "company": "Xendit",
+        "title": "CEO & Co-Founder",
+        "domain": "xendit.co",
+        "region": "Southeast Asia",
+        "industry": "Payments",
+        "priority": "P2",
+        "score": 55
+      },
+      "enriched": {
+        "name": "Moses Lo",
+        "company": "Xendit",
+        "domain": "xendit.co",
+        "title": "CEO & Co-Founder"
+      },
+      "email": {
+        "person": {
+          "firstName": "Moses",
+          "lastName": "Lo",
+          "domain": "xendit.co"
+        },
+        "discovered": [
+          {
+            "email": "moses.lo@xendit.co",
+            "valid": true,
+            "score": 80,
+            "checks": {
+              "syntax": true,
+              "disposable": true,
+              "roleBased": true,
+              "mx": true,
+              "catchAll": false
+            },
+            "suggestions": [],
+            "verifiedAt": "2026-02-17T22:41:58.052Z",
+            "mxRecords": [
+              "aspmx.l.google.com",
+              "alt1.aspmx.l.google.com",
+              "alt2.aspmx.l.google.com"
+            ]
+          },
+          {
+            "email": "moseslo@xendit.co",
+            "valid": true,
+            "score": 80,
+            "checks": {
+              "syntax": true,
+              "disposable": true,
+              "roleBased": true,
+              "mx": true,
+              "catchAll": false
+            },
+            "suggestions": [],
+            "verifiedAt": "2026-02-17T22:41:58.052Z",
+            "mxRecords": [
+              "aspmx.l.google.com",
+              "alt1.aspmx.l.google.com",
+              "alt2.aspmx.l.google.com"
+            ]
+          },
+          {
+            "email": "moses_lo@xendit.co",
+            "valid": true,
+            "score": 80,
+            "checks": {
+              "syntax": true,
+              "disposable": true,
+              "roleBased": true,
+              "mx": true,
+              "catchAll": false
+            },
+            "suggestions": [],
+            "verifiedAt": "2026-02-17T22:41:58.052Z",
+            "mxRecords": [
+              "aspmx.l.google.com",
+              "alt2.aspmx.l.google.com",
+              "alt1.aspmx.l.google.com"
+            ]
+          },
+          {
+            "email": "moses-lo@xendit.co",
+            "valid": true,
+            "score": 80,
+            "checks": {
+              "syntax": true,
+              "disposable": true,
+              "roleBased": true,
+              "mx": true,
+              "catchAll": false
+            },
+            "suggestions": [],
+            "verifiedAt": "2026-02-17T22:41:58.249Z",
+            "mxRecords": [
+              "aspmx.l.google.com",
+              "alt1.aspmx.l.google.com",
+              "alt2.aspmx.l.google.com"
+            ]
+          },
+          {
+            "email": "mosesl@xendit.co",
+            "valid": true,
+            "score": 80,
+            "checks": {
+              "syntax": true,
+              "disposable": true,
+              "roleBased": true,
+              "mx": true,
+              "catchAll": false
+            },
+            "suggestions": [],
+            "verifiedAt": "2026-02-17T22:41:58.250Z",
+            "mxRecords": [
+              "aspmx.l.google.com",
+              "alt2.aspmx.l.google.com",
+              "alt1.aspmx.l.google.com"
+            ]
+          }
+        ],
+        "verified": {
+          "email": "moses.lo@xendit.co",
+          "valid": true,
+          "score": 80,
+          "checks": {
+            "syntax": true,
+            "disposable": true,
+            "roleBased": true,
+            "mx": true,
+            "catchAll": false
+          },
+          "suggestions": [],
+          "verifiedAt": "2026-02-17T22:41:58.052Z",
+          "mxRecords": [
+            "aspmx.l.google.com",
+            "alt1.aspmx.l.google.com",
+            "alt2.aspmx.l.google.com"
+          ]
+        },
+        "confidence": 80,
+        "method": "pattern-verification",
+        "suggestions": [],
+        "discoveredAt": "2026-02-17T22:41:58.052Z"
+      },
+      "social": {
+        "person": {
+          "name": "Moses Lo",
+          "company": "Xendit",
+          "title": "CEO & Co-Founder"
+        },
+        "profiles": {
+          "github": {
+            "platform": "github",
+            "found": true,
+            "handle": "moseslo",
+            "url": "https://github.com/moseslo",
+            "confidence": 40,
+            "checks": {},
+            "activity": {},
+            "suggestion": "Try manual search: https://github.com/search?q=Moses%20Lo%20Xendit+type:user"
+          },
+          "linkedin": {
+            "platform": "linkedin",
+            "found": true,
+            "handle": "moseslo",
+            "url": "https://www.linkedin.com/in/moseslo",
+            "confidence": 40,
+            "checks": {},
+            "activity": {},
+            "suggestion": "Try manual search: https://www.linkedin.com/search/results/people/?keywords=Moses%20Lo%20Xendit"
+          }
+        },
+        "discovered": [
+          {
+            "platform": "github",
+            "handle": "moseslo",
+            "url": "https://github.com/moseslo",
+            "confidence": 40
+          },
+          {
+            "platform": "linkedin",
+            "handle": "moseslo",
+            "url": "https://www.linkedin.com/in/moseslo",
+            "confidence": 40
+          }
+        ],
+        "confidence": 50,
+        "suggestions": [],
+        "discoveredAt": "2026-02-17T22:41:58.052Z",
+        "crossValidated": true
+      },
+      "verification": {
+        "email": {
+          "email": "moses.lo@xendit.co",
+          "valid": true,
+          "score": 80,
+          "checks": {
+            "syntax": true,
+            "disposable": true,
+            "roleBased": true,
+            "mx": true,
+            "catchAll": false
+          },
+          "suggestions": [],
+          "verifiedAt": "2026-02-17T22:41:58.351Z",
+          "mxRecords": [
+            "aspmx.l.google.com",
+            "alt2.aspmx.l.google.com",
+            "alt1.aspmx.l.google.com"
+          ]
+        },
+        "social": {
+          "github": {
+            "platform": "github",
+            "username": "moseslo",
+            "valid": false,
+            "exists": true,
+            "active": false,
+            "score": 45,
+            "url": "https://github.com/moseslo",
+            "checks": {
+              "isPro": false
+            },
+            "activity": {
+              "hasRepos": false,
+              "hasContributions": false,
+              "hasBio": false,
+              "hasAvatar": true,
+              "recentActivity": null
+            },
+            "suggestions": [],
+            "verifiedAt": "2026-02-17T22:41:58.919Z"
+          },
+          "linkedin": {
+            "platform": "linkedin",
+            "identifier": "moseslo",
+            "valid": false,
+            "exists": true,
+            "active": false,
+            "score": 40,
+            "url": "https://www.linkedin.com/in/moseslo",
+            "checks": {
+              "premium": false
+            },
+            "activity": {
+              "hasPhoto": false,
+              "hasHeadline": false,
+              "hasExperience": false,
+              "hasConnections": false,
+              "hasActivity": false
+            },
+            "suggestions": [],
+            "verifiedAt": "2026-02-17T22:41:58.919Z"
+          }
+        }
+      },
+      "confidence": 26,
+      "completeness": 75,
+      "enrichmentTime": 1603,
+      "suggestions": [],
+      "enrichedAt": "2026-02-17T22:41:59.655Z",
+      "quality": "insufficient"
+    },
+    {
+      "original": {
+        "id": "lead_006",
+        "name": "Kris Marszalek",
+        "company": "Crypto.com",
+        "title": "CEO & Co-Founder",
+        "domain": "crypto.com",
+        "region": "Global",
+        "industry": "Cryptocurrency Exchange",
+        "priority": "P0",
+        "score": 92
+      },
+      "enriched": {
+        "name": "Kris Marszalek",
+        "company": "Crypto.com",
+        "domain": "crypto.com",
+        "title": "CEO & Co-Founder"
+      },
+      "email": {
+        "person": {
+          "firstName": "Kris",
+          "lastName": "Marszalek",
+          "domain": "crypto.com"
+        },
+        "discovered": [
+          {
+            "email": "kris.marszalek@crypto.com",
+            "valid": true,
+            "score": 80,
+            "checks": {
+              "syntax": true,
+              "disposable": true,
+              "roleBased": true,
+              "mx": true,
+              "catchAll": false
+            },
+            "suggestions": [],
+            "verifiedAt": "2026-02-17T22:43:13.422Z",
+            "mxRecords": [
+              "mxa-00543801.gslb.pphosted.com",
+              "mxb-00543801.gslb.pphosted.com",
+              "aspmx.l.google.com"
+            ]
+          },
+          {
+            "email": "krismarszalek@crypto.com",
+            "valid": true,
+            "score": 80,
+            "checks": {
+              "syntax": true,
+              "disposable": true,
+              "roleBased": true,
+              "mx": true,
+              "catchAll": false
+            },
+            "suggestions": [],
+            "verifiedAt": "2026-02-17T22:43:13.422Z",
+            "mxRecords": [
+              "mxa-00543801.gslb.pphosted.com",
+              "mxb-00543801.gslb.pphosted.com",
+              "aspmx.l.google.com"
+            ]
+          },
+          {
+            "email": "kris_marszalek@crypto.com",
+            "valid": true,
+            "score": 80,
+            "checks": {
+              "syntax": true,
+              "disposable": true,
+              "roleBased": true,
+              "mx": true,
+              "catchAll": false
+            },
+            "suggestions": [],
+            "verifiedAt": "2026-02-17T22:43:13.422Z",
+            "mxRecords": [
+              "mxb-00543801.gslb.pphosted.com",
+              "mxa-00543801.gslb.pphosted.com",
+              "aspmx.l.google.com"
+            ]
+          },
+          {
+            "email": "kris-marszalek@crypto.com",
+            "valid": true,
+            "score": 80,
+            "checks": {
+              "syntax": true,
+              "disposable": true,
+              "roleBased": true,
+              "mx": true,
+              "catchAll": false
+            },
+            "suggestions": [],
+            "verifiedAt": "2026-02-17T22:43:13.554Z",
+            "mxRecords": [
+              "mxa-00543801.gslb.pphosted.com",
+              "mxb-00543801.gslb.pphosted.com",
+              "aspmx.l.google.com"
+            ]
+          },
+          {
+            "email": "krism@crypto.com",
+            "valid": true,
+            "score": 80,
+            "checks": {
+              "syntax": true,
+              "disposable": true,
+              "roleBased": true,
+              "mx": true,
+              "catchAll": false
+            },
+            "suggestions": [],
+            "verifiedAt": "2026-02-17T22:43:13.554Z",
+            "mxRecords": [
+              "mxa-00543801.gslb.pphosted.com",
+              "mxb-00543801.gslb.pphosted.com",
+              "aspmx.l.google.com"
+            ]
+          }
+        ],
+        "verified": {
+          "email": "kris.marszalek@crypto.com",
+          "valid": true,
+          "score": 80,
+          "checks": {
+            "syntax": true,
+            "disposable": true,
+            "roleBased": true,
+            "mx": true,
+            "catchAll": false
+          },
+          "suggestions": [],
+          "verifiedAt": "2026-02-17T22:43:13.422Z",
+          "mxRecords": [
+            "mxa-00543801.gslb.pphosted.com",
+            "mxb-00543801.gslb.pphosted.com",
+            "aspmx.l.google.com"
+          ]
+        },
+        "confidence": 80,
+        "method": "pattern-verification",
+        "suggestions": [],
+        "discoveredAt": "2026-02-17T22:43:13.421Z"
+      },
+      "social": {
+        "person": {
+          "name": "Kris Marszalek",
+          "company": "Crypto.com",
+          "title": "CEO & Co-Founder"
+        },
+        "profiles": {
+          "linkedin": {
+            "platform": "linkedin",
+            "found": true,
+            "handle": "krismarszalek",
+            "url": "https://www.linkedin.com/in/krismarszalek",
+            "confidence": 40,
+            "checks": {},
+            "activity": {},
+            "suggestion": "Try manual search: https://www.linkedin.com/search/results/people/?keywords=Kris%20Marszalek%20Crypto.com"
+          }
+        },
+        "discovered": [
+          {
+            "platform": "linkedin",
+            "handle": "krismarszalek",
+            "url": "https://www.linkedin.com/in/krismarszalek",
+            "confidence": 40
+          }
+        ],
+        "confidence": 40,
+        "suggestions": [],
+        "discoveredAt": "2026-02-17T22:43:13.422Z"
+      },
+      "verification": {
+        "email": {
+          "email": "kris.marszalek@crypto.com",
+          "valid": true,
+          "score": 80,
+          "checks": {
+            "syntax": true,
+            "disposable": true,
+            "roleBased": true,
+            "mx": true,
+            "catchAll": false
+          },
+          "suggestions": [],
+          "verifiedAt": "2026-02-17T22:43:13.659Z",
+          "mxRecords": [
+            "mxa-00543801.gslb.pphosted.com",
+            "mxb-00543801.gslb.pphosted.com",
+            "aspmx.l.google.com"
+          ]
+        },
+        "social": {
+          "linkedin": {
+            "platform": "linkedin",
+            "identifier": "krismarszalek",
+            "valid": false,
+            "exists": true,
+            "active": false,
+            "score": 40,
+            "url": "https://www.linkedin.com/in/krismarszalek",
+            "checks": {
+              "premium": false
+            },
+            "activity": {
+              "hasPhoto": false,
+              "hasHeadline": false,
+              "hasExperience": false,
+              "hasConnections": false,
+              "hasActivity": false
+            },
+            "suggestions": [],
+            "verifiedAt": "2026-02-17T22:43:14.486Z"
+          }
+        }
+      },
+      "confidence": 24,
+      "completeness": 50,
+      "enrichmentTime": 2315,
+      "suggestions": [],
+      "enrichedAt": "2026-02-17T22:43:15.736Z",
+      "quality": "insufficient"
+    }
+  ]
+}

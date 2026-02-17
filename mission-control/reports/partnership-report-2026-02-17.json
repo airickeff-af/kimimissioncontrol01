@@ -1,0 +1,245 @@
+{
+  "generatedAt": "2026-02-17T22:45:48.644Z",
+  "topTargets": [
+    {
+      "rank": 1,
+      "company": "Bybit",
+      "score": 81,
+      "signalType": "job_posting",
+      "region": "Singapore / Southeast Asia",
+      "whySeeking": [
+        "Hiring BD for SEA expansion",
+        "P2P payment focus",
+        "Strategic partnerships"
+      ],
+      "contactInfo": {
+        "linkedin": "https://www.linkedin.com/company/bybit",
+        "careers": "https://www.bybit.com/en-US/careers"
+      },
+      "outreachRecommendations": [
+        "💼 **Job Posting Strategy**: Reach out to the hiring manager directly on LinkedIn",
+        "   - Mention you saw the BD/Partnerships role and have relevant connections",
+        "   - Offer to make warm introductions to potential partners",
+        "₿ **Crypto Angle**: Highlight Coins.ph 18M+ user base and regulatory licenses",
+        "💼 **LinkedIn Outreach**: Connect via company page https://www.linkedin.com/company/bybit"
+      ]
+    },
+    {
+      "rank": 2,
+      "company": "Solana Foundation",
+      "score": 79,
+      "signalType": "job_posting",
+      "region": "Southeast Asia",
+      "whySeeking": [
+        "Hiring growth lead for SEA",
+        "Payments focus",
+        "Partnership strategy"
+      ],
+      "contactInfo": {
+        "linkedin": "https://www.linkedin.com/company/solana-foundation",
+        "careers": "https://jobs.solana.com"
+      },
+      "outreachRecommendations": [
+        "💼 **Job Posting Strategy**: Reach out to the hiring manager directly on LinkedIn",
+        "   - Mention you saw the BD/Partnerships role and have relevant connections",
+        "   - Offer to make warm introductions to potential partners",
+        "💼 **LinkedIn Outreach**: Connect via company page https://www.linkedin.com/company/solana-foundation"
+      ]
+    },
+    {
+      "rank": 3,
+      "company": "Crypto.com",
+      "score": 79,
+      "signalType": "conference",
+      "region": "Singapore / Hong Kong",
+      "whySeeking": [
+        "Conference presence",
+        "Institutional focus",
+        "Partnership outreach"
+      ],
+      "contactInfo": {
+        "website": "https://crypto.com",
+        "linkedin": "https://www.linkedin.com/company/cryptocom",
+        "partnerships": "institutional@crypto.com"
+      },
+      "outreachRecommendations": [
+        "🎤 **Conference Strategy**: Schedule meeting at upcoming event",
+        "   - Request 15-min coffee chat during the conference",
+        "   - Prepare specific integration/use case proposal",
+        "₿ **Crypto Angle**: Highlight Coins.ph 18M+ user base and regulatory licenses",
+        "📧 **Direct Contact**: institutional@crypto.com"
+      ]
+    },
+    {
+      "rank": 4,
+      "company": "Remitly",
+      "score": 78,
+      "signalType": "press_release",
+      "region": "Philippines / US / Canada",
+      "whySeeking": [
+        "Active Coins.ph partnership",
+        "Stablecoin focus",
+        "OFW market"
+      ],
+      "contactInfo": {
+        "website": "https://www.remitly.com",
+        "linkedin": "https://www.linkedin.com/company/remitly",
+        "partnerships": "partnerships@remitly.com"
+      },
+      "outreachRecommendations": [
+        "📰 **Press Release Strategy**: Reference their recent announcement",
+        "   - Congratulate on the partnership/news",
+        "   - Propose complementary integration or follow-up partnership",
+        "🇵🇭 **PH Market Angle**: Offer local market expertise and distribution",
+        "📧 **Direct Contact**: partnerships@remitly.com"
+      ]
+    },
+    {
+      "rank": 5,
+      "company": "Matrixport",
+      "score": 73,
+      "signalType": "job_posting",
+      "region": "Southeast Asia",
+      "whySeeking": [
+        "Custody business expansion",
+        "Institutional focus",
+        "SEA hiring"
+      ],
+      "contactInfo": {
+        "linkedin": "https://www.linkedin.com/company/matrixport",
+        "website": "https://www.matrixport.com"
+      },
+      "outreachRecommendations": [
+        "💼 **Job Posting Strategy**: Reach out to the hiring manager directly on LinkedIn",
+        "   - Mention you saw the BD/Partnerships role and have relevant connections",
+        "   - Offer to make warm introductions to potential partners",
+        "₿ **Crypto Angle**: Highlight Coins.ph 18M+ user base and regulatory licenses",
+        "💼 **LinkedIn Outreach**: Connect via company page https://www.linkedin.com/company/matrixport"
+      ]
+    },
+    {
+      "rank": 6,
+      "company": "Veem",
+      "score": 73,
+      "signalType": "press_release",
+      "region": "Philippines / US / Canada",
+      "whySeeking": [
+        "Active Coins.ph partnership",
+        "B2B focus",
+        "Cross-border payments"
+      ],
+      "contactInfo": {
+        "website": "https://www.veem.com",
+        "linkedin": "https://www.linkedin.com/company/veem",
+        "partnerships": "partners@veem.com"
+      },
+      "outreachRecommendations": [
+        "📰 **Press Release Strategy**: Reference their recent announcement",
+        "   - Congratulate on the partnership/news",
+        "   - Propose complementary integration or follow-up partnership",
+        "💳 **Payment Angle**: Emphasize QR Ph integration and remittance volume",
+        "🇵🇭 **PH Market Angle**: Offer local market expertise and distribution",
+        "📧 **Direct Contact**: partners@veem.com"
+      ]
+    },
+    {
+      "rank": 7,
+      "company": "PayMongo",
+      "score": 73,
+      "signalType": "website_change",
+      "region": "Philippines",
+      "whySeeking": [
+        "API-first platform",
+        "Integration marketplace",
+        "PH market leader"
+      ],
+      "contactInfo": {
+        "website": "https://www.paymongo.com",
+        "linkedin": "https://www.linkedin.com/company/paymongo",
+        "partnerships": "partnerships@paymongo.com"
+      },
+      "outreachRecommendations": [
+        "🌐 **Website Strategy**: Reference specific partner page/initiative",
+        "   - Mention you noticed their new partner program",
+        "   - Propose pilot integration or co-marketing",
+        "💳 **Payment Angle**: Emphasize QR Ph integration and remittance volume",
+        "🇵🇭 **PH Market Angle**: Offer local market expertise and distribution",
+        "📧 **Direct Contact**: partnerships@paymongo.com"
+      ]
+    },
+    {
+      "rank": 8,
+      "company": "Starpago",
+      "score": 72,
+      "signalType": "partnership_page",
+      "region": "Philippines",
+      "whySeeking": [
+        "Active partnership with Coins.ph",
+        "QR Ph integration",
+        "B2B payments"
+      ],
+      "contactInfo": {
+        "website": "https://starpago.com",
+        "linkedin": "https://www.linkedin.com/company/starpago"
+      },
+      "outreachRecommendations": [
+        "💳 **Payment Angle**: Emphasize QR Ph integration and remittance volume",
+        "🇵🇭 **PH Market Angle**: Offer local market expertise and distribution",
+        "💼 **LinkedIn Outreach**: Connect via company page https://www.linkedin.com/company/starpago"
+      ]
+    },
+    {
+      "rank": 9,
+      "company": "Xendit",
+      "score": 72,
+      "signalType": "website_change",
+      "region": "Southeast Asia",
+      "whySeeking": [
+        "Partner program active",
+        "Multi-country presence",
+        "API integrations"
+      ],
+      "contactInfo": {
+        "website": "https://www.xendit.co",
+        "linkedin": "https://www.linkedin.com/company/xendit",
+        "partners": "https://www.xendit.co/en/partners"
+      },
+      "outreachRecommendations": [
+        "🌐 **Website Strategy**: Reference specific partner page/initiative",
+        "   - Mention you noticed their new partner program",
+        "   - Propose pilot integration or co-marketing",
+        "💳 **Payment Angle**: Emphasize QR Ph integration and remittance volume",
+        "💼 **LinkedIn Outreach**: Connect via company page https://www.linkedin.com/company/xendit"
+      ]
+    },
+    {
+      "rank": 10,
+      "company": "Nuvei",
+      "score": 72,
+      "signalType": "press_release",
+      "region": "Global / SEA",
+      "whySeeking": [
+        "Partnership team",
+        "Crypto expansion",
+        "Global reach"
+      ],
+      "contactInfo": {
+        "website": "https://www.nuvei.com",
+        "linkedin": "https://www.linkedin.com/company/nuvei",
+        "partnerships": "partners@nuvei.com"
+      },
+      "outreachRecommendations": [
+        "📰 **Press Release Strategy**: Reference their recent announcement",
+        "   - Congratulate on the partnership/news",
+        "   - Propose complementary integration or follow-up partnership",
+        "💳 **Payment Angle**: Emphasize QR Ph integration and remittance volume",
+        "📧 **Direct Contact**: partners@nuvei.com"
+      ]
+    }
+  ],
+  "summary": {
+    "highPriority": 1,
+    "mediumPriority": 11,
+    "total": 12
+  }
+}

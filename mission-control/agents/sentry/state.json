@@ -1,0 +1,64 @@
+{
+  "system": {
+    "gatewayStatus": "running",
+    "gatewayPid": 4375,
+    "lastCheck": "2026-02-17T07:08:00+08:00",
+    "uptime": "unknown"
+  },
+  "sessions": {
+    "total": 12,
+    "active": 12,
+    "failed": 0,
+    "mainSession": "agent:main:main"
+  },
+  "agents": {
+    "deployed": [
+      {"name": "Air1ck3ff", "role": "Nexus", "session": "main"},
+      {"name": "Forge", "role": "Coder", "session": "e92eaad9-e026-4807-b853-0f3ee11fe1d9"},
+      {"name": "Scout", "role": "Researcher", "session": "6a0dddcd-ea6a-41ab-a74e-27085482c97f"},
+      {"name": "Buzz", "role": "Social", "session": "bfa7d15c-1474-409a-afca-e20c56d1b6b7"},
+      {"name": "Sentry", "role": "DevOps", "session": "bf83aac4-ad45-4d7b-ade6-da31a6c26bf9"}
+    ],
+    "pending": [
+      {"name": "Quill", "role": "Writer"},
+      {"name": "Pixel", "role": "Designer"},
+      {"name": "Glasses", "role": "Research"},
+      {"name": "Gary", "role": "Marketing Lead"},
+      {"name": "Larry", "role": "Social Media"},
+      {"name": "Cipher", "role": "Security"},
+      {"name": "Audit", "role": "QA"}
+    ]
+  },
+  "alerts": [
+    {
+      "level": "critical",
+      "id": "SEC-001",
+      "message": "Extensions exist but plugins.allow not set",
+      "timestamp": "2026-02-17T07:08:00+08:00"
+    },
+    {
+      "level": "warning",
+      "id": "SEC-002",
+      "message": "Reverse proxy headers not trusted",
+      "timestamp": "2026-02-17T07:08:00+08:00"
+    },
+    {
+      "level": "warning",
+      "id": "SEC-003",
+      "message": "Ineffective denyCommands entries",
+      "timestamp": "2026-02-17T07:08:00+08:00"
+    },
+    {
+      "level": "warning",
+      "id": "SEC-004",
+      "message": "Extension plugin tools under permissive policy",
+      "timestamp": "2026-02-17T07:08:00+08:00"
+    }
+  ],
+  "incidents": [],
+  "metrics": {
+    "avgResponseTime": "44ms",
+    "memoryUsage": "unknown",
+    "cpuUsage": "unknown"
+  }
+}

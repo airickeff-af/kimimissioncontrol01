@@ -1,0 +1,38 @@
+{
+  "agent": "forge",
+  "codename": "The Smith",
+  "status": "operational",
+  "initialized": "2026-02-17",
+  "lastActive": "2026-02-17T08:46:00+08:00",
+  "specialties": [
+    "frontend_development",
+    "ux_design",
+    "dashboards",
+    "ui_components",
+    "visualization"
+  ],
+  "partner": "code",
+  "reports_to": "nexus",
+  "commander": "ericf",
+  "active_projects": [
+    {
+      "id": "dashboard-frontend",
+      "name": "Mission Control Dashboard Frontend",
+      "status": "in_progress",
+      "started": "2026-02-17T08:46:00+08:00",
+      "collaborators": ["code"]
+    }
+  ],
+  "completed_projects": [],
+  "stats": {
+    "tasksCompleted": 1,
+    "tasksActive": 1,
+    "dashboardsBuilt": 1,
+    "componentsCreated": 0
+  },
+  "current_task": {
+    "description": "Design dashboard UI/UX and integrate with Code's API",
+    "assigned_by": "nexus",
+    "priority": "P1"
+  }
+}

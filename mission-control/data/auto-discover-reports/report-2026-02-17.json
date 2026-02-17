@@ -1,0 +1,1134 @@
+{
+  "generatedAt": "2026-02-17T22:41:54.597Z",
+  "summary": {
+    "totalQueries": 72,
+    "newDiscoveries": 55,
+    "addedToLeads": 55,
+    "skippedDuplicates": 0
+  },
+  "discoveries": [
+    {
+      "company": "Maya Crypto",
+      "funding": 18000000,
+      "round": "Series B",
+      "date": "2026-02-11",
+      "contact": "Shailesh Baidwan",
+      "title": "President",
+      "region": "Philippines",
+      "industry": "Crypto",
+      "source": "simulated-funding-database",
+      "score": 80,
+      "priority": "P1",
+      "discoveredAt": "2026-02-17T22:41:54.584Z",
+      "tags": [
+        "auto-discovered",
+        "simulated-funding-database",
+        "philippines",
+        "crypto"
+      ]
+    },
+    {
+      "company": "PlutusX",
+      "funding": 3000000,
+      "round": "Seed",
+      "date": "2026-01-28",
+      "contact": "Mark Nunez",
+      "title": "CEO",
+      "region": "Philippines",
+      "industry": "Crypto",
+      "source": "simulated-funding-database",
+      "score": 80,
+      "priority": "P1",
+      "discoveredAt": "2026-02-17T22:41:54.584Z",
+      "tags": [
+        "auto-discovered",
+        "simulated-funding-database",
+        "philippines",
+        "crypto"
+      ]
+    },
+    {
+      "company": "Tonik",
+      "funding": 45000000,
+      "round": "Series B",
+      "date": "2026-02-09",
+      "contact": "Greg Krasnov",
+      "title": "CEO",
+      "region": "Philippines",
+      "industry": "Fintech",
+      "source": "simulated-funding-database",
+      "score": 80,
+      "priority": "P1",
+      "discoveredAt": "2026-02-17T22:41:54.584Z",
+      "tags": [
+        "auto-discovered",
+        "simulated-funding-database",
+        "philippines",
+        "fintech"
+      ]
+    },
+    {
+      "company": "UNObank",
+      "funding": 15000000,
+      "round": "Series A",
+      "date": "2026-01-25",
+      "contact": "Manish Bhai",
+      "title": "CEO",
+      "region": "Philippines",
+      "industry": "Fintech",
+      "source": "simulated-funding-database",
+      "score": 80,
+      "priority": "P1",
+      "discoveredAt": "2026-02-17T22:41:54.584Z",
+      "tags": [
+        "auto-discovered",
+        "simulated-funding-database",
+        "philippines",
+        "fintech"
+      ]
+    },
+    {
+      "company": "Mynt",
+      "funding": 300000000,
+      "round": "Series C",
+      "date": "2026-02-16",
+      "contact": "Martha Sazon",
+      "title": "CEO",
+      "region": "Philippines",
+      "industry": "Fintech",
+      "source": "tech-blogs",
+      "score": 80,
+      "priority": "P1",
+      "discoveredAt": "2026-02-17T22:41:54.584Z",
+      "tags": [
+        "auto-discovered",
+        "tech-blogs",
+        "philippines",
+        "fintech"
+      ]
+    },
+    {
+      "company": "PayMongo",
+      "funding": 31000000,
+      "round": "Series B",
+      "date": "2026-02-13",
+      "contact": "Francis Plaza",
+      "title": "CEO",
+      "region": "Philippines",
+      "industry": "Payments",
+      "source": "simulated-funding-database",
+      "score": 80,
+      "priority": "P1",
+      "discoveredAt": "2026-02-17T22:41:54.584Z",
+      "tags": [
+        "auto-discovered",
+        "simulated-funding-database",
+        "philippines",
+        "payments"
+      ]
+    },
+    {
+      "company": "Xendit Philippines",
+      "funding": 22000000,
+      "round": "Series C",
+      "date": "2026-01-20",
+      "contact": "Moses Lo",
+      "title": "CEO",
+      "region": "Philippines",
+      "industry": "Payments",
+      "source": "simulated-funding-database",
+      "score": 80,
+      "priority": "P1",
+      "discoveredAt": "2026-02-17T22:41:54.584Z",
+      "tags": [
+        "auto-discovered",
+        "simulated-funding-database",
+        "philippines",
+        "payments"
+      ]
+    },
+    {
+      "company": "Yield Guild Games",
+      "funding": 14000000,
+      "round": "Series A",
+      "date": "2026-02-07",
+      "contact": "Gabby Dizon",
+      "title": "CEO",
+      "region": "Philippines",
+      "industry": "DeFi",
+      "source": "simulated-funding-database",
+      "score": 80,
+      "priority": "P1",
+      "discoveredAt": "2026-02-17T22:41:54.585Z",
+      "tags": [
+        "auto-discovered",
+        "simulated-funding-database",
+        "philippines",
+        "defi"
+      ]
+    },
+    {
+      "company": "BreederDAO",
+      "funding": 8000000,
+      "round": "Series A",
+      "date": "2026-01-15",
+      "contact": "Renz Chong",
+      "title": "CEO",
+      "region": "Philippines",
+      "industry": "DeFi",
+      "source": "simulated-funding-database",
+      "score": 80,
+      "priority": "P1",
+      "discoveredAt": "2026-02-17T22:41:54.585Z",
+      "tags": [
+        "auto-discovered",
+        "simulated-funding-database",
+        "philippines",
+        "defi"
+      ]
+    },
+    {
+      "company": "Amber Group",
+      "funding": 50000000,
+      "round": "Series C",
+      "date": "2026-02-15",
+      "contact": "Michael Wu",
+      "title": "CEO",
+      "region": "Singapore",
+      "industry": "Crypto",
+      "source": "simulated-funding-database",
+      "score": 80,
+      "priority": "P1",
+      "discoveredAt": "2026-02-17T22:41:54.585Z",
+      "tags": [
+        "auto-discovered",
+        "simulated-funding-database",
+        "singapore",
+        "crypto"
+      ]
+    },
+    {
+      "company": "Matrixport",
+      "funding": 30000000,
+      "round": "Series B",
+      "date": "2026-01-28",
+      "contact": "John Ge",
+      "title": "CEO",
+      "region": "Singapore",
+      "industry": "Crypto",
+      "source": "simulated-funding-database",
+      "score": 80,
+      "priority": "P1",
+      "discoveredAt": "2026-02-17T22:41:54.585Z",
+      "tags": [
+        "auto-discovered",
+        "simulated-funding-database",
+        "singapore",
+        "crypto"
+      ]
+    },
+    {
+      "company": "Sparrow Exchange",
+      "funding": 3500000,
+      "round": "Seed",
+      "date": "2026-02-11",
+      "contact": "Kenneth Yeo",
+      "title": "CEO",
+      "region": "Singapore",
+      "industry": "Crypto",
+      "source": "tech-blogs",
+      "score": 80,
+      "priority": "P1",
+      "discoveredAt": "2026-02-17T22:41:54.585Z",
+      "tags": [
+        "auto-discovered",
+        "tech-blogs",
+        "singapore",
+        "crypto"
+      ]
+    },
+    {
+      "company": "StraitsX",
+      "funding": 8000000,
+      "round": "Series A",
+      "date": "2026-01-20",
+      "contact": "Aymeric Salley",
+      "title": "CEO",
+      "signal": "50+ new hires in 3 months",
+      "region": "Singapore",
+      "industry": "Crypto",
+      "source": "linkedin-signals",
+      "score": 80,
+      "priority": "P1",
+      "discoveredAt": "2026-02-17T22:41:54.585Z",
+      "tags": [
+        "auto-discovered",
+        "linkedin-signals",
+        "singapore",
+        "crypto"
+      ]
+    },
+    {
+      "company": "Aspire",
+      "funding": 25000000,
+      "round": "Series C",
+      "date": "2026-02-10",
+      "contact": "Andrea Baronchelli",
+      "title": "CEO",
+      "region": "Singapore",
+      "industry": "Fintech",
+      "source": "simulated-funding-database",
+      "score": 80,
+      "priority": "P1",
+      "discoveredAt": "2026-02-17T22:41:54.585Z",
+      "tags": [
+        "auto-discovered",
+        "simulated-funding-database",
+        "singapore",
+        "fintech"
+      ]
+    },
+    {
+      "company": "Volopay",
+      "funding": 12000000,
+      "round": "Series A",
+      "date": "2026-01-20",
+      "contact": "Rajith Shaji",
+      "title": "CEO",
+      "region": "Singapore",
+      "industry": "Fintech",
+      "source": "simulated-funding-database",
+      "score": 80,
+      "priority": "P1",
+      "discoveredAt": "2026-02-17T22:41:54.585Z",
+      "tags": [
+        "auto-discovered",
+        "simulated-funding-database",
+        "singapore",
+        "fintech"
+      ]
+    },
+    {
+      "company": "Grab Financial",
+      "funding": 50000000,
+      "round": "Strategic",
+      "date": "2026-02-01",
+      "contact": "Reuben Lai",
+      "title": "Head",
+      "signal": "Expanding to 5 new markets",
+      "region": "Singapore",
+      "industry": "Fintech",
+      "source": "linkedin-signals",
+      "score": 80,
+      "priority": "P1",
+      "discoveredAt": "2026-02-17T22:41:54.585Z",
+      "tags": [
+        "auto-discovered",
+        "linkedin-signals",
+        "singapore",
+        "fintech"
+      ]
+    },
+    {
+      "company": "Xfers",
+      "funding": 20000000,
+      "round": "Series B",
+      "date": "2026-02-05",
+      "contact": "Tianwei Liu",
+      "title": "CEO",
+      "region": "Singapore",
+      "industry": "Payments",
+      "source": "simulated-funding-database",
+      "score": 80,
+      "priority": "P1",
+      "discoveredAt": "2026-02-17T22:41:54.585Z",
+      "tags": [
+        "auto-discovered",
+        "simulated-funding-database",
+        "singapore",
+        "payments"
+      ]
+    },
+    {
+      "company": "CardUp",
+      "funding": 8000000,
+      "round": "Series A",
+      "date": "2026-01-15",
+      "contact": "Nicki Ramsay",
+      "title": "CEO",
+      "region": "Singapore",
+      "industry": "Payments",
+      "source": "simulated-funding-database",
+      "score": 80,
+      "priority": "P1",
+      "discoveredAt": "2026-02-17T22:41:54.585Z",
+      "tags": [
+        "auto-discovered",
+        "simulated-funding-database",
+        "singapore",
+        "payments"
+      ]
+    },
+    {
+      "company": "Pendle Finance",
+      "funding": 15000000,
+      "round": "Series A",
+      "date": "2026-02-12",
+      "contact": "TN Lee",
+      "title": "CEO",
+      "region": "Singapore",
+      "industry": "DeFi",
+      "source": "simulated-funding-database",
+      "score": 80,
+      "priority": "P1",
+      "discoveredAt": "2026-02-17T22:41:54.585Z",
+      "tags": [
+        "auto-discovered",
+        "simulated-funding-database",
+        "singapore",
+        "defi"
+      ]
+    },
+    {
+      "company": "Dexe Network",
+      "funding": 5000000,
+      "round": "Seed",
+      "date": "2026-01-25",
+      "contact": "Dmitry Kotliarov",
+      "title": "CEO",
+      "region": "Singapore",
+      "industry": "DeFi",
+      "source": "simulated-funding-database",
+      "score": 80,
+      "priority": "P1",
+      "discoveredAt": "2026-02-17T22:41:54.585Z",
+      "tags": [
+        "auto-discovered",
+        "simulated-funding-database",
+        "singapore",
+        "defi"
+      ]
+    },
+    {
+      "company": "Kyber Network",
+      "funding": 25000000,
+      "round": "Strategic",
+      "date": "2026-02-09",
+      "contact": "Victor Tran",
+      "title": "CEO",
+      "region": "Singapore",
+      "industry": "DeFi",
+      "source": "tech-blogs",
+      "score": 80,
+      "priority": "P1",
+      "discoveredAt": "2026-02-17T22:41:54.585Z",
+      "tags": [
+        "auto-discovered",
+        "tech-blogs",
+        "singapore",
+        "defi"
+      ]
+    },
+    {
+      "company": "OSL",
+      "funding": 45000000,
+      "round": "Series B",
+      "date": "2026-02-08",
+      "contact": "Wayne Huang",
+      "title": "CEO",
+      "region": "Hong Kong",
+      "industry": "Crypto",
+      "source": "simulated-funding-database",
+      "score": 80,
+      "priority": "P1",
+      "discoveredAt": "2026-02-17T22:41:54.585Z",
+      "tags": [
+        "auto-discovered",
+        "simulated-funding-database",
+        "hong-kong",
+        "crypto"
+      ]
+    },
+    {
+      "company": "Hex Trust",
+      "funding": 20000000,
+      "round": "Series A",
+      "date": "2026-01-30",
+      "contact": "Alessio Quaglini",
+      "title": "CEO",
+      "region": "Hong Kong",
+      "industry": "Crypto",
+      "source": "simulated-funding-database",
+      "score": 80,
+      "priority": "P1",
+      "discoveredAt": "2026-02-17T22:41:54.585Z",
+      "tags": [
+        "auto-discovered",
+        "simulated-funding-database",
+        "hong-kong",
+        "crypto"
+      ]
+    },
+    {
+      "company": "BC Technology",
+      "funding": 15000000,
+      "round": "Series B",
+      "date": "2026-01-25",
+      "contact": "Hugh Madden",
+      "title": "CEO",
+      "signal": "Licensed exchange growth",
+      "region": "Hong Kong",
+      "industry": "Crypto",
+      "source": "linkedin-signals",
+      "score": 80,
+      "priority": "P1",
+      "discoveredAt": "2026-02-17T22:41:54.585Z",
+      "tags": [
+        "auto-discovered",
+        "linkedin-signals",
+        "hong-kong",
+        "crypto"
+      ]
+    },
+    {
+      "company": "WeLab",
+      "funding": 35000000,
+      "round": "Series D",
+      "date": "2026-02-14",
+      "contact": "Simon Loong",
+      "title": "CEO",
+      "region": "Hong Kong",
+      "industry": "Fintech",
+      "source": "simulated-funding-database",
+      "score": 80,
+      "priority": "P1",
+      "discoveredAt": "2026-02-17T22:41:54.586Z",
+      "tags": [
+        "auto-discovered",
+        "simulated-funding-database",
+        "hong-kong",
+        "fintech"
+      ]
+    },
+    {
+      "company": "Neat",
+      "funding": 6000000,
+      "round": "Series A",
+      "date": "2026-01-18",
+      "contact": "David Rosa",
+      "title": "CEO",
+      "region": "Hong Kong",
+      "industry": "Fintech",
+      "source": "simulated-funding-database",
+      "score": 80,
+      "priority": "P1",
+      "discoveredAt": "2026-02-17T22:41:54.586Z",
+      "tags": [
+        "auto-discovered",
+        "simulated-funding-database",
+        "hong-kong",
+        "fintech"
+      ]
+    },
+    {
+      "company": "Livi Bank",
+      "funding": 40000000,
+      "round": "Series A",
+      "date": "2026-02-08",
+      "contact": "David Sun",
+      "title": "CEO",
+      "region": "Hong Kong",
+      "industry": "Fintech",
+      "source": "tech-blogs",
+      "score": 80,
+      "priority": "P1",
+      "discoveredAt": "2026-02-17T22:41:54.586Z",
+      "tags": [
+        "auto-discovered",
+        "tech-blogs",
+        "hong-kong",
+        "fintech"
+      ]
+    },
+    {
+      "company": "PayMe",
+      "funding": 25000000,
+      "round": "Strategic",
+      "date": "2026-02-01",
+      "contact": "Angela Lee",
+      "title": "Head of Product",
+      "region": "Hong Kong",
+      "industry": "Payments",
+      "source": "simulated-funding-database",
+      "score": 80,
+      "priority": "P1",
+      "discoveredAt": "2026-02-17T22:41:54.586Z",
+      "tags": [
+        "auto-discovered",
+        "simulated-funding-database",
+        "hong-kong",
+        "payments"
+      ]
+    },
+    {
+      "company": "Tap & Go",
+      "funding": 15000000,
+      "round": "Series B",
+      "date": "2026-01-22",
+      "contact": "Jimmy Fong",
+      "title": "CEO",
+      "region": "Hong Kong",
+      "industry": "Payments",
+      "source": "simulated-funding-database",
+      "score": 80,
+      "priority": "P1",
+      "discoveredAt": "2026-02-17T22:41:54.586Z",
+      "tags": [
+        "auto-discovered",
+        "simulated-funding-database",
+        "hong-kong",
+        "payments"
+      ]
+    },
+    {
+      "company": "Animoca Brands",
+      "funding": 100000000,
+      "round": "Series B",
+      "date": "2026-02-16",
+      "contact": "Yat Siu",
+      "title": "CEO",
+      "region": "Hong Kong",
+      "industry": "DeFi",
+      "source": "simulated-funding-database",
+      "score": 80,
+      "priority": "P1",
+      "discoveredAt": "2026-02-17T22:41:54.586Z",
+      "tags": [
+        "auto-discovered",
+        "simulated-funding-database",
+        "hong-kong",
+        "defi"
+      ]
+    },
+    {
+      "company": "CoinUnited",
+      "funding": 12000000,
+      "round": "Series A",
+      "date": "2026-01-12",
+      "contact": "Sam Fok",
+      "title": "CEO",
+      "region": "Hong Kong",
+      "industry": "DeFi",
+      "source": "simulated-funding-database",
+      "score": 80,
+      "priority": "P1",
+      "discoveredAt": "2026-02-17T22:41:54.586Z",
+      "tags": [
+        "auto-discovered",
+        "simulated-funding-database",
+        "hong-kong",
+        "defi"
+      ]
+    },
+    {
+      "company": "Bitkub",
+      "funding": 25000000,
+      "round": "Series B",
+      "date": "2026-02-06",
+      "contact": "Jirayut Srupsrisopa",
+      "title": "CEO",
+      "region": "Thailand",
+      "industry": "Crypto",
+      "source": "simulated-funding-database",
+      "score": 80,
+      "priority": "P1",
+      "discoveredAt": "2026-02-17T22:41:54.586Z",
+      "tags": [
+        "auto-discovered",
+        "simulated-funding-database",
+        "thailand",
+        "crypto"
+      ]
+    },
+    {
+      "company": "Satang Pro",
+      "funding": 8000000,
+      "round": "Series A",
+      "date": "2026-01-22",
+      "contact": "Poramin Insom",
+      "title": "CEO",
+      "region": "Thailand",
+      "industry": "Crypto",
+      "source": "simulated-funding-database",
+      "score": 80,
+      "priority": "P1",
+      "discoveredAt": "2026-02-17T22:41:54.586Z",
+      "tags": [
+        "auto-discovered",
+        "simulated-funding-database",
+        "thailand",
+        "crypto"
+      ]
+    },
+    {
+      "company": "Ascend Money",
+      "funding": 195000000,
+      "round": "Series C",
+      "date": "2026-02-17",
+      "contact": "Tanyapong Thamavaranukupt",
+      "title": "CEO",
+      "region": "Thailand",
+      "industry": "Fintech",
+      "source": "simulated-funding-database",
+      "score": 80,
+      "priority": "P1",
+      "discoveredAt": "2026-02-17T22:41:54.586Z",
+      "tags": [
+        "auto-discovered",
+        "simulated-funding-database",
+        "thailand",
+        "fintech"
+      ]
+    },
+    {
+      "company": "Rabbit LINE Pay",
+      "funding": 35000000,
+      "round": "Strategic",
+      "date": "2026-01-30",
+      "contact": "Ariya Banomyong",
+      "title": "CEO",
+      "region": "Thailand",
+      "industry": "Fintech",
+      "source": "simulated-funding-database",
+      "score": 80,
+      "priority": "P1",
+      "discoveredAt": "2026-02-17T22:41:54.586Z",
+      "tags": [
+        "auto-discovered",
+        "simulated-funding-database",
+        "thailand",
+        "fintech"
+      ]
+    },
+    {
+      "company": "2C2P Thailand",
+      "funding": 28000000,
+      "round": "Series D",
+      "date": "2026-02-04",
+      "contact": "Aung Kyaw Moe",
+      "title": "Group CEO",
+      "region": "Thailand",
+      "industry": "Payments",
+      "source": "simulated-funding-database",
+      "score": 80,
+      "priority": "P1",
+      "discoveredAt": "2026-02-17T22:41:54.586Z",
+      "tags": [
+        "auto-discovered",
+        "simulated-funding-database",
+        "thailand",
+        "payments"
+      ]
+    },
+    {
+      "company": "Omise Thailand",
+      "funding": 15000000,
+      "round": "Series B",
+      "date": "2026-01-18",
+      "contact": "Jun Hasegawa",
+      "title": "CEO",
+      "region": "Thailand",
+      "industry": "Payments",
+      "source": "simulated-funding-database",
+      "score": 80,
+      "priority": "P1",
+      "discoveredAt": "2026-02-17T22:41:54.586Z",
+      "tags": [
+        "auto-discovered",
+        "simulated-funding-database",
+        "thailand",
+        "payments"
+      ]
+    },
+    {
+      "company": "SIX Network",
+      "funding": 6000000,
+      "round": "Series A",
+      "date": "2026-02-03",
+      "contact": "Vachara Aemavat",
+      "title": "CEO",
+      "region": "Thailand",
+      "industry": "DeFi",
+      "source": "simulated-funding-database",
+      "score": 80,
+      "priority": "P1",
+      "discoveredAt": "2026-02-17T22:41:54.586Z",
+      "tags": [
+        "auto-discovered",
+        "simulated-funding-database",
+        "thailand",
+        "defi"
+      ]
+    },
+    {
+      "company": "Token X",
+      "funding": 4000000,
+      "round": "Seed",
+      "date": "2026-01-12",
+      "contact": "Krittiyawadee Klongrat",
+      "title": "CEO",
+      "region": "Thailand",
+      "industry": "DeFi",
+      "source": "simulated-funding-database",
+      "score": 80,
+      "priority": "P1",
+      "discoveredAt": "2026-02-17T22:41:54.586Z",
+      "tags": [
+        "auto-discovered",
+        "simulated-funding-database",
+        "thailand",
+        "defi"
+      ]
+    },
+    {
+      "company": "Indodax",
+      "funding": 20000000,
+      "round": "Series B",
+      "date": "2026-02-14",
+      "contact": "Oscar Darmawan",
+      "title": "CEO",
+      "region": "Indonesia",
+      "industry": "Crypto",
+      "source": "simulated-funding-database",
+      "score": 80,
+      "priority": "P1",
+      "discoveredAt": "2026-02-17T22:41:54.586Z",
+      "tags": [
+        "auto-discovered",
+        "simulated-funding-database",
+        "indonesia",
+        "crypto"
+      ]
+    },
+    {
+      "company": "Pintu",
+      "funding": 35000000,
+      "round": "Series B",
+      "date": "2026-01-28",
+      "contact": "Jeth Soetoyo",
+      "title": "CEO",
+      "region": "Indonesia",
+      "industry": "Crypto",
+      "source": "simulated-funding-database",
+      "score": 80,
+      "priority": "P1",
+      "discoveredAt": "2026-02-17T22:41:54.586Z",
+      "tags": [
+        "auto-discovered",
+        "simulated-funding-database",
+        "indonesia",
+        "crypto"
+      ]
+    },
+    {
+      "company": "Akulaku",
+      "funding": 100000000,
+      "round": "Series D",
+      "date": "2026-02-12",
+      "contact": "William Li",
+      "title": "CEO",
+      "region": "Indonesia",
+      "industry": "Fintech",
+      "source": "simulated-funding-database",
+      "score": 80,
+      "priority": "P1",
+      "discoveredAt": "2026-02-17T22:41:54.586Z",
+      "tags": [
+        "auto-discovered",
+        "simulated-funding-database",
+        "indonesia",
+        "fintech"
+      ]
+    },
+    {
+      "company": "Kredivo",
+      "funding": 200000000,
+      "round": "Series D",
+      "date": "2026-01-25",
+      "contact": "Akshay Garg",
+      "title": "CEO",
+      "region": "Indonesia",
+      "industry": "Fintech",
+      "source": "simulated-funding-database",
+      "score": 80,
+      "priority": "P1",
+      "discoveredAt": "2026-02-17T22:41:54.586Z",
+      "tags": [
+        "auto-discovered",
+        "simulated-funding-database",
+        "indonesia",
+        "fintech"
+      ]
+    },
+    {
+      "company": "Xendit Indonesia",
+      "funding": 30000000,
+      "round": "Series C",
+      "date": "2026-02-08",
+      "contact": "Moses Lo",
+      "title": "CEO",
+      "region": "Indonesia",
+      "industry": "Payments",
+      "source": "simulated-funding-database",
+      "score": 80,
+      "priority": "P1",
+      "discoveredAt": "2026-02-17T22:41:54.587Z",
+      "tags": [
+        "auto-discovered",
+        "simulated-funding-database",
+        "indonesia",
+        "payments"
+      ]
+    },
+    {
+      "company": "Midtrans",
+      "funding": 25000000,
+      "round": "Series C",
+      "date": "2026-01-20",
+      "contact": "Ryu Suliawan",
+      "title": "CEO",
+      "region": "Indonesia",
+      "industry": "Payments",
+      "source": "simulated-funding-database",
+      "score": 80,
+      "priority": "P1",
+      "discoveredAt": "2026-02-17T22:41:54.587Z",
+      "tags": [
+        "auto-discovered",
+        "simulated-funding-database",
+        "indonesia",
+        "payments"
+      ]
+    },
+    {
+      "company": "Bali Token",
+      "funding": 5000000,
+      "round": "Seed",
+      "date": "2026-02-05",
+      "contact": "Raka Winata",
+      "title": "CEO",
+      "region": "Indonesia",
+      "industry": "DeFi",
+      "source": "simulated-funding-database",
+      "score": 80,
+      "priority": "P1",
+      "discoveredAt": "2026-02-17T22:41:54.587Z",
+      "tags": [
+        "auto-discovered",
+        "simulated-funding-database",
+        "indonesia",
+        "defi"
+      ]
+    },
+    {
+      "company": "Tokocrypto",
+      "funding": 12000000,
+      "round": "Series A",
+      "date": "2026-01-15",
+      "contact": "Pang Xue Kai",
+      "title": "CEO",
+      "region": "Indonesia",
+      "industry": "DeFi",
+      "source": "simulated-funding-database",
+      "score": 80,
+      "priority": "P1",
+      "discoveredAt": "2026-02-17T22:41:54.587Z",
+      "tags": [
+        "auto-discovered",
+        "simulated-funding-database",
+        "indonesia",
+        "defi"
+      ]
+    },
+    {
+      "company": "BTC Markets",
+      "funding": 18000000,
+      "round": "Series B",
+      "date": "2026-02-10",
+      "contact": "Caroline Bowler",
+      "title": "CEO",
+      "region": "Australia",
+      "industry": "Crypto",
+      "source": "simulated-funding-database",
+      "score": 80,
+      "priority": "P1",
+      "discoveredAt": "2026-02-17T22:41:54.587Z",
+      "tags": [
+        "auto-discovered",
+        "simulated-funding-database",
+        "australia",
+        "crypto"
+      ]
+    },
+    {
+      "company": "CoinSpot",
+      "funding": 12000000,
+      "round": "Series A",
+      "date": "2026-01-26",
+      "contact": "Russell Wilson",
+      "title": "CEO",
+      "region": "Australia",
+      "industry": "Crypto",
+      "source": "simulated-funding-database",
+      "score": 80,
+      "priority": "P1",
+      "discoveredAt": "2026-02-17T22:41:54.587Z",
+      "tags": [
+        "auto-discovered",
+        "simulated-funding-database",
+        "australia",
+        "crypto"
+      ]
+    },
+    {
+      "company": "Airwallex",
+      "funding": 200000000,
+      "round": "Series E",
+      "date": "2026-02-15",
+      "contact": "Jack Zhang",
+      "title": "CEO",
+      "region": "Australia",
+      "industry": "Fintech",
+      "source": "simulated-funding-database",
+      "score": 80,
+      "priority": "P1",
+      "discoveredAt": "2026-02-17T22:41:54.587Z",
+      "tags": [
+        "auto-discovered",
+        "simulated-funding-database",
+        "australia",
+        "fintech"
+      ]
+    },
+    {
+      "company": "Afterpay",
+      "funding": 50000000,
+      "round": "Strategic",
+      "date": "2026-01-30",
+      "contact": "Nick Molnar",
+      "title": "Co-CEO",
+      "region": "Australia",
+      "industry": "Fintech",
+      "source": "simulated-funding-database",
+      "score": 80,
+      "priority": "P1",
+      "discoveredAt": "2026-02-17T22:41:54.588Z",
+      "tags": [
+        "auto-discovered",
+        "simulated-funding-database",
+        "australia",
+        "fintech"
+      ]
+    },
+    {
+      "company": "Assembly Payments",
+      "funding": 22000000,
+      "round": "Series B",
+      "date": "2026-02-07",
+      "contact": "Simon Jones",
+      "title": "CEO",
+      "region": "Australia",
+      "industry": "Payments",
+      "source": "simulated-funding-database",
+      "score": 80,
+      "priority": "P1",
+      "discoveredAt": "2026-02-17T22:41:54.588Z",
+      "tags": [
+        "auto-discovered",
+        "simulated-funding-database",
+        "australia",
+        "payments"
+      ]
+    },
+    {
+      "company": "Zepto",
+      "funding": 25000000,
+      "round": "Series B",
+      "date": "2026-01-22",
+      "contact": "Chris Jewell",
+      "title": "CEO",
+      "region": "Australia",
+      "industry": "Payments",
+      "source": "simulated-funding-database",
+      "score": 80,
+      "priority": "P1",
+      "discoveredAt": "2026-02-17T22:41:54.588Z",
+      "tags": [
+        "auto-discovered",
+        "simulated-funding-database",
+        "australia",
+        "payments"
+      ]
+    },
+    {
+      "company": "Synthetix",
+      "funding": 20000000,
+      "round": "Series A",
+      "date": "2026-02-13",
+      "contact": "Kain Warwick",
+      "title": "Founder",
+      "region": "Australia",
+      "industry": "DeFi",
+      "source": "simulated-funding-database",
+      "score": 80,
+      "priority": "P1",
+      "discoveredAt": "2026-02-17T22:41:54.588Z",
+      "tags": [
+        "auto-discovered",
+        "simulated-funding-database",
+        "australia",
+        "defi"
+      ]
+    },
+    {
+      "company": "Hedgey Finance",
+      "funding": 4000000,
+      "round": "Seed",
+      "date": "2026-01-18",
+      "contact": "Seth Shannon",
+      "title": "CEO",
+      "region": "Australia",
+      "industry": "DeFi",
+      "source": "simulated-funding-database",
+      "score": 80,
+      "priority": "P1",
+      "discoveredAt": "2026-02-17T22:41:54.588Z",
+      "tags": [
+        "auto-discovered",
+        "simulated-funding-database",
+        "australia",
+        "defi"
+      ]
+    }
+  ],
+  "byRegion": {
+    "Philippines": 9,
+    "Singapore": 12,
+    "Hong Kong": 10,
+    "Thailand": 8,
+    "Indonesia": 8,
+    "Australia": 8
+  },
+  "byIndustry": {
+    "Crypto": 15,
+    "Fintech": 15,
+    "Payments": 12,
+    "DeFi": 13
+  },
+  "byPriority": {
+    "P0": 0,
+    "P1": 55,
+    "P2": 0,
+    "P3": 0
+  }
+}

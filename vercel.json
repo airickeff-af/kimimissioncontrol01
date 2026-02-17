@@ -1,0 +1,71 @@
+{
+  "version": 2,
+  "name": "mission-control",
+  "builds": [
+    {
+      "src": "mission-control/dashboard/**",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "api/*.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/$1.js"
+    },
+    {
+      "src": "/",
+      "dest": "/mission-control/dashboard/index-v4.html"
+    },
+    {
+      "src": "/dashboard",
+      "dest": "/mission-control/dashboard/index-v4.html"
+    },
+    {
+      "src": "/tasks",
+      "dest": "/mission-control/dashboard/task-board.html"
+    },
+    {
+      "src": "/agents",
+      "dest": "/mission-control/dashboard/agent-performance.html"
+    },
+    {
+      "src": "/tokens",
+      "dest": "/mission-control/dashboard/token-tracker.html"
+    },
+    {
+      "src": "/leads",
+      "dest": "/mission-control/dashboard/lead-scoring.html"
+    },
+    {
+      "src": "/scout",
+      "dest": "/mission-control/dashboard/scout.html"
+    },
+    {
+      "src": "/competitors",
+      "dest": "/mission-control/dashboard/competitors.html"
+    },
+    {
+      "src": "/outreach",
+      "dest": "/mission-control/dashboard/outreach-analytics.html"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, no-store, must-revalidate"
+        },
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        }
+      ]
+    }
+  ]
+}

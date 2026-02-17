@@ -1,0 +1,70 @@
+name: Pre-Deploy Audit & Deploy
+
+on:
+  push:
+    branches: [ master, main ]
+  workflow_dispatch:
+
+jobs:
+  audit:
+    name: Quality Audit Gate
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        
+    - name: Run Pre-Deployment Audit
+      id: audit
+      run: |
+        chmod +x mission-control/scripts/pre-deploy-audit.sh
+        ./mission-control/scripts/pre-deploy-audit.sh
+      continue-on-error: false
+      
+    - name: Audit Failed - Block Deployment
+      if: failure()
+      run: |
+        echo "❌ QUALITY AUDIT FAILED"
+        echo "Score below 93/100 - Deployment blocked"
+        echo "Fix issues and push again"
+        exit 1
+        
+    - name: Audit Passed
+      if: success()
+      run: |
+        echo "✅ QUALITY AUDIT PASSED"
+        echo "Score meets EricF's standard (93/100+)"
+        echo "Proceeding to deployment..."
+
+  deploy:
+    name: Deploy to Vercel
+    needs: audit
+    runs-on: ubuntu-latest
+    if: needs.audit.result == 'success'
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Deploy to Vercel
+      uses: vercel/action-deploy@v1
+      with:
+        vercel-token: ${{ secrets.VERCEL_TOKEN }}
+        vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+        vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+        working-directory: ./
+        
+    - name: Post-Deploy Verification
+      run: |
+        echo "🚀 Deployment complete!"
+        echo "URL: https://kimimissioncontrol01.vercel.app"
+        
+        # Verify endpoints
+        sleep 10
+        curl -sf https://kimimissioncontrol01.vercel.app/api/health || exit 1
+        echo "✅ Health check passed"

@@ -1,0 +1,629 @@
+{
+  "metadata": {
+    "generatedAt": "2026-02-17T22:45:30.555Z",
+    "quarter": "Q1",
+    "year": "2025",
+    "region": "Southeast Asia",
+    "focus": "Crypto & Fintech"
+  },
+  "executiveSummary": {
+    "totalSectorsAnalyzed": 6,
+    "acceleratingSectors": [
+      "crypto",
+      "blockchain",
+      "defi",
+      "payments",
+      "digital_banking"
+    ],
+    "decliningSectors": [],
+    "overallSentiment": "cautiously optimistic",
+    "keyInsight": "Market showing resilience with 5 sectors demonstrating positive momentum. Crypto funding velocity recovering despite broader fintech headwinds."
+  },
+  "sectorAnalysis": [
+    {
+      "sector": "crypto",
+      "momentumScore": 14.005993637126004,
+      "forecast": {
+        "sector": "crypto",
+        "currentMomentum": 14.005993637126004,
+        "direction": "up",
+        "monthlyProjections": [
+          {
+            "month": 1,
+            "projectedGrowth": 11.905094591557102,
+            "confidence": 90
+          },
+          {
+            "month": 2,
+            "projectedGrowth": 10.119330402823536,
+            "confidence": 80
+          },
+          {
+            "month": 3,
+            "projectedGrowth": 8.601430842400005,
+            "confidence": 70
+          },
+          {
+            "month": 4,
+            "projectedGrowth": 7.311216216040004,
+            "confidence": 60
+          },
+          {
+            "month": 5,
+            "projectedGrowth": 6.214533783634003,
+            "confidence": 50
+          },
+          {
+            "month": 6,
+            "projectedGrowth": 5.2823537160889025,
+            "confidence": 40
+          }
+        ],
+        "emergingKeywords": [
+          {
+            "keyword": "institutional adoption",
+            "frequency": 45
+          },
+          {
+            "keyword": "bitcoin etf",
+            "frequency": 38
+          },
+          {
+            "keyword": "defi 2.0",
+            "frequency": 32
+          },
+          {
+            "keyword": "tokenization",
+            "frequency": 28
+          },
+          {
+            "keyword": "cbdc",
+            "frequency": 25
+          }
+        ],
+        "riskFactors": []
+      },
+      "indicators": [
+        {
+          "name": "SEA Crypto Funding",
+          "category": "funding",
+          "growthRate": "19.93",
+          "direction": "accelerating"
+        },
+        {
+          "name": "Bitcoin/Blockchain Jobs",
+          "category": "hiring",
+          "growthRate": "5.51",
+          "direction": "growing"
+        },
+        {
+          "name": "DeFi Roles",
+          "category": "hiring",
+          "growthRate": "12.50",
+          "direction": "accelerating"
+        },
+        {
+          "name": "Crypto News Volume",
+          "category": "news",
+          "growthRate": "18.06",
+          "direction": "accelerating"
+        },
+        {
+          "name": "Regulation Mentions",
+          "category": "news",
+          "growthRate": "14.29",
+          "direction": "accelerating"
+        },
+        {
+          "name": "Blockchain Patents",
+          "category": "patents",
+          "growthRate": "11.54",
+          "direction": "accelerating"
+        },
+        {
+          "name": "Major Event Attendance",
+          "category": "conferences",
+          "growthRate": "7.69",
+          "direction": "growing"
+        },
+        {
+          "name": "Blockchain Events",
+          "category": "conferences",
+          "growthRate": "18.42",
+          "direction": "accelerating"
+        }
+      ]
+    },
+    {
+      "sector": "fintech",
+      "momentumScore": -2.2104671061027785,
+      "forecast": {
+        "sector": "fintech",
+        "currentMomentum": -2.2104671061027785,
+        "direction": "sideways",
+        "monthlyProjections": [
+          {
+            "month": 1,
+            "projectedGrowth": -1.8788970401873617,
+            "confidence": 90
+          },
+          {
+            "month": 2,
+            "projectedGrowth": -1.5970624841592573,
+            "confidence": 80
+          },
+          {
+            "month": 3,
+            "projectedGrowth": -1.3575031115353686,
+            "confidence": 70
+          },
+          {
+            "month": 4,
+            "projectedGrowth": -1.1538776448050634,
+            "confidence": 60
+          },
+          {
+            "month": 5,
+            "projectedGrowth": -0.9807959980843038,
+            "confidence": 50
+          },
+          {
+            "month": 6,
+            "projectedGrowth": -0.8336765983716582,
+            "confidence": 40
+          }
+        ],
+        "emergingKeywords": [
+          {
+            "keyword": "embedded finance",
+            "frequency": 52
+          },
+          {
+            "keyword": "open banking",
+            "frequency": 48
+          },
+          {
+            "keyword": "digital wallet",
+            "frequency": 45
+          },
+          {
+            "keyword": "cross-border payments",
+            "frequency": 40
+          },
+          {
+            "keyword": "ai-powered",
+            "frequency": 35
+          }
+        ],
+        "riskFactors": [
+          "Significant funding decline detected"
+        ]
+      },
+      "indicators": [
+        {
+          "name": "SEA Fintech Funding",
+          "category": "funding",
+          "growthRate": "-20.92",
+          "direction": "declining"
+        },
+        {
+          "name": "Fintech News Volume",
+          "category": "news",
+          "growthRate": "9.09",
+          "direction": "growing"
+        },
+        {
+          "name": "Regulation Mentions",
+          "category": "news",
+          "growthRate": "14.29",
+          "direction": "accelerating"
+        },
+        {
+          "name": "Major Event Attendance",
+          "category": "conferences",
+          "growthRate": "7.69",
+          "direction": "growing"
+        }
+      ]
+    },
+    {
+      "sector": "blockchain",
+      "momentumScore": 11.124009284736788,
+      "forecast": {
+        "sector": "blockchain",
+        "currentMomentum": 11.124009284736788,
+        "direction": "up",
+        "monthlyProjections": [
+          {
+            "month": 1,
+            "projectedGrowth": 9.455407892026269,
+            "confidence": 90
+          },
+          {
+            "month": 2,
+            "projectedGrowth": 8.037096708222329,
+            "confidence": 80
+          },
+          {
+            "month": 3,
+            "projectedGrowth": 6.8315322019889795,
+            "confidence": 70
+          },
+          {
+            "month": 4,
+            "projectedGrowth": 5.806802371690632,
+            "confidence": 60
+          },
+          {
+            "month": 5,
+            "projectedGrowth": 4.935782015937037,
+            "confidence": 50
+          },
+          {
+            "month": 6,
+            "projectedGrowth": 4.195414713546482,
+            "confidence": 40
+          }
+        ],
+        "emergingKeywords": [
+          {
+            "keyword": "enterprise blockchain",
+            "frequency": 35
+          },
+          {
+            "keyword": "supply chain",
+            "frequency": 30
+          },
+          {
+            "keyword": "smart contracts",
+            "frequency": 28
+          },
+          {
+            "keyword": "interoperability",
+            "frequency": 25
+          },
+          {
+            "keyword": "zero knowledge",
+            "frequency": 22
+          }
+        ],
+        "riskFactors": []
+      },
+      "indicators": [
+        {
+          "name": "Bitcoin/Blockchain Jobs",
+          "category": "hiring",
+          "growthRate": "5.51",
+          "direction": "growing"
+        },
+        {
+          "name": "DeFi Roles",
+          "category": "hiring",
+          "growthRate": "12.50",
+          "direction": "accelerating"
+        },
+        {
+          "name": "Regulation Mentions",
+          "category": "news",
+          "growthRate": "14.29",
+          "direction": "accelerating"
+        },
+        {
+          "name": "Blockchain Patents",
+          "category": "patents",
+          "growthRate": "11.54",
+          "direction": "accelerating"
+        },
+        {
+          "name": "Major Event Attendance",
+          "category": "conferences",
+          "growthRate": "7.69",
+          "direction": "growing"
+        },
+        {
+          "name": "Blockchain Events",
+          "category": "conferences",
+          "growthRate": "18.42",
+          "direction": "accelerating"
+        }
+      ]
+    },
+    {
+      "sector": "defi",
+      "momentumScore": 12.087912087912086,
+      "forecast": {
+        "sector": "defi",
+        "currentMomentum": 12.087912087912086,
+        "direction": "up",
+        "monthlyProjections": [
+          {
+            "month": 1,
+            "projectedGrowth": 10.274725274725272,
+            "confidence": 90
+          },
+          {
+            "month": 2,
+            "projectedGrowth": 8.733516483516482,
+            "confidence": 80
+          },
+          {
+            "month": 3,
+            "projectedGrowth": 7.42348901098901,
+            "confidence": 70
+          },
+          {
+            "month": 4,
+            "projectedGrowth": 6.309965659340658,
+            "confidence": 60
+          },
+          {
+            "month": 5,
+            "projectedGrowth": 5.3634708104395585,
+            "confidence": 50
+          },
+          {
+            "month": 6,
+            "projectedGrowth": 4.558950188873625,
+            "confidence": 40
+          }
+        ],
+        "emergingKeywords": [],
+        "riskFactors": []
+      },
+      "indicators": [
+        {
+          "name": "Regulation Mentions",
+          "category": "news",
+          "growthRate": "14.29",
+          "direction": "accelerating"
+        },
+        {
+          "name": "Major Event Attendance",
+          "category": "conferences",
+          "growthRate": "7.69",
+          "direction": "growing"
+        }
+      ]
+    },
+    {
+      "sector": "payments",
+      "momentumScore": 12.087912087912086,
+      "forecast": {
+        "sector": "payments",
+        "currentMomentum": 12.087912087912086,
+        "direction": "up",
+        "monthlyProjections": [
+          {
+            "month": 1,
+            "projectedGrowth": 10.274725274725272,
+            "confidence": 90
+          },
+          {
+            "month": 2,
+            "projectedGrowth": 8.733516483516482,
+            "confidence": 80
+          },
+          {
+            "month": 3,
+            "projectedGrowth": 7.42348901098901,
+            "confidence": 70
+          },
+          {
+            "month": 4,
+            "projectedGrowth": 6.309965659340658,
+            "confidence": 60
+          },
+          {
+            "month": 5,
+            "projectedGrowth": 5.3634708104395585,
+            "confidence": 50
+          },
+          {
+            "month": 6,
+            "projectedGrowth": 4.558950188873625,
+            "confidence": 40
+          }
+        ],
+        "emergingKeywords": [
+          {
+            "keyword": "qr payments",
+            "frequency": 55
+          },
+          {
+            "keyword": "real-time payments",
+            "frequency": 48
+          },
+          {
+            "keyword": "cross-border",
+            "frequency": 42
+          },
+          {
+            "keyword": "digital currency",
+            "frequency": 35
+          },
+          {
+            "keyword": "contactless",
+            "frequency": 30
+          }
+        ],
+        "riskFactors": []
+      },
+      "indicators": [
+        {
+          "name": "Regulation Mentions",
+          "category": "news",
+          "growthRate": "14.29",
+          "direction": "accelerating"
+        },
+        {
+          "name": "Major Event Attendance",
+          "category": "conferences",
+          "growthRate": "7.69",
+          "direction": "growing"
+        }
+      ]
+    },
+    {
+      "sector": "digital_banking",
+      "momentumScore": 12.087912087912086,
+      "forecast": {
+        "sector": "digital_banking",
+        "currentMomentum": 12.087912087912086,
+        "direction": "up",
+        "monthlyProjections": [
+          {
+            "month": 1,
+            "projectedGrowth": 10.274725274725272,
+            "confidence": 90
+          },
+          {
+            "month": 2,
+            "projectedGrowth": 8.733516483516482,
+            "confidence": 80
+          },
+          {
+            "month": 3,
+            "projectedGrowth": 7.42348901098901,
+            "confidence": 70
+          },
+          {
+            "month": 4,
+            "projectedGrowth": 6.309965659340658,
+            "confidence": 60
+          },
+          {
+            "month": 5,
+            "projectedGrowth": 5.3634708104395585,
+            "confidence": 50
+          },
+          {
+            "month": 6,
+            "projectedGrowth": 4.558950188873625,
+            "confidence": 40
+          }
+        ],
+        "emergingKeywords": [
+          {
+            "keyword": "neobank",
+            "frequency": 40
+          },
+          {
+            "keyword": "digital lending",
+            "frequency": 35
+          },
+          {
+            "keyword": "financial inclusion",
+            "frequency": 32
+          },
+          {
+            "keyword": "mobile-first",
+            "frequency": 28
+          },
+          {
+            "keyword": "ai underwriting",
+            "frequency": 25
+          }
+        ],
+        "riskFactors": []
+      },
+      "indicators": [
+        {
+          "name": "Regulation Mentions",
+          "category": "news",
+          "growthRate": "14.29",
+          "direction": "accelerating"
+        },
+        {
+          "name": "Major Event Attendance",
+          "category": "conferences",
+          "growthRate": "7.69",
+          "direction": "growing"
+        }
+      ]
+    }
+  ],
+  "emergingTrends": [
+    {
+      "trend": "qr payments",
+      "signal": "strong",
+      "mentions": 55
+    },
+    {
+      "trend": "embedded finance",
+      "signal": "strong",
+      "mentions": 52
+    },
+    {
+      "trend": "open banking",
+      "signal": "strong",
+      "mentions": 48
+    },
+    {
+      "trend": "real-time payments",
+      "signal": "strong",
+      "mentions": 48
+    },
+    {
+      "trend": "institutional adoption",
+      "signal": "strong",
+      "mentions": 45
+    },
+    {
+      "trend": "digital wallet",
+      "signal": "strong",
+      "mentions": 45
+    },
+    {
+      "trend": "cross-border",
+      "signal": "strong",
+      "mentions": 42
+    },
+    {
+      "trend": "cross-border payments",
+      "signal": "moderate",
+      "mentions": 40
+    },
+    {
+      "trend": "neobank",
+      "signal": "moderate",
+      "mentions": 40
+    },
+    {
+      "trend": "bitcoin etf",
+      "signal": "moderate",
+      "mentions": 38
+    }
+  ],
+  "outlook": {
+    "threeMonth": {
+      "projection": "positive",
+      "confidence": "high",
+      "keyDrivers": [
+        "regulatory clarity",
+        "institutional adoption",
+        "market maturation"
+      ]
+    },
+    "sixMonth": {
+      "projection": "modest growth",
+      "confidence": "medium",
+      "keyDrivers": [
+        "macro environment",
+        "funding availability",
+        "talent migration"
+      ]
+    },
+    "risks": [
+      "Regulatory uncertainty in key markets",
+      "Global macroeconomic headwinds",
+      "Talent shortage in specialized roles",
+      "Competition from traditional finance"
+    ],
+    "opportunities": [
+      "Cross-border payment innovation",
+      "RWA (Real World Asset) tokenization",
+      "AI-blockchain convergence",
+      "Financial inclusion initiatives"
+    ]
+  }
+}

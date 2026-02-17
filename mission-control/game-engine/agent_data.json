@@ -1,0 +1,131 @@
+{
+  "last_update": "2026-02-17T08:27:00.732739",
+  "agents": {
+    "nexus": {
+      "soul_size": 15240,
+      "memory_size": 28470,
+      "total_knowledge_kb": 42.7,
+      "files_count": 12,
+      "last_modified": "2026-02-17T08:29:00",
+      "knowledge_areas": [
+        "coordination",
+        "management",
+        "strategy"
+      ],
+      "experience_score": 8.5,
+      "description": "Orchestrator (Air1ck3ff) - Coordinates all agents and manages Mission Control"
+    },
+    "glasses": {
+      "soul_size": 5174,
+      "memory_size": 10893,
+      "total_knowledge_kb": 15.69,
+      "files_count": 2,
+      "last_modified": "2026-02-17T08:27:00.732025",
+      "knowledge_areas": [
+        "research"
+      ],
+      "experience_score": 1.5,
+      "description": "Researcher - Gathers intelligence on crypto, NFTs, and trends"
+    },
+    "quill": {
+      "soul_size": 5621,
+      "memory_size": 7367,
+      "total_knowledge_kb": 12.68,
+      "files_count": 2,
+      "last_modified": "2026-02-17T08:27:00.732118",
+      "knowledge_areas": [],
+      "experience_score": 1.5,
+      "description": "Writer - Creates content, scripts, and social media copy"
+    },
+    "pixel": {
+      "soul_size": 2073,
+      "memory_size": 19973,
+      "total_knowledge_kb": 21.53,
+      "files_count": 6,
+      "last_modified": "2026-02-17T08:27:00.732294",
+      "knowledge_areas": [],
+      "experience_score": 3.4,
+      "description": "Visual Designer - Creates thumbnails, graphics, and visual assets"
+    },
+    "gary": {
+      "soul_size": 1044,
+      "memory_size": 9731,
+      "total_knowledge_kb": 10.52,
+      "files_count": 3,
+      "last_modified": "2026-02-17T08:27:00.732396",
+      "knowledge_areas": [
+        "content"
+      ],
+      "experience_score": 1.7,
+      "description": "Marketing Lead - Plans campaigns and growth strategies"
+    },
+    "larry": {
+      "soul_size": 848,
+      "memory_size": 7695,
+      "total_knowledge_kb": 8.34,
+      "files_count": 3,
+      "last_modified": "2026-02-17T08:27:00.732480",
+      "knowledge_areas": [],
+      "experience_score": 1.6,
+      "description": "Social Media - Manages posting and engagement"
+    },
+    "sentry": {
+      "soul_size": 985,
+      "memory_size": 6714,
+      "total_knowledge_kb": 7.52,
+      "files_count": 3,
+      "last_modified": "2026-02-17T08:27:00.732541",
+      "knowledge_areas": [],
+      "experience_score": 1.6,
+      "description": "DevOps - Monitors system health and infrastructure"
+    },
+    "audit": {
+      "soul_size": 7115,
+      "memory_size": 12296,
+      "total_knowledge_kb": 18.96,
+      "files_count": 3,
+      "last_modified": "2026-02-17T08:27:00.732600",
+      "knowledge_areas": [],
+      "experience_score": 2.2,
+      "description": "Quality Assurance - Reviews and verifies all agent outputs"
+    },
+    "cipher": {
+      "soul_size": 1243,
+      "memory_size": 5947,
+      "total_knowledge_kb": 7.02,
+      "files_count": 5,
+      "last_modified": "2026-02-17T08:27:00.732736",
+      "knowledge_areas": [],
+      "experience_score": 2.7,
+      "description": "Security - Protects systems and monitors threats"
+    },
+    "forge": {
+      "soul_size": 8500,
+      "memory_size": 15200,
+      "total_knowledge_kb": 23.2,
+      "files_count": 4,
+      "last_modified": "2026-02-17T08:41:00",
+      "knowledge_areas": [
+        "ux",
+        "frontend",
+        "dashboards"
+      ],
+      "experience_score": 4.5,
+      "description": "UX Developer - Builds dashboards and user interfaces",
+      "status": "active",
+      "current_task": "UX improvements"
+    },
+    "code": {
+      "soul_size": 0,
+      "memory_size": 0,
+      "total_knowledge_kb": 0.0,
+      "files_count": 0,
+      "last_modified": "2026-02-17T08:41:00",
+      "knowledge_areas": [],
+      "experience_score": 0.0,
+      "description": "Backend Developer - Builds systems and infrastructure",
+      "status": "initializing",
+      "current_task": "Setting up workspace"
+    }
+  }
+}

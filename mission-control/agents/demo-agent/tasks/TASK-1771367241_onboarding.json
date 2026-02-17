@@ -1,0 +1,23 @@
+{
+  "id": "TASK-1771367241",
+  "title": "Agent Onboarding - Complete Setup",
+  "description": "Welcome to Mission Control! Complete your initial setup and familiarize yourself with the system.",
+  "type": "onboarding",
+  "priority": "P1",
+  "status": "assigned",
+  "created_at": "2026-02-17T22:27:21Z",
+  "due_date": "2026-02-20T22:27:21Z",
+  "assigned_by": "Mission Control",
+  "checklist": [
+    { "item": "Read SOUL.md and understand your role", "completed": false },
+    { "item": "Review existing agent documentation", "completed": false },
+    { "item": "Test communication channels", "completed": false },
+    { "item": "Complete first practice task", "completed": false },
+    { "item": "Submit onboarding report", "completed": false }
+  ],
+  "resources": [
+    { "name": "Mission Control Guide", "path": "/root/.openclaw/workspace/mission-control/README.md" },
+    { "name": "Agent Best Practices", "path": "/root/.openclaw/workspace/mission-control/docs/AGENT_GUIDE.md" },
+    { "name": "Task Management", "path": "/root/.openclaw/workspace/mission-control/docs/TASK_SYSTEM.md" }
+  ]
+}

@@ -1,0 +1,20 @@
+# Large files
+venv/
+*.so
+*.dylib
+*.dll
+node_modules/
+.cache/
+
+# Data files
+mission-control/.cache/
+*.tar.gz
+*.zip
+
+# Logs
+*.log
+logs/
+
+# OS files
+.DS_Store
+Thumbs.db

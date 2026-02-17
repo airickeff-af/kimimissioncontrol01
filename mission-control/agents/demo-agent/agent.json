@@ -1,0 +1,29 @@
+{
+  "id": "demo-agent-67241",
+  "name": "demo-agent",
+  "type": "worker",
+  "role": "Demonstration agent for onboarding flow",
+  "priority": "P2",
+  "status": "active",
+  "created_at": "2026-02-17T22:27:21Z",
+  "version": "1.0.0",
+  "metrics": {
+    "tasks_completed": 0,
+    "tasks_failed": 0,
+    "last_active": null,
+    "uptime_hours": 0
+  },
+  "capabilities": [],
+  "dependencies": [],
+  "config": {
+    "auto_start": true,
+    "heartbeat_interval": 300,
+    "log_level": "info",
+    "max_concurrent_tasks": 3
+  },
+  "contact": {
+    "telegram": null,
+    "email": null,
+    "webhook": null
+  }
+}

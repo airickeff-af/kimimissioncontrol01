@@ -1,0 +1,353 @@
+{
+  "opportunities": [
+    {
+      "id": "opp-001",
+      "title": "Southeast Asia DeFi Infrastructure",
+      "type": "underserved_region",
+      "description": "Vietnam, Philippines, and Indonesia show top-tier crypto adoption (Chainalysis Index) but lack localized DeFi infrastructure. High remittance volume + mobile-first population = massive opportunity.",
+      "marketSize": 85,
+      "timing": 90,
+      "competitionLevel": 30,
+      "executionEase": 60,
+      "dataConfidence": "high",
+      "requiredSkills": {
+        "cryptoNative": 0.9,
+        "communityBuilding": 0.7,
+        "startupExperience": 0.6
+      },
+      "evidence": [
+        "Vietnam ranks #3 in Chainalysis 2025 Global Crypto Adoption Index",
+        "Philippines remittance market: $40B+ annually, 10% crypto penetration",
+        "Indonesia: 270M population, 20M+ crypto users, limited local DeFi options"
+      ],
+      "recommendedAction": "Partner with local payment processors (GCash, Dana) for crypto on/off ramps. Build mobile-first DeFi dashboard targeting remittance savings.",
+      "estimatedImpact": "$1M-10M ARR within 24 months",
+      "tags": [
+        "defi",
+        "remittances",
+        "mobile-first",
+        "emerging-markets"
+      ]
+    },
+    {
+      "id": "opp-002",
+      "title": "Africa Stablecoin Payment Rails",
+      "type": "underserved_region",
+      "description": "Nigeria, Kenya, and South Africa lead crypto adoption but rely on foreign stablecoins. Local currency volatility creates demand for USD-pegged solutions with local on/off ramps.",
+      "marketSize": 90,
+      "timing": 85,
+      "competitionLevel": 40,
+      "executionEase": 45,
+      "dataConfidence": "high",
+      "requiredSkills": {
+        "cryptoNative": 0.9,
+        "startupExperience": 0.8,
+        "communityBuilding": 0.7
+      },
+      "evidence": [
+        "Nigeria: $20B+ annual remittances, 35% crypto adoption rate",
+        "M-Pesa integration gap: No major stablecoin provider has built direct integration",
+        "Regulatory clarity improving: Nigeria SEC released digital asset guidelines 2025"
+      ],
+      "recommendedAction": "Build USDC/USDT on/off ramp aggregator with M-Pesa, Flutterwave integration. Target B2B cross-border payments first.",
+      "estimatedImpact": "$5M-50M ARR potential",
+      "tags": [
+        "stablecoins",
+        "payments",
+        "africa",
+        "b2b"
+      ]
+    },
+    {
+      "id": "opp-003",
+      "title": "Latin America Crypto Payroll",
+      "type": "underserved_region",
+      "description": "Argentina, Brazil, and Mexico face currency devaluation. Remote workers increasingly demand crypto payment options. Existing solutions are fragmented and expensive.",
+      "marketSize": 75,
+      "timing": 80,
+      "competitionLevel": 35,
+      "executionEase": 70,
+      "dataConfidence": "medium",
+      "requiredSkills": {
+        "cryptoNative": 0.8,
+        "startupExperience": 0.7,
+        "contentCreation": 0.5
+      },
+      "evidence": [
+        "Argentina inflation: 100%+ annually, crypto adoption at all-time high",
+        "Brazil: 40M freelancers, growing demand for USD-denominated income",
+        "Current solutions: Bitwage (expensive), manual USDT transfers (complex)"
+      ],
+      "recommendedAction": "Build \"Stripe for Crypto Payroll\" - simple API for companies to pay LATAM contractors in stablecoins.",
+      "estimatedImpact": "$2M-20M ARR within 18 months",
+      "tags": [
+        "payroll",
+        "stablecoins",
+        "latam",
+        "api"
+      ]
+    },
+    {
+      "id": "opp-004",
+      "title": "AI Agent Crypto Wallet Integration",
+      "type": "feature_gap",
+      "description": "AI agents cannot easily transact crypto autonomously. Current solutions (x402) have seen declining volume. Need for simple, secure agent-to-agent payments.",
+      "marketSize": 80,
+      "timing": 95,
+      "competitionLevel": 25,
+      "executionEase": 55,
+      "dataConfidence": "high",
+      "requiredSkills": {
+        "aiAutomation": 0.95,
+        "cryptoNative": 0.9,
+        "startupExperience": 0.6
+      },
+      "evidence": [
+        "Crypto.com CEO launched AI agent platform Feb 2026 - market heating up",
+        "x402 standard transaction volume declining (per MEXC analysis)",
+        "AWS launched 900+ pre-built agents in 2025, none with native crypto payments"
+      ],
+      "recommendedAction": "Build \"AgentWallet\" - simple SDK for AI agents to hold and transact crypto with spending limits and audit trails.",
+      "estimatedImpact": "$10M-100M+ if adopted by major agent platforms",
+      "tags": [
+        "ai-agents",
+        "wallets",
+        "sdk",
+        "infrastructure"
+      ]
+    },
+    {
+      "id": "opp-005",
+      "title": "Cross-Chain Portfolio Analytics",
+      "type": "feature_gap",
+      "description": "Users hold assets across 5+ chains but no unified dashboard shows true portfolio performance, tax implications, and yield opportunities.",
+      "marketSize": 70,
+      "timing": 75,
+      "competitionLevel": 50,
+      "executionEase": 65,
+      "dataConfidence": "high",
+      "requiredSkills": {
+        "defiExpertise": 0.8,
+        "cryptoNative": 0.8,
+        "contentCreation": 0.5
+      },
+      "evidence": [
+        "Average DeFi user interacts with 7+ chains (2025 data)",
+        "Existing solutions: Zapper (limited chains), DeBank (social focus)",
+        "Tax reporting pain: Users manually track across chains or pay $500+ for services"
+      ],
+      "recommendedAction": "Build unified cross-chain portfolio tracker with tax-loss harvesting suggestions and yield optimization.",
+      "estimatedImpact": "$1M-5M ARR from premium subscriptions",
+      "tags": [
+        "portfolio",
+        "analytics",
+        "tax",
+        "cross-chain"
+      ]
+    },
+    {
+      "id": "opp-006",
+      "title": "NFT Lending for Mid-Tier Assets",
+      "type": "feature_gap",
+      "description": "NFT lending exists for blue-chips (BAYC, Punks) but 95% of NFTs valued $1K-50K have no liquidity options. Massive underserved market.",
+      "marketSize": 65,
+      "timing": 70,
+      "competitionLevel": 40,
+      "executionEase": 60,
+      "dataConfidence": "medium",
+      "requiredSkills": {
+        "nftKnowledge": 0.9,
+        "defiExpertise": 0.8,
+        "cryptoNative": 0.7
+      },
+      "evidence": [
+        "NFT lending volume concentrated in top 10 collections",
+        "Mid-tier NFTs (10-50 ETH floor) have no efficient lending markets",
+        "Blur, NFTfi focus on high-value; gap at lower price points"
+      ],
+      "recommendedAction": "Build peer-to-pool NFT lending for 1-10 ETH floor collections with AI-powered valuation.",
+      "estimatedImpact": "$500K-5M ARR from interest spreads",
+      "tags": [
+        "nfts",
+        "lending",
+        "defi",
+        "mid-market"
+      ]
+    },
+    {
+      "id": "opp-007",
+      "title": "Crypto Onboarding for Non-Tech Users",
+      "type": "customer_pain",
+      "description": "Mainstream adoption blocked by complexity: seed phrases, gas fees, chain selection. Users want \"Apple-like\" simplicity.",
+      "marketSize": 95,
+      "timing": 85,
+      "competitionLevel": 60,
+      "executionEase": 50,
+      "dataConfidence": "high",
+      "requiredSkills": {
+        "startupExperience": 0.8,
+        "cryptoNative": 0.7,
+        "contentCreation": 0.6
+      },
+      "evidence": [
+        "Reddit threads: #1 complaint is complexity for new users",
+        "Coinbase/Phantom improved UX but still require crypto knowledge",
+        "Account abstraction (ERC-4337) enables gasless, seedless wallets"
+      ],
+      "recommendedAction": "Build \"Crypto for Normies\" wallet using account abstraction with social recovery and fiat onramp focus.",
+      "estimatedImpact": "Acquisition play - $50M+ valuation potential",
+      "tags": [
+        "wallets",
+        "ux",
+        "mainstream",
+        "account-abstraction"
+      ]
+    },
+    {
+      "id": "opp-008",
+      "title": "DeFi Yield Aggregator for Small Wallets",
+      "type": "customer_pain",
+      "description": "Gas costs make DeFi unprofitable for sub-$5K wallets. Users want yield but can't afford mainnet transactions.",
+      "marketSize": 60,
+      "timing": 80,
+      "competitionLevel": 45,
+      "executionEase": 70,
+      "dataConfidence": "high",
+      "requiredSkills": {
+        "defiExpertise": 0.9,
+        "cryptoNative": 0.8,
+        "aiAutomation": 0.5
+      },
+      "evidence": [
+        "Ethereum mainnet gas: $5-50 per transaction",
+        "Small holders (<$5K) excluded from yield farming",
+        "L2s (Arbitrum, Base) reduce costs but fragmentation creates confusion"
+      ],
+      "recommendedAction": "Build L2-native yield aggregator with gas sponsorship for small wallets. Monetize via referral fees.",
+      "estimatedImpact": "$1M-10M ARR from fee sharing",
+      "tags": [
+        "defi",
+        "yield",
+        "l2",
+        "small-wallets"
+      ]
+    },
+    {
+      "id": "opp-009",
+      "title": "MiCA Compliance as a Service",
+      "type": "regulatory_opening",
+      "description": "EU MiCA regulation fully active 2025. Crypto businesses need compliance tools for CASP licensing, travel rule, and stablecoin reserves.",
+      "marketSize": 75,
+      "timing": 95,
+      "competitionLevel": 30,
+      "executionEase": 55,
+      "dataConfidence": "high",
+      "requiredSkills": {
+        "cryptoNative": 0.8,
+        "startupExperience": 0.7,
+        "contentCreation": 0.5
+      },
+      "evidence": [
+        "MiCA took full effect January 2025",
+        "Implementation challenges: divergent national interpretations",
+        "Travel rule compliance still problematic for many CASPs"
+      ],
+      "recommendedAction": "Build MiCA compliance toolkit: KYC/AML automation, travel rule integration, audit trail reporting.",
+      "estimatedImpact": "$5M-30M ARR from SaaS subscriptions",
+      "tags": [
+        "compliance",
+        "mica",
+        "eu",
+        "b2b-saas"
+      ]
+    },
+    {
+      "id": "opp-010",
+      "title": "US Stablecoin Infrastructure (GENIUS Act)",
+      "type": "regulatory_opening",
+      "description": "GENIUS Act passed 2025 creates federal framework for stablecoins. Banks and fintechs need infrastructure to issue and manage compliant stablecoins.",
+      "marketSize": 90,
+      "timing": 90,
+      "competitionLevel": 40,
+      "executionEase": 50,
+      "dataConfidence": "high",
+      "requiredSkills": {
+        "cryptoNative": 0.9,
+        "startupExperience": 0.8,
+        "defiExpertise": 0.6
+      },
+      "evidence": [
+        "GENIUS Act passed with bipartisan support",
+        "Banks moving from sidelines to active crypto participation",
+        "Reserve requirements, audits, and attestations create tooling needs"
+      ],
+      "recommendedAction": "Build \"Stripe for Stablecoins\" - white-label stablecoin issuance and management for banks/fintechs.",
+      "estimatedImpact": "$10M-100M+ ARR if adopted by regional banks",
+      "tags": [
+        "stablecoins",
+        "us",
+        "banking",
+        "infrastructure"
+      ]
+    },
+    {
+      "id": "opp-011",
+      "title": "AI Content Tools for Crypto Creators",
+      "type": "partnership_void",
+      "description": "Crypto content creators need specialized AI tools: real-time price charts, on-chain data visualization, regulatory-safe language.",
+      "marketSize": 60,
+      "timing": 85,
+      "competitionLevel": 35,
+      "executionEase": 75,
+      "dataConfidence": "medium",
+      "requiredSkills": {
+        "contentCreation": 0.95,
+        "aiAutomation": 0.9,
+        "cryptoNative": 0.8
+      },
+      "evidence": [
+        "Crypto Twitter/X creators spend 10+ hours/week on content",
+        "No AI tool specializes in crypto content (price data, on-chain metrics)",
+        "Regulatory concerns make generic AI tools risky for financial content"
+      ],
+      "recommendedAction": "Build \"Quill Crypto\" - AI writing assistant trained on crypto markets with real-time data integration.",
+      "estimatedImpact": "$500K-3M ARR from creator subscriptions",
+      "tags": [
+        "ai",
+        "content",
+        "creators",
+        "crypto-media"
+      ]
+    },
+    {
+      "id": "opp-012",
+      "title": "Web2 Gaming + NFT Integration Platform",
+      "type": "partnership_void",
+      "description": "Traditional game studios want NFT integration but lack expertise. Current solutions are too complex or require blockchain knowledge.",
+      "marketSize": 80,
+      "timing": 75,
+      "competitionLevel": 50,
+      "executionEase": 60,
+      "dataConfidence": "medium",
+      "requiredSkills": {
+        "nftKnowledge": 0.9,
+        "startupExperience": 0.7,
+        "communityBuilding": 0.6
+      },
+      "evidence": [
+        "Gaming studios exploring NFTs but fear backlash/complexity",
+        "Existing solutions (Immutable, Enjin) require blockchain expertise",
+        "Market wants \"invisible\" NFT integration - players don't know they're using crypto"
+      ],
+      "recommendedAction": "Build Unity/Unreal plugin for invisible NFT integration. Handle all blockchain complexity behind the scenes.",
+      "estimatedImpact": "$2M-20M ARR from game studio contracts",
+      "tags": [
+        "gaming",
+        "nfts",
+        "web2",
+        "sdk"
+      ]
+    }
+  ],
+  "lastUpdated": "2026-02-17T22:42:00.090Z"
+}

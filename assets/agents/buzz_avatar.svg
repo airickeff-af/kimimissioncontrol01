@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="128" height="128" shape-rendering="crispEdges">
+    <!-- Buzz - Trend Monitor -->
+    <!-- Head (Buzzing Neon) -->
+    <rect x="10" y="4" width="12" height="10" fill="#c0ff00"/>
+    <!-- Face -->
+    <rect x="12" y="6" width="2" height="2" fill="#1a3300"/>
+    <rect x="18" y="6" width="2" height="2" fill="#1a3300"/>
+    <rect x="14" y="9" width="4" height="1" fill="#1a3300"/>
+    <!-- Body -->
+    <rect x="8" y="14" width="16" height="10" fill="#84cc16"/>
+    <!-- Symbol -->
+    <rect x="14" y="17" width="4" height="4" fill="#ecfccb"/>
+    <!-- Legs -->
+    <rect x="11" y="24" width="4" height="6" fill="#4d7c0f"/>
+    <rect x="17" y="24" width="4" height="6" fill="#4d7c0f"/>
+</svg>

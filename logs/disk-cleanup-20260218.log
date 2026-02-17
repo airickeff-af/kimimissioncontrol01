@@ -1,0 +1,15 @@
+=== Disk Cleanup Started: Wed Feb 18 05:51:20 AM CST 2026 ===
+Archiving old session transcripts...
+Removing old archived transcripts...
+Removed 0 old archives
+Main session is 6917645 bytes, truncating...
+Main session truncated to last 1000 lines
+Cleaning old logs...
+
+=== Disk Usage After Cleanup ===
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/vda2        40G  9.1G   29G  25% /
+
+Session storage: 41M
+Workspace: 979M
+=== Cleanup Complete: Wed Feb 18 05:51:20 AM CST 2026 ===

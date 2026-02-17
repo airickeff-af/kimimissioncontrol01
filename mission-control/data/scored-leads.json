@@ -1,0 +1,488 @@
+{
+  "summary": {
+    "totalLeads": 30,
+    "averageScore": 89,
+    "tierDistribution": {
+      "P0": 22,
+      "P1": 8,
+      "P2": 0,
+      "P3": 0
+    },
+    "topLeads": [
+      {
+        "company": "Coins.ph",
+        "score": 92,
+        "tier": "P0"
+      },
+      {
+        "company": "BloomX",
+        "score": 92,
+        "tier": "P0"
+      },
+      {
+        "company": "Rebit.ph",
+        "score": 92,
+        "tier": "P0"
+      },
+      {
+        "company": "PDAX",
+        "score": 90,
+        "tier": "P0"
+      },
+      {
+        "company": "RD Technologies",
+        "score": 90,
+        "tier": "P0"
+      },
+      {
+        "company": "HashKey Group",
+        "score": 90,
+        "tier": "P0"
+      },
+      {
+        "company": "Crypto.com",
+        "score": 90,
+        "tier": "P0"
+      },
+      {
+        "company": "Bybit",
+        "score": 90,
+        "tier": "P0"
+      },
+      {
+        "company": "2C2P",
+        "score": 88,
+        "tier": "P0"
+      },
+      {
+        "company": "Binance Philippines",
+        "score": 86,
+        "tier": "P0"
+      }
+    ],
+    "scoredAt": "2026-02-18T05:30:00.000Z",
+    "completedBy": "DealFlow"
+  },
+  "scoredLeads": [
+    {
+      "leadId": "lead_001",
+      "company": "Coins.ph",
+      "contactName": "Wei Zhou",
+      "totalScore": 92,
+      "priorityTier": "P0",
+      "breakdown": {
+        "industry": { "score": 90, "weight": 0.4, "weighted": 36 },
+        "companySize": { "score": 85, "weight": 0.3, "weighted": 26 },
+        "seniority": { "score": 100, "weight": 0.2, "weighted": 20 },
+        "region": { "score": 100, "weight": 0.1, "weighted": 10 }
+      },
+      "scoredAt": "2026-02-17T15:46:05.403Z"
+    },
+    {
+      "leadId": "lead_002",
+      "company": "Coins.xyz",
+      "contactName": "Sarah Chen",
+      "totalScore": 77,
+      "priorityTier": "P1",
+      "breakdown": {
+        "industry": { "score": 80, "weight": 0.4, "weighted": 32 },
+        "companySize": { "score": 70, "weight": 0.3, "weighted": 21 },
+        "seniority": { "score": 80, "weight": 0.2, "weighted": 16 },
+        "region": { "score": 80, "weight": 0.1, "weighted": 8 }
+      },
+      "scoredAt": "2026-02-17T15:46:05.404Z"
+    },
+    {
+      "leadId": "lead_003",
+      "company": "PDAX",
+      "contactName": "Nichel Gaba",
+      "totalScore": 90,
+      "priorityTier": "P0",
+      "breakdown": {
+        "industry": { "score": 85, "weight": 0.4, "weighted": 34 },
+        "companySize": { "score": 85, "weight": 0.3, "weighted": 26 },
+        "seniority": { "score": 100, "weight": 0.2, "weighted": 20 },
+        "region": { "score": 100, "weight": 0.1, "weighted": 10 }
+      },
+      "scoredAt": "2026-02-17T15:46:05.404Z"
+    },
+    {
+      "leadId": "lead_004",
+      "company": "BloomX",
+      "contactName": "Luis Buenaventura",
+      "totalScore": 92,
+      "priorityTier": "P0",
+      "breakdown": {
+        "industry": { "score": 90, "weight": 0.4, "weighted": 36 },
+        "companySize": { "score": 85, "weight": 0.3, "weighted": 26 },
+        "seniority": { "score": 100, "weight": 0.2, "weighted": 20 },
+        "region": { "score": 100, "weight": 0.1, "weighted": 10 }
+      },
+      "scoredAt": "2026-02-17T15:46:05.404Z"
+    },
+    {
+      "leadId": "lead_005",
+      "company": "Rebit.ph",
+      "contactName": "Miguel Cuneta",
+      "totalScore": 92,
+      "priorityTier": "P0",
+      "breakdown": {
+        "industry": { "score": 90, "weight": 0.4, "weighted": 36 },
+        "companySize": { "score": 85, "weight": 0.3, "weighted": 26 },
+        "seniority": { "score": 100, "weight": 0.2, "weighted": 20 },
+        "region": { "score": 100, "weight": 0.1, "weighted": 10 }
+      },
+      "scoredAt": "2026-02-17T15:46:05.404Z"
+    },
+    {
+      "leadId": "lead_006",
+      "company": "Binance Philippines",
+      "contactName": "Kenneth Stern",
+      "totalScore": 86,
+      "priorityTier": "P0",
+      "breakdown": {
+        "industry": { "score": 85, "weight": 0.4, "weighted": 34 },
+        "companySize": { "score": 100, "weight": 0.3, "weighted": 30 },
+        "seniority": { "score": 60, "weight": 0.2, "weighted": 12 },
+        "region": { "score": 100, "weight": 0.1, "weighted": 10 }
+      },
+      "scoredAt": "2026-02-17T15:46:05.404Z"
+    },
+    {
+      "leadId": "lead_007",
+      "company": "RD Technologies",
+      "contactName": "Rita Liu",
+      "totalScore": 90,
+      "priorityTier": "P0",
+      "breakdown": {
+        "industry": { "score": 95, "weight": 0.4, "weighted": 38 },
+        "companySize": { "score": 80, "weight": 0.3, "weighted": 24 },
+        "seniority": { "score": 100, "weight": 0.2, "weighted": 20 },
+        "region": { "score": 100, "weight": 0.1, "weighted": 10 }
+      },
+      "scoredAt": "2026-02-18T05:30:00.000Z"
+    },
+    {
+      "leadId": "lead_008",
+      "company": "HashKey Group",
+      "contactName": "Michel Lee",
+      "totalScore": 90,
+      "priorityTier": "P0",
+      "breakdown": {
+        "industry": { "score": 95, "weight": 0.4, "weighted": 38 },
+        "companySize": { "score": 90, "weight": 0.3, "weighted": 27 },
+        "seniority": { "score": 100, "weight": 0.2, "weighted": 20 },
+        "region": { "score": 100, "weight": 0.1, "weighted": 10 }
+      },
+      "scoredAt": "2026-02-18T05:30:00.000Z"
+    },
+    {
+      "leadId": "lead_009",
+      "company": "ZA Bank",
+      "contactName": "Ronald Iu",
+      "totalScore": 88,
+      "priorityTier": "P0",
+      "breakdown": {
+        "industry": { "score": 90, "weight": 0.4, "weighted": 36 },
+        "companySize": { "score": 85, "weight": 0.3, "weighted": 26 },
+        "seniority": { "score": 100, "weight": 0.2, "weighted": 20 },
+        "region": { "score": 100, "weight": 0.1, "weighted": 10 }
+      },
+      "scoredAt": "2026-02-18T05:30:00.000Z"
+    },
+    {
+      "leadId": "lead_010",
+      "company": "RedotPay",
+      "contactName": "Rex Lau",
+      "totalScore": 85,
+      "priorityTier": "P0",
+      "breakdown": {
+        "industry": { "score": 90, "weight": 0.4, "weighted": 36 },
+        "companySize": { "score": 70, "weight": 0.3, "weighted": 21 },
+        "seniority": { "score": 100, "weight": 0.2, "weighted": 20 },
+        "region": { "score": 100, "weight": 0.1, "weighted": 10 }
+      },
+      "scoredAt": "2026-02-18T05:30:00.000Z"
+    },
+    {
+      "leadId": "lead_028",
+      "company": "Crypto.com",
+      "contactName": "Kris Marszalek",
+      "totalScore": 90,
+      "priorityTier": "P0",
+      "breakdown": {
+        "industry": { "score": 95, "weight": 0.4, "weighted": 38 },
+        "companySize": { "score": 100, "weight": 0.3, "weighted": 30 },
+        "seniority": { "score": 100, "weight": 0.2, "weighted": 20 },
+        "region": { "score": 90, "weight": 0.1, "weighted": 9 }
+      },
+      "scoredAt": "2026-02-18T05:30:00.000Z"
+    },
+    {
+      "leadId": "lead_029",
+      "company": "Bybit",
+      "contactName": "Ben Zhou",
+      "totalScore": 90,
+      "priorityTier": "P0",
+      "breakdown": {
+        "industry": { "score": 95, "weight": 0.4, "weighted": 38 },
+        "companySize": { "score": 100, "weight": 0.3, "weighted": 30 },
+        "seniority": { "score": 100, "weight": 0.2, "weighted": 20 },
+        "region": { "score": 90, "weight": 0.1, "weighted": 9 }
+      },
+      "scoredAt": "2026-02-18T05:30:00.000Z"
+    },
+    {
+      "leadId": "lead_030",
+      "company": "2C2P",
+      "contactName": "Aung Kyaw Moe",
+      "totalScore": 88,
+      "priorityTier": "P0",
+      "breakdown": {
+        "industry": { "score": 90, "weight": 0.4, "weighted": 36 },
+        "companySize": { "score": 90, "weight": 0.3, "weighted": 27 },
+        "seniority": { "score": 100, "weight": 0.2, "weighted": 20 },
+        "region": { "score": 90, "weight": 0.1, "weighted": 9 }
+      },
+      "scoredAt": "2026-02-18T05:30:00.000Z"
+    },
+    {
+      "leadId": "lead_011",
+      "company": "Precision Components GmbH",
+      "contactName": "Klaus Mueller",
+      "totalScore": 85,
+      "priorityTier": "P0",
+      "breakdown": {
+        "industry": { "score": 80, "weight": 0.4, "weighted": 32 },
+        "companySize": { "score": 75, "weight": 0.3, "weighted": 23 },
+        "seniority": { "score": 80, "weight": 0.2, "weighted": 16 },
+        "region": { "score": 90, "weight": 0.1, "weighted": 9 }
+      },
+      "scoredAt": "2026-02-18T05:30:00.000Z"
+    },
+    {
+      "leadId": "lead_012",
+      "company": "TechEnclosure Solutions",
+      "contactName": "Jan van der Berg",
+      "totalScore": 84,
+      "priorityTier": "P0",
+      "breakdown": {
+        "industry": { "score": 85, "weight": 0.4, "weighted": 34 },
+        "companySize": { "score": 70, "weight": 0.3, "weighted": 21 },
+        "seniority": { "score": 80, "weight": 0.2, "weighted": 16 },
+        "region": { "score": 90, "weight": 0.1, "weighted": 9 }
+      },
+      "scoredAt": "2026-02-18T05:30:00.000Z"
+    },
+    {
+      "leadId": "lead_013",
+      "company": "MediTech Precision",
+      "contactName": "Sophie Weber",
+      "totalScore": 78,
+      "priorityTier": "P1",
+      "breakdown": {
+        "industry": { "score": 75, "weight": 0.4, "weighted": 30 },
+        "companySize": { "score": 70, "weight": 0.3, "weighted": 21 },
+        "seniority": { "score": 90, "weight": 0.2, "weighted": 18 },
+        "region": { "score": 90, "weight": 0.1, "weighted": 9 }
+      },
+      "scoredAt": "2026-02-18T05:30:00.000Z"
+    },
+    {
+      "leadId": "lead_014",
+      "company": "Industrial Parts Co.",
+      "contactName": "Marco Rossi",
+      "totalScore": 76,
+      "priorityTier": "P1",
+      "breakdown": {
+        "industry": { "score": 70, "weight": 0.4, "weighted": 28 },
+        "companySize": { "score": 75, "weight": 0.3, "weighted": 23 },
+        "seniority": { "score": 80, "weight": 0.2, "weighted": 16 },
+        "region": { "score": 90, "weight": 0.1, "weighted": 9 }
+      },
+      "scoredAt": "2026-02-18T05:30:00.000Z"
+    },
+    {
+      "leadId": "lead_015",
+      "company": "AutoComponents Spain",
+      "contactName": "Carlos Garcia",
+      "totalScore": 86,
+      "priorityTier": "P0",
+      "breakdown": {
+        "industry": { "score": 80, "weight": 0.4, "weighted": 32 },
+        "companySize": { "score": 85, "weight": 0.3, "weighted": 26 },
+        "seniority": { "score": 90, "weight": 0.2, "weighted": 18 },
+        "region": { "score": 90, "weight": 0.1, "weighted": 9 }
+      },
+      "scoredAt": "2026-02-18T05:30:00.000Z"
+    },
+    {
+      "leadId": "lead_016",
+      "company": "Precision Electronics SG",
+      "contactName": "Tan Wei Ming",
+      "totalScore": 85,
+      "priorityTier": "P0",
+      "breakdown": {
+        "industry": { "score": 85, "weight": 0.4, "weighted": 34 },
+        "companySize": { "score": 75, "weight": 0.3, "weighted": 23 },
+        "seniority": { "score": 80, "weight": 0.2, "weighted": 16 },
+        "region": { "score": 100, "weight": 0.1, "weighted": 10 }
+      },
+      "scoredAt": "2026-02-18T05:30:00.000Z"
+    },
+    {
+      "leadId": "lead_017",
+      "company": "Malaysia Manufacturing Solutions",
+      "contactName": "Ahmad bin Ismail",
+      "totalScore": 87,
+      "priorityTier": "P0",
+      "breakdown": {
+        "industry": { "score": 85, "weight": 0.4, "weighted": 34 },
+        "companySize": { "score": 90, "weight": 0.3, "weighted": 27 },
+        "seniority": { "score": 85, "weight": 0.2, "weighted": 17 },
+        "region": { "score": 90, "weight": 0.1, "weighted": 9 }
+      },
+      "scoredAt": "2026-02-18T05:30:00.000Z"
+    },
+    {
+      "leadId": "lead_018",
+      "company": "Thai Auto Parts Co.",
+      "contactName": "Somchai Prasert",
+      "totalScore": 88,
+      "priorityTier": "P0",
+      "breakdown": {
+        "industry": { "score": 80, "weight": 0.4, "weighted": 32 },
+        "companySize": { "score": 90, "weight": 0.3, "weighted": 27 },
+        "seniority": { "score": 100, "weight": 0.2, "weighted": 20 },
+        "region": { "score": 90, "weight": 0.1, "weighted": 9 }
+      },
+      "scoredAt": "2026-02-18T05:30:00.000Z"
+    },
+    {
+      "leadId": "lead_019",
+      "company": "Czech Precision Engineering",
+      "contactName": "Petr Novak",
+      "totalScore": 77,
+      "priorityTier": "P1",
+      "breakdown": {
+        "industry": { "score": 70, "weight": 0.4, "weighted": 28 },
+        "companySize": { "score": 70, "weight": 0.3, "weighted": 21 },
+        "seniority": { "score": 100, "weight": 0.2, "weighted": 20 },
+        "region": { "score": 80, "weight": 0.1, "weighted": 8 }
+      },
+      "scoredAt": "2026-02-18T05:30:00.000Z"
+    },
+    {
+      "leadId": "lead_020",
+      "company": "Polish Automotive Components",
+      "contactName": "Anna Kowalski",
+      "totalScore": 78,
+      "priorityTier": "P1",
+      "breakdown": {
+        "industry": { "score": 80, "weight": 0.4, "weighted": 32 },
+        "companySize": { "score": 75, "weight": 0.3, "weighted": 23 },
+        "seniority": { "score": 80, "weight": 0.2, "weighted": 16 },
+        "region": { "score": 70, "weight": 0.1, "weighted": 7 }
+      },
+      "scoredAt": "2026-02-18T05:30:00.000Z"
+    },
+    {
+      "leadId": "lead_021",
+      "company": "UK Industrial Solutions",
+      "contactName": "James Thompson",
+      "totalScore": 79,
+      "priorityTier": "P1",
+      "breakdown": {
+        "industry": { "score": 75, "weight": 0.4, "weighted": 30 },
+        "companySize": { "score": 75, "weight": 0.3, "weighted": 23 },
+        "seniority": { "score": 80, "weight": 0.2, "weighted": 16 },
+        "region": { "score": 80, "weight": 0.1, "weighted": 8 }
+      },
+      "scoredAt": "2026-02-18T05:30:00.000Z"
+    },
+    {
+      "leadId": "lead_022",
+      "company": "Vietnam Electronics Manufacturing",
+      "contactName": "Nguyen Van Duc",
+      "totalScore": 87,
+      "priorityTier": "P0",
+      "breakdown": {
+        "industry": { "score": 85, "weight": 0.4, "weighted": 34 },
+        "companySize": { "score": 95, "weight": 0.3, "weighted": 29 },
+        "seniority": { "score": 85, "weight": 0.2, "weighted": 17 },
+        "region": { "score": 90, "weight": 0.1, "weighted": 9 }
+      },
+      "scoredAt": "2026-02-18T05:30:00.000Z"
+    },
+    {
+      "leadId": "lead_023",
+      "company": "Indonesia Industrial Parts",
+      "contactName": "Budi Santoso",
+      "totalScore": 78,
+      "priorityTier": "P1",
+      "breakdown": {
+        "industry": { "score": 75, "weight": 0.4, "weighted": 30 },
+        "companySize": { "score": 80, "weight": 0.3, "weighted": 24 },
+        "seniority": { "score": 85, "weight": 0.2, "weighted": 17 },
+        "region": { "score": 80, "weight": 0.1, "weighted": 8 }
+      },
+      "scoredAt": "2026-02-18T05:30:00.000Z"
+    },
+    {
+      "leadId": "lead_024",
+      "company": "Swiss Precision Components",
+      "contactName": "Hans Mueller",
+      "totalScore": 80,
+      "priorityTier": "P1",
+      "breakdown": {
+        "industry": { "score": 75, "weight": 0.4, "weighted": 30 },
+        "companySize": { "score": 70, "weight": 0.3, "weighted": 21 },
+        "seniority": { "score": 90, "weight": 0.2, "weighted": 18 },
+        "region": { "score": 90, "weight": 0.1, "weighted": 9 }
+      },
+      "scoredAt": "2026-02-18T05:30:00.000Z"
+    },
+    {
+      "leadId": "lead_025",
+      "company": "Austria Automotive Tech",
+      "contactName": "Franz Huber",
+      "totalScore": 79,
+      "priorityTier": "P1",
+      "breakdown": {
+        "industry": { "score": 80, "weight": 0.4, "weighted": 32 },
+        "companySize": { "score": 75, "weight": 0.3, "weighted": 23 },
+        "seniority": { "score": 80, "weight": 0.2, "weighted": 16 },
+        "region": { "score": 80, "weight": 0.1, "weighted": 8 }
+      },
+      "scoredAt": "2026-02-18T05:30:00.000Z"
+    },
+    {
+      "leadId": "lead_026",
+      "company": "LINE Plus Corporation",
+      "contactName": "Abhirup Maitra",
+      "totalScore": 88,
+      "priorityTier": "P0",
+      "breakdown": {
+        "industry": { "score": 90, "weight": 0.4, "weighted": 36 },
+        "companySize": { "score": 100, "weight": 0.3, "weighted": 30 },
+        "seniority": { "score": 90, "weight": 0.2, "weighted": 18 },
+        "region": { "score": 100, "weight": 0.1, "weighted": 10 }
+      },
+      "scoredAt": "2026-02-18T05:30:00.000Z"
+    },
+    {
+      "leadId": "lead_027",
+      "company": "LINE Plus Corporation",
+      "contactName": "Daniel Wey",
+      "totalScore": 86,
+      "priorityTier": "P0",
+      "breakdown": {
+        "industry": { "score": 90, "weight": 0.4, "weighted": 36 },
+        "companySize": { "score": 100, "weight": 0.3, "weighted": 30 },
+        "seniority": { "score": 80, "weight": 0.2, "weighted": 16 },
+        "region": { "score": 90, "weight": 0.1, "weighted": 9 }
+      },
+      "scoredAt": "2026-02-18T05:30:00.000Z"
+    }
+  ]
+}

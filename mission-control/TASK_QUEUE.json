@@ -1,0 +1,113 @@
+{
+  "tasks": [
+    {
+      "id": "TASK-0001",
+      "description": "Build File Watcher API - Monitor agent workspace folders",
+      "status": "in_progress",
+      "priority": "P0",
+      "assignedTo": "code-2",
+      "createdBy": "nexus",
+      "created": "2026-02-17T11:00:00+08:00",
+      "updated": "2026-02-17T11:20:00+08:00",
+      "due": "2026-02-18T12:00:00+08:00",
+      "tags": ["backend", "api", "file-watcher"],
+      "metadata": {},
+      "notes": "Monitor agent workspace folders, detect new files/outputs, trigger updates automatically",
+      "parentId": null,
+      "subtasks": [
+        {
+          "id": "TASK-0001-SUB-1",
+          "description": "Create FileWatcher class with fs.watch",
+          "status": "completed",
+          "completed": true,
+          "created": "2026-02-17T11:00:00+08:00",
+          "completedAt": "2026-02-17T11:25:00+08:00"
+        },
+        {
+          "id": "TASK-0001-SUB-2",
+          "description": "Implement file change detection with hashing",
+          "status": "completed",
+          "completed": true,
+          "created": "2026-02-17T11:00:00+08:00",
+          "completedAt": "2026-02-17T11:30:00+08:00"
+        },
+        {
+          "id": "TASK-0001-SUB-3",
+          "description": "Integrate with main API server",
+          "status": "in_progress",
+          "completed": false,
+          "created": "2026-02-17T11:00:00+08:00"
+        }
+      ]
+    },
+    {
+      "id": "TASK-0002",
+      "description": "Build Task Queue API - CRUD operations for tasks",
+      "status": "in_progress",
+      "priority": "P0",
+      "assignedTo": "code-2",
+      "createdBy": "nexus",
+      "created": "2026-02-17T11:00:00+08:00",
+      "updated": "2026-02-17T11:20:00+08:00",
+      "due": "2026-02-18T12:00:00+08:00",
+      "tags": ["backend", "api", "task-queue"],
+      "metadata": {},
+      "notes": "CRUD operations for tasks, priority management (P0/P1/P2/P3), status tracking",
+      "parentId": null,
+      "subtasks": [
+        {
+          "id": "TASK-0002-SUB-1",
+          "description": "Create TaskQueue class with CRUD methods",
+          "status": "completed",
+          "completed": true,
+          "created": "2026-02-17T11:00:00+08:00",
+          "completedAt": "2026-02-17T11:35:00+08:00"
+        },
+        {
+          "id": "TASK-0002-SUB-2",
+          "description": "Implement priority management (P0-P3)",
+          "status": "completed",
+          "completed": true,
+          "created": "2026-02-17T11:00:00+08:00",
+          "completedAt": "2026-02-17T11:40:00+08:00"
+        },
+        {
+          "id": "TASK-0002-SUB-3",
+          "description": "Add subtask support",
+          "status": "completed",
+          "completed": true,
+          "created": "2026-02-17T11:00:00+08:00",
+          "completedAt": "2026-02-17T11:45:00+08:00"
+        }
+      ]
+    },
+    {
+      "id": "TASK-0003",
+      "description": "Integrate APIs with Code's main API and test with frontend",
+      "status": "pending",
+      "priority": "P1",
+      "assignedTo": "code-2",
+      "createdBy": "nexus",
+      "created": "2026-02-17T11:00:00+08:00",
+      "updated": "2026-02-17T11:00:00+08:00",
+      "due": "2026-02-18T12:00:00+08:00",
+      "tags": ["backend", "integration", "testing"],
+      "metadata": {},
+      "notes": "Connect to Code's main API, test with frontend",
+      "parentId": null,
+      "subtasks": []
+    }
+  ],
+  "history": [
+    {
+      "id": "TASK-0000",
+      "description": "Initialize Mission Control API infrastructure",
+      "status": "completed",
+      "completedAt": "2026-02-17T08:00:00+08:00",
+      "completedBy": "code",
+      "archived": "2026-02-17T08:00:00+08:00"
+    }
+  ],
+  "nextId": 4,
+  "updated": "2026-02-17T11:45:00+08:00"
+}

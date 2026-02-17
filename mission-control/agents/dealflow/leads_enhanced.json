@@ -1,0 +1,132 @@
+[
+  {
+    "id": "lead_001",
+    "company": "Coins.ph",
+    "contact_name": "Wei Zhou",
+    "title": "CEO & Founder",
+    "email": "wei.zhou@coins.ph",
+    "email_verified": false,
+    "linkedin": "https://www.linkedin.com/company/coins-ph",
+    "linkedin_personal": null,
+    "twitter": "https://x.com/coinsph",
+    "phone": null,
+    "telegram": null,
+    "status": "new",
+    "priority": "P0",
+    "notes": "Former Binance CFO (2018-2021). Acquired Coins.ph from Gojek in 2022. Leading crypto exchange in Philippines with 18M+ users. Expanding globally with Coins.xyz. Speaker at Consensus, Money20/20. Focus on remittance and financial inclusion through crypto.",
+    "research_sources": [
+      "https://www.coins.xyz/en/about",
+      "https://consensus-hongkong2025.coindesk.com/agenda/speaker/-wei-zhou",
+      "https://www.linkedin.com/posts/lightspark-group_wei-zhou-ceo-of-coinsph"
+    ],
+    "last_researched": "2026-02-18"
+  },
+  {
+    "id": "lead_002",
+    "company": "Coins.xyz",
+    "contact_name": "Wei Zhou",
+    "title": "CEO & Founder",
+    "email": null,
+    "email_verified": false,
+    "linkedin": "https://www.linkedin.com/company/coins-xyz",
+    "linkedin_personal": null,
+    "twitter": null,
+    "phone": null,
+    "telegram": null,
+    "status": "new",
+    "priority": "P0",
+    "notes": "IMPORTANT: Same CEO as Coins.ph (Wei Zhou). Coins.xyz is the global expansion of Coins.ph. Founded by former Binance CFO Wei Zhou and led by ex-Binance executives. Recently launched in Brazil (Jan 2025). Global licensed exchange. Focus on real-world disbursements, contractor payments, supplier settlements.",
+    "research_sources": [
+      "https://www.coins.xyz/en/about",
+      "https://ffnews.com/newsarticle/cryptocurrency/coins-xyz-launches-in-brazil",
+      "https://www.linkedin.com/company/coins-xyz"
+    ],
+    "last_researched": "2026-02-18"
+  },
+  {
+    "id": "lead_003",
+    "company": "PDAX",
+    "contact_name": "Nichel Gaba",
+    "title": "Founder & CEO",
+    "email": "nichel@pdax.ph",
+    "email_verified": false,
+    "linkedin": "https://ph.linkedin.com/in/nichel-gaba-cfa-57864a96",
+    "linkedin_personal": "https://ph.linkedin.com/in/nichel-gaba-cfa-57864a96",
+    "twitter": null,
+    "phone": null,
+    "telegram": null,
+    "status": "new",
+    "priority": "P1",
+    "notes": "CFA charterholder. University of Pennsylvania - The Wharton School. Founded PDAX in 2018. Philippines' largest homegrown cryptocurrency exchange. Strong regulatory standing with BSP license. $51.1M raised in funding. Based in Quezon City, NCR.",
+    "research_sources": [
+      "https://ph.linkedin.com/in/nichel-gaba-cfa-57864a96",
+      "https://www.accelinstitute.org/instructors/nichel-gaba",
+      "https://www.theasianbanker.com/finance-philippines-2025/speakers",
+      "https://rocketreach.co/nichel-gaba-email_52361342"
+    ],
+    "last_researched": "2026-02-18"
+  },
+  {
+    "id": "lead_004",
+    "company": "BloomX",
+    "contact_name": "Luis Buenaventura II",
+    "title": "Co-Founder & CSO (former) / Head of GCrypto at GCash",
+    "email": null,
+    "email_verified": false,
+    "linkedin": "https://ph.linkedin.com/in/helloluis",
+    "linkedin_personal": "https://ph.linkedin.com/in/helloluis",
+    "twitter": "https://x.com/helloluis",
+    "phone": null,
+    "telegram": null,
+    "status": "new",
+    "priority": "P1",
+    "notes": "Filipino crypto author, artist, and entrepreneur. Co-founded BloomX in 2015 (formerly Bloom Solutions). Former Philippine Country Manager of Yield Guild Games. Currently Head of GCrypto at GCash (Mynt - Globe Fintech Innovations). President of Blockchain Council of the Philippines. Pioneer in PH crypto since 2014. Author and illustrator.",
+    "research_sources": [
+      "https://ph.linkedin.com/in/helloluis",
+      "https://www.getprog.ai/profile/15738",
+      "https://www.behance.net/helloluis",
+      "https://blockchain-council-of-the-philippines"
+    ],
+    "last_researched": "2026-02-18"
+  },
+  {
+    "id": "lead_005",
+    "company": "Rebit.ph",
+    "contact_name": "Miguel Cuneta",
+    "title": "Co-Founder & Chief Community Officer",
+    "email": null,
+    "email_verified": false,
+    "linkedin": "https://ph.linkedin.com/in/miguel-cuneta-a335b093",
+    "linkedin_personal": "https://ph.linkedin.com/in/miguel-cuneta-a335b093",
+    "twitter": null,
+    "phone": null,
+    "telegram": null,
+    "status": "new",
+    "priority": "P2",
+    "notes": "In Bitcoin since early 2013. Co-founded SCI (Satoshi Citadel Industries) in 2014. SCI is a pioneer Bitcoin and blockchain company in Philippines. Rebit.ph is a Bitcoin remittance service under SCI Ventures. Also co-founded Bitbit (founded 2014 with Jardine Gerodias and John Bailon). Long-standing player in PH crypto ecosystem.",
+    "research_sources": [
+      "https://ph.linkedin.com/in/miguel-cuneta-a335b093",
+      "https://bitpinas.com/feature/miguel-cuneta-sci-ventures-ph-2019-crypto-blockchain-year-review",
+      "https://www.linkedin.com/company/satoshi-citadel-ventures"
+    ],
+    "last_researched": "2026-02-18"
+  },
+  {
+    "id": "lead_006",
+    "company": "Binance Philippines",
+    "contact_name": "Kenneth Stern",
+    "title": "Country Manager",
+    "email": null,
+    "email_verified": false,
+    "linkedin": null,
+    "linkedin_personal": null,
+    "twitter": null,
+    "phone": null,
+    "telegram": null,
+    "status": "new",
+    "priority": "P1",
+    "notes": "Country Manager for Binance Philippines. Major exchange with strong PH presence. Note: Need to verify current status as Binance has faced regulatory challenges in Philippines. May need updated contact information.",
+    "research_sources": [],
+    "last_researched": "2026-02-18"
+  }
+]

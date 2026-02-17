@@ -1,0 +1,1661 @@
+{
+  "date": "2025-02-18",
+  "report": {
+    "date": "2025-02-18",
+    "summary": {
+      "total": 15,
+      "positive": 3,
+      "negative": 5,
+      "neutral": 7,
+      "positive_pct": 20,
+      "negative_pct": 33,
+      "neutral_pct": 47,
+      "avg_score": -0.2,
+      "total_score": -3
+    },
+    "sentiment_trend": "neutral",
+    "top_entities": [
+      {
+        "type": "competitors",
+        "entity": "solana",
+        "count": 3,
+        "sentimentSum": 0,
+        "avgSentiment": 0
+      },
+      {
+        "type": "competitors",
+        "entity": "ethereum",
+        "count": 2,
+        "sentimentSum": -1,
+        "avgSentiment": -0.5
+      },
+      {
+        "type": "regulatory",
+        "entity": "sec",
+        "count": 2,
+        "sentimentSum": -3,
+        "avgSentiment": -1.5
+      },
+      {
+        "type": "competitors",
+        "entity": "coinbase",
+        "count": 1,
+        "sentimentSum": -2,
+        "avgSentiment": -2
+      },
+      {
+        "type": "competitors",
+        "entity": "opensea",
+        "count": 1,
+        "sentimentSum": -1,
+        "avgSentiment": -1
+      },
+      {
+        "type": "competitors",
+        "entity": "uniswap",
+        "count": 1,
+        "sentimentSum": -1,
+        "avgSentiment": -1
+      },
+      {
+        "type": "competitors",
+        "entity": "kraken",
+        "count": 1,
+        "sentimentSum": 0,
+        "avgSentiment": 0
+      },
+      {
+        "type": "market_signals",
+        "entity": "etf",
+        "count": 1,
+        "sentimentSum": 0,
+        "avgSentiment": 0
+      },
+      {
+        "type": "competitors",
+        "entity": "avalanche",
+        "count": 1,
+        "sentimentSum": 0,
+        "avgSentiment": 0
+      }
+    ],
+    "by_category": {
+      "institutional": {
+        "count": 2,
+        "score": 0
+      },
+      "market": {
+        "count": 6,
+        "score": -2
+      },
+      "regulatory": {
+        "count": 2,
+        "score": -3
+      },
+      "nft": {
+        "count": 2,
+        "score": 0
+      },
+      "defi": {
+        "count": 3,
+        "score": 2
+      }
+    },
+    "top_positive": [
+      {
+        "text": "XRP surges 47.8% driven by DEX growth exceeding $400M monthly volume",
+        "source": "Crypto.com",
+        "category": "market",
+        "score": 1,
+        "sentiment": "positive",
+        "confidence": 91,
+        "matches": {
+          "positive": [
+            {
+              "word": "growth",
+              "count": 1
+            }
+          ],
+          "negative": [],
+          "neutral": [
+            {
+              "word": "volume",
+              "count": 1
+            },
+            {
+              "word": "dex",
+              "count": 1
+            }
+          ]
+        },
+        "entities": {
+          "competitors": [],
+          "regulatory": [],
+          "market_signals": []
+        },
+        "timestamp": "2026-02-17T22:43:03.410Z"
+      },
+      {
+        "text": "RWA tokenization value surpasses $17B led by private credit growth",
+        "source": "Crypto.com",
+        "category": "defi",
+        "score": 1,
+        "sentiment": "positive",
+        "confidence": 100,
+        "matches": {
+          "positive": [
+            {
+              "word": "growth",
+              "count": 1
+            }
+          ],
+          "negative": [],
+          "neutral": []
+        },
+        "entities": {
+          "competitors": [],
+          "regulatory": [],
+          "market_signals": []
+        },
+        "timestamp": "2026-02-17T22:43:03.416Z"
+      },
+      {
+        "text": "Solana TVL hits record $12.1B driven by memecoin activity",
+        "source": "Binance",
+        "category": "defi",
+        "score": 1,
+        "sentiment": "positive",
+        "confidence": 100,
+        "matches": {
+          "positive": [
+            {
+              "word": "record",
+              "count": 1
+            }
+          ],
+          "negative": [],
+          "neutral": [
+            {
+              "word": "solana",
+              "count": 1
+            }
+          ]
+        },
+        "entities": {
+          "competitors": [
+            "solana"
+          ],
+          "regulatory": [],
+          "market_signals": []
+        },
+        "timestamp": "2026-02-17T22:43:03.416Z"
+      }
+    ],
+    "top_negative": [
+      {
+        "text": "SEC dismisses Coinbase lawsuit to facilitate regulatory reform",
+        "source": "SEC",
+        "category": "regulatory",
+        "score": -2,
+        "sentiment": "negative",
+        "confidence": 100,
+        "matches": {
+          "positive": [],
+          "negative": [
+            {
+              "word": "lawsuit",
+              "count": 1
+            },
+            {
+              "word": "sec",
+              "count": 1
+            }
+          ],
+          "neutral": []
+        },
+        "entities": {
+          "competitors": [
+            "coinbase"
+          ],
+          "regulatory": [
+            "sec"
+          ],
+          "market_signals": []
+        },
+        "timestamp": "2026-02-17T22:43:03.410Z"
+      },
+      {
+        "text": "Crypto market rallies to $4.12T total cap after government shutdown resolution",
+        "source": "Binance",
+        "category": "market",
+        "score": -1,
+        "sentiment": "negative",
+        "confidence": 91,
+        "matches": {
+          "positive": [],
+          "negative": [
+            {
+              "word": "shutdown",
+              "count": 1
+            }
+          ],
+          "neutral": [
+            {
+              "word": "market",
+              "count": 1
+            },
+            {
+              "word": "crypto",
+              "count": 1
+            }
+          ]
+        },
+        "entities": {
+          "competitors": [],
+          "regulatory": [],
+          "market_signals": []
+        },
+        "timestamp": "2026-02-17T22:43:03.410Z"
+      },
+      {
+        "text": "SEC closes investigations into Uniswap Labs and OpenSea with no action",
+        "source": "SEC",
+        "category": "regulatory",
+        "score": -1,
+        "sentiment": "negative",
+        "confidence": 91,
+        "matches": {
+          "positive": [],
+          "negative": [
+            {
+              "word": "sec",
+              "count": 1
+            }
+          ],
+          "neutral": []
+        },
+        "entities": {
+          "competitors": [
+            "opensea",
+            "uniswap"
+          ],
+          "regulatory": [
+            "sec"
+          ],
+          "market_signals": []
+        },
+        "timestamp": "2026-02-17T22:43:03.411Z"
+      },
+      {
+        "text": "Ethereum struggles with 8.2% decline under Solana competition",
+        "source": "Binance",
+        "category": "market",
+        "score": -1,
+        "sentiment": "negative",
+        "confidence": 100,
+        "matches": {
+          "positive": [],
+          "negative": [
+            {
+              "word": "decline",
+              "count": 1
+            }
+          ],
+          "neutral": [
+            {
+              "word": "ethereum",
+              "count": 1
+            },
+            {
+              "word": "solana",
+              "count": 1
+            }
+          ]
+        },
+        "entities": {
+          "competitors": [
+            "ethereum",
+            "solana"
+          ],
+          "regulatory": [],
+          "market_signals": []
+        },
+        "timestamp": "2026-02-17T22:43:03.415Z"
+      },
+      {
+        "text": "Stablecoin market cap grows to $217B indicating risk-off sentiment",
+        "source": "DeFiLlama",
+        "category": "market",
+        "score": -1,
+        "sentiment": "negative",
+        "confidence": 100,
+        "matches": {
+          "positive": [],
+          "negative": [
+            {
+              "word": "risk",
+              "count": 1
+            }
+          ],
+          "neutral": [
+            {
+              "word": "market",
+              "count": 1
+            }
+          ]
+        },
+        "entities": {
+          "competitors": [],
+          "regulatory": [],
+          "market_signals": []
+        },
+        "timestamp": "2026-02-17T22:43:03.415Z"
+      }
+    ]
+  },
+  "history": [
+    {
+      "date": "2025-02-12",
+      "summary": {
+        "total": 5,
+        "positive": 2,
+        "negative": 2,
+        "neutral": 1,
+        "positive_pct": 40,
+        "negative_pct": 40,
+        "neutral_pct": 20,
+        "avg_score": -0.2,
+        "total_score": -1
+      },
+      "sentiment_trend": "neutral",
+      "top_entities": [
+        {
+          "type": "competitors",
+          "entity": "ethereum",
+          "count": 2,
+          "sentimentSum": 2,
+          "avgSentiment": 1
+        },
+        {
+          "type": "regulatory",
+          "entity": "sec",
+          "count": 1,
+          "sentimentSum": -2,
+          "avgSentiment": -2
+        },
+        {
+          "type": "competitors",
+          "entity": "solana",
+          "count": 1,
+          "sentimentSum": 0,
+          "avgSentiment": 0
+        }
+      ],
+      "by_category": {
+        "regulatory": {
+          "count": 1,
+          "score": -2
+        },
+        "market": {
+          "count": 1,
+          "score": 1
+        },
+        "technology": {
+          "count": 1,
+          "score": 2
+        },
+        "security": {
+          "count": 1,
+          "score": -2
+        },
+        "defi": {
+          "count": 1,
+          "score": 0
+        }
+      },
+      "top_positive": [
+        {
+          "text": "Ethereum network upgrade promises improved efficiency and lower fees",
+          "source": "Ethereum Foundation",
+          "category": "technology",
+          "score": 2,
+          "sentiment": "positive",
+          "confidence": 100,
+          "matches": {
+            "positive": [
+              {
+                "word": "upgrade",
+                "count": 1
+              },
+              {
+                "word": "efficiency",
+                "count": 1
+              }
+            ],
+            "negative": [],
+            "neutral": [
+              {
+                "word": "network",
+                "count": 1
+              },
+              {
+                "word": "ethereum",
+                "count": 1
+              }
+            ]
+          },
+          "entities": {
+            "competitors": [
+              "ethereum"
+            ],
+            "regulatory": [],
+            "market_signals": []
+          },
+          "timestamp": "2026-02-17T22:43:03.397Z"
+        },
+        {
+          "text": "Bitcoin stabilizes at $97,000 as traders await regulatory clarity",
+          "source": "CoinDesk",
+          "category": "market",
+          "score": 1,
+          "sentiment": "positive",
+          "confidence": 100,
+          "matches": {
+            "positive": [
+              {
+                "word": "regulatory clarity",
+                "count": 1
+              }
+            ],
+            "negative": [],
+            "neutral": [
+              {
+                "word": "bitcoin",
+                "count": 1
+              }
+            ]
+          },
+          "entities": {
+            "competitors": [],
+            "regulatory": [],
+            "market_signals": []
+          },
+          "timestamp": "2026-02-17T22:43:03.397Z"
+        }
+      ],
+      "top_negative": [
+        {
+          "text": "SEC creates Cyber and Emerging Technologies Unit to combat blockchain fraud and protect investors",
+          "source": "SEC",
+          "category": "regulatory",
+          "score": -2,
+          "sentiment": "negative",
+          "confidence": 100,
+          "matches": {
+            "positive": [],
+            "negative": [
+              {
+                "word": "fraud",
+                "count": 1
+              },
+              {
+                "word": "sec",
+                "count": 1
+              }
+            ],
+            "neutral": [
+              {
+                "word": "blockchain",
+                "count": 1
+              }
+            ]
+          },
+          "entities": {
+            "competitors": [],
+            "regulatory": [
+              "sec"
+            ],
+            "market_signals": []
+          },
+          "timestamp": "2026-02-17T22:43:03.392Z"
+        },
+        {
+          "text": "DeFi protocol suffers $2M exploit due to smart contract vulnerability",
+          "source": "Rekt",
+          "category": "security",
+          "score": -2,
+          "sentiment": "negative",
+          "confidence": 100,
+          "matches": {
+            "positive": [],
+            "negative": [
+              {
+                "word": "exploit",
+                "count": 1
+              },
+              {
+                "word": "vulnerability",
+                "count": 1
+              }
+            ],
+            "neutral": [
+              {
+                "word": "protocol",
+                "count": 1
+              },
+              {
+                "word": "defi",
+                "count": 1
+              }
+            ]
+          },
+          "entities": {
+            "competitors": [],
+            "regulatory": [],
+            "market_signals": []
+          },
+          "timestamp": "2026-02-17T22:43:03.397Z"
+        }
+      ]
+    },
+    {
+      "date": "2025-02-13",
+      "summary": {
+        "total": 5,
+        "positive": 1,
+        "negative": 0,
+        "neutral": 4,
+        "positive_pct": 20,
+        "negative_pct": 0,
+        "neutral_pct": 80,
+        "avg_score": 0.2,
+        "total_score": 1
+      },
+      "sentiment_trend": "neutral",
+      "top_entities": [
+        {
+          "type": "market_signals",
+          "entity": "etf",
+          "count": 1,
+          "sentimentSum": 0,
+          "avgSentiment": 0
+        },
+        {
+          "type": "market_signals",
+          "entity": "institutional",
+          "count": 1,
+          "sentimentSum": 0,
+          "avgSentiment": 0
+        }
+      ],
+      "by_category": {
+        "institutional": {
+          "count": 2,
+          "score": 0
+        },
+        "market": {
+          "count": 1,
+          "score": 0
+        },
+        "partnership": {
+          "count": 1,
+          "score": 1
+        },
+        "nft": {
+          "count": 1,
+          "score": 0
+        }
+      },
+      "top_positive": [
+        {
+          "text": "Major bank announces partnership with crypto custody provider",
+          "source": "Reuters",
+          "category": "partnership",
+          "score": 1,
+          "sentiment": "positive",
+          "confidence": 100,
+          "matches": {
+            "positive": [
+              {
+                "word": "partnership",
+                "count": 1
+              }
+            ],
+            "negative": [],
+            "neutral": [
+              {
+                "word": "crypto",
+                "count": 1
+              },
+              {
+                "word": "custody",
+                "count": 1
+              }
+            ]
+          },
+          "entities": {
+            "competitors": [],
+            "regulatory": [],
+            "market_signals": []
+          },
+          "timestamp": "2026-02-17T22:43:03.400Z"
+        }
+      ],
+      "top_negative": []
+    },
+    {
+      "date": "2025-02-14",
+      "summary": {
+        "total": 5,
+        "positive": 1,
+        "negative": 3,
+        "neutral": 1,
+        "positive_pct": 20,
+        "negative_pct": 60,
+        "neutral_pct": 20,
+        "avg_score": -0.6,
+        "total_score": -3
+      },
+      "sentiment_trend": "bearish",
+      "top_entities": [
+        {
+          "type": "competitors",
+          "entity": "ethereum",
+          "count": 2,
+          "sentimentSum": -1,
+          "avgSentiment": -0.5
+        },
+        {
+          "type": "regulatory",
+          "entity": "sec",
+          "count": 1,
+          "sentimentSum": -1,
+          "avgSentiment": -1
+        }
+      ],
+      "by_category": {
+        "market": {
+          "count": 2,
+          "score": 1
+        },
+        "security": {
+          "count": 1,
+          "score": -2
+        },
+        "regulatory": {
+          "count": 1,
+          "score": -1
+        },
+        "technology": {
+          "count": 1,
+          "score": -1
+        }
+      },
+      "top_positive": [
+        {
+          "text": "Bitcoin drops 5% amid macroeconomic concerns and profit taking",
+          "source": "Bloomberg",
+          "category": "market",
+          "score": 1,
+          "sentiment": "positive",
+          "confidence": 100,
+          "matches": {
+            "positive": [
+              {
+                "word": "profit",
+                "count": 1
+              }
+            ],
+            "negative": [],
+            "neutral": [
+              {
+                "word": "bitcoin",
+                "count": 1
+              }
+            ]
+          },
+          "entities": {
+            "competitors": [],
+            "regulatory": [],
+            "market_signals": []
+          },
+          "timestamp": "2026-02-17T22:43:03.402Z"
+        }
+      ],
+      "top_negative": [
+        {
+          "text": "Crypto exchange hack results in $50M stolen funds",
+          "source": "Chainalysis",
+          "category": "security",
+          "score": -2,
+          "sentiment": "negative",
+          "confidence": 100,
+          "matches": {
+            "positive": [],
+            "negative": [
+              {
+                "word": "hack",
+                "count": 1
+              },
+              {
+                "word": "stolen",
+                "count": 1
+              }
+            ],
+            "neutral": [
+              {
+                "word": "exchange",
+                "count": 1
+              },
+              {
+                "word": "crypto",
+                "count": 1
+              }
+            ]
+          },
+          "entities": {
+            "competitors": [],
+            "regulatory": [],
+            "market_signals": []
+          },
+          "timestamp": "2026-02-17T22:43:03.402Z"
+        },
+        {
+          "text": "SEC warns about unregistered crypto lending platforms",
+          "source": "SEC",
+          "category": "regulatory",
+          "score": -1,
+          "sentiment": "negative",
+          "confidence": 100,
+          "matches": {
+            "positive": [],
+            "negative": [
+              {
+                "word": "sec",
+                "count": 1
+              }
+            ],
+            "neutral": [
+              {
+                "word": "crypto",
+                "count": 1
+              }
+            ]
+          },
+          "entities": {
+            "competitors": [],
+            "regulatory": [
+              "sec"
+            ],
+            "market_signals": []
+          },
+          "timestamp": "2026-02-17T22:43:03.402Z"
+        },
+        {
+          "text": "Major Ethereum validator slashed for attestation violation",
+          "source": "Beaconcha",
+          "category": "technology",
+          "score": -1,
+          "sentiment": "negative",
+          "confidence": 100,
+          "matches": {
+            "positive": [],
+            "negative": [
+              {
+                "word": "violation",
+                "count": 1
+              }
+            ],
+            "neutral": [
+              {
+                "word": "ethereum",
+                "count": 1
+              },
+              {
+                "word": "validator",
+                "count": 1
+              }
+            ]
+          },
+          "entities": {
+            "competitors": [
+              "ethereum"
+            ],
+            "regulatory": [],
+            "market_signals": []
+          },
+          "timestamp": "2026-02-17T22:43:03.402Z"
+        }
+      ]
+    },
+    {
+      "date": "2025-02-15",
+      "summary": {
+        "total": 5,
+        "positive": 2,
+        "negative": 0,
+        "neutral": 3,
+        "positive_pct": 40,
+        "negative_pct": 0,
+        "neutral_pct": 60,
+        "avg_score": 0.4,
+        "total_score": 2
+      },
+      "sentiment_trend": "neutral",
+      "top_entities": [
+        {
+          "type": "competitors",
+          "entity": "solana",
+          "count": 1,
+          "sentimentSum": 1,
+          "avgSentiment": 1
+        }
+      ],
+      "by_category": {
+        "market": {
+          "count": 1,
+          "score": 0
+        },
+        "technology": {
+          "count": 1,
+          "score": 1
+        },
+        "funding": {
+          "count": 1,
+          "score": 0
+        },
+        "partnership": {
+          "count": 1,
+          "score": 0
+        },
+        "defi": {
+          "count": 1,
+          "score": 1
+        }
+      },
+      "top_positive": [
+        {
+          "text": "Solana announces major network upgrade improving transaction throughput",
+          "source": "Solana Labs",
+          "category": "technology",
+          "score": 1,
+          "sentiment": "positive",
+          "confidence": 100,
+          "matches": {
+            "positive": [
+              {
+                "word": "upgrade",
+                "count": 1
+              }
+            ],
+            "negative": [],
+            "neutral": [
+              {
+                "word": "transaction",
+                "count": 1
+              },
+              {
+                "word": "network",
+                "count": 1
+              },
+              {
+                "word": "solana",
+                "count": 1
+              }
+            ]
+          },
+          "entities": {
+            "competitors": [
+              "solana"
+            ],
+            "regulatory": [],
+            "market_signals": []
+          },
+          "timestamp": "2026-02-17T22:43:03.404Z"
+        },
+        {
+          "text": "DeFi TVL grows 8% week over week reaching new monthly high",
+          "source": "DeFiLlama",
+          "category": "defi",
+          "score": 1,
+          "sentiment": "positive",
+          "confidence": 91,
+          "matches": {
+            "positive": [
+              {
+                "word": "high",
+                "count": 1
+              }
+            ],
+            "negative": [],
+            "neutral": [
+              {
+                "word": "defi",
+                "count": 1
+              }
+            ]
+          },
+          "entities": {
+            "competitors": [],
+            "regulatory": [],
+            "market_signals": []
+          },
+          "timestamp": "2026-02-17T22:43:03.404Z"
+        }
+      ],
+      "top_negative": []
+    },
+    {
+      "date": "2025-02-16",
+      "summary": {
+        "total": 5,
+        "positive": 3,
+        "negative": 1,
+        "neutral": 1,
+        "positive_pct": 60,
+        "negative_pct": 20,
+        "neutral_pct": 20,
+        "avg_score": 0.6,
+        "total_score": 3
+      },
+      "sentiment_trend": "bullish",
+      "top_entities": [
+        {
+          "type": "regulatory",
+          "entity": "bill",
+          "count": 1,
+          "sentimentSum": 1,
+          "avgSentiment": 1
+        },
+        {
+          "type": "regulatory",
+          "entity": "sec",
+          "count": 1,
+          "sentimentSum": 0,
+          "avgSentiment": 0
+        },
+        {
+          "type": "regulatory",
+          "entity": "compliance",
+          "count": 1,
+          "sentimentSum": 2,
+          "avgSentiment": 2
+        },
+        {
+          "type": "regulatory",
+          "entity": "mica",
+          "count": 1,
+          "sentimentSum": 2,
+          "avgSentiment": 2
+        }
+      ],
+      "by_category": {
+        "regulatory": {
+          "count": 4,
+          "score": 1
+        },
+        "technology": {
+          "count": 1,
+          "score": 2
+        }
+      },
+      "top_positive": [
+        {
+          "text": "European MiCA regulations drive compliance investment by crypto firms",
+          "source": "EU",
+          "category": "regulatory",
+          "score": 2,
+          "sentiment": "positive",
+          "confidence": 100,
+          "matches": {
+            "positive": [
+              {
+                "word": "investment",
+                "count": 1
+              },
+              {
+                "word": "compliance",
+                "count": 1
+              }
+            ],
+            "negative": [],
+            "neutral": [
+              {
+                "word": "crypto",
+                "count": 1
+              },
+              {
+                "word": "compliance",
+                "count": 1
+              }
+            ]
+          },
+          "entities": {
+            "competitors": [],
+            "regulatory": [
+              "compliance",
+              "mica"
+            ],
+            "market_signals": []
+          },
+          "timestamp": "2026-02-17T22:43:03.406Z"
+        },
+        {
+          "text": "Bitcoin mining difficulty reaches new all-time high",
+          "source": "Glassnode",
+          "category": "technology",
+          "score": 2,
+          "sentiment": "positive",
+          "confidence": 100,
+          "matches": {
+            "positive": [
+              {
+                "word": "high",
+                "count": 1
+              },
+              {
+                "word": "all-time high",
+                "count": 1
+              }
+            ],
+            "negative": [],
+            "neutral": [
+              {
+                "word": "bitcoin",
+                "count": 1
+              }
+            ]
+          },
+          "entities": {
+            "competitors": [],
+            "regulatory": [],
+            "market_signals": []
+          },
+          "timestamp": "2026-02-17T22:43:03.406Z"
+        },
+        {
+          "text": "Congress introduces bill providing regulatory clarity for digital assets",
+          "source": "Congress",
+          "category": "regulatory",
+          "score": 1,
+          "sentiment": "positive",
+          "confidence": 100,
+          "matches": {
+            "positive": [
+              {
+                "word": "regulatory clarity",
+                "count": 1
+              }
+            ],
+            "negative": [],
+            "neutral": []
+          },
+          "entities": {
+            "competitors": [],
+            "regulatory": [
+              "bill"
+            ],
+            "market_signals": []
+          },
+          "timestamp": "2026-02-17T22:43:03.405Z"
+        }
+      ],
+      "top_negative": [
+        {
+          "text": "Crypto mining ban proposed in US state sparks industry concern",
+          "source": "Local News",
+          "category": "regulatory",
+          "score": -2,
+          "sentiment": "negative",
+          "confidence": 100,
+          "matches": {
+            "positive": [],
+            "negative": [
+              {
+                "word": "ban",
+                "count": 1
+              },
+              {
+                "word": "concern",
+                "count": 1
+              }
+            ],
+            "neutral": [
+              {
+                "word": "crypto",
+                "count": 1
+              }
+            ]
+          },
+          "entities": {
+            "competitors": [],
+            "regulatory": [],
+            "market_signals": []
+          },
+          "timestamp": "2026-02-17T22:43:03.406Z"
+        }
+      ]
+    },
+    {
+      "date": "2025-02-17",
+      "summary": {
+        "total": 5,
+        "positive": 0,
+        "negative": 1,
+        "neutral": 4,
+        "positive_pct": 0,
+        "negative_pct": 20,
+        "neutral_pct": 80,
+        "avg_score": -0.2,
+        "total_score": -1
+      },
+      "sentiment_trend": "neutral",
+      "top_entities": [
+        {
+          "type": "competitors",
+          "entity": "ethereum",
+          "count": 2,
+          "sentimentSum": -1,
+          "avgSentiment": -0.5
+        },
+        {
+          "type": "market_signals",
+          "entity": "etf",
+          "count": 2,
+          "sentimentSum": 0,
+          "avgSentiment": 0
+        },
+        {
+          "type": "competitors",
+          "entity": "solana",
+          "count": 1,
+          "sentimentSum": 0,
+          "avgSentiment": 0
+        }
+      ],
+      "by_category": {
+        "institutional": {
+          "count": 3,
+          "score": 0
+        },
+        "market": {
+          "count": 1,
+          "score": 0
+        },
+        "technology": {
+          "count": 1,
+          "score": -1
+        }
+      },
+      "top_positive": [],
+      "top_negative": [
+        {
+          "text": "Ethereum gas fees drop to lowest levels in six months",
+          "source": "Etherscan",
+          "category": "technology",
+          "score": -1,
+          "sentiment": "negative",
+          "confidence": 100,
+          "matches": {
+            "positive": [],
+            "negative": [
+              {
+                "word": "drop",
+                "count": 1
+              }
+            ],
+            "neutral": [
+              {
+                "word": "ethereum",
+                "count": 1
+              }
+            ]
+          },
+          "entities": {
+            "competitors": [
+              "ethereum"
+            ],
+            "regulatory": [],
+            "market_signals": []
+          },
+          "timestamp": "2026-02-17T22:43:03.408Z"
+        }
+      ]
+    },
+    {
+      "date": "2025-02-18",
+      "summary": {
+        "total": 15,
+        "positive": 3,
+        "negative": 5,
+        "neutral": 7,
+        "positive_pct": 20,
+        "negative_pct": 33,
+        "neutral_pct": 47,
+        "avg_score": -0.2,
+        "total_score": -3
+      },
+      "sentiment_trend": "neutral",
+      "top_entities": [
+        {
+          "type": "competitors",
+          "entity": "solana",
+          "count": 3,
+          "sentimentSum": 0,
+          "avgSentiment": 0
+        },
+        {
+          "type": "competitors",
+          "entity": "ethereum",
+          "count": 2,
+          "sentimentSum": -1,
+          "avgSentiment": -0.5
+        },
+        {
+          "type": "regulatory",
+          "entity": "sec",
+          "count": 2,
+          "sentimentSum": -3,
+          "avgSentiment": -1.5
+        },
+        {
+          "type": "competitors",
+          "entity": "coinbase",
+          "count": 1,
+          "sentimentSum": -2,
+          "avgSentiment": -2
+        },
+        {
+          "type": "competitors",
+          "entity": "opensea",
+          "count": 1,
+          "sentimentSum": -1,
+          "avgSentiment": -1
+        },
+        {
+          "type": "competitors",
+          "entity": "uniswap",
+          "count": 1,
+          "sentimentSum": -1,
+          "avgSentiment": -1
+        },
+        {
+          "type": "competitors",
+          "entity": "kraken",
+          "count": 1,
+          "sentimentSum": 0,
+          "avgSentiment": 0
+        },
+        {
+          "type": "market_signals",
+          "entity": "etf",
+          "count": 1,
+          "sentimentSum": 0,
+          "avgSentiment": 0
+        },
+        {
+          "type": "competitors",
+          "entity": "avalanche",
+          "count": 1,
+          "sentimentSum": 0,
+          "avgSentiment": 0
+        }
+      ],
+      "by_category": {
+        "institutional": {
+          "count": 2,
+          "score": 0
+        },
+        "market": {
+          "count": 6,
+          "score": -2
+        },
+        "regulatory": {
+          "count": 2,
+          "score": -3
+        },
+        "nft": {
+          "count": 2,
+          "score": 0
+        },
+        "defi": {
+          "count": 3,
+          "score": 2
+        }
+      },
+      "top_positive": [
+        {
+          "text": "XRP surges 47.8% driven by DEX growth exceeding $400M monthly volume",
+          "source": "Crypto.com",
+          "category": "market",
+          "score": 1,
+          "sentiment": "positive",
+          "confidence": 91,
+          "matches": {
+            "positive": [
+              {
+                "word": "growth",
+                "count": 1
+              }
+            ],
+            "negative": [],
+            "neutral": [
+              {
+                "word": "volume",
+                "count": 1
+              },
+              {
+                "word": "dex",
+                "count": 1
+              }
+            ]
+          },
+          "entities": {
+            "competitors": [],
+            "regulatory": [],
+            "market_signals": []
+          },
+          "timestamp": "2026-02-17T22:43:03.410Z"
+        },
+        {
+          "text": "RWA tokenization value surpasses $17B led by private credit growth",
+          "source": "Crypto.com",
+          "category": "defi",
+          "score": 1,
+          "sentiment": "positive",
+          "confidence": 100,
+          "matches": {
+            "positive": [
+              {
+                "word": "growth",
+                "count": 1
+              }
+            ],
+            "negative": [],
+            "neutral": []
+          },
+          "entities": {
+            "competitors": [],
+            "regulatory": [],
+            "market_signals": []
+          },
+          "timestamp": "2026-02-17T22:43:03.416Z"
+        },
+        {
+          "text": "Solana TVL hits record $12.1B driven by memecoin activity",
+          "source": "Binance",
+          "category": "defi",
+          "score": 1,
+          "sentiment": "positive",
+          "confidence": 100,
+          "matches": {
+            "positive": [
+              {
+                "word": "record",
+                "count": 1
+              }
+            ],
+            "negative": [],
+            "neutral": [
+              {
+                "word": "solana",
+                "count": 1
+              }
+            ]
+          },
+          "entities": {
+            "competitors": [
+              "solana"
+            ],
+            "regulatory": [],
+            "market_signals": []
+          },
+          "timestamp": "2026-02-17T22:43:03.416Z"
+        }
+      ],
+      "top_negative": [
+        {
+          "text": "SEC dismisses Coinbase lawsuit to facilitate regulatory reform",
+          "source": "SEC",
+          "category": "regulatory",
+          "score": -2,
+          "sentiment": "negative",
+          "confidence": 100,
+          "matches": {
+            "positive": [],
+            "negative": [
+              {
+                "word": "lawsuit",
+                "count": 1
+              },
+              {
+                "word": "sec",
+                "count": 1
+              }
+            ],
+            "neutral": []
+          },
+          "entities": {
+            "competitors": [
+              "coinbase"
+            ],
+            "regulatory": [
+              "sec"
+            ],
+            "market_signals": []
+          },
+          "timestamp": "2026-02-17T22:43:03.410Z"
+        },
+        {
+          "text": "Crypto market rallies to $4.12T total cap after government shutdown resolution",
+          "source": "Binance",
+          "category": "market",
+          "score": -1,
+          "sentiment": "negative",
+          "confidence": 91,
+          "matches": {
+            "positive": [],
+            "negative": [
+              {
+                "word": "shutdown",
+                "count": 1
+              }
+            ],
+            "neutral": [
+              {
+                "word": "market",
+                "count": 1
+              },
+              {
+                "word": "crypto",
+                "count": 1
+              }
+            ]
+          },
+          "entities": {
+            "competitors": [],
+            "regulatory": [],
+            "market_signals": []
+          },
+          "timestamp": "2026-02-17T22:43:03.410Z"
+        },
+        {
+          "text": "SEC closes investigations into Uniswap Labs and OpenSea with no action",
+          "source": "SEC",
+          "category": "regulatory",
+          "score": -1,
+          "sentiment": "negative",
+          "confidence": 91,
+          "matches": {
+            "positive": [],
+            "negative": [
+              {
+                "word": "sec",
+                "count": 1
+              }
+            ],
+            "neutral": []
+          },
+          "entities": {
+            "competitors": [
+              "opensea",
+              "uniswap"
+            ],
+            "regulatory": [
+              "sec"
+            ],
+            "market_signals": []
+          },
+          "timestamp": "2026-02-17T22:43:03.411Z"
+        },
+        {
+          "text": "Ethereum struggles with 8.2% decline under Solana competition",
+          "source": "Binance",
+          "category": "market",
+          "score": -1,
+          "sentiment": "negative",
+          "confidence": 100,
+          "matches": {
+            "positive": [],
+            "negative": [
+              {
+                "word": "decline",
+                "count": 1
+              }
+            ],
+            "neutral": [
+              {
+                "word": "ethereum",
+                "count": 1
+              },
+              {
+                "word": "solana",
+                "count": 1
+              }
+            ]
+          },
+          "entities": {
+            "competitors": [
+              "ethereum",
+              "solana"
+            ],
+            "regulatory": [],
+            "market_signals": []
+          },
+          "timestamp": "2026-02-17T22:43:03.415Z"
+        },
+        {
+          "text": "Stablecoin market cap grows to $217B indicating risk-off sentiment",
+          "source": "DeFiLlama",
+          "category": "market",
+          "score": -1,
+          "sentiment": "negative",
+          "confidence": 100,
+          "matches": {
+            "positive": [],
+            "negative": [
+              {
+                "word": "risk",
+                "count": 1
+              }
+            ],
+            "neutral": [
+              {
+                "word": "market",
+                "count": 1
+              }
+            ]
+          },
+          "entities": {
+            "competitors": [],
+            "regulatory": [],
+            "market_signals": []
+          },
+          "timestamp": "2026-02-17T22:43:03.415Z"
+        }
+      ]
+    }
+  ],
+  "alerts": [
+    {
+      "type": "sentiment_shift",
+      "severity": "negative",
+      "metric": "positive_sentiment",
+      "change": -20,
+      "message": "Positive sentiment dropped by 20%",
+      "timestamp": "2026-02-17T22:43:03.400Z"
+    },
+    {
+      "type": "sentiment_shift",
+      "severity": "positive",
+      "metric": "negative_sentiment",
+      "change": -40,
+      "message": "Negative sentiment dropped by 40%",
+      "timestamp": "2026-02-17T22:43:03.400Z"
+    },
+    {
+      "type": "sentiment_shift",
+      "severity": "negative",
+      "metric": "negative_sentiment",
+      "change": 60,
+      "message": "Negative sentiment surged by 60%",
+      "timestamp": "2026-02-17T22:43:03.402Z"
+    },
+    {
+      "type": "high_negative",
+      "severity": "critical",
+      "metric": "negative_concentration",
+      "value": 60,
+      "message": "High negative sentiment: 60% of news is negative",
+      "timestamp": "2026-02-17T22:43:03.402Z"
+    },
+    {
+      "type": "sentiment_shift",
+      "severity": "positive",
+      "metric": "positive_sentiment",
+      "change": 20,
+      "message": "Positive sentiment surged by 20%",
+      "timestamp": "2026-02-17T22:43:03.404Z"
+    },
+    {
+      "type": "sentiment_shift",
+      "severity": "positive",
+      "metric": "negative_sentiment",
+      "change": -60,
+      "message": "Negative sentiment dropped by 60%",
+      "timestamp": "2026-02-17T22:43:03.404Z"
+    },
+    {
+      "type": "sentiment_shift",
+      "severity": "positive",
+      "metric": "positive_sentiment",
+      "change": 20,
+      "message": "Positive sentiment surged by 20%",
+      "timestamp": "2026-02-17T22:43:03.406Z"
+    },
+    {
+      "type": "sentiment_shift",
+      "severity": "negative",
+      "metric": "negative_sentiment",
+      "change": 20,
+      "message": "Negative sentiment surged by 20%",
+      "timestamp": "2026-02-17T22:43:03.406Z"
+    },
+    {
+      "type": "sentiment_shift",
+      "severity": "negative",
+      "metric": "positive_sentiment",
+      "change": -60,
+      "message": "Positive sentiment dropped by 60%",
+      "timestamp": "2026-02-17T22:43:03.408Z"
+    },
+    {
+      "type": "sentiment_shift",
+      "severity": "positive",
+      "metric": "positive_sentiment",
+      "change": 20,
+      "message": "Positive sentiment surged by 20%",
+      "timestamp": "2026-02-17T22:43:03.416Z"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+2026-02-17 12:04:54,976 - mc-websocket - INFO - Starting WebSocket server on 0.0.0.0:8765
+2026-02-17 12:04:54,986 - mc-websocket - INFO - Starting file watcher...
+2026-02-17 12:04:54,991 - websockets.server - INFO - server listening on 0.0.0.0:8765
+2026-02-17 12:04:54,991 - mc-websocket - INFO - WebSocket server started on ws://0.0.0.0:8765
+2026-02-17 12:05:10,229 - websockets.server - INFO - connection open
+2026-02-17 12:05:10,230 - mc-websocket - INFO - Client connected. Total: 1
+2026-02-17 12:05:10,232 - mc-websocket - ERROR - Error sending initial state: received 1000 (OK); then sent 1000 (OK)
+2026-02-17 12:05:10,232 - mc-websocket - ERROR - Error handling message: received 1000 (OK); then sent 1000 (OK)
+2026-02-17 12:05:10,232 - mc-websocket - INFO - Client disconnected. Total: 0
+2026-02-17 12:05:10,233 - websockets.server - INFO - connection open
+2026-02-17 12:05:10,233 - mc-websocket - INFO - Client connected. Total: 1
+2026-02-17 12:05:10,234 - mc-websocket - ERROR - Error sending initial state: received 1000 (OK); then sent 1000 (OK)
+2026-02-17 12:05:10,235 - mc-websocket - INFO - Client subscribed to channel: agent_status
+2026-02-17 12:05:10,235 - mc-websocket - ERROR - Error handling message: received 1000 (OK); then sent 1000 (OK)
+2026-02-17 12:05:10,235 - mc-websocket - INFO - Client disconnected. Total: 0
+2026-02-17 12:05:45,129 - websockets.server - INFO - connection open
+2026-02-17 12:05:45,129 - mc-websocket - INFO - Client connected. Total: 1
+2026-02-17 12:05:45,131 - mc-websocket - ERROR - Error sending initial state: received 1000 (OK); then sent 1000 (OK)
+2026-02-17 12:05:45,131 - mc-websocket - ERROR - Error handling message: received 1000 (OK); then sent 1000 (OK)
+2026-02-17 12:05:45,131 - mc-websocket - INFO - Client disconnected. Total: 0
+2026-02-17 12:05:45,131 - websockets.server - INFO - connection open
+2026-02-17 12:05:45,132 - mc-websocket - INFO - Client connected. Total: 1
+2026-02-17 12:05:45,133 - mc-websocket - ERROR - Error sending initial state: received 1000 (OK); then sent 1000 (OK)
+2026-02-17 12:05:45,133 - mc-websocket - INFO - Client subscribed to channel: agent_status
+2026-02-17 12:05:45,133 - mc-websocket - ERROR - Error handling message: received 1000 (OK); then sent 1000 (OK)
+2026-02-17 12:05:45,133 - mc-websocket - INFO - Client disconnected. Total: 0

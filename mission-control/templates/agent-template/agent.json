@@ -1,0 +1,29 @@
+{
+  "id": "{{AGENT_ID}}",
+  "name": "{{AGENT_NAME}}",
+  "type": "{{AGENT_TYPE}}",
+  "role": "{{AGENT_ROLE}}",
+  "priority": "{{AGENT_PRIORITY}}",
+  "status": "active",
+  "created_at": "{{CREATED_AT}}",
+  "version": "1.0.0",
+  "metrics": {
+    "tasks_completed": 0,
+    "tasks_failed": 0,
+    "last_active": null,
+    "uptime_hours": 0
+  },
+  "capabilities": [],
+  "dependencies": [],
+  "config": {
+    "auto_start": true,
+    "heartbeat_interval": 300,
+    "log_level": "info",
+    "max_concurrent_tasks": 3
+  },
+  "contact": {
+    "telegram": null,
+    "email": null,
+    "webhook": null
+  }
+}

@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🤝 Partnership Opportunity Finder Dashboard</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .header {
+            text-align: center;
+            padding: 30px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 20px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .header .subtitle {
+            color: #888;
+            font-size: 1.1em;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background: rgba(255,255,255,0.05);
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: transform 0.3s;
+        }
+        .stat-card:hover { transform: translateY(-5px); }
+        .stat-card .number {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #667eea;
+        }
+        .stat-card .label {
+            color: #888;
+            margin-top: 5px;
+        }
+        .opportunities-list {
+            display: grid;
+            gap: 20px;
+        }
+        .opportunity-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            padding: 25px;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.3s;
+        }
+        .opportunity-card:hover {
+            background: rgba(255,255,255,0.08);
+            transform: translateX(5px);
+        }
+        .opportunity-card.high-priority { border-left: 4px solid #2ecc71; }
+        .opportunity-card.medium-priority { border-left: 4px solid #f39c12; }
+        .opportunity-card.low-priority { border-left: 4px solid #e74c3c; }
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+        .company-name {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #fff;
+        }
+        .score-badge {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+        .signal-type {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            margin-right: 10px;
+            color: #fff;
+        }
+        .meta-info {
+            display: flex;
+            gap: 20px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+        .meta-item {
+            color: #888;
+            font-size: 0.9em;
+        }
+        .meta-item strong {
+            color: #fff;
+        }
+        .description {
+            color: #bbb;
+            line-height: 1.6;
+            margin: 15px 0;
+        }
+        .signals {
+            margin: 15px 0;
+        }
+        .signals h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        .signal-tag {
+            display: inline-block;
+            background: rgba(102, 126, 234, 0.2);
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            margin: 5px 5px 0 0;
+            color: #a8b5ff;
+        }
+        .contact-info {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        .contact-info h4 {
+            color: #2ecc71;
+            margin-bottom: 10px;
+        }
+        .contact-link {
+            display: inline-block;
+            color: #667eea;
+            text-decoration: none;
+            margin-right: 15px;
+            font-size: 0.9em;
+        }
+        .contact-link:hover {
+            text-decoration: underline;
+        }
+        .score-breakdown {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        .score-item {
+            text-align: center;
+        }
+        .score-item .value {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #667eea;
+        }
+        .score-item .label {
+            font-size: 0.75em;
+            color: #888;
+        }
+        .footer {
+            text-align: center;
+            padding: 30px;
+            color: #666;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🤝 Partnership Opportunity Finder</h1>
+        <p class="subtitle">Weekly Report - February 18, 2026</p>
+    </div>
+    
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="number">1</div>
+            <div class="label">High Priority</div>
+        </div>
+        <div class="stat-card">
+            <div class="number">11</div>
+            <div class="label">Medium Priority</div>
+        </div>
+        <div class="stat-card">
+            <div class="number">12</div>
+            <div class="label">Total Targets</div>
+        </div>
+        <div class="stat-card">
+            <div class="number">7</div>
+            <div class="label">Regions</div>
+        </div>
+    </div>
+    
+    <div class="opportunities-list">
+        
+        <div class="opportunity-card high-priority">
+            <div class="card-header">
+                <div>
+                    <div class="company-name">#1 Bybit</div>
+                    <div style="margin-top: 10px;">
+                        <span class="signal-type" style="background: #3498db;">JOB POSTING</span>
+                        <span style="color: #888;">Crypto Exchange</span>
+                    </div>
+                </div>
+                <div class="score-badge">81/100</div>
+            </div>
+            
+            <div class="meta-info">
+                <div class="meta-item"><strong>📍</strong> Singapore / Southeast Asia</div>
+                <div class="meta-item"><strong>📅</strong> Discovered: 2025-02-18</div>
+            </div>
+            
+            <div class="description">P2P Business Development - SEA - Responsible for exploring, acquiring, and maintaining local resources while driving strategic partnerships that enhance payment ecosystem.</div>
+            
+            <div class="signals">
+                <h4>🎯 Why They're Seeking Partners</h4>
+                <span class="signal-tag">Hiring BD for SEA expansion</span><span class="signal-tag">P2P payment focus</span><span class="signal-tag">Strategic partnerships</span>
+            </div>
+            
+            <div class="score-breakdown">
+                <div class="score-item">
+                    <div class="value">85</div>
+                    <div class="label">Strategic Fit</div>
+                </div>
+                <div class="score-item">
+                    <div class="value">75</div>
+                    <div class="label">Urgency</div>
+                </div>
+                <div class="score-item">
+                    <div class="value">90</div>
+                    <div class="label">Market</div>
+                </div>
+                <div class="score-item">
+                    <div class="value">70</div>
+                    <div class="label">Access</div>
+                </div>
+                <div class="score-item">
+                    <div class="value">85</div>
+                    <div class="label">Timing</div>
+                </div>
+            </div>
+            
+            <div class="contact-info">
+                <h4>📞 Contact Information</h4>
+                
+                <a href="https://www.linkedin.com/company/bybit" class="contact-link" target="_blank">💼 LinkedIn</a>
+                
+                <a href="https://www.bybit.com/en-US/careers" class="contact-link" target="_blank">💼 Careers</a>
+            </div>
+        </div>
+          
+        <div class="opportunity-card medium-priority">
+            <div class="card-header">
+                <div>
+                    <div class="company-name">#2 Solana Foundation</div>
+                    <div style="margin-top: 10px;">
+                        <span class="signal-type" style="background: #3498db;">JOB POSTING</span>
+                        <span style="color: #888;">Blockchain</span>
+                    </div>
+                </div>
+                <div class="score-badge">79/100</div>
+            </div>
+            
+            <div class="meta-info">
+                <div class="meta-item"><strong>📍</strong> Southeast Asia</div>
+                <div class="meta-item"><strong>📅</strong> Discovered: 2025-02-18</div>
+            </div>
+            
+            <div class="description">Growth Lead - Southeast Asia - 7-12 years experience in business development, partnerships, or strategy within payments, fintech, blockchain, and/or financial services.</div>
+            
+            <div class="signals">
+                <h4>🎯 Why They're Seeking Partners</h4>
+                <span class="signal-tag">Hiring growth lead for SEA</span><span class="signal-tag">Payments focus</span><span class="signal-tag">Partnership strategy</span>
+            </div>
+            
+            <div class="score-breakdown">
+                <div class="score-item">
+                    <div class="value">80</div>
+                    <div class="label">Strategic Fit</div>
+                </div>
+                <div class="score-item">
+                    <div class="value">75</div>
+                    <div class="label">Urgency</div>
+                </div>
+                <div class="score-item">
+                    <div class="value">85</div>
+                    <div class="label">Market</div>
+                </div>
+                <div class="score-item">
+                    <div class="value">75</div>
+                    <div class="label">Access</div>
+                </div>
+                <div class="score-item">
+                    <div class="value">80</div>
+                    <div class="label">Timing</div>
+                </div>
+            </div>
+            
+            <div class="contact-info">
+                <h4>📞 Contact Information</h4>
+                
+                <a href="https://www.linkedin.com/company/solana-foundation" class="contact-link" target="_blank">💼 LinkedIn</a>
+                
+                <a href="https://jobs.solana.com" class="contact-link" target="_blank">💼 Careers</a>
+            </div>
+        </div>
+          
+        <div class="opportunity-card medium-priority">
+            <div class="card-header">
+                <div>
+                    <div class="company-name">#3 Crypto.com</div>
+                    <div style="margin-top: 10px;">
+                        <span class="signal-type" style="background: #9b59b6;">CONFERENCE</span>
+                        <span style="color: #888;">Crypto Exchange</span>
+                    </div>
+                </div>
+                <div class="score-badge">79/100</div>
+            </div>
+            
+            <div class="meta-info">
+                <div class="meta-item"><strong>📍</strong> Singapore / Hong Kong</div>
+                <div class="meta-item"><strong>📅</strong> Discovered: 2025-02-18</div>
+            </div>
+            
+            <div class="description">Active at Consensus Hong Kong 2025 - Singapore-based exchange actively seeking institutional partnerships and integrations. Speaking at major conferences.</div>
+            
+            <div class="signals">
+                <h4>🎯 Why They're Seeking Partners</h4>
+                <span class="signal-tag">Conference presence</span><span class="signal-tag">Institutional focus</span><span class="signal-tag">Partnership outreach</span>
+            </div>
+            
+            <div class="score-breakdown">
+                <div class="score-item">
+                    <div class="value">75</div>
+                    <div class="label">Strategic Fit</div>
+                </div>
+                <div class="score-item">
+                    <div class="value">80</div>
+                    <div class="label">Urgency</div>
+                </div>
+                <div class="score-item">
+                    <div class="value">95</div>
+                    <div class="label">Market</div>
+                </div>
+                <div class="score-item">
+                    <div class="value">60</div>
+                    <div class="label">Access</div>
+                </div>
+                <div class="score-item">
+                    <div class="value">80</div>
+                    <div class="label">Timing</div>
+                </div>
+            </div>
+            
+            <div class="contact-info">
+                <h4>📞 Contact Information</h4>
+                <a href="https://crypto.com" class="contact-link" target="_blank">🌐 Website</a>
+                <a href="https://www.linkedin.com/company/cryptocom" class="contact-link" target="_blank">💼 LinkedIn</a>
+                <a href="mailto:institutional@crypto.com" class="contact-link">📧 institutional@crypto.com</a>
+                
+            </div>
+        </div>
+          
+        <div class="opportunity-card medium-priority">
+            <div class="card-header">
+                <div>
+                    <div class="company-name">#4 Remitly</div>
+                    <div style="margin-top: 10px;">
+                        <span class="signal-type" style="background: #e74c3c;">PRESS RELEASE</span>
+                        <span style="color: #888;">Remittance / Fintech</span>
+                    </div>
+                </div>
+                <div class="score-badge">78/100</div>
+            </div>
+            
+            <div class="meta-info">
+                <div class="meta-item"><strong>📍</strong> Philippines / US / Canada</div>
+                <div class="meta-item"><strong>📅</strong> Discovered: 2025-02-18</div>
+            </div>
+            
+            <div class="description">Stablecoin Remittance Partnership with Coins.ph - Collaborating to launch stablecoin-powered remittance service targeting OFWs in US and Canada.</div>
+            
+            <div class="signals">
+                <h4>🎯 Why They're Seeking Partners</h4>
+                <span class="signal-tag">Active Coins.ph partnership</span><span class="signal-tag">Stablecoin focus</span><span class="signal-tag">OFW market</span>
+            </div>
+            
+            <div class="score-breakdown">
+                <div class="score-item">
+                    <div class="value">95</div>
+                    <div class="label">Strategic Fit</div>
+                </div>
+                <div class="score-item">
+                    <div class="value">50</div>
+                    <div class="label">Urgency</div>
+                </div>
+                <div class="score-item">
+                    <div class="value">85</div>
+                    <div class="label">Market</div>
+                </div>
+                <div class="score-item">
+                    <div class="value">75</div>
+                    <div class="label">Access</div>
+                </div>
+                <div class="score-item">
+                    <div class="value">90</div>
+                    <div class="label">Timing</div>
+                </div>
+            </div>
+            
+            <div class="contact-info">
+                <h4>📞 Contact Information</h4>
+                <a href="https://www.remitly.com" class="contact-link" target="_blank">🌐 Website</a>
+                <a href="https://www.linkedin.com/company/remitly" class="contact-link" target="_blank">💼 LinkedIn</a>
+                <a href="mailto:partnerships@remitly.com" class="contact-link">📧 partnerships@remitly.com</a>
+                
+            </div>
+        </div>
+          
+        <div class="opportunity-card medium-priority">
+            <div class="card-header">
+                <div>
+                    <div class="company-name">#5 Matrixport</div>
+                    <div style="margin-top: 10px;">
+                        <span class="signal-type" style="background: #3498db;">JOB POSTING</span>
+                        <span style="color: #888;">Crypto Financial Services</span>
+                    </div>
+                </div>
+                <div class="score-badge">73/100</div>
+            </div>
+            
+            <div class="meta-info">
+                <div class="meta-item"><strong>📍</strong> Southeast Asia</div>
+                <div class="meta-item"><strong>📅</strong> Discovered: 2025-02-18</div>
+            </div>
+            
+            <div class="description">Business Development Manager, Custody (SEA) - Support growth of custody business across Southeast Asia. Mid-level role focused on institutional partnerships.</div>
+            
+            <div class="signals">
+                <h4>🎯 Why They're Seeking Partners</h4>
+                <span class="signal-tag">Custody business expansion</span><span class="signal-tag">Institutional focus</span><span class="signal-tag">SEA hiring</span>
+            </div>
+            
+            <div class="score-breakdown">
+                <div class="score-item">
+                    <div class="value">75</div>
+                    <div class="label">Strategic Fit</div>
+                </div>
+                <div class="score-item">
+                    <div class="value">75</div>
+                    <div class="label">Urgency</div>
+                </div>
+                <div class="score-item">
+                    <div class="value">70</div>
+                    <div class="label">Market</div>
+                </div>
+                <div class="score-item">
+                    <div class="value">65</div>
+                    <div class="label">Access</div>
+                </div>
+                <div class="score-item">
+                    <div class="value">75</div>
+                    <div class="label">Timing</div>
+                </div>
+            </div>
+            
+            <div class="contact-info">
+                <h4>📞 Contact Information</h4>
+                <a href="https://www.matrixport.com" class="contact-link" target="_blank">🌐 Website</a>
+                <a href="https://www.linkedin.com/company/matrixport" class="contact-link" target="_blank">💼 LinkedIn</a>
+                
+                
+            </div>
+        </div>
+          
+        <div class="opportunity-card medium-priority">
+            <div class="card-header">
+                <div>
+                    <div class="company-name">#6 Veem</div>
+                    <div style="margin-top: 10px;">
+                        <span class="signal-type" style="background: #e74c3c;">PRESS RELEASE</span>
+                        <span style="color: #888;">B2B Payments</span>
+                    </div>
+                </div>
+                <div class="score-badge">73/100</div>
+            </div>
+            
+            <div class="meta-info">
+                <div class="meta-item"><strong>📍</strong> Philippines / US / Canada</div>
+                <div class="meta-item"><strong>📅</strong> Discovered: 2025-02-18</div>
+            </div>
+            
+            <div class="description">Cross-border Payments Partnership with Coins.ph - Partnered to improve payments from US and Canada to Philippines, addressing inefficiencies in international payouts.</div>
+            
+            <div class="signals">
+                <h4>🎯 Why They're Seeking Partners</h4>
+                <span class="signal-tag">Active Coins.ph partnership</span><span class="signal-tag">B2B focus</span><span class="signal-tag">Cross-border payments</span>
+            </div>
+            
+            <div class="score-breakdown">
+                <div class="score-item">
+                    <div class="value">90</div>
+                    <div class="label">Strategic Fit</div>
+                </div>
+                <div class="score-item">
+                    <div class="value">50</div>
+                    <div class="label">Urgency</div>
+                </div>
+                <div class="score-item">
+                    <div class="value">70</div>
+                    <div class="label">Market</div>
+                </div>
+                <div class="score-item">
+                    <div class="value">70</div>
+                    <div class="label">Access</div>
+                </div>
+                <div class="score-item">
+                    <div class="value">85</div>
+                    <div class="label">Timing</div>
+                </div>
+            </div>
+            
+            <div class="contact-info">
+                <h4>📞 Contact Information</h4>
+                <a href="https://www.veem.com" class="contact-link" target="_blank">🌐 Website</a>
+                <a href="https://www.linkedin.com/company/veem" class="contact-link" target="_blank">💼 LinkedIn</a>
+                <a href="mailto:partners@veem.com" class="contact-link">📧 partners@veem.com</a>
+                
+            </div>
+        </div>
+          
+        <div class="opportunity-card medium-priority">
+            <div class="card-header">
+                <div>
+                    <div class="company-name">#7 PayMongo</div>
+                    <div style="margin-top: 10px;">
+                        <span class="signal-type" style="background: #2ecc71;">WEBSITE CHANGE</span>
+                        <span style="color: #888;">Fintech / Payments</span>
+                    </div>
+                </div>
+                <div class="score-badge">73/100</div>
+            </div>
+            
+            <div class="meta-info">
+                <div class="meta-item"><strong>📍</strong> Philippines</div>
+                <div class="meta-item"><strong>📅</strong> Discovered: 2025-02-18</div>
+            </div>
+            
+            <div class="description">Philippines Payment Gateway - Integration Focus - Leading payment gateway in Philippines with strong API integration capabilities. Expanding partner ecosystem.</div>
+            
+            <div class="signals">
+                <h4>🎯 Why They're Seeking Partners</h4>
+                <span class="signal-tag">API-first platform</span><span class="signal-tag">Integration marketplace</span><span class="signal-tag">PH market leader</span>
+            </div>
+            
+            <div class="score-breakdown">
+                <div class="score-item">
+                    <div class="value">85</div>
+                    <div class="label">Strategic Fit</div>
+                </div>
+                <div class="score-item">
+                    <div class="value">50</div>
+                    <div class="label">Urgency</div>
+                </div>
+                <div class="score-item">
+                    <div class="value">75</div>
+                    <div class="label">Market</div>
+                </div>
+                <div class="score-item">
+                    <div class="value">80</div>
+                    <div class="label">Access</div>
+                </div>
+                <div class="score-item">
+                    <div class="value">80</div>
+                    <div class="label">Timing</div>
+                </div>
+            </div>
+            
+            <div class="contact-info">
+                <h4>📞 Contact Information</h4>
+                <a href="https://www.paymongo.com" class="contact-link" target="_blank">🌐 Website</a>
+                <a href="https://www.linkedin.com/company/paymongo" class="contact-link" target="_blank">💼 LinkedIn</a>
+                <a href="mailto:partnerships@paymongo.com" class="contact-link">📧 partnerships@paymongo.com</a>
+                
+            </div>
+        </div>
+          
+        <div class="opportunity-card medium-priority">
+            <div class="card-header">
+                <div>
+                    <div class="company-name">#8 Starpago</div>
+                    <div style="margin-top: 10px;">
+                        <span class="signal-type" style="background: #f39c12;">PARTNERSHIP PAGE</span>
+                        <span style="color: #888;">Fintech / Payments</span>
+                    </div>
+                </div>
+                <div class="score-badge">72/100</div>
+            </div>
+            
+            <div class="meta-info">
+                <div class="meta-item"><strong>📍</strong> Philippines</div>
+                <div class="meta-item"><strong>📅</strong> Discovered: 2025-02-18</div>
+            </div>
+            
+            <div class="description">Digital Payments Partnership with Coins.ph - Streamlined way for companies to collect payments through Philippines QR Ph standard. Recently partnered with Coins.ph.</div>
+            
+            <div class="signals">
+                <h4>🎯 Why They're Seeking Partners</h4>
+                <span class="signal-tag">Active partnership with Coins.ph</span><span class="signal-tag">QR Ph integration</span><span class="signal-tag">B2B payments</span>
+            </div>
+            
+            <div class="score-breakdown">
+                <div class="score-item">
+                    <div class="value">90</div>
+                    <div class="label">Strategic Fit</div>
+                </div>
+                <div class="score-item">
+                    <div class="value">50</div>
+                    <div class="label">Urgency</div>
+                </div>
+                <div class="score-item">
+                    <div class="value">60</div>
+                    <div class="label">Market</div>
+                </div>
+                <div class="score-item">
+                    <div class="value">80</div>
+                    <div class="label">Access</div>
+                </div>
+                <div class="score-item">
+                    <div class="value">85</div>
+                    <div class="label">Timing</div>
+                </div>
+            </div>
+            
+            <div class="contact-info">
+                <h4>📞 Contact Information</h4>
+                <a href="https://starpago.com" class="contact-link" target="_blank">🌐 Website</a>
+                <a href="https://www.linkedin.com/company/starpago" class="contact-link" target="_blank">💼 LinkedIn</a>
+                
+                
+            </div>
+        </div>
+          
+        <div class="opportunity-card medium-priority">
+            <div class="card-header">
+                <div>
+                    <div class="company-name">#9 Xendit</div>
+                    <div style="margin-top: 10px;">
+                        <span class="signal-type" style="background: #2ecc71;">WEBSITE CHANGE</span>
+                        <span style="color: #888;">Fintech / Payments</span>
+                    </div>
+                </div>
+                <div class="score-badge">72/100</div>
+            </div>
+            
+            <div class="meta-info">
+                <div class="meta-item"><strong>📍</strong> Southeast Asia</div>
+                <div class="meta-item"><strong>📅</strong> Discovered: 2025-02-18</div>
+            </div>
+            
+            <div class="description">SEA Payment Gateway - Partner Program - Leading payment gateway across SEA (Indonesia, Philippines). Active partner program for integrations.</div>
+            
+            <div class="signals">
+                <h4>🎯 Why They're Seeking Partners</h4>
+                <span class="signal-tag">Partner program active</span><span class="signal-tag">Multi-country presence</span><span class="signal-tag">API integrations</span>
+            </div>
+            
+            <div class="score-breakdown">
+                <div class="score-item">
+                    <div class="value">80</div>
+                    <div class="label">Strategic Fit</div>
+                </div>
+                <div class="score-item">
+                    <div class="value">50</div>
+                    <div class="label">Urgency</div>
+                </div>
+                <div class="score-item">
+                    <div class="value">85</div>
+                    <div class="label">Market</div>
+                </div>
+                <div class="score-item">
+                    <div class="value">75</div>
+                    <div class="label">Access</div>
+                </div>
+                <div class="score-item">
+                    <div class="value">75</div>
+                    <div class="label">Timing</div>
+                </div>
+            </div>
+            
+            <div class="contact-info">
+                <h4>📞 Contact Information</h4>
+                <a href="https://www.xendit.co" class="contact-link" target="_blank">🌐 Website</a>
+                <a href="https://www.linkedin.com/company/xendit" class="contact-link" target="_blank">💼 LinkedIn</a>
+                
+                
+            </div>
+        </div>
+          
+        <div class="opportunity-card medium-priority">
+            <div class="card-header">
+                <div>
+                    <div class="company-name">#10 Nuvei</div>
+                    <div style="margin-top: 10px;">
+                        <span class="signal-type" style="background: #e74c3c;">PRESS RELEASE</span>
+                        <span style="color: #888;">Payment Processing</span>
+                    </div>
+                </div>
+                <div class="score-badge">72/100</div>
+            </div>
+            
+            <div class="meta-info">
+                <div class="meta-item"><strong>📍</strong> Global / SEA</div>
+                <div class="meta-item"><strong>📅</strong> Discovered: 2025-02-18</div>
+            </div>
+            
+            <div class="description">Payments Partnership Expansion - Global payment processor with dedicated partnerships team. Expanding crypto payment solutions.</div>
+            
+            <div class="signals">
+                <h4>🎯 Why They're Seeking Partners</h4>
+                <span class="signal-tag">Partnership team</span><span class="signal-tag">Crypto expansion</span><span class="signal-tag">Global reach</span>
+            </div>
+            
+            <div class="score-breakdown">
+                <div class="score-item">
+                    <div class="value">80</div>
+                    <div class="label">Strategic Fit</div>
+                </div>
+                <div class="score-item">
+                    <div class="value">50</div>
+                    <div class="label">Urgency</div>
+                </div>
+                <div class="score-item">
+                    <div class="value">90</div>
+                    <div class="label">Market</div>
+                </div>
+                <div class="score-item">
+                    <div class="value">65</div>
+                    <div class="label">Access</div>
+                </div>
+                <div class="score-item">
+                    <div class="value">75</div>
+                    <div class="label">Timing</div>
+                </div>
+            </div>
+            
+            <div class="contact-info">
+                <h4>📞 Contact Information</h4>
+                <a href="https://www.nuvei.com" class="contact-link" target="_blank">🌐 Website</a>
+                <a href="https://www.linkedin.com/company/nuvei" class="contact-link" target="_blank">💼 LinkedIn</a>
+                <a href="mailto:partners@nuvei.com" class="contact-link">📧 partners@nuvei.com</a>
+                
+            </div>
+        </div>
+          
+    </div>
+    
+    <div class="footer">
+        <p>Generated by Scout Partnership Opportunity Finder | coins.ph/coins.xyz Strategic Partnership Intelligence</p>
+        <p style="margin-top: 10px; font-size: 0.9em;">2/18/2026, 6:45:51 AM</p>
+    </div>
+</body>
+</html>

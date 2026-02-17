@@ -1,0 +1,38 @@
+{
+  "agent": "code",
+  "codename": "The Architect",
+  "status": "operational",
+  "initialized": "2026-02-17",
+  "lastActive": "2026-02-17T08:42:00+08:00",
+  "specialties": [
+    "backend_systems",
+    "api_integrations",
+    "database_design",
+    "automation_scripts",
+    "infrastructure_code"
+  ],
+  "partner": "forge",
+  "reports_to": "nexus",
+  "commander": "ericf",
+  "active_projects": [
+    {
+      "id": "dashboard-backend",
+      "name": "Mission Control Dashboard Backend",
+      "status": "in_progress",
+      "started": "2026-02-17T08:46:00+08:00",
+      "collaborators": ["forge"]
+    }
+  ],
+  "completed_projects": [],
+  "stats": {
+    "tasksCompleted": 0,
+    "tasksActive": 1,
+    "apisBuilt": 1,
+    "filesCreated": 4
+  },
+  "current_task": {
+    "description": "Build dashboard backend API with Forge",
+    "assigned_by": "nexus",
+    "priority": "P1"
+  }
+}

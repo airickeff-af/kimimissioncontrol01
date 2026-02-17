@@ -1,0 +1,70 @@
+{
+  "lastChecks": {
+    "agentHealth": 1771362420,
+    "taskQueue": 1771362420,
+    "systemResources": 1771363020,
+    "memoryMaintenance": 1771362420
+  },
+  "checkRotation": {
+    "current": "A",
+    "sequence": ["A", "B", "C", "D"],
+    "lastRotation": 1771362420,
+    "counter": 45
+  },
+  "alertSuppression": {
+    "lastAlertSent": 1771341429,
+    "suppressedAlerts": [],
+    "alertCooldownMinutes": 30,
+    "maxAlertsPerHour": 3
+  },
+  "agentHealth": {
+    "lastFullCheck": 1771352378,
+    "abortedSessions": [
+      {
+        "sessionId": "fac6e107-7e3f-4f5a-9f5d-9e6f5e4d3c2b",
+        "label": "dealflow-contact-research",
+        "detectedAt": 1771350540,
+        "recoveryStatus": "pending",
+        "recoveryProtocolApplied": false
+      }
+    ],
+    "abortPattern": {
+      "last24h": 1,
+      "byAgentType": {
+        "dealflow": 1
+      }
+    }
+  },
+  "tokenUsage": {
+    "mainSession": 191465,
+    "threshold": 200000,
+    "lastChecked": 1771354178,
+    "alertsSent": 0,
+    "trend": "increasing",
+    "growthRate": 15000
+  },
+  "systemResources": {
+    "diskSpace": {
+      "total": "40G",
+      "used": "9.0G",
+      "available": "29G",
+      "usePercent": 25
+    },
+    "lastChecked": 1771354178
+  },
+  "metrics": {
+    "heartbeatsCompleted": 30,
+    "alertsTriggered": 1,
+    "tasksProcessed": 10,
+    "selfImprovements": 3,
+    "frictionPointsIdentified": 4,
+    "blockedTasks": 25,
+    "overdueP0Tasks": 3
+  },
+  "improvementCycles": {
+    "totalActive": 4,
+    "dailyRuns": 88,
+    "estimatedTokenWaste": 60000,
+    "consolidationRecommended": true
+  }
+}

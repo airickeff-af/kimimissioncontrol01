@@ -1,0 +1,68 @@
+{
+  "alerts": [
+    {
+      "id": "test-1771367400571",
+      "timestamp": "2026-02-17T22:30:00.571Z",
+      "competitor": "Binance",
+      "type": "MAJOR",
+      "title": "Test Alert: Major Partnership Announcement",
+      "description": "This is a test alert to verify the notification system is working.",
+      "url": "https://example.com/test",
+      "keywords": [
+        "partnership",
+        "test"
+      ],
+      "severity": "major"
+    },
+    {
+      "id": "alert-1771368120468-49f6lv4qp",
+      "timestamp": "2026-02-17T22:42:00.468Z",
+      "competitor": "Binance",
+      "type": "PARTNERSHIP",
+      "title": "Binance Announces Strategic Partnership with SEA Payment Provider",
+      "description": "Major partnership to expand crypto payment infrastructure across Southeast Asia. Integration expected Q2 2026.",
+      "url": "https://example.com/binance-partnership",
+      "priority": "P0"
+    },
+    {
+      "id": "alert-1771368120471-ytmrxskw0",
+      "timestamp": "2026-02-17T22:42:00.471Z",
+      "competitor": "Stripe",
+      "type": "PRODUCT_LAUNCH",
+      "title": "Stripe Launches Crypto Payouts for SEA Merchants",
+      "description": "New feature allowing merchants to receive payments in stablecoins across 6 SEA countries.",
+      "url": "https://example.com/stripe-crypto",
+      "priority": "P0"
+    },
+    {
+      "id": "alert-1771368120471-mly0815kw",
+      "timestamp": "2026-02-17T22:42:00.471Z",
+      "competitor": "Coinbase",
+      "type": "MARKET_ENTRY",
+      "title": "Coinbase Secures Hong Kong VASP License",
+      "description": "Regulatory approval to operate virtual asset trading platform in Hong Kong.",
+      "url": "https://example.com/coinbase-hk",
+      "priority": "P0"
+    },
+    {
+      "id": "alert-1771368120472-8143oxcti",
+      "timestamp": "2026-02-17T22:42:00.472Z",
+      "competitor": "Wise",
+      "type": "KEY_HIRE",
+      "title": "Wise Appoints Former Grab Exec as SEA Regional Head",
+      "description": "New hire brings extensive experience in SEA fintech expansion.",
+      "priority": "P1"
+    },
+    {
+      "id": "alert-1771368120473-azyv60j6e",
+      "timestamp": "2026-02-17T22:42:00.473Z",
+      "competitor": "Crypto.com",
+      "type": "FUNDING",
+      "title": "Crypto.com Raises $200M Series D for Asia Expansion",
+      "description": "Funding round led by SEA sovereign wealth fund to accelerate regional growth.",
+      "url": "https://example.com/cryptocom-funding",
+      "priority": "P0"
+    }
+  ],
+  "lastCheck": "2026-02-17T22:42:00.473Z"
+}

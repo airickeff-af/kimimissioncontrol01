@@ -1,0 +1,68 @@
+[
+  {
+    "id": "lead_001",
+    "name": "Nichel Gaba",
+    "company": "PDAX",
+    "title": "Founder & CEO",
+    "domain": "pdax.ph",
+    "region": "Philippines",
+    "industry": "Cryptocurrency Exchange",
+    "priority": "P1",
+    "score": 70
+  },
+  {
+    "id": "lead_002",
+    "name": "Wei Zhou",
+    "company": "Coins.ph",
+    "title": "CEO",
+    "domain": "coins.ph",
+    "region": "Philippines",
+    "industry": "Cryptocurrency Wallet",
+    "priority": "P1",
+    "score": 68
+  },
+  {
+    "id": "lead_003",
+    "name": "George Royeca",
+    "company": "Angkas",
+    "title": "CEO",
+    "domain": "angkas.com",
+    "region": "Philippines",
+    "industry": "Transportation",
+    "priority": "P2",
+    "score": 56
+  },
+  {
+    "id": "lead_004",
+    "name": "Martha Sazon",
+    "company": "GCash",
+    "title": "CEO",
+    "domain": "gcash.com",
+    "region": "Philippines",
+    "industry": "Fintech",
+    "priority": "P2",
+    "score": 56
+  },
+  {
+    "id": "lead_005",
+    "name": "Moses Lo",
+    "company": "Xendit",
+    "title": "CEO & Co-Founder",
+    "domain": "xendit.co",
+    "region": "Southeast Asia",
+    "industry": "Payments",
+    "priority": "P2",
+    "score": 55
+  },
+  {
+    "id": "lead_006",
+    "name": "Kris Marszalek",
+    "company": "Crypto.com",
+    "title": "CEO & Co-Founder",
+    "domain": "crypto.com",
+    "region": "Global",
+    "industry": "Cryptocurrency Exchange",
+    "priority": "P0",
+    "score": 92
+  }
+]

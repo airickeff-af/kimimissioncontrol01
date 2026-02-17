@@ -1,0 +1,249 @@
+{
+  "lastUpdated": "2025-02-18",
+  "version": "1.0",
+  "description": "Competitor tracking configuration for SEA/HK fintech, crypto exchanges, and payment processors",
+  "competitors": [
+    {
+      "id": "binance",
+      "name": "Binance",
+      "category": "crypto_exchange",
+      "region": "Global (SEA focus)",
+      "priority": "P0",
+      "urls": {
+        "blog": "https://www.binance.com/en/blog",
+        "newsroom": "https://www.binance.com/en/newsroom",
+        "twitter": "https://x.com/binance",
+        "api_docs": "https://binance-docs.github.io/apidocs/",
+        "research": "https://www.binance.com/en/research"
+      },
+      "watchKeywords": ["partnership", "acquisition", "new listing", "regulatory", "SEA", "Hong Kong", "Singapore", "Malaysia", "Thailand", "Philippines", "Indonesia", "funding", "launch", "product"],
+      "alertThreshold": "major"
+    },
+    {
+      "id": "coinbase",
+      "name": "Coinbase",
+      "category": "crypto_exchange",
+      "region": "Global (expanding to SEA)",
+      "priority": "P0",
+      "urls": {
+        "blog": "https://www.coinbase.com/blog",
+        "newsroom": "https://www.coinbase.com/newsroom",
+        "twitter": "https://x.com/coinbase",
+        "developer": "https://www.coinbase.com/developer-platform",
+        "institutional": "https://www.coinbase.com/institutional"
+      },
+      "watchKeywords": ["Asia expansion", "Hong Kong", "Singapore", "partnership", "acquisition", "Base", "L2", "institutional", "listing", "regulatory"],
+      "alertThreshold": "major"
+    },
+    {
+      "id": "stripe",
+      "name": "Stripe",
+      "category": "payment_processor",
+      "region": "Global (strong SEA presence)",
+      "priority": "P0",
+      "urls": {
+        "newsroom": "https://stripe.com/newsroom",
+        "blog": "https://stripe.com/blog",
+        "twitter": "https://x.com/stripe",
+        "press": "https://stripe.com/newsroom/press",
+        "atlas": "https://stripe.com/atlas"
+      },
+      "watchKeywords": ["Asia", "Hong Kong", "Singapore", "Malaysia", "Thailand", "Philippines", "Indonesia", "acquisition", "funding", "new product", "crypto", "Web3", "partnership"],
+      "alertThreshold": "major"
+    },
+    {
+      "id": "wise",
+      "name": "Wise (formerly TransferWise)",
+      "category": "payment_processor",
+      "region": "Global (strong SEA presence)",
+      "priority": "P1",
+      "urls": {
+        "newsroom": "https://wise.com/newsroom",
+        "blog": "https://wise.com/blog",
+        "twitter": "https://x.com/Wise",
+        "business": "https://wise.com/business"
+      },
+      "watchKeywords": ["Asia expansion", "Hong Kong", "Singapore", "business", "API", "partnership", "acquisition", "new corridor", "crypto"],
+      "alertThreshold": "medium"
+    },
+    {
+      "id": "revolut",
+      "name": "Revolut",
+      "category": "fintech",
+      "region": "Global (expanding to SEA)",
+      "priority": "P1",
+      "urls": {
+        "newsroom": "https://www.revolut.com/en-US/newsroom",
+        "blog": "https://www.revolut.com/en-US/blog",
+        "twitter": "https://x.com/RevolutApp",
+        "business": "https://business.revolut.com"
+      },
+      "watchKeywords": ["Asia launch", "Hong Kong", "Singapore", "crypto", "business", "acquisition", "funding", "IPO", "partnership", "new market"],
+      "alertThreshold": "medium"
+    },
+    {
+      "id": "crypto_com",
+      "name": "Crypto.com",
+      "category": "crypto_exchange",
+      "region": "Singapore-based",
+      "priority": "P1",
+      "urls": {
+        "blog": "https://crypto.com/university",
+        "news": "https://crypto.com/news",
+        "twitter": "https://x.com/cryptocom",
+        "nft": "https://crypto.com/nft"
+      },
+      "watchKeywords": ["partnership", "sponsorship", "listing", "Singapore", "Hong Kong", "visa", "card", "regulatory", "staking", "rewards"],
+      "alertThreshold": "medium"
+    },
+    {
+      "id": "okx",
+      "name": "OKX",
+      "category": "crypto_exchange",
+      "region": "Global (strong Asia presence)",
+      "priority": "P1",
+      "urls": {
+        "blog": "https://www.okx.com/learn",
+        "news": "https://www.okx.com/news",
+        "twitter": "https://x.com/OKX",
+        "web3": "https://www.okx.com/web3"
+      },
+      "watchKeywords": ["Hong Kong", "Singapore", "Web3", "wallet", "DeFi", "listing", "partnership", "regulatory", "institutional"],
+      "alertThreshold": "medium"
+    },
+    {
+      "id": "bybit",
+      "name": "Bybit",
+      "category": "crypto_exchange",
+      "region": "Dubai/Singapore",
+      "priority": "P1",
+      "urls": {
+        "blog": "https://www.bybit.com/en-US/blog",
+        "news": "https://www.bybit.com/en-US/news",
+        "twitter": "https://x.com/Bybit_Official"
+      },
+      "watchKeywords": ["Singapore", "derivatives", "listing", "partnership", "institutional", "API", "trading competition", "regulatory"],
+      "alertThreshold": "medium"
+    },
+    {
+      "id": "htx",
+      "name": "HTX (formerly Huobi)",
+      "category": "crypto_exchange",
+      "region": "Asia-focused",
+      "priority": "P2",
+      "urls": {
+        "blog": "https://www.htx.com/en-us/blog",
+        "news": "https://www.htx.com/en-us/news",
+        "twitter": "https://x.com/htx_global"
+      },
+      "watchKeywords": ["Hong Kong", "listing", "HT token", "partnership", "acquisition"],
+      "alertThreshold": "low"
+    },
+    {
+      "id": "coins_ph",
+      "name": "Coins.ph",
+      "category": "crypto_exchange",
+      "region": "Philippines",
+      "priority": "P0",
+      "urls": {
+        "blog": "https://coins.ph/blog",
+        "twitter": "https://x.com/coinsph",
+        "pro": "https://pro.coins.ph"
+      },
+      "watchKeywords": ["partnership", "funding", "acquisition", "Philippines", "remittance", "new feature", "listing"],
+      "alertThreshold": "major"
+    },
+    {
+      "id": "coins_xyz",
+      "name": "Coins.xyz",
+      "category": "crypto_exchange",
+      "region": "Global",
+      "priority": "P0",
+      "urls": {
+        "twitter": "https://x.com/coins_xyz",
+        "docs": "https://docs.coins.xyz"
+      },
+      "watchKeywords": ["partnership", "API", "integration", "new market", "listing", "funding"],
+      "alertThreshold": "major"
+    },
+    {
+      "id": "grab_financial",
+      "name": "Grab Financial Group",
+      "category": "fintech",
+      "region": "SEA (Singapore-based)",
+      "priority": "P1",
+      "urls": {
+        "newsroom": "https://www.grab.com/sg/press",
+        "twitter": "https://x.com/GrabSG",
+        "financial": "https://www.grab.com/sg/financial-services"
+      },
+      "watchKeywords": ["crypto", "lending", "insurance", "partnership", "acquisition", "funding", "digital bank", "Singapore", "Malaysia", "Indonesia", "Thailand", "Philippines"],
+      "alertThreshold": "medium"
+    },
+    {
+      "id": "sea_money",
+      "name": "SeaMoney (ShopeePay)",
+      "category": "fintech",
+      "region": "SEA",
+      "priority": "P1",
+      "urls": {
+        "ir": "https://investors.sea.com/news-and-events/news-releases",
+        "twitter": "https://x.com/ShopeePay"
+      },
+      "watchKeywords": ["ShopeePay", "partnership", "funding", "digital bank", "crypto", "BNPL", "acquisition"],
+      "alertThreshold": "medium"
+    },
+    {
+      "id": "payoneer",
+      "name": "Payoneer",
+      "category": "payment_processor",
+      "region": "Global (strong SEA presence)",
+      "priority": "P2",
+      "urls": {
+        "blog": "https://blog.payoneer.com",
+        "newsroom": "https://www.payoneer.com/newsroom",
+        "twitter": "https://x.com/Payoneer"
+      },
+      "watchKeywords": ["Asia", "partnership", "acquisition", "marketplace", "API", "crypto"],
+      "alertThreshold": "low"
+    },
+    {
+      "id": "checkout_com",
+      "name": "Checkout.com",
+      "category": "payment_processor",
+      "region": "Global (Hong Kong office)",
+      "priority": "P2",
+      "urls": {
+        "newsroom": "https://www.checkout.com/newsroom",
+        "blog": "https://www.checkout.com/blog",
+        "twitter": "https://x.com/Checkout"
+      },
+      "watchKeywords": ["Hong Kong", "Singapore", "crypto", "stablecoin", "partnership", "funding", "valuation"],
+      "alertThreshold": "low"
+    }
+  ],
+  "alertConfig": {
+    "thresholds": {
+      "major": {
+        "description": "Major announcements requiring immediate attention",
+        "examples": ["acquisition", "major funding round", "regulatory approval", "major partnership", "new market entry"],
+        "notify": ["telegram", "dashboard"]
+      },
+      "medium": {
+        "description": "Important updates worth monitoring",
+        "examples": ["product launch", "minor partnership", "feature release", "executive hire"],
+        "notify": ["dashboard"]
+      },
+      "low": {
+        "description": "Routine updates",
+        "examples": ["blog post", "minor update", "event announcement"],
+        "notify": ["dashboard"]
+      }
+    }
+  },
+  "monitoringSchedule": {
+    "frequency": "daily",
+    "time": "08:00",
+    "timezone": "Asia/Shanghai"
+  }
+}
