@@ -36,7 +36,7 @@
             overflow: hidden;
         }
         
-        /* Animated grid background - same as other tabs */
+        /* Animated grid background */
         body::before {
             content: '';
             position: fixed;
@@ -58,7 +58,7 @@
             100% { transform: translate(60px, 60px); }
         }
         
-        /* Header - same style as other tabs */
+        /* Header */
         .header {
             background: rgba(17, 17, 24, 0.95);
             backdrop-filter: blur(20px);
@@ -109,7 +109,7 @@
             font-family: 'JetBrains Mono', monospace;
         }
         
-        /* Navigation - same as other tabs */
+        /* Navigation */
         .nav-tabs {
             display: flex;
             gap: 0.5rem;
@@ -262,7 +262,7 @@
             border-top: 8px solid var(--accent-cyan);
         }
         
-        /* Sidebar - same as other tabs */
+        /* Sidebar */
         .sidebar {
             background: var(--bg-secondary);
             display: flex;
@@ -513,6 +513,9 @@
             <a href="token-tracker.html" class="nav-tab">
                 <span>💰</span> Tokens
             </a>
+            <a href="task-board.html" class="nav-tab">
+                <span>📋</span> Tasks
+            </a>
         </nav>
         
         <div style="display: flex; align-items: center; gap: 1rem;">
@@ -581,66 +584,138 @@
         </div>
     </div>
 
-    <!-- Enhanced Standup Memory System -->
-    <script src="js/standup-memory.js"></script>
-    
     <script>
-        // Initialize standup manager
-        const standupManager = new StandupManager();
+        // ============================================
+        // WALKING COMPUTER HEAD AGENT SYSTEM
+        // ============================================
         
-        // All 20 agents with fixed positions and memory tracking
+        // Animation frame counter for global sync
+        let globalFrame = 0;
+        
+        // 8-frame walking animation data
+        // Each frame: [leftLegY, rightLegY, bodyBounce, shadowScale]
+        const WALK_CYCLE = [
+            [0, -4, 0, 1.0],      // Frame 0: Left down, right up
+            [2, -2, -1, 0.95],    // Frame 1: Transition
+            [4, 0, -2, 0.9],      // Frame 2: Left up, right down
+            [2, 2, -1, 0.95],     // Frame 3: Transition
+            [0, 4, 0, 1.0],       // Frame 4: Left down, right up (opposite)
+            [-2, 2, -1, 0.95],    // Frame 5: Transition
+            [-4, 0, -2, 0.9],     // Frame 6: Left up, right down (opposite)
+            [-2, -2, -1, 0.95],   // Frame 7: Transition
+        ];
+        
+        // Department colors for screen glow
+        const DEPT_COLORS = {
+            'Executive': '#ff2a6d',
+            'Dev': '#22c55e',
+            'Design': '#a855f7',
+            'Content': '#00d4ff',
+            'Growth': '#f97316',
+            'Ops': '#fbbf24',
+            'Business Dev': '#22c55e'
+        };
+        
+        // All 20 agents with walking computer head design
         const agents = [
             // EXECUTIVE BALCONY (Top)
-            { id: 'ericf', name: 'EricF', emoji: '👨‍💻', role: 'Commander', x: 250, y: 80, color: '#ff2a6d', status: 'working', activity: 'Strategic oversight', desk: 'Command A', dept: 'Executive' },
-            { id: 'nexus', name: 'Nexus', emoji: '🤖', role: 'Orchestrator', x: 450, y: 80, color: '#ff2a6d', status: 'working', activity: 'Monitoring systems', desk: 'Command B', dept: 'Executive' },
+            { id: 'ericf', name: 'EricF', role: 'Commander', x: 250, y: 80, color: '#ff2a6d', status: 'working', activity: 'Strategic oversight', desk: 'Command A', dept: 'Executive', facing: 1 },
+            { id: 'nexus', name: 'Nexus', role: 'Orchestrator', x: 450, y: 80, color: '#ff2a6d', status: 'working', activity: 'Monitoring systems', desk: 'Command B', dept: 'Executive', facing: 1 },
             
             // DEV TEAM - 3 Forge, 3 Code (Left)
-            { id: 'forge1', name: 'Forge-1', emoji: '🔨', role: 'UI Lead', x: 80, y: 200, color: '#f97316', status: 'working', activity: 'Component library', desk: 'Forge-1', dept: 'Dev' },
-            { id: 'forge2', name: 'Forge-2', emoji: '🔨', role: 'UI Dev', x: 160, y: 200, color: '#f97316', status: 'working', activity: 'Mobile responsive', desk: 'Forge-2', dept: 'Dev' },
-            { id: 'forge3', name: 'Forge-3', emoji: '🔨', role: 'UI Dev', x: 240, y: 200, color: '#f97316', status: 'working', activity: 'Animations', desk: 'Forge-3', dept: 'Dev' },
-            { id: 'code1', name: 'Code-1', emoji: '💻', role: 'Backend Lead', x: 80, y: 280, color: '#22c55e', status: 'busy', activity: 'API endpoints', desk: 'Code-1', dept: 'Dev' },
-            { id: 'code2', name: 'Code-2', emoji: '💻', role: 'Backend Dev', x: 160, y: 280, color: '#22c55e', status: 'working', activity: 'Database', desk: 'Code-2', dept: 'Dev' },
-            { id: 'code3', name: 'Code-3', emoji: '💻', role: 'Backend Dev', x: 240, y: 280, color: '#22c55e', status: 'working', activity: 'Testing', desk: 'Code-3', dept: 'Dev' },
+            { id: 'forge1', name: 'Forge-1', role: 'UI Lead', x: 80, y: 200, color: '#f97316', status: 'working', activity: 'Component library', desk: 'Forge-1', dept: 'Dev', facing: 1 },
+            { id: 'forge2', name: 'Forge-2', role: 'UI Dev', x: 160, y: 200, color: '#f97316', status: 'working', activity: 'Mobile responsive', desk: 'Forge-2', dept: 'Dev', facing: 1 },
+            { id: 'forge3', name: 'Forge-3', role: 'UI Dev', x: 240, y: 200, color: '#f97316', status: 'working', activity: 'Animations', desk: 'Forge-3', dept: 'Dev', facing: 1 },
+            { id: 'code1', name: 'Code-1', role: 'Backend Lead', x: 80, y: 280, color: '#22c55e', status: 'busy', activity: 'API endpoints', desk: 'Code-1', dept: 'Dev', facing: 1 },
+            { id: 'code2', name: 'Code-2', role: 'Backend Dev', x: 160, y: 280, color: '#22c55e', status: 'working', activity: 'Database', desk: 'Code-2', dept: 'Dev', facing: 1 },
+            { id: 'code3', name: 'Code-3', role: 'Backend Dev', x: 240, y: 280, color: '#22c55e', status: 'working', activity: 'Testing', desk: 'Code-3', dept: 'Dev', facing: 1 },
             
             // DESIGN TEAM (Middle)
-            { id: 'pixel1', name: 'Pixel-1', emoji: '🎨', role: 'Design Lead', x: 360, y: 200, color: '#a855f7', status: 'working', activity: 'Avatar design', desk: 'Pixel-1', dept: 'Design' },
-            { id: 'pixel2', name: 'Pixel-2', emoji: '🎨', role: 'Designer', x: 440, y: 200, color: '#a855f7', status: 'working', activity: 'Style guide', desk: 'Pixel-2', dept: 'Design' },
-            { id: 'pixel3', name: 'Pixel-3', emoji: '🎨', role: 'Designer', x: 520, y: 200, color: '#a855f7', status: 'working', activity: 'Assets', desk: 'Pixel-3', dept: 'Design' },
+            { id: 'pixel1', name: 'Pixel-1', role: 'Design Lead', x: 360, y: 200, color: '#a855f7', status: 'working', activity: 'Avatar design', desk: 'Pixel-1', dept: 'Design', facing: 1 },
+            { id: 'pixel2', name: 'Pixel-2', role: 'Designer', x: 440, y: 200, color: '#a855f7', status: 'working', activity: 'Style guide', desk: 'Pixel-2', dept: 'Design', facing: 1 },
+            { id: 'pixel3', name: 'Pixel-3', role: 'Designer', x: 520, y: 200, color: '#a855f7', status: 'working', activity: 'Assets', desk: 'Pixel-3', dept: 'Design', facing: 1 },
             
             // CONTENT TEAM (Right)
-            { id: 'glasses', name: 'Glasses', emoji: '🔍', role: 'Research Lead', x: 640, y: 200, color: '#00d4ff', status: 'resting', activity: 'Resting', desk: 'Research', dept: 'Content' },
-            { id: 'quill', name: 'Quill', emoji: '✍️', role: 'Content Lead', x: 720, y: 200, color: '#fbbf24', status: 'resting', activity: 'Resting', desk: 'Content', dept: 'Content' },
+            { id: 'glasses', name: 'Glasses', role: 'Research Lead', x: 640, y: 200, color: '#00d4ff', status: 'resting', activity: 'Resting', desk: 'Research', dept: 'Content', facing: -1 },
+            { id: 'quill', name: 'Quill', role: 'Content Lead', x: 720, y: 200, color: '#fbbf24', status: 'resting', activity: 'Resting', desk: 'Content', dept: 'Content', facing: -1 },
             
             // GROWTH TEAM (Right middle)
-            { id: 'gary', name: 'Gary', emoji: '📊', role: 'Marketing Lead', x: 640, y: 280, color: '#f97316', status: 'resting', activity: 'Resting', desk: 'Marketing', dept: 'Growth' },
-            { id: 'larry', name: 'Larry', emoji: '📱', role: 'Social Lead', x: 720, y: 280, color: '#22c55e', status: 'resting', activity: 'Resting', desk: 'Social', dept: 'Growth' },
+            { id: 'gary', name: 'Gary', role: 'Marketing Lead', x: 640, y: 280, color: '#f97316', status: 'resting', activity: 'Resting', desk: 'Marketing', dept: 'Growth', facing: -1 },
+            { id: 'larry', name: 'Larry', role: 'Social Lead', x: 720, y: 280, color: '#22c55e', status: 'resting', activity: 'Resting', desk: 'Social', dept: 'Growth', facing: -1 },
             
             // OPS TEAM (Bottom left)
-            { id: 'sentry', name: 'Sentry', emoji: '⚙️', role: 'DevOps Lead', x: 160, y: 380, color: '#00d4ff', status: 'working', activity: 'Monitoring', desk: 'Ops', dept: 'Ops' },
-            { id: 'audit', name: 'Audit', emoji: '✅', role: 'QA Lead', x: 280, y: 380, color: '#fbbf24', status: 'working', activity: 'Code review', desk: 'QA', dept: 'Ops' },
-            { id: 'cipher', name: 'Cipher', emoji: '🔒', role: 'Security Lead', x: 400, y: 380, color: '#a855f7', status: 'working', activity: 'Security check', desk: 'Security', dept: 'Ops' },
+            { id: 'sentry', name: 'Sentry', role: 'DevOps Lead', x: 160, y: 380, color: '#00d4ff', status: 'working', activity: 'Monitoring', desk: 'Ops', dept: 'Ops', facing: 1 },
+            { id: 'audit', name: 'Audit', role: 'QA Lead', x: 280, y: 380, color: '#fbbf24', status: 'working', activity: 'Code review', desk: 'QA', dept: 'Ops', facing: 1 },
+            { id: 'cipher', name: 'Cipher', role: 'Security Lead', x: 400, y: 380, color: '#a855f7', status: 'working', activity: 'Security check', desk: 'Security', dept: 'Ops', facing: 1 },
             
             // BUSINESS DEV (Bottom right)
-            { id: 'dealflow', name: 'DealFlow', emoji: '🤝', role: 'BD Lead', x: 580, y: 380, color: '#f97316', status: 'busy', activity: 'Finding leads', desk: 'BD', dept: 'Business Dev' },
-            { id: 'coldcall', name: 'ColdCall', emoji: '📞', role: 'Outreach Lead', x: 700, y: 380, color: '#22c55e', status: 'working', activity: 'Prep outreach', desk: 'Outreach', dept: 'Business Dev' }
+            { id: 'dealflow', name: 'DealFlow', role: 'BD Lead', x: 580, y: 380, color: '#f97316', status: 'busy', activity: 'Finding leads', desk: 'BD', dept: 'Business Dev', facing: -1 },
+            { id: 'coldcall', name: 'ColdCall', role: 'Outreach Lead', x: 700, y: 380, color: '#22c55e', status: 'working', activity: 'Prep outreach', desk: 'Outreach', dept: 'Business Dev', facing: -1 }
         ];
 
-        // Plants for decoration (Minecraft style)
+        // Enhanced environment objects
         const plants = [
-            { x: 40, y: 150, type: 'tree', size: 3 },
-            { x: 760, y: 150, type: 'tree', size: 3 },
-            { x: 40, y: 350, type: 'cactus', size: 2 },
-            { x: 760, y: 350, type: 'flower', size: 1 },
-            { x: 320, y: 150, type: 'bush', size: 2 },
-            { x: 600, y: 150, type: 'bush', size: 2 }
+            { x: 30, y: 140, type: 'tree', size: 3 },
+            { x: 770, y: 140, type: 'tree', size: 3 },
+            { x: 30, y: 340, type: 'cactus', size: 2 },
+            { x: 770, y: 340, type: 'flower', size: 1 },
+            { x: 310, y: 140, type: 'bush', size: 2 },
+            { x: 610, y: 140, type: 'bush', size: 2 },
+            { x: 100, y: 140, type: 'fern', size: 2 },
+            { x: 700, y: 340, type: 'flower2', size: 1 }
+        ];
+        
+        // Desks for the office
+        const desks = [
+            // Executive desks
+            { x: 250, y: 100, width: 60, height: 40, color: '#ff2a6d', label: 'CMD' },
+            { x: 450, y: 100, width: 60, height: 40, color: '#ff2a6d', label: 'CMD' },
+            // Dev desks - left side
+            { x: 80, y: 220, width: 50, height: 35, color: '#22c55e', label: 'DEV' },
+            { x: 160, y: 220, width: 50, height: 35, color: '#22c55e', label: 'DEV' },
+            { x: 240, y: 220, width: 50, height: 35, color: '#22c55e', label: 'DEV' },
+            { x: 80, y: 300, width: 50, height: 35, color: '#22c55e', label: 'DEV' },
+            { x: 160, y: 300, width: 50, height: 35, color: '#22c55e', label: 'DEV' },
+            { x: 240, y: 300, width: 50, height: 35, color: '#22c55e', label: 'DEV' },
+            // Design desks - middle
+            { x: 360, y: 220, width: 50, height: 35, color: '#a855f7', label: 'DSN' },
+            { x: 440, y: 220, width: 50, height: 35, color: '#a855f7', label: 'DSN' },
+            { x: 520, y: 220, width: 50, height: 35, color: '#a855f7', label: 'DSN' },
+            // Content desks
+            { x: 640, y: 220, width: 50, height: 35, color: '#00d4ff', label: 'CNT' },
+            { x: 720, y: 220, width: 50, height: 35, color: '#fbbf24', label: 'CNT' },
+            // Growth desks
+            { x: 640, y: 300, width: 50, height: 35, color: '#f97316', label: 'GRW' },
+            { x: 720, y: 300, width: 50, height: 35, color: '#22c55e', label: 'GRW' },
+            // Ops desks
+            { x: 160, y: 400, width: 50, height: 35, color: '#fbbf24', label: 'OPS' },
+            { x: 280, y: 400, width: 50, height: 35, color: '#a855f7', label: 'OPS' },
+            { x: 400, y: 400, width: 50, height: 35, color: '#00d4ff', label: 'OPS' },
+            // Business dev desks
+            { x: 580, y: 400, width: 50, height: 35, color: '#f97316', label: 'BD' },
+            { x: 700, y: 400, width: 50, height: 35, color: '#22c55e', label: 'BD' }
+        ];
+        
+        // Lighting effects
+        const lights = [
+            { x: 200, y: 50, color: '#ff2a6d', intensity: 0.3, radius: 150 },
+            { x: 500, y: 50, color: '#ff2a6d', intensity: 0.3, radius: 150 },
+            { x: 150, y: 180, color: '#22c55e', intensity: 0.25, radius: 120 },
+            { x: 450, y: 180, color: '#a855f7', intensity: 0.25, radius: 120 },
+            { x: 680, y: 180, color: '#00d4ff', intensity: 0.25, radius: 120 },
+            { x: 320, y: 360, color: '#fbbf24', intensity: 0.2, radius: 100 }
         ];
 
-        const meetingTable = { x: 400, y: 280, radius: 100 };
+        const meetingTable = { x: 400, y: 300, radius: 110 };
         let isStandupActive = false;
         let agentPositions = {};
+        let isWalking = {}; // Track which agents are walking
 
         const canvas = document.getElementById('office-canvas');
         const ctx = canvas.getContext('2d');
+        
+        // Disable anti-aliasing for pixel art look
+        ctx.imageSmoothingEnabled = false;
         
         function resizeCanvas() {
             canvas.width = canvas.parentElement.clientWidth;
@@ -651,274 +726,505 @@
 
         // Isometric projection
         function toIso(x, y) {
-            const scale = 0.65;
-            const isoX = (x - y * 0.5) * scale + canvas.width / 2 - 200;
-            const isoY = (y * 0.8) * scale + 50;
+            const scale = 0.7;
+            const isoX = (x - y * 0.5) * scale + canvas.width / 2 - 280;
+            const isoY = (y * 0.75) * scale + 80;
             return { x: isoX, y: isoY };
         }
 
-        // Draw Minecraft-style pixel art
+        // Draw pixel rectangle (Minecraft style)
         function drawPixelRect(x, y, w, h, color) {
             ctx.fillStyle = color;
-            ctx.fillRect(Math.floor(x), Math.floor(y), w, h);
+            ctx.fillRect(Math.floor(x), Math.floor(y), Math.floor(w), Math.floor(h));
+        }
+        
+        // Draw pixel outline
+        function drawPixelOutline(x, y, w, h, color, lineWidth = 1) {
+            ctx.strokeStyle = color;
+            ctx.lineWidth = lineWidth;
+            ctx.strokeRect(Math.floor(x), Math.floor(y), Math.floor(w), Math.floor(h));
         }
 
-        function drawMinecraftPlant(plant) {
-            const pos = toIso(plant.x, plant.y);
-            
-            if (plant.type === 'tree') {
-                // Trunk
-                drawPixelRect(pos.x - 4, pos.y - 20, 8, 20, '#8B4513');
-                // Leaves (blocky)
-                drawPixelRect(pos.x - 16, pos.y - 48, 32, 28, '#228B22');
-                drawPixelRect(pos.x - 12, pos.y - 56, 24, 8, '#32CD32');
-            } else if (plant.type === 'cactus') {
-                // Cactus body
-                drawPixelRect(pos.x - 6, pos.y - 30, 12, 30, '#2E8B57');
-                // Arms
-                drawPixelRect(pos.x - 14, pos.y - 20, 8, 6, '#2E8B57');
-                drawPixelRect(pos.x + 6, pos.y - 24, 8, 6, '#2E8B57');
-            } else if (plant.type === 'flower') {
-                // Stem
-                drawPixelRect(pos.x - 2, pos.y - 15, 4, 15, '#228B22');
-                // Flower (pixelated)
-                drawPixelRect(pos.x - 8, pos.y - 23, 16, 8, '#FF69B4');
-                drawPixelRect(pos.x - 4, pos.y - 27, 8, 4, '#FF1493');
-            } else if (plant.type === 'bush') {
-                // Bush (blocky clusters)
-                drawPixelRect(pos.x - 14, pos.y - 16, 28, 16, '#006400');
-                drawPixelRect(pos.x - 10, pos.y - 24, 20, 8, '#228B22');
-            }
+        // Draw dynamic shadow
+        function drawShadow(x, y, width, height, opacity, scale = 1) {
+            ctx.save();
+            ctx.globalAlpha = opacity;
+            ctx.fillStyle = '#000';
+            ctx.beginPath();
+            ctx.ellipse(x, y, width * scale, height * scale, 0, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
         }
 
-        function drawOffice() {
-            ctx.fillStyle = '#0a0a0f';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
-            // Draw isometric floor tiles (Minecraft style)
-            for (let i = -5; i < 20; i++) {
-                for (let j = -5; j < 15; j++) {
-                    const pos = toIso(i * 60, j * 40);
+        // Draw lighting effect
+        function drawLighting() {
+            lights.forEach(light => {
+                const pos = toIso(light.x, light.y);
+                const gradient = ctx.createRadialGradient(
+                    pos.x, pos.y, 0,
+                    pos.x, pos.y, light.radius
+                );
+                gradient.addColorStop(0, light.color + Math.floor(light.intensity * 255).toString(16).padStart(2, '0'));
+                gradient.addColorStop(1, 'transparent');
+                
+                ctx.fillStyle = gradient;
+                ctx.beginPath();
+                ctx.arc(pos.x, pos.y, light.radius, 0, Math.PI * 2);
+                ctx.fill();
+            });
+        }
+
+        // Draw enhanced environment
+        function drawEnvironment() {
+            // Draw floor tiles
+            for (let i = -5; i < 25; i++) {
+                for (let j = -5; j < 20; j++) {
+                    const pos = toIso(i * 50, j * 35);
                     const isEven = (i + j) % 2 === 0;
-                    ctx.fillStyle = isEven ? 'rgba(0, 212, 255, 0.03)' : 'rgba(0, 212, 255, 0.01)';
+                    ctx.fillStyle = isEven ? 'rgba(0, 212, 255, 0.04)' : 'rgba(0, 212, 255, 0.02)';
                     
-                    // Draw tile
                     ctx.beginPath();
                     ctx.moveTo(pos.x, pos.y);
-                    ctx.lineTo(pos.x + 40, pos.y + 20);
-                    ctx.lineTo(pos.x, pos.y + 40);
-                    ctx.lineTo(pos.x - 40, pos.y + 20);
+                    ctx.lineTo(pos.x + 35, pos.y + 17);
+                    ctx.lineTo(pos.x, pos.y + 35);
+                    ctx.lineTo(pos.x - 35, pos.y + 17);
                     ctx.closePath();
                     ctx.fill();
                     
-                    // Tile border
-                    ctx.strokeStyle = 'rgba(0, 212, 255, 0.05)';
+                    ctx.strokeStyle = 'rgba(0, 212, 255, 0.06)';
                     ctx.lineWidth = 1;
                     ctx.stroke();
                 }
             }
+        }
+
+        // Draw Minecraft-style plant
+        function drawMinecraftPlant(plant) {
+            const pos = toIso(plant.x, plant.y);
             
-            // Draw plants first (behind desks)
-            plants.forEach(plant => drawMinecraftPlant(plant));
-            
-            // Draw Command Balcony
-            drawBalcony();
-            
-            // Draw Meeting Table
-            drawMeetingTable();
-            
-            // Draw desks
-            agents.forEach(agent => {
-                if (!isStandupActive || agent.status !== 'meeting') {
-                    drawMinecraftDesk(agent);
-                }
-            });
-            
-            // Draw agents
-            agents.forEach(agent => drawMinecraftAgent(agent));
-            
-            // Draw connections if meeting
-            if (isStandupActive) {
-                drawMeetingConnections();
+            if (plant.type === 'tree') {
+                // Trunk - blocky
+                drawPixelRect(pos.x - 5, pos.y - 25, 10, 25, '#5D4037');
+                drawPixelRect(pos.x - 5, pos.y - 25, 10, 5, '#795548'); // Highlight
+                // Leaves - multiple blocks
+                drawPixelRect(pos.x - 18, pos.y - 55, 36, 30, '#1B5E20');
+                drawPixelRect(pos.x - 14, pos.y - 65, 28, 10, '#2E7D32');
+                drawPixelRect(pos.x - 10, pos.y - 72, 20, 7, '#4CAF50');
+                // Leaf highlights
+                drawPixelRect(pos.x - 14, pos.y - 55, 8, 8, '#2E7D32');
+            } else if (plant.type === 'cactus') {
+                // Main body
+                drawPixelRect(pos.x - 6, pos.y - 35, 12, 35, '#2E7D32');
+                drawPixelRect(pos.x - 4, pos.y - 35, 4, 35, '#4CAF50'); // Highlight
+                // Left arm
+                drawPixelRect(pos.x - 14, pos.y - 22, 8, 6, '#2E7D32');
+                drawPixelRect(pos.x - 14, pos.y - 30, 6, 8, '#2E7D32');
+                // Right arm
+                drawPixelRect(pos.x + 6, pos.y - 28, 8, 6, '#2E7D32');
+                drawPixelRect(pos.x + 8, pos.y - 36, 6, 8, '#2E7D32');
+            } else if (plant.type === 'flower') {
+                // Stem
+                drawPixelRect(pos.x - 2, pos.y - 18, 4, 18, '#388E3C');
+                // Leaves
+                drawPixelRect(pos.x - 8, pos.y - 10, 6, 3, '#4CAF50');
+                drawPixelRect(pos.x + 2, pos.y - 14, 6, 3, '#4CAF50');
+                // Flower head - pixel art style
+                drawPixelRect(pos.x - 10, pos.y - 28, 20, 10, '#E91E63');
+                drawPixelRect(pos.x - 6, pos.y - 32, 12, 4, '#F48FB1');
+                drawPixelRect(pos.x - 4, pos.y - 36, 8, 4, '#F8BBD9');
+                drawPixelRect(pos.x - 3, pos.y - 26, 6, 6, '#FFEB3B'); // Center
+            } else if (plant.type === 'flower2') {
+                // Different flower
+                drawPixelRect(pos.x - 2, pos.y - 15, 4, 15, '#388E3C');
+                drawPixelRect(pos.x - 8, pos.y - 22, 16, 8, '#9C27B0');
+                drawPixelRect(pos.x - 4, pos.y - 26, 8, 4, '#E1BEE7');
+                drawPixelRect(pos.x - 2, pos.y - 20, 4, 4, '#FFEB3B');
+            } else if (plant.type === 'bush') {
+                // Bush clusters
+                drawPixelRect(pos.x - 16, pos.y - 18, 32, 18, '#1B5E20');
+                drawPixelRect(pos.x - 12, pos.y - 28, 24, 10, '#2E7D32');
+                drawPixelRect(pos.x - 8, pos.y - 34, 16, 6, '#4CAF50');
+                drawPixelRect(pos.x - 10, pos.y - 18, 6, 6, '#2E7D32');
+            } else if (plant.type === 'fern') {
+                // Fern fronds
+                drawPixelRect(pos.x - 2, pos.y - 20, 4, 20, '#5D4037');
+                drawPixelRect(pos.x - 12, pos.y - 18, 10, 4, '#2E7D32');
+                drawPixelRect(pos.x - 16, pos.y - 24, 12, 4, '#388E3C');
+                drawPixelRect(pos.x + 2, pos.y - 16, 10, 4, '#2E7D32');
+                drawPixelRect(pos.x + 4, pos.y - 22, 12, 4, '#388E3C');
+                drawPixelRect(pos.x - 10, pos.y - 28, 8, 4, '#4CAF50');
+                drawPixelRect(pos.x + 2, pos.y - 26, 8, 4, '#4CAF50');
             }
         }
 
-        function drawBalcony() {
+        // Draw enhanced desk
+        function drawDesk(desk) {
+            const pos = toIso(desk.x, desk.y);
+            const w = desk.width * 0.6;
+            const h = desk.height * 0.4;
+            
+            // Desk shadow
+            drawShadow(pos.x, pos.y + h/2 + 5, w/2, h/4, 0.4);
+            
+            // Desk top (isometric block)
+            ctx.fillStyle = 'rgba(30, 30, 46, 0.9)';
+            ctx.beginPath();
+            ctx.moveTo(pos.x, pos.y - h/2);
+            ctx.lineTo(pos.x + w/2, pos.y - h/4);
+            ctx.lineTo(pos.x, pos.y);
+            ctx.lineTo(pos.x - w/2, pos.y - h/4);
+            ctx.closePath();
+            ctx.fill();
+            
+            // Desk edge
+            ctx.fillStyle = desk.color + '40';
+            ctx.beginPath();
+            ctx.moveTo(pos.x - w/2, pos.y - h/4);
+            ctx.lineTo(pos.x, pos.y);
+            ctx.lineTo(pos.x, pos.y + h/3);
+            ctx.lineTo(pos.x - w/2, pos.y + h/12);
+            ctx.closePath();
+            ctx.fill();
+            
+            ctx.fillStyle = desk.color + '60';
+            ctx.beginPath();
+            ctx.moveTo(pos.x, pos.y);
+            ctx.lineTo(pos.x + w/2, pos.y - h/4);
+            ctx.lineTo(pos.x + w/2, pos.y + h/12);
+            ctx.lineTo(pos.x, pos.y + h/3);
+            ctx.closePath();
+            ctx.fill();
+            
+            // Desk outline
+            ctx.strokeStyle = desk.color;
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(pos.x, pos.y - h/2);
+            ctx.lineTo(pos.x + w/2, pos.y - h/4);
+            ctx.lineTo(pos.x + w/2, pos.y + h/12);
+            ctx.lineTo(pos.x, pos.y + h/3);
+            ctx.lineTo(pos.x - w/2, pos.y + h/12);
+            ctx.lineTo(pos.x - w/2, pos.y - h/4);
+            ctx.closePath();
+            ctx.stroke();
+            
+            // Label
+            ctx.fillStyle = desk.color;
+            ctx.font = 'bold 8px JetBrains Mono';
+            ctx.textAlign = 'center';
+            ctx.fillText(desk.label, pos.x, pos.y - h/4);
+        }
+
+        // ============================================
+        // WALKING COMPUTER HEAD AGENT DRAWER
+        // ============================================
+        
+        function drawComputerHeadAgent(agent, frameOffset = 0) {
+            const pos = toIso(agent.x, agent.y);
+            const isMoving = isWalking[agent.id];
+            
+            // Calculate animation frame
+            let animFrame = 0;
+            if (isMoving) {
+                animFrame = Math.floor((globalFrame + frameOffset) / 4) % 8;
+            }
+            const cycle = WALK_CYCLE[animFrame];
+            const [leftLegOffset, rightLegOffset, bodyBounce, shadowScale] = cycle;
+            
+            // Dynamic shadow based on position and animation
+            const shadowOpacity = isMoving ? 0.3 + (shadowScale - 0.9) * 0.5 : 0.35;
+            drawShadow(pos.x, pos.y + 22, 14, 6, shadowOpacity, shadowScale);
+            
+            // Body position with bounce
+            const bodyY = pos.y + bodyBounce;
+            
+            // Direction multiplier (-1 for left, 1 for right)
+            const dir = agent.facing || 1;
+            
+            // ========================================
+            // LEGS (walking animation)
+            // ========================================
+            const legColor = '#374151'; // Dark gray
+            const legHighlight = '#4B5563';
+            
+            if (isMoving) {
+                // Left leg
+                const leftLegY = bodyY + 18 + leftLegOffset;
+                drawPixelRect(pos.x - 8 * dir, leftLegY, 6, 10, legColor);
+                drawPixelRect(pos.x - 8 * dir, leftLegY, 2, 10, legHighlight);
+                
+                // Right leg
+                const rightLegY = bodyY + 18 + rightLegOffset;
+                drawPixelRect(pos.x + 2 * dir, rightLegY, 6, 10, legColor);
+                drawPixelRect(pos.x + 2 * dir, rightLegY, 2, 10, legHighlight);
+            } else {
+                // Standing legs
+                drawPixelRect(pos.x - 8 * dir, bodyY + 18, 6, 8, legColor);
+                drawPixelRect(pos.x - 8 * dir, bodyY + 18, 2, 8, legHighlight);
+                drawPixelRect(pos.x + 2 * dir, bodyY + 18, 6, 8, legColor);
+                drawPixelRect(pos.x + 2 * dir, bodyY + 18, 2, 8, legHighlight);
+            }
+            
+            // ========================================
+            // BODY (small torso)
+            // ========================================
+            const bodyColor = '#1F2937';
+            drawPixelRect(pos.x - 10 * dir, bodyY + 8, 20, 12, bodyColor);
+            // Body highlight
+            drawPixelRect(pos.x - 10 * dir, bodyY + 8, 20, 3, '#374151');
+            // Department color accent on body
+            drawPixelRect(pos.x - 6 * dir, bodyY + 12, 12, 4, agent.color + '60');
+            
+            // ========================================
+            // COMPUTER MONITOR HEAD
+            // ========================================
+            const headY = bodyY - 14;
+            const headW = 28;
+            const headH = 22;
+            const headX = pos.x - headW/2;
+            
+            // Monitor bezel (dark)
+            drawPixelRect(headX, headY, headW, headH, '#111827');
+            
+            // Monitor glow effect (behind screen)
+            if (!isMoving || animFrame % 2 === 0) {
+                ctx.save();
+                ctx.shadowColor = agent.color;
+                ctx.shadowBlur = 15;
+                ctx.fillStyle = agent.color + '30';
+                ctx.fillRect(headX - 2, headY - 2, headW + 4, headH + 4);
+                ctx.restore();
+            }
+            
+            // Screen (glowing with department color)
+            const screenPadding = 3;
+            drawPixelRect(headX + screenPadding, headY + screenPadding, 
+                         headW - screenPadding*2, headH - screenPadding*2, 
+                         agent.color + '20');
+            
+            // Screen inner glow
+            const screenGradient = ctx.createLinearGradient(
+                headX + screenPadding, headY + screenPadding,
+                headX + screenPadding, headY + headH - screenPadding
+            );
+            screenGradient.addColorStop(0, agent.color + '40');
+            screenGradient.addColorStop(1, agent.color + '10');
+            ctx.fillStyle = screenGradient;
+            ctx.fillRect(headX + screenPadding, headY + screenPadding, 
+                        headW - screenPadding*2, headH - screenPadding*2);
+            
+            // ========================================
+            // PIXEL ART FACE
+            // ========================================
+            const faceX = headX + screenPadding + 2;
+            const faceY = headY + screenPadding + 3;
+            const faceColor = '#FFFFFF';
+            const faceGlow = agent.color;
+            
+            // Eyes (2x2 pixels each)
+            const eyeY = faceY + 3;
+            const leftEyeX = faceX + (dir === 1 ? 3 : 12);
+            const rightEyeX = faceX + (dir === 1 ? 12 : 3);
+            
+            // Eye glow
+            ctx.fillStyle = faceGlow;
+            ctx.globalAlpha = 0.6;
+            drawPixelRect(leftEyeX - 1, eyeY - 1, 6, 6, faceGlow);
+            drawPixelRect(rightEyeX - 1, eyeY - 1, 6, 6, faceGlow);
+            ctx.globalAlpha = 1;
+            
+            // Eyes
+            drawPixelRect(leftEyeX, eyeY, 4, 4, faceColor);
+            drawPixelRect(rightEyeX, eyeY, 4, 4, faceColor);
+            
+            // Pupils (based on status)
+            let pupilColor = '#000';
+            if (agent.status === 'working') pupilColor = '#22c55e';
+            else if (agent.status === 'busy') pupilColor = '#fbbf24';
+            else if (agent.status === 'meeting') pupilColor = '#ff2a6d';
+            else pupilColor = '#71717a';
+            
+            drawPixelRect(leftEyeX + 1, eyeY + 1, 2, 2, pupilColor);
+            drawPixelRect(rightEyeX + 1, eyeY + 1, 2, 2, pupilColor);
+            
+            // Mouth (changes based on status)
+            const mouthY = faceY + 12;
+            const mouthX = faceX + 6;
+            
+            if (agent.status === 'meeting') {
+                // Open mouth (talking)
+                drawPixelRect(mouthX, mouthY, 8, 4, '#000');
+                drawPixelRect(mouthX + 2, mouthY + 1, 4, 2, '#ff6b6b');
+            } else if (agent.status === 'working') {
+                // Happy smile
+                drawPixelRect(mouthX + 1, mouthY + 1, 6, 2, '#000');
+                drawPixelRect(mouthX, mouthY, 2, 2, '#000');
+                drawPixelRect(mouthX + 6, mouthY, 2, 2, '#000');
+            } else {
+                // Neutral
+                drawPixelRect(mouthX + 2, mouthY + 1, 4, 2, '#000');
+            }
+            
+            // Monitor outline
+            drawPixelOutline(headX, headY, headW, headH, agent.color, 2);
+            
+            // Monitor stand/neck
+            drawPixelRect(pos.x - 3, bodyY - 2, 6, 4, '#374151');
+            
+            // ========================================
+            // STATUS INDICATOR (floating pixel)
+            // ========================================
+            const statusColor = agent.status === 'working' ? '#22c55e' : 
+                               agent.status === 'busy' ? '#fbbf24' : 
+                               agent.status === 'meeting' ? '#ff2a6d' : '#71717a';
+            
+            // Floating indicator above head
+            const indicatorY = headY - 8 + Math.sin(globalFrame * 0.1) * 2;
+            
+            // Glow
+            ctx.save();
+            ctx.shadowColor = statusColor;
+            ctx.shadowBlur = 8;
+            drawPixelRect(pos.x - 3, indicatorY, 6, 6, statusColor);
+            ctx.restore();
+            
+            // ========================================
+            // NAME LABEL
+            // ========================================
+            ctx.fillStyle = '#fafafa';
+            ctx.font = 'bold 10px Inter';
+            ctx.textAlign = 'center';
+            ctx.fillText(agent.name, pos.x, bodyY + 38);
+            
+            // Activity
+            ctx.fillStyle = '#a1a1aa';
+            ctx.font = '8px Inter';
+            ctx.fillText(agent.activity.substring(0, 18), pos.x, bodyY + 48);
+        }
+
+        // Draw meeting table
+        function drawMeetingTableObj() {
+            const pos = toIso(meetingTable.x, meetingTable.y);
+            
+            // Table shadow
+            drawShadow(pos.x, pos.y + 20, 70, 35, 0.5);
+            
+            // Table base (Minecraft block style)
+            ctx.fillStyle = 'rgba(255, 42, 109, 0.15)';
+            ctx.strokeStyle = '#ff2a6d';
+            ctx.lineWidth = 2;
+            
+            // Top ellipse
+            ctx.beginPath();
+            ctx.ellipse(pos.x, pos.y, 70, 35, 0, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.stroke();
+            
+            // Inner glow
+            const tableGradient = ctx.createRadialGradient(
+                pos.x, pos.y, 0,
+                pos.x, pos.y, 50
+            );
+            tableGradient.addColorStop(0, 'rgba(255, 42, 109, 0.3)');
+            tableGradient.addColorStop(1, 'transparent');
+            ctx.fillStyle = tableGradient;
+            ctx.beginPath();
+            ctx.ellipse(pos.x, pos.y, 50, 25, 0, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Label
+            ctx.fillStyle = '#ff2a6d';
+            ctx.font = 'bold 11px Inter';
+            ctx.textAlign = 'center';
+            ctx.fillText('MEETING TABLE', pos.x, pos.y + 4);
+        }
+
+        // Draw command balcony
+        function drawCommandBalcony() {
             const pos1 = toIso(200, 60);
             const pos2 = toIso(500, 60);
             
-            // Balcony floor (elevated)
+            // Balcony floor
             ctx.fillStyle = 'rgba(255, 42, 109, 0.1)';
             ctx.strokeStyle = '#ff2a6d';
             ctx.lineWidth = 2;
             
             ctx.beginPath();
-            ctx.moveTo(pos1.x - 80, pos1.y);
-            ctx.lineTo(pos2.x + 80, pos2.y);
-            ctx.lineTo(pos2.x + 80, pos2.y + 20);
-            ctx.lineTo(pos1.x - 80, pos1.y + 20);
+            ctx.moveTo(pos1.x - 90, pos1.y);
+            ctx.lineTo(pos2.x + 90, pos2.y);
+            ctx.lineTo(pos2.x + 90, pos2.y + 25);
+            ctx.lineTo(pos1.x - 90, pos1.y + 25);
             ctx.closePath();
             ctx.fill();
             ctx.stroke();
+            
+            // Railing
+            ctx.strokeStyle = '#ff2a6d';
+            ctx.lineWidth = 1;
+            for (let i = 0; i < 8; i++) {
+                const x = pos1.x - 80 + i * 50;
+                ctx.beginPath();
+                ctx.moveTo(x, pos1.y);
+                ctx.lineTo(x, pos1.y + 20);
+                ctx.stroke();
+            }
             
             // Label
             ctx.fillStyle = '#ff2a6d';
             ctx.font = 'bold 11px Inter';
             ctx.textAlign = 'center';
             const centerX = (pos1.x + pos2.x) / 2;
-            ctx.fillText('COMMAND CENTER', centerX, pos1.y + 12);
+            ctx.fillText('COMMAND CENTER', centerX, pos1.y + 15);
         }
 
-        function drawMeetingTable() {
-            const pos = toIso(meetingTable.x, meetingTable.y);
+        // Main draw function
+        function drawOffice() {
+            // Clear
+            ctx.fillStyle = '#0a0a0f';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
             
-            // Table shadow
-            ctx.fillStyle = 'rgba(0,0,0,0.4)';
-            ctx.beginPath();
-            ctx.ellipse(pos.x + 5, pos.y + 15, 60, 30, 0, 0, Math.PI * 2);
-            ctx.fill();
+            // Draw environment
+            drawEnvironment();
             
-            // Table (Minecraft block style)
-            ctx.fillStyle = 'rgba(255, 42, 109, 0.2)';
-            ctx.strokeStyle = '#ff2a6d';
-            ctx.lineWidth = 2;
-            ctx.beginPath();
-            ctx.ellipse(pos.x, pos.y, 60, 30, 0, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.stroke();
+            // Draw lighting effects (subtle)
+            drawLighting();
             
-            // Inner glow
-            ctx.fillStyle = 'rgba(255, 42, 109, 0.3)';
-            ctx.beginPath();
-            ctx.ellipse(pos.x, pos.y, 35, 18, 0, 0, Math.PI * 2);
-            ctx.fill();
+            // Draw plants (behind everything)
+            plants.forEach(plant => drawMinecraftPlant(plant));
             
-            // Label
-            ctx.fillStyle = '#ff2a6d';
-            ctx.font = 'bold 10px Inter';
-            ctx.textAlign = 'center';
-            ctx.fillText('MEETING TABLE', pos.x, pos.y + 4);
-        }
-
-        function drawMinecraftDesk(agent) {
-            const pos = toIso(agent.x, agent.y);
+            // Draw command balcony
+            drawCommandBalcony();
             
-            // Desk shadow
-            ctx.fillStyle = 'rgba(0,0,0,0.3)';
-            ctx.beginPath();
-            ctx.ellipse(pos.x, pos.y + 18, 20, 10, 0, 0, Math.PI * 2);
-            ctx.fill();
+            // Draw meeting table
+            drawMeetingTableObj();
             
-            // Desk top (Minecraft block)
-            ctx.fillStyle = 'rgba(0, 212, 255, 0.1)';
-            ctx.strokeStyle = agent.color;
-            ctx.lineWidth = 1;
-            ctx.beginPath();
-            ctx.ellipse(pos.x, pos.y + 15, 20, 10, 0, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.stroke();
+            // Draw desks (behind agents)
+            desks.forEach(desk => drawDesk(desk));
             
-            // Computer (pixel art style)
-            const screenColor = agent.color;
+            // Draw agents (walking computer heads!)
+            agents.forEach((agent, index) => {
+                drawComputerHeadAgent(agent, index * 2);
+            });
             
-            // Monitor base
-            drawPixelRect(pos.x - 8, pos.y + 5, 16, 12, '#1a1a2e');
-            drawPixelRect(pos.x - 8, pos.y + 5, 16, 12, screenColor + '40'); // Glow
-            
-            // Screen glow effect
-            ctx.fillStyle = screenColor;
-            ctx.globalAlpha = 0.3;
-            ctx.fillRect(pos.x - 6, pos.y + 7, 12, 8);
-            ctx.globalAlpha = 1;
-            
-            // Monitor outline
-            ctx.strokeStyle = agent.color;
-            ctx.lineWidth = 1;
-            ctx.strokeRect(pos.x - 8, pos.y + 5, 16, 12);
-            
-            // Stand
-            drawPixelRect(pos.x - 2, pos.y + 17, 4, 3, '#444');
-            
-            // Desk label (small)
-            ctx.fillStyle = 'rgba(255,255,255,0.4)';
-            ctx.font = '8px Inter';
-            ctx.textAlign = 'center';
-            ctx.fillText(agent.desk, pos.x, pos.y + 32);
-        }
-
-        function drawMinecraftAgent(agent) {
-            const pos = toIso(agent.x, agent.y);
-            const bounce = Math.sin(Date.now() / 600 + agents.indexOf(agent)) * 1;
-            
-            // Shadow
-            ctx.fillStyle = 'rgba(0,0,0,0.3)';
-            ctx.beginPath();
-            ctx.ellipse(pos.x, pos.y + 14, 9, 5, 0, 0, Math.PI * 2);
-            ctx.fill();
-            
-            const bodyY = pos.y + bounce;
-            
-            // Body (Minecraft-style blocky)
-            ctx.fillStyle = agent.color;
-            drawPixelRect(pos.x - 7, bodyY, 14, 14);
-            
-            // Body highlight
-            ctx.fillStyle = 'rgba(255,255,255,0.2)';
-            drawPixelRect(pos.x - 7, bodyY, 14, 3);
-            
-            // Head (block)
-            ctx.fillStyle = '#f4e4c1';
-            drawPixelRect(pos.x - 6, bodyY - 10, 12, 10);
-            
-            // Head highlight
-            ctx.fillStyle = 'rgba(255,255,255,0.3)';
-            drawPixelRect(pos.x - 6, bodyY - 10, 12, 3);
-            
-            // Eyes (pixels)
-            ctx.fillStyle = '#000';
-            drawPixelRect(pos.x - 4, bodyY - 7, 2, 2);
-            drawPixelRect(pos.x + 2, bodyY - 7, 2, 2);
-            
-            // Status indicator (floating pixel)
-            const statusColor = agent.status === 'working' ? '#22c55e' : 
-                               agent.status === 'busy' ? '#fbbf24' : 
-                               agent.status === 'meeting' ? '#ff2a6d' : '#71717a';
-            
-            // Status dot
-            ctx.fillStyle = statusColor;
-            ctx.beginPath();
-            ctx.arc(pos.x + 9, bodyY - 10, 3, 0, Math.PI * 2);
-            ctx.fill();
-            
-            // Status glow for meeting
-            if (agent.status === 'meeting') {
-                ctx.fillStyle = statusColor + '40';
-                ctx.beginPath();
-                ctx.arc(pos.x + 9, bodyY - 10, 6, 0, Math.PI * 2);
-                ctx.fill();
+            // Draw meeting connections if active
+            if (isStandupActive) {
+                drawMeetingConnections();
             }
             
-            // Name label
-            ctx.fillStyle = '#fafafa';
-            ctx.font = 'bold 10px Inter';
-            ctx.textAlign = 'center';
-            ctx.fillText(agent.name, pos.x, bodyY + 24);
-            
-            // Activity
-            ctx.fillStyle = '#a1a1aa';
-            ctx.font = '8px Inter';
-            ctx.fillText(agent.activity.substring(0, 16), pos.x, bodyY + 34);
+            // Increment global frame
+            globalFrame++;
         }
 
+        // Draw meeting connections
         function drawMeetingConnections() {
             const tablePos = toIso(meetingTable.x, meetingTable.y);
             
             agents.filter(a => a.status === 'meeting').forEach(agent => {
                 const agentPos = toIso(agent.x, agent.y);
                 
-                ctx.strokeStyle = 'rgba(255, 42, 109, 0.2)';
+                ctx.strokeStyle = 'rgba(255, 42, 109, 0.3)';
                 ctx.lineWidth = 1;
-                ctx.setLineDash([3, 3]);
+                ctx.setLineDash([4, 4]);
                 ctx.beginPath();
                 ctx.moveTo(agentPos.x, agentPos.y);
                 ctx.lineTo(tablePos.x, tablePos.y);
@@ -934,7 +1240,10 @@
         }
         animate();
 
-        // Enhanced standup functionality with memory tracking
+        // ============================================
+        // STANDUP FUNCTIONALITY
+        // ============================================
+        
         const discussionTopics = [
             "Reviewing my past 24h work...",
             "I completed 3 tasks yesterday with good quality",
@@ -961,94 +1270,66 @@
             
             logActivity('🎤 STANDUP CALLED! All 20 agents gathering for 24h review...');
             
-            // Record pre-meeting activities
-            agents.forEach(agent => {
-                const memory = standupManager.getOrCreateMemory(agent.id);
-                memory.recordActivity(agent.activity, agent.status === 'busy' ? 'good' : 'excellent');
-            });
-            
-            // Start the meeting
-            const meeting = standupManager.startMeeting(agents);
-            
-            // Move agents to meeting table
+            // Move agents to meeting table with walking animation
             agents.forEach((agent, index) => {
                 agentPositions[agent.id] = { x: agent.x, y: agent.y };
                 
                 const angle = (Math.PI * 2 / agents.length) * index;
-                const radius = 80;
+                const radius = 90;
                 
                 agent.targetX = meetingTable.x + Math.cos(angle) * radius;
                 agent.targetY = meetingTable.y + Math.sin(angle) * radius;
+                
+                // Determine facing direction based on target
+                agent.facing = agent.targetX > agent.x ? 1 : -1;
+                
+                // Start walking
+                isWalking[agent.id] = true;
                 agent.status = 'meeting';
-                agent.activity = 'Reviewing 24h work';
+                agent.activity = 'Walking to meeting';
                 
-                animateAgentToMeeting(agent);
-                
-                // Show speech bubble with report
-                setTimeout(() => showAgentReport(agent, meeting), 2000 + (index * 600));
+                animateAgentToMeeting(agent, index * 100);
             });
             
             updateStats();
             updateAgentList();
-            showMeetingLog(meeting);
             
-            // End after 3 minutes
-            setTimeout(() => endStandup(meeting), 180000);
+            // Show speech bubbles after arrival
+            setTimeout(() => {
+                agents.forEach((agent, index) => {
+                    setTimeout(() => showSpeechBubble(agent), index * 400);
+                });
+            }, 2000);
+            
+            // End after 30 seconds (demo mode)
+            setTimeout(() => endStandup(), 30000);
         }
 
-        function showAgentReport(agent, meeting) {
-            const memory = standupManager.getOrCreateMemory(agent.id);
-            const stats = standupManager.getAgentStats(agent.id);
-            const report = meeting.reports.find(r => r.agentId === agent.id);
-            
-            // Generate report message
-            let message = "";
-            if (stats.recentActivities > 0) {
-                message = `Completed ${stats.recentActivities} tasks. Quality: ${stats.qualityScore}%. `;
-                if (stats.qualityScore > 80) message += "Excelling! ";
-                else if (stats.qualityScore < 60) message += "Need to improve. ";
-            } else {
-                message = "Ready to tackle new challenges. ";
-            }
-            
-            // Add insight
-            const idea = memory.generateIdea();
-            message += idea;
-            
-            const pos = toIso(agent.x, agent.y);
-            
-            const bubble = document.createElement('div');
-            bubble.className = 'speech-bubble';
-            bubble.style.left = (pos.x + canvas.parentElement.offsetLeft + 20) + 'px';
-            bubble.style.top = (pos.y + canvas.parentElement.offsetTop - 50) + 'px';
-            bubble.style.maxWidth = '220px';
-            bubble.innerHTML = `
-                <strong style="color: ${agent.color}">${agent.name}:</strong><br>
-                <small style="opacity:0.8">${message.substring(0, 80)}...</small>
-            `;
-            
-            document.body.appendChild(bubble);
-            logActivity(`📊 ${agent.name}: ${stats.recentActivities} tasks, ${stats.qualityScore}% quality`);
-            
-            setTimeout(() => bubble.remove(), 6000);
-        }
-
-        function animateAgentToMeeting(agent) {
-            const startX = agent.x, startY = agent.y;
-            const endX = agent.targetX, endY = agent.targetY;
-            const duration = 1500, startTime = Date.now();
-            
-            function step() {
-                const elapsed = Date.now() - startTime;
-                const progress = Math.min(elapsed / duration, 1);
-                const ease = 1 - Math.pow(1 - progress, 3);
+        function animateAgentToMeeting(agent, delay) {
+            setTimeout(() => {
+                const startX = agent.x, startY = agent.y;
+                const endX = agent.targetX, endY = agent.targetY;
+                const duration = 1500;
+                const startTime = Date.now();
                 
-                agent.x = startX + (endX - startX) * ease;
-                agent.y = startY + (endY - startY) * ease;
-                
-                if (progress < 1) requestAnimationFrame(step);
-            }
-            step();
+                function step() {
+                    const elapsed = Date.now() - startTime;
+                    const progress = Math.min(elapsed / duration, 1);
+                    const ease = 1 - Math.pow(1 - progress, 3);
+                    
+                    agent.x = startX + (endX - startX) * ease;
+                    agent.y = startY + (endY - startY) * ease;
+                    
+                    if (progress < 1) {
+                        requestAnimationFrame(step);
+                    } else {
+                        // Arrived - stop walking
+                        isWalking[agent.id] = false;
+                        agent.activity = 'Reviewing 24h work';
+                    }
+                }
+                step();
+            }, delay);
         }
 
         function showSpeechBubble(agent) {
@@ -1058,7 +1339,7 @@
             const bubble = document.createElement('div');
             bubble.className = 'speech-bubble';
             bubble.style.left = (pos.x + canvas.parentElement.offsetLeft + 20) + 'px';
-            bubble.style.top = (pos.y + canvas.parentElement.offsetTop - 40) + 'px';
+            bubble.style.top = (pos.y + canvas.parentElement.offsetTop - 70) + 'px';
             bubble.innerHTML = `<strong style="color: ${agent.color}">${agent.name}:</strong> ${topic}`;
             
             document.body.appendChild(bubble);
@@ -1068,45 +1349,22 @@
         }
 
         function endStandup() {
-            const completedMeeting = standupManager.endMeeting();
+            logActivity('✅ Standup complete! Agents returning to desks...');
             
-            // Generate improvements
-            const improvements = completedMeeting ? completedMeeting.improvements : [];
-            
-            logActivity('✅ Standup complete! Processing insights and improvements...');
-            
-            // Show improvements
-            if (improvements.length > 0) {
-                improvements.slice(0, 3).forEach((imp, i) => {
-                    setTimeout(() => {
-                        logActivity(`💡 Improvement: ${imp.source1} + ${imp.source2} = ${imp.improvement.substring(0, 40)}...`);
-                    }, i * 1000);
-                });
-            }
-            
-            // Update agent quality scores
-            agents.forEach(agent => {
-                const stats = standupManager.getAgentStats(agent.id);
-                if (stats) {
-                    // Boost quality for attending standup
-                    const memory = standupManager.getOrCreateMemory(agent.id);
-                    memory.qualityScore = Math.min(100, memory.qualityScore + 3);
-                    
-                    // Update activity based on insights
-                    if (stats.qualityScore > 85) {
-                        agent.activity = 'High performance mode';
-                    } else if (stats.qualityScore > 70) {
-                        agent.activity = 'Improving workflow';
-                    } else {
-                        agent.activity = 'Implementing feedback';
-                    }
-                }
-                
-                // Return to desk
+            // Return agents to desks
+            agents.forEach((agent, index) => {
                 const originalPos = agentPositions[agent.id];
-                if (originalPos) animateAgentReturn(agent, originalPos);
-                
-                agent.status = 'working';
+                if (originalPos) {
+                    // Determine facing direction
+                    agent.facing = originalPos.x > agent.x ? 1 : -1;
+                    
+                    // Start walking back
+                    isWalking[agent.id] = true;
+                    agent.status = 'working';
+                    agent.activity = 'Returning to desk';
+                    
+                    animateAgentReturn(agent, originalPos, index * 50);
+                }
             });
             
             isStandupActive = false;
@@ -1114,61 +1372,56 @@
             document.getElementById('standup-btn').textContent = '🎤 Call Standup';
             document.getElementById('standup-btn').classList.add('pulse');
             document.getElementById('meeting-status').classList.remove('active');
-            document.getElementById('meeting-info').style.display = 'none';
-            
-            // Show summary
-            setTimeout(() => {
-                const summary = completedMeeting ? standupManager.getMeetingSummary(completedMeeting.id) : null;
-                if (summary) {
-                    logActivity(`📈 Standup Summary: ${summary.ideasGenerated} ideas, ${summary.improvements.length} improvements identified`);
-                }
-            }, 2000);
             
             updateStats();
             updateAgentList();
         }
 
-        function animateAgentReturn(agent, targetPos) {
-            const startX = agent.x, startY = agent.y;
-            const duration = 1500, startTime = Date.now();
-            
-            function step() {
-                const elapsed = Date.now() - startTime;
-                const progress = Math.min(elapsed / duration, 1);
-                const ease = 1 - Math.pow(1 - progress, 3);
+        function animateAgentReturn(agent, targetPos, delay) {
+            setTimeout(() => {
+                const startX = agent.x, startY = agent.y;
+                const duration = 1500;
+                const startTime = Date.now();
                 
-                agent.x = startX + (targetPos.x - startX) * ease;
-                agent.y = startY + (targetPos.y - startY) * ease;
-                
-                if (progress < 1) requestAnimationFrame(step);
-            }
-            step();
+                function step() {
+                    const elapsed = Date.now() - startTime;
+                    const progress = Math.min(elapsed / duration, 1);
+                    const ease = 1 - Math.pow(1 - progress, 3);
+                    
+                    agent.x = startX + (targetPos.x - startX) * ease;
+                    agent.y = startY + (targetPos.y - startY) * ease;
+                    
+                    if (progress < 1) {
+                        requestAnimationFrame(step);
+                    } else {
+                        // Arrived - stop walking
+                        isWalking[agent.id] = false;
+                        agent.activity = 'Back to work';
+                        
+                        // Reset activities after a moment
+                        setTimeout(() => {
+                            resetAgentActivity(agent);
+                        }, 1000);
+                    }
+                }
+                step();
+            }, delay);
         }
-
-        function showMeetingLog(meeting) {
-            document.getElementById('meeting-info').style.display = 'block';
+        
+        function resetAgentActivity(agent) {
+            const activities = {
+                'Executive': ['Strategic oversight', 'Monitoring systems'],
+                'Dev': ['Component library', 'Mobile responsive', 'Animations', 'API endpoints', 'Database', 'Testing'],
+                'Design': ['Avatar design', 'Style guide', 'Assets'],
+                'Content': ['Researching', 'Content creation'],
+                'Growth': ['Marketing strategy', 'Social media'],
+                'Ops': ['Monitoring', 'Code review', 'Security check'],
+                'Business Dev': ['Finding leads', 'Prep outreach']
+            };
             
-            let html = '<h4 style="color: var(--accent-pink); margin-bottom: 12px;">📊 24-Hour Reviews</h4>';
-            
-            // Show agent reports
-            meeting.reports.slice(0, 5).forEach(report => {
-                html += `
-                    <div class="topic-item" style="padding: 8px 0; border-bottom: 1px solid var(--border);">
-                        <strong style="color: ${agents.find(a => a.id === report.agentId)?.color || '#fff'}">
-                            ${report.agentName}
-                        </strong>: 
-                        ${report.past24h.taskCount} tasks, ${report.past24h.qualityScore}% quality
-                    </div>
-                `;
-            });
-            
-            // Show ideas
-            html += '<h4 style="color: var(--accent-cyan); margin: 16px 0 12px;">💡 Ideas Generated</h4>';
-            meeting.ideas.slice(0, 4).forEach(idea => {
-                html += `<div class="topic-item" style="padding: 6px 0; font-size: 0.85rem;">• ${idea.agent}: ${idea.idea.substring(0, 50)}...</div>`;
-            });
-            
-            document.getElementById('meeting-topics').innerHTML = html;
+            const deptActivities = activities[agent.dept] || ['Working'];
+            agent.activity = deptActivities[Math.floor(Math.random() * deptActivities.length)];
+            updateAgentList();
         }
 
         // UI Functions
@@ -1203,7 +1456,7 @@
         function updateAgentList() {
             document.getElementById('agent-list').innerHTML = agents.map(agent => `
                 <div class="agent-item">
-                    <div class="agent-avatar" style="border: 2px solid ${agent.color}">${agent.emoji}</div>
+                    <div class="agent-avatar" style="border: 2px solid ${agent.color}">${agent.name[0]}</div>
                     <div class="agent-info">
                         <div class="agent-name" style="color: ${agent.color}">${agent.name}</div>
                         <div class="agent-desk">${agent.desk} • ${agent.activity}</div>
@@ -1214,9 +1467,9 @@
         }
 
         // Initial setup
-        logActivity('🏢 Pixel Office v6 loaded with 20 agents');
-        logActivity('🧠 Memory tracking system active');
-        logActivity('🎤 Enhanced standup with 24h reviews ready');
+        logActivity('🏢 Pixel Office v7 loaded with Walking Computer Head Agents!');
+        logActivity('🤖 20 agents with 8-frame walking animation ready');
+        logActivity('💡 Screen glows match department colors');
         updateStats();
         updateAgentList();
     </script>
