@@ -403,6 +403,7 @@
         
         <div style="display: flex; align-items: center; gap: 1rem;">
             <span style="font-size: 0.875rem; color: var(--text-muted);">🟢 20 Agents Active</span>
+            <button class="btn" onclick="location.reload()" style="font-size: 0.75rem; padding: 0.25rem 0.75rem;">🔄 Refresh</button>
         </div>
     </header>
 
@@ -734,6 +735,12 @@
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
         }
+        
+        // Auto-refresh every 30 minutes
+        setInterval(() => {
+            console.log('Auto-refreshing data viewer...');
+            loadFileList();
+        }, 1800000);
     </script>
 </body>
 </html>
