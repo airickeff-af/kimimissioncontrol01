@@ -436,12 +436,12 @@
             // Password removed - direct access granted
             document.getElementById('password-overlay').style.display = 'none';
             localStorage.setItem('dataViewerAuth', 'true');
-            loadFileList();
+            // loadFileList will be called after DOM loads
         }
 
-        // Auto-hide password overlay on load
+        // Auto-hide password overlay on load - will initialize after functions defined
         document.getElementById('password-overlay').style.display = 'none';
-        loadFileList();
+        // loadFileList() moved to end of script
 
         // File data embedded directly
         const filesData = [
@@ -741,6 +741,18 @@
             console.log('Auto-refreshing data viewer...');
             loadFileList();
         }, 1800000);
+        
+        // Initialize on page load - NOW SAFE (after function definitions)
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('Data viewer initializing...');
+            loadFileList();
+        });
+        
+        // Also try immediate load in case DOM is already ready
+        if (document.readyState === 'complete' || document.readyState === 'interactive') {
+            console.log('DOM already ready, loading immediately...');
+            loadFileList();
+        }
     </script>
 </body>
 </html>
