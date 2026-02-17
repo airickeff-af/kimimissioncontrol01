@@ -1,0 +1,68 @@
+[
+  {
+    "id": "lead_001",
+    "company": "Coins.ph",
+    "contact_name": "Wei Zhou",
+    "email": "wei.zhou@coins.ph",
+    "linkedin": "linkedin.com/in/weizhou-coins",
+    "status": "new",
+    "priority": "P0",
+    "notes": "CEO of Coins.ph - leading crypto exchange in Philippines. Potential strategic partnership for remittance corridor expansion. High priority target for Q1 2026.",
+    "created_date": "2026-02-17"
+  },
+  {
+    "id": "lead_002",
+    "company": "Coins.xyz",
+    "contact_name": "Sarah Chen",
+    "email": "sarah.chen@coins.xyz",
+    "linkedin": "linkedin.com/in/sarahchen-web3",
+    "status": "new",
+    "priority": "P0",
+    "notes": "Head of Partnerships at Coins.xyz - Web3 infrastructure provider. Interested in cross-chain liquidity solutions. Referred by industry contact.",
+    "created_date": "2026-02-17"
+  },
+  {
+    "id": "lead_003",
+    "company": "PDAX",
+    "contact_name": "Nichel Gaba",
+    "email": "nichel.gaba@pdax.ph",
+    "linkedin": "linkedin.com/in/nichelgaba",
+    "status": "new",
+    "priority": "P1",
+    "notes": "CEO of PDAX - Philippine Digital Asset Exchange. Strong regulatory standing with BSP license. Potential competitor analysis and partnership opportunity.",
+    "created_date": "2026-02-17"
+  },
+  {
+    "id": "lead_004",
+    "company": "BloomX",
+    "contact_name": "Luis Buenaventura",
+    "email": "luis@bloomx.ph",
+    "linkedin": "linkedin.com/in/luisbuenaventura",
+    "status": "new",
+    "priority": "P1",
+    "notes": "Founder of BloomX - crypto remittance platform focused on Philippines. Active in local crypto community. Good fit for partnership discussions.",
+    "created_date": "2026-02-17"
+  },
+  {
+    "id": "lead_005",
+    "company": "Rebit.ph",
+    "contact_name": "Miguel Cuneta",
+    "email": "miguel@rebit.ph",
+    "linkedin": "linkedin.com/in/miguelcuneta",
+    "status": "new",
+    "priority": "P2",
+    "notes": "Co-founder of Rebit.ph - Bitcoin remittance service. Long-standing player in PH crypto space. Secondary priority but worth exploring integration.",
+    "created_date": "2026-02-17"
+  },
+  {
+    "id": "lead_006",
+    "company": "Binance Philippines",
+    "contact_name": "Kenneth Stern",
+    "email": "kenneth.stern@binance.com",
+    "linkedin": "linkedin.com/in/kennethstern",
+    "status": "new",
+    "priority": "P1",
+    "notes": "Country Manager for Binance Philippines. Major exchange with strong PH presence. Potential for liquidity sharing or co-marketing initiatives.",
+    "created_date": "2026-02-17"
+  }
+]
