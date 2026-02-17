@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mission Control - Living Pixel Office</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap');
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --bg: #2d1b4e;
+            --panel: #f4e4c1;
+            --neon-cyan: #00ffff;
+            --neon-pink: #ff6b9d;
+            --neon-green: #51cf66;
+            --neon-yellow: #fcc419;
+            --neon-purple: #a855f7;
+            --neon-orange: #ff922b;
+        }
+        
+        body {
+            font-family: 'VT323', monospace;
+            background: var(--bg);
+            color: var(--panel);
+            min-height: 100vh;
+            overflow: hidden;
+        }
+        
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            height: 100vh;
+        }
+        
+        /* Office Canvas Area */
+        .office-area {
+            position: relative;
+            background: linear-gradient(180deg, #1a0f2e 0%, #2d1b4e 100%);
+            overflow: hidden;
+        }
+        
+        #office-canvas {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .office-header {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            background: rgba(0,0,0,0.8);
+            padding: 10px 20px;
+            border-radius: 10px;
+            border: 2px solid var(--neon-cyan);
+            z-index: 10;
+        }
+        
+        .office-header h1 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.8rem;
+            color: var(--neon-cyan);
+            margin-bottom: 5px;
+        }
+        
+        .last-updated {
+            font-size: 0.7rem;
+            color: #888;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            background: rgba(0,0,0,0.9);
+            border-left: 3px solid var(--neon-cyan);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        .sidebar-header {
+            padding: 15px;
+            background: linear-gradient(90deg, rgba(0,255,255,0.1), transparent);
+            border-bottom: 2px solid var(--neon-cyan);
+        }
+        
+        .sidebar-header h2 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.7rem;
+            color: var(--neon-cyan);
+        }
+        
+        /* Activity Feed */
+        .activity-feed {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px;
+        }
+        
+        .activity-item {
+            padding: 10px;
+            margin-bottom: 8px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 8px;
+            border-left: 3px solid var(--neon-cyan);
+            font-size: 0.85rem;
+            animation: slideIn 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .activity-time {
+            font-size: 0.7rem;
+            color: #666;
+            display: block;
+            margin-bottom: 3px;
+        }
+        
+        .activity-text {
+            color: var(--panel);
+        }
+        
+        .activity-agents {
+            color: var(--neon-cyan);
+            font-weight: bold;
+        }
+        
+        /* Agent Status Panel */
+        .agent-panel {
+            padding: 15px;
+            border-top: 2px solid var(--neon-cyan);
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .agent-panel h3 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.6rem;
+            color: var(--neon-cyan);
+            margin-bottom: 10px;
+        }
+        
+        .agent-status-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px;
+            margin-bottom: 5px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 5px;
+            font-size: 0.8rem;
+        }
+        
+        .agent-emoji {
+            font-size: 1.2rem;
+        }
+        
+        .agent-info {
+            flex: 1;
+        }
+        
+        .agent-name {
+            font-weight: bold;
+            color: var(--panel);
+        }
+        
+        .agent-task {
+            font-size: 0.75rem;
+            color: #888;
+        }
+        
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--neon-green);
+            box-shadow: 0 0 5px var(--neon-green);
+        }
+        
+        .status-dot.working { background: var(--neon-yellow); box-shadow: 0 0 5px var(--neon-yellow); }
+        .status-dot.meeting { background: var(--neon-cyan); box-shadow: 0 0 5px var(--neon-cyan); }
+        .status-dot.resting { background: #666; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="office-area">
+            <canvas id="office-canvas"></canvas>
+            <div class="office-header">
+                <h1>🏢 MISSION CONTROL HQ</h1>
+                <div class="last-updated" id="last-updated">Last updated: Just now</div>
+            </div>
+        </div>
+        
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2>📊 LIVE ACTIVITY FEED</h2>
+            </div>
+            
+            <div class="activity-feed" id="activity-feed">
+                <!-- Activities populated by JS -->
+            </div>
+            
+            <div class="agent-panel">
+                <h3>AGENT STATUS</h3>
+                <div id="agent-status-list">
+                    <!-- Agent statuses populated by JS -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Agent data with pending tasks
+        const agentsData = {
+            nexus: {
+                id: 'nexus', name: 'Nexus', emoji: '🤖', color: '#00ffff',
+                x: 400, y: 100, targetX: 400, targetY: 100,
+                status: 'working', activity: 'Delegating tasks',
+                pendingTasks: ['Review Code API fix', 'Approve dashboard updates', 'Plan tomorrow sprint'],
+                department: 'executive', role: 'Orchestrator'
+            },
+            ericf: {
+                id: 'ericf', name: 'EricF', emoji: '👨‍💻', color: '#ff6b9d',
+                x: 600, y: 100, targetX: 600, targetY: 100,
+                status: 'resting', activity: 'Strategic oversight',
+                pendingTasks: ['Review leads', 'Approve partnerships'],
+                department: 'executive', role: 'Commander'
+            },
+            forge: {
+                id: 'forge', name: 'Forge', emoji: '🔨', color: '#ff922b',
+                x: 150, y: 300, targetX: 150, targetY: 300,
+                status: 'working', activity: 'Polishing UI components',
+                pendingTasks: ['Fix mobile responsive', 'Add dark mode', 'Optimize animations'],
+                department: 'dev', role: 'UI/Frontend'
+            },
+            code: {
+                id: 'code', name: 'Code', emoji: '💻', color: '#51cf66',
+                x: 300, y: 300, targetX: 300, targetY: 300,
+                status: 'working', activity: 'Fixing API 404 errors',
+                pendingTasks: ['Fix API routing', 'Test endpoints', 'Update documentation'],
+                department: 'dev', role: 'Backend'
+            },
+            pixel: {
+                id: 'pixel', name: 'Pixel', emoji: '🎨', color: '#a855f7',
+                x: 450, y: 300, targetX: 450, targetY: 300,
+                status: 'working', activity: 'Creating OK Computer avatars',
+                pendingTasks: ['Design agent avatars', 'Create style guide', 'Export assets'],
+                department: 'dev', role: 'Designer'
+            },
+            glasses: {
+                id: 'glasses', name: 'Glasses', emoji: '🔍', color: '#00ffff',
+                x: 150, y: 500, targetX: 150, targetY: 500,
+                status: 'resting', activity: 'Research complete',
+                pendingTasks: ['Tomorrow briefing prep'],
+                department: 'content', role: 'Researcher'
+            },
+            quill: {
+                id: 'quill', name: 'Quill', emoji: '✍️', color: '#fcc419',
+                x: 300, y: 500, targetX: 300, targetY: 500,
+                status: 'resting', activity: 'Content drafted',
+                pendingTasks: ['Edit Twitter thread', 'Schedule posts'],
+                department: 'content', role: 'Writer'
+            },
+            gary: {
+                id: 'gary', name: 'Gary', emoji: '📊', color: '#51cf66',
+                x: 600, y: 500, targetX: 600, targetY: 500,
+                status: 'working', activity: 'Planning campaigns',
+                pendingTasks: ['Review content calendar', 'Analyze metrics'],
+                department: 'growth', role: 'Marketing'
+            },
+            larry: {
+                id: 'larry', name: 'Larry', emoji: '📱', color: '#ff6b9d',
+                x: 750, y: 500, targetX: 750, targetY: 500,
+                status: 'working', activity: 'Scheduling posts',
+                pendingTasks: ['Queue tomorrow posts', 'Engage with community'],
+                department: 'growth', role: 'Social'
+            },
+            sentry: {
+                id: 'sentry', name: 'Sentry', emoji: '⚙️', color: '#00ffff',
+                x: 150, y: 700, targetX: 150, targetY: 700,
+                status: 'working', activity: 'Monitoring systems',
+                pendingTasks: ['Check server health', 'Review logs'],
+                department: 'ops', role: 'DevOps'
+            },
+            audit: {
+                id: 'audit', name: 'Audit', emoji: '✅', color: '#fcc419',
+                x: 300, y: 700, targetX: 300, targetY: 700,
+                status: 'working', activity: 'Reviewing outputs',
+                pendingTasks: ['Review Code backend', 'Check DealFlow leads'],
+                department: 'ops', role: 'QA'
+            },
+            cipher: {
+                id: 'cipher', name: 'Cipher', emoji: '🔒', color: '#a855f7',
+                x: 450, y: 700, targetX: 450, targetY: 700,
+                status: 'working', activity: 'Security monitoring',
+                pendingTasks: ['Security audit', 'Review access logs'],
+                department: 'ops', role: 'Security'
+            },
+            dealflow: {
+                id: 'dealflow', name: 'DealFlow', emoji: '🤝', color: '#ff922b',
+                x: 600, y: 700, targetX: 600, targetY: 700,
+                status: 'working', activity: 'Finding 30 leads/day',
+                pendingTasks: ['Find 30 DeFi leads', 'Research RWA contacts', 'Update leads.json'],
+                department: 'bd', role: 'Lead Gen'
+            },
+            coldcall: {
+                id: 'coldcall', name: 'ColdCall', emoji: '📞', color: '#ff6b9d',
+                x: 750, y: 700, targetX: 750, targetY: 700,
+                status: 'working', activity: 'Preparing outreach templates',
+                pendingTasks: ['Draft email templates', 'Create LinkedIn scripts'],
+                department: 'bd', role: 'Outreach'
+            },
+            scout: {
+                id: 'scout', name: 'Scout', emoji: '🕵️', color: '#00ffff',
+                x: 900, y: 700, targetX: 900, targetY: 700,
+                status: 'working', activity: 'Gathering intel',
+                pendingTasks: ['Research LINE contacts', 'Find partnership opportunities'],
+                department: 'bd', role: 'Intel'
+            }
+        };
+
+        class LivingOffice {
+            constructor() {
+                this.canvas = document.getElementById('office-canvas');
+                this.ctx = this.canvas.getContext('2d');
+                this.canvas.width = 1000;
+                this.canvas.height = 800;
+                
+                this.agents = Object.values(agentsData);
+                this.meetingTable = { x: 500, y: 400, radius: 100 };
+                this.activities = [];
+                this.lastUpdate = new Date();
+                
+                this.setupOffice();
+                this.startSimulation();
+            }
+
+            setupOffice() {
+                this.logActivity('Office initialized with ' + this.agents.length + ' agents');
+                this.updateAgentStatusList();
+            }
+
+            logActivity(text, agents = []) {
+                const activity = {
+                    time: new Date().toLocaleTimeString(),
+                    text: text,
+                    agents: agents,
+                    id: Date.now()
+                };
+                this.activities.unshift(activity);
+                if (this.activities.length > 20) this.activities.pop();
+                
+                this.updateActivityFeed();
+                this.lastUpdate = new Date();
+                document.getElementById('last-updated').textContent = 
+                    'Last updated: ' + this.lastUpdate.toLocaleTimeString();
+            }
+
+            updateActivityFeed() {
+                const feed = document.getElementById('activity-feed');
+                feed.innerHTML = this.activities.map(act => {
+                    let text = act.text;
+                    if (act.agents.length > 0) {
+                        text = text.replace('{{agents}}', 
+                            '<span class="activity-agents">' + act.agents.join(', ') + '</span>');
+                    }
+                    return `
+                        <div class="activity-item">
+                            <span class="activity-time">${act.time}</span>
+                            <span class="activity-text">${text}</span>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            updateAgentStatusList() {
+                const list = document.getElementById('agent-status-list');
+                list.innerHTML = this.agents.map(agent => {
+                    const statusClass = agent.status === 'working' ? 'working' : 
+                                       agent.status === 'meeting' ? 'meeting' : 'resting';
+                    const currentTask = agent.activity;
+                    const pendingCount = agent.pendingTasks.length;
+                    
+                    return `
+                        <div class="agent-status-item">
+                            <span class="agent-emoji">${agent.emoji}</span>
+                            <div class="agent-info">
+                                <div class="agent-name">${agent.name}</div>
+                                <div class="agent-task">${currentTask} | ${pendingCount} pending</div>
+                            </div>
+                            <div class="status-dot ${statusClass}"></div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            drawOffice() {
+                // Clear
+                this.ctx.fillStyle = '#2d1b4e';
+                this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+
+                // Grid floor
+                this.ctx.strokeStyle = 'rgba(0,255,255,0.05)';
+                for (let x = 0; x < this.canvas.width; x += 50) {
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(x, 0);
+                    this.ctx.lineTo(x, this.canvas.height);
+                    this.ctx.stroke();
+                }
+                for (let y = 0; y < this.canvas.height; y += 50) {
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(0, y);
+                    this.ctx.lineTo(this.canvas.width, y);
+                    this.ctx.stroke();
+                }
+
+                // Meeting table
+                this.ctx.fillStyle = 'rgba(244, 228, 193, 0.2)';
+                this.ctx.beginPath();
+                this.ctx.arc(this.meetingTable.x, this.meetingTable.y, this.meetingTable.radius, 0, Math.PI * 2);
+                this.ctx.fill();
+                this.ctx.strokeStyle = '#f4e4c1';
+                this.ctx.lineWidth = 3;
+                this.ctx.stroke();
+                
+                this.ctx.fillStyle = '#f4e4c1';
+                this.ctx.font = '14px "Press Start 2P"';
+                this.ctx.textAlign = 'center';
+                this.ctx.fillText('MEETING TABLE', this.meetingTable.x, this.meetingTable.y - 10);
+                this.ctx.font = '10px VT323';
+                this.ctx.fillText('(Click to call meeting)', this.meetingTable.x, this.meetingTable.y + 10);
+
+                // Department labels
+                this.drawDeptLabel('EXECUTIVE', 400, 60, '#ff6b9d');
+                this.drawDeptLabel('DEV TEAM', 300, 260, '#ff922b');
+                this.drawDeptLabel('CONTENT', 225, 460, '#00ffff');
+                this.drawDeptLabel('GROWTH', 675, 460, '#51cf66');
+                this.drawDeptLabel('OPERATIONS', 300, 660, '#fcc419');
+                this.drawDeptLabel('BUSINESS DEV', 750, 660, '#a855f7');
+            }
+
+            drawDeptLabel(text, x, y, color) {
+                this.ctx.fillStyle = color;
+                this.ctx.font = '10px "Press Start 2P"';
+                this.ctx.textAlign = 'center';
+                this.ctx.fillText(text, x, y);
+            }
+
+            drawAgent(agent) {
+                const legOffset = Math.sin(Date.now() / 200 + agent.x) * 5;
+                const isMoving = Math.abs(agent.x - agent.targetX) > 2 || Math.abs(agent.y - agent.targetY) > 2;
+                
+                // Legs (animated when moving)
+                this.ctx.fillStyle = '#4a4a6a';
+                if (isMoving) {
+                    this.ctx.fillRect(agent.x - 12 + legOffset, agent.y + 25, 6, 15);
+                    this.ctx.fillRect(agent.x + 6 - legOffset, agent.y + 25, 6, 15);
+                } else {
+                    this.ctx.fillRect(agent.x - 12, agent.y + 25, 6, 15);
+                    this.ctx.fillRect(agent.x + 6, agent.y + 25, 6, 15);
+                }
+
+                // Body (computer)
+                this.ctx.fillStyle = agent.color;
+                this.ctx.fillRect(agent.x - 18, agent.y - 15, 36, 35);
+                
+                // Screen
+                this.ctx.fillStyle = '#1a1a2e';
+                this.ctx.fillRect(agent.x - 13, agent.y - 10, 26, 20);
+                
+                // Emoji face
+                this.ctx.font = '16px Arial';
+                this.ctx.textAlign = 'center';
+                this.ctx.fillText(agent.emoji, agent.x, agent.y + 5);
+
+                // Status glow
+                if (agent.status === 'working') {
+                    this.ctx.shadowColor = agent.color;
+                    this.ctx.shadowBlur = 10;
+                }
+
+                // Name label
+                this.ctx.shadowBlur = 0;
+                this.ctx.fillStyle = '#fff';
+                this.ctx.font = '9px "Press Start 2P"';
+                this.ctx.fillText(agent.name, agent.x, agent.y + 45);
+                
+                // Activity indicator
+                this.ctx.font = '8px VT323';
+                this.ctx.fillStyle = '#888';
+                this.ctx.fillText(agent.activity.substring(0, 15), agent.x, agent.y + 55);
+            }
+
+            updateAgents() {
+                this.agents.forEach(agent => {
+                    const dx = agent.targetX - agent.x;
+                    const dy = agent.targetY - agent.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (dist > 2) {
+                        agent.x += (dx / dist) * 1.5;
+                        agent.y += (dy / dist) * 1.5;
+                    }
+                });
+            }
+
+            animate() {
+                this.drawOffice();
+                this.updateAgents();
+                this.agents.forEach(agent => this.drawAgent(agent));
+                requestAnimationFrame(() => this.animate());
+            }
+
+            callMeeting() {
+                const available = this.agents.filter(a => a.status !== 'meeting');
+                const count = Math.min(Math.floor(Math.random() * 3) + 2, available.length);
+                const participants = [];
+                
+                for (let i = 0; i < count; i++) {
+                    const idx = Math.floor(Math.random() * available.length);
+                    const agent = available.splice(idx, 1)[0];
+                    participants.push(agent);
+                    
+                    // Move to meeting table
+                    const angle = (Math.PI * 2 / count) * i;
+                    agent.targetX = this.meetingTable.x + Math.cos(angle) * 70;
+                    agent.targetY = this.meetingTable.y + Math.sin(angle) * 70;
+                    agent.status = 'meeting';
+                    agent.activity = 'In meeting';
+                }
+                
+                const topics = ['API integration', 'Dashboard design', 'Lead strategy', 'Partnership outreach', 'Security review'];
+                const topic = topics[Math.floor(Math.random() * topics.length)];
+                
+                this.logActivity('{{agents}} started meeting about ' + topic, participants.map(a => a.name));
+                this.updateAgentStatusList();
+                
+                // End meeting after 8 seconds
+                setTimeout(() => {
+                    participants.forEach(agent => {
+                        agent.targetX = agentsData[agent.id].x;
+                        agent.targetY = agentsData[agent.id].y;
+                        agent.status = 'working';
+                        agent.activity = agentsData[agent.id].activity;
+                    });
+                    this.logActivity('Meeting completed: ' + topic);
+                    this.updateAgentStatusList();
+                }, 8000);
+            }
+
+            startSimulation() {
+                this.animate();
+                
+                // Random wandering
+                setInterval(() => {
+                    this.agents.forEach(agent => {
+                        if (agent.status !== 'meeting' && Math.random() < 0.3) {
+                            const offsetX = (Math.random() - 0.5) * 60;
+                            const offsetY = (Math.random() - 0.5) * 40;
+                            agent.targetX = agentsData[agent.id].x + offsetX;
+                            agent.targetY = agentsData[agent.id].y + offsetY;
+                        }
+                    });
+                }, 4000);
+                
+                // Random meetings
+                setInterval(() => {
+                    if (Math.random() < 0.4) this.callMeeting();
+                }, 15000);
+                
+                // Update status periodically
+                setInterval(() => {
+                    this.updateAgentStatusList();
+                }, 3000);
+            }
+        }
+
+        // Initialize
+        window.office = new LivingOffice();
+
+        // Click handler for meeting table
+        document.getElementById('office-canvas').addEventListener('click', (e) => {
+            const rect = e.target.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            const dx = x - 500;
+            const dy = y - 400;
+            if (Math.sqrt(dx * dx + dy * dy) < 100) {
+                window.office.callMeeting();
+            }
+        });
+    </script>
+</body>
+</html>
