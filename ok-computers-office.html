@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mission Control - OK Computers Style Office</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap');
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --bg-dark: #0a0a0f;
+            --bg-panel: #1a1a2e;
+            --neon-cyan: #00ffff;
+            --neon-pink: #ff00ff;
+            --neon-green: #00ff00;
+            --neon-yellow: #ffff00;
+            --neon-orange: #ff8800;
+            --neon-purple: #8800ff;
+            --text: #e0e0e0;
+            --glow-cyan: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 30px #00ffff;
+            --glow-pink: 0 0 10px #ff00ff, 0 0 20px #ff00ff, 0 0 30px #ff00ff;
+        }
+        
+        body {
+            font-family: 'VT323', monospace;
+            background: var(--bg-dark);
+            color: var(--text);
+            min-height: 100vh;
+            overflow: hidden;
+            image-rendering: pixelated;
+        }
+        
+        /* Scanline effect */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 255, 255, 0.03),
+                rgba(0, 255, 255, 0.03) 1px,
+                transparent 1px,
+                transparent 2px
+            );
+            pointer-events: none;
+            z-index: 1000;
+            animation: scanline 8s linear infinite;
+        }
+        
+        @keyframes scanline {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(2px); }
+        }
+        
+        /* Office Container */
+        .office {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(180deg, #0f0f1a 0%, #1a1a2e 50%, #0a0a0f 100%);
+            overflow: auto;
+        }
+        
+        /* Grid floor */
+        .floor {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 40%;
+            background: 
+                linear-gradient(90deg, rgba(0,255,255,0.1) 1px, transparent 1px),
+                linear-gradient(rgba(0,255,255,0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            transform: perspective(500px) rotateX(60deg);
+            transform-origin: bottom;
+        }
+        
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 20px;
+            border-bottom: 2px solid var(--neon-cyan);
+            box-shadow: 0 0 20px rgba(0,255,255,0.3);
+        }
+        
+        .header h1 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 1.2rem;
+            color: var(--neon-cyan);
+            text-shadow: var(--glow-cyan);
+            margin-bottom: 10px;
+        }
+        
+        .header .subtitle {
+            color: var(--neon-pink);
+            text-shadow: var(--glow-pink);
+            font-size: 1rem;
+        }
+        
+        /* Leaders Section (Top) */
+        .leaders {
+            display: flex;
+            justify-content: center;
+            gap: 100px;
+            padding: 30px;
+            position: relative;
+        }
+        
+        .leader-platform {
+            background: linear-gradient(180deg, rgba(0,255,255,0.1), transparent);
+            border: 2px solid var(--neon-cyan);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: var(--glow-cyan);
+            position: relative;
+        }
+        
+        .leader-platform::before {
+            content: '👑';
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.5rem;
+        }
+        
+        .leader-platform.ericf {
+            border-color: var(--neon-pink);
+            box-shadow: var(--glow-pink);
+        }
+        
+        .leader-platform.ericf::before {
+            content: '⭐';
+        }
+        
+        /* Pixel Computer Avatar - OK Computers Style */
+        .pixel-computer {
+            width: 100px;
+            height: 120px;
+            margin: 0 auto 15px;
+            position: relative;
+        }
+        
+        /* Monitor Head */
+        .monitor {
+            width: 80px;
+            height: 70px;
+            background: #2a2a3e;
+            border: 3px solid var(--neon-cyan);
+            border-radius: 10px;
+            position: relative;
+            margin: 0 auto;
+            box-shadow: var(--glow-cyan);
+        }
+        
+        .monitor.screen {
+            border-color: var(--neon-pink);
+            box-shadow: var(--glow-pink);
+        }
+        
+        /* Screen glow */
+        .monitor::after {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            background: linear-gradient(135deg, rgba(0,255,255,0.3), transparent);
+            border-radius: 5px;
+            animation: screenGlow 2s ease-in-out infinite;
+        }
+        
+        @keyframes screenGlow {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+        
+        /* Face on screen */
+        .face {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.5rem;
+            color: var(--neon-cyan);
+            text-shadow: var(--glow-cyan);
+        }
+        
+        /* Computer body */
+        .computer-body {
+            width: 60px;
+            height: 40px;
+            background: #1a1a2e;
+            border: 2px solid var(--neon-cyan);
+            margin: 5px auto 0;
+            border-radius: 5px;
+            position: relative;
+        }
+        
+        /* Keyboard */
+        .keyboard {
+            width: 70px;
+            height: 15px;
+            background: #2a2a3e;
+            border: 1px solid var(--neon-cyan);
+            margin: 2px auto 0;
+            border-radius: 3px;
+            box-shadow: 0 0 5px rgba(0,255,255,0.5);
+        }
+        
+        /* Cables */
+        .cables {
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 20px;
+            background: var(--neon-cyan);
+            box-shadow: var(--glow-cyan);
+        }
+        
+        /* Agent Name */
+        .agent-name {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.7rem;
+            color: var(--neon-cyan);
+            text-shadow: var(--glow-cyan);
+            margin-top: 10px;
+        }
+        
+        .agent-role {
+            font-size: 0.9rem;
+            color: var(--text);
+            margin-top: 5px;
+        }
+        
+        /* Departments Grid */
+        .departments {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            padding: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .department {
+            background: rgba(26, 26, 46, 0.8);
+            border: 2px solid var(--neon-cyan);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+            transition: all 0.3s;
+        }
+        
+        .department:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--glow-cyan);
+        }
+        
+        .department .pixel-computer {
+            width: 80px;
+            height: 100px;
+        }
+        
+        .department .monitor {
+            width: 60px;
+            height: 55px;
+        }
+        
+        .department .computer-body {
+            width: 45px;
+            height: 30px;
+        }
+        
+        .department .keyboard {
+            width: 55px;
+            height: 12px;
+        }
+        
+        .department .agent-name {
+            font-size: 0.6rem;
+        }
+        
+        /* Status indicator */
+        .status {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--neon-green);
+            box-shadow: 0 0 10px var(--neon-green);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .status.busy {
+            background: var(--neon-yellow);
+            box-shadow: 0 0 10px var(--neon-yellow);
+        }
+        
+        .status.offline {
+            background: var(--neon-pink);
+            box-shadow: 0 0 10px var(--neon-pink);
+        }
+        
+        /* Neon text effect */
+        .neon-text {
+            color: var(--neon-cyan);
+            text-shadow: 
+                0 0 5px var(--neon-cyan),
+                0 0 10px var(--neon-cyan),
+                0 0 20px var(--neon-cyan),
+                0 0 40px var(--neon-cyan);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .departments {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .leaders {
+                gap: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="office">
+        <div class="floor"></div>
+        
+        <!-- Header -->
+        <div class="header">
+            <h1>MISSION CONTROL</h1>
+            <div class="subtitle">OK COMPUTERS EDITION</div>
+        </div>
+        
+        <!-- Leaders (Top Tier) -->
+        <div class="leaders">
+            <!-- Nexus (Air1ck3ff) -->
+            <div class="leader-platform">
+                <div class="pixel-computer">
+                    <div class="monitor">
+                        <div class="face">🤖</div>
+                    </div>
+                    <div class="computer-body"></div>
+                    <div class="keyboard"></div>
+                    <div class="cables"></div>
+                </div>
+                <div class="agent-name">NEXUS</div>
+                <div class="agent-role">Air1ck3ff | Orchestrator</div>
+                <div class="status"></div>
+            </div>
+            
+            <!-- EricF (You - Static) -->
+            <div class="leader-platform ericf">
+                <div class="pixel-computer">
+                    <div class="monitor screen">
+                        <div class="face">👨‍💻</div>
+                    </div>
+                    <div class="computer-body"></div>
+                    <div class="keyboard"></div>
+                    <div class="cables"></div>
+                </div>
+                <div class="agent-name">ERICF</div>
+                <div class="agent-role">Commander | You</div>
+                <div class="status"></div>
+            </div>
+        </div>
+        
+        <!-- Departments (Grid) -->
+        <div class="departments">
+            <!-- Forge -->
+            <div class="department">
+                <div class="pixel-computer">
+                    <div class="monitor">
+                        <div class="face">🔨</div>
+                    </div>
+                    <div class="computer-body"></div>
+                    <div class="keyboard"></div>
+                </div>
+                <div class="agent-name">FORGE</div>
+                <div class="agent-role">UI/Frontend</div>
+                <div class="status"></div>
+            </div>
+            
+            <!-- Code -->
+            <div class="department">
+                <div class="pixel-computer">
+                    <div class="monitor">
+                        <div class="face">💻</div>
+                    </div>
+                    <div class="computer-body"></div>
+                    <div class="keyboard"></div>
+                </div>
+                <div class="agent-name">CODE</div>
+                <div class="agent-role">Backend</div>
+                <div class="status busy"></div>
+            </div>
+            
+            <!-- Pixel -->
+            <div class="department">
+                <div class="pixel-computer">
+                    <div class="monitor">
+                        <div class="face">🎨</div>
+                    </div>
+                    <div class="computer-body"></div>
+                    <div class="keyboard"></div>
+                </div>
+                <div class="agent-name">PIXEL</div>
+                <div class="agent-role">Designer</div>
+                <div class="status"></div>
+            </div>
+            
+            <!-- Glasses -->
+            <div class="department">
+                <div class="pixel-computer">
+                    <div class="monitor">
+                        <div class="face">🔍</div>
+                    </div>
+                    <div class="computer-body"></div>
+                    <div class="keyboard"></div>
+                </div>
+                <div class="agent-name">GLASSES</div>
+                <div class="agent-role">Researcher</div>
+                <div class="status"></div>
+            </div>
+            
+            <!-- Quill -->
+            <div class="department">
+                <div class="pixel-computer">
+                    <div class="monitor">
+                        <div class="face">✍️</div>
+                    </div>
+                    <div class="computer-body"></div>
+                    <div class="keyboard"></div>
+                </div>
+                <div class="agent-name">QUILL</div>
+                <div class="agent-role">Writer</div>
+                <div class="status"></div>
+            </div>
+            
+            <!-- Gary -->
+            <div class="department">
+                <div class="pixel-computer">
+                    <div class="monitor">
+                        <div class="face">📈</div>
+                    </div>
+                    <div class="computer-body"></div>
+                    <div class="keyboard"></div>
+                </div>
+                <div class="agent-name">GARY</div>
+                <div class="agent-role">Marketing</div>
+                <div class="status"></div>
+            </div>
+            
+            <!-- Larry -->
+            <div class="department">
+                <div class="pixel-computer">
+                    <div class="monitor">
+                        <div class="face">📱</div>
+                    </div>
+                    <div class="computer-body"></div>
+                    <div class="keyboard"></div>
+                </div>
+                <div class="agent-name">LARRY</div>
+                <div class="agent-role">Social</div>
+                <div class="status"></div>
+            </div>
+            
+            <!-- Sentry -->
+            <div class="department">
+                <div class="pixel-computer">
+                    <div class="monitor">
+                        <div class="face">⚙️</div>
+                    </div>
+                    <div class="computer-body"></div>
+                    <div class="keyboard"></div>
+                </div>
+                <div class="agent-name">SENTRY</div>
+                <div class="agent-role">DevOps</div>
+                <div class="status"></div>
+            </div>
+            
+            <!-- Audit -->
+            <div class="department">
+                <div class="pixel-computer">
+                    <div class="monitor">
+                        <div class="face">✅</div>
+                    </div>
+                    <div class="computer-body"></div>
+                    <div class="keyboard"></div>
+                </div>
+                <div class="agent-name">AUDIT</div>
+                <div class="agent-role">QA</div>
+                <div class="status"></div>
+            </div>
+            
+            <!-- Cipher -->
+            <div class="department">
+                <div class="pixel-computer">
+                    <div class="monitor">
+                        <div class="face">🔒</div>
+                    </div>
+                    <div class="computer-body"></div>
+                    <div class="keyboard"></div>
+                </div>
+                <div class="agent-name">CIPHER</div>
+                <div class="agent-role">Security</div>
+                <div class="status"></div>
+            </div>
+            
+            <!-- DealFlow -->
+            <div class="department">
+                <div class="pixel-computer">
+                    <div class="monitor">
+                        <div class="face">🤝</div>
+                    </div>
+                    <div class="computer-body"></div>
+                    <div class="keyboard"></div>
+                </div>
+                <div class="agent-name">DEALFLOW</div>
+                <div class="agent-role">Lead Gen</div>
+                <div class="status"></div>
+            </div>
+            
+            <!-- ColdCall -->
+            <div class="department">
+                <div class="pixel-computer">
+                    <div class="monitor">
+                        <div class="face">📞</div>
+                    </div>
+                    <div class="computer-body"></div>
+                    <div class="keyboard"></div>
+                </div>
+                <div class="agent-name">COLDCALL</div>
+                <div class="agent-role">Outreach</div>
+                <div class="status"></div>
+            </div>
+            
+            <!-- Scout -->
+            <div class="department">
+                <div class="pixel-computer">
+                    <div class="monitor">
+                        <div class="face">🕵️</div>
+                    </div>
+                    <div class="computer-body"></div>
+                    <div class="keyboard"></div>
+                </div>
+                <div class="agent-name">SCOUT</div>
+                <div class="agent-role">Intel</div>
+                <div class="status"></div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Add subtle animation to computers
+        document.querySelectorAll('.monitor').forEach((monitor, index) => {
+            setInterval(() => {
+                monitor.style.boxShadow = `
+                    0 0 ${10 + Math.random() * 10}px rgba(0, 255, 255, ${0.5 + Math.random() * 0.5}),
+                    0 0 ${20 + Math.random() * 10}px rgba(0, 255, 255, ${0.3 + Math.random() * 0.3})
+                `;
+            }, 2000 + index * 100);
+        });
+        
+        // Status indicator animation
+        document.querySelectorAll('.status').forEach(status => {
+            setInterval(() => {
+                status.style.opacity = 0.5 + Math.random() * 0.5;
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
