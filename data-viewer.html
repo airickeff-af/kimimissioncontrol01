@@ -77,10 +77,7 @@
             width: 90%;
         }
         
-        .password-box h2 {
-            color: var(--accent-cyan);
-            margin-bottom: 0.5rem;
-        }
+        .password-box h2 { color: var(--accent-cyan); margin-bottom: 0.5rem; }
         
         .password-box input {
             width: 100%;
@@ -157,7 +154,6 @@
             font-family: 'JetBrains Mono', monospace;
         }
         
-        /* Navigation - Standardized */
         .nav-tabs {
             display: flex;
             gap: 0.5rem;
@@ -193,13 +189,12 @@
             box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
         }
         
-        /* Main Content */
         .main-content {
             padding: 2rem;
-            position: relative;
-            z-index: 1;
             max-width: 1400px;
             margin: 0 auto;
+            position: relative;
+            z-index: 1;
         }
         
         h2 {
@@ -208,48 +203,51 @@
             font-size: 1.5rem;
         }
         
-        /* File Grid */
-        .file-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-        
-        .file-card {
+        /* File List */
+        .file-list {
             background: var(--bg-card);
             border: 1px solid var(--border);
             border-radius: 12px;
-            padding: 1.5rem;
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+        
+        .file-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border);
             cursor: pointer;
             transition: all 0.2s;
         }
         
-        .file-card:hover {
-            border-color: var(--accent-cyan);
-            transform: translateY(-2px);
-        }
-        
-        .file-card.active {
-            border-color: var(--accent-cyan);
+        .file-item:hover {
             background: rgba(0, 212, 255, 0.05);
         }
         
+        .file-item:last-child {
+            border-bottom: none;
+        }
+        
         .file-icon {
-            font-size: 2.5rem;
-            margin-bottom: 0.75rem;
+            font-size: 1.5rem;
+            margin-right: 1rem;
+            width: 40px;
+            text-align: center;
+        }
+        
+        .file-info {
+            flex: 1;
         }
         
         .file-name {
             font-weight: 600;
-            font-size: 1.1rem;
             margin-bottom: 0.25rem;
         }
         
         .file-desc {
             font-size: 0.875rem;
             color: var(--text-muted);
-            margin-bottom: 0.75rem;
         }
         
         .file-meta {
@@ -257,6 +255,13 @@
             gap: 1rem;
             font-size: 0.75rem;
             color: var(--text-muted);
+        }
+        
+        .file-type {
+            padding: 0.25rem 0.5rem;
+            background: rgba(0, 212, 255, 0.1);
+            border-radius: 4px;
+            color: var(--accent-cyan);
         }
         
         /* Content Area */
@@ -283,7 +288,6 @@
         
         .content-title {
             font-weight: 600;
-            font-size: 1.1rem;
         }
         
         .content-actions {
@@ -319,7 +323,6 @@
             overflow-y: auto;
         }
         
-        /* Table */
         .data-table {
             width: 100%;
             border-collapse: collapse;
@@ -339,11 +342,6 @@
             border-bottom: 1px solid var(--border);
         }
         
-        .data-table tr:hover {
-            background: rgba(255,255,255,0.03);
-        }
-        
-        /* Text View */
         .text-view {
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.875rem;
@@ -352,7 +350,6 @@
             color: var(--text-primary);
         }
         
-        /* JSON View */
         .json-view {
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.875rem;
@@ -363,16 +360,13 @@
         .json-string { color: var(--accent-green); }
         .json-number { color: var(--accent-yellow); }
         
-        /* Loading/Error */
         .loading, .error {
             text-align: center;
             padding: 3rem;
             color: var(--text-muted);
         }
         
-        .error {
-            color: var(--accent-pink);
-        }
+        .error { color: var(--accent-pink); }
     </style>
 </head>
 <body>
@@ -411,9 +405,9 @@
     <div class="main-content">
         <h2>📂 Available Data Files</h2>
         
-        <!-- File Browser -->
-        <div class="file-grid" id="file-grid">
-            <!-- Files will be loaded here -->
+        <!-- File List -->
+        <div class="file-list" id="file-list">
+            <!-- Files populated by JavaScript -->
         </div>
 
         <!-- Content Area -->
@@ -453,42 +447,46 @@
             loadFileList();
         }
 
-        // File data embedded directly (no fetch needed)
-        const filesData = {
-            'leads': {
+        // File data embedded directly
+        const filesData = [
+            {
+                id: 'leads',
                 name: 'DealFlow Leads',
                 icon: '🤝',
-                desc: '26 crypto/fintech leads',
-                type: 'json',
+                desc: '26 crypto/fintech partnership leads',
+                type: 'JSON',
+                size: '15 KB',
                 data: [
-                    { id: 'lead_001', company: 'Coins.ph', contact: 'Wei Zhou', email: 'wei.zhou@coins.ph', priority: 'P0', status: 'new', country: 'Philippines' },
-                    { id: 'lead_002', company: 'Coins.xyz', contact: 'Sarah Chen', email: 'sarah.chen@coins.xyz', priority: 'P0', status: 'new', country: 'Singapore' },
-                    { id: 'lead_003', company: 'PDAX', contact: 'Nichel Gaba', email: 'nichel.gaba@pdax.ph', priority: 'P1', status: 'new', country: 'Philippines' },
-                    { id: 'lead_004', company: 'BloomX', contact: 'Luis Buenaventura', email: 'luis@bloomx.ph', priority: 'P1', status: 'new', country: 'Philippines' },
-                    { id: 'lead_005', company: 'Rebit.ph', contact: 'Miguel Cuneta', email: 'miguel@rebit.ph', priority: 'P1', status: 'new', country: 'Philippines' }
+                    { id: 'lead_001', company: 'Coins.ph', contact: 'Wei Zhou', priority: 'P0', status: 'new' },
+                    { id: 'lead_002', company: 'Coins.xyz', contact: 'Sarah Chen', priority: 'P0', status: 'new' },
+                    { id: 'lead_003', company: 'PDAX', contact: 'Nichel Gaba', priority: 'P1', status: 'new' },
+                    { id: 'lead_004', company: 'BloomX', contact: 'Luis Buenaventura', priority: 'P1', status: 'new' },
+                    { id: 'lead_005', company: 'Rebit.ph', contact: 'Miguel Cuneta', priority: 'P1', status: 'new' }
                 ]
             },
-            'agents': {
-                name: 'Agent Data',
+            {
+                id: 'agents',
+                name: 'Agent Registry',
                 icon: '🤖',
-                desc: '20 agents with positions',
-                type: 'json',
+                desc: '20 agents with roles and status',
+                type: 'JSON',
+                size: '8 KB',
                 data: [
-                    { id: 'nexus', name: 'Nexus', role: 'Orchestrator', dept: 'Executive', status: 'active', emoji: '🤖' },
-                    { id: 'ericf', name: 'EricF', role: 'Commander', dept: 'Executive', status: 'active', emoji: '👨‍💻' },
-                    { id: 'forge1', name: 'Forge-1', role: 'UI Lead', dept: 'Dev', status: 'active', emoji: '🔨' },
-                    { id: 'code1', name: 'Code-1', role: 'Backend Lead', dept: 'Dev', status: 'busy', emoji: '💻' },
-                    { id: 'pixel1', name: 'Pixel-1', role: 'Design Lead', dept: 'Design', status: 'active', emoji: '🎨' }
+                    { id: 'nexus', name: 'Nexus', role: 'Orchestrator', dept: 'Executive', status: 'active' },
+                    { id: 'glasses', name: 'Glasses', role: 'Researcher', dept: 'Intel', status: 'active' },
+                    { id: 'quill', name: 'Quill', role: 'Writer', dept: 'Content', status: 'active' },
+                    { id: 'pixel', name: 'Pixel', role: 'Designer', dept: 'Creative', status: 'active' },
+                    { id: 'forge', name: 'Forge', role: 'UI Lead', dept: 'Dev', status: 'active' }
                 ]
             },
-            'memory': {
+            {
+                id: 'memory',
                 name: 'Memory Bank',
                 icon: '🧠',
-                desc: 'Never forget system',
-                type: 'text',
+                desc: 'Never forget system - critical facts',
+                type: 'Markdown',
+                size: '12 KB',
                 content: `# MEMORY BANK v1.0
-**Created:** 2026-02-17
-**Purpose:** Never forget anything
 
 ## CRITICAL FACTS
 
@@ -515,128 +513,166 @@
 2. On Hing Metal lead gen
 3. Mission Control improvements
 
-*Never forget mode: ACTIVE*` 
+*Never forget mode: ACTIVE*`
             },
-            'tasks': {
+            {
+                id: 'tasks',
                 name: 'Pending Tasks',
                 icon: '📋',
-                desc: 'Task tracking',
-                type: 'text',
+                desc: 'Task tracking and assignments',
+                type: 'Markdown',
+                size: '18 KB',
                 content: `# PENDING TASKS
-**Total:** 12 tasks
+**Total:** 19 tasks
 
 ## P0 - CRITICAL
 1. Fix Code API 404 - Code (Due: Feb 18)
 2. Complete 30 leads/day - DealFlow (26/30)
 3. Pixel Office Update - Pixel-2 (Due: Feb 18, 5AM)
+4. Fix Memory Bank Sync - Sentry (Due: Feb 18, 2AM)
 
 ## P1 - HIGH
-4. Regional Leads - Australia (30-50)
-5. Regional Leads - Brazil (30-50)
-6. Regional Leads - Nigeria (30-50)
-7. Regional Leads - Hong Kong (30-50)
-8. Regional Leads - Singapore (30-50)
-9. Regional Leads - Thailand (30-50)
+5-10. Regional Leads (6 countries) - DealFlow
 
 ## P2 - MEDIUM
-10. Install PyTorch - Sentry
-11. Larry API Creds - EricF
-12. Vector Search - Nexus
+11. Install PyTorch - Sentry ✅ DONE
+12. Larry API Creds - EricF
+13. Vector Search - Nexus
 
-*All tasks tracked in task-board.html*`
+*Last updated: Feb 17, 11:30 PM*`
             },
-            'token': {
-                name: 'Token Usage',
+            {
+                id: 'token',
+                name: 'Token Usage Report',
                 icon: '💰',
-                desc: 'Real usage data',
-                type: 'text',
-                content: `# ACTUAL TOKEN USAGE
-**From:** Feb 17, 8:00 AM HKT
-**Duration:** ~14 hours
+                desc: 'Real usage data and costs',
+                type: 'Markdown',
+                size: '6 KB',
+                content: `# TOKEN USAGE REPORT
+**Date:** Feb 17, 2026
 
 ## TOTALS
 - Tokens: ~247,500
 - Cost: ~$0.52 USD
-- Per Day (proj): ~$0.89
+- Per Day: ~$0.89
 - Per Month: ~$26.70
 
-## BY AGENT
+## TOP AGENTS
 | Agent | Tokens | Cost |
 |-------|--------|------|
 | DealFlow | 115,300 | $0.23 |
 | Nexus | 75,300 | $0.15 |
 | Forge | 45,000 | $0.09 |
-| Code | 37,000 | $0.07 |
-| Pixel | 25,000 | $0.05 |
 
 ## VERDICT
-✅ NO UPGRADE NEEDED
-Using ~42% of free tier`
+✅ NO UPGRADE NEEDED`
             },
-            'heartbeats': {
-                name: 'Heartbeats',
+            {
+                id: 'heartbeats',
+                name: 'Heartbeats Schedule',
                 icon: '🕐',
-                desc: 'All 13 cron jobs',
-                type: 'text',
+                desc: 'All 13 cron jobs and schedules',
+                type: 'Markdown',
+                size: '5 KB',
                 content: `# HEARTBEATS TABLE
 **Total:** 13 active cron jobs
 
-| # | Job | Frequency | Status |
-|---|-----|-----------|--------|
-| 1 | Memory Bank | 30 min | ✅ |
-| 2 | Office Position | 1 hour | ✅ |
-| 3 | Task Queue | 20 min | ✅ |
-| 4 | Heartbeat Nexus | 30 min | ⚠️ |
-| 5 | Agent Progress | 4 hours | ✅ |
-| 6 | Improvement Cycle | 1.5 hrs | ✅ |
-| 7 | Self-Improvement | 1.5 hrs | ✅ |
-| 8 | Glasses Morning | 6:45 AM | ✅ |
-| 9 | Daily Morning | 8:00 AM | ✅ |
-| 10 | Glasses Evening | 6:45 PM | ✅ |
-| 11 | Evening Briefing | 4:00 PM | ✅ |
-| 12 | Innovation Sprint | 2 hours | ✅ |
-| 13 | Continuous Improvement | 6 hours | ✅ |
+| # | Job | Frequency |
+|---|-----|-----------|
+| 1 | Memory Bank | Every 30 min |
+| 2 | Office Position | Every 1 hour |
+| 3 | Task Queue | Every 20 min |
+| 4 | Nexus Heartbeat | Every 30 min |
+| 5 | Agent Progress | Every 4 hours |
+| 6 | Improvement Cycle | Every 1.5 hrs |
+| 7 | Self-Improvement | Every 1.5 hrs |
+| 8 | Glasses Morning | Daily 6:45 AM |
+| 9 | Daily Briefing | Daily 8:00 AM |
+| 10 | Glasses Evening | Daily 6:45 PM |
+| 11 | Evening Briefing | Daily 4:00 PM |
+| 12 | Innovation Sprint | Every 2 hours |
+| 13 | Continuous Improve | Every 4 hours |
 
-## SUMMARY
-- ✅ 11 Healthy
-- ⚠️ 1 Warning
-- 🔴 0 Critical`
+## STATUS
+✅ 13 Healthy | ⚠️ 0 Warning | 🔴 0 Critical`
+            },
+            {
+                id: 'competitors',
+                name: 'Competitor Analysis',
+                icon: '🎯',
+                desc: '10 key competitors monitoring',
+                type: 'Markdown',
+                size: '10 KB',
+                content: `# COMPETITOR MONITORING
+
+## TIER 1: DIRECT CRYPTO
+- PDAX, Maya, BloomX, Moneybees, DA5/SurgePay
+
+## TIER 2: FINTECH/E-WALLET
+- GCash, GoTyme Bank, UnionBank
+
+## TIER 3: GLOBAL PLAYERS
+- Binance, Bybit
+
+## KEY INTELLIGENCE
+🔴 Maya planning $500M-$1B US IPO
+🟡 BSP VASP moratorium extended
+🟢 SEC blocked 10 foreign exchanges
+
+*Monitoring active since Feb 17*`
+            },
+            {
+                id: 'scored-leads',
+                name: 'Scored Leads',
+                icon: '⭐',
+                desc: 'AI-scored leads (0-100 scale)',
+                type: 'JSON',
+                size: '4 KB',
+                data: [
+                    { company: 'Coins.ph', score: 92, priority: 'P0', tier: 'Tier 1' },
+                    { company: 'BloomX', score: 92, priority: 'P0', tier: 'Tier 1' },
+                    { company: 'Rebit.ph', score: 92, priority: 'P0', tier: 'Tier 1' },
+                    { company: 'PDAX', score: 90, priority: 'P0', tier: 'Tier 1' },
+                    { company: 'Binance PH', score: 86, priority: 'P0', tier: 'Tier 1' }
+                ]
             }
-        };
+        ];
 
         let currentFile = null;
         let currentContent = '';
 
         function loadFileList() {
-            const grid = document.getElementById('file-grid');
-            grid.innerHTML = Object.entries(filesData).map(([key, file]) => `
-                <div class="file-card" onclick="loadFile('${key}')" id="card-${key}">
+            const list = document.getElementById('file-list');
+            list.innerHTML = filesData.map(file => `
+                <div class="file-item" onclick="loadFile('${file.id}')" id="file-${file.id}">
                     <div class="file-icon">${file.icon}</div>
-                    <div class="file-name">${file.name}</div>
-                    <div class="file-desc">${file.desc}</div>
+                    <div class="file-info">
+                        <div class="file-name">${file.name}</div>
+                        <div class="file-desc">${file.desc}</div>
+                    </div>
                     <div class="file-meta">
-                        <span>${file.type.toUpperCase()}</span>
-                        <span>Click to view</span>
+                        <span class="file-type">${file.type}</span>
+                        <span>${file.size}</span>
                     </div>
                 </div>
             `).join('');
         }
 
-        function loadFile(fileKey) {
-            const file = filesData[fileKey];
+        function loadFile(fileId) {
+            const file = filesData.find(f => f.id === fileId);
             if (!file) return;
 
             currentFile = file;
 
             // Update active state
-            document.querySelectorAll('.file-card').forEach(c => c.classList.remove('active'));
-            document.getElementById(`card-${fileKey}`).classList.add('active');
+            document.querySelectorAll('.file-item').forEach(item => item.style.background = '');
+            document.getElementById(`file-${fileId}`).style.background = 'rgba(0, 212, 255, 0.1)';
 
             // Show content area
             document.getElementById('content-area').classList.add('active');
             document.getElementById('content-title').textContent = file.name;
 
-            if (file.type === 'json') {
+            if (file.type === 'JSON') {
                 currentContent = JSON.stringify(file.data, null, 2);
                 document.getElementById('content-body').innerHTML = renderJSON(file.data);
             } else {
