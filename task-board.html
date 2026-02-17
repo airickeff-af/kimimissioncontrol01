@@ -3,430 +3,526 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mission Control - Visual Task Board</title>
+    <title>Task Board | Mission Control</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
         
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         :root {
-            --bg: #0a0a0f;
-            --card: #15151d;
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #111118;
+            --bg-card: #15151d;
+            --accent-cyan: #00d4ff;
+            --accent-pink: #ff2a6d;
+            --accent-purple: #a855f7;
+            --accent-green: #22c55e;
+            --accent-yellow: #fbbf24;
+            --accent-orange: #f97316;
+            --text-primary: #fafafa;
+            --text-secondary: #a1a1aa;
+            --text-muted: #71717a;
             --border: #27272a;
-            --text: #fafafa;
-            --text-muted: #a1a1aa;
-            --accent: #00d4ff;
-            --success: #22c55e;
-            --warning: #eab308;
-            --danger: #ef4444;
-            --purple: #a855f7;
         }
         
         body {
             font-family: 'Inter', sans-serif;
-            background: var(--bg);
-            color: var(--text);
+            background: var(--bg-primary);
+            color: var(--text-primary);
             min-height: 100vh;
-            padding: 20px;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+            z-index: 0;
+            animation: gridMove 20s linear infinite;
+        }
+        
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(60px, 60px); }
         }
         
         .header {
-            text-align: center;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
+            background: rgba(17, 17, 24, 0.95);
+            backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--border);
+            padding: 0 2rem;
+            height: 70px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
         
-        h1 {
-            font-size: 2rem;
-            background: linear-gradient(135deg, var(--accent), var(--purple));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 10px;
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
         }
         
-        .subtitle {
-            color: var(--text-muted);
+        .logo {
+            width: 42px;
+            height: 42px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.3);
+        }
+        
+        .nav-tabs {
+            display: flex;
+            gap: 0.5rem;
+            background: rgba(255,255,255,0.05);
+            padding: 0.5rem;
+            border-radius: 12px;
+        }
+        
+        .nav-tab {
+            padding: 0.75rem 1.25rem;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+        
+        .nav-tab:hover {
+            color: var(--text-primary);
+            background: rgba(255,255,255,0.05);
+        }
+        
+        .nav-tab.active {
+            color: var(--text-primary);
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
+        }
+        
+        .main-content {
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+            max-width: 1400px;
+            margin: 0 auto;
         }
         
         .stats-bar {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
         }
         
-        .stat-item {
-            text-align: center;
-            padding: 15px 25px;
-            background: var(--card);
-            border-radius: 12px;
+        .stat-card {
+            background: var(--bg-card);
             border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
         }
         
         .stat-value {
-            font-size: 2rem;
-            font-weight: 800;
+            font-size: 2.5rem;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
         }
         
         .stat-label {
-            color: var(--text-muted);
             font-size: 0.875rem;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
         }
         
-        .board {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-        }
-        
-        .column {
-            background: var(--card);
-            border-radius: 16px;
-            padding: 20px;
-            border: 1px solid var(--border);
-        }
-        
-        .column-header {
+        .tabs {
             display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
+            gap: 1rem;
+            margin-bottom: 2rem;
             border-bottom: 1px solid var(--border);
         }
         
-        .column-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
+        .tab {
+            padding: 1rem 2rem;
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
         }
         
-        .icon-pending { background: rgba(239, 68, 68, 0.2); }
-        .icon-progress { background: rgba(234, 179, 8, 0.2); }
-        .icon-review { background: rgba(168, 85, 247, 0.2); }
-        .icon-done { background: rgba(34, 197, 94, 0.2); }
-        
-        .column-title {
-            font-size: 1.1rem;
-            font-weight: 600;
+        .tab:hover {
+            color: var(--text-primary);
         }
         
-        .column-count {
-            margin-left: auto;
-            background: var(--bg);
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 0.875rem;
-            font-weight: 600;
+        .tab.active {
+            color: var(--accent-cyan);
+            border-bottom-color: var(--accent-cyan);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
         }
         
         .task-card {
-            background: var(--bg);
-            border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 12px;
+            background: var(--bg-card);
             border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
             transition: all 0.2s;
-            cursor: pointer;
         }
         
         .task-card:hover {
-            transform: translateY(-2px);
-            border-color: var(--accent);
+            border-color: var(--accent-cyan);
         }
         
         .task-header {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin-bottom: 10px;
+            margin-bottom: 1rem;
+        }
+        
+        .task-title {
+            font-size: 1.1rem;
+            font-weight: 600;
         }
         
         .task-id {
             font-size: 0.75rem;
             color: var(--text-muted);
-            font-family: monospace;
-        }
-        
-        .priority {
-            padding: 3px 8px;
-            border-radius: 4px;
-            font-size: 0.7rem;
-            font-weight: 600;
-        }
-        
-        .p0 { background: rgba(239, 68, 68, 0.2); color: var(--danger); }
-        .p1 { background: rgba(234, 179, 8, 0.2); color: var(--warning); }
-        .p2 { background: rgba(0, 212, 255, 0.2); color: var(--accent); }
-        
-        .task-title {
-            font-size: 0.95rem;
-            margin-bottom: 10px;
-            line-height: 1.4;
+            font-family: 'JetBrains Mono', monospace;
         }
         
         .task-meta {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.8rem;
-            color: var(--text-muted);
+            gap: 1rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
         }
         
-        .agent-tag {
+        .meta-item {
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
         }
         
-        .agent-avatar {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--accent), var(--purple));
-        }
-        
-        .timestamp {
-            font-family: monospace;
+        .priority-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
             font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
         }
         
-        .add-task {
-            width: 100%;
-            padding: 12px;
-            background: transparent;
-            border: 2px dashed var(--border);
-            border-radius: 10px;
+        .priority-p0 { background: rgba(255, 42, 109, 0.2); color: var(--accent-pink); }
+        .priority-p1 { background: rgba(251, 191, 36, 0.2); color: var(--accent-yellow); }
+        .priority-p2 { background: rgba(0, 212, 255, 0.2); color: var(--accent-cyan); }
+        
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .status-pending { background: rgba(251, 191, 36, 0.2); color: var(--accent-yellow); }
+        .status-progress { background: rgba(0, 212, 255, 0.2); color: var(--accent-cyan); }
+        .status-review { background: rgba(168, 85, 247, 0.2); color: var(--accent-purple); }
+        .status-complete { background: rgba(34, 197, 94, 0.2); color: var(--accent-green); }
+        .status-rework { background: rgba(255, 42, 109, 0.2); color: var(--accent-pink); }
+        
+        .audit-section {
+            background: rgba(255,255,255,0.03);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .audit-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        
+        .audit-status {
+            font-size: 0.875rem;
+        }
+        
+        .audit-notes {
+            font-size: 0.875rem;
             color: var(--text-muted);
-            cursor: pointer;
-            transition: all 0.2s;
-            margin-top: 10px;
+            margin-top: 0.5rem;
         }
         
-        .add-task:hover {
-            border-color: var(--accent);
-            color: var(--accent);
+        .quality-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 4px;
+            margin-top: 0.5rem;
+            overflow: hidden;
+        }
+        
+        .quality-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.3s;
+        }
+        
+        @media (max-width: 768px) {
+            .stats-bar {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .tabs {
+                flex-wrap: wrap;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>🎯 Mission Control Task Board</h1>
-        <p class="subtitle">Real-time agent task visualization</p>
-    </div>
-    
-    <div class="stats-bar">
-        <div class="stat-item">
-            <div class="stat-value" style="color: var(--danger)">5</div>
-            <div class="stat-label">Pending</div>
-        </div>
-        <div class="stat-item">
-            <div class="stat-value" style="color: var(--warning)">2</div>
-            <div class="stat-label">In Progress</div>
-        </div>
-        <div class="stat-item">
-            <div class="stat-value" style="color: var(--purple)">1</div>
-            <div class="stat-label">In Review</div>
-        </div>
-        <div class="stat-item">
-            <div class="stat-value" style="color: var(--success)">6</div>
-            <div class="stat-label">Completed</div>
-        </div>
-    </div>
-    
-    <div class="board">
-        <!-- PENDING -->
-        <div class="column">
-            <div class="column-header">
-                <div class="column-icon icon-pending">🔴</div>
-                <div class="column-title">Pending</div>
-                <div class="column-count">5</div>
-            </div>
-            
-            <div class="task-card">
-                <div class="task-header">
-                    <span class="task-id">P-001</span>
-                    <span class="priority p0">P0</span>
-                </div>
-                <div class="task-title">Fix API 404 errors</div>
-                <div class="task-meta">
-                    <div class="agent-tag">
-                        <div class="agent-avatar"></div>
-                        <span>Code</span>
-                    </div>
-                    <span class="timestamp">Due: 7:30 PM</span>
-                </div>
-            </div>
-            
-            <div class="task-card">
-                <div class="task-header">
-                    <span class="task-id">P-002</span>
-                    <span class="priority p0">P0</span>
-                </div>
-                <div class="task-title">Deploy dashboard tonight</div>
-                <div class="task-meta">
-                    <div class="agent-tag">
-                        <div class="agent-avatar"></div>
-                        <span>Nexus</span>
-                    </div>
-                    <span class="timestamp">Due: 10:00 PM</span>
-                </div>
-            </div>
-            
-            <div class="task-card">
-                <div class="task-header">
-                    <span class="task-id">P-003</span>
-                    <span class="priority p1">P1</span>
-                </div>
-                <div class="task-title">Add WebSocket real-time updates</div>
-                <div class="task-meta">
-                    <div class="agent-tag">
-                        <div class="agent-avatar"></div>
-                        <span>Code</span>
-                    </div>
-                    <span class="timestamp">This week</span>
-                </div>
-            </div>
-            
-            <button class="add-task">+ Add Task</button>
-        </div>
-        
-        <!-- IN PROGRESS -->
-        <div class="column">
-            <div class="column-header">
-                <div class="column-icon icon-progress">🟡</div>
-                <div class="column-title">In Progress</div>
-                <div class="column-count">2</div>
-            </div>
-            
-            <div class="task-card">
-                <div class="task-header">
-                    <span class="task-id">P-004</span>
-                    <span class="priority p0">P0</span>
-                </div>
-                <div class="task-title">Complete dashboard tabs</div>
-                <div class="task-meta">
-                    <div class="agent-tag">
-                        <div class="agent-avatar"></div>
-                        <span>Forge-2</span>
-                    </div>
-                    <span class="timestamp">Due: 7:40 PM</span>
-                </div>
-            </div>
-            
-            <div class="task-card">
-                <div class="task-header">
-                    <span class="task-id">P-005</span>
-                    <span class="priority p1">P1</span>
-                </div>
-                <div class="task-title">Review dashboard UI</div>
-                <div class="task-meta">
-                    <div class="agent-tag">
-                        <div class="agent-avatar"></div>
-                        <span>Audit</span>
-                    </div>
-                    <span class="timestamp">Due: 8:00 PM</span>
-                </div>
+    <header class="header">
+        <div class="brand">
+            <div class="logo">📋</div>
+            <div>
+                <h1 style="font-size: 1.25rem;">Task Board</h1>
+                <span style="font-size: 0.875rem; color: var(--text-muted);">Mission Control Task Tracking</span>
             </div>
         </div>
         
-        <!-- IN REVIEW -->
-        <div class="column">
-            <div class="column-header">
-                <div class="column-icon icon-review">🟣</div>
-                <div class="column-title">In Review</div>
-                <div class="column-count">1</div>
+        <nav class="nav-tabs">
+            <a href="index.html" class="nav-tab">📊 Overview</a>
+            <a href="living-pixel-office.html" class="nav-tab">🏢 Office</a>
+            <a href="data-viewer.html" class="nav-tab">📁 Data</a>
+            <a href="token-tracker.html" class="nav-tab">💰 Tokens</a>
+            <a href="task-board.html" class="nav-tab active">📋 Tasks</a>
+        </nav>
+    </header>
+
+    <div class="main-content">
+        <!-- Stats Bar -->
+        <div class="stats-bar">
+            <div class="stat-card">
+                <div class="stat-value" style="color: var(--accent-yellow);">12</div>
+                <div class="stat-label">Pending Tasks</div>
             </div>
-            
+            <div class="stat-card">
+                <div class="stat-value" style="color: var(--accent-cyan);">3</div>
+                <div class="stat-label">In Progress</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" style="color: var(--accent-purple);">2</div>
+                <div class="stat-label">In Review</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" style="color: var(--accent-green);">15</div>
+                <div class="stat-label">Completed</div>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('pending')">⏳ Pending (12)</button>
+            <button class="tab" onclick="switchTab('progress')">🔄 In Progress (3)</button>
+            <button class="tab" onclick="switchTab('review')">👀 In Review (2)</button>
+            <button class="tab" onclick="switchTab('completed')">✅ Completed (15)</button>
+        </div>
+
+        <!-- Pending Tasks -->
+        <div id="pending" class="tab-content active">
             <div class="task-card">
                 <div class="task-header">
-                    <span class="task-id">C-004</span>
-                    <span class="priority p1">DONE</span>
-                </div>
-                <div class="task-title">Populate leads.json</div>
-                <div class="task-meta">
-                    <div class="agent-tag">
-                        <div class="agent-avatar"></div>
-                        <span>DealFlow</span>
+                    <div>
+                        <div class="task-title">Fix Code API 404 Errors</div>
+                        <div class="task-id">TASK-001</div>
                     </div>
-                    <span class="timestamp">✅ Approved</span>
+                    <span class="priority-badge priority-p0">P0 - Critical</span>
+                </div>
+                <div class="task-meta">
+                    <div class="meta-item">👤 Code</div>
+                    <div class="meta-item">📅 Due: Feb 18, 12:00 PM</div>
+                    <div class="meta-item">🕐 Est: 4 hours</div>
+                </div>
+                <div style="color: var(--text-secondary); font-size: 0.875rem;">
+                    API endpoints returning 404 errors. Needs debugging and fixing before deployment.
+                </div>
+            </div>
+
+            <div class="task-card">
+                <div class="task-header">
+                    <div>
+                        <div class="task-title">Complete 30 Leads/Day Quota</div>
+                        <div class="task-id">TASK-002</div>
+                    </div>
+                    <span class="priority-badge priority-p0">P0 - Critical</span>
+                </div>
+                <div class="task-meta">
+                    <div class="meta-item">👤 DealFlow</div>
+                    <div class="meta-item">📅 Due: Daily</div>
+                    <div class="meta-item">📊 Progress: 26/30 (87%)</div>
+                </div>
+                <div style="color: var(--text-secondary); font-size: 0.875rem;">
+                    Find 4 more high-quality leads to reach daily quota. Focus on DeFi and RWA.
+                </div>
+            </div>
+
+            <div class="task-card">
+                <div class="task-header">
+                    <div>
+                        <div class="task-title">Regional Leads - Australia (30-50)</div>
+                        <div class="task-id">TASK-005</div>
+                    </div>
+                    <span class="priority-badge priority-p1">P1 - High</span>
+                </div>
+                <div class="task-meta">
+                    <div class="meta-item">👤 DealFlow</div>
+                    <div class="meta-item">📅 Due: Feb 24</div>
+                    <div class="meta-item">🎯 Focus: DeFi, Exchanges</div>
                 </div>
             </div>
         </div>
-        
-        <!-- COMPLETED -->
-        <div class="column">
-            <div class="column-header">
-                <div class="column-icon icon-done">🟢</div>
-                <div class="column-title">Completed</div>
-                <div class="column-count">6</div>
-            </div>
-            
+
+        <!-- In Progress -->
+        <div id="progress" class="tab-content">
             <div class="task-card">
                 <div class="task-header">
-                    <span class="task-id">C-001</span>
-                    <span class="priority p1">DONE</span>
-                </div>
-                <div class="task-title">Deploy all agents</div>
-                <div class="task-meta">
-                    <div class="agent-tag">
-                        <div class="agent-avatar"></div>
-                        <span>Nexus</span>
+                    <div>
+                        <div class="task-title">Find 2 Influential NFT/DeFi People</div>
+                        <div class="task-id">SCOUT-001</div>
                     </div>
-                    <span class="timestamp">7:08 AM</span>
+                    <span class="status-badge status-progress">🔄 In Progress</span>
+                </div>
+                <div class="task-meta">
+                    <div class="meta-item">👤 Scout</div>
+                    <div class="meta-item">📅 Due: Feb 19, 12:00 PM</div>
+                    <div class="meta-item">⏱️ Started: 2 hours ago</div>
+                </div>
+                <div style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 1rem;">
+                    Researching Chris Maddern (OpenSea) and Serena Leung (Polygon). Gathering contact info and background.
+                </div>
+                <div style="background: rgba(0,212,255,0.1); padding: 0.75rem; border-radius: 8px; font-size: 0.875rem;">
+                    📝 Last Update: Found both candidates, researching LinkedIn profiles
                 </div>
             </div>
-            
+        </div>
+
+        <!-- In Review -->
+        <div id="review" class="tab-content">
             <div class="task-card">
                 <div class="task-header">
-                    <span class="task-id">C-002</span>
-                    <span class="priority p1">DONE</span>
-                </div>
-                <div class="task-title">Setup cron schedules</div>
-                <div class="task-meta">
-                    <div class="agent-tag">
-                        <div class="agent-avatar"></div>
-                        <span>Nexus</span>
+                    <div>
+                        <div class="task-title">Navigation Tabs on All Pages</div>
+                        <div class="task-id">FORGE-001</div>
                     </div>
-                    <span class="timestamp">7:08 AM</span>
+                    <span class="status-badge status-review">👀 In Review</span>
+                </div>
+                <div class="task-meta">
+                    <div class="meta-item">👤 Forge-2</div>
+                    <div class="meta-item">✅ Completed: Feb 17, 10:00 PM</div>
+                </div>
+                <div class="audit-section">
+                    <div class="audit-header">
+                        <span>✅</span>
+                        <span>Audit Status: Approved</span>
+                    </div>
+                    <div class="audit-status">👤 Audit reviewed and approved</div>
+                    <div class="audit-notes">All 4 pages have consistent navigation. Code quality good. No rework needed.</div>
+                    <div style="margin-top: 0.5rem;">
+                        <div style="font-size: 0.75rem; color: var(--text-muted);">Quality Score</div>
+                        <div class="quality-bar">
+                            <div class="quality-fill" style="width: 92%; background: var(--accent-green);"></div>
+                        </div>
+                        <div style="font-size: 0.75rem; color: var(--accent-green); margin-top: 0.25rem;">92% - Excellent</div>
+                    </div>
                 </div>
             </div>
-            
+        </div>
+
+        <!-- Completed -->
+        <div id="completed" class="tab-content">
             <div class="task-card">
                 <div class="task-header">
-                    <span class="task-id">C-003</span>
-                    <span class="priority p1">DONE</span>
-                </div>
-                <div class="task-title">Create dashboard files</div>
-                <div class="task-meta">
-                    <div class="agent-tag">
-                        <div class="agent-avatar"></div>
-                        <span>Forge</span>
+                    <div>
+                        <div class="task-title">Create Standup Meeting Feature</div>
+                        <div class="task-id">FORGE-002</div>
                     </div>
-                    <span class="timestamp">11:00 AM</span>
+                    <span class="status-badge status-complete">✅ Completed</span>
+                </div>
+                <div class="task-meta">
+                    <div class="meta-item">👤 Forge + Nexus</div>
+                    <div class="meta-item">📅 Feb 17, 9:15 PM</div>
+                    <div class="meta-item">⏱️ Duration: 6 hours</div>
+                </div>
+                <div class="audit-section">
+                    <div class="audit-header">
+                        <span>✅</span>
+                        <span>Audit: Approved - Quality 95%</span>
+                    </div>
+                    <div class="audit-notes">Feature working perfectly. All 20 agents can gather for standup. Memory tracking active.</div>
+                </div>
+            </div>
+
+            <div class="task-card">
+                <div class="task-header">
+                    <div>
+                        <div class="task-title">Update Token Tracker with Charts</div>
+                        <div class="task-id">NEXUS-001</div>
+                    </div>
+                    <span class="status-badge status-complete">✅ Completed</span>
+                </div>
+                <div class="task-meta">
+                    <div class="meta-item">👤 Nexus</div>
+                    <div class="meta-item">📅 Feb 17, 9:45 PM</div>
+                    <div class="meta-item">⏱️ Duration: 45 min</div>
+                </div>
+                <div class="audit-section">
+                    <div class="audit-header">
+                        <span>✅</span>
+                        <span>Audit: Approved - Quality 88%</span>
+                    </div>
+                    <div class="audit-notes">Chart.js integration working well. Usage trends and cost breakdown visible.</div>
                 </div>
             </div>
         </div>
     </div>
-    
+
     <script>
-        // Auto-refresh every 5 minutes
-        setInterval(() => {
-            location.reload();
-        }, 300000);
-        
-        // Make cards clickable
-        document.querySelectorAll('.task-card').forEach(card => {
-            card.addEventListener('click', () => {
-                console.log('Task clicked:', card.querySelector('.task-title').textContent);
-            });
-        });
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(tabName).classList.add('active');
+        }
     </script>
 </body>
 </html>
