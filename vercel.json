@@ -1,92 +1,79 @@
 {
   "version": 2,
   "name": "mission-control",
-  "builds": [
-    {
-      "src": "api/**/*.js",
-      "use": "@vercel/node"
-    },
-    {
-      "src": "mission-control/dashboard/**",
-      "use": "@vercel/static"
+  "functions": {
+    "api/**/*.js": {
+      "maxDuration": 10
     }
-  ],
-  "routes": [
+  },
+  "rewrites": [
     {
-      "src": "/api/logs/activity",
-      "dest": "/api/logs/activity.js"
+      "source": "/api/logs/activity",
+      "destination": "/api/logs/activity.js"
     },
     {
-      "src": "/api/logs",
-      "dest": "/api/logs/index.js"
+      "source": "/api/logs",
+      "destination": "/api/logs/index.js"
     },
     {
-      "src": "/api/agents",
-      "dest": "/api/agents.js"
+      "source": "/api/agents",
+      "destination": "/api/agents.js"
     },
     {
-      "src": "/api/tasks",
-      "dest": "/api/tasks.js"
+      "source": "/api/tasks",
+      "destination": "/api/tasks.js"
     },
     {
-      "src": "/api/tokens",
-      "dest": "/api/tokens.js"
+      "source": "/api/tokens",
+      "destination": "/api/tokens.js"
     },
     {
-      "src": "/api/metrics",
-      "dest": "/api/metrics.js"
+      "source": "/api/metrics",
+      "destination": "/api/metrics.js"
     },
     {
-      "src": "/api/health",
-      "dest": "/api/health.js"
+      "source": "/api/health",
+      "destination": "/api/health.js"
     },
     {
-      "src": "/api/(.*)",
-      "dest": "/api/$1"
+      "source": "/logs-view",
+      "destination": "/mission-control/dashboard/logs-view.html"
     },
     {
-      "src": "/logs-view",
-      "dest": "/mission-control/dashboard/logs-view.html"
+      "source": "/agents",
+      "destination": "/mission-control/dashboard/agents.html"
     },
     {
-      "src": "/agents",
-      "dest": "/mission-control/dashboard/agents.html"
+      "source": "/office",
+      "destination": "/mission-control/dashboard/animated-office.html"
     },
     {
-      "src": "/office",
-      "dest": "/mission-control/dashboard/animated-office.html"
+      "source": "/data-viewer",
+      "destination": "/mission-control/dashboard/data-viewer.html"
     },
     {
-      "src": "/data-viewer",
-      "dest": "/mission-control/dashboard/data-viewer.html"
+      "source": "/task-board",
+      "destination": "/mission-control/dashboard/task-board.html"
     },
     {
-      "src": "/task-board",
-      "dest": "/mission-control/dashboard/task-board.html"
+      "source": "/dealflow",
+      "destination": "/mission-control/dashboard/dealflow-view.html"
     },
     {
-      "src": "/dealflow",
-      "dest": "/mission-control/dashboard/dealflow-view.html"
+      "source": "/scout",
+      "destination": "/mission-control/dashboard/scout.html"
     },
     {
-      "src": "/scout",
-      "dest": "/mission-control/dashboard/scout.html"
+      "source": "/tokens",
+      "destination": "/mission-control/dashboard/token-tracker.html"
     },
     {
-      "src": "/tokens",
-      "dest": "/mission-control/dashboard/token-tracker.html"
+      "source": "/hq",
+      "destination": "/mission-control/dashboard/hq.html"
     },
     {
-      "src": "/hq",
-      "dest": "/mission-control/dashboard/hq.html"
-    },
-    {
-      "src": "/(.*)\\.html",
-      "dest": "/mission-control/dashboard/$1.html"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/mission-control/dashboard/index.html"
+      "source": "/(.*)",
+      "destination": "/mission-control/dashboard/index.html"
     }
   ]
 }
