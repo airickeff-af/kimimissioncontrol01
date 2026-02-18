@@ -5,6 +5,32 @@
   "outputDirectory": "mission-control/dashboard",
   "installCommand": null,
   "framework": null,
+  "functions": {
+    "api/health.js": {
+      "maxDuration": 10
+    },
+    "api/agents.js": {
+      "maxDuration": 10
+    },
+    "api/tasks.js": {
+      "maxDuration": 10
+    },
+    "api/tokens.js": {
+      "maxDuration": 10
+    },
+    "api/metrics.js": {
+      "maxDuration": 10
+    },
+    "api/logs/activity.js": {
+      "maxDuration": 10
+    },
+    "api/logs/index.js": {
+      "maxDuration": 10
+    },
+    "api/test.js": {
+      "maxDuration": 10
+    }
+  },
   "rewrites": [
     {
       "source": "/api/health",
