@@ -12,6 +12,10 @@
       "destination": "/api/logs-activity.js"
     },
     {
+      "source": "/api/logs",
+      "destination": "/api/logs.js"
+    },
+    {
       "source": "/api/:path*",
       "destination": "/api/:path*"
     },
