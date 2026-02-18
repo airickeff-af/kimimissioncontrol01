@@ -1,22 +1,9 @@
 {
   "version": 2,
   "name": "mission-control",
-  "functions": {
-    "api/**/*.js": {
-      "runtime": "nodejs18.x"
-    }
-  },
   "rewrites": [
     { "source": "/api/logs/activity", "destination": "/api/logs/activity.js" },
-    { "source": "/api/logs", "destination": "/api/logs.js" },
-    { "source": "/api/test", "destination": "/api/test.js" },
-    { "source": "/api/health", "destination": "/api/health.js" },
-    { "source": "/api/agents", "destination": "/api/agents.js" },
-    { "source": "/api/deals", "destination": "/api/deals.js" },
-    { "source": "/api/tasks", "destination": "/api/tasks.js" },
-    { "source": "/api/tokens", "destination": "/api/tokens.js" },
-    { "source": "/api/metrics", "destination": "/api/metrics.js" },
-    { "source": "/api/(.*)", "destination": "/api/$1" },
+    { "source": "/api/logs", "destination": "/api/logs/index.js" },
     { "source": "/css/(.*)", "destination": "/mission-control/dashboard/css/$1" },
     { "source": "/js/(.*)", "destination": "/mission-control/dashboard/js/$1" },
     { "source": "/assets/(.*)", "destination": "/assets/$1" },
