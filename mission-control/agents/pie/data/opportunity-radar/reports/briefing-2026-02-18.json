@@ -1,0 +1,372 @@
+{
+  "generatedAt": "2026-02-18T01:28:57.459Z",
+  "period": "Last 24 hours",
+  "executiveSummary": {
+    "totalAlerts": 62,
+    "highPriorityAlerts": 62,
+    "fundingEvents": 0,
+    "partnershipOpportunities": 0,
+    "hotSectors": []
+  },
+  "keyInsights": [
+    "22 funding rounds detected - market remains active",
+    "AI is the most active sector with 38 mentions",
+    "Top active competitors: Binance, Coinbase, Kraken"
+  ],
+  "recommendedActions": [
+    {
+      "priority": "HIGH",
+      "action": "Review partnership opportunities",
+      "details": "2 potential partnerships identified"
+    }
+  ],
+  "alertDetails": [
+    {
+      "timestamp": "2026-02-18T01:28:57.290Z",
+      "source": "Decrypt",
+      "type": "GENERAL_INTELLIGENCE",
+      "priority": "HIGH",
+      "summary": "Funding: $1000.0M",
+      "details": {
+        "categories": {},
+        "competitors": [],
+        "sectors": [],
+        "sentiment": 0,
+        "opportunityScore": 5,
+        "fundingAmount": 1000000000,
+        "isHot": true
+      },
+      "actionItems": [
+        "Monitor for strategic moves",
+        "Assess competitive threat"
+      ],
+      "item": {
+        "title": "Abu Dhabi Funds Boosted BlackRock Bitcoin ETF Exposure to $1 Billion by End of 2025: Filings",
+        "link": "https://decrypt.co/358351/abu-dhabi-funds-blackrock-bitcoin-etf-exposure-1-billion",
+        "published": "2026-02-17T21:12:46.000Z"
+      }
+    },
+    {
+      "timestamp": "2026-02-18T01:28:57.290Z",
+      "source": "Decrypt",
+      "type": "GENERAL_INTELLIGENCE",
+      "priority": "HIGH",
+      "summary": "Funding: $1000.0M",
+      "details": {
+        "categories": {},
+        "competitors": [],
+        "sectors": [],
+        "sentiment": 0,
+        "opportunityScore": 5,
+        "fundingAmount": 1000000000,
+        "isHot": true
+      },
+      "actionItems": [
+        "Monitor for strategic moves",
+        "Assess competitive threat"
+      ],
+      "item": {
+        "title": "Abu Dhabi Funds Boosted BlackRock Bitcoin ETF Exposure to $1 Billion by End of 2025: Filings",
+        "link": "https://decrypt.co/358351/abu-dhabi-funds-blackrock-bitcoin-etf-exposure-1-billion",
+        "published": "2026-02-17T21:12:46.000Z"
+      }
+    },
+    {
+      "timestamp": "2026-02-18T01:28:57.348Z",
+      "source": "Decrypt",
+      "type": "MA_ACTIVITY",
+      "priority": "HIGH",
+      "summary": "Funding: $8000.0M | Sectors: AI | Categories: acquisition",
+      "details": {
+        "categories": {
+          "acquisition": [
+            {
+              "keyword": "buys",
+              "count": 1
+            }
+          ]
+        },
+        "competitors": [],
+        "sectors": [
+          "AI"
+        ],
+        "sentiment": 0,
+        "opportunityScore": 7.9,
+        "fundingAmount": 8000000000,
+        "isHot": true
+      },
+      "actionItems": [
+        "Monitor for strategic moves",
+        "Assess competitive threat",
+        "Analyze M&A implications"
+      ],
+      "item": {
+        "title": "Tom Lee Expects 'Defining Year for Ethereum' as BitMine Buys ETH Amid 'Rock Bottom' Vibes",
+        "link": "https://decrypt.co/358322/tom-lee-defining-year-ethereum-bitmine-buys-eth-rock-bottom-vibes",
+        "published": "2026-02-17T16:54:18.000Z"
+      }
+    },
+    {
+      "timestamp": "2026-02-18T01:28:57.348Z",
+      "source": "Decrypt",
+      "type": "MA_ACTIVITY",
+      "priority": "HIGH",
+      "summary": "Funding: $8000.0M | Sectors: AI | Categories: acquisition",
+      "details": {
+        "categories": {
+          "acquisition": [
+            {
+              "keyword": "buys",
+              "count": 1
+            }
+          ]
+        },
+        "competitors": [],
+        "sectors": [
+          "AI"
+        ],
+        "sentiment": 0,
+        "opportunityScore": 7.9,
+        "fundingAmount": 8000000000,
+        "isHot": true
+      },
+      "actionItems": [
+        "Monitor for strategic moves",
+        "Assess competitive threat",
+        "Analyze M&A implications"
+      ],
+      "item": {
+        "title": "Tom Lee Expects 'Defining Year for Ethereum' as BitMine Buys ETH Amid 'Rock Bottom' Vibes",
+        "link": "https://decrypt.co/358322/tom-lee-defining-year-ethereum-bitmine-buys-eth-rock-bottom-vibes",
+        "published": "2026-02-17T16:54:18.000Z"
+      }
+    },
+    {
+      "timestamp": "2026-02-18T01:28:57.349Z",
+      "source": "Decrypt",
+      "type": "GENERAL_INTELLIGENCE",
+      "priority": "HIGH",
+      "summary": "Funding: $48000.0M | Sectors: RWA",
+      "details": {
+        "categories": {},
+        "competitors": [],
+        "sectors": [
+          "RWA"
+        ],
+        "sentiment": 0,
+        "opportunityScore": 7.7,
+        "fundingAmount": 48000000000,
+        "isHot": true
+      },
+      "actionItems": [
+        "Monitor for strategic moves",
+        "Assess competitive threat"
+      ],
+      "item": {
+        "title": "Strategy’s Bitcoin Buying Accelerates as $48 Billion BTC Stash Sits Underwater",
+        "link": "https://decrypt.co/358313/strategys-bitcoin-buying-accelerates-48-billion-btc-stash-underwater",
+        "published": "2026-02-17T16:13:42.000Z"
+      }
+    },
+    {
+      "timestamp": "2026-02-18T01:28:57.349Z",
+      "source": "Decrypt",
+      "type": "GENERAL_INTELLIGENCE",
+      "priority": "HIGH",
+      "summary": "Funding: $48000.0M | Sectors: RWA",
+      "details": {
+        "categories": {},
+        "competitors": [],
+        "sectors": [
+          "RWA"
+        ],
+        "sentiment": 0,
+        "opportunityScore": 7.7,
+        "fundingAmount": 48000000000,
+        "isHot": true
+      },
+      "actionItems": [
+        "Monitor for strategic moves",
+        "Assess competitive threat"
+      ],
+      "item": {
+        "title": "Strategy’s Bitcoin Buying Accelerates as $48 Billion BTC Stash Sits Underwater",
+        "link": "https://decrypt.co/358313/strategys-bitcoin-buying-accelerates-48-billion-btc-stash-underwater",
+        "published": "2026-02-17T16:13:42.000Z"
+      }
+    },
+    {
+      "timestamp": "2026-02-18T01:28:57.350Z",
+      "source": "Decrypt",
+      "type": "GENERAL_INTELLIGENCE",
+      "priority": "HIGH",
+      "summary": "Funding: $1000.0M | Sectors: AI | Categories: ipo",
+      "details": {
+        "categories": {
+          "ipo": [
+            {
+              "keyword": "ipo",
+              "count": 1
+            }
+          ]
+        },
+        "competitors": [],
+        "sectors": [
+          "AI"
+        ],
+        "sentiment": 0,
+        "opportunityScore": 7,
+        "fundingAmount": 1000000000,
+        "isHot": true
+      },
+      "actionItems": [
+        "Monitor for strategic moves",
+        "Assess competitive threat"
+      ],
+      "item": {
+        "title": "Philippines' Digital Bank Maya Looks to US Market for Up to $1B IPO",
+        "link": "https://decrypt.co/358255/philippines-digital-bank-maya-us-1b-ipo",
+        "published": "2026-02-17T03:17:07.000Z"
+      }
+    },
+    {
+      "timestamp": "2026-02-18T01:28:57.350Z",
+      "source": "Decrypt",
+      "type": "GENERAL_INTELLIGENCE",
+      "priority": "HIGH",
+      "summary": "Funding: $1000.0M | Sectors: AI | Categories: ipo",
+      "details": {
+        "categories": {
+          "ipo": [
+            {
+              "keyword": "ipo",
+              "count": 1
+            }
+          ]
+        },
+        "competitors": [],
+        "sectors": [
+          "AI"
+        ],
+        "sentiment": 0,
+        "opportunityScore": 7,
+        "fundingAmount": 1000000000,
+        "isHot": true
+      },
+      "actionItems": [
+        "Monitor for strategic moves",
+        "Assess competitive threat"
+      ],
+      "item": {
+        "title": "Philippines' Digital Bank Maya Looks to US Market for Up to $1B IPO",
+        "link": "https://decrypt.co/358255/philippines-digital-bank-maya-us-1b-ipo",
+        "published": "2026-02-17T03:17:07.000Z"
+      }
+    },
+    {
+      "timestamp": "2026-02-18T01:28:57.351Z",
+      "source": "Decrypt",
+      "type": "GENERAL_INTELLIGENCE",
+      "priority": "HIGH",
+      "summary": "Funding: $605.0M | Categories: ipo",
+      "details": {
+        "categories": {
+          "ipo": [
+            {
+              "keyword": "shares",
+              "count": 1
+            }
+          ]
+        },
+        "competitors": [],
+        "sectors": [],
+        "sentiment": 0,
+        "opportunityScore": 5.8,
+        "fundingAmount": 605000000,
+        "isHot": true
+      },
+      "actionItems": [
+        "Monitor for strategic moves",
+        "Assess competitive threat"
+      ],
+      "item": {
+        "title": "Metaplanet Posts $605 Million Loss After Spending Billions on Bitcoin",
+        "link": "https://decrypt.co/358163/metaplanet-605-million-loss-billions-bitcoin",
+        "published": "2026-02-16T17:27:52.000Z"
+      }
+    },
+    {
+      "timestamp": "2026-02-18T01:28:57.351Z",
+      "source": "Decrypt",
+      "type": "GENERAL_INTELLIGENCE",
+      "priority": "HIGH",
+      "summary": "Funding: $605.0M | Categories: ipo",
+      "details": {
+        "categories": {
+          "ipo": [
+            {
+              "keyword": "shares",
+              "count": 1
+            }
+          ]
+        },
+        "competitors": [],
+        "sectors": [],
+        "sentiment": 0,
+        "opportunityScore": 5.8,
+        "fundingAmount": 605000000,
+        "isHot": true
+      },
+      "actionItems": [
+        "Monitor for strategic moves",
+        "Assess competitive threat"
+      ],
+      "item": {
+        "title": "Metaplanet Posts $605 Million Loss After Spending Billions on Bitcoin",
+        "link": "https://decrypt.co/358163/metaplanet-605-million-loss-billions-bitcoin",
+        "published": "2026-02-16T17:27:52.000Z"
+      }
+    }
+  ],
+  "competitorActivity": [
+    {
+      "id": "act-1771378137455",
+      "timestamp": "2026-02-18T01:28:57.455Z",
+      "type": "general",
+      "title": "BNB Price Prediction 2026 to 2030: Will Binance Coin Soar?",
+      "description": "Funding: $85590.0M | Competitors: Binance | Sectors: AI",
+      "source": "NFTPlazas",
+      "url": "https://nftplazas.com/bnb-price-prediction/",
+      "impact": "high",
+      "tags": [],
+      "metadata": {
+        "fundingAmount": 85590000000,
+        "sectors": [
+          "AI"
+        ]
+      },
+      "competitorId": "binance",
+      "competitorName": "Binance"
+    },
+    {
+      "id": "act-1771378137452",
+      "timestamp": "2026-02-18T01:28:57.452Z",
+      "type": "general",
+      "title": "Binance Lists Espresso (ESP) For Spot Markets",
+      "description": "Competitors: Binance | Sectors: AI, Modular | Categories: ipo",
+      "source": "NFTPlazas",
+      "url": "https://nftplazas.com/binance-lists-espresso-esp/",
+      "impact": "high",
+      "tags": [],
+      "metadata": {
+        "fundingAmount": null,
+        "sectors": [
+          "AI",
+          "Modular"
+        ]
+      },
+      "competitorId": "binance",
+      "competitorName": "Binance"
+    }
+  ]
+}

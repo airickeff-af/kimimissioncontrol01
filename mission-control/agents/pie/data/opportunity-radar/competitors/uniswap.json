@@ -1,0 +1,20 @@
+{
+  "id": "uniswap",
+  "name": "Uniswap",
+  "type": "defi",
+  "website": "https://uniswap.org",
+  "twitter": "@uniswap",
+  "tags": [
+    "dex",
+    "amm",
+    "ethereum"
+  ],
+  "description": "",
+  "createdAt": "2026-02-18T01:28:51.085Z",
+  "metrics": [
+    {
+      "timestamp": "2026-02-18T01:28:57.456Z",
+      "lastChecked": "2026-02-18T01:28:57.456Z"
+    }
+  ]
+}

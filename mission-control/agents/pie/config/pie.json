@@ -1,0 +1,97 @@
+{
+  "name": "PIE - Predictive Intelligence Engine",
+  "version": "1.0.0",
+  "description": "Sales intelligence system for EricF's coins.ph/coins.xyz partnership development",
+  
+  "modules": {
+    "opportunityRadar": {
+      "enabled": true,
+      "scanInterval": 3600000,
+      "sectors": ["crypto", "nft", "gaming", "payments", "defi", "web3"],
+      "competitors": ["binance", "coinbase", "kraken", "okx", "bybit", "crypto.com"],
+      "minScore": 60
+    },
+    
+    "frictionPredictor": {
+      "enabled": true,
+      "minConfidence": 0.6,
+      "responseThreshold": 0.5,
+      "weights": {
+        "firmographic": 0.25,
+        "engagement": 0.30,
+        "timing": 0.20,
+        "signals": 0.15,
+        "history": 0.10
+      }
+    },
+    
+    "prefetcher": {
+      "enabled": true,
+      "cacheTTL": 86400000,
+      "briefingTemplate": "default",
+      "autoEnrich": true
+    },
+    
+    "microActions": {
+      "enabled": true,
+      "maxActionsPerHour": 10,
+      "requireApproval": false,
+      "allowedActions": [
+        "schedule_reminder",
+        "flag_outdated_contact",
+        "suggest_timing",
+        "enrich_lead_data",
+        "update_lead_status",
+        "create_task",
+        "log_activity"
+      ]
+    }
+  },
+  
+  "integrations": {
+    "dealflow": {
+      "enabled": true,
+      "syncInterval": 300000,
+      "bidirectional": true
+    }
+  },
+  
+  "dataSources": {
+    "crunchbase": {
+      "enabled": true,
+      "apiKey": "${CRUNCHBASE_API_KEY}"
+    },
+    "linkedin": {
+      "enabled": true,
+      "token": "${LINKEDIN_TOKEN}"
+    },
+    "news": {
+      "enabled": true,
+      "apiKey": "${NEWS_API_KEY}"
+    }
+  },
+  
+  "notifications": {
+    "highPriorityOpportunities": true,
+    "dailyBriefing": true,
+    "weeklyReport": true,
+    "channels": ["telegram"]
+  },
+  
+  "coinsContext": {
+    "company": "coins.ph / coins.xyz",
+    "market": "Philippines / Southeast Asia",
+    "keyMetrics": {
+      "registeredUsers": "18.6M",
+      "marketShare": "75-80%",
+      "remittanceMarket": "$38B",
+      "cryptoAdoptionRank": "9th globally"
+    },
+    "partnerships": [
+      "Circle (USDC)",
+      "Veem (Remittance)",
+      "Ronin Network (Gaming)",
+      "HashKey (Exchange)"
+    ]
+  }
+}

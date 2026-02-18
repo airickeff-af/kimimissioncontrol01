@@ -1,0 +1,20 @@
+{
+  "id": "aave",
+  "name": "Aave",
+  "type": "defi",
+  "website": "https://aave.com",
+  "twitter": "@aave",
+  "tags": [
+    "lending",
+    "ethereum",
+    "multichain"
+  ],
+  "description": "",
+  "createdAt": "2026-02-18T01:28:51.085Z",
+  "metrics": [
+    {
+      "timestamp": "2026-02-18T01:28:57.456Z",
+      "lastChecked": "2026-02-18T01:28:57.456Z"
+    }
+  ]
+}

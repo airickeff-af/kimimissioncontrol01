@@ -1,15 +1,15 @@
 {
   "lastChecks": {
-    "agentHealth": 1771362420,
+    "agentHealth": 1771379229,
     "taskQueue": 1771362420,
     "systemResources": 1771363020,
     "memoryMaintenance": 1771362420
   },
   "checkRotation": {
-    "current": "A",
+    "current": "B",
     "sequence": ["A", "B", "C", "D"],
-    "lastRotation": 1771362420,
-    "counter": 45
+    "lastRotation": 1771379229,
+    "counter": 46
   },
   "alertSuppression": {
     "lastAlertSent": 1771341429,
@@ -18,53 +18,48 @@
     "maxAlertsPerHour": 3
   },
   "agentHealth": {
-    "lastFullCheck": 1771352378,
+    "lastFullCheck": 1771379229,
     "abortedSessions": [
       {
-        "sessionId": "fac6e107-7e3f-4f5a-9f5d-9e6f5e4d3c2b",
-        "label": "dealflow-contact-research",
-        "detectedAt": 1771350540,
+        "sessionId": "51f195e7-8974-4823-9e1a-a182b5c2daa9",
+        "label": "nexus-voyage-setup",
+        "detectedAt": 1771376747,
         "recoveryStatus": "pending",
         "recoveryProtocolApplied": false
       }
     ],
     "abortPattern": {
-      "last24h": 1,
+      "last24h": 2,
       "byAgentType": {
-        "dealflow": 1
+        "dealflow": 1,
+        "nexus": 1
       }
     }
   },
   "tokenUsage": {
-    "mainSession": 191465,
+    "mainSession": 145430,
     "threshold": 200000,
-    "lastChecked": 1771354178,
+    "lastChecked": 1771379229,
     "alertsSent": 0,
-    "trend": "increasing",
-    "growthRate": 15000
+    "trend": "stable",
+    "growthRate": 0
   },
   "systemResources": {
     "diskSpace": {
       "total": "40G",
-      "used": "9.0G",
-      "available": "29G",
-      "usePercent": 25
+      "used": "9.6G",
+      "available": "28G",
+      "usePercent": 26
     },
-    "lastChecked": 1771354178
+    "lastChecked": 1771379229
   },
   "metrics": {
-    "heartbeatsCompleted": 30,
+    "heartbeatsCompleted": 31,
     "alertsTriggered": 1,
     "tasksProcessed": 10,
     "selfImprovements": 3,
     "frictionPointsIdentified": 4,
-    "blockedTasks": 25,
-    "overdueP0Tasks": 3
-  },
-  "improvementCycles": {
-    "totalActive": 4,
-    "dailyRuns": 88,
-    "estimatedTokenWaste": 60000,
-    "consolidationRecommended": true
+    "blockedTasks": 27,
+    "overdueP0Tasks": 0
   }
 }

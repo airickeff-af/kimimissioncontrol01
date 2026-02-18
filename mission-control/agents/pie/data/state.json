@@ -1,0 +1,412 @@
+{
+  "lastScan": null,
+  "activeOpportunities": [
+    {
+      "id": "funding-immutable-x",
+      "type": "funding_round",
+      "title": "Immutable raised $200M",
+      "company": "Immutable",
+      "amount": "$200M",
+      "series": "Series C",
+      "date": "2026-02-15",
+      "leadInvestors": [
+        "Temasek",
+        "Animoca Brands"
+      ],
+      "description": "Gaming-focused blockchain platform",
+      "sectors": [
+        "gaming",
+        "nft",
+        "blockchain"
+      ],
+      "relevance": 70,
+      "signals": [
+        "fresh_capital",
+        "growth_stage",
+        "investor_backing"
+      ],
+      "action": "Reach out to explore partnership",
+      "urgency": "high",
+      "score": 90
+    },
+    {
+      "id": "funding-ton-foundation",
+      "type": "funding_round",
+      "title": "TON Foundation raised $50M",
+      "company": "TON Foundation",
+      "amount": "$50M",
+      "series": "Grant",
+      "date": "2026-02-10",
+      "leadInvestors": [
+        "Various"
+      ],
+      "description": "Telegram-integrated blockchain",
+      "sectors": [
+        "messaging",
+        "crypto",
+        "payments"
+      ],
+      "relevance": 60,
+      "signals": [
+        "fresh_capital",
+        "growth_stage",
+        "investor_backing"
+      ],
+      "action": "Reach out to explore partnership",
+      "urgency": "high",
+      "score": 80
+    },
+    {
+      "id": "product-63727970746f2077",
+      "type": "product_launch",
+      "title": "crypto wallet launch announcement",
+      "company": "crypto",
+      "product": "crypto wallet launch announcement",
+      "description": "Latest developments in crypto wallet launch",
+      "url": "https://example.com/news",
+      "publishedAt": "2026-02-18T01:29:04.339Z",
+      "relevance": 60,
+      "signals": [
+        "new_product",
+        "market_expansion"
+      ],
+      "action": "Evaluate integration opportunity",
+      "urgency": "medium",
+      "score": 68
+    },
+    {
+      "id": "product-7061796d656e7420",
+      "type": "product_launch",
+      "title": "payment crypto integration announcement",
+      "company": "payment",
+      "product": "payment crypto integration announcement",
+      "description": "Latest developments in payment crypto integration",
+      "url": "https://example.com/news",
+      "publishedAt": "2026-02-18T01:29:04.340Z",
+      "relevance": 60,
+      "signals": [
+        "new_product",
+        "market_expansion"
+      ],
+      "action": "Evaluate integration opportunity",
+      "urgency": "medium",
+      "score": 68
+    },
+    {
+      "id": "product-67616d696e672074",
+      "type": "product_launch",
+      "title": "gaming token launch announcement",
+      "company": "gaming",
+      "product": "gaming token launch announcement",
+      "description": "Latest developments in gaming token launch",
+      "url": "https://example.com/news",
+      "publishedAt": "2026-02-18T01:29:04.340Z",
+      "relevance": 55,
+      "signals": [
+        "new_product",
+        "market_expansion"
+      ],
+      "action": "Evaluate integration opportunity",
+      "urgency": "medium",
+      "score": 63
+    }
+  ],
+  "leadScores": [
+    [
+      "lead-hashkey",
+      {
+        "leadId": "lead-hashkey",
+        "lead": "HashKey Exchange",
+        "score": 76,
+        "confidence": 0.6,
+        "likelihood": "high",
+        "factors": [
+          "strong_company_profile"
+        ],
+        "bottlenecks": [
+          {
+            "type": "no_prior_contact",
+            "severity": "medium",
+            "description": "No prior outreach recorded",
+            "action": "Start with warm introduction or LinkedIn connect"
+          },
+          {
+            "type": "cold_outreach",
+            "severity": "low",
+            "description": "No recent news or funding to reference",
+            "action": "Research for recent company updates or industry trends"
+          }
+        ],
+        "optimalTiming": {
+          "bestDays": [
+            "tuesday",
+            "wednesday",
+            "thursday"
+          ],
+          "bestTimes": [
+            "10:00",
+            "14:00",
+            "15:00"
+          ],
+          "timezone": "Asia/Manila",
+          "nextOptimal": "2026-02-19T02:00:00.000Z",
+          "avoid": [
+            "monday_morning",
+            "friday_afternoon",
+            "weekend"
+          ]
+        },
+        "researchNeeded": true,
+        "recommendedAction": "contact_immediately",
+        "timestamp": "2026-02-18T01:29:04.337Z"
+      }
+    ],
+    [
+      "lead-immutable",
+      {
+        "leadId": "lead-immutable",
+        "lead": "Immutable X",
+        "score": 76,
+        "confidence": 0.7,
+        "likelihood": "high",
+        "factors": [
+          "strong_company_profile"
+        ],
+        "bottlenecks": [
+          {
+            "type": "no_prior_contact",
+            "severity": "medium",
+            "description": "No prior outreach recorded",
+            "action": "Start with warm introduction or LinkedIn connect"
+          },
+          {
+            "type": "cold_outreach",
+            "severity": "low",
+            "description": "No recent news or funding to reference",
+            "action": "Research for recent company updates or industry trends"
+          }
+        ],
+        "optimalTiming": {
+          "bestDays": [
+            "tuesday",
+            "wednesday",
+            "thursday"
+          ],
+          "bestTimes": [
+            "10:00",
+            "14:00",
+            "15:00"
+          ],
+          "timezone": "Asia/Manila",
+          "nextOptimal": "2026-02-19T02:00:00.000Z",
+          "avoid": [
+            "monday_morning",
+            "friday_afternoon",
+            "weekend"
+          ]
+        },
+        "researchNeeded": true,
+        "recommendedAction": "contact_immediately",
+        "timestamp": "2026-02-18T01:29:04.337Z"
+      }
+    ],
+    [
+      "lead-animoca",
+      {
+        "leadId": "lead-animoca",
+        "lead": "Animoca Brands",
+        "score": 94,
+        "confidence": 0.7,
+        "likelihood": "very_high",
+        "factors": [
+          "strong_company_profile",
+          "high_engagement",
+          "historically_responsive"
+        ],
+        "bottlenecks": [
+          {
+            "type": "no_prior_contact",
+            "severity": "medium",
+            "description": "No prior outreach recorded",
+            "action": "Start with warm introduction or LinkedIn connect"
+          },
+          {
+            "type": "cold_outreach",
+            "severity": "low",
+            "description": "No recent news or funding to reference",
+            "action": "Research for recent company updates or industry trends"
+          }
+        ],
+        "optimalTiming": {
+          "bestDays": [
+            "tuesday",
+            "wednesday",
+            "thursday"
+          ],
+          "bestTimes": [
+            "10:00",
+            "14:00",
+            "15:00"
+          ],
+          "timezone": "Asia/Manila",
+          "nextOptimal": "2026-02-19T02:00:00.000Z",
+          "avoid": [
+            "monday_morning",
+            "friday_afternoon",
+            "weekend"
+          ]
+        },
+        "researchNeeded": true,
+        "recommendedAction": "contact_immediately",
+        "timestamp": "2026-02-18T01:29:04.338Z"
+      }
+    ],
+    [
+      "lead-ton",
+      {
+        "leadId": "lead-ton",
+        "lead": "TON Foundation",
+        "score": 68,
+        "confidence": 0.6,
+        "likelihood": "high",
+        "factors": [
+          "strong_company_profile"
+        ],
+        "bottlenecks": [
+          {
+            "type": "no_prior_contact",
+            "severity": "medium",
+            "description": "No prior outreach recorded",
+            "action": "Start with warm introduction or LinkedIn connect"
+          },
+          {
+            "type": "cold_outreach",
+            "severity": "low",
+            "description": "No recent news or funding to reference",
+            "action": "Research for recent company updates or industry trends"
+          }
+        ],
+        "optimalTiming": {
+          "bestDays": [
+            "tuesday",
+            "wednesday",
+            "thursday"
+          ],
+          "bestTimes": [
+            "10:00",
+            "14:00",
+            "15:00"
+          ],
+          "timezone": "Asia/Manila",
+          "nextOptimal": "2026-02-19T02:00:00.000Z",
+          "avoid": [
+            "monday_morning",
+            "friday_afternoon",
+            "weekend"
+          ]
+        },
+        "researchNeeded": true,
+        "recommendedAction": "contact_with_personalization",
+        "timestamp": "2026-02-18T01:29:04.338Z"
+      }
+    ],
+    [
+      "lead-gala",
+      {
+        "leadId": "lead-gala",
+        "lead": "Gala Games",
+        "score": 70,
+        "confidence": 0.7,
+        "likelihood": "high",
+        "factors": [
+          "strong_company_profile"
+        ],
+        "bottlenecks": [
+          {
+            "type": "no_prior_contact",
+            "severity": "medium",
+            "description": "No prior outreach recorded",
+            "action": "Start with warm introduction or LinkedIn connect"
+          },
+          {
+            "type": "cold_outreach",
+            "severity": "low",
+            "description": "No recent news or funding to reference",
+            "action": "Research for recent company updates or industry trends"
+          }
+        ],
+        "optimalTiming": {
+          "bestDays": [
+            "tuesday",
+            "wednesday",
+            "thursday"
+          ],
+          "bestTimes": [
+            "10:00",
+            "14:00",
+            "15:00"
+          ],
+          "timezone": "Asia/Manila",
+          "nextOptimal": "2026-02-19T02:00:00.000Z",
+          "avoid": [
+            "monday_morning",
+            "friday_afternoon",
+            "weekend"
+          ]
+        },
+        "researchNeeded": true,
+        "recommendedAction": "contact_with_personalization",
+        "timestamp": "2026-02-18T01:29:04.338Z"
+      }
+    ],
+    [
+      "lead-alchemy",
+      {
+        "leadId": "lead-alchemy",
+        "lead": "Alchemy Pay",
+        "score": 77,
+        "confidence": 0.6,
+        "likelihood": "high",
+        "factors": [
+          "strong_company_profile"
+        ],
+        "bottlenecks": [
+          {
+            "type": "no_prior_contact",
+            "severity": "medium",
+            "description": "No prior outreach recorded",
+            "action": "Start with warm introduction or LinkedIn connect"
+          },
+          {
+            "type": "cold_outreach",
+            "severity": "low",
+            "description": "No recent news or funding to reference",
+            "action": "Research for recent company updates or industry trends"
+          }
+        ],
+        "optimalTiming": {
+          "bestDays": [
+            "tuesday",
+            "wednesday",
+            "thursday"
+          ],
+          "bestTimes": [
+            "10:00",
+            "14:00",
+            "15:00"
+          ],
+          "timezone": "Asia/Manila",
+          "nextOptimal": "2026-02-19T02:00:00.000Z",
+          "avoid": [
+            "monday_morning",
+            "friday_afternoon",
+            "weekend"
+          ]
+        },
+        "researchNeeded": true,
+        "recommendedAction": "contact_immediately",
+        "timestamp": "2026-02-18T01:29:04.338Z"
+      }
+    ]
+  ]
+}

@@ -1,0 +1,141 @@
+[
+  {
+    "id": "lead-hashkey",
+    "company": "HashKey Exchange",
+    "industry": "Cryptocurrency Exchange",
+    "category": "exchange",
+    "description": "Licensed digital asset platform in Hong Kong",
+    "location": "Hong Kong",
+    "employees": 200,
+    "fundingStage": "growth",
+    "decisionMaker": {
+      "name": "Livio Weng",
+      "title": "CEO",
+      "linkedin": "linkedin.com/in/livioweng"
+    },
+    "relevanceScore": 90,
+    "status": "new",
+    "source": "opportunity_radar",
+    "signals": ["sea_expansion", "competitor_partnership"],
+    "competitorPartnerships": ["INDODAX"],
+    "notes": "Already partnered with INDODAX for SEA expansion. Strong regulatory alignment.",
+    "createdAt": "2026-02-17T00:00:00Z"
+  },
+  {
+    "id": "lead-immutable",
+    "company": "Immutable X",
+    "industry": "Gaming Blockchain",
+    "category": "gaming",
+    "description": "Layer 2 gaming blockchain with near-zero fees",
+    "location": "Sydney, Australia",
+    "employees": 300,
+    "fundingStage": "series_c",
+    "decisionMaker": {
+      "name": "Robbie Ferguson",
+      "title": "Co-founder",
+      "linkedin": "linkedin.com/in/robbieferguson"
+    },
+    "relevanceScore": 95,
+    "status": "contacted",
+    "source": "research",
+    "signals": ["gaming_focus", "asia_expansion"],
+    "emailsSent": 2,
+    "emailsOpened": 1,
+    "emailsReplied": 0,
+    "lastContact": "2026-02-15T10:00:00Z",
+    "notes": "Leading gaming L2. Gods Unchained, Guild of Guardians. High priority for coins.xyz.",
+    "createdAt": "2026-02-10T00:00:00Z"
+  },
+  {
+    "id": "lead-animoca",
+    "company": "Animoca Brands",
+    "industry": "Web3 Gaming Investment",
+    "category": "gaming",
+    "description": "Leading Web3 investor with 570+ portfolio companies",
+    "location": "Hong Kong",
+    "employees": 500,
+    "fundingStage": "growth",
+    "decisionMaker": {
+      "name": "Yat Siu",
+      "title": "Co-founder & Chairman",
+      "linkedin": "linkedin.com/in/yatsiu"
+    },
+    "relevanceScore": 98,
+    "status": "qualified",
+    "source": "referral",
+    "signals": ["major_investor", "sea_focus", "portfolio_synergies"],
+    "emailsSent": 3,
+    "emailsOpened": 3,
+    "emailsReplied": 1,
+    "lastContact": "2026-02-14T14:00:00Z",
+    "notes": "Strategic investor. Portfolio includes The Sandbox, Axie Infinity. Yat Siu is key decision maker.",
+    "createdAt": "2026-02-01T00:00:00Z"
+  },
+  {
+    "id": "lead-ton",
+    "company": "TON Foundation",
+    "industry": "Layer 1 Blockchain",
+    "category": "infrastructure",
+    "description": "The Open Network - Telegram-integrated blockchain",
+    "location": "Dubai, UAE",
+    "employees": 100,
+    "fundingStage": "grant_funded",
+    "decisionMaker": {
+      "name": "Andrew Rogozov",
+      "title": "Founding Member",
+      "linkedin": "linkedin.com/in/andrewrogozov"
+    },
+    "relevanceScore": 88,
+    "status": "new",
+    "source": "news_alert",
+    "signals": ["rapid_growth", "telegram_ecosystem", "viral_apps"],
+    "notes": "900M+ Telegram users. Mini-apps going viral. Strong Philippines potential (mobile-first market).",
+    "createdAt": "2026-02-16T00:00:00Z"
+  },
+  {
+    "id": "lead-gala",
+    "company": "Gala Games",
+    "industry": "Decentralized Gaming",
+    "category": "gaming",
+    "description": "Decentralized gaming ecosystem moving to GalaChain",
+    "location": "United States",
+    "employees": 250,
+    "fundingStage": "growth",
+    "decisionMaker": {
+      "name": "Jason Brink",
+      "title": "President of Blockchain",
+      "linkedin": "linkedin.com/in/jasonbrink"
+    },
+    "relevanceScore": 85,
+    "status": "nurture",
+    "source": "research",
+    "signals": ["gaming_ecosystem", "blockchain_migration"],
+    "emailsSent": 1,
+    "emailsOpened": 0,
+    "emailsReplied": 0,
+    "lastContact": "2026-02-01T09:00:00Z",
+    "notes": "Major GameFi player. Spider Tanks, Town Star. Building GalaChain ecosystem. Needs nurturing.",
+    "createdAt": "2026-01-20T00:00:00Z"
+  },
+  {
+    "id": "lead-alchemy",
+    "company": "Alchemy Pay",
+    "industry": "Fiat-Crypto Payment Gateway",
+    "category": "payments",
+    "description": "Leading fiat-crypto payment bridge",
+    "location": "Singapore",
+    "employees": 150,
+    "fundingStage": "series_a",
+    "decisionMaker": {
+      "name": "Robert McCracken",
+      "title": "BD Lead",
+      "email": "partnerships@alchemypay.org"
+    },
+    "relevanceScore": 82,
+    "status": "new",
+    "source": "competitor_tracking",
+    "signals": ["payment_focus", "sea_presence", "active_partnerships"],
+    "notes": "Recently partnered with Stable for ecosystem expansion. PHP on-ramp/off-ramp opportunity.",
+    "createdAt": "2026-02-17T00:00:00Z"
+  }
+]

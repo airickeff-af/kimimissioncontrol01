@@ -1,0 +1,20 @@
+{
+  "id": "kraken",
+  "name": "Kraken",
+  "type": "exchange",
+  "website": "https://kraken.com",
+  "twitter": "@krakenfx",
+  "tags": [
+    "cex",
+    "us",
+    "europe"
+  ],
+  "description": "",
+  "createdAt": "2026-02-18T01:28:51.085Z",
+  "metrics": [
+    {
+      "timestamp": "2026-02-18T01:28:57.456Z",
+      "lastChecked": "2026-02-18T01:28:57.456Z"
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "id": "binance",
+  "name": "Binance",
+  "type": "exchange",
+  "website": "https://binance.com",
+  "twitter": "@binance",
+  "tags": [
+    "cex",
+    "global",
+    "defi"
+  ],
+  "description": "",
+  "createdAt": "2026-02-18T01:28:51.084Z",
+  "activities": [
+    {
+      "id": "act-1771378137455",
+      "timestamp": "2026-02-18T01:28:57.455Z",
+      "type": "general",
+      "title": "BNB Price Prediction 2026 to 2030: Will Binance Coin Soar?",
+      "description": "Funding: $85590.0M | Competitors: Binance | Sectors: AI",
+      "source": "NFTPlazas",
+      "url": "https://nftplazas.com/bnb-price-prediction/",
+      "impact": "high",
+      "tags": [],
+      "metadata": {
+        "fundingAmount": 85590000000,
+        "sectors": [
+          "AI"
+        ]
+      }
+    },
+    {
+      "id": "act-1771378137452",
+      "timestamp": "2026-02-18T01:28:57.452Z",
+      "type": "general",
+      "title": "Binance Lists Espresso (ESP) For Spot Markets",
+      "description": "Competitors: Binance | Sectors: AI, Modular | Categories: ipo",
+      "source": "NFTPlazas",
+      "url": "https://nftplazas.com/binance-lists-espresso-esp/",
+      "impact": "high",
+      "tags": [],
+      "metadata": {
+        "fundingAmount": null,
+        "sectors": [
+          "AI",
+          "Modular"
+        ]
+      }
+    }
+  ],
+  "lastActivity": "2026-02-18T01:28:57.455Z",
+  "metrics": [
+    {
+      "timestamp": "2026-02-18T01:28:57.455Z",
+      "lastChecked": "2026-02-18T01:28:57.455Z"
+    }
+  ]
+}

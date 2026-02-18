@@ -1,0 +1,28 @@
+{
+  "name": "pie-predictive-intelligence-engine",
+  "version": "1.0.0",
+  "description": "Predictive Intelligence Engine for coins.ph/coins.xyz partnership sales",
+  "main": "pie-core.js",
+  "scripts": {
+    "start": "node pie-core.js",
+    "test": "jest",
+    "lint": "eslint ."
+  },
+  "keywords": [
+    "sales",
+    "intelligence",
+    "crypto",
+    "partnerships",
+    "lead-scoring"
+  ],
+  "author": "Nexus + Glasses (Mission Control)",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.13.5",
+    "node-cron": "^3.0.3"
+  },
+  "devDependencies": {
+    "eslint": "^8.55.0",
+    "jest": "^29.7.0"
+  }
+}

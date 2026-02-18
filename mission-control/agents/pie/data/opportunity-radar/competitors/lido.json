@@ -1,0 +1,20 @@
+{
+  "id": "lido",
+  "name": "Lido",
+  "type": "defi",
+  "website": "https://lido.fi",
+  "twitter": "@lidofinance",
+  "tags": [
+    "staking",
+    "ethereum",
+    "liquid"
+  ],
+  "description": "",
+  "createdAt": "2026-02-18T01:28:51.085Z",
+  "metrics": [
+    {
+      "timestamp": "2026-02-18T01:28:57.456Z",
+      "lastChecked": "2026-02-18T01:28:57.456Z"
+    }
+  ]
+}

@@ -1,0 +1,106 @@
+{
+  "id": "briefing-lead-hashkey-1771378133228",
+  "leadId": "lead-hashkey",
+  "generatedAt": "2026-02-18T01:28:53.228Z",
+  "expiresAt": "2026-02-19T01:28:53.228Z",
+  "executiveSummary": {
+    "company": "lead-hashkey",
+    "relevanceScore": "N/A",
+    "keyInsight": "Standard outreach approach recommended",
+    "recommendedApproach": "Standard value proposition with personalization"
+  },
+  "company": {
+    "name": "lead-hashkey",
+    "description": "Company information pending",
+    "industry": "Unknown"
+  },
+  "news": {
+    "latest": [],
+    "funding": [],
+    "partnerships": [],
+    "productLaunches": [],
+    "hiring": [],
+    "sentiment": "neutral"
+  },
+  "decisionMaker": null,
+  "talkingPoints": {
+    "opening": [],
+    "valueProposition": [
+      "Access to 18.6M registered users in the Philippines - the Philippines ranks 9th globally in crypto adoption",
+      "75-80% market share in PHP-to-stablecoin liquidity",
+      "BSP-licensed platform with strong regulatory standing",
+      "Proven track record with partners like Circle, Veem, and Ronin"
+    ],
+    "partnershipAngles": [],
+    "objectionHandlers": [
+      {
+        "objection": "We're already working with another exchange",
+        "response": "Many of our partners work with multiple exchanges. Our 75% market share in PHP liquidity and BSP license offers unique advantages for Philippines-focused strategies."
+      },
+      {
+        "objection": "The Philippines market is too small",
+        "response": "With 18.6M users and ₱6 trillion market cap, the Philippines ranks 9th globally in crypto adoption. It's a high-growth, mobile-first market."
+      },
+      {
+        "objection": "We need more time to evaluate",
+        "response": "I understand. Would it help if I connected you with ${this._getReferencePartner()} to hear about their experience?"
+      }
+    ],
+    "nextSteps": [
+      "Schedule technical integration call with our dev team",
+      "Introduce to our Philippines market lead",
+      "Share case study from similar partnership",
+      "Invite to upcoming Web3 Philippines event"
+    ],
+    "questionsToAsk": [
+      "What's your current strategy for Southeast Asia expansion?",
+      "Are you exploring stablecoin integration for payments?",
+      "What's your timeline for Philippines market entry?",
+      "Who else are you considering for this partnership?"
+    ]
+  },
+  "competitors": [],
+  "ourPosition": {
+    "relevantPartnerships": [
+      {
+        "partner": "Circle",
+        "type": "Stablecoin",
+        "date": "2026-02"
+      },
+      {
+        "partner": "Veem",
+        "type": "Remittance",
+        "date": "2026-01"
+      },
+      {
+        "partner": "Ronin Network",
+        "type": "Gaming",
+        "date": "2025-12"
+      }
+    ],
+    "marketAdvantages": [
+      "18.6M registered users (Philippines #1 crypto wallet)",
+      "75-80% market share in PHP-to-stablecoin",
+      "BSP Virtual Currency Exchange license",
+      "600K+ QRPH merchant network",
+      "$38B remittance market access"
+    ],
+    "caseStudies": [
+      {
+        "partner": "Circle",
+        "result": "PHPC stablecoin launch with enterprise payments integration",
+        "relevance": "Stablecoin partnerships"
+      },
+      {
+        "partner": "Veem",
+        "result": "Expanded to North America→Philippines corridor",
+        "relevance": "Cross-border payments"
+      },
+      {
+        "partner": "Ronin",
+        "result": "Connecting gaming wallet to 600K+ merchants",
+        "relevance": "GameFi integration"
+      }
+    ]
+  }
+}

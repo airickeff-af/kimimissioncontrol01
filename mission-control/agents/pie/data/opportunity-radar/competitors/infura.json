@@ -1,0 +1,20 @@
+{
+  "id": "infura",
+  "name": "Infura",
+  "type": "infrastructure",
+  "website": "https://infura.io",
+  "twitter": "@infura_io",
+  "tags": [
+    "rpc",
+    "ethereum",
+    "consensys"
+  ],
+  "description": "",
+  "createdAt": "2026-02-18T01:28:51.085Z",
+  "metrics": [
+    {
+      "timestamp": "2026-02-18T01:28:57.456Z",
+      "lastChecked": "2026-02-18T01:28:57.456Z"
+    }
+  ]
+}

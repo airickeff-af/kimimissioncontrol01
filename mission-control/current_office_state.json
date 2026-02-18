@@ -1,9 +1,9 @@
 {
-    "timestamp": "2026-02-18T08:01:10+08:00",
-    "hour": 08,
-    "state": "default",
+    "timestamp": "2026-02-18T10:00:29+08:00",
+    "hour": 10,
+    "state": "deep_work_morning",
     "zone": "individual",
-    "description": "Default positions",
+    "description": "Deep work - Agents at individual desks",
     "positions": {
         "air1ck3ff": "command_center",
         "glasses": "content_desk",
