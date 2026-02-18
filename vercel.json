@@ -6,21 +6,21 @@
       "runtime": "nodejs18.x"
     }
   },
-  "routes": [
-    { "src": "/api/logs/activity", "dest": "/api/logs/activity.js" },
-    { "src": "/api/logs", "dest": "/api/logs.js" },
-    { "src": "/api/test", "dest": "/api/test.js" },
-    { "src": "/api/health", "dest": "/api/health.js" },
-    { "src": "/api/agents", "dest": "/api/agents.js" },
-    { "src": "/api/deals", "dest": "/api/deals.js" },
-    { "src": "/api/tasks", "dest": "/api/tasks.js" },
-    { "src": "/api/tokens", "dest": "/api/tokens.js" },
-    { "src": "/api/metrics", "dest": "/api/metrics.js" },
-    { "src": "/api/(.*)", "dest": "/api/$1" },
-    { "src": "/css/(.*)", "dest": "/mission-control/dashboard/css/$1" },
-    { "src": "/js/(.*)", "dest": "/mission-control/dashboard/js/$1" },
-    { "src": "/assets/(.*)", "dest": "/assets/$1" },
-    { "src": "/(.+\\.(html|css|js|png|jpg|jpeg|gif|svg|ico))", "dest": "/$1" },
-    { "src": "/(.*)", "dest": "/index.html" }
+  "rewrites": [
+    { "source": "/api/logs/activity", "destination": "/api/logs/activity.js" },
+    { "source": "/api/logs", "destination": "/api/logs.js" },
+    { "source": "/api/test", "destination": "/api/test.js" },
+    { "source": "/api/health", "destination": "/api/health.js" },
+    { "source": "/api/agents", "destination": "/api/agents.js" },
+    { "source": "/api/deals", "destination": "/api/deals.js" },
+    { "source": "/api/tasks", "destination": "/api/tasks.js" },
+    { "source": "/api/tokens", "destination": "/api/tokens.js" },
+    { "source": "/api/metrics", "destination": "/api/metrics.js" },
+    { "source": "/api/(.*)", "destination": "/api/$1" },
+    { "source": "/css/(.*)", "destination": "/mission-control/dashboard/css/$1" },
+    { "source": "/js/(.*)", "destination": "/mission-control/dashboard/js/$1" },
+    { "source": "/assets/(.*)", "destination": "/assets/$1" },
+    { "source": "/(.+\\.(html|css|js|png|jpg|jpeg|gif|svg|ico))", "destination": "/$1" },
+    { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
