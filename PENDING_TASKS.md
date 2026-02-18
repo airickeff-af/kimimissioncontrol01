@@ -9,6 +9,52 @@
 ## 🆕 NEW TASKS FROM CONTINUOUS IMPROVEMENT
 #### Batch: 2026-02-18 11:15
 
+### **TASK-047: Unified Kairosoft Theme + DealFlow with Full Contact Data**
+- **Assigned:** Forge-1, Forge-2, Forge-3
+- **Due:** Feb 18, 3:00 PM
+- **Status:** 🟢 IN PROGRESS
+- **Priority:** P1
+- **Description:** Apply Pixel's Kairosoft theme to all pages + DealFlow with COMPLETE contact info for ColdCall
+
+**DealFlow Page Requirements:**
+- Kairosoft pixel theme
+- **ALL 30 DEALS with FULL CONTACT INFO:**
+  - Company name
+  - Contact person name + Title
+  - **Email** (primary contact method)
+  - **LinkedIn** (personal + company)
+  - **Twitter/X** (if available)
+  - **Phone** (if available)
+  - **Telegram** (if available)
+  - Priority (P0/P1/P2)
+  - Lead score
+  - Status (new/contacted/qualified)
+  - Notes/Research sources
+- **ColdCall Action Button** - "Copy Contact Info" or "Start Outreach"
+- **Filter by:** Priority, Status, Region, Industry
+
+**Data Source:** `/mission-control/agents/dealflow/leads_complete_26.json` + 4 more leads
+
+**Pages to Theme:**
+1. `/mission-control/dashboard/living-pixel-office.html` (reference)
+2. `/mission-control/dashboard/scout.html`
+3. `/mission-control/dashboard/dealflow-view.html` ⭐ PRIORITY
+4. `/mission-control/dashboard/task-board.html`
+5. `/mission-control/dashboard/token-tracker.html`
+6. `/mission-control/dashboard/logs-view.html`
+7. `/mission-control/dashboard/data-viewer.html`
+
+**Theme Requirements:**
+- Kairosoft game aesthetic (pixel art, chibi style)
+- Retro color palette (beige, brown, muted greens)
+- "Press Start 2P" or pixel-style fonts
+- 3D button effects with shadows
+- Card-based layouts with borders
+- Animated elements where appropriate
+- Consistent navigation across all pages
+
+**Source:** EricF request (Feb 18, 12:22 PM)
+
 ### **TASK-046: Update Overview Page with Complete Agent Data**
 - **Assigned:** Forge-2 (active), Forge-3 (active)
 - **Due:** Feb 18, 1:00 PM
