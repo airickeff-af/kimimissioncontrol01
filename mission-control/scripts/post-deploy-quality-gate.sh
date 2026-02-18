@@ -2,11 +2,22 @@
 #
 # Post-Deploy Quality Gate
 # Tests the LIVE deployment and enforces 95/100 minimum score
+# Reads configuration from /mission-control/config/audit-config.json
 #
 
-DEPLOYMENT_URL="https://dashboard-ten-sand-20.vercel.app"
-MIN_SCORE=95
+REPO_DIR="/root/.openclaw/workspace"
+CONFIG_FILE="$REPO_DIR/mission-control/config/audit-config.json"
 LOG_FILE="/tmp/quality-gate.log"
+
+# Load config if available
+if [ -f "$CONFIG_FILE" ]; then
+    # Extract deployment URL from config
+    DEPLOYMENT_URL=$(grep -o '"url": "[^"]*"' "$CONFIG_FILE" | head -1 | cut -d'"' -f4 || echo "https://dashboard-ten-sand-20.vercel.app")
+    MIN_SCORE=$(grep -o '"min_score": [0-9]*' "$CONFIG_FILE" | grep -A5 'quality_gate' | grep -o '[0-9]*' | head -1 || echo "95")
+else
+    DEPLOYMENT_URL="https://dashboard-ten-sand-20.vercel.app"
+    MIN_SCORE=95
+fi
 
 echo "$(date '+%Y-%m-%d %H:%M:%S'): Quality Gate check started" >> $LOG_FILE
 echo "Testing: $DEPLOYMENT_URL" >> $LOG_FILE

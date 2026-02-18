@@ -1,9 +1,9 @@
 {
-    "timestamp": "2026-02-18T18:01:27+08:00",
-    "hour": 18,
-    "state": "wrap_up",
-    "zone": "individual",
-    "description": "End of day wrap-up",
+    "timestamp": "2026-02-18T21:00:36+08:00",
+    "hour": 21,
+    "state": "night_ops",
+    "zone": "ops_center",
+    "description": "Night operations - Sentry/Cipher monitoring",
     "positions": {
         "air1ck3ff": "command_center",
         "glasses": "content_desk",

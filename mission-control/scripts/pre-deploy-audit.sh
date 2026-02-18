@@ -3,6 +3,7 @@
 # Pre-Deployment Audit Gate
 # Blocks deployment if quality score < 93/100
 # Run this before any git push or vercel deploy
+# Reads configuration from /mission-control/config/audit-config.json
 #
 
 set -e
@@ -12,8 +13,16 @@ echo "=============================="
 echo "Date: $(date)"
 echo ""
 
-# Configuration
-MIN_SCORE=93
+# Load configuration
+CONFIG_FILE="mission-control/config/audit-config.json"
+if [ -f "$CONFIG_FILE" ]; then
+    MIN_SCORE=$(grep -o '"min_score": [0-9]*' "$CONFIG_FILE" | head -1 | grep -o '[0-9]*' || echo "93")
+    echo "📋 Config loaded: min_score=$MIN_SCORE"
+else
+    MIN_SCORE=93
+    echo "⚠️  Config not found, using default: min_score=$MIN_SCORE"
+fi
+
 AUDIT_LOG="/tmp/pre-deploy-audit.log"
 FAILED=0
 
@@ -146,15 +155,15 @@ echo "=============================="
 echo "📊 QUALITY SCORE: $SCORE/100"
 echo "=============================="
 
-if [ "$SCORE" -ge 93 ]; then
-    echo -e "${GREEN}✅ PASSED - Meets EricF's minimum standard (93/100)${NC}"
+if [ "$SCORE" -ge $MIN_SCORE ]; then
+    echo -e "${GREEN}✅ PASSED - Meets EricF's minimum standard ($MIN_SCORE/100)${NC}"
     echo ""
     echo "🚀 Ready for deployment!"
     echo "   Run: vercel --prod"
     echo "   Or: git push origin master"
     exit 0
 else
-    echo -e "${RED}❌ FAILED - Below minimum standard (93/100)${NC}"
+    echo -e "${RED}❌ FAILED - Below minimum standard ($MIN_SCORE/100)${NC}"
     echo ""
     echo "🔧 Required actions:"
     if [ "$PLACEHOLDER_COUNT" -gt 0 ]; then

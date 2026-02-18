@@ -242,7 +242,7 @@
 - **Leads:** 26 crypto + 15 manufacturing = 41 total
 - **Agents:** 20 deployed
 - **Cost:** $0.52 today, $27/month projected
-- **URL:** dashboard-ten-sand-20.vercel.app
+- **URL:** https://dashboard-ten-sand-20.vercel.app
 - **Timezone:** GMT+8 (Hong Kong)
 - **Critical:** Code API fix needed
 - **Completed Today:** 18 tasks

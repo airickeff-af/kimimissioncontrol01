@@ -2,11 +2,19 @@
 #
 # Audit Bot - Deployment Gatekeeper
 # Runs before any deployment to enforce quality standards
+# Reads configuration from /mission-control/config/audit-config.json
 #
 
 REPO_DIR="/root/.openclaw/workspace"
-MIN_SCORE=93
+CONFIG_FILE="$REPO_DIR/mission-control/config/audit-config.json"
 LOG_FILE="/tmp/audit-gate.log"
+
+# Load config if available
+if [ -f "$CONFIG_FILE" ]; then
+    MIN_SCORE=$(grep -o '"min_score": [0-9]*' "$CONFIG_FILE" | head -1 | grep -o '[0-9]*' || echo "93")
+else
+    MIN_SCORE=93
+fi
 
 echo "$(date): Audit Gate check started" >> $LOG_FILE
 
@@ -30,7 +38,7 @@ if [ -f "mission-control/scripts/pre-deploy-audit.sh" ]; then
         # Notify EricF
         echo "🔴 DEPLOYMENT BLOCKED"
         echo ""
-        echo "Quality audit failed - Score below 93/100"
+        echo "Quality audit failed - Score below $MIN_SCORE/100"
         echo "Review issues in: $LOG_FILE"
         echo ""
         echo "To override (not recommended):"

@@ -1,8 +1,9 @@
 # PENDING TASKS LOG - MISSION CONTROL
 **Status:** ACTIVE  
-**Last Updated:** 2026-02-18 6:40 PM HKT
+**Last Updated:** 2026-02-18 8:48 PM HKT
 **Total Tasks:** 60  
 **Completed Today:** 31
+**Delegation Workflow:** [v2.0 with Audit Checkpoints](/mission-control/docs/DELEGATION_WORKFLOW.md)
 
 ---
 
@@ -16,6 +17,11 @@
 - **Priority:** P0 - DEPLOYMENT BLOCKING
 - **Quality Gate Score:** 0/100 (Required: 95/100)
 - **Full Report:** `/root/.openclaw/workspace/QUALITY_GATE_REPORT_2026-02-18.md`
+- **Audit Checkpoints:**
+  - [ ] 25% - Code-1 reported to Audit-1
+  - [ ] 50% - Code-1 reported to Audit-1
+  - [ ] 75% - Code-1 reported to Audit-2
+  - [ ] Final - Code-1 reviewed by Audit-1
 
 **Problem:**
 All pages and API endpoints return 404. Site completely inaccessible.
@@ -1380,6 +1386,11 @@ If not resolved by 5:00 PM, escalate to EricF immediately.
 - **Status:** ⏳ NOT STARTED
 - **Priority:** P1
 - **Description:** Standardize all API responses to use same format
+- **Audit Checkpoints:**
+  - [ ] 25% - Code-1 reported to Audit-1
+  - [ ] 50% - Code-1 reported to Audit-1
+  - [ ] 75% - Code-1 reported to Audit-2
+  - [ ] Final - Code-1 reviewed by Audit-1
 
 **Requirements:**
 - Define standard JSON response schema
@@ -1421,6 +1432,11 @@ If not resolved by 5:00 PM, escalate to EricF immediately.
 - **Status:** ⏳ NOT STARTED
 - **Priority:** P1
 - **Description:** Reduce file size from 53KB to under 40KB
+- **Audit Checkpoints:**
+  - [ ] 25% - Forge-1 reported to Audit-1
+  - [ ] 50% - Forge-1 reported to Audit-1
+  - [ ] 75% - Forge-1 reported to Audit-2
+  - [ ] Final - Forge-1 reviewed by Audit-1
 
 **Requirements:**
 - Minify HTML, CSS, and inline JavaScript
@@ -1702,3 +1718,88 @@ If not resolved by 5:00 PM, escalate to EricF immediately.
 | 🟢 P2 - Medium | 18 | 4 | 0 | 14 |
 | ⚪ P3 - Low | 5 | 0 | 0 | 5 |
 | **TOTAL** | **60** | **16** | **2** | **42** |
+
+---
+
+## 📝 TASK FORMAT REFERENCE (v2.0)
+
+### New Task Format with Audit Checkpoints
+
+All new tasks must include the `audit_checkpoints` field:
+
+```markdown
+### **TASK-XXX: Task Title**
+- **Assigned:** [Agent Name]
+- **Due:** [Date/Time]
+- **Status:** [⏳ NOT STARTED / 🟢 IN PROGRESS / 🔴 BLOCKED / ✅ COMPLETED]
+- **Priority:** [P0/P1/P2/P3]
+- **Description:** [Detailed description]
+- **Acceptance Criteria:**
+  - [ ] Criterion 1
+  - [ ] Criterion 2
+- **Audit Checkpoints:**
+  - [ ] 25% - [Agent] reported to Audit-1 on [date]
+  - [ ] 50% - [Agent] reported to Audit-1 on [date]
+  - [ ] 75% - [Agent] reported to Audit-2 on [date]
+  - [ ] Final - [Agent] reviewed by Audit-1 on [date]
+- **Progress Reports:**
+  - `/mission-control/audit/progress-reports/TASK-XXX-25-[timestamp].md`
+- **Blockers:** [None / specific blockers]
+- **Notes:** [Additional context]
+```
+
+### Delegation Template
+
+When assigning a task, use this format:
+
+```
+🔔 TASK ASSIGNED to [Agent]
+
+Task: TASK-XXX - [Description]
+Priority: P0/P1/P2/P3
+Due: [Date/Time]
+
+📊 AUDIT CHECKPOINTS:
+- Report to Audit-1 at 25% progress
+- Report to Audit-1 at 50% progress
+- Report to Audit-2 at 75% progress
+- Final review by Audit-1 at completion
+
+📋 REPORTING FORMAT:
+Send progress updates to: /mission-control/audit/progress-reports/
+Include: % complete, what was done, any blockers
+
+✅ ACCEPTANCE CRITERIA:
+[Specific criteria]
+
+🎯 BEGIN WORK
+```
+
+### Progress Report Template
+
+Agents must submit progress reports at each checkpoint:
+
+**File:** `/mission-control/templates/PROGRESS_REPORT_TEMPLATE.md`
+
+```markdown
+## Progress Report: TASK-XXX
+**Agent:** [Name]
+**Timestamp:** [ISO date]
+**Progress:** [X]%
+**Status:** [started/in_progress/blocked/completed]
+
+### Work Completed:
+- [item 1]
+- [item 2]
+
+### Issues Encountered:
+- [issue 1] or "None"
+
+### Next Steps:
+- [next action]
+
+### Estimated Completion:
+[time estimate]
+```
+
+**Full Documentation:** See `/mission-control/docs/DELEGATION_WORKFLOW.md`

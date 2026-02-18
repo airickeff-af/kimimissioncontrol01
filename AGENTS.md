@@ -207,6 +207,23 @@ Think of it like a human reviewing their journal and updating their mental model
 
 The goal: Be helpful without being annoying. Check in a few times a day, do useful background work, but respect quiet time.
 
+## Audit Configuration
+
+### Correct Deployment URL
+All audit agents must use the correct dashboard URL:
+- **Correct:** `https://dashboard-ten-sand-20.vercel.app`
+
+### Deprecated URLs (DO NOT USE)
+The following URLs are deprecated and should not be used:
+- `mission-control-seven.vercel.app` ❌
+- `mission-control-ivory.vercel.app` ❌
+- `mission-control-eight.vercel.app` ❌
+- `dashboard-kappa-two.vercel.app` ❌
+- `kimimissioncontrol01.vercel.app` ❌
+
+### Reference
+See `/mission-control/docs/AUDIT_URL_STANDARD.md` for full documentation.
+
 ## Make It Yours
 
 This is a starting point. Add your own conventions, style, and rules as you figure out what works.

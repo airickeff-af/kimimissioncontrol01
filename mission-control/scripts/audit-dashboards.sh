@@ -2,13 +2,25 @@
 #
 # Audit Script: Verify Dashboard Refresh Functionality
 # Run this to check all dashboards have working refresh buttons and auto-refresh
+# Reads configuration from /mission-control/config/audit-config.json
 #
 
-DASHBOARD_DIR="/root/.openclaw/workspace/mission-control/dashboard"
-API_URL="https://dashboard-ten-sand-20.vercel.app/api"
+REPO_DIR="/root/.openclaw/workspace"
+DASHBOARD_DIR="$REPO_DIR/mission-control/dashboard"
+CONFIG_FILE="$REPO_DIR/mission-control/config/audit-config.json"
+
+# Load config if available
+if [ -f "$CONFIG_FILE" ]; then
+    DEPLOYMENT_URL=$(grep -o '"url": "[^"]*"' "$CONFIG_FILE" | head -1 | cut -d'"' -f4 || echo "https://dashboard-ten-sand-20.vercel.app")
+else
+    DEPLOYMENT_URL="https://dashboard-ten-sand-20.vercel.app"
+fi
+
+API_URL="${DEPLOYMENT_URL}/api"
 
 echo "=== DASHBOARD REFRESH AUDIT ==="
 echo "Date: $(date)"
+echo "Deployment: $DEPLOYMENT_URL"
 echo ""
 
 # Check if dashboard-utils.js exists
@@ -67,11 +79,11 @@ done
 echo ""
 echo "4. Checking Vercel configuration..."
 
-if [ -f "/root/.openclaw/workspace/vercel.json" ]; then
+if [ -f "$REPO_DIR/vercel.json" ]; then
     echo "   ✅ vercel.json found"
     
     # Check for API routes
-    if grep -q '"src": "/api/' "/root/.openclaw/workspace/vercel.json"; then
+    if grep -q '"src": "/api/' "$REPO_DIR/vercel.json"; then
         echo "   ✅ API routes configured"
     else
         echo "   ❌ API routes missing"
@@ -82,6 +94,6 @@ fi
 
 echo ""
 echo "=== AUDIT SUMMARY ==="
+echo "Deployment URL: $DEPLOYMENT_URL"
 echo "Run 'vercel --prod' to deploy updates"
-echo "Dashboard URL: https://dashboard-ten-sand-20.vercel.app"
 echo ""

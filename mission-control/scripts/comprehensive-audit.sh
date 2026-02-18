@@ -2,12 +2,23 @@
 #
 # COMPREHENSIVE AUDIT - Checks Everything
 # EricF requirement: Audit looks at everything
+# Reads configuration from /mission-control/config/audit-config.json
 #
 
 REPO_DIR="/root/.openclaw/workspace"
+CONFIG_FILE="$REPO_DIR/mission-control/config/audit-config.json"
 DASHBOARD_DIR="$REPO_DIR/mission-control/dashboard"
 API_DIR="$REPO_DIR/api"
 LOG_FILE="/tmp/comprehensive-audit.log"
+
+# Load config if available
+if [ -f "$CONFIG_FILE" ]; then
+    MIN_SCORE=$(grep -o '"min_score": [0-9]*' "$CONFIG_FILE" | head -1 | grep -o '[0-9]*' || echo "93")
+    DEPLOYMENT_URL=$(grep -o '"url": "[^"]*"' "$CONFIG_FILE" | head -1 | cut -d'"' -f4 || echo "https://dashboard-ten-sand-20.vercel.app")
+else
+    MIN_SCORE=93
+    DEPLOYMENT_URL="https://dashboard-ten-sand-20.vercel.app"
+fi
 
 SCORE=100
 ERRORS=0
@@ -16,6 +27,8 @@ WARNINGS=0
 echo "🔍 COMPREHENSIVE AUDIT - Everything Checked"
 echo "============================================"
 echo "Date: $(date)"
+echo "Deployment: $DEPLOYMENT_URL"
+echo "Min Score: $MIN_SCORE/100"
 echo ""
 
 # 1. CODE QUALITY CHECKS
@@ -188,6 +201,15 @@ else
     ERRORS=$((ERRORS + 1))
 fi
 
+# Check audit config
+if [ -f "$CONFIG_FILE" ]; then
+    echo "   ✅ audit-config.json - Exists"
+else
+    echo "   ❌ audit-config.json - Missing"
+    SCORE=$((SCORE - 5))
+    ERRORS=$((ERRORS + 1))
+fi
+
 # 7. SECURITY CHECKS
 echo ""
 echo "7️⃣ SECURITY"
@@ -225,12 +247,12 @@ echo "============================================"
 echo "Errors: $ERRORS | Warnings: $WARNINGS"
 echo ""
 
-if [ $SCORE -ge 93 ]; then
-    echo "✅ PASSED - Meets EricF's standard (93/100+)"
+if [ $SCORE -ge $MIN_SCORE ]; then
+    echo "✅ PASSED - Meets EricF's standard ($MIN_SCORE/100+)"
     echo "Ready for deployment"
     exit 0
 elif [ $SCORE -ge 85 ]; then
-    echo "⚠️  WARNING - Below standard (need 93/100)"
+    echo "⚠️  WARNING - Below standard (need $MIN_SCORE/100)"
     echo "Fix errors before deployment"
     exit 1
 else
