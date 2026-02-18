@@ -1,52 +1,16 @@
 {
   "version": 2,
   "name": "mission-control",
-  "builds": [
-    {
-      "src": "api/**/*.js",
-      "use": "@vercel/node"
-    }
-  ],
+  "buildCommand": null,
+  "outputDirectory": "mission-control/dashboard",
   "rewrites": [
     {
-      "source": "/logs-view",
-      "destination": "/mission-control/dashboard/logs-view.html"
+      "source": "/api/(.*)",
+      "destination": "/api/$1"
     },
     {
-      "source": "/agents",
-      "destination": "/mission-control/dashboard/agents.html"
-    },
-    {
-      "source": "/office",
-      "destination": "/mission-control/dashboard/animated-office.html"
-    },
-    {
-      "source": "/data-viewer",
-      "destination": "/mission-control/dashboard/data-viewer.html"
-    },
-    {
-      "source": "/task-board",
-      "destination": "/mission-control/dashboard/task-board.html"
-    },
-    {
-      "source": "/dealflow",
-      "destination": "/mission-control/dashboard/dealflow-view.html"
-    },
-    {
-      "source": "/scout",
-      "destination": "/mission-control/dashboard/scout.html"
-    },
-    {
-      "source": "/tokens",
-      "destination": "/mission-control/dashboard/token-tracker.html"
-    },
-    {
-      "source": "/hq",
-      "destination": "/mission-control/dashboard/hq.html"
-    },
-    {
-      "source": "/((?!api/).*)",
-      "destination": "/mission-control/dashboard/index.html"
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ]
 }
