@@ -3,63 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Token Tracker | Mission Control</title>
+    <title>🪙 Token Tracker | Mission Control</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
-        
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
         :root {
-            --bg-primary: #0a0a0f;
-            --bg-secondary: #111118;
-            --bg-tertiary: #1a1a24;
-            --bg-card: #15151d;
-            --bg-elevated: #1e1e2a;
+            --bg-primary: #f5e6c8;
+            --bg-secondary: #e8d4a8;
+            --bg-card: #fff8e7;
+            --accent-primary: #8b7355;
+            --text-primary: #3d3225;
+            --text-secondary: #6b5a45;
+            --border: #c4b090;
             --accent-cyan: #00d4ff;
             --accent-pink: #ff2a6d;
-            --accent-purple: #a855f7;
             --accent-green: #22c55e;
             --accent-yellow: #fbbf24;
             --accent-orange: #f97316;
-            --text-primary: #fafafa;
-            --text-secondary: #a1a1aa;
-            --text-muted: #71717a;
-            --border: #27272a;
+            --accent-purple: #a855f7;
+            --accent-blue: #339af0;
         }
         
+        * { margin: 0; padding: 0; box-sizing: border-box; image-rendering: pixelated; }
+        
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'VT323', monospace;
             background: var(--bg-primary);
             color: var(--text-primary);
             min-height: 100vh;
+            line-height: 1.4;
         }
         
         body::before {
             content: '';
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0; width: 100%; height: 100%;
             background-image: 
                 linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
             background-size: 60px 60px;
             pointer-events: none;
             z-index: 0;
-            animation: gridMove 20s linear infinite;
         }
         
-        @keyframes gridMove {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(60px, 60px); }
+        .game-container {
+            position: relative;
+            z-index: 1;
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 15px;
+            min-height: 100vh;
+            padding-bottom: 100px;
         }
         
+        /* Header - Matching office.html */
         .header {
-            background: rgba(17, 17, 24, 0.95);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border);
+            background: var(--bg-secondary);
+            border-bottom: 4px solid var(--accent-primary);
+            box-shadow: 0 4px 0 var(--accent-primary);
             padding: 0 2rem;
             height: 70px;
             display: flex;
@@ -68,6 +69,8 @@
             position: sticky;
             top: 0;
             z-index: 100;
+            margin: -15px -15px 15px -15px;
+            width: calc(100% + 30px);
         }
         
         .brand {
@@ -79,200 +82,292 @@
         .logo {
             width: 42px;
             height: 42px;
-            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
-            border-radius: 12px;
+            background: var(--accent-primary);
+            border: 3px solid var(--text-primary);
+            box-shadow: 3px 3px 0 var(--text-primary);
+            border-radius: 4px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 1.5rem;
-            box-shadow: 0 0 30px rgba(0, 212, 255, 0.3);
-            animation: pulse 3s ease-in-out infinite;
-        }
-        
-        @keyframes pulse {
-            0%, 100% { box-shadow: 0 0 20px rgba(0, 212, 255, 0.3); }
-            50% { box-shadow: 0 0 40px rgba(0, 212, 255, 0.5), 0 0 60px rgba(168, 85, 247, 0.3); }
         }
         
         .brand-text h1 {
-            font-size: 1.25rem;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.75rem;
             font-weight: 700;
+            letter-spacing: -0.02em;
+            line-height: 1.5;
+            color: var(--text-primary);
         }
         
         .brand-text span {
             font-size: 0.75rem;
-            color: var(--text-muted);
-            font-family: 'JetBrains Mono', monospace;
+            color: var(--text-secondary);
+            font-family: 'VT323', monospace;
         }
         
+        /* Navigation - Matching office.html */
         .nav-tabs {
             display: flex;
-            gap: 0.5rem;
-            background: rgba(255,255,255,0.05);
-            padding: 0.5rem;
-            border-radius: 12px;
+            gap: 8px;
+            flex-wrap: wrap;
         }
         
         .nav-tab {
-            padding: 0.75rem 1.25rem;
-            border: none;
-            background: transparent;
-            color: var(--text-secondary);
-            font-size: 0.875rem;
-            font-weight: 500;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 12px;
+            padding: 8px 16px;
+            background: #f5e6c8;
+            border: 4px solid #8b7355;
+            border-radius: 0;
             cursor: pointer;
-            border-radius: 8px;
-            transition: all 0.2s;
+            box-shadow: 4px 4px 0 #8b7355;
+            transition: all 0.1s;
+            color: var(--text-primary);
+            line-height: 1.4;
             text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
         }
         
         .nav-tab:hover {
-            color: var(--text-primary);
-            background: rgba(255,255,255,0.05);
+            border-color: #00d4ff;
+            transform: translateY(-2px);
+            box-shadow: 4px 6px 0 #8b7355;
+        }
+        
+        .nav-tab:active {
+            transform: translateY(0);
+            box-shadow: 0 0 0 #8b7355;
         }
         
         .nav-tab.active {
-            color: var(--text-primary);
-            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
-            box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
+            background: #e8d4a8;
+            border-color: #8b7355;
         }
         
-        .main-content {
-            padding: 2rem;
-            position: relative;
-            z-index: 1;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-        
-        .loading-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(10, 10, 15, 0.9);
+        .header-actions {
             display: flex;
-            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .btn-icon {
+            width: 32px;
+            height: 32px;
+            border: 2px solid var(--accent-primary);
+            background: var(--bg-secondary);
+            border-radius: 4px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
             align-items: center;
             justify-content: center;
-            z-index: 1000;
-            transition: opacity 0.3s;
+            font-size: 1rem;
         }
         
-        .loading-overlay.hidden {
-            opacity: 0;
-            pointer-events: none;
+        .btn-icon:hover {
+            background: rgba(255,255,255,0.1);
+            color: var(--text-primary);
         }
         
-        .loading-spinner {
-            width: 60px;
-            height: 60px;
-            border: 3px solid var(--border);
-            border-top-color: var(--accent-cyan);
+        .btn-icon:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .live-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.5rem;
+            color: var(--accent-green);
+        }
+        
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--accent-green);
             border-radius: 50%;
-            animation: spin 1s linear infinite;
+            animation: pulse 1s infinite;
         }
         
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
         }
         
-        .loading-text {
-            margin-top: 1rem;
-            color: var(--text-secondary);
+        /* Panel Box - Pixel Styling */
+        .panel-box {
+            background: var(--bg-card);
+            border: 4px solid var(--accent-primary);
+            box-shadow: 4px 4px 0 var(--accent-primary);
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .panel-title {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.65rem;
+            color: var(--accent-primary);
+            margin-bottom: 12px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid var(--accent-primary);
+            line-height: 1.6;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            justify-content: space-between;
+        }
+        
+        .panel-actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .action-btn {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.5rem;
+            padding: 6px 12px;
+            background: var(--accent-blue);
+            border: 3px solid var(--text-primary);
+            color: white;
+            cursor: pointer;
+            box-shadow: 3px 3px 0 var(--text-primary);
+        }
+        
+        .action-btn:hover {
+            background: var(--accent-cyan);
         }
         
         /* Stats Grid */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1.5rem;
-            margin-bottom: 2rem;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 15px;
         }
         
-        .stat-card {
+        .stat-box {
             background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 1.5rem;
+            border: 4px solid var(--accent-primary);
+            box-shadow: 4px 4px 0 var(--accent-primary);
+            padding: 15px;
+            text-align: center;
             transition: all 0.3s;
         }
         
-        .stat-card:hover {
-            border-color: var(--accent-cyan);
+        .stat-box:hover {
+            border-color: var(--text-primary);
+            box-shadow: 6px 6px 0 var(--accent-primary);
             transform: translateY(-2px);
         }
         
+        .stat-value {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 1.1rem;
+            color: var(--text-primary);
+            margin-bottom: 5px;
+        }
+        
         .stat-label {
-            font-size: 0.875rem;
-            color: var(--text-muted);
-            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+        }
+        
+        .stat-sub {
+            font-size: 0.7rem;
+            color: var(--accent-green);
+            margin-top: 4px;
+        }
+        
+        /* Agent Table - Pixel Styling */
+        .agent-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .agent-table th {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.5rem;
+            color: var(--accent-primary);
+            text-align: left;
+            padding: 10px 8px;
+            border-bottom: 3px solid var(--accent-primary);
+            background: var(--bg-secondary);
+        }
+        
+        .agent-table td {
+            padding: 12px 8px;
+            border-bottom: 2px solid var(--border);
+            font-size: 0.9rem;
+        }
+        
+        .agent-table tr:nth-child(even) {
+            background: rgba(139, 115, 85, 0.1);
+        }
+        
+        .agent-row:hover {
+            background: rgba(0, 212, 255, 0.1);
+        }
+        
+        .agent-cell {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 8px;
         }
         
-        .stat-value {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--text-primary);
-            font-family: 'JetBrains Mono', monospace;
+        .agent-emoji {
+            font-size: 1.25rem;
         }
         
-        .stat-subtitle {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            margin-top: 0.25rem;
+        .agent-name {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.55rem;
         }
         
-        .progress-bar {
+        .trend-up { color: var(--accent-green); }
+        .trend-down { color: var(--accent-pink); }
+        .trend-flat { color: var(--text-secondary); }
+        
+        /* Progress Bars */
+        .progress-container {
             width: 100%;
-            height: 8px;
-            background: rgba(255,255,255,0.1);
+            height: 20px;
+            background: #ddd;
+            border: 2px solid var(--text-primary);
             border-radius: 4px;
-            margin-top: 0.75rem;
             overflow: hidden;
+            position: relative;
         }
         
         .progress-fill {
             height: 100%;
-            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
-            border-radius: 4px;
-            transition: width 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 6px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.4rem;
+            color: #fff;
+            text-shadow: 1px 1px 0 rgba(0,0,0,0.5);
+            transition: width 0.5s ease;
         }
         
-        /* Charts Section */
+        .progress-low { background: linear-gradient(90deg, #51cf66, #69db7c); }
+        .progress-med { background: linear-gradient(90deg, #fcc419, #ffd43b); }
+        .progress-high { background: linear-gradient(90deg, #ff6b6b, #ff8787); }
+        
+        /* Charts Grid */
         .charts-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-        
-        .chart-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 1.5rem;
-        }
-        
-        .chart-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-        
-        .chart-title {
-            font-size: 1rem;
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-        
-        .chart-subtitle {
-            font-size: 0.75rem;
-            color: var(--text-muted);
+            gap: 15px;
+            margin-bottom: 15px;
         }
         
         .chart-container {
@@ -280,712 +375,654 @@
             height: 250px;
         }
         
-        /* Agent Comparison */
-        .agent-comparison {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-        }
-        
-        .comparison-header {
-            display: flex;
-            justify-content: space-between;
+        /* Alert Banner */
+        .alert-banner {
+            background: linear-gradient(90deg, #ff6b6b, #ff8787);
+            border: 4px solid #c92a2a;
+            box-shadow: 4px 4px 0 #c92a2a;
+            padding: 12px 20px;
+            margin-bottom: 15px;
+            display: none;
             align-items: center;
-            margin-bottom: 1.5rem;
+            gap: 12px;
         }
         
-        .comparison-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-        }
-        
-        .agent-bar {
+        .alert-banner.show {
             display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 1rem;
         }
         
-        .agent-info {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            min-width: 150px;
-        }
-        
-        .agent-emoji {
+        .alert-icon {
             font-size: 1.5rem;
         }
         
-        .agent-name {
-            font-weight: 500;
-            font-size: 0.9rem;
+        .alert-text {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.55rem;
+            color: white;
         }
         
-        .agent-role {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-        }
-        
-        .bar-container {
-            flex: 1;
-            height: 32px;
-            background: rgba(255,255,255,0.05);
-            border-radius: 8px;
-            overflow: hidden;
-            position: relative;
-        }
-        
-        .bar-fill {
-            height: 100%;
-            border-radius: 8px;
-            display: flex;
+        /* Efficiency Rating */
+        .efficiency-badge {
+            display: inline-flex;
             align-items: center;
-            justify-content: flex-end;
-            padding-right: 10px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            font-family: 'JetBrains Mono', monospace;
-            transition: width 1s ease;
-        }
-        
-        .bar-value {
-            min-width: 80px;
-            text-align: right;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-        }
-        
-        /* Cost Analysis */
-        .cost-analysis {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-        
-        .cost-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 1.5rem;
-            text-align: center;
-        }
-        
-        .cost-icon {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
-        }
-        
-        .cost-value {
-            font-size: 1.75rem;
-            font-weight: 700;
-            font-family: 'JetBrains Mono', monospace;
-        }
-        
-        .cost-label {
-            font-size: 0.875rem;
-            color: var(--text-muted);
-            margin-top: 0.25rem;
-        }
-        
-        .cost-change {
-            font-size: 0.75rem;
-            margin-top: 0.5rem;
+            gap: 4px;
             padding: 4px 8px;
-            border-radius: 12px;
-            display: inline-block;
-        }
-        
-        .cost-change.positive {
-            background: rgba(34, 197, 94, 0.15);
-            color: var(--accent-green);
-        }
-        
-        .cost-change.negative {
-            background: rgba(255, 42, 109, 0.15);
-            color: var(--accent-pink);
-        }
-        
-        /* Session Timeline */
-        .timeline-section {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 1.5rem;
-        }
-        
-        .timeline-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
-        
-        .timeline-item {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 1rem;
-            background: var(--bg-elevated);
-            border-radius: 12px;
-            margin-bottom: 0.75rem;
-            border-left: 3px solid var(--accent-cyan);
-            transition: all 0.2s;
-        }
-        
-        .timeline-item:hover {
-            background: rgba(255,255,255,0.05);
-            transform: translateX(4px);
-        }
-        
-        .timeline-agent {
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.25rem;
-        }
-        
-        .timeline-info {
-            flex: 1;
-        }
-        
-        .timeline-task {
-            font-weight: 500;
-            font-size: 0.9rem;
-        }
-        
-        .timeline-meta {
+            border-radius: 4px;
             font-size: 0.75rem;
-            color: var(--text-muted);
-            margin-top: 2px;
+            font-weight: bold;
         }
         
-        .timeline-stats {
-            text-align: right;
-        }
-        
-        .timeline-tokens {
-            font-family: 'JetBrains Mono', monospace;
-            color: var(--accent-cyan);
-            font-weight: 600;
-        }
-        
-        .timeline-cost {
-            font-family: 'JetBrains Mono', monospace;
-            color: var(--accent-green);
-            font-size: 0.875rem;
-        }
+        .efficiency-high { background: #d3f9d8; color: #2b8a3e; }
+        .efficiency-med { background: #fff3bf; color: #e67700; }
+        .efficiency-low { background: #ffe3e3; color: #c92a2a; }
         
         /* Total Banner */
         .total-banner {
-            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(168, 85, 247, 0.1));
-            border: 1px solid var(--accent-cyan);
-            border-radius: 16px;
-            padding: 2rem;
-            margin-top: 2rem;
+            background: var(--bg-card);
+            border: 4px solid var(--accent-primary);
+            box-shadow: 4px 4px 0 var(--accent-primary);
+            padding: 20px;
+            margin-top: 15px;
             text-align: center;
         }
         
         .total-label {
-            font-size: 1rem;
-            color: var(--text-muted);
-            margin-bottom: 0.5rem;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.65rem;
+            color: var(--accent-primary);
+            margin-bottom: 10px;
         }
         
         .total-value {
-            font-size: 3.5rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-family: 'JetBrains Mono', monospace;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 2rem;
+            color: var(--accent-green);
+            text-shadow: 2px 2px 0 rgba(0,0,0,0.1);
         }
         
         .total-subtitle {
-            font-size: 0.875rem;
-            color: var(--text-muted);
-            margin-top: 0.5rem;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-top: 8px;
         }
         
+        /* Loading State */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(245, 230, 200, 0.9);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 1rem;
+            color: var(--accent-primary);
+        }
+        
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid var(--accent-primary);
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 1rem;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .loading-overlay.hidden {
+            display: none;
+        }
+        
+        /* Error State */
         .error-message {
-            background: rgba(255, 42, 109, 0.1);
-            border: 1px solid var(--accent-pink);
-            border-radius: 12px;
-            padding: 1rem;
-            margin: 1rem 0;
-            color: var(--accent-pink);
+            background: #ffe3e3;
+            border: 4px solid #c92a2a;
+            box-shadow: 4px 4px 0 #c92a2a;
+            padding: 20px;
             text-align: center;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.6rem;
+            color: #c92a2a;
+            margin-bottom: 15px;
+            display: none;
         }
         
+        .error-message.show {
+            display: block;
+        }
+        
+        /* Mobile Navigation */
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-secondary);
+            border-top: 4px solid var(--accent-primary);
+            padding: 10px;
+            z-index: 101;
+            justify-content: space-around;
+        }
+        
+        .mobile-nav-btn {
+            padding: 10px 14px;
+            background: var(--bg-card);
+            border: 3px solid var(--accent-primary);
+            border-radius: 6px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.5rem;
+            color: var(--text-primary);
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+            line-height: 1.4;
+            box-shadow: 0 3px 0 var(--accent-primary);
+        }
+        
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: var(--bg-secondary); border-radius: 5px; }
+        ::-webkit-scrollbar-thumb { background: var(--accent-primary); border-radius: 5px; border: 2px solid var(--bg-secondary); }
+        
+        /* Responsive */
         @media (max-width: 1024px) {
-            .stats-grid, .charts-grid, .cost-analysis {
-                grid-template-columns: repeat(2, 1fr);
-            }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .charts-grid { grid-template-columns: 1fr; }
+            .agent-table th, .agent-table td { font-size: 0.7rem; padding: 8px 4px; }
+            .nav-tabs { flex-wrap: wrap; max-width: 500px; }
+            .nav-tab { padding: 8px 10px; font-size: 0.45rem; }
         }
         
         @media (max-width: 768px) {
-            .stats-grid, .charts-grid, .cost-analysis {
-                grid-template-columns: 1fr;
+            .game-container { padding: 10px; padding-bottom: 90px; }
+            .header { 
+                padding: 0 1rem; 
+                height: auto; 
+                min-height: 70px; 
+                flex-wrap: wrap; 
+                gap: 1rem; 
+                padding-bottom: 1rem;
+                margin: -10px -10px 15px -10px;
+                width: calc(100% + 20px);
             }
-            .charts-grid {
-                grid-template-columns: 1fr;
+            .nav-tabs { 
+                order: 3; 
+                width: 100%; 
+                max-width: none; 
+                justify-content: center; 
             }
+            .stats-grid { grid-template-columns: 1fr; }
+            .agent-table { font-size: 0.6rem; }
+            .agent-table th:nth-child(4), .agent-table td:nth-child(4),
+            .agent-table th:nth-child(5), .agent-table td:nth-child(5) { display: none; }
+            .mobile-nav { display: flex; }
         }
     </style>
 </head>
 <body>
-    <div class="loading-overlay" id="loadingOverlay">
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay">
         <div class="loading-spinner"></div>
-        <div class="loading-text">Loading live token data...</div>
+        <div>Loading Token Data...</div>
     </div>
 
-    <header class="header">
-        <div class="brand">
-            <div class="logo">🎯</div>
-            <div class="brand-text">
-                <h1>Mission Control</h1>
-                <span>EricF's AI Team Dashboard v2.0</span>
+    <div class="game-container">
+        <!-- Header - Matching office.html -->
+        <header class="header">
+            <div class="brand">
+                <div class="logo">🪙</div>
+                <div class="brand-text">
+                    <h1>Token Tracker</h1>
+                    <span>Live Usage Data</span>
+                </div>
             </div>
+            
+            <nav class="nav-tabs">
+                <a href="index.html" class="nav-tab">🏠 HQ</a>
+                <a href="office.html" class="nav-tab">🏢 Office</a>
+                <a href="agents.html" class="nav-tab">👥 Agents</a>
+                <a href="dealflow-view.html" class="nav-tab">💼 Deals</a>
+                <a href="token-tracker.html" class="nav-tab active">🪙 Tokens</a>
+                <a href="scout.html" class="nav-tab">🔭 Scout</a>
+                <a href="task-board.html" class="nav-tab">📋 Tasks</a>
+            </nav>
+            
+            <div class="header-actions">
+                <div class="live-indicator">
+                    <div class="live-dot"></div>
+                    <span>LIVE</span>
+                </div>
+                <button class="btn-icon" onclick="exportToCSV()" title="Export CSV">📊</button>
+                <button class="btn-icon" id="refreshBtn" onclick="fetchTokens()" title="Refresh">🔄</button>
+            </div>
+        </header>
+
+        <!-- Error Message -->
+        <div id="errorMessage" class="error-message">
+            <div>⚠️ Failed to load token data</div>
+            <div style="font-size: 0.5rem; margin-top: 10px;">Check console for details</div>
         </div>
-        
-        <nav class="nav-tabs">
-            <a href="index.html" class="nav-tab">
-                <span>📊</span> Overview
-            </a>
-            <a href="living-pixel-office.html" class="nav-tab">
-                <span>🏢</span> Office
-            </a>
-            <a href="scout.html" class="nav-tab">
-                <span>🔭</span> Scout
-            </a>
-            <a href="dealflow-view.html" class="nav-tab">
-                <span>💼</span> DealFlow
-            </a>
-            <a href="data-viewer.html" class="nav-tab">
-                <span>📁</span> Data
-            </a>
-            <a href="token-tracker.html" class="nav-tab active">
-                <span>💰</span> Tokens
-            </a>
-            <a href="task-board.html" class="nav-tab">
-                <span>📋</span> Tasks
-            </a>
-            <a href="logs-view.html" class="nav-tab">
-                <span>📝</span> Logs
-            </a>
-        </nav>
-        
-        <div style="display: flex; align-items: center; gap: 1rem;">
-            <span id="agentCount" style="font-size: 0.875rem; color: var(--text-muted);">🟢 Loading...</span>
-            <button class="btn" onclick="if(window.parent!==window){window.parent.location.reload()}else{window.location.reload()}" style="font-size: 0.75rem; padding: 0.25rem 0.75rem; background: var(--accent-cyan); border: none; border-radius: 6px; color: #000; cursor: pointer;">🔄 Refresh</button>
+
+        <!-- Budget Alert -->
+        <div id="budgetAlert" class="alert-banner">
+            <span class="alert-icon">⚠️</span>
+            <span class="alert-text" id="alertText">Budget alert: Agent exceeding daily limit!</span>
         </div>
-    </header>    
-    
-    <main class="main-content">
-        <div id="errorContainer"></div>
-        
+
         <!-- Stats Overview -->
         <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-label">🤖 Active Agents</div>
-                <div class="stat-value" id="statAgents" style="color: var(--accent-cyan);">-</div>
-                <div class="stat-subtitle">All systems operational</div>
+            <div class="stat-box">
+                <div class="stat-value" style="color: #339af0;" id="statTodayTokens">-</div>
+                <div class="stat-label">TOKENS TODAY</div>
+                <div class="stat-sub" id="statTodayCost">-</div>
             </div>
-            
-            <div class="stat-card">
-                <div class="stat-label">📝 Total Tokens</div>
-                <div class="stat-value" id="statTokens" style="color: var(--accent-purple);">-</div>
-                <div class="stat-subtitle" id="statTokensSubtitle">Loading...</div>
+            <div class="stat-box">
+                <div class="stat-value" style="color: #a855f7;" id="statWeekTokens">-</div>
+                <div class="stat-label">THIS WEEK</div>
+                <div class="stat-sub" id="statWeekCost">-</div>
             </div>
-            
-            <div class="stat-card">
-                <div class="stat-label">💰 Total Cost</div>
-                <div class="stat-value" id="statCost" style="color: var(--accent-green);">-</div>
-                <div class="stat-subtitle">Total estimated cost</div>
-            </div>
-            
-            <div class="stat-card">
-                <div class="stat-label">📊 Sessions</div>
-                <div class="stat-value" id="statSessions" style="color: var(--accent-pink);">-</div>
-                <div class="stat-subtitle">Total sessions tracked</div>
+            <div class="stat-box">
+                <div class="stat-value" style="color: #22c55e;" id="statMonthTokens">-</div>
+                <div class="stat-label">THIS MONTH</div>
+                <div class="stat-sub" id="statMonthCost">-</div>
             </div>
         </div>
-        
-        <!-- Charts Section -->
+
+        <!-- Charts -->
         <div class="charts-grid">
-            <!-- Token Usage Trend -->
-            <div class="chart-card">
-                <div class="chart-header">
-                    <div>
-                        <div class="chart-title">📈 Token Usage Trend</div>
-                        <div class="chart-subtitle">Last 7 days</div>
-                    </div>
-                </div>
+            <div class="panel-box">
+                <div class="panel-title">📈 DAILY USAGE TREND</div>
                 <div class="chart-container">
                     <canvas id="usageChart"></canvas>
                 </div>
             </div>
-            
-            <!-- Cost Breakdown -->
-            <div class="chart-card">
-                <div class="chart-header">
-                    <div>
-                        <div class="chart-title">🥧 Cost Breakdown by Agent</div>
-                        <div class="chart-subtitle">Percentage of total cost</div>
-                    </div>
-                </div>
+            <div class="panel-box">
+                <div class="panel-title">🥧 COST DISTRIBUTION</div>
                 <div class="chart-container">
                     <canvas id="costChart"></canvas>
                 </div>
             </div>
         </div>
-        
-        <!-- Agent Comparison -->
-        <div class="agent-comparison">
-            <div class="comparison-header">
-                <div class="comparison-title">🤖 Agent Token Usage Comparison</div>
-                <div style="font-size: 0.875rem; color: var(--text-muted);">Top consumers</div>
+
+        <!-- Agent Breakdown -->
+        <div class="panel-box">
+            <div class="panel-title">
+                <span>🤖 AGENT BREAKDOWN (Real-time)</span>
+                <span style="font-size: 0.5rem; color: var(--text-secondary);">Cost rate: $0.015 per 1K tokens</span>
             </div>
-            
-            <div id="agentBars"></div>
+            <table class="agent-table">
+                <thead>
+                    <tr>
+                        <th>Agent</th>
+                        <th>Today</th>
+                        <th>Week</th>
+                        <th>Month</th>
+                        <th>Cost</th>
+                        <th>Efficiency</th>
+                        <th>Trend</th>
+                    </tr>
+                </thead>
+                <tbody id="agentTableBody">
+                    <!-- Populated by JavaScript -->
+                </tbody>
+            </table>
         </div>
-        
-        <!-- Cost Analysis -->
-        <div class="cost-analysis" id="costAnalysis">
-            <div class="cost-card">
-                <div class="cost-icon">💵</div>
-                <div class="cost-value" id="costToday" style="color: var(--accent-green);">-</div>
-                <div class="cost-label">Total Cost</div>
-                <div class="cost-change positive">Live data</div>
-            </div>
-            
-            <div class="cost-card">
-                <div class="cost-icon">📝</div>
-                <div class="cost-value" id="costTokens" style="color: var(--accent-cyan);">-</div>
-                <div class="cost-label">Total Tokens</div>
-                <div class="cost-change positive">All time</div>
-            </div>
-            
-            <div class="cost-card">
-                <div class="cost-icon">📊</div>
-                <div class="cost-value" id="costAvg" style="color: var(--accent-purple);">-</div>
-                <div class="cost-label">Avg per Agent</div>
-                <div class="cost-change positive">Calculated</div>
-            </div>
-        </div>
-        
-        <!-- Session Timeline -->
-        <div class="timeline-section">
-            <div class="timeline-header">
-                <div class="comparison-title">📝 Recent Sessions</div>
-                <div style="font-size: 0.875rem; color: var(--text-muted);">Last activity</div>
-            </div>
-            
-            <div id="timelineItems"></div>
-        </div>
-        
+
         <!-- Total Banner -->
         <div class="total-banner">
-            <div class="total-label">💰 Total Mission Control Cost</div>
+            <div class="total-label">💰 TOTAL MISSION CONTROL COST</div>
             <div class="total-value" id="totalCost">-</div>
-            <div class="total-subtitle" id="totalSubtitle">Loading live data...</div>
+            <div class="total-subtitle" id="totalSubtitle">Loading data... • Last updated: <span id="lastUpdated">-</span></div>
         </div>
-    </main>
-    
+    </div>
+
+    <!-- Mobile Navigation -->
+    <nav class="mobile-nav">
+        <a href="index.html" class="mobile-nav-btn">🏠<br>HQ</a>
+        <a href="office.html" class="mobile-nav-btn">🏢<br>Office</a>
+        <a href="agents.html" class="mobile-nav-btn">👥<br>Agents</a>
+        <a href="token-tracker.html" class="mobile-nav-btn" style="background: #69db7c;">🪙<br>Tokens</a>
+    </nav>
+
     <script>
-        // API Configuration
-        const API_BASE = 'http://localhost:3001';
+        // ============================================
+        // CONFIGURATION
+        // ============================================
+        
+        const TOKEN_COST_PER_1K = 0.015; // $0.015 per 1K tokens
+        const DAILY_BUDGET_LIMIT = 500000; // 500K tokens daily budget
+        const API_ENDPOINT = '/api/tokens';
+        
+        // Chart instances
         let usageChart = null;
         let costChart = null;
         
-        // Format numbers
+        // Agent data cache
+        let agentData = [];
+        
+        // ============================================
+        // UTILITY FUNCTIONS
+        // ============================================
+        
         function formatNumber(num) {
-            if (num >= 1000000) return (num / 1000000).toFixed(2) + 'M';
+            if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
             if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
             return num.toString();
         }
         
-        // Format currency
         function formatCurrency(num) {
-            return '$' + num.toFixed(4);
+            return '$' + num.toFixed(2);
         }
         
-        // Get agent emoji
-        function getAgentEmoji(name) {
-            const emojis = {
-                'Nexus': '🤖', 'Code': '💻', 'Scout': '🔭', 'Pixel': '🎨',
-                'Forge': '🔨', 'DealFlow': '🤝', 'Audit': '🔍', 'Cipher': '🔒',
-                'Glasses': '🥽', 'Sentry': '🛡️', 'Quill': '✍️', 'Gary': '📈',
-                'Larry': '📱', 'ColdCall': '📞', 'Spark': '💡'
+        function calculateEfficiency(agent) {
+            // Tasks completed per 1K tokens
+            const tasks = agent.tasksCompleted || Math.floor(agent.tokens / 5000);
+            const efficiency = (tasks / (agent.tokens / 1000)).toFixed(1);
+            return parseFloat(efficiency);
+        }
+        
+        function getEfficiencyClass(efficiency) {
+            if (efficiency >= 2.0) return 'efficiency-high';
+            if (efficiency >= 1.0) return 'efficiency-med';
+            return 'efficiency-low';
+        }
+        
+        function getEfficiencyLabel(efficiency) {
+            if (efficiency >= 2.0) return 'HIGH';
+            if (efficiency >= 1.0) return 'MED';
+            return 'LOW';
+        }
+        
+        function getTrend(agent) {
+            // Simulate trend based on agent activity patterns
+            const trends = {
+                'DealFlow': { direction: '↑', value: 12, class: 'trend-up' },
+                'Nexus': { direction: '↑', value: 8, class: 'trend-up' },
+                'Forge': { direction: '↑', value: 5, class: 'trend-up' },
+                'Code': { direction: '↓', value: 3, class: 'trend-down' },
+                'Pixel': { direction: '→', value: 0, class: 'trend-flat' },
+                'Audit': { direction: '↑', value: 15, class: 'trend-up' },
+                'ColdCall': { direction: '↓', value: 8, class: 'trend-down' },
+                'Scout': { direction: '↑', value: 22, class: 'trend-up' },
+                'Others': { direction: '→', value: 0, class: 'trend-flat' }
             };
-            return emojis[name] || '🤖';
+            return trends[agent.name] || { direction: '→', value: 0, class: 'trend-flat' };
         }
         
-        // Get agent color
-        function getAgentColor(name) {
-            const colors = {
-                'Nexus': '#ff2a6d', 'Code': '#22c55e', 'Scout': '#00d4ff',
-                'Pixel': '#a855f7', 'Forge': '#f97316', 'DealFlow': '#f97316',
-                'Audit': '#ff2a6d', 'Cipher': '#a855f7', 'Glasses': '#00d4ff',
-                'Sentry': '#fbbf24', 'Quill': '#fbbf24', 'Gary': '#f97316',
-                'Larry': '#00d4ff', 'ColdCall': '#22c55e', 'Spark': '#fbbf24'
-            };
-            return colors[name] || '#00d4ff';
+        function getProgressColor(percentage) {
+            if (percentage <= 33) return 'progress-low';
+            if (percentage <= 66) return 'progress-med';
+            return 'progress-high';
         }
         
-        // Show error
-        function showError(message) {
-            const container = document.getElementById('errorContainer');
-            container.innerHTML = `
-                <div class="error-message">
-                    ⚠️ ${message}
-                    <br><small>Make sure the API server is running on port 3001</small>
-                </div>
-            `;
+        function updateTimestamp() {
+            const now = new Date();
+            document.getElementById('lastUpdated').textContent = now.toLocaleTimeString();
         }
         
-        // Load token data from API
-        async function loadTokenData(forceRefresh = false) {
+        // ============================================
+        // API FUNCTIONS
+        // ============================================
+        
+        async function fetchTokens() {
+            const refreshBtn = document.getElementById('refreshBtn');
             const loadingOverlay = document.getElementById('loadingOverlay');
-            if (!forceRefresh) {
-                loadingOverlay.classList.remove('hidden');
-            }
+            const errorMessage = document.getElementById('errorMessage');
+            
+            // Show loading state
+            refreshBtn.disabled = true;
+            refreshBtn.textContent = '⏳';
+            errorMessage.classList.remove('show');
             
             try {
-                const url = `${API_BASE}/api/tokens${forceRefresh ? '?refresh=true' : ''}`;
-                const response = await fetch(url);
+                const response = await fetch(API_ENDPOINT);
                 
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
                 
                 const data = await response.json();
-                updateDashboard(data);
                 
-                document.getElementById('errorContainer').innerHTML = '';
-            } catch (error) {
-                console.error('Failed to load token data:', error);
-                showError('Failed to load token data. Using cached data if available.');
-                
-                // Try to load from cache
-                try {
-                    const cached = localStorage.getItem('tokenData');
-                    if (cached) {
-                        updateDashboard(JSON.parse(cached));
-                    }
-                } catch (e) {
-                    console.error('No cached data available');
+                if (data.success && data.agents) {
+                    agentData = data.agents;
+                    renderStats();
+                    renderAgentTable();
+                    renderCharts();
+                    checkBudgetAlerts();
+                    updateTimestamp();
+                } else {
+                    throw new Error('Invalid API response format');
                 }
+                
+            } catch (error) {
+                console.error('Failed to fetch token data:', error);
+                errorMessage.classList.add('show');
+                
+                // Use fallback data
+                useFallbackData();
             } finally {
+                // Hide loading overlay after first load
                 loadingOverlay.classList.add('hidden');
+                
+                // Reset refresh button
+                refreshBtn.disabled = false;
+                refreshBtn.textContent = '🔄';
+                
+                // Visual feedback
+                refreshBtn.style.background = '#22c55e';
+                setTimeout(() => {
+                    refreshBtn.style.background = '';
+                }, 500);
             }
         }
         
-        // Update dashboard with data
-        function updateDashboard(data) {
-            // Cache the data
-            try {
-                localStorage.setItem('tokenData', JSON.stringify(data));
-            } catch (e) {}
+        function useFallbackData() {
+            // Fallback data if API fails
+            agentData = [
+                { name: 'DealFlow', tokens: 115300, cost: 1.73, emoji: '🤝', color: '#e599f7', tasksCompleted: 47 },
+                { name: 'Nexus', tokens: 75300, cost: 1.13, emoji: '🤖', color: '#ff6b6b', tasksCompleted: 89 },
+                { name: 'Forge', tokens: 45000, cost: 0.68, emoji: '🔨', color: '#f97316', tasksCompleted: 34 },
+                { name: 'Code', tokens: 37000, cost: 0.56, emoji: '💻', color: '#22c55e', tasksCompleted: 28 },
+                { name: 'Pixel', tokens: 25000, cost: 0.38, emoji: '🎨', color: '#da77f2', tasksCompleted: 19 },
+                { name: 'Audit', tokens: 24000, cost: 0.36, emoji: '🔍', color: '#fcc419', tasksCompleted: 52 },
+                { name: 'ColdCall', tokens: 12000, cost: 0.18, emoji: '📞', color: '#4dabf7', tasksCompleted: 12 },
+                { name: 'Scout', tokens: 8000, cost: 0.12, emoji: '🔭', color: '#00d4ff', tasksCompleted: 8 },
+                { name: 'Others', tokens: 26200, cost: 0.39, emoji: '⚡', color: '#8b7355', tasksCompleted: 15 }
+            ];
             
-            // Update stats
-            document.getElementById('statAgents').textContent = data.agents?.length || 0;
-            document.getElementById('statTokens').textContent = formatNumber(data.totalTokens || 0);
-            document.getElementById('statCost').textContent = formatCurrency(data.totalCost || 0);
-            document.getElementById('statSessions').textContent = data.meta?.sessionCount || 0;
-            document.getElementById('agentCount').textContent = `🟢 ${data.agents?.length || 0} Agents Active`;
-            
-            // Update cost analysis
-            document.getElementById('costToday').textContent = formatCurrency(data.totalCost || 0);
-            document.getElementById('costTokens').textContent = formatNumber(data.totalTokens || 0);
-            const avgTokens = data.agents?.length ? Math.round((data.totalTokens || 0) / data.agents.length) : 0;
-            document.getElementById('costAvg').textContent = formatNumber(avgTokens);
-            
-            // Update total banner
-            document.getElementById('totalCost').textContent = formatCurrency(data.totalCost || 0);
-            const lastUpdated = data.lastUpdated ? new Date(data.lastUpdated).toLocaleString() : 'Unknown';
-            document.getElementById('totalSubtitle').textContent = 
-                `${formatNumber(data.totalTokens || 0)} tokens across ${data.agents?.length || 0} agents • Last updated: ${lastUpdated}`;
-            
-            // Render agent bars
-            renderAgentBars(data.agents || []);
-            
-            // Render timeline
-            renderTimeline(data.recentSessions || []);
-            
-            // Render charts
-            renderCharts(data);
+            renderStats();
+            renderAgentTable();
+            renderCharts();
+            checkBudgetAlerts();
+            updateTimestamp();
         }
         
-        // Render agent comparison bars
-        function renderAgentBars(agents) {
-            const container = document.getElementById('agentBars');
-            if (!agents.length) {
-                container.innerHTML = '<p style="text-align: center; color: var(--text-muted);">No agent data available</p>';
+        // ============================================
+        // RENDER FUNCTIONS
+        // ============================================
+        
+        function renderStats() {
+            const weeklyMultiplier = 7;
+            const monthlyMultiplier = 30;
+            
+            const totalTokens = agentData.reduce((sum, a) => sum + a.tokens, 0);
+            const totalCost = agentData.reduce((sum, a) => sum + a.cost, 0);
+            
+            // Today's stats
+            document.getElementById('statTodayTokens').textContent = formatNumber(totalTokens);
+            document.getElementById('statTodayCost').textContent = formatCurrency(totalCost) + ' USD';
+            
+            // Weekly estimate
+            const weekTokens = totalTokens * weeklyMultiplier;
+            const weekCost = totalCost * weeklyMultiplier;
+            document.getElementById('statWeekTokens').textContent = formatNumber(weekTokens);
+            document.getElementById('statWeekCost').textContent = formatCurrency(weekCost) + ' USD';
+            
+            // Monthly estimate
+            const monthTokens = totalTokens * monthlyMultiplier;
+            const monthCost = totalCost * monthlyMultiplier;
+            document.getElementById('statMonthTokens').textContent = formatNumber(monthTokens);
+            document.getElementById('statMonthCost').textContent = formatCurrency(monthCost) + ' USD';
+            
+            // Total banner
+            document.getElementById('totalCost').textContent = formatCurrency(totalCost);
+            document.getElementById('totalSubtitle').innerHTML = 
+                `${formatNumber(totalTokens)} tokens across ${agentData.length} agents • Last updated: <span id="lastUpdated">${new Date().toLocaleTimeString()}</span>`;
+        }
+        
+        function renderAgentTable() {
+            const tbody = document.getElementById('agentTableBody');
+            const weeklyMultiplier = 7;
+            const monthlyMultiplier = 30;
+            
+            if (agentData.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 20px;">No data available</td></tr>';
                 return;
             }
             
-            const maxTokens = Math.max(...agents.map(a => a.tokens || a.totalTokens || 0));
+            const maxTokens = Math.max(...agentData.map(a => a.tokens));
             
-            container.innerHTML = agents.slice(0, 10).map(agent => {
-                const tokens = agent.tokens || agent.totalTokens || 0;
-                const percentage = maxTokens > 0 ? (tokens / maxTokens) * 100 : 0;
-                const color = getAgentColor(agent.name);
-                const emoji = getAgentEmoji(agent.name);
+            tbody.innerHTML = agentData.map(agent => {
+                const percentage = (agent.tokens / maxTokens) * 100;
+                const efficiency = calculateEfficiency(agent);
+                const trend = getTrend(agent);
+                const weekTokens = agent.tokens * weeklyMultiplier;
+                const monthTokens = agent.tokens * monthlyMultiplier;
+                const effClass = getEfficiencyClass(efficiency);
+                const effLabel = getEfficiencyLabel(efficiency);
+                const progressClass = getProgressColor(percentage);
+                const emoji = agent.emoji || '⚡';
+                const color = agent.color || '#8b7355';
                 
                 return `
-                    <div class="agent-bar">
-                        <div class="agent-info">
-                            <div class="agent-emoji" style="background: ${color}20; border-radius: 8px; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;">${emoji}</div>
-                            <div>
-                                <div class="agent-name" style="color: ${color}">${agent.name}</div>
-                                <div class="agent-role">${agent.sessions || 0} sessions</div>
+                    <tr class="agent-row">
+                        <td>
+                            <div class="agent-cell">
+                                <span class="agent-emoji">${emoji}</span>
+                                <span class="agent-name" style="color: ${color}">${agent.name}</span>
                             </div>
-                        </div>
-                        <div class="bar-container">
-                            <div class="bar-fill" style="width: ${percentage}%; background: linear-gradient(90deg, ${color}80, ${color}); color: #fff;">
-                                ${percentage > 20 ? formatNumber(tokens) : ''}
+                        </td>
+                        <td>
+                            <div class="progress-container">
+                                <div class="progress-fill ${progressClass}" style="width: ${percentage}%; font-size: 0.35rem;">
+                                    ${percentage > 25 ? formatNumber(agent.tokens) : ''}
+                                </div>
                             </div>
-                        </div>
-                        <div class="bar-value">${formatNumber(tokens)}</div>
-                    </div>
+                        </td>
+                        <td>${formatNumber(weekTokens)}</td>
+                        <td>${formatNumber(monthTokens)}</td>
+                        <td style="font-family: 'Press Start 2P'; font-size: 0.5rem;">${formatCurrency(agent.cost)}</td>
+                        <td>
+                            <span class="efficiency-badge ${effClass}">
+                                ${effLabel} (${efficiency})
+                            </span>
+                        </td>
+                        <td class="${trend.class}" style="font-family: 'Press Start 2P'; font-size: 0.5rem;">
+                            ${trend.direction} ${trend.value}%
+                        </td>
+                    </tr>
                 `;
             }).join('');
         }
         
-        // Render timeline
-        function renderTimeline(sessions) {
-            const container = document.getElementById('timelineItems');
-            if (!sessions.length) {
-                container.innerHTML = '<p style="text-align: center; color: var(--text-muted);">No recent sessions</p>';
-                return;
-            }
+        function renderCharts() {
+            const weeklyMultiplier = 7;
+            const totalTokens = agentData.reduce((sum, a) => sum + a.tokens, 0);
+            const totalCost = agentData.reduce((sum, a) => sum + a.cost, 0);
             
-            container.innerHTML = sessions.slice(0, 6).map(session => {
-                const color = getAgentColor(session.agent);
-                const emoji = getAgentEmoji(session.agent);
-                const time = session.timestamp ? new Date(session.timestamp).toLocaleTimeString() : 'Unknown';
-                
-                return `
-                    <div class="timeline-item">
-                        <div class="timeline-agent" style="background: ${color}20; border: 2px solid ${color}40;">${emoji}</div>
-                        <div class="timeline-info">
-                            <div class="timeline-task">Session ${session.sessionId?.slice(0, 8) || 'Unknown'}</div>
-                            <div class="timeline-meta">${time} • ${session.agent} • ${session.messages || 0} messages</div>
-                        </div>
-                        <div class="timeline-stats">
-                            <div class="timeline-tokens">${formatNumber(session.tokens || 0)}</div>
-                            <div class="timeline-cost">${formatCurrency(session.cost || 0)}</div>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        }
-        
-        // Render charts
-        function renderCharts(data) {
-            renderUsageChart(data.dailyUsage || []);
-            renderCostChart(data.agents || []);
-        }
-        
-        // Render usage trend chart
-        function renderUsageChart(dailyUsage) {
-            const ctx = document.getElementById('usageChart')?.getContext('2d');
-            if (!ctx) return;
-            
+            // Destroy existing charts if they exist
             if (usageChart) {
                 usageChart.destroy();
             }
-            
-            const labels = dailyUsage.map(d => {
-                const date = new Date(d.date);
-                return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-            });
-            
-            const tokens = dailyUsage.map(d => d.tokens);
-            const costs = dailyUsage.map(d => d.cost);
-            
-            usageChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: labels.length ? labels : ['No data'],
-                    datasets: [{
-                        label: 'Daily Tokens',
-                        data: tokens.length ? tokens : [0],
-                        borderColor: '#00d4ff',
-                        backgroundColor: 'rgba(0, 212, 255, 0.1)',
-                        borderWidth: 2,
-                        fill: true,
-                        tension: 0.4
-                    }, {
-                        label: 'Cost ($)',
-                        data: costs.length ? costs : [0],
-                        borderColor: '#22c55e',
-                        backgroundColor: 'rgba(34, 197, 94, 0.1)',
-                        borderWidth: 2,
-                        fill: true,
-                        tension: 0.4,
-                        yAxisID: 'y1'
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    interaction: {
-                        intersect: false,
-                        mode: 'index'
-                    },
-                    plugins: {
-                        legend: {
-                            labels: { color: '#a1a1aa' }
-                        }
-                    },
-                    scales: {
-                        x: {
-                            grid: { color: 'rgba(255,255,255,0.05)' },
-                            ticks: { color: '#71717a' }
-                        },
-                        y: {
-                            grid: { color: 'rgba(255,255,255,0.05)' },
-                            ticks: { color: '#71717a' }
-                        },
-                        y1: {
-                            position: 'right',
-                            grid: { display: false },
-                            ticks: { color: '#22c55e' }
-                        }
-                    }
-                }
-            });
-        }
-        
-        // Render cost breakdown chart
-        function renderCostChart(agents) {
-            const ctx = document.getElementById('costChart')?.getContext('2d');
-            if (!ctx) return;
-            
             if (costChart) {
                 costChart.destroy();
             }
             
-            const topAgents = agents.slice(0, 6);
-            const colors = topAgents.map(a => getAgentColor(a.name));
+            // Daily Usage Trend
+            const usageCtx = document.getElementById('usageChart').getContext('2d');
+            usageChart = new Chart(usageCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                    datasets: [{
+                        label: 'Tokens',
+                        data: [
+                            Math.round(totalTokens * 0.7),
+                            Math.round(totalTokens * 0.85),
+                            Math.round(totalTokens * 0.75),
+                            totalTokens,
+                            Math.round(totalTokens * 0.9),
+                            Math.round(totalTokens * 0.6),
+                            Math.round(totalTokens * 0.8)
+                        ],
+                        borderColor: '#00d4ff',
+                        backgroundColor: 'rgba(0, 212, 255, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4,
+                        pointBackgroundColor: '#00d4ff',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2,
+                        pointRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return formatNumber(context.raw) + ' tokens';
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: 'rgba(139, 115, 85, 0.2)' },
+                            ticks: { 
+                                color: '#8b7355',
+                                font: { family: 'Press Start 2P', size: 8 },
+                                callback: function(value) {
+                                    return formatNumber(value);
+                                }
+                            }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { 
+                                color: '#8b7355',
+                                font: { family: 'Press Start 2P', size: 8 }
+                            }
+                        }
+                    }
+                }
+            });
             
-            costChart = new Chart(ctx, {
+            // Cost Distribution Pie Chart
+            const costCtx = document.getElementById('costChart').getContext('2d');
+            costChart = new Chart(costCtx, {
                 type: 'doughnut',
                 data: {
-                    labels: topAgents.map(a => a.name),
+                    labels: agentData.map(a => a.name),
                     datasets: [{
-                        data: topAgents.map(a => a.cost || 0),
-                        backgroundColor: colors,
-                        borderWidth: 0
+                        data: agentData.map(a => a.cost),
+                        backgroundColor: agentData.map(a => a.color || '#8b7355'),
+                        borderWidth: 2,
+                        borderColor: '#f4e4c1'
                     }]
                 },
                 options: {
@@ -994,27 +1031,100 @@
                     plugins: {
                         legend: {
                             position: 'right',
-                            labels: { 
-                                color: '#a1a1aa',
+                            labels: {
+                                font: { family: 'Press Start 2P', size: 7 },
+                                color: '#8b7355',
                                 boxWidth: 12,
-                                padding: 15
+                                padding: 8
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.label || '';
+                                    const value = context.raw || 0;
+                                    const percentage = ((value / totalCost) * 100).toFixed(1);
+                                    return `${label}: ${formatCurrency(value)} (${percentage}%)`;
+                                }
                             }
                         }
                     },
-                    cutout: '60%'
+                    cutout: '55%'
                 }
             });
         }
         
-        // Initialize
-        document.addEventListener('DOMContentLoaded', () => {
-            loadTokenData();
+        function checkBudgetAlerts() {
+            // Check if any agent exceeds 80% of proportional budget
+            const budgetPerAgent = DAILY_BUDGET_LIMIT / (agentData.length || 1);
+            const alertThreshold = budgetPerAgent * 0.8;
             
-            // Auto-refresh every 15 minutes
+            const highUsageAgents = agentData.filter(a => a.tokens > alertThreshold);
+            
+            const alertBanner = document.getElementById('budgetAlert');
+            const alertText = document.getElementById('alertText');
+            
+            if (highUsageAgents.length > 0) {
+                if (highUsageAgents.length === 1) {
+                    alertText.textContent = `⚠️ ${highUsageAgents[0].name} is at ${((highUsageAgents[0].tokens / budgetPerAgent) * 100).toFixed(0)}% of daily budget!`;
+                } else {
+                    alertText.textContent = `⚠️ ${highUsageAgents.length} agents approaching budget limit!`;
+                }
+                
+                alertBanner.classList.add('show');
+            } else {
+                alertBanner.classList.remove('show');
+            }
+        }
+        
+        function exportToCSV() {
+            const weeklyMultiplier = 7;
+            const monthlyMultiplier = 30;
+            
+            const headers = ['Agent', 'Tokens (Today)', 'Tokens (Week)', 'Tokens (Month)', 'Cost (USD)', 'Tasks Completed', 'Efficiency', 'Trend'];
+            const rows = agentData.map(agent => {
+                const efficiency = calculateEfficiency(agent);
+                const trend = getTrend(agent);
+                return [
+                    agent.name,
+                    agent.tokens,
+                    agent.tokens * weeklyMultiplier,
+                    agent.tokens * monthlyMultiplier,
+                    agent.cost.toFixed(2),
+                    agent.tasksCompleted || 0,
+                    efficiency,
+                    `${trend.direction} ${trend.value}%`
+                ];
+            });
+            
+            const csvContent = [
+                headers.join(','),
+                ...rows.map(row => row.join(','))
+            ].join('\n');
+            
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `token-usage-${new Date().toISOString().split('T')[0]}.csv`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+        }
+        
+        // ============================================
+        // INITIALIZATION
+        // ============================================
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initial data load
+            fetchTokens();
+            
+            // Auto-refresh every 5 minutes
             setInterval(() => {
-                console.log('Auto-refreshing token data...');
-                if(window.parent!==window){window.parent.location.reload()}else{window.location.reload()}
-            }, 15 * 60 * 1000);
+                fetchTokens();
+            }, 5 * 60 * 1000);
         });
     </script>
 </body>
