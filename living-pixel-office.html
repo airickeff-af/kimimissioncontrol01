@@ -250,6 +250,12 @@
             font-family: 'Inter', sans-serif;
             box-shadow: 0 4px 20px rgba(0,0,0,0.5);
             pointer-events: none;
+            animation: bubblePop 0.3s ease;
+        }
+        
+        @keyframes bubblePop {
+            from { opacity: 0; transform: scale(0.8) translateY(10px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
         }
         
         .speech-bubble::after {
@@ -260,6 +266,24 @@
             border-left: 8px solid transparent;
             border-right: 8px solid transparent;
             border-top: 8px solid var(--accent-cyan);
+        }
+        
+        .speech-bubble.peer-review {
+            border-color: var(--accent-green);
+            background: linear-gradient(135deg, var(--bg-elevated), rgba(34, 197, 94, 0.1));
+        }
+        
+        .speech-bubble.peer-review::after {
+            border-top-color: var(--accent-green);
+        }
+        
+        .speech-bubble.pingpong {
+            border-color: var(--accent-yellow);
+            background: linear-gradient(135deg, var(--bg-elevated), rgba(251, 191, 36, 0.1));
+        }
+        
+        .speech-bubble.pingpong::after {
+            border-top-color: var(--accent-yellow);
         }
         
         /* Sidebar */
@@ -337,6 +361,16 @@
             border-left: 3px solid var(--accent-cyan);
             font-size: 0.875rem;
             animation: slideIn 0.3s ease;
+        }
+        
+        .activity-item.chat {
+            border-left-color: var(--accent-green);
+            background: linear-gradient(90deg, rgba(34, 197, 94, 0.05), transparent);
+        }
+        
+        .activity-item.pingpong {
+            border-left-color: var(--accent-yellow);
+            background: linear-gradient(90deg, rgba(251, 191, 36, 0.05), transparent);
         }
         
         @keyframes slideIn {
@@ -433,6 +467,11 @@
             color: var(--text-muted);
         }
         
+        .status-badge.playing {
+            background: rgba(251, 191, 36, 0.15);
+            color: var(--accent-yellow);
+        }
+        
         /* Meeting Log */
         .meeting-info {
             background: var(--bg-card);
@@ -462,7 +501,7 @@
         /* Stats Bar */
         .stats-bar {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(4, 1fr);
             gap: 12px;
             padding: 1rem;
             background: var(--bg-tertiary);
@@ -487,6 +526,50 @@
             font-size: 0.7rem;
             color: var(--text-muted);
             margin-top: 4px;
+        }
+        
+        /* Historical Minutes */
+        .minutes-history {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .minutes-entry {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .minutes-entry h5 {
+            color: var(--accent-cyan);
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .minutes-entry .minutes-date {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+        }
+        
+        /* Clear data button */
+        .clear-data-btn {
+            padding: 8px 16px;
+            background: rgba(255, 42, 109, 0.2);
+            border: 1px solid var(--accent-pink);
+            border-radius: 6px;
+            color: var(--accent-pink);
+            font-size: 0.75rem;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: all 0.2s;
+        }
+        
+        .clear-data-btn:hover {
+            background: rgba(255, 42, 109, 0.3);
         }
     </style>
 </head>
@@ -560,6 +643,10 @@
                     <div class="stat-value" id="meeting-count">0</div>
                     <div class="stat-label">In Meeting</div>
                 </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="playing-count">0</div>
+                    <div class="stat-label">Playing</div>
+                </div>
             </div>
             
             <div class="tabs">
@@ -604,9 +691,16 @@
             
             <div id="minutes-tab" class="tab-content">
                 <div style="background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
-                    <h4 style="color: var(--accent-cyan); margin-bottom: 0.5rem;">📝 Meeting Minutes</h4>
+                    <h4 style="color: var(--accent-cyan); margin-bottom: 0.5rem;">📝 Latest Meeting Minutes</h4>
                     <div id="meeting-minutes-display" style="font-size: 0.8rem; line-height: 1.5;">
                         <p style="color: var(--text-muted);">No standup completed yet. Start a meeting to generate minutes.</p>
+                    </div>
+                </div>
+                
+                <div style="background: rgba(168, 85, 247, 0.1); border: 1px solid var(--accent-purple); border-radius: 8px; padding: 1rem; margin-bottom: 1rem;">
+                    <h4 style="color: var(--accent-purple); margin-bottom: 0.5rem;">📚 Historical Minutes</h4>
+                    <div id="historical-minutes" class="minutes-history">
+                        <p style="color: var(--text-muted); font-size: 0.8rem;">Past meeting minutes will appear here...</p>
                     </div>
                 </div>
                 
@@ -632,11 +726,534 @@
                         <p style="color: var(--text-muted);">Tasks will appear here after Nexus peer review...</p>
                     </div>
                 </div>
+                
+                <button class="clear-data-btn" onclick="clearAllData()">🗑️ Clear All Saved Data</button>
             </div>
         </div>
     </div>
 
     <script>
+        // ============================================
+        // LOCALSTORAGE PERSISTENCE
+        // ============================================
+        
+        const STORAGE_KEYS = {
+            ACTIVITIES: 'pixelOffice_activities',
+            MEETING_MINUTES: 'pixelOffice_meetingMinutes',
+            AGENT_STATES: 'pixelOffice_agentStates',
+            LAST_VISIT: 'pixelOffice_lastVisit'
+        };
+        
+        // Load saved activities from localStorage
+        function loadSavedActivities() {
+            try {
+                const saved = localStorage.getItem(STORAGE_KEYS.ACTIVITIES);
+                if (saved) {
+                    const activities = JSON.parse(saved);
+                    const feed = document.getElementById('activity-feed');
+                    feed.innerHTML = '';
+                    activities.forEach(activity => {
+                        const item = document.createElement('div');
+                        item.className = activity.className || 'activity-item';
+                        item.innerHTML = `
+                            <span class="activity-time">${activity.time}</span>
+                            <span class="activity-text">${activity.text}</span>
+                        `;
+                        feed.appendChild(item);
+                    });
+                    return activities.length;
+                }
+            } catch (e) {
+                console.log('No saved activities found');
+            }
+            return 0;
+        }
+        
+        // Save activities to localStorage
+        function saveActivities() {
+            try {
+                const feed = document.getElementById('activity-feed');
+                const items = Array.from(feed.children).slice(0, 50); // Keep last 50
+                const activities = items.map(item => ({
+                    time: item.querySelector('.activity-time')?.textContent || '',
+                    text: item.querySelector('.activity-text')?.textContent || '',
+                    className: item.className
+                }));
+                localStorage.setItem(STORAGE_KEYS.ACTIVITIES, JSON.stringify(activities));
+            } catch (e) {
+                console.error('Failed to save activities:', e);
+            }
+        }
+        
+        // Load meeting minutes history
+        function loadMeetingMinutes() {
+            try {
+                const saved = localStorage.getItem(STORAGE_KEYS.MEETING_MINUTES);
+                if (saved) {
+                    return JSON.parse(saved);
+                }
+            } catch (e) {
+                console.log('No saved meeting minutes found');
+            }
+            return [];
+        }
+        
+        // Save meeting minutes
+        function saveMeetingMinutes(minutes) {
+            try {
+                localStorage.setItem(STORAGE_KEYS.MEETING_MINUTES, JSON.stringify(minutes));
+            } catch (e) {
+                console.error('Failed to save meeting minutes:', e);
+            }
+        }
+        
+        // Add meeting minute to history
+        function addMeetingMinute(minuteData) {
+            const minutes = loadMeetingMinutes();
+            minutes.unshift({
+                ...minuteData,
+                id: Date.now()
+            });
+            // Keep only last 20 meetings
+            if (minutes.length > 20) minutes.pop();
+            saveMeetingMinutes(minutes);
+            renderHistoricalMinutes();
+        }
+        
+        // Render historical minutes
+        function renderHistoricalMinutes() {
+            const container = document.getElementById('historical-minutes');
+            const minutes = loadMeetingMinutes();
+            
+            if (minutes.length === 0) {
+                container.innerHTML = '<p style="color: var(--text-muted); font-size: 0.8rem;">Past meeting minutes will appear here...</p>';
+                return;
+            }
+            
+            container.innerHTML = minutes.map(m => `
+                <div class="minutes-entry">
+                    <h5>
+                        <span>🕐 ${m.time}</span>
+                        <span class="minutes-date">${m.date}</span>
+                    </h5>
+                    <div style="font-size: 0.75rem; color: var(--text-secondary);">
+                        ${m.summary}
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // Clear all saved data
+        function clearAllData() {
+            if (confirm('Are you sure you want to clear all saved activities and meeting minutes?')) {
+                Object.values(STORAGE_KEYS).forEach(key => localStorage.removeItem(key));
+                document.getElementById('activity-feed').innerHTML = '';
+                document.getElementById('historical-minutes').innerHTML = '<p style="color: var(--text-muted); font-size: 0.8rem;">Past meeting minutes will appear here...</p>';
+                document.getElementById('meeting-minutes-display').innerHTML = '<p style="color: var(--text-muted);">No standup completed yet. Start a meeting to generate minutes.</p>';
+                logActivity('🗑️ All saved data cleared');
+            }
+        }
+        
+        // ============================================
+        // AGENT-TO-AGENT CONVERSATIONS
+        // ============================================
+        
+        const conversationTopics = {
+            work: [
+                "Hey, can you review my PR?",
+                "The API is looking solid!",
+                "Did you see the new design?",
+                "Need help with this bug?",
+                "Great job on the dashboard!",
+                "Your code is so clean ✨",
+                "Thanks for the feedback!",
+                "Let's pair on this feature",
+                "The tests are passing! 🎉",
+                "Refactoring complete!",
+                "Love the new component!",
+                "Deploy went smoothly"
+            ],
+            peerReview: [
+                "Great job on the dashboard!",
+                "Your UI work is impressive!",
+                "Clean code as always! 👏",
+                "Love the animation you added",
+                "Solid architecture choice",
+                "Thanks for documenting that!",
+                "Your attention to detail 👌",
+                "Excellent error handling!",
+                "This solution is elegant",
+                "You've leveled up! 🚀"
+            ],
+            casual: [
+                "Coffee break soon? ☕",
+                "Did you see that game?",
+                "Weekend plans?",
+                "This weather is crazy!",
+                "New restaurant nearby 🍜",
+                "Check out this meme 😂",
+                "How's your project going?",
+                "Lunch together today?",
+                "Did you hear the news?",
+                "TGIF! 🎉"
+            ],
+            pingpong: [
+                "Ready to lose? 🏓",
+                "My serve!",
+                "Nice shot!",
+                "That was close!",
+                "Rematch!",
+                "I'm on fire! 🔥",
+                "Beginner's luck!",
+                "Game on!",
+                "Point to me!",
+                "What a rally!"
+            ]
+        };
+        
+        // Random agent conversations
+        function triggerRandomConversation() {
+            if (isStandupActive || isPingPongActive) return; // Don't interrupt meetings or games
+            
+            // Pick two random agents who are not in a meeting
+            const availableAgents = agents.filter(a => a.status !== 'meeting' && a.status !== 'playing');
+            if (availableAgents.length < 2) return;
+            
+            const agent1 = availableAgents[Math.floor(Math.random() * availableAgents.length)];
+            let agent2 = availableAgents[Math.floor(Math.random() * availableAgents.length)];
+            while (agent2.id === agent1.id) {
+                agent2 = availableAgents[Math.floor(Math.random() * availableAgents.length)];
+            }
+            
+            // Pick conversation type
+            const types = ['work', 'work', 'peerReview', 'casual']; // Weighted toward work
+            const type = types[Math.floor(Math.random() * types.length)];
+            const topics = conversationTopics[type];
+            const message = topics[Math.floor(Math.random() * topics.length)];
+            
+            // Show conversation
+            showAgentConversation(agent1, agent2, message, type);
+        }
+        
+        function showAgentConversation(agent1, agent2, message, type) {
+            // Position between the two agents
+            const midX = (agent1.x + agent2.x) / 2;
+            const midY = (agent1.y + agent2.y) / 2;
+            const pos = toIso(midX, midY);
+            
+            const bubble = document.createElement('div');
+            bubble.className = `speech-bubble ${type === 'peerReview' ? 'peer-review' : ''}`;
+            bubble.style.left = (pos.x + canvas.parentElement.offsetLeft) + 'px';
+            bubble.style.top = (pos.y + canvas.parentElement.offsetTop - 60) + 'px';
+            bubble.innerHTML = `
+                <strong style="color: ${agent1.color}">${agent1.name}</strong> → 
+                <strong style="color: ${agent2.color}">${agent2.name}</strong><br>
+                "${message}"
+            `;
+            
+            document.body.appendChild(bubble);
+            
+            // Log to activity feed
+            const activityClass = type === 'peerReview' ? 'chat' : '';
+            logActivity(`💬 ${agent1.name} → ${agent2.name}: "${message}"`, activityClass);
+            
+            // Agent2 responds after a delay
+            setTimeout(() => {
+                const responses = type === 'peerReview' 
+                    ? ["Thanks! Appreciate it! 🙏", "You're too kind!", "Team effort! 💪", "Glad you like it!"]
+                    : ["Haha totally! 😄", "I know right!", "Absolutely!", "Couldn't agree more!"];
+                const response = responses[Math.floor(Math.random() * responses.length)];
+                
+                bubble.innerHTML += `<br><br><strong style="color: ${agent2.color}">${agent2.name}</strong>: "${response}"`;
+                
+                setTimeout(() => bubble.remove(), 4000);
+            }, 2000);
+            
+            setTimeout(() => {
+                if (bubble.parentNode) bubble.remove();
+            }, 6000);
+        }
+        
+        // ============================================
+        // PING PONG TABLE & INTERACTIONS
+        // ============================================
+        
+        const pingPongTable = { x: 600, y: 150, width: 80, height: 50 };
+        let isPingPongActive = false;
+        let pingPongPlayers = [];
+        let pingPongBall = { x: 0, y: 0, vx: 0, vy: 0 };
+        let pingPongScore = [0, 0];
+        
+        // Draw ping pong table
+        function drawPingPongTable() {
+            const pos = toIso(pingPongTable.x, pingPongTable.y);
+            const w = pingPongTable.width * 0.7;
+            const h = pingPongTable.height * 0.5;
+            
+            // Table shadow
+            drawShadow(pos.x, pos.y + 15, w/2, h/3, 0.4);
+            
+            // Table top (green)
+            ctx.fillStyle = '#1B5E20';
+            ctx.beginPath();
+            ctx.moveTo(pos.x, pos.y - h/2);
+            ctx.lineTo(pos.x + w/2, pos.y - h/4);
+            ctx.lineTo(pos.x, pos.y);
+            ctx.lineTo(pos.x - w/2, pos.y - h/4);
+            ctx.closePath();
+            ctx.fill();
+            
+            // Table border
+            ctx.strokeStyle = '#4CAF50';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            
+            // Center line
+            ctx.strokeStyle = 'rgba(255,255,255,0.5)';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(pos.x, pos.y - h/4);
+            ctx.lineTo(pos.x, pos.y);
+            ctx.stroke();
+            
+            // Net
+            ctx.strokeStyle = '#fff';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(pos.x - 5, pos.y - h/3);
+            ctx.lineTo(pos.x + 5, pos.y - h/6);
+            ctx.stroke();
+            
+            // Net posts
+            drawPixelRect(pos.x - 7, pos.y - h/3 - 5, 4, 8, '#666');
+            drawPixelRect(pos.x + 3, pos.y - h/6 - 5, 4, 8, '#666');
+            
+            // Label
+            ctx.fillStyle = '#fff';
+            ctx.font = 'bold 9px Inter';
+            ctx.textAlign = 'center';
+            ctx.fillText('🏓 PING PONG', pos.x, pos.y - h/4 + 5);
+            
+            // Draw ball if game is active
+            if (isPingPongActive) {
+                drawPingPongBall();
+            }
+        }
+        
+        function drawPingPongBall() {
+            const pos = toIso(pingPongBall.x, pingPongBall.y);
+            
+            // Ball shadow
+            drawShadow(pos.x, pos.y + 5, 4, 2, 0.3);
+            
+            // Ball
+            ctx.fillStyle = '#FFEB3B';
+            ctx.beginPath();
+            ctx.arc(pos.x, pos.y, 4, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Ball highlight
+            ctx.fillStyle = '#FFF';
+            ctx.beginPath();
+            ctx.arc(pos.x - 1, pos.y - 1, 1.5, 0, Math.PI * 2);
+            ctx.fill();
+        }
+        
+        // Trigger random ping pong game
+        function triggerPingPongGame() {
+            if (isStandupActive || isPingPongActive) return;
+            
+            // Pick two random agents
+            const availableAgents = agents.filter(a => a.status !== 'meeting' && a.status !== 'playing');
+            if (availableAgents.length < 2) return;
+            
+            const player1 = availableAgents[Math.floor(Math.random() * availableAgents.length)];
+            let player2 = availableAgents[Math.floor(Math.random() * availableAgents.length)];
+            while (player2.id === player1.id) {
+                player2 = availableAgents[Math.floor(Math.random() * availableAgents.length)];
+            }
+            
+            startPingPongGame(player1, player2);
+        }
+        
+        function startPingPongGame(player1, player2) {
+            isPingPongActive = true;
+            pingPongPlayers = [player1, player2];
+            pingPongScore = [0, 0];
+            
+            // Set players to playing status
+            player1.status = 'playing';
+            player2.status = 'playing';
+            player1.activity = 'Playing ping pong';
+            player2.activity = 'Playing ping pong';
+            
+            // Move players to table
+            player1.targetX = pingPongTable.x - 60;
+            player1.targetY = pingPongTable.y;
+            player2.targetX = pingPongTable.x + 60;
+            player2.targetY = pingPongTable.y;
+            
+            player1.facing = 1;
+            player2.facing = -1;
+            
+            isWalking[player1.id] = true;
+            isWalking[player2.id] = true;
+            
+            logActivity(`🏓 ${player1.name} and ${player2.name} started a ping pong game!`, 'pingpong');
+            
+            // Animate to table
+            animateAgentToPingPong(player1, 0);
+            animateAgentToPingPong(player2, 100);
+            
+            // Start game after arrival
+            setTimeout(() => {
+                isWalking[player1.id] = false;
+                isWalking[player2.id] = false;
+                startPingPongMatch();
+            }, 2000);
+        }
+        
+        function animateAgentToPingPong(agent, delay) {
+            setTimeout(() => {
+                const startX = agent.x, startY = agent.y;
+                const endX = agent.targetX, endY = agent.targetY;
+                const duration = 1500;
+                const startTime = Date.now();
+                
+                function step() {
+                    const elapsed = Date.now() - startTime;
+                    const progress = Math.min(elapsed / duration, 1);
+                    const ease = 1 - Math.pow(1 - progress, 3);
+                    
+                    agent.x = startX + (endX - startX) * ease;
+                    agent.y = startY + (endY - startY) * ease;
+                    
+                    if (progress < 1) {
+                        requestAnimationFrame(step);
+                    }
+                }
+                step();
+            }, delay);
+        }
+        
+        function startPingPongMatch() {
+            pingPongBall.x = pingPongTable.x;
+            pingPongBall.y = pingPongTable.y;
+            pingPongBall.vx = (Math.random() > 0.5 ? 1 : -1) * 2;
+            pingPongBall.vy = (Math.random() - 0.5) * 2;
+            
+            let rallyCount = 0;
+            const maxRallies = 5 + Math.floor(Math.random() * 10); // 5-15 rallies
+            
+            const gameInterval = setInterval(() => {
+                if (!isPingPongActive) {
+                    clearInterval(gameInterval);
+                    return;
+                }
+                
+                // Move ball
+                pingPongBall.x += pingPongBall.vx;
+                pingPongBall.y += pingPongBall.vy;
+                
+                // Bounce off table edges
+                if (Math.abs(pingPongBall.x - pingPongTable.x) > 40) {
+                    pingPongBall.vx *= -1;
+                    rallyCount++;
+                    
+                    // Show occasional comments
+                    if (rallyCount % 3 === 0) {
+                        const speaker = rallyCount % 2 === 0 ? pingPongPlayers[0] : pingPongPlayers[1];
+                        showPingPongComment(speaker);
+                    }
+                }
+                if (Math.abs(pingPongBall.y - pingPongTable.y) > 25) {
+                    pingPongBall.vy *= -1;
+                }
+                
+                // End game after max rallies
+                if (rallyCount >= maxRallies) {
+                    clearInterval(gameInterval);
+                    endPingPongGame();
+                }
+            }, 50);
+        }
+        
+        function showPingPongComment(agent) {
+            const topics = conversationTopics.pingpong;
+            const message = topics[Math.floor(Math.random() * topics.length)];
+            const pos = toIso(agent.x, agent.y);
+            
+            const bubble = document.createElement('div');
+            bubble.className = 'speech-bubble pingpong';
+            bubble.style.left = (pos.x + canvas.parentElement.offsetLeft) + 'px';
+            bubble.style.top = (pos.y + canvas.parentElement.offsetTop - 70) + 'px';
+            bubble.innerHTML = `<strong style="color: ${agent.color}">${agent.name}:</strong> "${message}"`;
+            
+            document.body.appendChild(bubble);
+            setTimeout(() => bubble.remove(), 2000);
+        }
+        
+        function endPingPongGame() {
+            const [player1, player2] = pingPongPlayers;
+            const winner = Math.random() > 0.5 ? player1 : player2;
+            
+            logActivity(`🏆 ${winner.name} won the ping pong match!`, 'pingpong');
+            
+            // Show winner celebration
+            const pos = toIso(winner.x, winner.y);
+            const bubble = document.createElement('div');
+            bubble.className = 'speech-bubble pingpong';
+            bubble.style.left = (pos.x + canvas.parentElement.offsetLeft) + 'px';
+            bubble.style.top = (pos.y + canvas.parentElement.offsetTop - 70) + 'px';
+            bubble.innerHTML = `🏆 <strong style="color: ${winner.color}">${winner.name}:</strong> "I win! Great game!"`;
+            document.body.appendChild(bubble);
+            setTimeout(() => bubble.remove(), 3000);
+            
+            // Return players to desks
+            setTimeout(() => {
+                returnPingPongPlayers();
+            }, 1500);
+        }
+        
+        function returnPingPongPlayers() {
+            pingPongPlayers.forEach(agent => {
+                const originalPos = agentPositions[agent.id];
+                if (originalPos) {
+                    agent.facing = originalPos.x > agent.x ? 1 : -1;
+                    isWalking[agent.id] = true;
+                    agent.status = 'working';
+                    agent.activity = 'Back to work';
+                    
+                    const startX = agent.x, startY = agent.y;
+                    const endX = originalPos.x, endY = originalPos.y;
+                    const duration = 1500;
+                    const startTime = Date.now();
+                    
+                    function step() {
+                        const elapsed = Date.now() - startTime;
+                        const progress = Math.min(elapsed / duration, 1);
+                        const ease = 1 - Math.pow(1 - progress, 3);
+                        
+                        agent.x = startX + (endX - startX) * ease;
+                        agent.y = startY + (endY - startY) * ease;
+                        
+                        if (progress < 1) {
+                            requestAnimationFrame(step);
+                        } else {
+                            isWalking[agent.id] = false;
+                            resetAgentActivity(agent);
+                        }
+                    }
+                    step();
+                }
+            });
+            
+            isPingPongActive = false;
+            pingPongPlayers = [];
+            updateStats();
+            updateAgentList();
+        }
+        
         // ============================================
         // WALKING COMPUTER HEAD AGENT SYSTEM
         // ============================================
@@ -1094,6 +1711,7 @@
             if (agent.status === 'working') pupilColor = '#22c55e';
             else if (agent.status === 'busy') pupilColor = '#fbbf24';
             else if (agent.status === 'meeting') pupilColor = '#ff2a6d';
+            else if (agent.status === 'playing') pupilColor = '#fbbf24';
             else pupilColor = '#71717a';
             
             drawPixelRect(leftEyeX + 1, eyeY + 1, 2, 2, pupilColor);
@@ -1107,6 +1725,12 @@
                 // Open mouth (talking)
                 drawPixelRect(mouthX, mouthY, 8, 4, '#000');
                 drawPixelRect(mouthX + 2, mouthY + 1, 4, 2, '#ff6b6b');
+            } else if (agent.status === 'playing') {
+                // Big smile (having fun)
+                drawPixelRect(mouthX + 1, mouthY + 1, 6, 3, '#000');
+                drawPixelRect(mouthX, mouthY, 2, 2, '#000');
+                drawPixelRect(mouthX + 6, mouthY, 2, 2, '#000');
+                drawPixelRect(mouthX + 2, mouthY + 2, 4, 2, '#FFEB3B'); // Teeth
             } else if (agent.status === 'working') {
                 // Happy smile
                 drawPixelRect(mouthX + 1, mouthY + 1, 6, 2, '#000');
@@ -1128,7 +1752,8 @@
             // ========================================
             const statusColor = agent.status === 'working' ? '#22c55e' : 
                                agent.status === 'busy' ? '#fbbf24' : 
-                               agent.status === 'meeting' ? '#ff2a6d' : '#71717a';
+                               agent.status === 'meeting' ? '#ff2a6d' : 
+                               agent.status === 'playing' ? '#fbbf24' : '#71717a';
             
             // Floating indicator above head
             const indicatorY = headY - 8 + Math.sin(globalFrame * 0.1) * 2;
@@ -1246,6 +1871,9 @@
             
             // Draw command balcony
             drawCommandBalcony();
+            
+            // Draw ping pong table
+            drawPingPongTable();
             
             // Draw meeting table
             drawMeetingTableObj();
@@ -1435,6 +2063,7 @@
         function generateMeetingMinutes() {
             const now = new Date();
             const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+            const dateStr = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
             
             // Generate random insights based on current activities
             const insights = [
@@ -1487,6 +2116,13 @@
             
             // Update the Minutes tab display
             document.getElementById('meeting-minutes-display').innerHTML = minutesHTML;
+            
+            // Add to historical minutes
+            addMeetingMinute({
+                time: timeStr,
+                date: dateStr,
+                summary: `${selectedInsights.length} updates discussed, ${selectedImprovements.length} action items identified.`
+            });
             
             // Show meeting info sections
             document.getElementById('meeting-info').style.display = 'block';
@@ -1673,25 +2309,30 @@
             document.getElementById(tabName + '-tab').classList.add('active');
         }
 
-        function logActivity(text) {
+        function logActivity(text, className = '') {
             const feed = document.getElementById('activity-feed');
             const time = new Date().toLocaleTimeString('en-US', { hour12: false });
             
             const item = document.createElement('div');
-            item.className = 'activity-item';
+            item.className = 'activity-item ' + className;
             item.innerHTML = `
                 <span class="activity-time">${time}</span>
                 <span class="activity-text">${text}</span>
             `;
             feed.insertBefore(item, feed.firstChild);
             while (feed.children.length > 20) feed.removeChild(feed.lastChild);
+            
+            // Save to localStorage
+            saveActivities();
         }
 
         function updateStats() {
             const active = agents.filter(a => a.status === 'working' || a.status === 'busy').length;
             const meeting = agents.filter(a => a.status === 'meeting').length;
+            const playing = agents.filter(a => a.status === 'playing').length;
             document.getElementById('active-count').textContent = active;
             document.getElementById('meeting-count').textContent = meeting;
+            document.getElementById('playing-count').textContent = playing;
         }
 
         function updateAgentList() {
@@ -1708,11 +2349,34 @@
         }
 
         // Initial setup
-        logActivity('🏢 Pixel Office v7 loaded with Walking Computer Head Agents!');
-        logActivity('🤖 20 agents with 8-frame walking animation ready');
-        logActivity('💡 Screen glows match department colors');
+        const savedCount = loadSavedActivities();
+        renderHistoricalMinutes();
+        
+        if (savedCount === 0) {
+            logActivity('🏢 Pixel Office v8 loaded with Walking Computer Head Agents!');
+            logActivity('🤖 20 agents with 8-frame walking animation ready');
+            logActivity('💬 Agent-to-agent conversations enabled');
+            logActivity('🏓 Ping pong table added for fun meetups');
+            logActivity('💾 Activities now persist across refreshes');
+        } else {
+            logActivity(`📂 Loaded ${savedCount} saved activities from previous session`);
+        }
+        
         updateStats();
         updateAgentList();
+        
+        // Random events loop
+        setInterval(() => {
+            if (!isStandupActive && !isPingPongActive) {
+                // 30% chance for conversation, 20% chance for ping pong
+                const roll = Math.random();
+                if (roll < 0.3) {
+                    triggerRandomConversation();
+                } else if (roll < 0.5) {
+                    triggerPingPongGame();
+                }
+            }
+        }, 15000); // Check every 15 seconds
         
         // Auto-refresh every 30 minutes for latest data
         setInterval(() => {
