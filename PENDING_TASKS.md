@@ -9,7 +9,18 @@
 ## 🆕 NEW TASKS FROM CONTINUOUS IMPROVEMENT
 #### Batch: 2026-02-18 11:15
 
-### **TASK-CI-001: Verify CI System Works**
+### **TASK-046: Update Overview Page with Complete Agent Data**
+- **Assigned:** Forge-2 (active), Forge-3 (active)
+- **Due:** Feb 18, 1:00 PM
+- **Status:** 🟢 IN PROGRESS (Spawned 12:20 PM)
+- **Priority:** P1
+- **Description:** Update Mission Control overview page with complete agent information and activity metrics
+- **Requirements:** All 22 agents with tokens, files, tasks, activity count, last active, success rate
+- **Source:** EricF request (Feb 18, 12:18 PM)
+- **Subagent Sessions:** 
+  - Forge-2: agent:main:subagent:9dcba34d-4b07-41b9-a72d-1ca74aa77726
+
+
 - **Assigned:** Nexus
 - **Due:** 2026-02-21
 - **Status:** ⏳ NOT STARTED
@@ -259,14 +270,15 @@
 - **Notes:** All 5 pages updated with fixed refresh functionality
 
 ### **TASK-033: Scout Opportunities - Realistic Data**
-- **Assigned:** Scout
+- **Assigned:** Scout (active)
 - **Due:** Feb 18, 6:00 AM
-- **Status:** 🟢 IN PROGRESS (Fixing)
+- **Status:** 🟢 IN PROGRESS (Spawned 12:20 PM)
 - **Description:** Fix overly optimistic ROI estimates (40-60% too high)
 - **Issues:** Time estimates 50-100% too short, missing hours/week
 - **Blockers:** None
 - **Next Step:** Revise all 30 opportunities with realistic data
 - **Note:** EricF approved all P0 fixes - proceeding immediately
+- **Subagent Session:** agent:main:subagent:61e5a6dc-adb3-4bd0-8aaa-98e4ffcc81f8
 
 ### **TASK-034: Token Tracker Live API**
 - **Assigned:** Code

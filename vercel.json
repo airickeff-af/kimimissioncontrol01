@@ -13,6 +13,10 @@
   ],
   "routes": [
     {
+      "src": "/api/logs/activity",
+      "dest": "/api/logs-activity.js"
+    },
+    {
       "src": "/api/(.*)",
       "dest": "/api/$1"
     },
