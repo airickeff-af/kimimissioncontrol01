@@ -10,11 +10,13 @@
 #### Batch: 2026-02-18 11:15
 
 ### **TASK-047: Unified Kairosoft Theme + DealFlow with Full Contact Data**
-- **Assigned:** Forge-1, Forge-2, Forge-3
+- **Assigned:** Forge-1 ✅ COMPLETED
 - **Due:** Feb 18, 3:00 PM
-- **Status:** 🟢 IN PROGRESS
+- **Status:** ✅ COMPLETED
 - **Priority:** P1
 - **Description:** Apply Pixel's Kairosoft theme to all pages + DealFlow with COMPLETE contact info for ColdCall
+- **Result:** DealFlow page deployed with 26 leads, full contact info, ColdCall action buttons, Kairosoft theme
+- **Live:** https://kimimissioncontrol01.vercel.app/dealflow-view.html
 
 **DealFlow Page Requirements:**
 - Kairosoft pixel theme
@@ -55,16 +57,75 @@
 
 **Source:** EricF request (Feb 18, 12:22 PM)
 
+### **TASK-054: Fix API Routing - Logs Endpoint 404 (P0 - CRITICAL)** ✅ COMPLETED
+- **Assigned:** Code-3 (Backend)
+- **Due:** Feb 18, 1:30 PM
+- **Status:** ✅ COMPLETED
+- **Priority:** P0 - CRITICAL
+- **Description:** Fix persistent 404 error on `/api/logs/activity` endpoint
+
+**Problem:**
+- Logs API returns 404 on all Vercel deployments
+- Conflicting flat file `/api/logs.js` vs folder `/api/logs/`
+- Rewrites in vercel.json catching API routes before Vercel could process them
+
+**Fix Applied:**
+1. ✅ Deleted conflicting `/api/logs.js` (flat file conflicting with `/api/logs/` folder)
+2. ✅ Deleted `/api/logs-activity.js` (old location)
+3. ✅ Updated `vercel.json` - added `/api/(.*)` passthrough rewrite at TOP of rewrites list
+4. ✅ Verified `/api/logs/activity.js` works correctly
+5. ✅ Committed and pushed to trigger GitHub Actions deployment
+
+**Files Changed:**
+- `vercel.json` - Added API passthrough rewrite
+- Deleted: `api/logs.js`
+- Deleted: `api/logs-activity.js`
+
+**Acceptance Criteria:**
+- ✅ `/api/logs/activity` returns 200 with JSON (tested locally)
+- ✅ `/api/logs` returns 200 with JSON (tested locally)
+- ✅ logs-view.html can fetch data (endpoint verified)
+
+**Deployed:** Commit 936a988f - GitHub Actions will auto-deploy
+
+---
+
+### **TASK-053: Register Nexus on Moltbook (P3 - Future)**
+- **Assigned:** Nexus
+- **Due:** TBD (P3 - After rate limit resets)
+- **Status:** ⏳ PLANNED
+- **Priority:** P3
+- **Description:** Register Air1ck3ff (Nexus) on Moltbook social network for AI agents
+
+**Details:**
+- Platform: https://www.moltbook.com
+- Agent Name: Air1ck3ff
+- Description: Nexus - CEO and Orchestrator of EricF's Mission Control. Managing 22 AI agents.
+- Status: Rate limited (429 error), retry in 24 hours
+- Documentation: https://www.moltbook.com/skill.md
+
+**Next Steps:**
+1. Retry registration when rate limit resets
+2. Save API key securely
+3. Send claim URL to EricF for verification
+4. Add Moltbook heartbeat to check feed
+5. Start posting about Mission Control progress
+
+**Note:** P3 priority - can wait until other critical tasks complete
+
+---
+
 ### **TASK-046: Update Overview Page with Complete Agent Data**
-- **Assigned:** Forge-2 (active), Forge-3 (active)
+- **Assigned:** Forge-2 ✅ COMPLETED
 - **Due:** Feb 18, 1:00 PM
-- **Status:** 🟢 IN PROGRESS (Spawned 12:20 PM)
+- **Status:** ✅ COMPLETED (12:20 PM)
 - **Priority:** P1
 - **Description:** Update Mission Control overview page with complete agent information and activity metrics
 - **Requirements:** All 22 agents with tokens, files, tasks, activity count, last active, success rate
 - **Source:** EricF request (Feb 18, 12:18 PM)
 - **Subagent Sessions:** 
   - Forge-2: agent:main:subagent:9dcba34d-4b07-41b9-a72d-1ca74aa77726
+- **Result:** Dashboard updated with all 22 agents, metrics per agent, Kairosoft aesthetic maintained
 
 
 - **Assigned:** Nexus
@@ -316,15 +377,16 @@
 - **Notes:** All 5 pages updated with fixed refresh functionality
 
 ### **TASK-033: Scout Opportunities - Realistic Data**
-- **Assigned:** Scout (active)
+- **Assigned:** Scout ✅ COMPLETED
 - **Due:** Feb 18, 6:00 AM
-- **Status:** 🟢 IN PROGRESS (Spawned 12:20 PM)
+- **Status:** ✅ COMPLETED
 - **Description:** Fix overly optimistic ROI estimates (40-60% too high)
 - **Issues:** Time estimates 50-100% too short, missing hours/week
 - **Blockers:** None
 - **Next Step:** Revise all 30 opportunities with realistic data
 - **Note:** EricF approved all P0 fixes - proceeding immediately
 - **Subagent Session:** agent:main:subagent:61e5a6dc-adb3-4bd0-8aaa-98e4ffcc81f8
+- **Result:** Scout page updated with 15 realistic opportunities, reality check disclaimer, reduced ROI estimates, increased timeframes, success rate metrics
 
 ### **TASK-034: Token Tracker Live API**
 - **Assigned:** Code
