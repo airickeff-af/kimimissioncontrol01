@@ -2208,50 +2208,101 @@
             document.getElementById('auto-generated-tasks').innerHTML = tasksHTML;
         }
         
-        function addImprovementTasks() {
+        async function addImprovementTasks() {
             if (pendingImprovementTasks.length === 0) {
                 alert('No improvement tasks to add. Complete a standup first!');
                 return;
             }
             
-            // In a real implementation, this would add tasks to the backend
-            // For now, we'll show a confirmation and log it
-            const taskCount = pendingImprovementTasks.length;
-            logActivity(`➕ Nexus added ${taskCount} improvement tasks to pending queue`);
-            
-            // Show success status
-            const statusEl = document.getElementById('add-tasks-status');
             const btnEl = document.getElementById('add-tasks-btn');
+            const statusEl = document.getElementById('add-tasks-status');
             
-            if (statusEl) {
-                statusEl.style.display = 'inline';
-                statusEl.textContent = `✅ ${taskCount} tasks added!`;
-            }
-            
+            // Disable button during API call
             if (btnEl) {
-                btnEl.textContent = '✓ Added!';
-                btnEl.style.background = 'var(--accent-green)';
                 btnEl.disabled = true;
+                btnEl.textContent = '⏳ Adding...';
             }
             
-            // Show alert with details
-            alert(`✅ ${taskCount} improvement tasks added to pending queue!\n\nTasks:\n${pendingImprovementTasks.map(t => `- ${t.title}`).join('\n')}`);
-            
-            // Clear the pending tasks
-            pendingImprovementTasks = [];
-            document.getElementById('auto-generated-tasks').innerHTML = '<p style="color: var(--text-muted);">✅ Tasks added to pending queue!</p>';
-            
-            // Reset button after 3 seconds
-            setTimeout(() => {
+            try {
+                // Call the API to create tasks
+                const response = await fetch('http://localhost:8080/api/tasks/create', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        tasks: pendingImprovementTasks,
+                        source: 'Office Standup - Nexus Peer Review'
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok && result.success) {
+                    const taskCount = result.tasks_created;
+                    logActivity(`➕ Nexus added ${taskCount} improvement tasks to PENDING_TASKS.md`);
+                    
+                    // Show success status
+                    if (statusEl) {
+                        statusEl.style.display = 'inline';
+                        statusEl.textContent = `✅ ${taskCount} tasks saved!`;
+                    }
+                    
+                    if (btnEl) {
+                        btnEl.textContent = '✓ Added!';
+                        btnEl.style.background = 'var(--accent-green)';
+                    }
+                    
+                    // Show alert with details
+                    alert(`✅ ${taskCount} improvement tasks saved to PENDING_TASKS.md!\n\nTasks:\n${pendingImprovementTasks.map(t => `- ${t.title}`).join('\n')}`);
+                    
+                    // Clear the pending tasks
+                    pendingImprovementTasks = [];
+                    document.getElementById('auto-generated-tasks').innerHTML = '<p style="color: var(--text-muted);">✅ Tasks saved to PENDING_TASKS.md!</p>';
+                    
+                    // Reset button after 3 seconds
+                    setTimeout(() => {
+                        if (btnEl) {
+                            btnEl.textContent = '➕ Add Tasks to Pending';
+                            btnEl.style.background = 'var(--accent-cyan)';
+                            btnEl.disabled = false;
+                        }
+                        if (statusEl) {
+                            statusEl.style.display = 'none';
+                        }
+                    }, 3000);
+                } else {
+                    throw new Error(result.error || 'Failed to create tasks');
+                }
+            } catch (error) {
+                console.error('Error adding tasks:', error);
+                
+                // Fallback: Save to localStorage if API fails
+                const fallbackKey = 'pixelOffice_pendingTasksFallback';
+                const existing = JSON.parse(localStorage.getItem(fallbackKey) || '[]');
+                const newTasks = pendingImprovementTasks.map(t => ({
+                    ...t,
+                    savedAt: new Date().toISOString(),
+                    source: 'Office Standup - Nexus Peer Review (Fallback)'
+                }));
+                localStorage.setItem(fallbackKey, JSON.stringify([...existing, ...newTasks]));
+                
+                logActivity(`⚠️ API failed, tasks saved to localStorage fallback`);
+                
+                if (statusEl) {
+                    statusEl.style.display = 'inline';
+                    statusEl.textContent = '⚠️ Saved locally (API down)';
+                    statusEl.style.color = 'var(--accent-yellow)';
+                }
+                
                 if (btnEl) {
-                    btnEl.textContent = '➕ Add Tasks to Pending';
-                    btnEl.style.background = 'var(--accent-cyan)';
+                    btnEl.textContent = '⚠️ Saved Locally';
+                    btnEl.style.background = 'var(--accent-yellow)';
                     btnEl.disabled = false;
                 }
-                if (statusEl) {
-                    statusEl.style.display = 'none';
-                }
-            }, 3000);
+                
+                alert(`⚠️ Could not save to PENDING_TASKS.md (API error: ${error.message})\n\nTasks have been saved to localStorage as fallback. Please notify Nexus to sync manually.`);
+            }
         }
 
         function animateAgentReturn(agent, targetPos, delay) {
