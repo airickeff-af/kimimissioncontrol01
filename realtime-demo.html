@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mission Control - Real-Time Demo</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0a0a0f;
+      color: #e0e0e0;
+      min-height: 100vh;
+      padding: 2rem;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    h1 {
+      color: #00d4ff;
+      margin-bottom: 0.5rem;
+      font-size: 2rem;
+    }
+    
+    .subtitle {
+      color: #888;
+      margin-bottom: 2rem;
+    }
+    
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    
+    .card {
+      background: #12121a;
+      border: 1px solid #1e1e2e;
+      border-radius: 12px;
+      padding: 1.5rem;
+    }
+    
+    .card h2 {
+      color: #ff2a6d;
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .status-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+    
+    .status-indicator.connected {
+      background: rgba(34, 197, 94, 0.1);
+      color: #22c55e;
+    }
+    
+    .status-indicator.connecting {
+      background: rgba(0, 212, 255, 0.1);
+      color: #00d4ff;
+    }
+    
+    .status-indicator.reconnecting {
+      background: rgba(251, 191, 36, 0.1);
+      color: #fbbf24;
+    }
+    
+    .status-indicator.polling {
+      background: rgba(168, 85, 247, 0.1);
+      color: #a855f7;
+    }
+    
+    .status-indicator.disconnected {
+      background: rgba(255, 42, 109, 0.1);
+      color: #ff2a6d;
+    }
+    
+    .status-indicator.error {
+      background: rgba(239, 68, 68, 0.1);
+      color: #ef4444;
+    }
+    
+    .event-log {
+      max-height: 300px;
+      overflow-y: auto;
+      font-family: 'Monaco', 'Menlo', monospace;
+      font-size: 0.8rem;
+    }
+    
+    .event-item {
+      padding: 0.5rem;
+      border-left: 3px solid #00d4ff;
+      margin-bottom: 0.5rem;
+      background: rgba(0, 212, 255, 0.05);
+      border-radius: 0 4px 4px 0;
+    }
+    
+    .event-item.agent { border-left-color: #22c55e; background: rgba(34, 197, 94, 0.05); }
+    .event-item.task { border-left-color: #f97316; background: rgba(249, 115, 22, 0.05); }
+    .event-item.token { border-left-color: #a855f7; background: rgba(168, 85, 247, 0.05); }
+    .event-item.system { border-left-color: #ff2a6d; background: rgba(255, 42, 109, 0.05); }
+    .event-item.lead { border-left-color: #fbbf24; background: rgba(251, 191, 36, 0.05); }
+    
+    .event-time {
+      color: #666;
+      font-size: 0.75rem;
+    }
+    
+    .event-type {
+      color: #00d4ff;
+      font-weight: 600;
+    }
+    
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+    
+    .stat {
+      text-align: center;
+      padding: 1rem;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 8px;
+    }
+    
+    .stat-value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #00d4ff;
+    }
+    
+    .stat-label {
+      font-size: 0.75rem;
+      color: #888;
+      text-transform: uppercase;
+    }
+    
+    .controls {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-top: 1rem;
+    }
+    
+    button {
+      padding: 0.5rem 1rem;
+      border: 1px solid #00d4ff;
+      background: transparent;
+      color: #00d4ff;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.875rem;
+      transition: all 0.2s;
+    }
+    
+    button:hover {
+      background: #00d4ff;
+      color: #0a0a0f;
+    }
+    
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    
+    .subscription-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+    
+    .tag {
+      padding: 0.25rem 0.75rem;
+      background: #1e1e2e;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      color: #888;
+    }
+    
+    .tag.active {
+      background: rgba(0, 212, 255, 0.2);
+      color: #00d4ff;
+    }
+    
+    .toast-container {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      z-index: 1000;
+    }
+    
+    .toast {
+      padding: 1rem 1.5rem;
+      margin-bottom: 0.5rem;
+      border-radius: 8px;
+      animation: slideIn 0.3s ease;
+      max-width: 300px;
+    }
+    
+    .toast.info { background: #00d4ff; color: #0a0a0f; }
+    .toast.success { background: #22c55e; color: #0a0a0f; }
+    .toast.warning { background: #fbbf24; color: #0a0a0f; }
+    .toast.error { background: #ff2a6d; color: white; }
+    
+    @keyframes slideIn {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+    
+    .pulse {
+      animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>⚡ Mission Control Real-Time</h1>
+    <p class="subtitle">WebSocket live updates demo - No more polling!</p>
+    
+    <div class="grid">
+      <!-- Connection Status -->
+      <div class="card">
+        <h2>🔌 Connection Status</h2>
+        <div id="connectionStatus" class="status-indicator disconnected">
+          <span>○</span>
+          <span>Disconnected</span>
+        </div>
+        
+        <div class="stats-grid" style="margin-top: 1rem;">
+          <div class="stat">
+            <div id="messagesReceived" class="stat-value">0</div>
+            <div class="stat-label">Messages</div>
+          </div>
+          <div class="stat">
+            <div id="reconnectCount" class="stat-value">0</div>
+            <div class="stat-label">Reconnects</div>
+          </div>
+        </div>
+        
+        <div class="controls">
+          <button id="btnConnect">Connect</button>
+          <button id="btnDisconnect">Disconnect</button>
+          <button id="btnReconnect">Reconnect</button>
+        </div>
+      </div>
+      
+      <!-- Subscriptions -->
+      <div class="card">
+        <h2>📋 Subscriptions</h2>
+        <p style="color: #888; font-size: 0.875rem; margin-bottom: 0.5rem;">Click to toggle event subscriptions:</p>
+        
+        <div class="subscription-tags">
+          <span class="tag" data-event="agent">🤖 Agents</span>
+          <span class="tag" data-event="task">📋 Tasks</span>
+          <span class="tag" data-event="token">💰 Tokens</span>
+          <span class="tag" data-event="lead">🎯 Leads</span>
+          <span class="tag" data-event="system">⚙️ System</span>
+        </div>
+        
+        <div class="controls">
+          <button id="btnSubscribeAll">Subscribe All</button>
+          <button id="btnClearSubs">Clear All</button>
+        </div>
+      </div>
+      
+      <!-- Live Events -->
+      <div class="card" style="grid-column: 1 / -1;">
+        <h2>📡 Live Events</h2>
+        <div id="eventLog" class="event-log">
+          <div class="event-item">
+            <span class="event-time">--:--:--</span>
+            <span class="event-type">Waiting for connection...</span>
+          </div>
+        </div>
+        
+        <div class="controls">
+          <button id="btnClearLog">Clear Log</button>
+          <button id="btnTestBroadcast">Test Broadcast</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div id="toastContainer" class="toast-container"></div>
+
+  <!-- Load the real-time client library -->
+  <script src="js/realtime.js"></script>
+  
+  <script>
+    // Initialize client with debug mode
+    const client = new MCRealtimeClient({
+      debug: true,
+      enablePolling: true
+    });
+    
+    // DOM elements
+    const connectionStatus = document.getElementById('connectionStatus');
+    const messagesReceived = document.getElementById('messagesReceived');
+    const reconnectCount = document.getElementById('reconnectCount');
+    const eventLog = document.getElementById('eventLog');
+    const toastContainer = document.getElementById('toastContainer');
+    
+    let messageCount = 0;
+    
+    // Connection state mapping
+    const stateConfig = {
+      connecting: { class: 'connecting', text: '○ Connecting...' },
+      connected: { class: 'connected', text: '● Live' },
+      reconnecting: { class: 'reconnecting', text: '↻ Reconnecting...' },
+      polling: { class: 'polling', text: '◐ Polling' },
+      disconnected: { class: 'disconnected', text: '○ Offline' },
+      error: { class: 'error', text: '✕ Error' }
+    };
+    
+    // Update connection indicator
+    function updateConnectionStatus(state) {
+      const config = stateConfig[state] || stateConfig.disconnected;
+      connectionStatus.className = `status-indicator ${config.class}`;
+      connectionStatus.innerHTML = `<span class="${state === 'connected' ? 'pulse' : ''}">${config.text.split(' ')[0]}</span><span>${config.text.split(' ').slice(1).join(' ')}</span>`;
+    }
+    
+    // Add event to log
+    function addEventToLog(type, data, category = 'system') {
+      messageCount++;
+      messagesReceived.textContent = messageCount;
+      
+      const time = new Date().toLocaleTimeString();
+      const item = document.createElement('div');
+      item.className = `event-item ${category}`;
+      
+      let content = '';
+      if (data.agentId) content += ` <strong>${data.agentId}</strong>`;
+      if (data.taskId) content += ` <strong>${data.taskId}</strong>`;
+      if (data.leadId) content += ` <strong>${data.leadId}</strong>`;
+      if (data.status) content += ` → ${data.status}`;
+      if (data.score) content += ` score: ${data.score}`;
+      if (data.tokens) content += ` ${data.tokens.toLocaleString()} tokens`;
+      if (data.message) content += ` "${data.message}"`;
+      
+      item.innerHTML = `
+        <div class="event-time">${time}</div>
+        <div><span class="event-type">${type}</span>${content}</div>
+      `;
+      
+      eventLog.insertBefore(item, eventLog.firstChild);
+      
+      // Keep only last 50 events
+      while (eventLog.children.length > 50) {
+        eventLog.removeChild(eventLog.lastChild);
+      }
+    }
+    
+    // Show toast notification
+    function showToast(title, message, type = 'info') {
+      const toast = document.createElement('div');
+      toast.className = `toast ${type}`;
+      toast.innerHTML = `<strong>${title}</strong><br>${message}`;
+      toastContainer.appendChild(toast);
+      
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateX(100%)';
+        setTimeout(() => toast.remove(), 300);
+      }, 5000);
+    }
+    
+    // Event listeners
+    client.addEventListener('stateChange', (e) => {
+      updateConnectionStatus(e.detail.state);
+      addEventToLog('stateChange', { status: e.detail.state });
+    });
+    
+    client.addEventListener('connected', () => {
+      showToast('Connected', 'WebSocket connection established', 'success');
+      reconnectCount.textContent = client.metrics.reconnects;
+    });
+    
+    client.addEventListener('disconnected', () => {
+      showToast('Disconnected', 'WebSocket connection closed', 'warning');
+    });
+    
+    client.addEventListener('message', (e) => {
+      console.log('Message received:', e.detail);
+    });
+    
+    // Subscribe to specific event types
+    client.on(MC_REALTIME_EVENTS.AGENT_STATUS_CHANGE, (data) => {
+      addEventToLog('agent:statusChange', data, 'agent');
+      showToast('Agent Status', `${data.agentId} is now ${data.status}`, 'info');
+    });
+    
+    client.on(MC_REALTIME_EVENTS.TASK_CREATED, (data) => {
+      addEventToLog('task:created', data, 'task');
+      showToast('New Task', data.task?.description?.substring(0, 50) || 'Task created', 'info');
+    });
+    
+    client.on(MC_REALTIME_EVENTS.TASK_COMPLETED, (data) => {
+      addEventToLog('task:completed', data, 'task');
+      showToast('Task Complete', data.taskId, 'success');
+    });
+    
+    client.on(MC_REALTIME_EVENTS.TASK_ASSIGNED, (data) => {
+      addEventToLog('task:assigned', data, 'task');
+      showToast('Task Assigned', `To ${data.agentId}`, 'info');
+    });
+    
+    client.on(MC_REALTIME_EVENTS.TOKEN_USAGE, (data) => {
+      addEventToLog('token:usage', data, 'token');
+    });
+    
+    client.on(MC_REALTIME_EVENTS.TOKEN_THRESHOLD, (data) => {
+      addEventToLog('token:threshold', data, 'token');
+      showToast('Token Alert', `${data.agent}: ${data.percentUsed}% used`, data.alert);
+    });
+    
+    client.on(MC_REALTIME_EVENTS.LEAD_ADDED, (data) => {
+      addEventToLog('lead:added', data, 'lead');
+      showToast('New Lead', data.lead?.name || 'Lead added', 'success');
+    });
+    
+    client.on(MC_REALTIME_EVENTS.LEAD_SCORED, (data) => {
+      addEventToLog('lead:scored', data, 'lead');
+    });
+    
+    client.on(MC_REALTIME_EVENTS.SYSTEM_ALERT, (data) => {
+      addEventToLog('system:alert', data, 'system');
+      showToast('System Alert', data.message, data.level);
+    });
+    
+    client.on(MC_REALTIME_EVENTS.FILE_CHANGE, (data) => {
+      addEventToLog(`file:${data.action}`, data, 'system');
+    });
+    
+    // Button handlers
+    document.getElementById('btnConnect').addEventListener('click', () => {
+      client.connect();
+    });
+    
+    document.getElementById('btnDisconnect').addEventListener('click', () => {
+      client.disconnect();
+    });
+    
+    document.getElementById('btnReconnect').addEventListener('click', () => {
+      client.reconnect();
+    });
+    
+    document.getElementById('btnClearLog').addEventListener('click', () => {
+      eventLog.innerHTML = '';
+      messageCount = 0;
+      messagesReceived.textContent = 0;
+    });
+    
+    document.getElementById('btnTestBroadcast').addEventListener('click', async () => {
+      // Test via API
+      try {
+        const response = await fetch('http://localhost:3001/api/system/status');
+        const data = await response.json();
+        addEventToLog('test:broadcast', { message: 'API test successful', status: data.system?.gatewayStatus }, 'system');
+        showToast('Test', 'API connection working', 'success');
+      } catch (err) {
+        showToast('Test Failed', err.message, 'error');
+      }
+    });
+    
+    // Subscription tag handlers
+    document.querySelectorAll('.tag').forEach(tag => {
+      tag.addEventListener('click', () => {
+        const event = tag.dataset.event;
+        const isActive = tag.classList.contains('active');
+        
+        if (isActive) {
+          tag.classList.remove('active');
+          client.unsubscribe(`${event}:*`);
+        } else {
+          tag.classList.add('active');
+          client.subscribe(`${event}:*`);
+        }
+      });
+    });
+    
+    document.getElementById('btnSubscribeAll').addEventListener('click', () => {
+      document.querySelectorAll('.tag').forEach(tag => tag.classList.add('active'));
+      client.subscribeAll();
+      showToast('Subscriptions', 'Subscribed to all events', 'success');
+    });
+    
+    document.getElementById('btnClearSubs').addEventListener('click', () => {
+      document.querySelectorAll('.tag').forEach(tag => tag.classList.remove('active'));
+      client.clearSubscriptions();
+      showToast('Subscriptions', 'All subscriptions cleared', 'info');
+    });
+    
+    // Auto-connect on page load
+    window.addEventListener('load', () => {
+      client.connect().catch(err => {
+        console.log('Auto-connect failed, will retry:', err.message);
+      });
+    });
+  </script>
+</body>
+</html>

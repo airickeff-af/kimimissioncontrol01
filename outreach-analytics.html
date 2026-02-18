@@ -1,0 +1,1595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Outreach Analytics | Mission Control</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #111118;
+            --bg-card: #16161f;
+            --bg-card-hover: #1e1e2a;
+            --accent-cyan: #00d4ff;
+            --accent-purple: #a855f7;
+            --accent-green: #00ff9f;
+            --accent-red: #ff6b6b;
+            --accent-yellow: #ffc107;
+            --accent-orange: #ff8c42;
+            --text-primary: #ffffff;
+            --text-secondary: #a1a1aa;
+            --text-muted: #71717a;
+            --border-color: #27272a;
+            --shadow-glow: 0 0 30px rgba(0, 212, 255, 0.15);
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+        
+        /* Header */
+        .header {
+            background: linear-gradient(180deg, rgba(17, 17, 24, 0.98) 0%, rgba(10, 10, 15, 0.95) 100%);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .logo {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: var(--shadow-glow);
+        }
+        
+        .brand-text h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #fff, var(--accent-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .brand-text span {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+        
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        
+        .date-range {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+        
+        .refresh-btn {
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .refresh-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(0, 212, 255, 0.4);
+        }
+        
+        /* Navigation Tabs */
+        .nav-tabs {
+            display: flex;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            overflow-x: auto;
+        }
+        
+        .nav-tab {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .nav-tab:hover {
+            color: var(--text-primary);
+            background: rgba(255,255,255,0.05);
+        }
+        
+        .nav-tab.active {
+            color: var(--text-primary);
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+        }
+        
+        /* Main Content */
+        .main-content {
+            padding: 2rem;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+        
+        /* KPI Cards */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .kpi-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s;
+        }
+        
+        .kpi-card:hover {
+            background: var(--bg-card-hover);
+            transform: translateY(-2px);
+        }
+        
+        .kpi-label {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .kpi-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .kpi-change {
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        
+        .kpi-change.positive { color: var(--accent-green); }
+        .kpi-change.negative { color: var(--accent-red); }
+        
+        /* Charts Grid */
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        @media (max-width: 1200px) {
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .chart-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+        
+        .chart-card.full-width {
+            grid-column: 1 / -1;
+        }
+        
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .chart-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .chart-subtitle {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 300px;
+        }
+        
+        .chart-container.large {
+            height: 400px;
+        }
+        
+        /* Funnel */
+        .funnel-container {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        
+        .funnel-stage {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .funnel-bar {
+            height: 48px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 1rem;
+            color: white;
+            font-weight: 600;
+            transition: all 0.3s;
+            position: relative;
+        }
+        
+        .funnel-bar:hover {
+            transform: translateX(5px);
+        }
+        
+        .funnel-bar.sent { 
+            width: 100%; 
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
+        }
+        .funnel-bar.delivered { 
+            width: 95%; 
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+        }
+        .funnel-bar.opened { 
+            width: 44%; 
+            background: linear-gradient(90deg, var(--accent-purple), #ec4899);
+        }
+        .funnel-bar.clicked { 
+            width: 13%; 
+            background: linear-gradient(90deg, #f59e0b, #ef4444);
+        }
+        .funnel-bar.replied { 
+            width: 7%; 
+            background: linear-gradient(90deg, var(--accent-green), #10b981);
+        }
+        .funnel-bar.meeting { 
+            width: 2%; 
+            background: linear-gradient(90deg, #10b981, #059669);
+            min-width: 80px;
+        }
+        
+        .funnel-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            min-width: 120px;
+        }
+        
+        .funnel-stats {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+        
+        /* Data Tables */
+        .table-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        .table-header {
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .table-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+        }
+        
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .data-table th {
+            background: var(--bg-secondary);
+            padding: 1rem 1.5rem;
+            text-align: left;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+        }
+        
+        .data-table td {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.875rem;
+        }
+        
+        .data-table tr:hover td {
+            background: var(--bg-card-hover);
+        }
+        
+        .data-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        /* Progress Bars */
+        .progress-bar {
+            height: 8px;
+            background: var(--bg-secondary);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+        
+        .progress-fill.high { background: var(--accent-green); }
+        .progress-fill.medium { background: var(--accent-yellow); }
+        .progress-fill.low { background: var(--accent-red); }
+        
+        /* Recommendations */
+        .recommendations-grid {
+            display: grid;
+            gap: 1rem;
+        }
+        
+        .recommendation-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            display: flex;
+            gap: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .recommendation-card:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--accent-cyan);
+        }
+        
+        .rec-priority {
+            width: 4px;
+            border-radius: 2px;
+            flex-shrink: 0;
+        }
+        
+        .rec-priority.high { background: var(--accent-red); }
+        .rec-priority.medium { background: var(--accent-yellow); }
+        .rec-priority.low { background: var(--accent-green); }
+        
+        .rec-content {
+            flex: 1;
+        }
+        
+        .rec-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.75rem;
+        }
+        
+        .rec-title {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+        
+        .rec-badge {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+        
+        .rec-badge.template { background: rgba(0, 212, 255, 0.2); color: var(--accent-cyan); }
+        .rec-badge.industry { background: rgba(168, 85, 247, 0.2); color: var(--accent-purple); }
+        .rec-badge.timing { background: rgba(255, 193, 7, 0.2); color: var(--accent-yellow); }
+        .rec-badge.region { background: rgba(0, 255, 159, 0.2); color: var(--accent-green); }
+        .rec-badge.sequence { background: rgba(255, 107, 107, 0.2); color: var(--accent-red); }
+        
+        .rec-description {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+        
+        .rec-action {
+            background: var(--bg-secondary);
+            border-left: 3px solid var(--accent-cyan);
+            padding: 0.75rem 1rem;
+            border-radius: 0 8px 8px 0;
+            font-size: 0.875rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .rec-impact {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            color: var(--accent-green);
+            font-weight: 600;
+        }
+        
+        /* Tab Panels */
+        .tab-panel {
+            display: none;
+        }
+        
+        .tab-panel.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Heatmap */
+        .heatmap-container {
+            display: grid;
+            grid-template-columns: repeat(24, 1fr);
+            gap: 2px;
+            margin-top: 1rem;
+        }
+        
+        .heatmap-cell {
+            aspect-ratio: 1;
+            border-radius: 2px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .heatmap-cell:hover {
+            transform: scale(1.2);
+            z-index: 10;
+        }
+        
+        .heatmap-legend {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 1rem;
+            justify-content: center;
+        }
+        
+        .heatmap-scale {
+            display: flex;
+            gap: 2px;
+        }
+        
+        .heatmap-scale-item {
+            width: 20px;
+            height: 20px;
+            border-radius: 2px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem;
+            }
+            
+            .main-content {
+                padding: 1rem;
+            }
+            
+            .kpi-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .data-table {
+                font-size: 0.75rem;
+            }
+            
+            .data-table th,
+            .data-table td {
+                padding: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="brand">
+            <div class="logo">📊</div>
+            <div class="brand-text">
+                <h1>Outreach Analytics</h1>
+                <span>ColdCall Performance Dashboard</span>
+            </div>
+        </div>
+        <div class="header-actions">
+            <span class="date-range">📅 Last 30 Days</span>
+            <button class="refresh-btn" onclick="refreshData()">🔄 Refresh</button>
+        </div>
+    </header>
+    
+    <nav class="nav-tabs">
+        <button class="nav-tab active" onclick="switchTab('overview')">
+            <span>📈</span> Overview
+        </button>
+        <button class="nav-tab" onclick="switchTab('templates')">
+            <span>📝</span> Templates
+        </button>
+        <button class="nav-tab" onclick="switchTab('industries')">
+            <span>🏭</span> Industries
+        </button>
+        <button class="nav-tab" onclick="switchTab('timing')">
+            <span>⏰</span> Timing
+        </button>
+        <button class="nav-tab" onclick="switchTab('funnel')">
+            <span>🔽</span> Funnel
+        </button>
+        <button class="nav-tab" onclick="switchTab('recommendations')">
+            <span>💡</span> Insights
+        </button>
+    </nav>
+    
+    <main class="main-content">
+        <!-- Overview Tab -->
+        <div class="tab-panel active" id="overview-panel">
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-label">📧 Emails Sent</div>
+                    <div class="kpi-value" style="color: var(--accent-cyan);">2,847</div>
+                    <div class="kpi-change positive">↑ 12% vs last month</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">👁️ Open Rate</div>
+                    <div class="kpi-value" style="color: var(--accent-purple);">43.8%</div>
+                    <div class="kpi-change positive">↑ 3.0% vs last month</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">💬 Reply Rate</div>
+                    <div class="kpi-value" style="color: var(--accent-yellow);">6.9%</div>
+                    <div class="kpi-change positive">↑ 1.0% vs last month</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">📅 Meetings Booked</div>
+                    <div class="kpi-value" style="color: var(--accent-green);">47</div>
+                    <div class="kpi-change positive">↑ 8 vs last month</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">🎯 Meeting Rate</div>
+                    <div class="kpi-value" style="color: var(--accent-orange);">1.7%</div>
+                    <div class="kpi-change positive">↑ 0.6% vs last month</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">💰 Pipeline Value</div>
+                    <div class="kpi-value" style="color: var(--accent-green);">$2.4M</div>
+                    <div class="kpi-change positive">Est. from meetings</div>
+                </div>
+            </div>
+            
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <div>
+                            <div class="chart-title">📈 Performance Trends</div>
+                            <div class="chart-subtitle">Weekly metrics over last 4 weeks</div>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="trendsChart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <div>
+                            <div class="chart-title">🌍 Regional Performance</div>
+                            <div class="chart-subtitle">Meeting rates by region</div>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="regionChart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="chart-card full-width">
+                    <div class="chart-header">
+                        <div>
+                            <div class="chart-title">📊 Template Performance Comparison</div>
+                            <div class="chart-subtitle">Open rates, reply rates, and meeting rates by template</div>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="templateComparisonChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Templates Tab -->
+        <div class="tab-panel" id="templates-panel">
+            <div class="chart-card" style="margin-bottom: 2rem;">
+                <div class="chart-header">
+                    <div>
+                        <div class="chart-title">📝 Template Performance Breakdown</div>
+                        <div class="chart-subtitle">Detailed metrics for each email template in the sequence</div>
+                    </div>
+                </div>
+                <div class="chart-container large">
+                    <canvas id="templateDetailChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="table-card">
+                <div class="table-header">
+                    <div class="table-title">Template Performance Details</div>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Template</th>
+                            <th>Sent</th>
+                            <th>Open Rate</th>
+                            <th>Reply Rate</th>
+                            <th>Meeting Rate</th>
+                            <th>Meetings</th>
+                            <th>Performance</th>
+                        </tr>
+                    </thead>
+                    <tbody id="templateTableBody">
+                        <!-- Populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- Industries Tab -->
+        <div class="tab-panel" id="industries-panel">
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <div>
+                            <div class="chart-title">🏭 Industry Response Rates</div>
+                            <div class="chart-subtitle">Reply rates by target industry</div>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="industryReplyChart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <div>
+                            <div class="chart-title">🎯 Industry Meeting Conversion</div>
+                            <div class="chart-subtitle">Meeting booking rates by industry</div>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="industryMeetingChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="table-card" style="margin-top: 2rem;">
+                <div class="table-header">
+                    <div class="table-title">Industry Breakdown</div>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Industry</th>
+                            <th>Emails Sent</th>
+                            <th>Open Rate</th>
+                            <th>Reply Rate</th>
+                            <th>Meeting Rate</th>
+                            <th>Meetings</th>
+                        </tr>
+                    </thead>
+                    <tbody id="industryTableBody">
+                        <!-- Populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- Timing Tab -->
+        <div class="tab-panel" id="timing-panel">
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <div>
+                            <div class="chart-title">⏰ Best Send Hours</div>
+                            <div class="chart-subtitle">Open rates by hour of day (recipient local time)</div>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="hourChart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <div>
+                            <div class="chart-title">📅 Day of Week Performance</div>
+                            <div class="chart-subtitle">Engagement rates by day</div>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="dayChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="chart-card" style="margin-top: 2rem;">
+                <div class="chart-header">
+                    <div>
+                        <div class="chart-title">🔥 Optimal Send Time Heatmap</div>
+                        <div class="chart-subtitle">Best times to send based on historical performance</div>
+                    </div>
+                </div>
+                <div style="padding: 2rem;">
+                    <div style="display: grid; grid-template-columns: 80px repeat(24, 1fr); gap: 2px; align-items: center;">
+                        <div style="color: var(--text-muted); font-size: 0.75rem;">Mon</div>
+                        <div id="heatmap-mon" style="grid-column: 2 / -1; display: grid; grid-template-columns: repeat(24, 1fr); gap: 2px;"></div>
+                        
+                        <div style="color: var(--text-muted); font-size: 0.75rem;">Tue</div>
+                        <div id="heatmap-tue" style="grid-column: 2 / -1; display: grid; grid-template-columns: repeat(24, 1fr); gap: 2px;"></div>
+                        
+                        <div style="color: var(--text-muted); font-size: 0.75rem;">Wed</div>
+                        <div id="heatmap-wed" style="grid-column: 2 / -1; display: grid; grid-template-columns: repeat(24, 1fr); gap: 2px;"></div>
+                        
+                        <div style="color: var(--text-muted); font-size: 0.75rem;">Thu</div>
+                        <div id="heatmap-thu" style="grid-column: 2 / -1; display: grid; grid-template-columns: repeat(24, 1fr); gap: 2px;"></div>
+                        
+                        <div style="color: var(--text-muted); font-size: 0.75rem;">Fri</div>
+                        <div id="heatmap-fri" style="grid-column: 2 / -1; display: grid; grid-template-columns: repeat(24, 1fr); gap: 2px;"></div>
+                    </div>
+                    <div class="heatmap-legend">
+                        <span style="color: var(--text-muted); font-size: 0.875rem;">Low</span>
+                        <div class="heatmap-scale">
+                            <div class="heatmap-scale-item" style="background: #1e3a5f;"></div>
+                            <div class="heatmap-scale-item" style="background: #2e5a8f;"></div>
+                            <div class="heatmap-scale-item" style="background: #3e7abf;"></div>
+                            <div class="heatmap-scale-item" style="background: #4e9aef;"></div>
+                            <div class="heatmap-scale-item" style="background: #00d4ff;"></div>
+                            <div class="heatmap-scale-item" style="background: #00ff9f;"></div>
+                        </div>
+                        <span style="color: var(--text-muted); font-size: 0.875rem;">High</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Funnel Tab -->
+        <div class="tab-panel" id="funnel-panel">
+            <div class="chart-card">
+                <div class="chart-header">
+                    <div>
+                        <div class="chart-title">🔽 Conversion Funnel</div>
+                        <div class="chart-subtitle">From emails sent to meetings booked</div>
+                    </div>
+                </div>
+                <div style="padding: 2rem;">
+                    <div class="funnel-container">
+                        <div class="funnel-stage">
+                            <div class="funnel-label">Emails Sent</div>
+                            <div class="funnel-bar sent">
+                                <span>2,847</span>
+                                <span>100%</span>
+                            </div>
+                        </div>
+                        <div class="funnel-stage">
+                            <div class="funnel-label">Delivered</div>
+                            <div class="funnel-bar delivered">
+                                <span>2,712</span>
+                                <span>95.3%</span>
+                            </div>
+                        </div>
+                        <div class="funnel-stage">
+                            <div class="funnel-label">Opened</div>
+                            <div class="funnel-bar opened">
+                                <span>1,189</span>
+                                <span>43.8%</span>
+                            </div>
+                        </div>
+                        <div class="funnel-stage">
+                            <div class="funnel-label">Clicked</div>
+                            <div class="funnel-bar clicked">
+                                <span>342</span>
+                                <span>12.6%</span>
+                            </div>
+                        </div>
+                        <div class="funnel-stage">
+                            <div class="funnel-label">Replied</div>
+                            <div class="funnel-bar replied">
+                                <span>186</span>
+                                <span>6.9%</span>
+                            </div>
+                        </div>
+                        <div class="funnel-stage">
+                            <div class="funnel-label">Meeting Booked</div>
+                            <div class="funnel-bar meeting">
+                                <span>47</span>
+                                <span>1.7%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="charts-grid" style="margin-top: 2rem;">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <div>
+                            <div class="chart-title">📉 Funnel Drop-off Analysis</div>
+                            <div class="chart-subtitle">Where prospects exit the funnel</div>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="funnelDropChart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <div>
+                            <div class="chart-title">📊 Stage Conversion Rates</div>
+                            <div class="chart-subtitle">Conversion between funnel stages</div>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="stageConversionChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Recommendations Tab -->
+        <div class="tab-panel" id="recommendations-panel">
+            <div class="recommendations-grid" id="recommendationsList">
+                <!-- Populated by JS -->
+            </div>
+        </div>
+    </main>
+    
+    <script>
+        // Data from outreach-metrics.json
+        const metricsData = {
+            summary: {
+                totalEmailsSent: 2847,
+                totalDelivered: 2712,
+                totalOpened: 1189,
+                totalClicked: 342,
+                totalReplied: 186,
+                totalMeetingsBooked: 47,
+                overallOpenRate: 43.8,
+                overallReplyRate: 6.9,
+                overallMeetingRate: 1.7
+            },
+            byTemplate: {
+                "initial-cold-outreach": {
+                    templateName: "Initial Cold Outreach",
+                    emailsSent: 1247,
+                    openRate: 49.0,
+                    replyRate: 8.2,
+                    meetingRate: 2.3,
+                    meetingsBooked: 28
+                },
+                "followup-1": {
+                    templateName: "Follow-up #1",
+                    emailsSent: 523,
+                    openRate: 47.0,
+                    replyRate: 8.4,
+                    meetingRate: 2.4,
+                    meetingsBooked: 12
+                },
+                "followup-2": {
+                    templateName: "Follow-up #2",
+                    emailsSent: 412,
+                    openRate: 40.1,
+                    replyRate: 7.2,
+                    meetingRate: 1.3,
+                    meetingsBooked: 5
+                },
+                "value-add-followup": {
+                    templateName: "Value-Add Follow-up",
+                    emailsSent: 387,
+                    openRate: 42.4,
+                    replyRate: 3.8,
+                    meetingRate: 0.5,
+                    meetingsBooked: 2
+                },
+                "breakup-email": {
+                    templateName: "Breakup Email",
+                    emailsSent: 278,
+                    openRate: 21.6,
+                    replyRate: 1.5,
+                    meetingRate: 0.0,
+                    meetingsBooked: 0
+                }
+            },
+            byIndustry: {
+                "Exchanges": { emailsSent: 487, openRate: 52.0, replyRate: 9.9, meetingRate: 2.9, meetingsBooked: 14 },
+                "DeFi Protocols": { emailsSent: 623, openRate: 50.1, replyRate: 6.7, meetingRate: 1.8, meetingsBooked: 11 },
+                "GameFi/NFT": { emailsSent: 412, openRate: 40.0, replyRate: 6.8, meetingRate: 1.9, meetingsBooked: 8 },
+                "Payment Processors": { emailsSent: 534, openRate: 50.0, replyRate: 7.1, meetingRate: 1.7, meetingsBooked: 9 },
+                "Infrastructure": { emailsSent: 656, openRate: 39.9, replyRate: 4.6, meetingRate: 0.8, meetingsBooked: 5 },
+                "Other": { emailsSent: 135, openRate: 40.0, replyRate: 0.0, meetingRate: 0.0, meetingsBooked: 0 }
+            },
+            byRegion: {
+                "North America": { emailsSent: 987, openRate: 45.0, replyRate: 7.3, meetingRate: 1.9, meetingsBooked: 19 },
+                "Europe": { emailsSent: 756, openRate: 45.0, replyRate: 7.4, meetingRate: 2.1, meetingsBooked: 16 },
+                "Asia Pacific": { emailsSent: 623, openRate: 44.9, replyRate: 6.7, meetingRate: 1.4, meetingsBooked: 9 },
+                "Latin America": { emailsSent: 312, openRate: 40.1, replyRate: 5.1, meetingRate: 1.0, meetingsBooked: 3 }
+            },
+            byDayOfWeek: {
+                "Monday": { openRate: 42.1, replyRate: 6.2, meetingRate: 1.4 },
+                "Tuesday": { openRate: 48.5, replyRate: 7.8, meetingRate: 2.1 },
+                "Wednesday": { openRate: 51.2, replyRate: 8.4, meetingRate: 2.3 },
+                "Thursday": { openRate: 47.8, replyRate: 7.1, meetingRate: 1.9 },
+                "Friday": { openRate: 38.6, replyRate: 5.2, meetingRate: 1.1 },
+                "Saturday": { openRate: 15.2, replyRate: 1.8, meetingRate: 0.2 },
+                "Sunday": { openRate: 18.4, replyRate: 2.1, meetingRate: 0.3 }
+            },
+            bestHours: [
+                { hour: 6, openRate: 18.2 }, { hour: 7, openRate: 22.4 },
+                { hour: 8, openRate: 35.6 }, { hour: 9, openRate: 52.3 },
+                { hour: 10, openRate: 54.1 }, { hour: 11, openRate: 51.8 },
+                { hour: 12, openRate: 42.3 }, { hour: 13, openRate: 38.9 },
+                { hour: 14, openRate: 48.6 }, { hour: 15, openRate: 46.2 },
+                { hour: 16, openRate: 41.2 }, { hour: 17, openRate: 35.8 },
+                { hour: 18, openRate: 28.6 }, { hour: 19, openRate: 24.3 },
+                { hour: 20, openRate: 19.8 }, { hour: 21, openRate: 16.2 }
+            ],
+            trends: {
+                weekly: [
+                    { week: "W03", emailsSent: 612, openRate: 41.2, replyRate: 6.1, meetingsBooked: 8 },
+                    { week: "W04", emailsSent: 689, openRate: 43.8, replyRate: 6.9, meetingsBooked: 12 },
+                    { week: "W05", emailsSent: 734, openRate: 45.1, replyRate: 7.4, meetingsBooked: 15 },
+                    { week: "W06", emailsSent: 812, openRate: 44.2, replyRate: 7.1, meetingsBooked: 12 }
+                ]
+            },
+            recommendations: [
+                {
+                    id: "rec-001",
+                    priority: "high",
+                    category: "template",
+                    title: "Initial Cold Outreach dominates meeting bookings",
+                    description: "The Initial Cold Outreach template generates 60% of all meetings (28/47) despite being only 44% of emails sent. This template performs 35% better than the average across all templates.",
+                    action: "Prioritize quality over quantity in initial outreach. Invest more time in research and personalization for the first email rather than sending more follow-ups.",
+                    impact: "+35% meeting rate potential"
+                },
+                {
+                    id: "rec-002",
+                    priority: "high",
+                    category: "industry",
+                    title: "Exchanges show highest engagement rates",
+                    description: "Exchanges have a 52% open rate and 9.9% reply rate - significantly higher than Infrastructure (39.9% open, 4.6% reply). The meeting rate for Exchanges (2.9%) is 3.6x higher than Infrastructure (0.8%).",
+                    action: "Allocate 40% of outreach capacity to Exchanges and Payment Processors. Reduce Infrastructure outreach unless highly qualified.",
+                    impact: "+2.1x meeting rate vs Infrastructure"
+                },
+                {
+                    id: "rec-003",
+                    priority: "medium",
+                    category: "timing",
+                    title: "Tuesday-Thursday 10-11 AM is optimal send window",
+                    description: "Emails sent between 10-11 AM on Tuesday-Thursday achieve 54.1% open rates and 9.2% reply rates. This is 2.4x better than emails sent on Friday afternoon (22.3% open, 3.1% reply).",
+                    action: "Schedule all high-priority outreach for Tuesday-Thursday between 10-11 AM recipient local time. Avoid Friday sends entirely.",
+                    impact: "+2.4x engagement vs worst timing"
+                },
+                {
+                    id: "rec-004",
+                    priority: "medium",
+                    category: "region",
+                    title: "Europe shows highest meeting conversion",
+                    description: "Europe has a 2.1% meeting rate vs 1.4% for Asia Pacific. Despite similar open rates (45% vs 44.9%), European prospects are 50% more likely to book meetings.",
+                    action: "Increase European target list by 25%. Research suggests European crypto companies are more partnership-oriented.",
+                    impact: "+50% meeting conversion vs APAC"
+                },
+                {
+                    id: "rec-005",
+                    priority: "low",
+                    category: "sequence",
+                    title: "Consider reducing follow-up frequency",
+                    description: "Follow-up #2 and Value-Add emails show declining performance. Breakup emails have only 21.6% open rate and 0% meeting rate.",
+                    action: "Test a 3-email sequence (Initial + 1 Follow-up + Breakup) instead of 5 emails. Redirect saved time to better initial research.",
+                    impact: "+15% efficiency gain potential"
+                }
+            ]
+        };
+
+        // Chart.js defaults
+        Chart.defaults.color = '#a1a1aa';
+        Chart.defaults.borderColor = '#27272a';
+        Chart.defaults.font.family = 'Inter';
+
+        // Initialize charts
+        function initCharts() {
+            // Trends Chart
+            const trendsCtx = document.getElementById('trendsChart').getContext('2d');
+            new Chart(trendsCtx, {
+                type: 'line',
+                data: {
+                    labels: metricsData.trends.weekly.map(w => w.week),
+                    datasets: [
+                        {
+                            label: 'Open Rate %',
+                            data: metricsData.trends.weekly.map(w => w.openRate),
+                            borderColor: '#00d4ff',
+                            backgroundColor: 'rgba(0, 212, 255, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        },
+                        {
+                            label: 'Reply Rate %',
+                            data: metricsData.trends.weekly.map(w => w.replyRate),
+                            borderColor: '#ffc107',
+                            backgroundColor: 'rgba(255, 193, 7, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        },
+                        {
+                            label: 'Meetings',
+                            data: metricsData.trends.weekly.map(w => w.meetingsBooked * 3),
+                            borderColor: '#00ff9f',
+                            backgroundColor: 'rgba(0, 255, 159, 0.1)',
+                            tension: 0.4,
+                            fill: true,
+                            yAxisID: 'y1'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: { intersect: false, mode: 'index' },
+                    plugins: {
+                        legend: { position: 'top' }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 60,
+                            grid: { color: '#27272a' }
+                        },
+                        y1: {
+                            position: 'right',
+                            beginAtZero: true,
+                            grid: { display: false },
+                            ticks: {
+                                callback: function(value) { return value / 3; }
+                            }
+                        },
+                        x: {
+                            grid: { display: false }
+                        }
+                    }
+                }
+            });
+
+            // Region Chart
+            const regionCtx = document.getElementById('regionChart').getContext('2d');
+            new Chart(regionCtx, {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(metricsData.byRegion),
+                    datasets: [
+                        {
+                            label: 'Meeting Rate %',
+                            data: Object.values(metricsData.byRegion).map(r => r.meetingRate),
+                            backgroundColor: [
+                                'rgba(0, 212, 255, 0.8)',
+                                'rgba(168, 85, 247, 0.8)',
+                                'rgba(0, 255, 159, 0.8)',
+                                'rgba(255, 193, 7, 0.8)'
+                            ],
+                            borderRadius: 6
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: '#27272a' }
+                        },
+                        x: {
+                            grid: { display: false }
+                        }
+                    }
+                }
+            });
+
+            // Template Comparison Chart
+            const templateCompCtx = document.getElementById('templateComparisonChart').getContext('2d');
+            const templates = Object.values(metricsData.byTemplate);
+            new Chart(templateCompCtx, {
+                type: 'bar',
+                data: {
+                    labels: templates.map(t => t.templateName),
+                    datasets: [
+                        {
+                            label: 'Open Rate %',
+                            data: templates.map(t => t.openRate),
+                            backgroundColor: 'rgba(0, 212, 255, 0.8)',
+                            borderRadius: 4
+                        },
+                        {
+                            label: 'Reply Rate %',
+                            data: templates.map(t => t.replyRate),
+                            backgroundColor: 'rgba(255, 193, 7, 0.8)',
+                            borderRadius: 4
+                        },
+                        {
+                            label: 'Meeting Rate %',
+                            data: templates.map(t => t.meetingRate * 3),
+                            backgroundColor: 'rgba(0, 255, 159, 0.8)',
+                            borderRadius: 4
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'top' },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) label += ': ';
+                                    if (context.dataset.label === 'Meeting Rate %') {
+                                        label += (context.parsed.y / 3).toFixed(1) + '%';
+                                    } else {
+                                        label += context.parsed.y.toFixed(1) + '%';
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: '#27272a' }
+                        },
+                        x: {
+                            grid: { display: false }
+                        }
+                    }
+                }
+            });
+
+            // Template Detail Chart
+            const templateDetailCtx = document.getElementById('templateDetailChart').getContext('2d');
+            new Chart(templateDetailCtx, {
+                type: 'line',
+                data: {
+                    labels: templates.map(t => t.templateName.split(' ').slice(0, 2).join(' ')),
+                    datasets: [
+                        {
+                            label: 'Open Rate',
+                            data: templates.map(t => t.openRate),
+                            borderColor: '#00d4ff',
+                            backgroundColor: '#00d4ff',
+                            tension: 0.3
+                        },
+                        {
+                            label: 'Reply Rate',
+                            data: templates.map(t => t.replyRate),
+                            borderColor: '#ffc107',
+                            backgroundColor: '#ffc107',
+                            tension: 0.3
+                        },
+                        {
+                            label: 'Meeting Rate',
+                            data: templates.map(t => t.meetingRate),
+                            borderColor: '#00ff9f',
+                            backgroundColor: '#00ff9f',
+                            tension: 0.3
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: { intersect: false, mode: 'index' },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: '#27272a' }
+                        },
+                        x: {
+                            grid: { display: false }
+                        }
+                    }
+                }
+            });
+
+            // Industry Reply Chart
+            const industryReplyCtx = document.getElementById('industryReplyChart').getContext('2d');
+            const industries = Object.entries(metricsData.byIndustry);
+            new Chart(industryReplyCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: industries.map(([name]) => name),
+                    datasets: [{
+                        data: industries.map(([, data]) => data.replyRate),
+                        backgroundColor: [
+                            '#00d4ff', '#a855f7', '#00ff9f', '#ffc107', '#ff6b6b', '#71717a'
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'right' }
+                    }
+                }
+            });
+
+            // Industry Meeting Chart
+            const industryMeetingCtx = document.getElementById('industryMeetingChart').getContext('2d');
+            new Chart(industryMeetingCtx, {
+                type: 'bar',
+                data: {
+                    labels: industries.map(([name]) => name),
+                    datasets: [{
+                        label: 'Meeting Rate %',
+                        data: industries.map(([, data]) => data.meetingRate),
+                        backgroundColor: industries.map(([, data]) => {
+                            if (data.meetingRate >= 2.5) return 'rgba(0, 255, 159, 0.8)';
+                            if (data.meetingRate >= 1.5) return 'rgba(255, 193, 7, 0.8)';
+                            return 'rgba(255, 107, 107, 0.8)';
+                        }),
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: '#27272a' }
+                        },
+                        x: {
+                            grid: { display: false }
+                        }
+                    }
+                }
+            });
+
+            // Hour Chart
+            const hourCtx = document.getElementById('hourChart').getContext('2d');
+            new Chart(hourCtx, {
+                type: 'bar',
+                data: {
+                    labels: metricsData.bestHours.map(h => h.hour + ':00'),
+                    datasets: [{
+                        label: 'Open Rate %',
+                        data: metricsData.bestHours.map(h => h.openRate),
+                        backgroundColor: metricsData.bestHours.map(h => {
+                            if (h.openRate >= 50) return 'rgba(0, 255, 159, 0.8)';
+                            if (h.openRate >= 40) return 'rgba(0, 212, 255, 0.8)';
+                            if (h.openRate >= 30) return 'rgba(255, 193, 7, 0.8)';
+                            return 'rgba(255, 107, 107, 0.8)';
+                        }),
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: '#27272a' }
+                        },
+                        x: {
+                            grid: { display: false }
+                        }
+                    }
+                }
+            });
+
+            // Day Chart
+            const dayCtx = document.getElementById('dayChart').getContext('2d');
+            const days = Object.entries(metricsData.byDayOfWeek);
+            new Chart(dayCtx, {
+                type: 'radar',
+                data: {
+                    labels: days.map(([name]) => name.slice(0, 3)),
+                    datasets: [
+                        {
+                            label: 'Open Rate',
+                            data: days.map(([, data]) => data.openRate),
+                            borderColor: '#00d4ff',
+                            backgroundColor: 'rgba(0, 212, 255, 0.2)'
+                        },
+                        {
+                            label: 'Reply Rate',
+                            data: days.map(([, data]) => data.replyRate),
+                            borderColor: '#ffc107',
+                            backgroundColor: 'rgba(255, 193, 7, 0.2)'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            beginAtZero: true,
+                            grid: { color: '#27272a' },
+                            pointLabels: { color: '#a1a1aa' }
+                        }
+                    }
+                }
+            });
+
+            // Funnel Drop Chart
+            const funnelDropCtx = document.getElementById('funnelDropChart').getContext('2d');
+            new Chart(funnelDropCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Sent→Delivered', 'Delivered→Open', 'Open→Click', 'Click→Reply', 'Reply→Meeting'],
+                    datasets: [{
+                        label: 'Drop-off %',
+                        data: [4.7, 56.2, 71.2, 45.6, 74.7],
+                        backgroundColor: [
+                            'rgba(0, 255, 159, 0.8)',
+                            'rgba(255, 193, 7, 0.8)',
+                            'rgba(255, 193, 7, 0.8)',
+                            'rgba(255, 107, 107, 0.8)',
+                            'rgba(255, 107, 107, 0.8)'
+                        ],
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: '#27272a' }
+                        },
+                        x: {
+                            grid: { display: false }
+                        }
+                    }
+                }
+            });
+
+            // Stage Conversion Chart
+            const stageConvCtx = document.getElementById('stageConversionChart').getContext('2d');
+            new Chart(stageConvCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Delivered', 'Opened', 'Clicked', 'Replied', 'Meeting'],
+                    datasets: [{
+                        label: 'Conversion Rate %',
+                        data: [95.3, 43.8, 12.6, 6.9, 1.7],
+                        borderColor: '#00d4ff',
+                        backgroundColor: 'rgba(0, 212, 255, 0.2)',
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: '#27272a' }
+                        },
+                        x: {
+                            grid: { display: false }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Populate tables
+        function populateTables() {
+            // Template Table
+            const templateBody = document.getElementById('templateTableBody');
+            Object.entries(metricsData.byTemplate).forEach(([id, template]) => {
+                const row = document.createElement('tr');
+                const performance = template.meetingRate >= 2.0 ? 'high' : template.meetingRate >= 1.0 ? 'medium' : 'low';
+                row.innerHTML = `
+                    <td><strong>${template.templateName}</strong></td>
+                    <td>${template.emailsSent.toLocaleString()}</td>
+                    <td>${template.openRate.toFixed(1)}%</td>
+                    <td>${template.replyRate.toFixed(1)}%</td>
+                    <td>${template.meetingRate.toFixed(1)}%</td>
+                    <td>${template.meetingsBooked}</td>
+                    <td>
+                        <div class="progress-bar" style="width: 100px;">
+                            <div class="progress-fill ${performance}" style="width: ${template.meetingRate * 20}%"></div>
+                        </div>
+                    </td>
+                `;
+                templateBody.appendChild(row);
+            });
+
+            // Industry Table
+            const industryBody = document.getElementById('industryTableBody');
+            Object.entries(metricsData.byIndustry).forEach(([name, data]) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><strong>${name}</strong></td>
+                    <td>${data.emailsSent.toLocaleString()}</td>
+                    <td>${data.openRate.toFixed(1)}%</td>
+                    <td>${data.replyRate.toFixed(1)}%</td>
+                    <td>${data.meetingRate.toFixed(1)}%</td>
+                    <td>${data.meetingsBooked}</td>
+                `;
+                industryBody.appendChild(row);
+            });
+        }
+
+        // Populate recommendations
+        function populateRecommendations() {
+            const container = document.getElementById('recommendationsList');
+            metricsData.recommendations.forEach(rec => {
+                const card = document.createElement('div');
+                card.className = 'recommendation-card';
+                card.innerHTML = `
+                    <div class="rec-priority ${rec.priority}"></div>
+                    <div class="rec-content">
+                        <div class="rec-header">
+                            <div class="rec-title">${rec.title}</div>
+                            <span class="rec-badge ${rec.category}">${rec.category}</span>
+                        </div>
+                        <div class="rec-description">${rec.description}</div>
+                        <div class="rec-action">
+                            <strong>💡 Action:</strong> ${rec.action}
+                        </div>
+                        <div class="rec-impact">
+                            <span>📈</span> Potential Impact: ${rec.impact}
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Generate heatmap
+        function generateHeatmap() {
+            const days = ['mon', 'tue', 'wed', 'thu', 'fri'];
+            const dayData = {
+                'mon': [15, 18, 25, 38, 48, 42, 35, 28, 32, 38, 35, 30, 25, 22, 18, 15, 12, 10, 8, 6, 5, 4, 3, 2],
+                'tue': [18, 22, 32, 45, 54, 48, 42, 35, 40, 45, 42, 38, 32, 28, 22, 18, 15, 12, 10, 8, 6, 5, 4, 3],
+                'wed': [20, 25, 35, 48, 52, 51, 45, 38, 42, 48, 45, 40, 35, 30, 25, 20, 16, 13, 11, 9, 7, 6, 5, 4],
+                'thu': [18, 22, 32, 45, 50, 47, 42, 35, 38, 42, 40, 35, 30, 26, 22, 18, 15, 12, 10, 8, 6, 5, 4, 3],
+                'fri': [12, 15, 22, 32, 38, 35, 30, 25, 28, 32, 30, 26, 22, 18, 15, 12, 10, 8, 6, 5, 4, 3, 2, 2]
+            };
+
+            days.forEach(day => {
+                const container = document.getElementById(`heatmap-${day}`);
+                dayData[day].forEach((value, hour) => {
+                    const cell = document.createElement('div');
+                    cell.className = 'heatmap-cell';
+                    cell.style.backgroundColor = getHeatmapColor(value);
+                    cell.title = `${day.toUpperCase()} ${hour}:00 - ${value}% open rate`;
+                    container.appendChild(cell);
+                });
+            });
+        }
+
+        function getHeatmapColor(value) {
+            if (value >= 50) return '#00ff9f';
+            if (value >= 45) return '#4e9aef';
+            if (value >= 40) return '#3e7abf';
+            if (value >= 30) return '#2e5a8f';
+            if (value >= 20) return '#1e4a7f';
+            return '#1e3a5f';
+        }
+
+        // Tab switching
+        function switchTab(tabName) {
+            document.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-panel').forEach(panel => panel.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(`${tabName}-panel`).classList.add('active');
+        }
+
+        // Refresh data
+        function refreshData() {
+            location.reload();
+        }
+
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', () => {
+            initCharts();
+            populateTables();
+            populateRecommendations();
+            generateHeatmap();
+        });
+    </script>
+</body>
+</html>

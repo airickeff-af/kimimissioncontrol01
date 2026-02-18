@@ -1,0 +1,335 @@
+/**
+ * Dashboard Performance Optimizer
+ * TASK-CI-004: Dashboard Load Time Optimization
+ * 
+ * Implements:
+ * 1. Lazy loading for Chart.js
+ * 2. Code splitting for components
+ * 3. Service worker for caching
+ * 4. CDN resources for external libraries
+ * 5. Minified CSS/JS
+ */
+
+// ============================================
+// 1. LAZY LOADER UTILITY
+// ============================================
+
+const LazyLoader = {
+    loadedScripts: new Set(),
+    
+    /**
+     * Lazy load a script dynamically
+     */
+    loadScript(src, options = {}) {
+        return new Promise((resolve, reject) => {
+            if (this.loadedScripts.has(src)) {
+                resolve();
+                return;
+            }
+            
+            const script = document.createElement('script');
+            script.src = src;
+            script.async = options.async !== false;
+            script.defer = options.defer === true;
+            
+            if (options.module) {
+                script.type = 'module';
+            }
+            
+            script.onload = () => {
+                this.loadedScripts.add(src);
+                resolve();
+            };
+            script.onerror = reject;
+            
+            document.head.appendChild(script);
+        });
+    },
+    
+    /**
+     * Lazy load Chart.js only when charts are needed
+     */
+    async loadChartJS() {
+        if (window.Chart) return window.Chart;
+        
+        // Use CDN with high availability
+        const cdnUrl = 'https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js';
+        await this.loadScript(cdnUrl, { async: true });
+        
+        // Configure Chart.js defaults for performance
+        if (window.Chart) {
+            Chart.defaults.responsive = true;
+            Chart.defaults.maintainAspectRatio = false;
+            Chart.defaults.animation.duration = 0; // Disable animations for better performance
+            Chart.defaults.transitions.active.animation.duration = 0;
+        }
+        
+        return window.Chart;
+    },
+    
+    /**
+     * Load component on demand
+     */
+    async loadComponent(name) {
+        const componentMap = {
+            'token-chart': '/mission-control/dashboard/components/token-chart.js',
+            'agent-list': '/mission-control/dashboard/components/agent-list.js',
+            'activity-feed': '/mission-control/dashboard/components/activity-feed.js',
+            'task-board': '/mission-control/dashboard/components/task-board.js'
+        };
+        
+        const src = componentMap[name];
+        if (!src) {
+            console.warn(`Component ${name} not found`);
+            return null;
+        }
+        
+        try {
+            await this.loadScript(src, { module: true, async: true });
+            return window[`MC${name.charAt(0).toUpperCase() + name.slice(1)}`];
+        } catch (e) {
+            console.error(`Failed to load component ${name}:`, e);
+            return null;
+        }
+    }
+};
+
+// ============================================
+// 2. RESOURCE PRELOADER
+// ============================================
+
+const ResourcePreloader = {
+    /**
+     * Preload critical resources
+     */
+    preloadCritical() {
+        const criticalResources = [
+            { rel: 'preload', href: '/mission-control/dashboard/css/critical.css', as: 'style' },
+            { rel: 'preload', href: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap', as: 'style' },
+            { rel: 'preconnect', href: 'https://cdn.jsdelivr.net' },
+            { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
+            { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: true }
+        ];
+        
+        criticalResources.forEach(resource => {
+            const link = document.createElement('link');
+            Object.entries(resource).forEach(([key, value]) => {
+                if (value !== undefined) link.setAttribute(key, value);
+            });
+            document.head.appendChild(link);
+        });
+    },
+    
+    /**
+     * Prefetch resources that will likely be needed
+     */
+    prefetch(url) {
+        const link = document.createElement('link');
+        link.rel = 'prefetch';
+        link.href = url;
+        document.head.appendChild(link);
+    }
+};
+
+// ============================================
+// 3. SERVICE WORKER REGISTRATION
+// ============================================
+
+const ServiceWorkerManager = {
+    async register() {
+        if ('serviceWorker' in navigator) {
+            try {
+                const registration = await navigator.serviceWorker.register(
+                    '/mission-control/dashboard/sw.js',
+                    { scope: '/mission-control/dashboard/' }
+                );
+                
+                registration.addEventListener('updatefound', () => {
+                    const newWorker = registration.installing;
+                    newWorker.addEventListener('statechange', () => {
+                        if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                            // New version available
+                            console.log('New dashboard version available');
+                            // Optionally show update notification
+                        }
+                    });
+                });
+                
+                return registration;
+            } catch (error) {
+                console.log('SW registration failed:', error);
+            }
+        }
+        return null;
+    }
+};
+
+// ============================================
+// 4. PERFORMANCE MONITORING
+// ============================================
+
+const PerformanceMonitor = {
+    metrics: {},
+    
+    /**
+     * Track First Contentful Paint (FCP)
+     */
+    trackFCP() {
+        if ('PerformanceObserver' in window) {
+            const observer = new PerformanceObserver((list) => {
+                const entries = list.getEntries();
+                entries.forEach(entry => {
+                    if (entry.name === 'first-contentful-paint') {
+                        this.metrics.fcp = entry.startTime;
+                        console.log(`FCP: ${entry.startTime.toFixed(2)}ms`);
+                    }
+                });
+            });
+            observer.observe({ entryTypes: ['paint'] });
+        }
+    },
+    
+    /**
+     * Track Time to Interactive (TTI)
+     */
+    trackTTI() {
+        // Simplified TTI estimation
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const timing = performance.timing;
+                const tti = timing.domInteractive - timing.navigationStart;
+                this.metrics.tti = tti;
+                console.log(`TTI: ${tti}ms`);
+            }, 0);
+        });
+    },
+    
+    /**
+     * Get bundle size estimate
+     */
+    getBundleSize() {
+        let totalSize = 0;
+        performance.getEntriesByType('resource').forEach(r => {
+            if (r.transferSize) {
+                totalSize += r.transferSize;
+            }
+        });
+        this.metrics.bundleSize = totalSize;
+        return totalSize;
+    },
+    
+    /**
+     * Report metrics
+     */
+    report() {
+        return {
+            fcp: this.metrics.fcp,
+            tti: this.metrics.tti,
+            bundleSize: this.metrics.bundleSize,
+            timestamp: new Date().toISOString()
+        };
+    }
+};
+
+// ============================================
+// 5. OPTIMIZED DASHBOARD INITIALIZER
+// ============================================
+
+const DashboardOptimizer = {
+    /**
+     * Initialize optimized dashboard
+     */
+    async init() {
+        // Start performance tracking
+        PerformanceMonitor.trackFCP();
+        PerformanceMonitor.trackTTI();
+        
+        // Preload critical resources
+        ResourcePreloader.preloadCritical();
+        
+        // Register service worker for caching
+        await ServiceWorkerManager.register();
+        
+        // Initialize lazy loading for images
+        this.initLazyImages();
+        
+        // Initialize intersection observer for components
+        this.initComponentLoader();
+        
+        console.log('Dashboard optimizer initialized');
+    },
+    
+    /**
+     * Initialize lazy image loading
+     */
+    initLazyImages() {
+        if ('IntersectionObserver' in window) {
+            const imageObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        img.src = img.dataset.src;
+                        img.classList.remove('lazy');
+                        imageObserver.unobserve(img);
+                    }
+                });
+            }, { rootMargin: '50px' });
+            
+            document.querySelectorAll('img.lazy').forEach(img => {
+                imageObserver.observe(img);
+            });
+        }
+    },
+    
+    /**
+     * Initialize component lazy loading
+     */
+    initComponentLoader() {
+        if ('IntersectionObserver' in window) {
+            const componentObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const element = entry.target;
+                        const componentName = element.dataset.component;
+                        if (componentName) {
+                            LazyLoader.loadComponent(componentName).then(Component => {
+                                if (Component && Component.init) {
+                                    Component.init(element);
+                                }
+                            });
+                        }
+                        componentObserver.unobserve(element);
+                    }
+                });
+            }, { rootMargin: '100px' });
+            
+            document.querySelectorAll('[data-component]').forEach(el => {
+                componentObserver.observe(el);
+            });
+        }
+    },
+    
+    /**
+     * Load Chart.js on demand
+     */
+    async loadCharts(containerId, chartConfig) {
+        const Chart = await LazyLoader.loadChartJS();
+        const ctx = document.getElementById(containerId)?.getContext('2d');
+        if (ctx && Chart) {
+            return new Chart(ctx, chartConfig);
+        }
+        return null;
+    }
+};
+
+// Auto-initialize when DOM is ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => DashboardOptimizer.init());
+} else {
+    DashboardOptimizer.init();
+}
+
+// Export for global access
+window.DashboardOptimizer = DashboardOptimizer;
+window.LazyLoader = LazyLoader;
+window.PerformanceMonitor = PerformanceMonitor;

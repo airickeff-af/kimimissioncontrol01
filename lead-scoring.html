@@ -1,0 +1,1276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lead Scoring Dashboard | Mission Control</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            image-rendering: pixelated;
+        }
+        
+        :root {
+            --bg-color: #2d1b4e;
+            --panel-bg: #f4e4c1;
+            --panel-border: #8b7355;
+            --text-dark: #2c1810;
+            --text-light: #f4e4c1;
+            --accent: #ff6b6b;
+            --accent-green: #51cf66;
+            --accent-blue: #339af0;
+            --accent-yellow: #fcc419;
+            --accent-purple: #9775fa;
+            --accent-orange: #ff922b;
+            --tier-p0: #ff6b6b;
+            --tier-p1: #ffa94d;
+            --tier-p2: #ffd43b;
+            --tier-p3: #69db7c;
+            --tier-cold: #adb5bd;
+        }
+        
+        body {
+            font-family: 'VT323', monospace;
+            background: var(--bg-color);
+            color: var(--text-dark);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        /* Pixel Art Pattern Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.1) 2px, rgba(0,0,0,0.1) 4px),
+                repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0,0,0,0.1) 2px, rgba(0,0,0,0.1) 4px);
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        /* Main Container */
+        .game-container {
+            position: relative;
+            z-index: 1;
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 15px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Header - Game Title Style */
+        .game-header {
+            background: linear-gradient(180deg, #5c3d7a 0%, #3d2652 100%);
+            border: 4px solid #2d1b4e;
+            border-radius: 8px;
+            padding: 12px 20px;
+            margin-bottom: 12px;
+            box-shadow: 
+                0 4px 0 #1a0f2e,
+                inset 0 2px 0 rgba(255,255,255,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .game-title {
+            font-family: 'Press Start 2P', cursive;
+            font-size: clamp(0.7rem, 2vw, 1rem);
+            color: var(--accent-yellow);
+            text-shadow: 3px 3px 0 #2d1b4e;
+            letter-spacing: 2px;
+        }
+        
+        .game-stats {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .stat-box {
+            background: var(--panel-bg);
+            border: 3px solid var(--panel-border);
+            border-radius: 4px;
+            padding: 6px 12px;
+            font-size: 1rem;
+            min-width: 70px;
+            text-align: center;
+        }
+        
+        .stat-label {
+            color: #8b7355;
+            font-size: 0.8rem;
+        }
+        
+        .stat-value {
+            color: var(--text-dark);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        /* Filter Panel */
+        .filter-panel {
+            background: var(--panel-bg);
+            border: 4px solid var(--panel-border);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 12px;
+            box-shadow: 
+                0 4px 0 #5c4a3a,
+                inset 0 2px 0 rgba(255,255,255,0.5);
+        }
+        
+        .filter-title {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.6rem;
+            color: var(--panel-border);
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--panel-border);
+        }
+        
+        .filter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+        }
+        
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        
+        .filter-label {
+            font-size: 0.9rem;
+            color: var(--text-dark);
+            font-weight: bold;
+        }
+        
+        .filter-select, .filter-input {
+            padding: 8px 12px;
+            border: 3px solid var(--panel-border);
+            border-radius: 4px;
+            background: white;
+            font-family: 'VT323', monospace;
+            font-size: 1rem;
+            color: var(--text-dark);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .filter-select:hover, .filter-input:hover {
+            border-color: #5c4a3a;
+        }
+        
+        .filter-select:focus, .filter-input:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 2px rgba(51, 154, 240, 0.3);
+        }
+        
+        .range-inputs {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .range-inputs input {
+            width: 70px;
+            text-align: center;
+        }
+        
+        .range-separator {
+            font-weight: bold;
+            color: var(--panel-border);
+        }
+        
+        /* Action Buttons */
+        .filter-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.55rem;
+            padding: 10px 16px;
+            border: 3px solid #2d1b4e;
+            border-radius: 6px;
+            cursor: pointer;
+            box-shadow: 0 4px 0 #2d1b4e;
+            transition: all 0.1s;
+            color: var(--text-dark);
+            text-transform: uppercase;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 0 #2d1b4e;
+        }
+        
+        .btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 0 0 #2d1b4e;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(180deg, #69db7c 0%, #51cf66 100%);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(180deg, #74c0fc 0%, #339af0 100%);
+        }
+        
+        .btn-export {
+            background: linear-gradient(180deg, #ffc078 0%, #ffa94d 100%);
+        }
+        
+        /* Sort Bar */
+        .sort-bar {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+        
+        .sort-label {
+            font-size: 1rem;
+            color: var(--text-light);
+            font-weight: bold;
+        }
+        
+        .sort-btn {
+            padding: 6px 12px;
+            border: 2px solid var(--panel-border);
+            border-radius: 4px;
+            background: var(--panel-bg);
+            font-family: 'VT323', monospace;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .sort-btn:hover {
+            background: white;
+        }
+        
+        .sort-btn.active {
+            background: var(--accent-blue);
+            color: white;
+            border-color: var(--accent-blue);
+        }
+        
+        /* Lead Grid */
+        .lead-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        /* Lead Card */
+        .lead-card {
+            background: var(--panel-bg);
+            border: 4px solid var(--panel-border);
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 
+                0 4px 0 #5c4a3a,
+                inset 0 2px 0 rgba(255,255,255,0.5);
+            transition: all 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .lead-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 
+                0 6px 0 #5c4a3a,
+                inset 0 2px 0 rgba(255,255,255,0.5);
+        }
+        
+        .lead-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 6px;
+            height: 100%;
+        }
+        
+        .lead-card.tier-p0::before { background: var(--tier-p0); }
+        .lead-card.tier-p1::before { background: var(--tier-p1); }
+        .lead-card.tier-p2::before { background: var(--tier-p2); }
+        .lead-card.tier-p3::before { background: var(--tier-p3); }
+        .lead-card.tier-cold::before { background: var(--tier-cold); }
+        
+        .lead-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+            padding-left: 10px;
+        }
+        
+        .lead-company {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.65rem;
+            color: var(--text-dark);
+            line-height: 1.4;
+            flex: 1;
+        }
+        
+        .tier-badge {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.5rem;
+            padding: 4px 8px;
+            border-radius: 4px;
+            color: white;
+            text-shadow: 1px 1px 0 rgba(0,0,0,0.3);
+            margin-left: 8px;
+        }
+        
+        .tier-badge.p0 { background: var(--tier-p0); }
+        .tier-badge.p1 { background: var(--tier-p1); }
+        .tier-badge.p2 { background: var(--tier-p2); color: var(--text-dark); text-shadow: none; }
+        .tier-badge.p3 { background: var(--tier-p3); }
+        .tier-badge.cold { background: var(--tier-cold); }
+        
+        .lead-contact {
+            padding-left: 10px;
+            margin-bottom: 12px;
+        }
+        
+        .contact-name {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: var(--text-dark);
+        }
+        
+        .contact-title {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        /* Score Bar */
+        .score-section {
+            padding-left: 10px;
+            margin-bottom: 12px;
+        }
+        
+        .score-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+        
+        .score-label {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .score-value {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.7rem;
+            color: var(--text-dark);
+        }
+        
+        .score-bar {
+            width: 100%;
+            height: 20px;
+            background: #ddd;
+            border: 3px solid var(--panel-border);
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .score-fill {
+            height: 100%;
+            transition: width 0.5s ease-out;
+            position: relative;
+        }
+        
+        .score-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 50%;
+            background: linear-gradient(180deg, rgba(255,255,255,0.4), transparent);
+        }
+        
+        .score-fill.high { background: linear-gradient(180deg, #69db7c 0%, #51cf66 100%); }
+        .score-fill.medium-high { background: linear-gradient(180deg, #ffd43b 0%, #fcc419 100%); }
+        .score-fill.medium { background: linear-gradient(180deg, #ffa94d 0%, #ff922b 100%); }
+        .score-fill.low { background: linear-gradient(180deg, #adb5bd 0%, #868e96 100%); }
+        
+        /* Score Breakdown */
+        .score-breakdown {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            padding-left: 10px;
+            margin-bottom: 12px;
+        }
+        
+        .breakdown-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.85rem;
+        }
+        
+        .breakdown-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            border: 2px solid var(--panel-border);
+        }
+        
+        .breakdown-dot.size { background: var(--accent-green); }
+        .breakdown-dot.partnership { background: var(--accent-blue); }
+        .breakdown-dot.contact { background: var(--accent-yellow); }
+        .breakdown-dot.market { background: var(--accent-purple); }
+        
+        /* Action Required */
+        .action-box {
+            background: rgba(255,255,255,0.7);
+            border: 2px solid var(--panel-border);
+            border-radius: 4px;
+            padding: 8px 10px;
+            margin-left: 10px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .action-icon {
+            font-size: 1.2rem;
+        }
+        
+        /* Lead Actions */
+        .lead-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+            margin-left: 10px;
+        }
+        
+        .lead-btn {
+            flex: 1;
+            padding: 8px;
+            border: 2px solid var(--panel-border);
+            border-radius: 4px;
+            background: white;
+            font-family: 'VT323', monospace;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+        
+        .lead-btn:hover {
+            background: var(--panel-border);
+            color: white;
+        }
+        
+        /* Heat Map Section */
+        .heatmap-section {
+            background: var(--panel-bg);
+            border: 4px solid var(--panel-border);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 12px;
+            box-shadow: 
+                0 4px 0 #5c4a3a,
+                inset 0 2px 0 rgba(255,255,255,0.5);
+        }
+        
+        .heatmap-title {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.6rem;
+            color: var(--panel-border);
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--panel-border);
+        }
+        
+        .heatmap-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 8px;
+        }
+        
+        .heatmap-cell {
+            padding: 10px;
+            border-radius: 4px;
+            text-align: center;
+            border: 2px solid var(--panel-border);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .heatmap-cell:hover {
+            transform: scale(1.05);
+        }
+        
+        .heatmap-label {
+            font-size: 0.8rem;
+            color: var(--text-dark);
+            margin-bottom: 4px;
+        }
+        
+        .heatmap-value {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.7rem;
+            color: var(--text-dark);
+        }
+        
+        /* Stats Overview */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        
+        .stats-card {
+            background: var(--panel-bg);
+            border: 4px solid var(--panel-border);
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+            box-shadow: 
+                0 4px 0 #5c4a3a,
+                inset 0 2px 0 rgba(255,255,255,0.5);
+        }
+        
+        .stats-number {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 1.2rem;
+            color: var(--text-dark);
+            margin-bottom: 4px;
+        }
+        
+        .stats-label {
+            font-size: 0.85rem;
+            color: #666;
+        }
+        
+        /* Loading State */
+        .loading-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 60px;
+        }
+        
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid var(--panel-border);
+            border-top-color: var(--accent-blue);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .loading-text {
+            margin-top: 16px;
+            font-size: 1.2rem;
+            color: var(--text-light);
+        }
+        
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px;
+            color: var(--text-light);
+        }
+        
+        .empty-icon {
+            font-size: 4rem;
+            margin-bottom: 16px;
+        }
+        
+        .empty-text {
+            font-size: 1.2rem;
+        }
+        
+        /* Error State */
+        .error-state {
+            background: rgba(255, 107, 107, 0.2);
+            border: 4px solid var(--tier-p0);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+            color: var(--text-light);
+        }
+        
+        .error-icon {
+            font-size: 3rem;
+            margin-bottom: 12px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .game-container {
+                padding: 10px;
+            }
+            
+            .game-header {
+                padding: 10px 15px;
+            }
+            
+            .game-title {
+                font-size: 0.6rem;
+            }
+            
+            .filter-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .lead-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .score-breakdown {
+                grid-template-columns: 1fr;
+            }
+            
+            .sort-bar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .lead-card {
+            animation: fadeIn 0.3s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <!-- Header -->
+        <div class="game-header">
+            <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                <div class="game-title">◈ LEAD SCORING HQ</div>
+                <button onclick="refreshData()" id="refreshBtn" style="
+                    background: var(--accent-green);
+                    border: 3px solid var(--text-dark);
+                    padding: 8px 16px;
+                    font-family: 'VT323', monospace;
+                    font-size: 1rem;
+                    cursor: pointer;
+                    box-shadow: 4px 4px 0 var(--text-dark);
+                ">🔄 REFRESH</button>
+            </div>
+            <div class="game-stats">
+                <div class="stat-box">
+                    <div class="stat-label">TOTAL</div>
+                    <div class="stat-value" id="totalLeads">-</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">AVG SCORE</div>
+                    <div class="stat-value" id="avgScore">-</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">P0/P1</div>
+                    <div class="stat-value" id="priorityCount">-</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Stats Overview -->
+        <div class="stats-grid" id="statsGrid">
+            <!-- Dynamically populated -->
+        </div>
+        
+        <!-- Heat Map -->
+        <div class="heatmap-section">
+            <div class="heatmap-title">TIER DISTRIBUTION HEAT MAP</div>
+            <div class="heatmap-grid" id="heatmapGrid">
+                <!-- Dynamically populated -->
+            </div>
+        </div>
+        
+        <!-- Filter Panel -->
+        <div class="filter-panel">
+            <div class="filter-title">FILTER LEADS</div>
+            <div class="filter-grid">
+                <div class="filter-group">
+                    <label class="filter-label">Priority Tier</label>
+                    <select class="filter-select" id="filterTier">
+                        <option value="">All Tiers</option>
+                        <option value="P0">P0 - Critical</option>
+                        <option value="P1">P1 - High</option>
+                        <option value="P2">P2 - Medium</option>
+                        <option value="P3">P3 - Low</option>
+                        <option value="Cold">Cold</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label class="filter-label">Region</label>
+                    <select class="filter-select" id="filterRegion">
+                        <option value="">All Regions</option>
+                        <option value="Philippines">Philippines</option>
+                        <option value="Singapore">Singapore</option>
+                        <option value="Hong Kong">Hong Kong</option>
+                        <option value="Indonesia">Indonesia</option>
+                        <option value="Vietnam">Vietnam</option>
+                        <option value="Thailand">Thailand</option>
+                        <option value="Malaysia">Malaysia</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label class="filter-label">Industry</label>
+                    <select class="filter-select" id="filterIndustry">
+                        <option value="">All Industries</option>
+                        <option value="crypto_exchange">Crypto Exchange</option>
+                        <option value="fintech">Fintech</option>
+                        <option value="ride_hailing">Ride Hailing</option>
+                        <option value="ecommerce">E-commerce</option>
+                        <option value="gaming">Gaming</option>
+                        <option value="saas">SaaS</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label class="filter-label">Score Range</label>
+                    <div class="range-inputs">
+                        <input type="number" class="filter-input" id="scoreMin" placeholder="0" min="0" max="100">
+                        <span class="range-separator">-</span>
+                        <input type="number" class="filter-input" id="scoreMax" placeholder="100" min="0" max="100">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="filter-actions">
+                <button class="btn btn-primary" onclick="applyFilters()">🔍 Apply Filters</button>
+                <button class="btn btn-secondary" onclick="resetFilters()">↺ Reset</button>
+                <button class="btn btn-export" onclick="exportToCSV()">📥 Export CSV</button>
+            </div>
+        </div>
+        
+        <!-- Sort Bar -->
+        <div class="sort-bar">
+            <span class="sort-label">Sort by:</span>
+            <button class="sort-btn active" data-sort="score" onclick="sortLeads('score')">Score ↓</button>
+            <button class="sort-btn" data-sort="company" onclick="sortLeads('company')">Company</button>
+            <button class="sort-btn" data-sort="size" onclick="sortLeads('size')">Company Size</button>
+            <button class="sort-btn" data-sort="updated" onclick="sortLeads('updated')">Last Updated</button>
+        </div>
+        
+        <!-- Lead Grid -->
+        <div class="lead-grid" id="leadGrid">
+            <div class="loading-container">
+                <div class="loading-spinner"></div>
+                <div class="loading-text">Loading leads from API...</div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // API Configuration
+        const API_BASE = 'http://localhost:3001';
+        const CACHE_KEY = 'leadScoringData';
+        const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+        
+        // Global state
+        let allLeads = [];
+        let filteredLeads = [];
+        let currentSort = { field: 'score', direction: 'desc' };
+        let summaryData = null;
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            loadLeads();
+        });
+        
+        // Get cached data
+        function getCachedData() {
+            try {
+                const cached = localStorage.getItem(CACHE_KEY);
+                if (cached) {
+                    const { data, timestamp } = JSON.parse(cached);
+                    if (Date.now() - timestamp < CACHE_DURATION) {
+                        return data;
+                    }
+                }
+            } catch (e) {
+                console.error('Cache read error:', e);
+            }
+            return null;
+        }
+        
+        // Set cached data
+        function setCachedData(data) {
+            try {
+                localStorage.setItem(CACHE_KEY, JSON.stringify({
+                    data,
+                    timestamp: Date.now()
+                }));
+            } catch (e) {
+                console.error('Cache write error:', e);
+            }
+        }
+        
+        // Load leads from API
+        async function loadLeads(forceRefresh = false) {
+            const refreshBtn = document.getElementById('refreshBtn');
+            refreshBtn.textContent = '⏳ LOADING...';
+            refreshBtn.disabled = true;
+            
+            try {
+                // Check cache first
+                if (!forceRefresh) {
+                    const cached = getCachedData();
+                    if (cached) {
+                        allLeads = cached.scoredLeads || [];
+                        summaryData = cached.summary;
+                        filteredLeads = [...allLeads];
+                        updateHeaderStats(summaryData);
+                        renderStatsGrid(summaryData);
+                        renderHeatMap(summaryData?.tierDistribution || {});
+                        renderLeads();
+                        
+                        // Fetch fresh data in background
+                        fetchFreshData();
+                        refreshBtn.textContent = '🔄 REFRESH';
+                        refreshBtn.disabled = false;
+                        return;
+                    }
+                }
+                
+                await fetchFreshData();
+                
+            } catch (error) {
+                console.error('Error loading leads:', error);
+                document.getElementById('leadGrid').innerHTML = `
+                    <div class="error-state">
+                        <div class="error-icon">⚠️</div>
+                        <div>Failed to load leads from API</div>
+                        <div style="font-size: 0.9rem; margin-top: 8px;">${error.message}</div>
+                        <button onclick="loadLeads(true)" style="margin-top: 12px; padding: 8px 16px; cursor: pointer;">Try Again</button>
+                    </div>
+                `;
+                
+                // Try to use cached data as fallback
+                const cached = getCachedData();
+                if (cached) {
+                    allLeads = cached.scoredLeads || [];
+                    summaryData = cached.summary;
+                    filteredLeads = [...allLeads];
+                    updateHeaderStats(summaryData);
+                    renderStatsGrid(summaryData);
+                    renderHeatMap(summaryData?.tierDistribution || {});
+                    renderLeads();
+                }
+            } finally {
+                refreshBtn.textContent = '🔄 REFRESH';
+                refreshBtn.disabled = false;
+            }
+        }
+        
+        // Fetch fresh data from API
+        async function fetchFreshData() {
+            const response = await fetch(`${API_BASE}/api/leads`);
+            
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
+            const data = await response.json();
+            
+            allLeads = data.scoredLeads || [];
+            summaryData = data.summary;
+            filteredLeads = [...allLeads];
+            
+            // Cache the data
+            setCachedData(data);
+            
+            // Update UI
+            updateHeaderStats(summaryData);
+            renderStatsGrid(summaryData);
+            renderHeatMap(summaryData?.tierDistribution || {});
+            renderLeads();
+        }
+        
+        // Refresh data
+        function refreshData() {
+            loadLeads(true);
+        }
+        
+        // Update header stats
+        function updateHeaderStats(summary) {
+            if (!summary) return;
+            document.getElementById('totalLeads').textContent = summary.totalLeads || 0;
+            document.getElementById('avgScore').textContent = summary.averageScore || 0;
+            const tierDist = summary.tierDistribution || {};
+            const priorityCount = (tierDist.P0 || 0) + (tierDist.P1 || 0);
+            document.getElementById('priorityCount').textContent = priorityCount;
+        }
+        
+        // Render stats grid
+        function renderStatsGrid(summary) {
+            const statsGrid = document.getElementById('statsGrid');
+            if (!summary?.categoryAverages) {
+                statsGrid.innerHTML = '';
+                return;
+            }
+            
+            const categories = summary.categoryAverages;
+            
+            statsGrid.innerHTML = `
+                <div class="stats-card">
+                    <div class="stats-number">${categories.companySizeFunding}</div>
+                    <div class="stats-label">Company Size</div>
+                </div>
+                <div class="stats-card">
+                    <div class="stats-number">${categories.partnershipPotential}</div>
+                    <div class="stats-label">Partnership</div>
+                </div>
+                <div class="stats-card">
+                    <div class="stats-number">${categories.contactAccessibility}</div>
+                    <div class="stats-label">Contact Access</div>
+                </div>
+                <div class="stats-card">
+                    <div class="stats-number">${categories.marketRelevance}</div>
+                    <div class="stats-label">Market Fit</div>
+                </div>
+            `;
+        }
+        
+        // Render heat map
+        function renderHeatMap(tierDistribution) {
+            const heatmapGrid = document.getElementById('heatmapGrid');
+            const tiers = [
+                { key: 'P0', label: 'P0 Critical', color: '#ff6b6b' },
+                { key: 'P1', label: 'P1 High', color: '#ffa94d' },
+                { key: 'P2', label: 'P2 Medium', color: '#ffd43b' },
+                { key: 'P3', label: 'P3 Low', color: '#69db7c' },
+                { key: 'Cold', label: 'Cold', color: '#adb5bd' }
+            ];
+            
+            heatmapGrid.innerHTML = tiers.map(tier => {
+                const count = tierDistribution[tier.key] || 0;
+                const opacity = Math.max(0.2, Math.min(1, count / 10));
+                return `
+                    <div class="heatmap-cell" style="background: ${tier.color}; opacity: ${opacity};"
+                         onclick="filterByTier('${tier.key}')">
+                        <div class="heatmap-label">${tier.label}</div>
+                        <div class="heatmap-value">${count}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        // Filter by tier from heat map
+        function filterByTier(tier) {
+            document.getElementById('filterTier').value = tier;
+            applyFilters();
+        }
+        
+        // Get score bar class
+        function getScoreClass(score) {
+            if (score >= 70) return 'high';
+            if (score >= 55) return 'medium-high';
+            if (score >= 40) return 'medium';
+            return 'low';
+        }
+        
+        // Get tier class
+        function getTierClass(tier) {
+            return `tier-${tier.toLowerCase()}`;
+        }
+        
+        // Render leads
+        function renderLeads() {
+            const leadGrid = document.getElementById('leadGrid');
+            
+            if (filteredLeads.length === 0) {
+                leadGrid.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">🔍</div>
+                        <div class="empty-text">No leads match your filters.</div>
+                    </div>
+                `;
+                return;
+            }
+            
+            leadGrid.innerHTML = filteredLeads.map((lead, index) => {
+                const breakdown = lead.breakdown;
+                const scoreClass = getScoreClass(lead.totalScore);
+                const tierClass = getTierClass(lead.priorityTier);
+                
+                return `
+                    <div class="lead-card ${tierClass}" style="animation-delay: ${index * 0.05}s">
+                        <div class="lead-header">
+                            <div class="lead-company">${lead.company}</div>
+                            <span class="tier-badge ${lead.priorityTier.toLowerCase()}">${lead.priorityTier}</span>
+                        </div>
+                        
+                        <div class="lead-contact">
+                            <div class="contact-name">${lead.contactName}</div>
+                            <div class="contact-title">${lead.title}</div>
+                        </div>
+                        
+                        <div class="score-section">
+                            <div class="score-header">
+                                <span class="score-label">Lead Score</span>
+                                <span class="score-value">${lead.totalScore}/100</span>
+                            </div>
+                            <div class="score-bar">
+                                <div class="score-fill ${scoreClass}" style="width: ${lead.totalScore}%"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="score-breakdown">
+                            <div class="breakdown-item">
+                                <span class="breakdown-dot size"></span>
+                                <span>Size: ${breakdown?.companySizeFunding?.score || 0}</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <span class="breakdown-dot partnership"></span>
+                                <span>Partner: ${breakdown?.partnershipPotential?.score || 0}</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <span class="breakdown-dot contact"></span>
+                                <span>Contact: ${breakdown?.contactAccessibility?.score || 0}</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <span class="breakdown-dot market"></span>
+                                <span>Market: ${breakdown?.marketRelevance?.score || 0}</span>
+                            </div>
+                        </div>
+                        
+                        <div class="action-box">
+                            <span class="action-icon">⚡</span>
+                            <span>${lead.actionRequired}</span>
+                        </div>
+                        
+                        <div class="lead-actions">
+                            <button class="lead-btn" onclick="viewLead('${lead.leadId}')">👁 View</button>
+                            <button class="lead-btn" onclick="contactLead('${lead.leadId}')">📧 Contact</button>
+                            <button class="lead-btn" onclick="editLead('${lead.leadId}')">✏️ Edit</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        // Apply filters
+        function applyFilters() {
+            const tier = document.getElementById('filterTier').value;
+            const region = document.getElementById('filterRegion').value;
+            const industry = document.getElementById('filterIndustry').value;
+            const scoreMin = parseInt(document.getElementById('scoreMin').value) || 0;
+            const scoreMax = parseInt(document.getElementById('scoreMax').value) || 100;
+            
+            filteredLeads = allLeads.filter(lead => {
+                // Tier filter
+                if (tier && lead.priorityTier !== tier) return false;
+                
+                // Score range filter
+                if (lead.totalScore < scoreMin || lead.totalScore > scoreMax) return false;
+                
+                // Region filter
+                if (region) {
+                    const leadRegion = lead.breakdown?.marketRelevance?.details?.geography?.region;
+                    if (!leadRegion || !leadRegion.toLowerCase().includes(region.toLowerCase())) {
+                        const leadData = JSON.stringify(lead).toLowerCase();
+                        if (!leadData.includes(region.toLowerCase())) return false;
+                    }
+                }
+                
+                // Industry filter
+                if (industry) {
+                    const leadIndustry = lead.breakdown?.marketRelevance?.details?.industry?.type;
+                    if (!leadIndustry || !leadIndustry.toLowerCase().includes(industry.toLowerCase())) {
+                        const leadData = JSON.stringify(lead).toLowerCase();
+                        if (!leadData.includes(industry.toLowerCase())) return false;
+                    }
+                }
+                
+                return true;
+            });
+            
+            // Re-apply current sort
+            sortLeads(currentSort.field, false);
+            
+            renderLeads();
+        }
+        
+        // Reset filters
+        function resetFilters() {
+            document.getElementById('filterTier').value = '';
+            document.getElementById('filterRegion').value = '';
+            document.getElementById('filterIndustry').value = '';
+            document.getElementById('scoreMin').value = '';
+            document.getElementById('scoreMax').value = '';
+            
+            filteredLeads = [...allLeads];
+            sortLeads('score', false);
+            renderLeads();
+        }
+        
+        // Sort leads
+        function sortLeads(field, toggleDirection = true) {
+            // Update active button
+            document.querySelectorAll('.sort-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.sort === field) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            // Toggle direction if clicking same field
+            if (toggleDirection && currentSort.field === field) {
+                currentSort.direction = currentSort.direction === 'asc' ? 'desc' : 'asc';
+            } else if (!toggleDirection) {
+                // Keep current direction
+            } else {
+                currentSort.direction = 'desc';
+            }
+            
+            currentSort.field = field;
+            
+            // Update button text to show direction
+            const activeBtn = document.querySelector(`.sort-btn[data-sort="${field}"]`);
+            if (activeBtn) {
+                const baseText = {
+                    'score': 'Score',
+                    'company': 'Company',
+                    'size': 'Company Size',
+                    'updated': 'Last Updated'
+                }[field];
+                activeBtn.textContent = baseText + (currentSort.direction === 'asc' ? ' ↑' : ' ↓');
+            }
+            
+            // Sort the leads
+            filteredLeads.sort((a, b) => {
+                let valA, valB;
+                
+                switch (field) {
+                    case 'score':
+                        valA = a.totalScore;
+                        valB = b.totalScore;
+                        break;
+                    case 'company':
+                        valA = a.company.toLowerCase();
+                        valB = b.company.toLowerCase();
+                        break;
+                    case 'size':
+                        valA = a.breakdown?.companySizeFunding?.score || 0;
+                        valB = b.breakdown?.companySizeFunding?.score || 0;
+                        break;
+                    case 'updated':
+                        valA = new Date(a.scoredAt);
+                        valB = new Date(b.scoredAt);
+                        break;
+                    default:
+                        return 0;
+                }
+                
+                if (valA < valB) return currentSort.direction === 'asc' ? -1 : 1;
+                if (valA > valB) return currentSort.direction === 'asc' ? 1 : -1;
+                return 0;
+            });
+            
+            if (toggleDirection || !toggleDirection) {
+                renderLeads();
+            }
+        }
+        
+        // Export to CSV
+        function exportToCSV() {
+            const headers = ['Company', 'Contact Name', 'Title', 'Score', 'Tier', 'Company Size Score', 'Partnership Score', 'Contact Score', 'Market Score', 'Action Required', 'Scored At'];
+            
+            const rows = filteredLeads.map(lead => [
+                lead.company,
+                lead.contactName,
+                lead.title,
+                lead.totalScore,
+                lead.priorityTier,
+                lead.breakdown?.companySizeFunding?.score || 0,
+                lead.breakdown?.partnershipPotential?.score || 0,
+                lead.breakdown?.contactAccessibility?.score || 0,
+                lead.breakdown?.marketRelevance?.score || 0,
+                lead.actionRequired,
+                new Date(lead.scoredAt).toLocaleDateString()
+            ]);
+            
+            const csvContent = [
+                headers.join(','),
+                ...rows.map(row => row.map(cell => `"${cell}"`).join(','))
+            ].join('\n');
+            
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `leads-export-${new Date().toISOString().split('T')[0]}.csv`;
+            link.click();
+        }
+        
+        // Lead actions
+        function viewLead(leadId) {
+            const lead = allLeads.find(l => l.leadId === leadId);
+            if (lead) {
+                alert(`Lead Details:\n\nCompany: ${lead.company}\nContact: ${lead.contactName}\nTitle: ${lead.title}\nScore: ${lead.totalScore}/100\nTier: ${lead.priorityTier}\n\nRecommendations:\n${lead.recommendations?.join('\n') || 'None'}`);
+            }
+        }
+        
+        function contactLead(leadId) {
+            const lead = allLeads.find(l => l.leadId === leadId);
+            if (lead) {
+                alert(`Initiating contact workflow for:\n\n${lead.contactName} at ${lead.company}\n\nAction: ${lead.actionRequired}`);
+            }
+        }
+        
+        function editLead(leadId) {
+            alert(`Edit lead: ${leadId}\n\n(This would open an edit form in the full implementation)`);
+        }
+        
+        // Auto-refresh every 5 minutes
+        setInterval(() => {
+            console.log('Auto-refreshing lead data...');
+            fetchFreshData().catch(console.error);
+        }, 5 * 60 * 1000);
+    </script>
+</body>
+</html>

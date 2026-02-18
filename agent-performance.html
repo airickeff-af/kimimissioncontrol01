@@ -1,0 +1,1677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta name="theme-color" content="#0a0a0f">
+    <title>Agent Performance Dashboard | Mission Control</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #111118;
+            --bg-tertiary: #1a1a24;
+            --bg-card: #15151d;
+            --bg-elevated: #1e1e2a;
+            --accent-cyan: #00d4ff;
+            --accent-pink: #ff2a6d;
+            --accent-purple: #a855f7;
+            --accent-green: #22c55e;
+            --accent-yellow: #fbbf24;
+            --accent-orange: #f97316;
+            --accent-blue: #3b82f6;
+            --text-primary: #fafafa;
+            --text-secondary: #a1a1aa;
+            --text-muted: #71717a;
+            --border: #27272a;
+            --border-hover: #3f3f46;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        html {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.5;
+            -webkit-text-size-adjust: 100%;
+        }
+        
+        body {
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        /* Animated Grid Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+            animation: gridMove 30s linear infinite;
+        }
+        
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(40px, 40px); }
+        }
+        
+        /* Header */
+        .header {
+            background: rgba(17, 17, 24, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            padding: 0 1rem;
+            height: 70px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .logo {
+            width: 42px;
+            height: 42px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.3);
+            animation: pulse 3s ease-in-out infinite;
+            flex-shrink: 0;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 20px rgba(0, 212, 255, 0.3); }
+            50% { box-shadow: 0 0 40px rgba(0, 212, 255, 0.5), 0 0 60px rgba(168, 85, 247, 0.3); }
+        }
+        
+        .brand-text h1 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+        
+        .brand-text span {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        /* Desktop Navigation */
+        .nav-desktop {
+            display: flex;
+            gap: 0.5rem;
+            background: rgba(255,255,255,0.05);
+            padding: 0.5rem;
+            border-radius: 12px;
+        }
+        
+        .nav-tab {
+            padding: 0.75rem 1.25rem;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+        
+        .nav-tab:hover {
+            color: var(--text-primary);
+            background: rgba(255,255,255,0.05);
+        }
+        
+        .nav-tab.active {
+            color: var(--text-primary);
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
+        }
+        
+        /* Mobile Navigation Toggle */
+        .nav-toggle {
+            display: none;
+            width: 44px;
+            height: 44px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 1.25rem;
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Mobile Navigation Menu */
+        .nav-dropdown {
+            display: none;
+            position: fixed;
+            top: 70px;
+            left: 0;
+            right: 0;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem;
+            z-index: 99;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .nav-dropdown.active {
+            display: flex;
+        }
+        
+        .nav-dropdown .nav-tab {
+            padding: 1rem;
+            justify-content: flex-start;
+        }
+        
+        /* Mobile Bottom Navigation */
+        .nav-mobile {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border);
+            padding: 0.5rem;
+            z-index: 101;
+            justify-content: space-around;
+        }
+        
+        .nav-mobile .nav-tab {
+            flex: 1;
+            flex-direction: column;
+            padding: 0.5rem 0.25rem;
+            font-size: 0.65rem;
+            gap: 2px;
+        }
+        
+        .nav-mobile .nav-tab .icon {
+            font-size: 1.25rem;
+        }
+        
+        .nav-mobile .nav-tab span:not(.icon) {
+            display: none;
+        }
+        
+        .nav-mobile .nav-tab.active span:not(.icon) {
+            display: block;
+        }
+        
+        /* Live Indicator */
+        .live-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--accent-green);
+            font-family: 'JetBrains Mono', monospace;
+            white-space: nowrap;
+        }
+        
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--accent-green);
+            border-radius: 50%;
+            animation: livePulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes livePulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+        }
+        
+        /* Loading Overlay */
+        .loading-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(10, 10, 15, 0.95);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            transition: opacity 0.3s;
+        }
+        
+        .loading-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .loading-spinner {
+            width: 50px; height: 50px;
+            border: 3px solid var(--border);
+            border-top-color: var(--accent-cyan);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Error Message */
+        .error-message {
+            background: rgba(255, 42, 109, 0.1);
+            border: 1px solid var(--accent-pink);
+            border-radius: 12px;
+            padding: 1rem;
+            margin: 1rem;
+            color: var(--accent-pink);
+            text-align: center;
+        }
+        
+        /* Main Content */
+        .main-content {
+            padding: 1.5rem;
+            max-width: 1600px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Resource Bar */
+        .resource-bar {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .resource-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            transition: all 0.3s;
+        }
+        
+        .resource-item:hover {
+            border-color: var(--border-hover);
+            transform: translateY(-2px);
+        }
+        
+        .resource-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+        
+        .resource-icon.agents { background: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(0, 212, 255, 0.1)); }
+        .resource-icon.tasks { background: linear-gradient(135deg, rgba(168, 85, 247, 0.2), rgba(168, 85, 247, 0.1)); }
+        .resource-icon.tokens { background: linear-gradient(135deg, rgba(34, 197, 94, 0.2), rgba(34, 197, 94, 0.1)); }
+        .resource-icon.efficiency { background: linear-gradient(135deg, rgba(251, 191, 36, 0.2), rgba(251, 191, 36, 0.1)); }
+        .resource-icon.uptime { background: linear-gradient(135deg, rgba(249, 115, 22, 0.2), rgba(249, 115, 22, 0.1)); }
+        
+        .resource-info {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .resource-info h3 {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.25rem;
+        }
+        
+        .resource-value {
+            font-size: 1.25rem;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .resource-change {
+            font-size: 0.65rem;
+            margin-top: 0.25rem;
+        }
+        
+        .resource-change.positive { color: var(--accent-green); }
+        .resource-change.negative { color: var(--accent-pink); }
+        
+        /* Dashboard Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        /* Section Headers */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .section-title::before {
+            content: '';
+            width: 4px;
+            height: 20px;
+            background: linear-gradient(180deg, var(--accent-cyan), var(--accent-purple));
+            border-radius: 2px;
+        }
+        
+        .refresh-btn {
+            padding: 0.5rem 1rem;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            min-height: 44px;
+        }
+        
+        .refresh-btn:hover {
+            border-color: var(--accent-cyan);
+            color: var(--text-primary);
+        }
+        
+        .refresh-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        /* Agent Cards Grid */
+        .agents-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1rem;
+        }
+        
+        .agent-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.25rem;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .agent-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .agent-card:hover {
+            border-color: var(--border-hover);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        .agent-card:hover::before {
+            opacity: 1;
+        }
+        
+        .agent-card.active { border-left: 3px solid var(--accent-green); }
+        .agent-card.busy { border-left: 3px solid var(--accent-yellow); }
+        .agent-card.idle { border-left: 3px solid var(--text-muted); }
+        
+        .agent-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+        
+        .agent-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            position: relative;
+            flex-shrink: 0;
+        }
+        
+        .agent-avatar::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            right: -2px;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            border: 3px solid var(--bg-card);
+        }
+        
+        .agent-avatar.active::after { background: var(--accent-green); }
+        .agent-avatar.busy::after { background: var(--accent-yellow); }
+        .agent-avatar.idle::after { background: var(--text-muted); }
+        
+        .agent-info h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+        
+        .agent-role {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+        
+        .agent-status-badge {
+            margin-left: auto;
+            padding: 0.35rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+        
+        .agent-status-badge.active {
+            background: rgba(34, 197, 94, 0.15);
+            color: var(--accent-green);
+        }
+        
+        .agent-status-badge.busy {
+            background: rgba(251, 191, 36, 0.15);
+            color: var(--accent-yellow);
+        }
+        
+        .agent-status-badge.idle {
+            background: rgba(113, 113, 122, 0.15);
+            color: var(--text-muted);
+        }
+        
+        /* Current Task */
+        .current-task {
+            background: var(--bg-elevated);
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            margin-bottom: 1rem;
+            font-size: 0.85rem;
+        }
+        
+        .current-task-label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.25rem;
+        }
+        
+        /* Stats Bars */
+        .agent-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+        }
+        
+        .stat-row {
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+        }
+        
+        .stat-label-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.7rem;
+        }
+        
+        .stat-name { color: var(--text-muted); }
+        
+        .stat-value-small {
+            color: var(--text-primary);
+            font-weight: 600;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .stat-bar {
+            height: 6px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        
+        .stat-bar-fill {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.5s ease;
+        }
+        
+        .stat-bar-fill.tasks { background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple)); }
+        .stat-bar-fill.tokens { background: linear-gradient(90deg, var(--accent-green), #10b981); }
+        .stat-bar-fill.efficiency { background: linear-gradient(90deg, var(--accent-yellow), #f59e0b); }
+        .stat-bar-fill.uptime { background: linear-gradient(90deg, var(--accent-orange), #ea580c); }
+        
+        /* Sidebar */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        .panel {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.25rem;
+        }
+        
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .panel-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+        
+        .panel-action {
+            font-size: 0.75rem;
+            color: var(--accent-cyan);
+            cursor: pointer;
+        }
+        
+        /* Leaderboard */
+        .leaderboard-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        
+        .leaderboard-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            background: var(--bg-elevated);
+            border-radius: 10px;
+            transition: all 0.2s;
+        }
+        
+        .leaderboard-item:hover {
+            background: rgba(255,255,255,0.05);
+        }
+        
+        .leaderboard-rank {
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            flex-shrink: 0;
+        }
+        
+        .leaderboard-rank.gold {
+            background: linear-gradient(135deg, #ffd700, #ffb800);
+            color: #000;
+        }
+        
+        .leaderboard-rank.silver {
+            background: linear-gradient(135deg, #c0c0c0, #a0a0a0);
+            color: #000;
+        }
+        
+        .leaderboard-rank.bronze {
+            background: linear-gradient(135deg, #cd7f32, #b87333);
+            color: #fff;
+        }
+        
+        .leaderboard-rank.normal {
+            background: var(--bg-card);
+            color: var(--text-muted);
+        }
+        
+        .leaderboard-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            background: var(--bg-card);
+            flex-shrink: 0;
+        }
+        
+        .leaderboard-info {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .leaderboard-name {
+            font-size: 0.85rem;
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .leaderboard-score {
+            font-size: 0.75rem;
+            color: var(--accent-cyan);
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        /* Activity Feed */
+        .activity-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .activity-item {
+            display: flex;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            background: var(--bg-elevated);
+            border-radius: 10px;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+        
+        .activity-item:hover {
+            background: rgba(255,255,255,0.05);
+        }
+        
+        .activity-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+        
+        .activity-icon.complete { background: rgba(34, 197, 94, 0.15); }
+        .activity-icon.start { background: rgba(0, 212, 255, 0.15); }
+        .activity-icon.token { background: rgba(168, 85, 247, 0.15); }
+        .activity-icon.alert { background: rgba(255, 42, 109, 0.15); }
+        
+        .activity-content {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .activity-text {
+            color: var(--text-primary);
+            line-height: 1.4;
+        }
+        
+        .activity-text strong {
+            color: var(--accent-cyan);
+        }
+        
+        .activity-time {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+        
+        /* Charts Section */
+        .charts-section {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        .chart-container {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.25rem;
+        }
+        
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        
+        .chart-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+        
+        .chart-filters {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .chart-filter {
+            padding: 0.35rem 0.75rem;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s;
+            min-height: 32px;
+        }
+        
+        .chart-filter:hover, .chart-filter.active {
+            border-color: var(--accent-cyan);
+            color: var(--text-primary);
+        }
+        
+        .chart-wrapper {
+            height: 250px;
+            position: relative;
+        }
+        
+        /* Token Usage Table */
+        .token-table-wrapper {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            margin: 0 -1.25rem;
+            padding: 0 1.25rem;
+        }
+        
+        .token-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+            min-width: 700px;
+        }
+        
+        .token-table th {
+            text-align: left;
+            padding: 0.75rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-bottom: 1px solid var(--border);
+            white-space: nowrap;
+        }
+        
+        .token-table td {
+            padding: 0.75rem;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .token-table tr:hover td {
+            background: rgba(255,255,255,0.02);
+        }
+        
+        .token-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .agent-cell {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .agent-cell-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            background: var(--bg-elevated);
+            flex-shrink: 0;
+        }
+        
+        .agent-cell-name {
+            font-weight: 500;
+        }
+        
+        .agent-cell-role {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+        
+        .token-bar {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .token-bar-track {
+            flex: 1;
+            height: 8px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 4px;
+            overflow: hidden;
+            min-width: 60px;
+        }
+        
+        .token-bar-fill {
+            height: 100%;
+            border-radius: 4px;
+            background: linear-gradient(90deg, var(--accent-green), var(--accent-cyan));
+            transition: width 0.5s ease;
+        }
+        
+        .token-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            color: var(--accent-cyan);
+            min-width: 70px;
+            text-align: right;
+            font-size: 0.8rem;
+        }
+        
+        /* Footer */
+        .footer {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .footer-stats {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .footer-stat {
+            text-align: center;
+        }
+        
+        .footer-stat-value {
+            font-size: 1.25rem;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--accent-cyan);
+        }
+        
+        .footer-stat-label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .footer-note {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+        
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--border-hover);
+        }
+        
+        /* Tablet Styles */
+        @media (max-width: 1200px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+            }
+        }
+        
+        @media (max-width: 1024px) {
+            .nav-desktop {
+                display: none;
+            }
+            
+            .nav-toggle {
+                display: flex;
+            }
+            
+            .nav-mobile {
+                display: flex;
+            }
+            
+            .main-content {
+                padding: 1rem;
+                padding-bottom: 5rem;
+            }
+            
+            .resource-bar {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .charts-section {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Mobile Styles */
+        @media (max-width: 768px) {
+            .header {
+                height: 60px;
+                padding: 0 0.75rem;
+            }
+            
+            .logo {
+                width: 36px;
+                height: 36px;
+                font-size: 1.2rem;
+            }
+            
+            .brand-text h1 {
+                font-size: 1rem;
+            }
+            
+            .brand-text span {
+                display: none;
+            }
+            
+            .nav-dropdown {
+                top: 60px;
+            }
+            
+            .live-indicator {
+                display: none;
+            }
+            
+            .resource-bar {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .resource-item {
+                padding: 0.75rem;
+            }
+            
+            .resource-icon {
+                width: 36px;
+                height: 36px;
+                font-size: 1rem;
+            }
+            
+            .resource-value {
+                font-size: 1rem;
+            }
+            
+            .agents-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .chart-wrapper {
+                height: 200px;
+            }
+            
+            .footer {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .footer-stats {
+                justify-content: center;
+            }
+        }
+        
+        /* Small Mobile */
+        @media (max-width: 480px) {
+            .resource-bar {
+                grid-template-columns: 1fr;
+            }
+            
+            .agent-stats {
+                grid-template-columns: 1fr;
+            }
+            
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .chart-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .chart-filters {
+                width: 100%;
+            }
+            
+            .chart-filter {
+                flex: 1;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+        <div style="margin-top: 1rem; color: var(--text-secondary);">Loading live agent data...</div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="brand">
+            <div class="logo">📊</div>
+            <div class="brand-text">
+                <h1>Agent Performance</h1>
+                <span>Real-time Metrics</span>
+            </div>
+        </div>
+        
+        <!-- Desktop Navigation -->
+        <nav class="nav-desktop">
+            <a href="index.html" class="nav-tab">🏠 HQ</a>
+            <a href="agents.html" class="nav-tab">👥 Agents</a>
+            <a href="task-board.html" class="nav-tab">📋 Tasks</a>
+            <a href="token-tracker.html" class="nav-tab">🪙 Tokens</a>
+            <a href="agent-performance.html" class="nav-tab active">📊 Performance</a>
+        </nav>
+        
+        <!-- Mobile Nav Toggle -->
+        <button class="nav-toggle" onclick="toggleNav()" aria-label="Toggle navigation">☰</button>
+        
+        <div class="live-indicator">
+            <span class="live-dot"></span>
+            <span>LIVE</span>
+        </div>
+    </header>
+    
+    <!-- Mobile Dropdown Menu -->
+    <nav class="nav-dropdown" id="navDropdown">
+        <a href="index.html" class="nav-tab">🏠 HQ</a>
+        <a href="agents.html" class="nav-tab">👥 Agents</a>
+        <a href="task-board.html" class="nav-tab">📋 Tasks</a>
+        <a href="token-tracker.html" class="nav-tab">🪙 Tokens</a>
+        <a href="agent-performance.html" class="nav-tab active">📊 Performance</a>
+    </nav>
+
+    <!-- Error Container -->
+    <div id="errorContainer"></div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Resource Bar -->
+        <div class="resource-bar">
+            <div class="resource-item">
+                <div class="resource-icon agents">👥</div>
+                <div class="resource-info">
+                    <h3>Active Agents</h3>
+                    <div class="resource-value" id="statAgents" style="color: var(--accent-cyan);">-</div>
+                    <div class="resource-change" id="statAgentsChange">Loading...</div>
+                </div>
+            </div>
+            <div class="resource-item">
+                <div class="resource-icon tasks">📋</div>
+                <div class="resource-info">
+                    <h3>Tasks Today</h3>
+                    <div class="resource-value" id="statTasks" style="color: var(--accent-purple);">-</div>
+                    <div class="resource-change" id="statTasksChange">Loading...</div>
+                </div>
+            </div>
+            <div class="resource-item">
+                <div class="resource-icon tokens">🪙</div>
+                <div class="resource-info">
+                    <h3>Tokens Used</h3>
+                    <div class="resource-value" id="statTokens" style="color: var(--accent-green);">-</div>
+                    <div class="resource-change" id="statTokensChange">Loading...</div>
+                </div>
+            </div>
+            <div class="resource-item">
+                <div class="resource-icon efficiency">⚡</div>
+                <div class="resource-info">
+                    <h3>Efficiency</h3>
+                    <div class="resource-value" id="statEfficiency" style="color: var(--accent-yellow);">-</div>
+                    <div class="resource-change" id="statEfficiencyChange">Loading...</div>
+                </div>
+            </div>
+            <div class="resource-item">
+                <div class="resource-icon uptime">⏱️</div>
+                <div class="resource-info">
+                    <h3>Uptime</h3>
+                    <div class="resource-value" id="statUptime" style="color: var(--accent-orange);">-</div>
+                    <div class="resource-change" id="statUptimeChange">Loading...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dashboard Grid -->
+        <div class="dashboard-grid">
+            <!-- Left Column: Agent Cards -->
+            <div class="agents-section">
+                <div class="section-header">
+                    <h2 class="section-title">Agent Status</h2>
+                    <button class="refresh-btn" id="refreshBtn" onclick="refreshData()">
+                        <span>🔄</span> Refresh
+                    </button>
+                </div>
+                
+                <div class="agents-grid" id="agentsGrid">
+                    <!-- Agent cards populated by JS -->
+                </div>
+            </div>
+
+            <!-- Right Column: Sidebar -->
+            <div class="sidebar">
+                <!-- Leaderboard -->
+                <div class="panel">
+                    <div class="panel-header">
+                        <h3 class="panel-title">🏆 Top Performers</h3>
+                        <span class="panel-action">View All</span>
+                    </div>
+                    <div class="leaderboard-list" id="leaderboardList">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="panel">
+                    <div class="panel-header">
+                        <h3 class="panel-title">🔔 Recent Activity</h3>
+                        <span class="panel-action">Clear</span>
+                    </div>
+                    <div class="activity-list" id="activityList">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div class="charts-section">
+            <div class="chart-container">
+                <div class="chart-header">
+                    <h3 class="chart-title">📈 Task Completion Trends</h3>
+                    <div class="chart-filters">
+                        <button class="chart-filter active">7D</button>
+                        <button class="chart-filter">30D</button>
+                        <button class="chart-filter">90D</button>
+                    </div>
+                </div>
+                <div class="chart-wrapper">
+                    <canvas id="taskChart"></canvas>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <div class="chart-header">
+                    <h3 class="chart-title">🪙 Token Usage by Agent</h3>
+                    <div class="chart-filters">
+                        <button class="chart-filter active">Today</button>
+                        <button class="chart-filter">Week</button>
+                        <button class="chart-filter">Month</button>
+                    </div>
+                </div>
+                <div class="chart-wrapper">
+                    <canvas id="tokenChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Token Usage Table -->
+        <div class="chart-container" style="margin-top: 1.5rem;">
+            <div class="chart-header">
+                <h3 class="chart-title">💰 Detailed Token Usage</h3>
+                <span class="panel-action">Export CSV</span>
+            </div>
+            <div class="token-table-wrapper">
+                <table class="token-table" id="tokenTable">
+                    <thead>
+                        <tr>
+                            <th>Agent</th>
+                            <th>Role</th>
+                            <th>Status</th>
+                            <th>Tasks</th>
+                            <th>Tokens</th>
+                            <th>Efficiency</th>
+                            <th>Cost</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tokenTableBody">
+                        <!-- Populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-stats">
+                <div class="footer-stat">
+                    <div class="footer-stat-value" id="footerTotalTasks">-</div>
+                    <div class="footer-stat-label">Total Tasks</div>
+                </div>
+                <div class="footer-stat">
+                    <div class="footer-stat-value" id="footerTotalTokens">-</div>
+                    <div class="footer-stat-label">Total Tokens</div>
+                </div>
+                <div class="footer-stat">
+                    <div class="footer-stat-value" id="footerTotalCost">-</div>
+                    <div class="footer-stat-label">Total Cost</div>
+                </div>
+            </div>
+            <div class="footer-note">
+                Last updated: <span id="lastUpdated">Just now</span> • Auto-refresh every 30s
+            </div>
+        </footer>
+    </main>
+    
+    <!-- Mobile Bottom Navigation -->
+    <nav class="nav-mobile">
+        <a href="index.html" class="nav-tab">
+            <span class="icon">🏠</span>
+            <span>HQ</span>
+        </a>
+        <a href="agents.html" class="nav-tab">
+            <span class="icon">👥</span>
+            <span>Agents</span>
+        </a>
+        <a href="task-board.html" class="nav-tab">
+            <span class="icon">📋</span>
+            <span>Tasks</span>
+        </a>
+        <a href="token-tracker.html" class="nav-tab">
+            <span class="icon">🪙</span>
+            <span>Tokens</span>
+        </a>
+        <a href="agent-performance.html" class="nav-tab active">
+            <span class="icon">📊</span>
+            <span>Perf</span>
+        </a>
+    </nav>
+
+    <script>
+        // Mobile nav toggle
+        function toggleNav() {
+            const dropdown = document.getElementById('navDropdown');
+            dropdown.classList.toggle('active');
+        }
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            const dropdown = document.getElementById('navDropdown');
+            const toggle = document.querySelector('.nav-toggle');
+            if (!dropdown.contains(e.target) && !toggle.contains(e.target)) {
+                dropdown.classList.remove('active');
+            }
+        });
+        
+        // Sample data for demo
+        const agentsData = [
+            { name: 'Nexus', role: 'Orchestrator', status: 'active', tasksCompleted: 45, tokensUsed: 18200 },
+            { name: 'DealFlow', role: 'Lead Gen', status: 'busy', tasksCompleted: 52, tokensUsed: 24100 },
+            { name: 'Code', role: 'Backend Dev', status: 'busy', tasksCompleted: 29, tokensUsed: 12400 },
+            { name: 'Forge', role: 'UI/Frontend', status: 'active', tasksCompleted: 38, tokensUsed: 15800 },
+            { name: 'Scout', role: 'Researcher', status: 'active', tasksCompleted: 38, tokensUsed: 28500 },
+            { name: 'Pixel', role: 'Designer', status: 'busy', tasksCompleted: 31, tokensUsed: 11200 }
+        ];
+        
+        const agentEmojis = {
+            'Nexus': '🤖', 'Code': '💻', 'Scout': '🔭', 'Pixel': '🎨',
+            'Forge': '⚒️', 'DealFlow': '💼', 'Audit': '🔒', 'Cipher': '🔐'
+        };
+        
+        const agentColors = {
+            'Nexus': '#00d4ff', 'Code': '#22c55e', 'Scout': '#a855f7',
+            'Pixel': '#f97316', 'Forge': '#ff2a6d', 'DealFlow': '#f97316'
+        };
+        
+        function formatNumber(num) {
+            if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
+            return num.toString();
+        }
+        
+        // Initialize dashboard
+        function initDashboard() {
+            updateStats();
+            renderAgentCards();
+            renderLeaderboard();
+            renderActivity();
+            renderTokenTable();
+            initCharts();
+            
+            // Hide loading overlay
+            document.getElementById('loadingOverlay').classList.add('hidden');
+        }
+        
+        function updateStats() {
+            const activeAgents = agentsData.filter(a => a.status === 'active').length;
+            const totalTasks = agentsData.reduce((sum, a) => sum + a.tasksCompleted, 0);
+            const totalTokens = agentsData.reduce((sum, a) => sum + a.tokensUsed, 0);
+            
+            document.getElementById('statAgents').textContent = activeAgents;
+            document.getElementById('statAgentsChange').textContent = `of ${agentsData.length} total`;
+            document.getElementById('statAgentsChange').className = 'resource-change positive';
+            
+            document.getElementById('statTasks').textContent = totalTasks;
+            document.getElementById('statTasksChange').textContent = 'Total completed';
+            
+            document.getElementById('statTokens').textContent = formatNumber(totalTokens);
+            document.getElementById('statTokensChange').textContent = 'All time';
+            
+            document.getElementById('statEfficiency').textContent = '87%';
+            document.getElementById('statEfficiencyChange').textContent = 'Avg across agents';
+            
+            document.getElementById('statUptime').textContent = '99.9%';
+            document.getElementById('statUptimeChange').textContent = 'System stable';
+            
+            document.getElementById('footerTotalTasks').textContent = totalTasks;
+            document.getElementById('footerTotalTokens').textContent = formatNumber(totalTokens);
+            document.getElementById('footerTotalCost').textContent = '$' + (totalTokens * 0.00001).toFixed(2);
+        }
+        
+        function renderAgentCards() {
+            const grid = document.getElementById('agentsGrid');
+            
+            grid.innerHTML = agentsData.map(agent => {
+                const emoji = agentEmojis[agent.name] || '🤖';
+                const color = agentColors[agent.name] || '#00d4ff';
+                const efficiency = Math.min(98, 70 + Math.floor(agent.tasksCompleted / 5));
+                const uptime = agent.status === 'active' ? '99.9%' : '98.5%';
+                
+                return `
+                    <div class="agent-card ${agent.status}">
+                        <div class="agent-header">
+                            <div class="agent-avatar ${agent.status}" style="background: linear-gradient(135deg, ${color}20, ${color}10);">
+                                ${emoji}
+                            </div>
+                            <div class="agent-info">
+                                <h3>${agent.name}</h3>
+                                <div class="agent-role">${agent.role}</div>
+                            </div>
+                            <span class="agent-status-badge ${agent.status}">${agent.status}</span>
+                        </div>
+                        
+                        <div class="current-task">
+                            <div class="current-task-label">Current Task</div>
+                            <div>${agent.tasksCompleted} tasks completed</div>
+                        </div>
+                        
+                        <div class="agent-stats">
+                            <div class="stat-row">
+                                <div class="stat-label-row">
+                                    <span class="stat-name">Tasks</span>
+                                    <span class="stat-value-small">${agent.tasksCompleted}</span>
+                                </div>
+                                <div class="stat-bar">
+                                    <div class="stat-bar-fill tasks" style="width: ${Math.min(agent.tasksCompleted / 2, 100)}%"></div>
+                                </div>
+                            </div>
+                            <div class="stat-row">
+                                <div class="stat-label-row">
+                                    <span class="stat-name">Tokens</span>
+                                    <span class="stat-value-small">${formatNumber(agent.tokensUsed)}</span>
+                                </div>
+                                <div class="stat-bar">
+                                    <div class="stat-bar-fill tokens" style="width: ${Math.min(agent.tokensUsed / 500, 100)}%"></div>
+                                </div>
+                            </div>
+                            <div class="stat-row">
+                                <div class="stat-label-row">
+                                    <span class="stat-name">Efficiency</span>
+                                    <span class="stat-value-small">${efficiency}%</span>
+                                </div>
+                                <div class="stat-bar">
+                                    <div class="stat-bar-fill efficiency" style="width: ${efficiency}%"></div>
+                                </div>
+                            </div>
+                            <div class="stat-row">
+                                <div class="stat-label-row">
+                                    <span class="stat-name">Uptime</span>
+                                    <span class="stat-value-small">${uptime}</span>
+                                </div>
+                                <div class="stat-bar">
+                                    <div class="stat-bar-fill uptime" style="width: ${parseFloat(uptime)}%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        function renderLeaderboard() {
+            const sorted = [...agentsData].sort((a, b) => b.tasksCompleted - a.tasksCompleted).slice(0, 5);
+            const list = document.getElementById('leaderboardList');
+            
+            list.innerHTML = sorted.map((agent, i) => {
+                const rankClass = i === 0 ? 'gold' : i === 1 ? 'silver' : i === 2 ? 'bronze' : 'normal';
+                const emoji = agentEmojis[agent.name] || '🤖';
+                const color = agentColors[agent.name] || '#00d4ff';
+                
+                return `
+                    <div class="leaderboard-item">
+                        <div class="leaderboard-rank ${rankClass}">${i + 1}</div>
+                        <div class="leaderboard-avatar" style="background: linear-gradient(135deg, ${color}20, ${color}10);">${emoji}</div>
+                        <div class="leaderboard-info">
+                            <div class="leaderboard-name">${agent.name}</div>
+                            <div class="leaderboard-score">${agent.tasksCompleted} tasks</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        function renderActivity() {
+            const activities = [
+                { type: 'complete', icon: '✅', text: '<strong>DealFlow</strong> completed 20 leads', time: '2 min ago' },
+                { type: 'start', icon: '🚀', text: '<strong>Forge</strong> started UI task', time: '5 min ago' },
+                { type: 'token', icon: '🪙', text: '<strong>Nexus</strong> used 2.5K tokens', time: '15 min ago' },
+                { type: 'complete', icon: '✅', text: '<strong>Code</strong> fixed API bug', time: '30 min ago' }
+            ];
+            
+            const list = document.getElementById('activityList');
+            list.innerHTML = activities.map(a => `
+                <div class="activity-item">
+                    <div class="activity-icon ${a.type}">${a.icon}</div>
+                    <div class="activity-content">
+                        <div class="activity-text">${a.text}</div>
+                        <div class="activity-time">${a.time}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function renderTokenTable() {
+            const tbody = document.getElementById('tokenTableBody');
+            tbody.innerHTML = agentsData.map(agent => {
+                const emoji = agentEmojis[agent.name] || '🤖';
+                const efficiency = Math.min(98, 70 + Math.floor(agent.tasksCompleted / 5));
+                const cost = (agent.tokensUsed * 0.00001).toFixed(2);
+                
+                return `
+                    <tr>
+                        <td>
+                            <div class="agent-cell">
+                                <div class="agent-cell-avatar">${emoji}</div>
+                                <div>
+                                    <div class="agent-cell-name">${agent.name}</div>
+                                    <div class="agent-cell-role">${agent.role}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>${agent.role}</td>
+                        <td>
+                            <span class="agent-status-badge ${agent.status}">${agent.status}</span>
+                        </td>
+                        <td>${agent.tasksCompleted}</td>
+                        <td>
+                            <div class="token-bar">
+                                <div class="token-bar-track">
+                                    <div class="token-bar-fill" style="width: ${Math.min(agent.tokensUsed / 500, 100)}%"></div>
+                                </div>
+                                <span class="token-value">${formatNumber(agent.tokensUsed)}</span>
+                            </div>
+                        </td>
+                        <td>${efficiency}%</td>
+                        <td>$${cost}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+        
+        function initCharts() {
+            // Task Chart
+            const taskCtx = document.getElementById('taskChart').getContext('2d');
+            new Chart(taskCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                    datasets: [{
+                        label: 'Tasks',
+                        data: [12, 19, 15, 25, 22, 30, 28],
+                        borderColor: '#00d4ff',
+                        backgroundColor: 'rgba(0, 212, 255, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' } },
+                        x: { grid: { display: false } }
+                    }
+                }
+            });
+            
+            // Token Chart
+            const tokenCtx = document.getElementById('tokenChart').getContext('2d');
+            new Chart(tokenCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: agentsData.map(a => a.name),
+                    datasets: [{
+                        data: agentsData.map(a => a.tokensUsed),
+                        backgroundColor: agentsData.map(a => agentColors[a.name] || '#00d4ff')
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: { color: '#a1a1aa', font: { size: 11 }, boxWidth: 12 }
+                        }
+                    }
+                }
+            });
+        }
+        
+        function refreshData() {
+            const btn = document.getElementById('refreshBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<span>⏳</span> Loading...';
+            
+            setTimeout(() => {
+                initDashboard();
+                btn.disabled = false;
+                btn.innerHTML = '<span>🔄</span> Refresh';
+            }, 1000);
+        }
+        
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', initDashboard);
+    </script>
+</body>
+</html>

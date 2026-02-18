@@ -13,6 +13,8 @@ const url = require('url');
 // Import services
 const FileWatcher = require('./fileWatcher');
 const TaskQueue = require('./taskQueue');
+const tokenTracker = require('../../api/tokens');
+const { startWebSocketServer } = require('../../api/websocket-integration');
 
 // Configuration
 const CONFIG = {
@@ -262,6 +264,196 @@ function getSystemStatus() {
 }
 
 /**
+ * Get token usage data - LIVE from session transcripts
+ */
+function getTokens() {
+  const data = tokenTracker.getTokenData();
+  
+  return {
+    lastUpdated: data.lastUpdated,
+    totalTokens: data.total.totalTokens,
+    totalCost: data.total.cost,
+    period: 'all',
+    agents: data.agents.map(a => ({
+      name: a.name,
+      emoji: getAgentEmoji(a.name),
+      role: getAgentRole(a.name),
+      tokens: a.totalTokens,
+      tokensIn: a.tokensIn,
+      tokensOut: a.tokensOut,
+      cost: a.cost,
+      color: getAgentColor(a.name),
+      sessions: a.sessions
+    })),
+    summary: {
+      today: { 
+        cost: data.total.cost, 
+        tokens: data.total.totalTokens 
+      }
+    },
+    dailyUsage: data.dailyUsage,
+    recentSessions: data.recentSessions,
+    meta: {
+      sessionCount: data.sessionCount,
+      agentCount: data.agents.length
+    }
+  };
+}
+
+/**
+ * Get leads data - LIVE from scored-leads-v2.json
+ */
+function getLeads() {
+  const leadsPath = path.join(CONFIG.missionControlDir, 'data', 'scored-leads-v2.json');
+  
+  try {
+    if (fs.existsSync(leadsPath)) {
+      const content = fs.readFileSync(leadsPath, 'utf-8');
+      const data = JSON.parse(content);
+      return {
+        success: true,
+        ...data,
+        lastUpdated: data.summary?.scoredAt || new Date().toISOString()
+      };
+    }
+  } catch (e) {
+    console.error('Error reading leads data:', e.message);
+  }
+  
+  // Fallback to leads.json if scored-leads-v2.json doesn't exist
+  const fallbackPath = path.join(CONFIG.missionControlDir, 'data', 'leads.json');
+  try {
+    if (fs.existsSync(fallbackPath)) {
+      const content = fs.readFileSync(fallbackPath, 'utf-8');
+      const data = JSON.parse(content);
+      return {
+        success: true,
+        scoredLeads: data.leads || [],
+        summary: {
+          totalLeads: data.leads?.length || 0,
+          averageScore: data.averageScore || 0,
+          tierDistribution: data.tierDistribution || {},
+          scoredAt: new Date().toISOString()
+        },
+        lastUpdated: new Date().toISOString()
+      };
+    }
+  } catch (e) {
+    console.error('Error reading fallback leads data:', e.message);
+  }
+  
+  return {
+    success: false,
+    error: 'No leads data available',
+    scoredLeads: [],
+    summary: {
+      totalLeads: 0,
+      averageScore: 0,
+      tierDistribution: {},
+      scoredAt: new Date().toISOString()
+    },
+    lastUpdated: new Date().toISOString()
+  };
+}
+
+/**
+ * Get opportunities data - LIVE from opportunities.json
+ */
+function getOpportunities() {
+  const oppPath = path.join(CONFIG.missionControlDir, 'data', 'opportunities.json');
+  const reportPath = path.join(CONFIG.missionControlDir, 'reports', 'opportunity-report-2026-02-17.json');
+  
+  try {
+    let opportunities = [];
+    let top5 = [];
+    let summary = { totalOpportunities: 0, averageScore: 0 };
+    
+    // Read main opportunities file
+    if (fs.existsSync(oppPath)) {
+      const content = fs.readFileSync(oppPath, 'utf-8');
+      const data = JSON.parse(content);
+      opportunities = data.opportunities || [];
+      summary = {
+        totalOpportunities: opportunities.length,
+        averageScore: opportunities.length 
+          ? Math.round(opportunities.reduce((sum, o) => sum + (o.score || 0), 0) / opportunities.length)
+          : 0,
+        highPriority: opportunities.filter(o => (o.score || 0) >= 80).length,
+        mediumPriority: opportunities.filter(o => (o.score || 0) >= 60 && (o.score || 0) < 80).length,
+        lowPriority: opportunities.filter(o => (o.score || 0) < 60).length
+      };
+    }
+    
+    // Read report for top 5
+    if (fs.existsSync(reportPath)) {
+      const content = fs.readFileSync(reportPath, 'utf-8');
+      const data = JSON.parse(content);
+      top5 = data.top5 || [];
+    }
+    
+    return {
+      success: true,
+      opportunities,
+      top5,
+      summary,
+      lastUpdated: new Date().toISOString()
+    };
+  } catch (e) {
+    console.error('Error reading opportunities data:', e.message);
+  }
+  
+  return {
+    success: false,
+    error: 'No opportunities data available',
+    opportunities: [],
+    top5: [],
+    summary: { totalOpportunities: 0, averageScore: 0 },
+    lastUpdated: new Date().toISOString()
+  };
+}
+
+/**
+ * Helper: Get emoji for agent
+ */
+function getAgentEmoji(name) {
+  const emojis = {
+    'Nexus': '🤖', 'Code': '💻', 'Scout': '🔭', 'Pixel': '🎨',
+    'Forge': '🔨', 'DealFlow': '🤝', 'Audit': '🔍', 'Cipher': '🔒',
+    'Glasses': '🥽', 'Sentry': '🛡️', 'Quill': '✍️', 'Gary': '📈',
+    'Larry': '📱', 'ColdCall': '📞', 'Spark': '💡'
+  };
+  return emojis[name] || '🤖';
+}
+
+/**
+ * Helper: Get role for agent
+ */
+function getAgentRole(name) {
+  const roles = {
+    'Nexus': 'Orchestrator', 'Code': 'Backend Lead', 'Scout': 'Researcher',
+    'Pixel': 'Designer', 'Forge': 'UI Lead', 'DealFlow': 'BD Lead',
+    'Audit': 'QA', 'Cipher': 'Security', 'Glasses': 'Researcher',
+    'Sentry': 'DevOps', 'Quill': 'Writer', 'Gary': 'Marketing',
+    'Larry': 'Social', 'ColdCall': 'Outreach', 'Spark': 'Innovation'
+  };
+  return roles[name] || 'Agent';
+}
+
+/**
+ * Helper: Get color for agent
+ */
+function getAgentColor(name) {
+  const colors = {
+    'Nexus': '#ff2a6d', 'Code': '#22c55e', 'Scout': '#00d4ff',
+    'Pixel': '#a855f7', 'Forge': '#f97316', 'DealFlow': '#f97316',
+    'Audit': '#ff2a6d', 'Cipher': '#a855f7', 'Glasses': '#00d4ff',
+    'Sentry': '#fbbf24', 'Quill': '#fbbf24', 'Gary': '#f97316',
+    'Larry': '#00d4ff', 'ColdCall': '#22c55e', 'Spark': '#fbbf24'
+  };
+  return colors[name] || '#00d4ff';
+}
+
+/**
  * API Request Handler
  */
 async function handleRequest(req, res) {
@@ -323,6 +515,24 @@ async function handleRequest(req, res) {
     else if (pathname === '/api/system/events' && method === 'GET') {
       const limit = query.limit ? parseInt(query.limit) : 50;
       response = eventLog.slice(0, limit);
+      statusCode = 200;
+    }
+    
+    // Tokens API
+    else if (pathname === '/api/tokens' && method === 'GET') {
+      response = getTokens();
+      statusCode = 200;
+    }
+    
+    // Leads API
+    else if (pathname === '/api/leads' && method === 'GET') {
+      response = getLeads();
+      statusCode = 200;
+    }
+    
+    // Opportunities API
+    else if (pathname === '/api/opportunities' && method === 'GET') {
+      response = getOpportunities();
       statusCode = 200;
     }
     
@@ -458,34 +668,55 @@ async function handleRequest(req, res) {
 // Start server
 const server = http.createServer(handleRequest);
 
-server.listen(CONFIG.port, () => {
+server.listen(CONFIG.port, async () => {
   console.log(`🚀 Mission Control API Server v2.0`);
   console.log(`📡 Port: ${CONFIG.port}`);
   console.log(`📊 Health: http://localhost:${CONFIG.port}/api/health`);
   console.log(`🤖 Agents: http://localhost:${CONFIG.port}/api/agents`);
   console.log(`📋 Tasks: http://localhost:${CONFIG.port}/api/tasks`);
   console.log(`📁 Files: http://localhost:${CONFIG.port}/api/files/watch`);
+  console.log(`💰 Tokens: http://localhost:${CONFIG.port}/api/tokens`);
+  console.log(`🎯 Leads: http://localhost:${CONFIG.port}/api/leads`);
+  console.log(`🔭 Opportunities: http://localhost:${CONFIG.port}/api/opportunities`);
   
   // Start file watcher
   fileWatcher.start();
+  
+  // Start WebSocket server with integration
+  try {
+    await startWebSocketServer({
+      fileWatcher,
+      taskQueue,
+      tokenTracker
+    });
+    console.log(`🔌 WebSocket: ws://localhost:3002/api/ws`);
+  } catch (err) {
+    console.error('❌ WebSocket server failed to start:', err.message);
+  }
 });
 
 // Graceful shutdown
 process.on('SIGTERM', () => {
   console.log('SIGTERM received, shutting down gracefully');
   fileWatcher.stop();
-  server.close(() => {
-    console.log('Server closed');
-    process.exit(0);
+  const { wsServer } = require('../../api/websocket');
+  wsServer.stop().then(() => {
+    server.close(() => {
+      console.log('Server closed');
+      process.exit(0);
+    });
   });
 });
 
 process.on('SIGINT', () => {
   console.log('SIGINT received, shutting down gracefully');
   fileWatcher.stop();
-  server.close(() => {
-    console.log('Server closed');
-    process.exit(0);
+  const { wsServer } = require('../../api/websocket');
+  wsServer.stop().then(() => {
+    server.close(() => {
+      console.log('Server closed');
+      process.exit(0);
+    });
   });
 });
 

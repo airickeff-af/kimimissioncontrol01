@@ -10,6 +10,9 @@ const path = require('path');
 const http = require('http');
 const url = require('url');
 
+// Import token tracker
+const tokenTracker = require('../../api/tokens.js');
+
 // Configuration
 const CONFIG = {
   port: 3001,
@@ -491,6 +494,28 @@ function handleRequest(req, res) {
     statusCode = response.error ? 404 : 200;
   } else if (pathname === '/api/health') {
     response = { status: 'ok', timestamp: new Date().toISOString() };
+    statusCode = 200;
+  } else if (pathname === '/api/tokens') {
+    // Token usage endpoint
+    const forceRefresh = query.refresh === 'true';
+    const data = tokenTracker.getTokenData(forceRefresh);
+    response = {
+      agents: data.agents.map(a => ({
+        name: a.name,
+        tokensIn: a.tokensIn,
+        tokensOut: a.tokensOut,
+        cost: a.cost
+      })),
+      total: {
+        tokensIn: data.total.tokensIn,
+        cost: data.total.cost
+      },
+      meta: {
+        lastUpdated: data.lastUpdated,
+        sessionCount: data.sessionCount,
+        agentCount: data.agents.length
+      }
+    };
     statusCode = 200;
   }
   

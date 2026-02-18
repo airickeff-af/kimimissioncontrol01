@@ -1,0 +1,52 @@
+/* ============================================
+ * CRITICAL CSS - Above-the-fold styles
+ * Minified for fast initial render
+ * ============================================ */
+
+:root{--bg-primary:#0a0a0f;--bg-secondary:#111118;--bg-card:#15151d;--bg-elevated:#1e1e2a;--accent-cyan:#00d4ff;--accent-pink:#ff2a6d;--accent-purple:#a855f7;--accent-green:#22c55e;--accent-yellow:#fbbf24;--text-primary:#fafafa;--text-secondary:#a1a1aa;--text-muted:#71717a;--border:#27272a}
+*{margin:0;padding:0;box-sizing:border-box}
+html{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg-primary);color:var(--text-primary);line-height:1.5}
+body{min-height:100vh;overflow-x:hidden}
+
+/* Critical Header Styles */
+.header{background:rgba(17,17,24,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 1.5rem;height:70px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100}
+.brand{display:flex;align-items:center;gap:1rem}
+.logo{width:42px;height:42px;background:linear-gradient(135deg,var(--accent-cyan),var(--accent-purple));border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;font-weight:800;box-shadow:0 0 30px rgba(0,212,255,.2)}
+.brand-text h1{font-size:1.25rem;font-weight:700;letter-spacing:-.02em;background:linear-gradient(135deg,#fff,var(--accent-cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.brand-text span{font-size:.75rem;color:var(--text-muted)}
+
+/* Critical Navigation */
+.nav-tabs{display:flex;gap:.5rem;background:rgba(255,255,255,.05);padding:.5rem;border-radius:12px}
+.nav-tab{padding:.75rem 1.25rem;border:none;background:transparent;color:var(--text-secondary);font-size:.875rem;font-weight:500;cursor:pointer;border-radius:8px;transition:all .2s;text-decoration:none;display:flex;align-items:center;gap:.5rem;white-space:nowrap}
+.nav-tab:hover{color:var(--text-primary);background:rgba(255,255,255,.05)}
+.nav-tab.active{color:var(--text-primary);background:linear-gradient(135deg,var(--accent-cyan),var(--accent-purple));box-shadow:0 4px 15px rgba(0,212,255,.3)}
+
+/* Critical Loading State */
+.loading-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:var(--bg-primary);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:1000;transition:opacity .3s}
+.loading-overlay.hidden{opacity:0;pointer-events:none}
+.loading-spinner{width:50px;height:50px;border:3px solid var(--border);border-top-color:var(--accent-cyan);border-radius:50%;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-text{margin-top:1rem;color:var(--text-secondary);font-size:.875rem}
+
+/* Critical Content Layout */
+.main-content{padding:1.5rem;max-width:1400px;margin:0 auto;position:relative;z-index:1}
+.stats-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1.5rem}
+.stat-card{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:1.25rem;transition:all .2s}
+.stat-card:hover{border-color:var(--border-hover);transform:translateY(-2px)}
+.stat-label{font-size:.875rem;color:var(--text-muted);margin-bottom:.5rem}
+.stat-value{font-size:1.75rem;font-weight:700;color:var(--text-primary)}
+
+/* Critical Responsive */
+@media(max-width:1024px){.stats-bar{grid-template-columns:repeat(2,1fr)}.nav-tab{padding:.6rem 1rem;font-size:.8rem}}
+@media(max-width:768px){.header{height:60px;padding:0 1rem}.brand-text h1{font-size:1rem}.brand-text span{display:none}.logo{width:36px;height:36px;font-size:1.2rem}.nav-tabs{position:fixed;bottom:0;left:0;right:0;top:auto;flex-direction:row;justify-content:space-around;padding:.5rem;border-radius:0;border-top:1px solid var(--border);background:var(--bg-secondary);z-index:101}.nav-tab{flex:1;justify-content:center;padding:.5rem;font-size:.7rem;flex-direction:column;gap:.25rem}.nav-tab span:not(.icon){display:none}.nav-tab.active span:not(.icon){display:block}.main-content{padding:1rem;padding-bottom:5rem}.stats-bar{grid-template-columns:1fr}}
+
+/* Critical Animations (GPU accelerated) */
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.7}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.animate-fade-in{animation:fadeIn .3s ease-out}
+
+/* Content visibility for off-screen content */
+.lazy-content{content-visibility:auto;contain-intrinsic-size:0 500px}
+
+/* Reduced motion preference */
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}

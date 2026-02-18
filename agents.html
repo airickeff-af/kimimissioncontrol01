@@ -286,7 +286,7 @@
         
         <div style="display: flex; align-items: center; gap: 1rem;">
             <span style="font-size: 0.875rem; color: var(--text-muted);">🟢 20 Agents Active</span>
-            <button class="refresh-btn" onclick="location.reload()" style="width: auto; padding: 0.5rem 1rem; margin: 0;">🔄 Refresh</button>
+            <button class="refresh-btn" onclick="window.location.reload()" style="width: auto; padding: 0.5rem 1rem; margin: 0;">🔄 Refresh</button>
         </div>
     </header>
 
@@ -415,7 +415,7 @@
         
         // Auto-refresh every 30 minutes
         setInterval(() => {
-            location.reload();
+            window.location.reload();
         }, 1800000);
     </script>
 </body>

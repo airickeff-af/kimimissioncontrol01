@@ -1,0 +1,350 @@
+<!-- Scout Competitor Monitor Widget -->
+<!-- Include this in the Scout dashboard for competitor tracking -->
+
+<style>
+.competitor-widget {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.25rem;
+    margin-bottom: 1.5rem;
+}
+
+.competitor-widget-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.competitor-widget-title {
+    font-size: 1rem;
+    color: var(--accent-cyan);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.competitor-status {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.competitor-stat {
+    background: var(--bg-elevated);
+    padding: 0.5rem 0.75rem;
+    border-radius: 8px;
+    text-align: center;
+    flex: 1;
+}
+
+.competitor-stat .value {
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.competitor-stat .value.p0 { color: var(--accent-pink); }
+.competitor-stat .value.p1 { color: var(--accent-yellow); }
+.competitor-stat .value.p2 { color: var(--accent-green); }
+
+.competitor-stat .label {
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+}
+
+.competitor-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.competitor-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    background: var(--bg-elevated);
+    border-radius: 8px;
+    transition: all 0.2s;
+    cursor: pointer;
+}
+
+.competitor-item:hover {
+    border: 1px solid var(--accent-cyan);
+}
+
+.competitor-item .icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+}
+
+.competitor-item.crypto_exchange .icon { background: rgba(0, 212, 255, 0.2); }
+.competitor-item.payment_processor .icon { background: rgba(168, 85, 247, 0.2); }
+.competitor-item.fintech .icon { background: rgba(34, 197, 94, 0.2); }
+
+.competitor-item .info {
+    flex: 1;
+}
+
+.competitor-item .name {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.competitor-item .meta {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+}
+
+.competitor-item .priority-badge {
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.competitor-item .priority-badge.p0 { background: rgba(255, 42, 109, 0.2); color: var(--accent-pink); }
+.competitor-item .priority-badge.p1 { background: rgba(251, 191, 36, 0.2); color: var(--accent-yellow); }
+.competitor-item .priority-badge.p2 { background: rgba(34, 197, 94, 0.2); color: var(--accent-green); }
+
+.competitor-alerts {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+}
+
+.competitor-alerts-title {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+}
+
+.alert-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    background: rgba(255, 42, 109, 0.1);
+    border-left: 3px solid var(--accent-pink);
+    border-radius: 0 4px 4px 0;
+    margin-bottom: 0.5rem;
+    font-size: 0.8rem;
+}
+
+.alert-item.medium {
+    background: rgba(251, 191, 36, 0.1);
+    border-left-color: var(--accent-yellow);
+}
+
+.alert-item.low {
+    background: rgba(34, 197, 94, 0.1);
+    border-left-color: var(--accent-green);
+}
+
+.alert-item .time {
+    color: var(--text-muted);
+    font-size: 0.7rem;
+}
+
+.competitor-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.competitor-btn {
+    flex: 1;
+    padding: 0.5rem;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.competitor-btn:hover {
+    border-color: var(--accent-cyan);
+    color: var(--accent-cyan);
+}
+
+.last-check {
+    text-align: center;
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    margin-top: 0.75rem;
+}
+</style>
+
+<div class="competitor-widget">
+    <div class="competitor-widget-header">
+        <div class="competitor-widget-title">
+            🎯 Competitor Monitor
+        </div>
+        <span style="font-size: 0.75rem; color: var(--text-muted);">SEA/HK Focus</span>
+    </div>
+    
+    <div class="competitor-status">
+        <div class="competitor-stat">
+            <div class="value p0" id="competitor-p0">5</div>
+            <div class="label">P0 Critical</div>
+        </div>
+        <div class="competitor-stat">
+            <div class="value p1" id="competitor-p1">6</div>
+            <div class="label">P1 Important</div>
+        </div>
+        <div class="competitor-stat">
+            <div class="value p2" id="competitor-p2">4</div>
+            <div class="label">P2 Monitor</div>
+        </div>
+    </div>
+    
+    <div class="competitor-list" id="competitor-list">
+        <!-- Populated by JavaScript -->
+    </div>
+    
+    <div class="competitor-alerts" id="competitor-alerts" style="display: none;">
+        <div class="competitor-alerts-title">🚨 Recent Alerts</div>
+        <div id="alerts-container">
+            <!-- Populated by JavaScript -->
+        </div>
+    </div>
+    
+    <div class="competitor-actions">
+        <button class="competitor-btn" onclick="refreshCompetitors()">🔄 Refresh</button>
+        <button class="competitor-btn" onclick="viewAllCompetitors()">📋 View All</button>
+        <button class="competitor-btn" onclick="runCheck()">🔍 Check Now</button>
+    </div>
+    
+    <div class="last-check" id="last-check">
+        Last check: Never
+    </div>
+</div>
+
+<script>
+// Competitor data (loaded from competitors.json)
+const competitorData = [
+    { id: 'binance', name: 'Binance', category: 'crypto_exchange', region: 'Global', priority: 'P0', icon: '💱' },
+    { id: 'coinbase', name: 'Coinbase', category: 'crypto_exchange', region: 'Global', priority: 'P0', icon: '💱' },
+    { id: 'stripe', name: 'Stripe', category: 'payment_processor', region: 'Global', priority: 'P0', icon: '💳' },
+    { id: 'wise', name: 'Wise', category: 'payment_processor', region: 'Global', priority: 'P1', icon: '💳' },
+    { id: 'revolut', name: 'Revolut', category: 'fintech', region: 'Global', priority: 'P1', icon: '🏦' },
+    { id: 'crypto_com', name: 'Crypto.com', category: 'crypto_exchange', region: 'Singapore', priority: 'P1', icon: '💱' },
+    { id: 'okx', name: 'OKX', category: 'crypto_exchange', region: 'Asia', priority: 'P1', icon: '💱' },
+    { id: 'bybit', name: 'Bybit', category: 'crypto_exchange', region: 'Dubai/SG', priority: 'P1', icon: '💱' },
+    { id: 'coins_ph', name: 'Coins.ph', category: 'crypto_exchange', region: 'Philippines', priority: 'P0', icon: '💱' },
+    { id: 'coins_xyz', name: 'Coins.xyz', category: 'crypto_exchange', region: 'Global', priority: 'P0', icon: '💱' },
+    { id: 'grab_financial', name: 'Grab Financial', category: 'fintech', region: 'SEA', priority: 'P1', icon: '🏦' },
+    { id: 'sea_money', name: 'SeaMoney', category: 'fintech', region: 'SEA', priority: 'P1', icon: '🏦' },
+    { id: 'htx', name: 'HTX', category: 'crypto_exchange', region: 'Asia', priority: 'P2', icon: '💱' },
+    { id: 'payoneer', name: 'Payoneer', category: 'payment_processor', region: 'Global', priority: 'P2', icon: '💳' },
+    { id: 'checkout_com', name: 'Checkout.com', category: 'payment_processor', region: 'Global', priority: 'P2', icon: '💳' }
+];
+
+// Sample alerts (would come from monitoring system)
+let competitorAlerts = [];
+
+function renderCompetitors() {
+    const list = document.getElementById('competitor-list');
+    const p0Competitors = competitorData.filter(c => c.priority === 'P0');
+    
+    list.innerHTML = p0Competitors.map(comp => `
+        <div class="competitor-item ${comp.category}" onclick="openCompetitor('${comp.id}')">
+            <div class="icon">${comp.icon}</div>
+            <div class="info">
+                <div class="name">${comp.name}</div>
+                <div class="meta">${comp.region} • ${comp.category.replace('_', ' ')}</div>
+            </div>
+            <span class="priority-badge ${comp.priority.toLowerCase()}">${comp.priority}</span>
+        </div>
+    `).join('');
+}
+
+function renderAlerts() {
+    const container = document.getElementById('alerts-container');
+    const section = document.getElementById('competitor-alerts');
+    
+    if (competitorAlerts.length === 0) {
+        section.style.display = 'none';
+        return;
+    }
+    
+    section.style.display = 'block';
+    container.innerHTML = competitorAlerts.slice(0, 3).map(alert => `
+        <div class="alert-item ${alert.severity}">
+            <span>${alert.icon || '🚨'}</span>
+            <div>
+                <strong>${alert.competitor}</strong>: ${alert.title}
+                <div class="time">${alert.time}</div>
+            </div>
+        </div>
+    `).join('');
+}
+
+function refreshCompetitors() {
+    // In production, this would fetch from the monitoring API
+    document.getElementById('last-check').textContent = 'Last check: ' + new Date().toLocaleString();
+    
+    // Simulate finding an alert
+    if (Math.random() > 0.7) {
+        competitorAlerts.unshift({
+            competitor: 'Binance',
+            title: 'New partnership announcement',
+            severity: 'medium',
+            time: 'Just now',
+            icon: '🤝'
+        });
+        renderAlerts();
+    }
+}
+
+function viewAllCompetitors() {
+    // Open full competitor list modal or navigate to dedicated page
+    alert('Full competitor list:\n\n' + competitorData.map(c => `${c.name} (${c.priority})`).join('\n'));
+}
+
+function runCheck() {
+    document.getElementById('last-check').textContent = 'Checking...';
+    
+    setTimeout(() => {
+        document.getElementById('last-check').textContent = 'Last check: ' + new Date().toLocaleString();
+        
+        // Simulate check completion
+        competitorAlerts.unshift({
+            competitor: 'System',
+            title: 'Daily check completed - no major alerts',
+            severity: 'low',
+            time: 'Just now',
+            icon: '✓'
+        });
+        renderAlerts();
+    }, 1500);
+}
+
+function openCompetitor(id) {
+    const comp = competitorData.find(c => c.id === id);
+    if (comp) {
+        // In production, open detailed view
+        console.log('Opening competitor:', comp.name);
+    }
+}
+
+// Initialize
+renderCompetitors();
+renderAlerts();
+
+// Auto-refresh every 30 minutes
+setInterval(() => {
+    document.getElementById('last-check').textContent = 'Last check: ' + new Date().toLocaleString();
+}, 1800000);
+</script>

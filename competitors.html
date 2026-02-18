@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Competitor Monitor | Scout</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #111118;
+            --bg-card: #15151d;
+            --bg-elevated: #1e1e2a;
+            --accent-cyan: #00d4ff;
+            --accent-pink: #ff2a6d;
+            --accent-purple: #a855f7;
+            --accent-green: #22c55e;
+            --accent-yellow: #fbbf24;
+            --accent-orange: #f97316;
+            --text-primary: #fafafa;
+            --text-secondary: #a1a1aa;
+            --text-muted: #71717a;
+            --border: #27272a;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .header {
+            background: rgba(17, 17, 24, 0.95);
+            border-bottom: 1px solid var(--border);
+            padding: 0 2rem;
+            height: 70px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .logo {
+            width: 42px;
+            height: 42px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+        
+        .nav-tabs {
+            display: flex;
+            gap: 0.5rem;
+            background: rgba(255,255,255,0.05);
+            padding: 0.5rem;
+            border-radius: 12px;
+        }
+        
+        .nav-tab {
+            padding: 0.75rem 1.25rem;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .nav-tab:hover, .nav-tab.active {
+            color: var(--text-primary);
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+        }
+        
+        .main-content {
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .subtitle {
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+        }
+        
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.25rem;
+            text-align: center;
+        }
+        
+        .stat-card .value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+        
+        .stat-card .value.p0 { color: var(--accent-pink); }
+        .stat-card .value.p1 { color: var(--accent-yellow); }
+        .stat-card .value.p2 { color: var(--accent-green); }
+        .stat-card .value.total { color: var(--accent-cyan); }
+        
+        .stat-card .label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+        
+        /* Filter Bar */
+        .filter-bar {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .filter-btn:hover, .filter-btn.active {
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
+        }
+        
+        .last-updated {
+            margin-left: auto;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+        
+        /* Competitor Grid */
+        .competitor-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 1rem;
+        }
+        
+        .competitor-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.25rem;
+            transition: all 0.2s;
+            position: relative;
+        }
+        
+        .competitor-card:hover {
+            border-color: var(--accent-cyan);
+            transform: translateY(-2px);
+        }
+        
+        .competitor-card.p0 { border-left: 4px solid var(--accent-pink); }
+        .competitor-card.p1 { border-left: 4px solid var(--accent-yellow); }
+        .competitor-card.p2 { border-left: 4px solid var(--accent-green); }
+        
+        .competitor-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.75rem;
+        }
+        
+        .competitor-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .competitor-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+        
+        .competitor-card.crypto_exchange .competitor-icon { background: rgba(0, 212, 255, 0.2); }
+        .competitor-card.payment_processor .competitor-icon { background: rgba(168, 85, 247, 0.2); }
+        .competitor-card.fintech .competitor-icon { background: rgba(34, 197, 94, 0.2); }
+        
+        .priority-badge {
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .priority-badge.p0 { background: rgba(255, 42, 109, 0.2); color: var(--accent-pink); }
+        .priority-badge.p1 { background: rgba(251, 191, 36, 0.2); color: var(--accent-yellow); }
+        .priority-badge.p2 { background: rgba(34, 197, 94, 0.2); color: var(--accent-green); }
+        
+        .competitor-meta {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 0.75rem;
+        }
+        
+        .competitor-keywords {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            margin-bottom: 1rem;
+        }
+        
+        .keyword-tag {
+            padding: 0.2rem 0.5rem;
+            background: var(--bg-elevated);
+            border-radius: 4px;
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+        }
+        
+        .competitor-links {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .competitor-link {
+            padding: 0.4rem 0.75rem;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        
+        .competitor-link:hover {
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
+        }
+        
+        /* Alert Section */
+        .alert-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.25rem;
+            margin-bottom: 2rem;
+        }
+        
+        .alert-section h3 {
+            color: var(--accent-cyan);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .alert-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem;
+            background: var(--bg-elevated);
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+            border-left: 3px solid var(--accent-pink);
+        }
+        
+        .alert-item.medium { border-left-color: var(--accent-yellow); }
+        .alert-item.low { border-left-color: var(--accent-green); }
+        
+        .alert-item .icon {
+            font-size: 1.25rem;
+        }
+        
+        .alert-item .content {
+            flex: 1;
+        }
+        
+        .alert-item .title {
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+        
+        .alert-item .meta {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+        
+        .alert-item .time {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-muted);
+        }
+        
+        /* Action Bar */
+        .action-bar {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .action-btn {
+            padding: 0.75rem 1.25rem;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 212, 255, 0.3);
+        }
+        
+        .action-btn.secondary {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+        }
+        
+        .action-btn.secondary:hover {
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
+            box-shadow: none;
+        }
+        
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .competitor-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="brand">
+            <div class="logo">🎯</div>
+            <div>
+                <h1 style="font-size: 1.25rem;">Competitor Monitor</h1>
+                <span style="font-size: 0.75rem; color: var(--text-muted);">Scout Research</span>
+            </div>
+        </div>
+        
+        <nav class="nav-tabs">
+            <a href="index.html" class="nav-tab">📊 Overview</a>
+            <a href="scout.html" class="nav-tab">🔭 Scout</a>
+            <a href="agents.html" class="nav-tab">🤖 Agents</a>
+            <a href="living-pixel-office.html" class="nav-tab">🏢 Office</a>
+            <a href="data-viewer.html" class="nav-tab">📁 Data</a>
+        </nav>
+        
+        <div style="display: flex; align-items: center; gap: 1rem;">
+            <button class="filter-btn" onclick="window.location.reload()">🔄 Refresh</button>
+        </div>
+    </header>
+
+    <div class="main-content">
+        <h1>🎯 Competitor Monitor</h1>
+        <p class="subtitle">Tracking crypto exchanges, fintech, and payment processors in SEA/HK</p>
+        
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="value total" id="stat-total">15</div>
+                <div class="label">Total Competitors</div>
+            </div>
+            <div class="stat-card">
+                <div class="value p0" id="stat-p0">5</div>
+                <div class="label">P0 Critical</div>
+            </div>
+            <div class="stat-card">
+                <div class="value p1" id="stat-p1">6</div>
+                <div class="label">P1 Important</div>
+            </div>
+            <div class="stat-card">
+                <div class="value p2" id="stat-p2">4</div>
+                <div class="label">P2 Monitor</div>
+            </div>
+        </div>
+        
+        <!-- Action Bar -->
+        <div class="action-bar">
+            <button class="action-btn" onclick="runCheck()">
+                🔍 Run Check Now
+            </button>
+            <button class="action-btn secondary" onclick="exportData()">
+                📥 Export Data
+            </button>
+            <button class="action-btn secondary" onclick="viewConfig()">
+                ⚙️ View Config
+            </button>
+        </div>
+        
+        <!-- Recent Alerts -->
+        <div class="alert-section" id="alert-section">
+            <h3>🚨 Recent Alerts</h3>
+            <div id="alerts-container">
+                <div class="empty-state">No alerts yet. Run a check to start monitoring.</div>
+            </div>
+        </div>
+        
+        <!-- Filter Bar -->
+        <div class="filter-bar">
+            <button class="filter-btn active" onclick="filterCompetitors('all')">All</button>
+            <button class="filter-btn" onclick="filterCompetitors('p0')">🔴 P0 Critical</button>
+            <button class="filter-btn" onclick="filterCompetitors('p1')">🟡 P1 Important</button>
+            <button class="filter-btn" onclick="filterCompetitors('p2')">🟢 P2 Monitor</button>
+            <button class="filter-btn" onclick="filterCompetitors('crypto')">💱 Crypto Exchanges</button>
+            <button class="filter-btn" onclick="filterCompetitors('payment')">💳 Payment Processors</button>
+            <button class="filter-btn" onclick="filterCompetitors('fintech')">🏦 Fintech</button>
+            <span class="last-updated" id="last-updated">Last updated: Loading...</span>
+        </div>
+        
+        <!-- Competitor Grid -->
+        <div class="competitor-grid" id="competitor-grid">
+            <!-- Populated by JavaScript -->
+        </div>
+    </div>
+
+    <script>
+        // Competitor data from competitors.json
+        const competitors = [
+            {
+                id: 'binance',
+                name: 'Binance',
+                category: 'crypto_exchange',
+                region: 'Global (SEA focus)',
+                priority: 'P0',
+                keywords: ['partnership', 'acquisition', 'new listing', 'regulatory', 'SEA', 'Hong Kong', 'Singapore'],
+                urls: { blog: 'https://www.binance.com/en/blog', newsroom: 'https://www.binance.com/en/newsroom', twitter: 'https://x.com/binance' }
+            },
+            {
+                id: 'coinbase',
+                name: 'Coinbase',
+                category: 'crypto_exchange',
+                region: 'Global (expanding to SEA)',
+                priority: 'P0',
+                keywords: ['Asia expansion', 'Hong Kong', 'Singapore', 'partnership', 'Base', 'L2'],
+                urls: { blog: 'https://www.coinbase.com/blog', newsroom: 'https://www.coinbase.com/newsroom', twitter: 'https://x.com/coinbase' }
+            },
+            {
+                id: 'stripe',
+                name: 'Stripe',
+                category: 'payment_processor',
+                region: 'Global (strong SEA presence)',
+                priority: 'P0',
+                keywords: ['Asia', 'Hong Kong', 'Singapore', 'acquisition', 'crypto', 'Web3'],
+                urls: { newsroom: 'https://stripe.com/newsroom', blog: 'https://stripe.com/blog', twitter: 'https://x.com/stripe' }
+            },
+            {
+                id: 'wise',
+                name: 'Wise',
+                category: 'payment_processor',
+                region: 'Global (strong SEA presence)',
+                priority: 'P1',
+                keywords: ['Asia expansion', 'Hong Kong', 'Singapore', 'business', 'API'],
+                urls: { newsroom: 'https://wise.com/newsroom', blog: 'https://wise.com/blog', twitter: 'https://x.com/Wise' }
+            },
+            {
+                id: 'revolut',
+                name: 'Revolut',
+                category: 'fintech',
+                region: 'Global (expanding to SEA)',
+                priority: 'P1',
+                keywords: ['Asia launch', 'Hong Kong', 'Singapore', 'crypto', 'IPO'],
+                urls: { newsroom: 'https://www.revolut.com/en-US/newsroom', blog: 'https://www.revolut.com/en-US/blog', twitter: 'https://x.com/RevolutApp' }
+            },
+            {
+                id: 'crypto_com',
+                name: 'Crypto.com',
+                category: 'crypto_exchange',
+                region: 'Singapore-based',
+                priority: 'P1',
+                keywords: ['partnership', 'sponsorship', 'Singapore', 'visa', 'staking'],
+                urls: { blog: 'https://crypto.com/university', news: 'https://crypto.com/news', twitter: 'https://x.com/cryptocom' }
+            },
+            {
+                id: 'okx',
+                name: 'OKX',
+                category: 'crypto_exchange',
+                region: 'Global (strong Asia presence)',
+                priority: 'P1',
+                keywords: ['Hong Kong', 'Singapore', 'Web3', 'wallet', 'DeFi'],
+                urls: { blog: 'https://www.okx.com/learn', news: 'https://www.okx.com/news', twitter: 'https://x.com/OKX' }
+            },
+            {
+                id: 'bybit',
+                name: 'Bybit',
+                category: 'crypto_exchange',
+                region: 'Dubai/Singapore',
+                priority: 'P1',
+                keywords: ['Singapore', 'derivatives', 'institutional', 'API'],
+                urls: { blog: 'https://www.bybit.com/en-US/blog', news: 'https://www.bybit.com/en-US/news', twitter: 'https://x.com/Bybit_Official' }
+            },
+            {
+                id: 'htx',
+                name: 'HTX',
+                category: 'crypto_exchange',
+                region: 'Asia-focused',
+                priority: 'P2',
+                keywords: ['Hong Kong', 'listing', 'HT token'],
+                urls: { blog: 'https://www.htx.com/en-us/blog', news: 'https://www.htx.com/en-us/news', twitter: 'https://x.com/htx_global' }
+            },
+            {
+                id: 'coins_ph',
+                name: 'Coins.ph',
+                category: 'crypto_exchange',
+                region: 'Philippines',
+                priority: 'P0',
+                keywords: ['partnership', 'funding', 'Philippines', 'remittance'],
+                urls: { blog: 'https://coins.ph/blog', twitter: 'https://x.com/coinsph' }
+            },
+            {
+                id: 'coins_xyz',
+                name: 'Coins.xyz',
+                category: 'crypto_exchange',
+                region: 'Global',
+                priority: 'P0',
+                keywords: ['partnership', 'API', 'integration', 'new market'],
+                urls: { twitter: 'https://x.com/coins_xyz' }
+            },
+            {
+                id: 'grab_financial',
+                name: 'Grab Financial Group',
+                category: 'fintech',
+                region: 'SEA (Singapore-based)',
+                priority: 'P1',
+                keywords: ['crypto', 'lending', 'partnership', 'digital bank'],
+                urls: { newsroom: 'https://www.grab.com/sg/press', twitter: 'https://x.com/GrabSG' }
+            },
+            {
+                id: 'sea_money',
+                name: 'SeaMoney',
+                category: 'fintech',
+                region: 'SEA',
+                priority: 'P1',
+                keywords: ['ShopeePay', 'partnership', 'digital bank', 'BNPL'],
+                urls: { ir: 'https://investors.sea.com/news-and-events/news-releases' }
+            },
+            {
+                id: 'payoneer',
+                name: 'Payoneer',
+                category: 'payment_processor',
+                region: 'Global (strong SEA presence)',
+                priority: 'P2',
+                keywords: ['Asia', 'partnership', 'marketplace', 'API'],
+                urls: { blog: 'https://blog.payoneer.com', newsroom: 'https://www.payoneer.com/newsroom', twitter: 'https://x.com/Payoneer' }
+            },
+            {
+                id: 'checkout_com',
+                name: 'Checkout.com',
+                category: 'payment_processor',
+                region: 'Global (Hong Kong office)',
+                priority: 'P2',
+                keywords: ['Hong Kong', 'Singapore', 'crypto', 'stablecoin'],
+                urls: { newsroom: 'https://www.checkout.com/newsroom', blog: 'https://www.checkout.com/blog', twitter: 'https://x.com/Checkout' }
+            }
+        ];
+
+        const categoryIcons = {
+            crypto_exchange: '💱',
+            payment_processor: '💳',
+            fintech: '🏦'
+        };
+
+        let currentFilter = 'all';
+        let alerts = [];
+
+        function renderCompetitors(filter = 'all') {
+            const grid = document.getElementById('competitor-grid');
+            let filtered = competitors;
+
+            if (filter === 'p0') filtered = competitors.filter(c => c.priority === 'P0');
+            else if (filter === 'p1') filtered = competitors.filter(c => c.priority === 'P1');
+            else if (filter === 'p2') filtered = competitors.filter(c => c.priority === 'P2');
+            else if (filter === 'crypto') filtered = competitors.filter(c => c.category === 'crypto_exchange');
+            else if (filter === 'payment') filtered = competitors.filter(c => c.category === 'payment_processor');
+            else if (filter === 'fintech') filtered = competitors.filter(c => c.category === 'fintech');
+
+            grid.innerHTML = filtered.map(comp => {
+                const icon = categoryIcons[comp.category] || '🏢';
+                const urlEntries = Object.entries(comp.urls).slice(0, 3);
+                
+                return `
+                    <div class="competitor-card ${comp.priority.toLowerCase()} ${comp.category}">
+                        <div class="competitor-header">
+                            <div class="competitor-name">
+                                <div class="competitor-icon">${icon}</div>
+                                ${comp.name}
+                            </div>
+                            <span class="priority-badge ${comp.priority.toLowerCase()}">${comp.priority}</span>
+                        </div>
+                        
+                        <div class="competitor-meta">
+                            <span>${comp.region}</span>
+                            <span>•</span>
+                            <span>${comp.category.replace('_', ' ')}</span>
+                        </div>
+                        
+                        <div class="competitor-keywords">
+                            ${comp.keywords.slice(0, 5).map(k => `<span class="keyword-tag">${k}</span>`).join('')}
+                        </div>
+                        
+                        <div class="competitor-links">
+                            ${urlEntries.map(([name, url]) => `
+                                <a href="${url}" target="_blank" class="competitor-link">${name} ↗</a>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function filterCompetitors(type) {
+            currentFilter = type;
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            renderCompetitors(type);
+        }
+
+        function runCheck() {
+            const btn = event.target;
+            btn.textContent = '⏳ Checking...';
+            btn.disabled = true;
+
+            setTimeout(() => {
+                btn.textContent = '🔍 Run Check Now';
+                btn.disabled = false;
+                
+                // Simulate finding an alert
+                const newAlert = {
+                    id: Date.now(),
+                    competitor: 'Binance',
+                    title: 'New partnership with SEA payment provider announced',
+                    severity: 'medium',
+                    time: new Date().toLocaleString()
+                };
+                
+                alerts.unshift(newAlert);
+                renderAlerts();
+                
+                document.getElementById('last-updated').textContent = 'Last updated: ' + new Date().toLocaleString();
+            }, 2000);
+        }
+
+        function renderAlerts() {
+            const container = document.getElementById('alerts-container');
+            
+            if (alerts.length === 0) {
+                container.innerHTML = '<div class="empty-state">No alerts yet. Run a check to start monitoring.</div>';
+                return;
+            }
+
+            container.innerHTML = alerts.slice(0, 5).map(alert => {
+                const icon = alert.severity === 'major' ? '🔴' : alert.severity === 'medium' ? '🟡' : '🟢';
+                return `
+                    <div class="alert-item ${alert.severity}">
+                        <span class="icon">${icon}</span>
+                        <div class="content">
+                            <div class="title">${alert.competitor}: ${alert.title}</div>
+                            <div class="meta">${alert.severity.toUpperCase()} priority</div>
+                        </div>
+                        <span class="time">${alert.time}</span>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function exportData() {
+            const data = {
+                exportedAt: new Date().toISOString(),
+                competitors: competitors,
+                alerts: alerts
+            };
+            
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `competitor-data-${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function viewConfig() {
+            window.open('../data/competitors.json', '_blank');
+        }
+
+        // Initialize
+        renderCompetitors();
+        document.getElementById('last-updated').textContent = 'Last updated: ' + new Date().toLocaleString();
+    </script>
+</body>
+</html>

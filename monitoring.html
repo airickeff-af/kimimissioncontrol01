@@ -1,0 +1,1302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta name="theme-color" content="#0a0a0f">
+    <title>Performance Monitoring | Mission Control</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #111118;
+            --bg-tertiary: #1a1a24;
+            --bg-card: #15151d;
+            --bg-elevated: #1e1e2a;
+            --accent-cyan: #00d4ff;
+            --accent-pink: #ff2a6d;
+            --accent-purple: #a855f7;
+            --accent-green: #22c55e;
+            --accent-yellow: #fbbf24;
+            --accent-orange: #f97316;
+            --accent-red: #ef4444;
+            --text-primary: #fafafa;
+            --text-secondary: #a1a1aa;
+            --text-muted: #71717a;
+            --border: #27272a;
+            --border-hover: #3f3f46;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        html {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.5;
+            -webkit-text-size-adjust: 100%;
+        }
+        
+        body {
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        /* Animated Grid Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+            z-index: 0;
+            animation: gridMove 20s linear infinite;
+        }
+        
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(60px, 60px); }
+        }
+        
+        /* Header */
+        .header {
+            background: rgba(17, 17, 24, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            padding: 0 1rem;
+            height: 70px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .logo {
+            width: 42px;
+            height: 42px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.3);
+            animation: pulse 3s ease-in-out infinite;
+            flex-shrink: 0;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 20px rgba(0, 212, 255, 0.3); }
+            50% { box-shadow: 0 0 40px rgba(0, 212, 255, 0.5), 0 0 60px rgba(168, 85, 247, 0.3); }
+        }
+        
+        .brand-text h1 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+        
+        .brand-text span {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        /* Desktop Navigation */
+        .nav-desktop {
+            display: flex;
+            gap: 0.5rem;
+            background: rgba(255,255,255,0.05);
+            padding: 0.5rem;
+            border-radius: 12px;
+        }
+        
+        .nav-tab {
+            padding: 0.75rem 1rem;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+        
+        .nav-tab:hover {
+            color: var(--text-primary);
+            background: rgba(255,255,255,0.05);
+        }
+        
+        .nav-tab.active {
+            color: var(--text-primary);
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
+        }
+        
+        /* Mobile Navigation Toggle */
+        .nav-toggle {
+            display: none;
+            width: 44px;
+            height: 44px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 1.25rem;
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Mobile Navigation Menu */
+        .nav-dropdown {
+            display: none;
+            position: fixed;
+            top: 70px;
+            left: 0;
+            right: 0;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem;
+            z-index: 99;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .nav-dropdown.active {
+            display: flex;
+        }
+        
+        .nav-dropdown .nav-tab {
+            padding: 1rem;
+            justify-content: flex-start;
+        }
+        
+        /* Mobile Bottom Navigation */
+        .nav-mobile {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border);
+            padding: 0.5rem;
+            z-index: 101;
+            justify-content: space-around;
+        }
+        
+        .nav-mobile .nav-tab {
+            flex: 1;
+            flex-direction: column;
+            padding: 0.5rem 0.25rem;
+            font-size: 0.65rem;
+            gap: 2px;
+        }
+        
+        .nav-mobile .nav-tab .icon {
+            font-size: 1.25rem;
+        }
+        
+        .nav-mobile .nav-tab span:not(.icon) {
+            display: none;
+        }
+        
+        .nav-mobile .nav-tab.active span:not(.icon) {
+            display: block;
+        }
+        
+        /* Live Indicator */
+        .live-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.8rem;
+            color: var(--accent-green);
+        }
+        
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--accent-green);
+            border-radius: 50%;
+            animation: livePulse 1.5s ease-in-out infinite;
+        }
+        
+        @keyframes livePulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+        }
+        
+        /* Main Content */
+        .main-content {
+            padding: 1.5rem;
+            max-width: 1800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Alert Banner */
+        .alert-banner {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(239, 68, 68, 0.1));
+            border: 1px solid var(--accent-red);
+            border-radius: 12px;
+            padding: 1rem 1.5rem;
+            margin-bottom: 1.5rem;
+            display: none;
+            align-items: center;
+            gap: 1rem;
+            animation: alertPulse 2s ease-in-out infinite;
+        }
+        
+        .alert-banner.active {
+            display: flex;
+        }
+        
+        @keyframes alertPulse {
+            0%, 100% { box-shadow: 0 0 10px rgba(239, 68, 68, 0.3); }
+            50% { box-shadow: 0 0 20px rgba(239, 68, 68, 0.5); }
+        }
+        
+        .alert-icon {
+            font-size: 1.5rem;
+            animation: alertShake 0.5s ease-in-out infinite;
+        }
+        
+        @keyframes alertShake {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-10deg); }
+            75% { transform: rotate(10deg); }
+        }
+        
+        .alert-text {
+            flex: 1;
+            font-size: 0.95rem;
+        }
+        
+        .alert-close {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 1.5rem;
+            padding: 0.25rem;
+            min-width: 44px;
+            min-height: 44px;
+        }
+        
+        /* Stats Bar */
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.25rem;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stat-card:hover {
+            border-color: var(--border-hover);
+            transform: translateY(-2px);
+        }
+        
+        .stat-card.alert {
+            border-color: var(--accent-red);
+            animation: alertGlow 2s ease-in-out infinite;
+        }
+        
+        @keyframes alertGlow {
+            0%, 100% { box-shadow: 0 0 5px rgba(239, 68, 68, 0.3); }
+            50% { box-shadow: 0 0 15px rgba(239, 68, 68, 0.5); }
+        }
+        
+        .stat-card.warning {
+            border-color: var(--accent-yellow);
+        }
+        
+        .stat-card.success {
+            border-color: var(--accent-green);
+        }
+        
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .stat-change {
+            font-size: 0.75rem;
+            margin-top: 0.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        
+        .stat-change.positive { color: var(--accent-green); }
+        .stat-change.negative { color: var(--accent-red); }
+        .stat-change.neutral { color: var(--text-muted); }
+        
+        /* Dashboard Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .panel {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.5rem;
+        }
+        
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.25rem;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        
+        .panel-title {
+            font-size: 1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--accent-cyan);
+        }
+        
+        .panel-actions {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .panel-btn {
+            padding: 0.5rem 0.75rem;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            min-height: 36px;
+        }
+        
+        .panel-btn:hover {
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
+        }
+        
+        .panel-btn.active {
+            background: var(--accent-cyan);
+            color: var(--bg-primary);
+            border-color: var(--accent-cyan);
+        }
+        
+        /* Chart Container */
+        .chart-container {
+            position: relative;
+            height: 300px;
+        }
+        
+        .chart-legend {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+            flex-wrap: wrap;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+        
+        .legend-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 3px;
+        }
+        
+        /* Scorecard Grid */
+        .scorecard-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+        
+        .scorecard {
+            background: var(--bg-elevated);
+            border-radius: 12px;
+            padding: 1rem;
+            border: 1px solid var(--border);
+        }
+        
+        .scorecard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+        
+        .scorecard-title {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+        
+        .scorecard-status {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+        
+        .scorecard-status.good { background: var(--accent-green); box-shadow: 0 0 8px var(--accent-green); }
+        .scorecard-status.warning { background: var(--accent-yellow); box-shadow: 0 0 8px var(--accent-yellow); }
+        .scorecard-status.critical { background: var(--accent-red); box-shadow: 0 0 8px var(--accent-red); animation: blink 1s ease-in-out infinite; }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+        
+        .scorecard-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .scorecard-target {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+        
+        /* Metrics Grid */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .metric-panel {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.25rem;
+        }
+        
+        .metric-panel .panel-title {
+            font-size: 0.9rem;
+        }
+        
+        .metric-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        
+        .metric-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem;
+            background: var(--bg-elevated);
+            border-radius: 8px;
+            border-left: 3px solid transparent;
+        }
+        
+        .metric-item.good { border-left-color: var(--accent-green); }
+        .metric-item.warning { border-left-color: var(--accent-yellow); }
+        .metric-item.critical { border-left-color: var(--accent-red); }
+        
+        .metric-name {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+        
+        .metric-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        .metric-value.good { color: var(--accent-green); }
+        .metric-value.warning { color: var(--accent-yellow); }
+        .metric-value.critical { color: var(--accent-red); }
+        
+        /* Agent Performance Table */
+        .agent-table-wrapper {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            margin: 0 -1.5rem;
+            padding: 0 1.5rem;
+        }
+        
+        .agent-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+            min-width: 800px;
+        }
+        
+        .agent-table th,
+        .agent-table td {
+            padding: 0.875rem 1rem;
+            text-align: left;
+        }
+        
+        .agent-table th {
+            color: var(--text-muted);
+            font-weight: 500;
+            border-bottom: 1px solid var(--border);
+            white-space: nowrap;
+        }
+        
+        .agent-table td {
+            border-bottom: 1px solid var(--border);
+            color: var(--text-secondary);
+        }
+        
+        .agent-table tr:hover td {
+            background: var(--bg-elevated);
+            color: var(--text-primary);
+        }
+        
+        .agent-cell {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .agent-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            background: var(--bg-tertiary);
+            flex-shrink: 0;
+        }
+        
+        .agent-name {
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: var(--bg-tertiary);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.3s;
+        }
+        
+        .progress-fill.good { background: var(--accent-green); }
+        .progress-fill.warning { background: var(--accent-yellow); }
+        .progress-fill.critical { background: var(--accent-red); }
+        
+        /* Refresh Button */
+        .refresh-btn {
+            padding: 0.5rem 1rem;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            min-height: 44px;
+        }
+        
+        .refresh-btn:hover {
+            border-color: var(--accent-cyan);
+            color: var(--text-primary);
+        }
+        
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--border-hover);
+        }
+        
+        /* Tablet Styles */
+        @media (max-width: 1400px) {
+            .stats-bar {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        
+        @media (max-width: 1200px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .metrics-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 1024px) {
+            .nav-desktop {
+                display: none;
+            }
+            
+            .nav-toggle {
+                display: flex;
+            }
+            
+            .nav-mobile {
+                display: flex;
+            }
+            
+            .main-content {
+                padding: 1rem;
+                padding-bottom: 5rem;
+            }
+            
+            .stats-bar {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Mobile Styles */
+        @media (max-width: 768px) {
+            .header {
+                height: 60px;
+                padding: 0 0.75rem;
+            }
+            
+            .logo {
+                width: 36px;
+                height: 36px;
+                font-size: 1.2rem;
+            }
+            
+            .brand-text h1 {
+                font-size: 1rem;
+            }
+            
+            .brand-text span {
+                display: none;
+            }
+            
+            .nav-dropdown {
+                top: 60px;
+            }
+            
+            .stats-bar {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.75rem;
+            }
+            
+            .stat-card {
+                padding: 1rem;
+            }
+            
+            .stat-value {
+                font-size: 1.25rem;
+            }
+            
+            .panel {
+                padding: 1rem;
+            }
+            
+            .panel-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .panel-actions {
+                width: 100%;
+            }
+            
+            .panel-btn {
+                flex: 1;
+                text-align: center;
+            }
+            
+            .chart-container {
+                height: 250px;
+            }
+            
+            .chart-legend {
+                gap: 1rem;
+            }
+            
+            .scorecard-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .agent-table-wrapper {
+                margin: 0 -1rem;
+                padding: 0 1rem;
+            }
+        }
+        
+        /* Small Mobile */
+        @media (max-width: 480px) {
+            .stats-bar {
+                grid-template-columns: 1fr;
+            }
+            
+            .chart-container {
+                height: 200px;
+            }
+            
+            .chart-legend {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="brand">
+            <div class="logo">📊</div>
+            <div class="brand-text">
+                <h1>Performance Monitoring</h1>
+                <span>System Health Dashboard</span>
+            </div>
+        </div>
+        
+        <!-- Desktop Navigation -->
+        <nav class="nav-desktop">
+            <a href="index.html" class="nav-tab">
+                <span class="icon">📊</span> Overview
+            </a>
+            <a href="hq.html" class="nav-tab">
+                <span class="icon">🏢</span> HQ
+            </a>
+            <a href="token-tracker.html" class="nav-tab">
+                <span class="icon">💰</span> Tokens
+            </a>
+            <a href="task-board.html" class="nav-tab">
+                <span class="icon">📋</span> Tasks
+            </a>
+            <a href="data-viewer.html" class="nav-tab">
+                <span class="icon">📁</span> Data
+            </a>
+            <a href="logs-view.html" class="nav-tab">
+                <span class="icon">📝</span> Logs
+            </a>
+            <a href="monitoring.html" class="nav-tab active">
+                <span class="icon">📈</span> Monitor
+            </a>
+        </nav>
+        
+        <!-- Mobile Nav Toggle -->
+        <button class="nav-toggle" onclick="toggleNav()" aria-label="Toggle navigation">☰</button>
+        
+        <div style="display: flex; align-items: center; gap: 1rem;">
+            <div class="live-indicator">
+                <div class="live-dot"></div>
+                <span>LIVE</span>
+            </div>
+            <button class="refresh-btn" onclick="refreshData()">🔄 Refresh</button>
+        </div>
+    </header>
+    
+    <!-- Mobile Dropdown Menu -->
+    <nav class="nav-dropdown" id="navDropdown">
+        <a href="index.html" class="nav-tab">📊 Overview</a>
+        <a href="hq.html" class="nav-tab">🏢 HQ</a>
+        <a href="token-tracker.html" class="nav-tab">💰 Tokens</a>
+        <a href="task-board.html" class="nav-tab">📋 Tasks</a>
+        <a href="data-viewer.html" class="nav-tab">📁 Data</a>
+        <a href="logs-view.html" class="nav-tab">📝 Logs</a>
+        <a href="monitoring.html" class="nav-tab active">📈 Monitor</a>
+    </nav>
+
+    <div class="main-content">
+        <!-- Alert Banner -->
+        <div class="alert-banner" id="alertBanner">
+            <span class="alert-icon">🚨</span>
+            <span class="alert-text" id="alertText">API latency exceeded 500ms threshold</span>
+            <button class="alert-close" onclick="dismissAlert()">×</button>
+        </div>
+
+        <!-- Top Stats Bar -->
+        <div class="stats-bar">
+            <div class="stat-card" id="uptimeCard">
+                <div class="stat-label">⏱️ System Uptime</div>
+                <div class="stat-value" id="uptimeValue">99.9%</div>
+                <div class="stat-change positive">
+                    <span>↑</span> Last 30 days
+                </div>
+            </div>
+            <div class="stat-card" id="latencyCard">
+                <div class="stat-label">⚡ API Latency</div>
+                <div class="stat-value" id="latencyValue">245ms</div>
+                <div class="stat-change positive">
+                    <span>↓</span> -12ms
+                </div>
+            </div>
+            <div class="stat-card" id="errorCard">
+                <div class="stat-label">❌ Error Rate</div>
+                <div class="stat-value" id="errorValue">0.3%</div>
+                <div class="stat-change positive">
+                    <span>↓</span> Below 1%
+                </div>
+            </div>
+            <div class="stat-card" id="tokenCard">
+                <div class="stat-label">🪙 Token Usage</div>
+                <div class="stat-value" id="tokenValue">142K</div>
+                <div class="stat-change neutral">
+                    <span>→</span> 71% of limit
+                </div>
+            </div>
+            <div class="stat-card" id="agentCard">
+                <div class="stat-label">🤖 Active Agents</div>
+                <div class="stat-value" id="agentValue">20/20</div>
+                <div class="stat-change positive">
+                    <span>✓</span> All healthy
+                </div>
+            </div>
+            <div class="stat-card" id="successCard">
+                <div class="stat-label">✅ Success Rate</div>
+                <div class="stat-value" id="successValue">97.2%</div>
+                <div class="stat-change positive">
+                    <span>↑</span> +2.1%
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Dashboard Grid -->
+        <div class="dashboard-grid">
+            <!-- API Response Times Chart -->
+            <div class="panel">
+                <div class="panel-header">
+                    <div class="panel-title">📈 API Response Times</div>
+                    <div class="panel-actions">
+                        <button class="panel-btn active" data-range="1h">1H</button>
+                        <button class="panel-btn" data-range="6h">6H</button>
+                        <button class="panel-btn" data-range="24h">24H</button>
+                        <button class="panel-btn" data-range="7d">7D</button>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="latencyChart"></canvas>
+                </div>
+                <div class="chart-legend">
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: var(--accent-cyan);"></div>
+                        <span>p50 (Median)</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: var(--accent-purple);"></div>
+                        <span>p95</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: var(--accent-pink);"></div>
+                        <span>p99</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Performance Scorecards -->
+            <div class="panel">
+                <div class="panel-header">
+                    <div class="panel-title">🎯 Performance Scorecards</div>
+                </div>
+                <div class="scorecard-grid">
+                    <div class="scorecard">
+                        <div class="scorecard-header">
+                            <span class="scorecard-title">API Health</span>
+                            <span class="scorecard-status good"></span>
+                        </div>
+                        <div class="scorecard-value" style="color: var(--accent-green);">98.5</div>
+                        <div class="scorecard-target">Target: >95</div>
+                    </div>
+                    <div class="scorecard">
+                        <div class="scorecard-header">
+                            <span class="scorecard-title">Dashboard Load</span>
+                            <span class="scorecard-status good"></span>
+                        </div>
+                        <div class="scorecard-value" style="color: var(--accent-green);">1.2s</div>
+                        <div class="scorecard-target">Target: <2s</div>
+                    </div>
+                    <div class="scorecard">
+                        <div class="scorecard-header">
+                            <span class="scorecard-title">Agent Success</span>
+                            <span class="scorecard-status good"></span>
+                        </div>
+                        <div class="scorecard-value" style="color: var(--accent-green);">97.2%</div>
+                        <div class="scorecard-target">Target: >95%</div>
+                    </div>
+                    <div class="scorecard">
+                        <div class="scorecard-header">
+                            <span class="scorecard-title">Token Efficiency</span>
+                            <span class="scorecard-status warning"></span>
+                        </div>
+                        <div class="scorecard-value" style="color: var(--accent-yellow);">71%</div>
+                        <div class="scorecard-target">Limit: 200K/day</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Metrics Grid -->
+        <div class="metrics-grid">
+            <div class="metric-panel">
+                <div class="panel-header">
+                    <div class="panel-title">❌ Error Rates</div>
+                </div>
+                <div class="metric-list">
+                    <div class="metric-item good">
+                        <span class="metric-name">API 4xx Errors</span>
+                        <span class="metric-value good">0.12%</span>
+                    </div>
+                    <div class="metric-item good">
+                        <span class="metric-name">API 5xx Errors</span>
+                        <span class="metric-value good">0.05%</span>
+                    </div>
+                    <div class="metric-item good">
+                        <span class="metric-name">Agent Failures</span>
+                        <span class="metric-value good">0.8%</span>
+                    </div>
+                    <div class="metric-item warning">
+                        <span class="metric-name">Timeout Errors</span>
+                        <span class="metric-value warning">1.2%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="metric-panel">
+                <div class="panel-header">
+                    <div class="panel-title">🪙 Token Usage</div>
+                </div>
+                <div class="metric-list">
+                    <div class="metric-item warning">
+                        <span class="metric-name">Scout</span>
+                        <span class="metric-value warning">28.5K</span>
+                    </div>
+                    <div class="metric-item warning">
+                        <span class="metric-name">DealFlow</span>
+                        <span class="metric-value warning">24.1K</span>
+                    </div>
+                    <div class="metric-item good">
+                        <span class="metric-name">Nexus</span>
+                        <span class="metric-value good">18.2K</span>
+                    </div>
+                    <div class="metric-item good">
+                        <span class="metric-name">Forge</span>
+                        <span class="metric-value good">15.8K</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="metric-panel">
+                <div class="panel-header">
+                    <div class="panel-title">🖥️ Dashboard Load</div>
+                </div>
+                <div class="metric-list">
+                    <div class="metric-item good">
+                        <span class="metric-name">HQ Overview</span>
+                        <span class="metric-value good">0.8s</span>
+                    </div>
+                    <div class="metric-item good">
+                        <span class="metric-name">Office View</span>
+                        <span class="metric-value good">1.1s</span>
+                    </div>
+                    <div class="metric-item good">
+                        <span class="metric-name">Task Board</span>
+                        <span class="metric-value good">0.6s</span>
+                    </div>
+                    <div class="metric-item warning">
+                        <span class="metric-name">Data Viewer</span>
+                        <span class="metric-value warning">2.3s</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Agent Performance Table -->
+        <div class="panel">
+            <div class="panel-header">
+                <div class="panel-title">🤖 Agent Performance</div>
+                <div class="panel-actions">
+                    <button class="panel-btn active">All</button>
+                    <button class="panel-btn">Active</button>
+                    <button class="panel-btn">Issues</button>
+                </div>
+            </div>
+            <div class="agent-table-wrapper">
+                <table class="agent-table">
+                    <thead>
+                        <tr>
+                            <th>Agent</th>
+                            <th>Success Rate</th>
+                            <th>Avg Response</th>
+                            <th>Tasks (24h)</th>
+                            <th>Tokens</th>
+                            <th>Error Rate</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="agentTableBody">
+                        <!-- Populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Mobile Bottom Navigation -->
+    <nav class="nav-mobile">
+        <a href="index.html" class="nav-tab">
+            <span class="icon">📊</span>
+            <span>Overview</span>
+        </a>
+        <a href="hq.html" class="nav-tab">
+            <span class="icon">🏢</span>
+            <span>HQ</span>
+        </a>
+        <a href="token-tracker.html" class="nav-tab">
+            <span class="icon">💰</span>
+            <span>Tokens</span>
+        </a>
+        <a href="task-board.html" class="nav-tab">
+            <span class="icon">📋</span>
+            <span>Tasks</span>
+        </a>
+        <a href="monitoring.html" class="nav-tab active">
+            <span class="icon">📈</span>
+            <span>Monitor</span>
+        </a>
+    </nav>
+
+    <script>
+        // Mobile nav toggle
+        function toggleNav() {
+            const dropdown = document.getElementById('navDropdown');
+            dropdown.classList.toggle('active');
+        }
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            const dropdown = document.getElementById('navDropdown');
+            const toggle = document.querySelector('.nav-toggle');
+            if (!dropdown.contains(e.target) && !toggle.contains(e.target)) {
+                dropdown.classList.remove('active');
+            }
+        });
+        
+        function dismissAlert() {
+            document.getElementById('alertBanner').classList.remove('active');
+        }
+        
+        function refreshData() {
+            // Simulate refresh
+            console.log('Refreshing data...');
+        }
+        
+        // Chart.js default configuration
+        Chart.defaults.color = '#a1a1aa';
+        Chart.defaults.borderColor = '#27272a';
+        Chart.defaults.font.family = "'Inter', sans-serif";
+
+        // Initialize Latency Chart
+        const latencyCtx = document.getElementById('latencyChart').getContext('2d');
+        new Chart(latencyCtx, {
+            type: 'line',
+            data: {
+                labels: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00', '24:00'],
+                datasets: [
+                    {
+                        label: 'p50',
+                        data: [120, 135, 110, 145, 130, 125, 140],
+                        borderColor: '#00d4ff',
+                        backgroundColor: 'rgba(0, 212, 255, 0.1)',
+                        borderWidth: 2,
+                        tension: 0.4,
+                        pointRadius: 0,
+                        pointHoverRadius: 4,
+                        fill: true
+                    },
+                    {
+                        label: 'p95',
+                        data: [250, 280, 220, 310, 265, 240, 290],
+                        borderColor: '#a855f7',
+                        backgroundColor: 'rgba(168, 85, 247, 0.1)',
+                        borderWidth: 2,
+                        tension: 0.4,
+                        pointRadius: 0,
+                        pointHoverRadius: 4,
+                        fill: true
+                    },
+                    {
+                        label: 'p99',
+                        data: [380, 420, 340, 480, 400, 360, 440],
+                        borderColor: '#ff2a6d',
+                        backgroundColor: 'rgba(255, 42, 109, 0.1)',
+                        borderWidth: 2,
+                        tension: 0.4,
+                        pointRadius: 0,
+                        pointHoverRadius: 4,
+                        fill: true
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: {
+                    mode: 'index',
+                    intersect: false
+                },
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 600,
+                        grid: { color: 'rgba(39, 39, 42, 0.5)' },
+                        ticks: { callback: function(value) { return value + 'ms'; } }
+                    },
+                    x: {
+                        grid: { display: false }
+                    }
+                }
+            }
+        });
+
+        // Agent data
+        const agents = [
+            { name: 'Nexus', emoji: '🤖', role: 'Orchestrator', success: 99.2, response: 120, tasks: 45, tokens: 18200, errors: 0.1 },
+            { name: 'Scout', emoji: '🔭', role: 'Researcher', success: 96.8, response: 280, tasks: 38, tokens: 28500, errors: 0.8 },
+            { name: 'DealFlow', emoji: '🤝', role: 'Lead Gen', success: 94.5, response: 350, tasks: 52, tokens: 24100, errors: 1.2 },
+            { name: 'Forge', emoji: '🔨', role: 'UI Lead', success: 98.1, response: 180, tasks: 38, tokens: 15800, errors: 0.3 },
+            { name: 'Code', emoji: '💻', role: 'Backend', success: 97.5, response: 150, tasks: 29, tokens: 12400, errors: 0.5 }
+        ];
+
+        // Render agent table
+        function renderAgentTable() {
+            const tbody = document.getElementById('agentTableBody');
+            tbody.innerHTML = agents.map(agent => {
+                const statusClass = agent.success >= 95 ? 'good' : agent.success >= 90 ? 'warning' : 'critical';
+                const statusText = agent.success >= 95 ? 'Healthy' : agent.success >= 90 ? 'Warning' : 'Critical';
+                
+                return `
+                    <tr>
+                        <td>
+                            <div class="agent-cell">
+                                <div class="agent-avatar">${agent.emoji}</div>
+                                <div>
+                                    <div class="agent-name">${agent.name}</div>
+                                    <div style="font-size: 0.75rem; color: var(--text-muted);">${agent.role}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                <div class="progress-bar" style="width: 60px;">
+                                    <div class="progress-fill ${statusClass}" style="width: ${agent.success}%"></div>
+                                </div>
+                                <span>${agent.success}%</span>
+                            </div>
+                        </td>
+                        <td>${agent.response}ms</td>
+                        <td>${agent.tasks}</td>
+                        <td>${(agent.tokens/1000).toFixed(1)}K</td>
+                        <td style="color: ${agent.errors > 1 ? 'var(--accent-red)' : agent.errors > 0.5 ? 'var(--accent-yellow)' : 'var(--accent-green)'}">${agent.errors}%</td>
+                        <td>
+                            <span style="display: inline-flex; align-items: center; gap: 0.25rem; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: 500; background: ${statusClass === 'good' ? 'rgba(34, 197, 94, 0.2)' : statusClass === 'warning' ? 'rgba(251, 191, 36, 0.2)' : 'rgba(239, 68, 68, 0.2)'}; color: ${statusClass === 'good' ? 'var(--accent-green)' : statusClass === 'warning' ? 'var(--accent-yellow)' : 'var(--accent-red)'}">
+                                <span style="width: 6px; height: 6px; border-radius: 50%; background: currentColor;"></span>
+                                ${statusText}
+                            </span>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // Time range buttons
+        document.querySelectorAll('[data-range]').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('[data-range]').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Initialize
+        renderAgentTable();
+    </script>
+</body>
+</html>

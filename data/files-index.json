@@ -1,0 +1,98 @@
+[
+  {
+    "id": "file_001",
+    "name": "DealFlow Leads",
+    "path": "data/leads.json",
+    "type": "json",
+    "description": "26 crypto/fintech leads",
+    "size": "15KB"
+  },
+  {
+    "id": "file_002", 
+    "name": "On Hing Metal Leads",
+    "path": "data/onhing_metal_leads.json",
+    "type": "json",
+    "description": "15 manufacturing leads",
+    "size": "13KB"
+  },
+  {
+    "id": "file_003",
+    "name": "Agent Data",
+    "path": "data/agents.json",
+    "type": "json",
+    "description": "20 agents with positions",
+    "size": "8KB"
+  },
+  {
+    "id": "file_004",
+    "name": "Task Queue",
+    "path": "TASK_QUEUE.json",
+    "type": "json",
+    "description": "Pending tasks",
+    "size": "2KB"
+  },
+  {
+    "id": "file_005",
+    "name": "Office State",
+    "path": "current_office_state.json",
+    "type": "json",
+    "description": "Current office positions",
+    "size": "1KB"
+  },
+  {
+    "id": "file_006",
+    "name": "Memory Bank",
+    "path": "MEMORY_BANK.md",
+    "type": "markdown",
+    "description": "Never forget system",
+    "size": "25KB"
+  },
+  {
+    "id": "file_007",
+    "name": "Pending Tasks",
+    "path": "PENDING_TASKS.md",
+    "type": "markdown",
+    "description": "Task tracking",
+    "size": "15KB"
+  },
+  {
+    "id": "file_008",
+    "name": "Token Usage Report",
+    "path": "ACTUAL_TOKEN_USAGE_REPORT.md",
+    "type": "markdown",
+    "description": "Real usage data",
+    "size": "8KB"
+  },
+  {
+    "id": "file_009",
+    "name": "Speed Optimization",
+    "path": "SPEED_OPTIMIZATION_PROTOCOL.md",
+    "type": "markdown",
+    "description": "Performance guide",
+    "size": "10KB"
+  },
+  {
+    "id": "file_010",
+    "name": "Available Skills",
+    "path": "AVAILABLE_OPENCLAW_SKILLS.md",
+    "type": "markdown",
+    "description": "53 OpenClaw skills",
+    "size": "12KB"
+  },
+  {
+    "id": "file_011",
+    "name": "Low Lift Money Opportunities",
+    "path": "agents/scout/LOW_LIFT_MONEY_OPPORTUNITIES.md",
+    "type": "markdown",
+    "description": "8 money-making ideas",
+    "size": "8KB"
+  },
+  {
+    "id": "file_012",
+    "name": "NFT/DeFi Research",
+    "path": "agents/scout/RESEARCH_NFT_DEFI_RWA.md",
+    "type": "markdown",
+    "description": "2 influential people",
+    "size": "6KB"
+  }
+]

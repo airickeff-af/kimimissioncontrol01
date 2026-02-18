@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PIE Dashboard - Partnership Intelligence Engine</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --kairo-green: #4ade80;
+            --kairo-dark: #1a1a2e;
+            --kairo-darker: #16162a;
+            --kairo-accent: #fbbf24;
+            --kairo-danger: #f87171;
+            --kairo-info: #60a5fa;
+            --kairo-purple: #a78bfa;
+            --pixel-border: 4px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--kairo-dark);
+            color: #e2e8f0;
+            min-height: 100vh;
+        }
+
+        /* Pixel Art Header */
+        .pixel-header {
+            background: linear-gradient(180deg, #2d2d44 0%, var(--kairo-darker) 100%);
+            border-bottom: var(--pixel-border) solid #0f0f1a;
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        .pixel-header::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: repeating-linear-gradient(
+                90deg,
+                var(--kairo-green) 0px,
+                var(--kairo-green) 8px,
+                transparent 8px,
+                transparent 16px
+            );
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .pixel-logo {
+            width: 48px;
+            height: 48px;
+            background: var(--kairo-green);
+            border: 4px solid #0f0f1a;
+            box-shadow: 4px 4px 0 #0f0f1a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 20px;
+            color: var(--kairo-dark);
+        }
+
+        .logo-text {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 14px;
+            color: var(--kairo-green);
+            text-shadow: 2px 2px 0 #0f0f1a;
+        }
+
+        .logo-sub {
+            font-size: 10px;
+            color: #94a3b8;
+            margin-top: 4px;
+        }
+
+        .header-nav {
+            display: flex;
+            gap: 8px;
+        }
+
+        .nav-btn {
+            padding: 12px 20px;
+            background: #2d2d44;
+            border: 3px solid #0f0f1a;
+            color: #94a3b8;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 10px;
+            cursor: pointer;
+            transition: all 0.1s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .nav-btn:hover, .nav-btn.active {
+            background: var(--kairo-green);
+            color: var(--kairo-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 0 #0f0f1a;
+        }
+
+        .user-section {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .pixel-avatar {
+            width: 40px;
+            height: 40px;
+            background: var(--kairo-accent);
+            border: 3px solid #0f0f1a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 12px;
+            color: var(--kairo-dark);
+        }
+
+        /* Main Layout */
+        .dashboard-container {
+            display: flex;
+            min-height: calc(100vh - 85px);
+        }
+
+        /* Sidebar */
+        .pixel-sidebar {
+            width: 240px;
+            background: var(--kairo-darker);
+            border-right: 4px solid #0f0f1a;
+            padding: 24px 16px;
+        }
+
+        .sidebar-section {
+            margin-bottom: 24px;
+        }
+
+        .sidebar-title {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 8px;
+            color: #64748b;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            padding-left: 8px;
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 13px;
+            border: 3px solid transparent;
+            margin-bottom: 4px;
+            transition: all 0.1s;
+        }
+
+        .sidebar-link:hover, .sidebar-link.active {
+            background: #2d2d44;
+            border-color: #0f0f1a;
+            color: var(--kairo-green);
+        }
+
+        .sidebar-link .icon {
+            font-size: 16px;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 24px;
+            overflow-y: auto;
+        }
+
+        /* Stats Row */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .pixel-stat-card {
+            background: #2d2d44;
+            border: 4px solid #0f0f1a;
+            padding: 20px;
+            position: relative;
+            box-shadow: 6px 6px 0 #0f0f1a;
+        }
+
+        .pixel-stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--kairo-green);
+        }
+
+        .pixel-stat-card.danger::before { background: var(--kairo-danger); }
+        .pixel-stat-card.info::before { background: var(--kairo-info); }
+        .pixel-stat-card.gold::before { background: var(--kairo-accent); }
+
+        .stat-label {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 8px;
+            color: #64748b;
+            margin-bottom: 12px;
+        }
+
+        .stat-value {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 24px;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .stat-change {
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .stat-change.positive { color: var(--kairo-green); }
+        .stat-change.negative { color: var(--kairo-danger); }
+
+        /* Dashboard Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        .pixel-panel {
+            background: #2d2d44;
+            border: 4px solid #0f0f1a;
+            box-shadow: 6px 6px 0 #0f0f1a;
+        }
+
+        .panel-header {
+            background: #252538;
+            padding: 16px 20px;
+            border-bottom: 4px solid #0f0f1a;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .panel-title {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 11px;
+            color: var(--kairo-green);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .panel-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .panel-btn {
+            padding: 8px 12px;
+            background: #3d3d5c;
+            border: 2px solid #0f0f1a;
+            color: #94a3b8;
+            font-size: 10px;
+            font-family: 'Press Start 2P', cursive;
+            cursor: pointer;
+        }
+
+        .panel-btn:hover {
+            background: var(--kairo-green);
+            color: var(--kairo-dark);
+        }
+
+        .panel-content {
+            padding: 20px;
+        }
+
+        /* Heat Map */
+        .heatmap-container {
+            position: relative;
+            height: 300px;
+            background: var(--kairo-darker);
+            border: 3px solid #0f0f1a;
+            overflow: hidden;
+        }
+
+        .heatmap-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            grid-template-rows: repeat(8, 1fr);
+            height: 100%;
+            gap: 2px;
+            padding: 8px;
+        }
+
+        .heatmap-cell {
+            background: #1e1e32;
+            border: 1px solid #2d2d44;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .heatmap-cell:hover {
+            transform: scale(1.1);
+            z-index: 10;
+            border-color: #fff;
+        }
+
+        .heatmap-cell.level-1 { background: #1e3a5f; }
+        .heatmap-cell.level-2 { background: #2563eb; }
+        .heatmap-cell.level-3 { background: #3b82f6; }
+        .heatmap-cell.level-4 { background: #60a5fa; }
+        .heatmap-cell.level-5 { background: #93c5fd; }
+        .heatmap-cell.hot-1 { background: #7c2d12; }
+        .heatmap-cell.hot-2 { background: #ea580c; }
+        .heatmap-cell.hot-3 { background: #f97316; }
+        .heatmap-cell.hot-4 { background: #fb923c; }
+        .heatmap-cell.hot-5 { background: #fdba74; }
+
+        .heatmap-tooltip {
+            position: absolute;
+            background: #0f0f1a;
+            border: 2px solid var(--kairo-green);
+            padding: 8px 12px;
+            font-size: 11px;
+            pointer-events: none;
+            z-index: 100;
+            display: none;
+            white-space: nowrap;
+        }
+
+        .heatmap-legend {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-top: 12px;
+            padding: 12px;
+            background: var(--kairo-darker);
+            border: 2px solid #0f0f1a;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 10px;
+            font-family: 'Press Start 2P', cursive;
+        }
+
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border: 2px solid #0f0f1a;
+        }
+
+        /* Opportunity Feed */
+        .opportunity-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .opportunity-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            background: var(--kairo-darker);
+            border: 2px solid #0f0f1a;
+            margin-bottom: 8px;
+            transition: all 0.1s;
+            cursor: pointer;
+        }
+
+        .opportunity-item:hover {
+            background: #363654;
+            transform: translateX(4px);
+            border-color: var(--kairo-green);
+        }
+
+        .opp-priority {
+            width: 8px;
+            height: 40px;
+            background: var(--kairo-green);
+        }
+
+        .opp-priority.high { background: var(--kairo-danger); }
+        .opp-priority.medium { background: var(--kairo-accent); }
+
+        .opp-icon {
+            width: 40px;
+            height: 40px;
+            background: #3d3d5c;
+            border: 3px solid #0f0f1a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .opp-details {
+            flex: 1;
+        }
+
+        .opp-title {
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .opp-meta {
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        .opp-score {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 14px;
+            color: var(--kairo-green);
+            padding: 8px 12px;
+            background: #0f0f1a;
+            border: 2px solid var(--kairo-green);
+        }
+
+        /* Pipeline Section */
+        .pipeline-container {
+            display: flex;
+            gap: 16px;
+            overflow-x: auto;
+            padding-bottom: 16px;
+        }
+
+        .pipeline-stage {
+            min-width: 200px;
+            background: var(--kairo-darker);
+            border: 3px solid #0f0f1a;
+        }
+
+        .stage-header {
+            background: #252538;
+            padding: 12px 16px;
+            border-bottom: 3px solid #0f0f1a;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 9px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .stage-count {
+            background: var(--kairo-green);
+            color: var(--kairo-dark);
+            padding: 4px 8px;
+            font-size: 10px;
+        }
+
+        .stage-cards {
+            padding: 12px;
+            min-height: 200px;
+        }
+
+        .pipeline-card {
+            background: #3d3d5c;
+            border: 2px solid #0f0f1a;
+            padding: 12px;
+            margin-bottom: 8px;
+            cursor: grab;
+        }
+
+        .pipeline-card:hover {
+            border-color: var(--kairo-green);
+        }
+
+        .card-title {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .card-value {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 10px;
+            color: var(--kairo-accent);
+        }
+
+        /* Alert Notifications */
+        .alert-container {
+            position: fixed;
+            top: 100px;
+            right: 24px;
+            width: 320px;
+            z-index: 1000;
+        }
+
+        .pixel-alert {
+            background: #2d2d44;
+            border: 4px solid #0f0f1a;
+            box-shadow: 8px 8px 0 #0f0f1a;
+            margin-bottom: 16px;
+            animation: slideIn 0.3s ease-out;
+            overflow: hidden;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .alert-header {
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .alert-header.success { background: rgba(74, 222, 128, 0.2); }
+        .alert-header.warning { background: rgba(251, 191, 36, 0.2); }
+        .alert-header.danger { background: rgba(248, 113, 113, 0.2); }
+        .alert-header.info { background: rgba(96, 165, 250, 0.2); }
+
+        .alert-icon {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            border: 2px solid #0f0f1a;
+        }
+
+        .alert-header.success .alert-icon { background: var(--kairo-green); }
+        .alert-header.warning .alert-icon { background: var(--kairo-accent); }
+        .alert-header.danger .alert-icon { background: var(--kairo-danger); }
+        .alert-header.info .alert-icon { background: var(--kairo-info); }
+
+        .alert-title {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 10px;
+        }
+
+        .alert-body {
+            padding: 16px;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .alert-time {
+            font-size: 10px;
+            color: #64748b;
+            margin-top: 8px;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 1200px) {
+            .stats-row {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .pixel-sidebar {
+                display: none;
+            }
+            .stats-row {
+                grid-template-columns: 1fr;
+            }
+            .header-nav {
+                display: none;
+            }
+            .alert-container {
+                width: calc(100% - 48px);
+                right: 24px;
+                left: 24px;
+            }
+        }
+
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--kairo-darker);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3d3d5c;
+            border: 2px solid var(--kairo-darker);
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--kairo-green);
+        }
+    </style>
+</head>
+<body>
+    <!-- Alert Container -->
+    <div class="alert-container" id="alertContainer"></div>
+
+    <!-- Header -->
+    <header class="pixel-header">
+        <div class="logo-section">
+            <div class="pixel-logo">π</div>
+            <div>
+                <div class="logo-text">PIE DASHBOARD</div>
+                <div class="logo-sub">Partnership Intelligence Engine</div>
+            </div>
+        </div>
+        <nav class="header-nav">
+            <a href="pie.html" class="nav-btn active">Overview</a>
+            <a href="pie-opportunities.html" class="nav-btn">Opportunities</a>
+            <a href="pie-competitors.html" class="nav-btn">Competitors</a>
+        </nav>
+        <div class="user-section">
+            <div class="pixel-avatar">JD</div>
+        </div>
+    </header>
+
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="pixel-sidebar">
+            <div class="sidebar-section">
+                <div class="sidebar-title">Intelligence</div>
+                <a href="#" class="sidebar-link active">
+                    <span class="icon">📊</span>
+                    Dashboard
+                </a>
+                <a href="pie-opportunities.html" class="sidebar-link">
+                    <span class="icon">🎯</span>
+                    Opportunities
+                </a>
+                <a href="pie-competitors.html" class="sidebar-link">
+                    <span class="icon">👁️</span>
+                    Competitors
+                </a>
+                <a href="#" class="sidebar-link">
+                    <span class="icon">🗺️</span>
+                    Heat Map
+                </a>
+            </div>
+            <div class="sidebar-section">
+                <div class="sidebar-title">Pipeline</div>
+                <a href="#" class="sidebar-link">
+                    <span class="icon">🔄</span>
+                    Active Deals
+                </a>
+                <a href="#" class="sidebar-link">
+                    <span class="icon">📈</span>
+                    Forecast
+                </a>
+                <a href="#" class="sidebar-link">
+                    <span class="icon">📋</span>
+                    Tasks
+                </a>
+            </div>
+            <div class="sidebar-section">
+                <div class="sidebar-title">System</div>
+                <a href="#" class="sidebar-link">
+                    <span class="icon">⚙️</span>
+                    Settings
+                </a>
+                <a href="#" class="sidebar-link">
+                    <span class="icon">🔔</span>
+                    Alerts
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Stats Row -->
+            <div class="stats-row">
+                <div class="pixel-stat-card">
+                    <div class="stat-label">ACTIVE OPPS</div>
+                    <div class="stat-value">247</div>
+                    <div class="stat-change positive">
+                        <span>▲</span> +12% vs last week
+                    </div>
+                </div>
+                <div class="pixel-stat-card info">
+                    <div class="stat-label">PIPELINE VALUE</div>
+                    <div class="stat-value">$4.2M</div>
+                    <div class="stat-change positive">
+                        <span>▲</span> +8% vs last month
+                    </div>
+                </div>
+                <div class="pixel-stat-card gold">
+                    <div class="stat-label">WIN RATE</div>
+                    <div class="stat-value">34%</div>
+                    <div class="stat-change positive">
+                        <span>▲</span> +3% vs target
+                    </div>
+                </div>
+                <div class="pixel-stat-card danger">
+                    <div class="stat-label">AT RISK</div>
+                    <div class="stat-value">18</div>
+                    <div class="stat-change negative">
+                        <span>▼</span> -2 this week
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dashboard Grid -->
+            <div class="dashboard-grid">
+                <!-- Heat Map Panel -->
+                <div class="pixel-panel">
+                    <div class="panel-header">
+                        <div class="panel-title">
+                            <span>🔥</span>
+                            DECISION MAKER HEAT MAP
+                        </div>
+                        <div class="panel-actions">
+                            <button class="panel-btn">DAY</button>
+                            <button class="panel-btn">WEEK</button>
+                            <button class="panel-btn active">MONTH</button>
+                        </div>
+                    </div>
+                    <div class="panel-content">
+                        <div class="heatmap-container">
+                            <div class="heatmap-grid" id="heatmapGrid"></div>
+                            <div class="heatmap-tooltip" id="heatmapTooltip"></div>
+                        </div>
+                        <div class="heatmap-legend">
+                            <div class="legend-item">
+                                <div class="legend-color" style="background: #1e3a5f;"></div>
+                                <span>Cold</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color" style="background: #3b82f6;"></div>
+                                <span>Warm</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color" style="background: #60a5fa;"></div>
+                                <span>Active</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color" style="background: #f97316;"></div>
+                                <span>Hot</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color" style="background: #fdba74;"></div>
+                                <span>Very Hot</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Opportunity Feed -->
+                <div class="pixel-panel">
+                    <div class="panel-header">
+                        <div class="panel-title">
+                            <span>⚡</span>
+                            LIVE OPPORTUNITIES
+                        </div>
+                        <div class="panel-actions">
+                            <button class="panel-btn">ALL</button>
+                        </div>
+                    </div>
+                    <div class="panel-content">
+                        <div class="opportunity-list" id="opportunityList">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pipeline Section -->
+            <div class="pixel-panel">
+                <div class="panel-header">
+                    <div class="panel-title">
+                        <span>🔄</span>
+                        PARTNERSHIP PIPELINE
+                    </div>
+                    <div class="panel-actions">
+                        <button class="panel-btn">+ ADD DEAL</button>
+                        <button class="panel-btn">EXPORT</button>
+                    </div>
+                </div>
+                <div class="panel-content">
+                    <div class="pipeline-container">
+                        <div class="pipeline-stage">
+                            <div class="stage-header">
+                                <span>PROSPECTING</span>
+                                <span class="stage-count">12</span>
+                            </div>
+                            <div class="stage-cards">
+                                <div class="pipeline-card">
+                                    <div class="card-title">TechCorp Inc</div>
+                                    <div class="card-value">$250K</div>
+                                </div>
+                                <div class="pipeline-card">
+                                    <div class="card-title">DataFlow Systems</div>
+                                    <div class="card-value">$180K</div>
+                                </div>
+                                <div class="pipeline-card">
+                                    <div class="card-title">CloudNine AI</div>
+                                    <div class="card-value">$320K</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="pipeline-stage">
+                            <div class="stage-header">
+                                <span>QUALIFICATION</span>
+                                <span class="stage-count">8</span>
+                            </div>
+                            <div class="stage-cards">
+                                <div class="pipeline-card">
+                                    <div class="card-title">MegaSoft Ltd</div>
+                                    <div class="card-value">$500K</div>
+                                </div>
+                                <div class="pipeline-card">
+                                    <div class="card-title">InnovateCo</div>
+                                    <div class="card-value">$275K</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="pipeline-stage">
+                            <div class="stage-header">
+                                <span>PROPOSAL</span>
+                                <span class="stage-count">5</span>
+                            </div>
+                            <div class="stage-cards">
+                                <div class="pipeline-card">
+                                    <div class="card-title">GlobalTech Partners</div>
+                                    <div class="card-value">$750K</div>
+                                </div>
+                                <div class="pipeline-card">
+                                    <div class="card-title">NextGen Solutions</div>
+                                    <div class="card-value">$420K</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="pipeline-stage">
+                            <div class="stage-header">
+                                <span>NEGOTIATION</span>
+                                <span class="stage-count">3</span>
+                            </div>
+                            <div class="stage-cards">
+                                <div class="pipeline-card">
+                                    <div class="card-title">Enterprise Hub</div>
+                                    <div class="card-value">$1.2M</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="pipeline-stage">
+                            <div class="stage-header">
+                                <span>CLOSED WON</span>
+                                <span class="stage-count">7</span>
+                            </div>
+                            <div class="stage-cards">
+                                <div class="pipeline-card">
+                                    <div class="card-title">Acme Corp</div>
+                                    <div class="card-value">$890K</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Generate Heat Map
+        function generateHeatmap() {
+            const grid = document.getElementById('heatmapGrid');
+            const tooltip = document.getElementById('heatmapTooltip');
+            const companies = ['TechCorp', 'DataFlow', 'CloudNine', 'MegaSoft', 'InnovateCo', 'GlobalTech'];
+            const roles = ['CEO', 'CTO', 'VP Sales', 'VP Product', 'CFO', 'CMO'];
+            
+            for (let i = 0; i < 96; i++) {
+                const cell = document.createElement('div');
+                cell.className = 'heatmap-cell';
+                
+                // Random heat level
+                const rand = Math.random();
+                let level;
+                if (rand < 0.3) level = 'level-1';
+                else if (rand < 0.5) level = 'level-2';
+                else if (rand < 0.65) level = 'level-3';
+                else if (rand < 0.8) level = 'level-4';
+                else if (rand < 0.9) level = 'hot-3';
+                else level = 'hot-5';
+                
+                cell.classList.add(level);
+                
+                const company = companies[Math.floor(Math.random() * companies.length)];
+                const role = roles[Math.floor(Math.random() * roles.length)];
+                const activity = Math.floor(Math.random() * 50) + 1;
+                
+                cell.addEventListener('mouseenter', (e) => {
+                    tooltip.innerHTML = `
+                        <strong>${company}</strong><br>
+                        ${role}<br>
+                        ${activity} activities
+                    `;
+                    tooltip.style.display = 'block';
+                });
+                
+                cell.addEventListener('mousemove', (e) => {
+                    const rect = grid.getBoundingClientRect();
+                    tooltip.style.left = (e.clientX - rect.left + 10) + 'px';
+                    tooltip.style.top = (e.clientY - rect.top - 40) + 'px';
+                });
+                
+                cell.addEventListener('mouseleave', () => {
+                    tooltip.style.display = 'none';
+                });
+                
+                grid.appendChild(cell);
+            }
+        }
+
+        // Generate Opportunities
+        function generateOpportunities() {
+            const list = document.getElementById('opportunityList');
+            const opportunities = [
+                { title: 'TechCorp Inc - Enterprise Deal', meta: 'New decision maker identified • 2h ago', score: '94', priority: 'high', icon: '🏢' },
+                { title: 'DataFlow Systems Partnership', meta: 'Funding round detected • 4h ago', score: '87', priority: 'high', icon: '💰' },
+                { title: 'CloudNine AI Integration', meta: 'CTO showing interest • 6h ago', score: '82', priority: 'medium', icon: '🤖' },
+                { title: 'MegaSoft Ltd Expansion', meta: 'Competitor weakness alert • 8h ago', score: '78', priority: 'medium', icon: '📈' },
+                { title: 'InnovateCo Strategic Alliance', meta: 'Budget confirmed • 12h ago', score: '75', priority: 'medium', icon: '🤝' },
+            ];
+            
+            opportunities.forEach(opp => {
+                const item = document.createElement('div');
+                item.className = 'opportunity-item';
+                item.innerHTML = `
+                    <div class="opp-priority ${opp.priority}"></div>
+                    <div class="opp-icon">${opp.icon}</div>
+                    <div class="opp-details">
+                        <div class="opp-title">${opp.title}</div>
+                        <div class="opp-meta">${opp.meta}</div>
+                    </div>
+                    <div class="opp-score">${opp.score}</div>
+                `;
+                list.appendChild(item);
+            });
+        }
+
+        // Alert System
+        function showAlert(type, title, message) {
+            const container = document.getElementById('alertContainer');
+            const alert = document.createElement('div');
+            alert.className = 'pixel-alert';
+            
+            const icons = {
+                success: '✓',
+                warning: '⚠',
+                danger: '✕',
+                info: 'ℹ'
+            };
+            
+            alert.innerHTML = `
+                <div class="alert-header ${type}">
+                    <div class="alert-icon">${icons[type]}</div>
+                    <div class="alert-title">${title}</div>
+                </div>
+                <div class="alert-body">
+                    ${message}
+                    <div class="alert-time">Just now</div>
+                </div>
+            `;
+            
+            container.appendChild(alert);
+            
+            setTimeout(() => {
+                alert.style.animation = 'slideIn 0.3s ease-out reverse';
+                setTimeout(() => alert.remove(), 300);
+            }, 5000);
+        }
+
+        // Demo alerts
+        setTimeout(() => {
+            showAlert('success', 'NEW OPPORTUNITY', 'TechCorp Inc just raised $50M Series C - perfect timing for outreach!');
+        }, 2000);
+
+        setTimeout(() => {
+            showAlert('warning', 'COMPETITOR ALERT', 'RivalCo just signed with DataFlow - act fast!');
+        }, 6000);
+
+        // Initialize
+        generateHeatmap();
+        generateOpportunities();
+    </script>
+</body>
+</html>
