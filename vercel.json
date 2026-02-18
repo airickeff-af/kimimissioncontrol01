@@ -66,43 +66,43 @@
     },
     {
       "source": "/logs-view",
-      "destination": "/mission-control/dashboard/logs-view.html"
+      "destination": "/logs-view.html"
     },
     {
       "source": "/agents",
-      "destination": "/mission-control/dashboard/agents.html"
+      "destination": "/agents.html"
     },
     {
       "source": "/office",
-      "destination": "/mission-control/dashboard/animated-office.html"
+      "destination": "/animated-office.html"
     },
     {
       "source": "/data-viewer",
-      "destination": "/mission-control/dashboard/data-viewer.html"
+      "destination": "/data-viewer.html"
     },
     {
       "source": "/task-board",
-      "destination": "/mission-control/dashboard/task-board.html"
+      "destination": "/task-board.html"
     },
     {
       "source": "/dealflow",
-      "destination": "/mission-control/dashboard/dealflow-view.html"
+      "destination": "/dealflow-view.html"
     },
     {
       "source": "/scout",
-      "destination": "/mission-control/dashboard/scout.html"
+      "destination": "/scout.html"
     },
     {
       "source": "/tokens",
-      "destination": "/mission-control/dashboard/token-tracker.html"
+      "destination": "/token-tracker.html"
     },
     {
       "source": "/hq",
-      "destination": "/mission-control/dashboard/hq.html"
+      "destination": "/hq.html"
     },
     {
       "source": "/((?!api/).*)",
-      "destination": "/mission-control/dashboard/index.html"
+      "destination": "/index.html"
     }
   ],
   "headers": [

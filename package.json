@@ -6,5 +6,7 @@
     "build": "echo 'Static build - no compilation needed'",
     "vercel-build": "echo 'Vercel build step'"
   },
-  "dependencies": {}
+  "devDependencies": {
+    "localtunnel": "^2.0.2"
+  }
 }
