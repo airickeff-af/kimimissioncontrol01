@@ -7,30 +7,26 @@
       "use": "@vercel/static"
     },
     {
-      "src": "api/*.js",
-      "use": "@vercel/node"
-    },
-    {
       "src": "api/**/*.js",
       "use": "@vercel/node"
     }
   ],
-  "routes": [
+  "rewrites": [
     {
-      "src": "/api/logs/activity",
-      "dest": "/api/logs-activity.js"
+      "source": "/api/logs/activity",
+      "destination": "/api/logs/activity.js"
     },
     {
-      "src": "/api/logs",
-      "dest": "/api/logs/index.js"
+      "source": "/api/logs",
+      "destination": "/api/logs/index.js"
     },
     {
-      "src": "/api/(.*)",
-      "dest": "/api/$1"
+      "source": "/api/(.*)",
+      "destination": "/api/$1.js"
     },
     {
-      "src": "/(.*)",
-      "dest": "/$1"
+      "source": "/(.*)",
+      "destination": "/$1"
     }
   ]
 }

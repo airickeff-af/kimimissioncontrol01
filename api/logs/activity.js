@@ -1,8 +1,6 @@
 // Vercel Serverless Function: /api/logs/activity.js
 // Returns REAL agent activity logs from memory files
-
-const fs = require('fs');
-const path = require('path');
+// Using CommonJS module.exports format for Vercel Node.js runtime
 
 module.exports = (req, res) => {
   // Set CORS headers
@@ -20,9 +18,14 @@ module.exports = (req, res) => {
 
   try {
     // Read memory files for real activity data
-    const memoryDir = path.join(process.cwd(), 'memory');
-    const pendingTasksPath = path.join(process.cwd(), 'PENDING_TASKS.md');
-    const taskQueuePath = path.join(process.cwd(), 'mission-control/TASK_QUEUE.json');
+    const fs = require('fs');
+    const path = require('path');
+    
+    // Use process.cwd() which is the project root on Vercel
+    const baseDir = process.cwd();
+    const memoryDir = path.join(baseDir, 'memory');
+    const pendingTasksPath = path.join(baseDir, 'PENDING_TASKS.md');
+    const taskQueuePath = path.join(baseDir, 'mission-control/TASK_QUEUE.json');
     
     // Get recent memory files
     let memoryFiles = [];
