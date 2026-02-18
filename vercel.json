@@ -16,8 +16,28 @@
       "dest": "/api/logs-activity.js"
     },
     {
+      "src": "/api/health",
+      "dest": "/api/health.js"
+    },
+    {
+      "src": "/api/agents",
+      "dest": "/api/agents.js"
+    },
+    {
+      "src": "/api/tasks",
+      "dest": "/api/tasks.js"
+    },
+    {
+      "src": "/api/deals",
+      "dest": "/api/deals.js"
+    },
+    {
+      "src": "/api/tokens",
+      "dest": "/api/tokens.js"
+    },
+    {
       "src": "/api/test",
-      "dest": "/api/test.js"
+      "dest": "/api/test-simple.js"
     },
     {
       "src": "/api/logs",
