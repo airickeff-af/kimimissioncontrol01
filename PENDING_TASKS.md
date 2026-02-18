@@ -46,6 +46,60 @@ setInterval(() => {
 
 ---
 
+### **TASK-095: P0 - URGENT: Real API Integration + Missing Pages Fix**
+- **Assigned:** CodeMaster + Forge
+- **Due:** Feb 19, 9:00 AM (8.5 hours)
+- **Status:** 🔴 CRITICAL - IN PROGRESS
+- **Priority:** P0 - BLOCKING
+
+**Quality Gate Finding:** 78/100 - 3 pages 404, 4 pages use dummy data
+
+**CRITICAL FIXES NEEDED:**
+
+**1. Real API Integration (4 pages):**
+
+**HQ (index.html):**
+- [ ] Replace hardcoded data with /api/agents
+- [ ] Replace fake stats with /api/stats
+- [ ] Replace fake deploys with /api/deployments
+- [ ] Add loading states
+- [ ] Add error handling
+
+**Agents (agents.html):**
+- [ ] Replace static list with /api/agents
+- [ ] Real-time status from API
+- [ ] Remove hardcoded data
+
+**Data Viewer (data-viewer.html):**
+- [ ] Read actual files from /data/
+- [ ] Use /api/leads for Singapore/HK
+- [ ] Real file listing
+
+**Pixel Office (pixel-office.html):**
+- [ ] Connect /api/agents (positions)
+- [ ] Connect /api/tasks (current work)
+- [ ] Connect /api/logs/activity
+- [ ] Real-time updates
+
+**2. Create Missing Pages (3 pages):**
+- [ ] /deals.html - Use /api/deals (10 deals ready)
+- [ ] /tokens.html - Use /api/tokens (real data ready)
+- [ ] /tasks.html - Create or redirect to task-board
+
+**3. Fix Navigation:**
+- [ ] Update all nav links
+- [ ] Ensure consistency
+
+**Acceptance:**
+- [ ] All 7 pages use real APIs
+- [ ] Quality score 95/100
+- [ ] No 404 errors
+- [ ] Deployed by 9 AM
+
+**Progress Reports:** Every 2 hours
+
+---
+
 ### **TASK-094: P0 - Pixel Office Agent Hierarchy Table**
 - **Assigned:** Forge
 - **Due:** Feb 19, 9:00 AM (with TASK-092)
