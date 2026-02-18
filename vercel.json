@@ -9,20 +9,12 @@
     {
       "src": "mission-control/dashboard/api/**/*.js",
       "use": "@vercel/node"
-    },
-    {
-      "src": "api/**/*.js",
-      "use": "@vercel/node"
     }
   ],
   "routes": [
     {
       "src": "/api/logs/activity",
-      "dest": "/mission-control/dashboard/api/logs-activity.js"
-    },
-    {
-      "src": "/api/(.*)",
-      "dest": "/api/$1"
+      "dest": "/mission-control/dashboard/api/logs-activity.json"
     },
     {
       "src": "/logs-view.html",
