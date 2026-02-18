@@ -1,55 +1,64 @@
 {
   "version": 2,
-  "builds": [
+  "rewrites": [
     {
-      "src": "api/**/*.js",
-      "use": "@vercel/node"
+      "source": "/api/logs/activity",
+      "destination": "/api/logs/activity.js"
     },
     {
-      "src": "**/*.html",
-      "use": "@vercel/static"
+      "source": "/api/logs",
+      "destination": "/api/logs/index.js"
+    },
+    {
+      "source": "/api/health",
+      "destination": "/api/health.js"
+    },
+    {
+      "source": "/api/agents",
+      "destination": "/api/agents.js"
+    },
+    {
+      "source": "/api/tasks",
+      "destination": "/api/tasks.js"
+    },
+    {
+      "source": "/api/deals",
+      "destination": "/api/deals.js"
+    },
+    {
+      "source": "/api/tokens",
+      "destination": "/api/tokens.js"
+    },
+    {
+      "source": "/api/test",
+      "destination": "/api/test-simple.js"
+    },
+    {
+      "source": "/api/(.*)",
+      "destination": "/api/$1.js"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/$1"
     }
   ],
-  "routes": [
+  "headers": [
     {
-      "src": "/api/logs/activity",
-      "dest": "/api/logs/activity.js"
-    },
-    {
-      "src": "/api/health",
-      "dest": "/api/health.js"
-    },
-    {
-      "src": "/api/agents",
-      "dest": "/api/agents.js"
-    },
-    {
-      "src": "/api/tasks",
-      "dest": "/api/tasks.js"
-    },
-    {
-      "src": "/api/deals",
-      "dest": "/api/deals.js"
-    },
-    {
-      "src": "/api/tokens",
-      "dest": "/api/tokens.js"
-    },
-    {
-      "src": "/api/test",
-      "dest": "/api/test-simple.js"
-    },
-    {
-      "src": "/api/logs",
-      "dest": "/api/logs/index.js"
-    },
-    {
-      "src": "/api/(.*)",
-      "dest": "/api/$1"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/$1"
+      "source": "/api/(.*)",
+      "headers": [
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        },
+        {
+          "key": "Access-Control-Allow-Methods",
+          "value": "GET, POST, PUT, DELETE, OPTIONS"
+        },
+        {
+          "key": "Access-Control-Allow-Headers",
+          "value": "Content-Type, Authorization"
+        }
+      ]
     }
   ]
 }
