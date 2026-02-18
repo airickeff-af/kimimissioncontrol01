@@ -7,6 +7,7 @@
     "vercel-build": "echo 'Vercel build step'"
   },
   "devDependencies": {
-    "localtunnel": "^2.0.2"
+    "localtunnel": "^2.0.2",
+    "ws": "^8.19.0"
   }
 }
