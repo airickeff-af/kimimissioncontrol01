@@ -596,10 +596,6 @@
                 <span class="icon">📊</span>
                 <span>Overview</span>
             </a>
-            <a href="hq.html" class="nav-tab">
-                <span class="icon">🏢</span>
-                <span>HQ</span>
-            </a>
             <a href="token-tracker.html" class="nav-tab">
                 <span class="icon">💰</span>
                 <span>Tokens</span>
@@ -627,14 +623,13 @@
         
         <div style="display: flex; align-items: center; gap: 1rem;">
             <span id="agentCount" style="font-size: 0.875rem; color: var(--text-muted); display: none;">🟢 20</span>
-            <button onclick="window.location.reload()" class="refresh-btn" style="background: transparent; border: 1px solid var(--border); color: var(--text-secondary); padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; font-size: 0.875rem; min-height: 44px;">🔄</button>
+            <button onclick="if(window.parent!==window){window.parent.location.reload()}else{window.location.reload()}" class="refresh-btn" style="background: transparent; border: 1px solid var(--border); color: var(--text-secondary); padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; font-size: 0.875rem; min-height: 44px;">🔄</button>
         </div>
     </header>
     
     <!-- Mobile Dropdown Menu -->
     <nav class="nav-dropdown" id="navDropdown">
         <a href="index.html" class="nav-tab active">📊 Overview</a>
-        <a href="hq.html" class="nav-tab">🏢 HQ</a>
         <a href="token-tracker.html" class="nav-tab">💰 Tokens</a>
         <a href="task-board.html" class="nav-tab">📋 Tasks</a>
         <a href="data-viewer.html" class="nav-tab">📁 Data</a>
