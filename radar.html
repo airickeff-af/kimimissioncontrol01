@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="theme-color" content="#2d1b4e">
+    <title>🎯 PIE Radar | Mission Control</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-primary: #2d1b4e;
+            --bg-secondary: #3d2652;
+            --panel-bg: #f4e4c1;
+            --panel-border: #8b7355;
+            --panel-shadow: #5c4a3a;
+            --text-dark: #2c1810;
+            --text-light: #f4e4c1;
+            --accent-cyan: #00d4ff;
+            --accent-pink: #ff6b6b;
+            --accent-green: #51cf66;
+            --accent-blue: #339af0;
+            --accent-yellow: #fcc419;
+            --accent-purple: #da77f2;
+            --accent-orange: #ff8787;
+            --accent-red: #ff4444;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            image-rendering: pixelated;
+        }
+        
+        html {
+            font-family: 'VT323', monospace;
+            background: var(--bg-primary);
+            color: var(--text-light);
+            line-height: 1.4;
+        }
+        
+        body {
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        /* Pixel Grid Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.15) 2px, rgba(0,0,0,0.15) 4px),
+                repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0,0,0,0.15) 2px, rgba(0,0,0,0.15) 4px);
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .game-container {
+            position: relative;
+            z-index: 1;
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 15px;
+            min-height: 100vh;
+            padding-bottom: 100px;
+        }
+        
+        /* Header */
+        .game-header {
+            background: linear-gradient(180deg, #5c3d7a 0%, #3d2652 100%);
+            border: 4px solid #2d1b4e;
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 0 #1a0f2e, inset 0 2px 0 rgba(255,255,255,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .game-title {
+            font-family: 'Press Start 2P', cursive;
+            font-size: clamp(0.6rem, 2vw, 0.85rem);
+            color: var(--accent-yellow);
+            text-shadow: 3px 3px 0 #2d1b4e;
+            letter-spacing: 2px;
+            line-height: 1.6;
+        }
+        
+        .game-stats {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .stat-box {
+            background: var(--panel-bg);
+            border: 3px solid var(--panel-border);
+            border-radius: 4px;
+            padding: 8px 12px;
+            min-width: 70px;
+            text-align: center;
+            box-shadow: 0 3px 0 var(--panel-shadow);
+        }
+        
+        .stat-label {
+            color: #8b7355;
+            font-size: 0.7rem;
+        }
+        
+        .stat-value {
+            color: var(--text-dark);
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.75rem;
+        }
+        
+        /* Navigation */
+        .nav-panel {
+            background: var(--panel-bg);
+            border: 4px solid var(--panel-border);
+            border-radius: 8px;
+            padding: 12px;
+            box-shadow: 0 4px 0 var(--panel-shadow), inset 0 2px 0 rgba(255,255,255,0.5);
+            margin-bottom: 15px;
+        }
+        
+        .nav-desktop {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .nav-btn {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.5rem;
+            padding: 10px 14px;
+            background: linear-gradient(180deg, #74c0fc 0%, #339af0 100%);
+            border: 3px solid #2d1b4e;
+            border-radius: 6px;
+            cursor: pointer;
+            box-shadow: 0 4px 0 #2d1b4e;
+            transition: all 0.1s;
+            color: var(--text-dark);
+            line-height: 1.4;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 0 #2d1b4e;
+        }
+        
+        .nav-btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 0 0 #2d1b4e;
+        }
+        
+        .nav-btn.active {
+            background: linear-gradient(180deg, #69db7c 0%, #51cf66 100%);
+        }
+        
+        /* Radar Container */
+        .radar-container {
+            background: var(--panel-bg);
+            border: 4px solid var(--panel-border);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 0 var(--panel-shadow), inset 0 2px 0 rgba(255,255,255,0.5);
+            margin-bottom: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .radar-title {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.65rem;
+            color: var(--panel-border);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .radar-display {
+            width: 100%;
+            height: 400px;
+            background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+            border: 3px solid var(--panel-border);
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Animated Radar Sweep */
+        .radar-sweep {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(from 0deg, transparent 0deg, rgba(0, 212, 255, 0.1) 60deg, transparent 60deg);
+            transform: translate(-50%, -50%);
+            animation: radar-sweep 4s linear infinite;
+            pointer-events: none;
+        }
+        
+        @keyframes radar-sweep {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+        
+        /* Radar Grid */
+        .radar-grid {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            height: 80%;
+        }
+        
+        .radar-ring {
+            position: absolute;
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        .radar-ring:nth-child(1) { width: 25%; height: 25%; }
+        .radar-ring:nth-child(2) { width: 50%; height: 50%; }
+        .radar-ring:nth-child(3) { width: 75%; height: 75%; }
+        .radar-ring:nth-child(4) { width: 100%; height: 100%; }
+        
+        /* Radar Blips */
+        .radar-blip {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            animation: blip-pulse 2s ease-in-out infinite;
+            cursor: pointer;
+        }
+        
+        .radar-blip.hot { background: var(--accent-red); box-shadow: 0 0 10px var(--accent-red); }
+        .radar-blip.warm { background: var(--accent-yellow); box-shadow: 0 0 10px var(--accent-yellow); }
+        .radar-blip.cold { background: var(--accent-cyan); box-shadow: 0 0 10px var(--accent-cyan); }
+        
+        @keyframes blip-pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.3); opacity: 0.7; }
+        }
+        
+        /* Intel Cards */
+        .intel-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .intel-card {
+            background: linear-gradient(180deg, #fff 0%, #f0e6d3 100%);
+            border: 3px solid var(--panel-border);
+            border-radius: 6px;
+            padding: 15px;
+            transition: all 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .intel-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 4px;
+            background: var(--card-color, var(--accent-cyan));
+        }
+        
+        .intel-card.hot::before { background: var(--accent-red); }
+        .intel-card.warm::before { background: var(--accent-yellow); }
+        .intel-card.cold::before { background: var(--accent-cyan); }
+        
+        .intel-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 0 var(--panel-shadow);
+        }
+        
+        .intel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+        
+        .intel-title {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.55rem;
+            color: var(--text-dark);
+            margin-bottom: 5px;
+        }
+        
+        .intel-type {
+            display: inline-block;
+            padding: 3px 8px;
+            background: rgba(0, 212, 255, 0.2);
+            color: var(--accent-blue);
+            border-radius: 4px;
+            font-size: 0.7rem;
+        }
+        
+        .intel-desc {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+        
+        .intel-meta {
+            display: flex;
+            gap: 15px;
+            font-size: 0.8rem;
+            color: #8b7355;
+        }
+        
+        .intel-meta span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        /* Alert Banner */
+        .alert-banner {
+            background: linear-gradient(180deg, rgba(255, 107, 107, 0.2) 0%, rgba(201, 42, 42, 0.1) 100%);
+            border: 3px solid var(--accent-red);
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            animation: alert-pulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes alert-pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(255, 107, 107, 0.4); }
+            50% { box-shadow: 0 0 0 10px rgba(255, 107, 107, 0); }
+        }
+        
+        .alert-icon {
+            font-size: 2rem;
+            animation: alert-blink 1s ease-in-out infinite;
+        }
+        
+        @keyframes alert-blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+        
+        .alert-content h4 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.6rem;
+            color: #c92a2a;
+            margin-bottom: 5px;
+        }
+        
+        .alert-content p {
+            color: var(--text-dark);
+            font-size: 0.85rem;
+        }
+        
+        /* Panel Box */
+        .panel-box {
+            background: var(--panel-bg);
+            border: 4px solid var(--panel-border);
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 4px 0 var(--panel-shadow), inset 0 2px 0 rgba(255,255,255,0.5);
+            margin-bottom: 15px;
+        }
+        
+        .panel-title {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.65rem;
+            color: var(--panel-border);
+            margin-bottom: 12px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid var(--panel-border);
+            line-height: 1.6;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        /* Mobile Navigation */
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #3d2652;
+            border-top: 4px solid #2d1b4e;
+            padding: 10px;
+            z-index: 101;
+            justify-content: space-around;
+        }
+        
+        .mobile-nav-btn {
+            padding: 10px 14px;
+            background: var(--panel-bg);
+            border: 3px solid var(--panel-border);
+            border-radius: 6px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.5rem;
+            color: var(--text-dark);
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+            line-height: 1.4;
+            box-shadow: 0 3px 0 var(--panel-shadow);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .game-container { padding: 10px; padding-bottom: 90px; }
+            .game-title { font-size: 0.5rem; }
+            .nav-desktop { display: none; }
+            .mobile-nav { display: flex; }
+            .intel-grid { grid-template-columns: 1fr; }
+            .radar-display { height: 300px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <!-- Header -->
+        <header class="game-header">
+            <div class="game-title">🎯 PIE RADAR INTELLIGENCE</div>
+            <div class="game-stats">
+                <div class="stat-box">
+                    <div class="stat-label">ALERTS</div>
+                    <div class="stat-value" style="color: #ff4444;">3</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">TRACKING</div>
+                    <div class="stat-value" style="color: #00d4ff;">12</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">OPPS</div>
+                    <div class="stat-value" style="color: #51cf66;">8</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <div class="nav-panel">
+            <div class="nav-desktop">
+                <a href="index.html" class="nav-btn">📊 HQ</a>
+                <a href="living-pixel-office.html" class="nav-btn">🏢 OFFICE</a>
+                <a href="scout.html" class="nav-btn">🔭 SCOUT</a>
+                <a href="radar.html" class="nav-btn active">🎯 RADAR</a>
+                <a href="dealflow-view.html" class="nav-btn">💼 DEALS</a>
+                <a href="task-board.html" class="nav-btn">📋 TASKS</a>
+                <a href="token-tracker.html" class="nav-btn">💰 TOKENS</a>
+            </div>
+        </div>
+
+        <!-- Critical Alert -->
+        <div class="alert-banner">
+            <div class="alert-icon">🚨</div>
+            <div class="alert-content">
+                <h4>CRITICAL OPPORTUNITY DETECTED</h4>
+                <p>Crypto.com partnership window closing in 48 hours. Kris Marszalek actively seeking Asian market expansion partners.</p>
+            </div>
+        </div>
+
+        <!-- Radar Display -->
+        <div class="radar-container">
+            <div class="radar-title">📡 LIVE OPPORTUNITY RADAR</div>
+            <div class="radar-display">
+                <div class="radar-sweep"></div>
+                <div class="radar-grid">
+                    <div class="radar-ring"></div>
+                    <div class="radar-ring"></div>
+                    <div class="radar-ring"></div>
+                    <div class="radar-ring"></div>
+                </div>
+                <!-- Radar Blips -->
+                <div class="radar-blip hot" style="top: 30%; left: 60%;" title="Crypto.com - P0"></div>
+                <div class="radar-blip hot" style="top: 45%; left: 70%;" title="Binance - P0"></div>
+                <div class="radar-blip warm" style="top: 60%; left: 40%;" title="PDAX - P1"></div>
+                <div class="radar-blip warm" style="top: 35%; left: 30%;" title="Coins.ph - P1"></div>
+                <div class="radar-blip cold" style="top: 70%; left: 60%;" title="Angkas - P2"></div>
+                <div class="radar-blip cold" style="top: 25%; left: 45%;" title="GCash - P2"></div>
+            </div>
+        </div>
+
+        <!-- Hot Opportunities -->
+        <div class="panel-box">
+            <div class="panel-title">🔥 HOT OPPORTUNITIES (P0/P1)</div>
+            <div class="intel-grid">
+                <div class="intel-card hot">
+                    <div class="intel-header">
+                        <div>
+                            <div class="intel-title">Crypto.com Partnership</div>
+                            <span class="intel-type">EXCHANGE</span>
+                        </div>
+                    </div>
+                    <p class="intel-desc">CEO Kris Marszalek seeking Asian market BD partners. Strong signal from LinkedIn activity and recent conference appearances.</p>
+                    <div class="intel-meta">
+                        <span>⏰ 48h window</span>
+                        <span>🎯 92 score</span>
+                        <span>📧 Verified</span>
+                    </div>
+                </div>
+                
+                <div class="intel-card hot">
+                    <div class="intel-header">
+                        <div>
+                            <div class="intel-title">Binance Labs Fund</div>
+                            <span class="intel-type">VC/FUND</span>
+                        </div>
+                    </div>
+                    <p class="intel-desc">New $1B fund announced for Web3 infrastructure. Application window opens next week. Strong fit for portfolio companies.</p>
+                    <div class="intel-meta">
+                        <span>⏰ 7 days</span>
+                        <span>🎯 95 score</span>
+                        <span>💰 $1B fund</span>
+                    </div>
+                </div>
+                
+                <div class="intel-card warm">
+                    <div class="intel-header">
+                        <div>
+                            <div class="intel-title">PDAX Integration</div>
+                            <span class="intel-type">EXCHANGE</span>
+                        </div>
+                    </div>
+                    <p class="intel-desc">Philippines exchange expanding API partnerships. Technical integration opportunity with favorable terms.</p>
+                    <div class="intel-meta">
+                        <span>⏰ 2 weeks</span>
+                        <span>🎯 70 score</span>
+                        <span>🇵🇭 PH market</span>
+                    </div>
+                </div>
+                
+                <div class="intel-card warm">
+                    <div class="intel-header">
+                        <div>
+                            <div class="intel-title">Coins.ph Wallet</div>
+                            <span class="intel-type">WALLET</span>
+                        </div>
+                    </div>
+                    <p class="intel-desc">New partnership program launching Q2. Early access available for strategic partners.</p>
+                    <div class="intel-meta">
+                        <span>⏰ 3 weeks</span>
+                        <span>🎯 68 score</span>
+                        <span>📱 Mobile-first</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Trending Sectors -->
+        <div class="panel-box">
+            <div class="panel-title">📈 TRENDING SECTORS</div>
+            <div class="intel-grid">
+                <div class="intel-card">
+                    <div class="intel-header">
+                        <div>
+                            <div class="intel-title">AI + Crypto</div>
+                            <span class="intel-type">EMERGING</span>
+                        </div>
+                    </div>
+                    <p class="intel-desc">AI-powered trading agents and DeFi automation seeing 300% growth in developer interest.</p>
+                    <div class="intel-meta">
+                        <span>📈 +300%</span>
+                        <span>🔥 Hot</span>
+                        <span>🤖 AI/ML</span>
+                    </div>
+                </div>
+                
+                <div class="intel-card">
+                    <div class="intel-header">
+                        <div>
+                            <div class="intel-title">DePIN Networks</div>
+                            <span class="intel-type">INFRASTRUCTURE</span>
+                        </div>
+                    </div>
+                    <p class="intel-desc">Decentralized Physical Infrastructure Networks raising $500M+ in Q1 2026.</p>
+                    <div class="intel-meta">
+                        <span>📈 +180%</span>
+                        <span>🔥 Hot</span>
+                        <span>🌐 Infra</span>
+                    </div>
+                </div>
+                
+                <div class="intel-card">
+                    <div class="intel-header">
+                        <div>
+                            <div class="intel-title">RWA Tokenization</div>
+                            <span class="intel-type">TRADFI</span>
+                        </div>
+                    </div>
+                    <p class="intel-desc">Real World Assets on-chain gaining regulatory clarity. Hong Kong leading adoption.</p>
+                    <div class="intel-meta">
+                        <span>📈 +95%</span>
+                        <span>🟡 Warm</span>
+                        <span>🏛️ Regulated</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Competitor Intel -->
+        <div class="panel-box">
+            <div class="panel-title">🕵️ COMPETITOR MOVES</div>
+            <div class="intel-grid">
+                <div class="intel-card">
+                    <div class="intel-header">
+                        <div>
+                            <div class="intel-title">Coinbase Asia Expansion</div>
+                            <span class="intel-type">EXPANSION</span>
+                        </div>
+                    </div>
+                    <p class="intel-desc">Hiring 50+ BD roles across Singapore, Hong Kong, Tokyo. Aggressive market entry strategy.</p>
+                    <div class="intel-meta">
+                        <span>📍 Asia</span>
+                        <span>👥 50+ hires</span>
+                        <span>⚠️ Threat</span>
+                    </div>
+                </div>
+                
+                <div class="intel-card">
+                    <div class="intel-header">
+                        <div>
+                            <div class="intel-title">Kraken NFT Marketplace</div>
+                            <span class="intel-type">PRODUCT</span>
+                        </div>
+                    </div>
+                    <p class="intel-desc">Beta launch of NFT trading platform. Targeting Asian artists and collectors.</p>
+                    <div class="intel-meta">
+                        <span>🎨 NFT</span>
+                        <span>🔄 Beta</span>
+                        <span>📊 Monitor</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Navigation -->
+    <nav class="mobile-nav">
+        <a href="index.html" class="mobile-nav-btn">📊<br>HQ</a>
+        <a href="living-pixel-office.html" class="mobile-nav-btn">🏢<br>OFFICE</a>
+        <a href="scout.html" class="mobile-nav-btn">🔭<br>SCOUT</a>
+        <a href="radar.html" class="mobile-nav-btn" style="background: #69db7c;">🎯<br>RADAR</a>
+        <a href="task-board.html" class="mobile-nav-btn">📋<br>TASKS</a>
+    </nav>
+
+    <script>
+        // Auto-refresh radar blips
+        setInterval(() => {
+            const blips = document.querySelectorAll('.radar-blip');
+            blips.forEach(blip => {
+                blip.style.opacity = Math.random() > 0.3 ? '1' : '0.5';
+            });
+        }, 2000);
+
+        // Simulate new intel alerts
+        const alerts = [
+            '🚨 Crypto.com CEO active on LinkedIn',
+            '💰 New funding: DeFi Protocol $50M',
+            '📈 Bitcoin breaks $52K resistance',
+            '🎯 Binance hiring 100+ in Asia'
+        ];
+
+        let alertIndex = 0;
+        setInterval(() => {
+            // Could update alert banner here
+            alertIndex = (alertIndex + 1) % alerts.length;
+        }, 10000);
+    </script>
+</body>
+</html>
