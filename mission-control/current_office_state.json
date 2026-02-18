@@ -1,6 +1,6 @@
 {
-    "timestamp": "2026-02-18T21:00:36+08:00",
-    "hour": 21,
+    "timestamp": "2026-02-18T22:00:33+08:00",
+    "hour": 22,
     "state": "night_ops",
     "zone": "ops_center",
     "description": "Night operations - Sentry/Cipher monitoring",
