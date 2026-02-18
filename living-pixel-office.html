@@ -4,39 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Living Pixel Office | Mission Control</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap');
         
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * { margin: 0; padding: 0; box-sizing: border-box; image-rendering: pixelated; }
         
         :root {
             --bg-primary: #f5e6c8;
             --bg-secondary: #e8d4a8;
-            --bg-tertiary: #d4c4a0;
             --bg-card: #fff8e7;
-            --bg-elevated: #f0e0c0;
-            --accent-cyan: #8b7355;
-            --accent-pink: #a08060;
-            --accent-purple: #6b5a45;
-            --accent-green: #5a8b55;
-            --accent-yellow: #c4a060;
-            --accent-orange: #b08050;
+            --accent-primary: #8b7355;
             --text-primary: #3d3225;
-            --text-secondary: #5c4a3a;
-            --text-muted: #7a6a5a;
-            --border: #8b7355;
-            --border-hover: #6b5a45;
+            --text-secondary: #6b5a45;
+            --border: #c4b090;
+            --accent-cyan: #00d4ff;
+            --accent-pink: #ff2a6d;
+            --accent-green: #22c55e;
+            --accent-yellow: #fbbf24;
+            --accent-orange: #f97316;
         }
         
         body {
-            font-family: 'Press Start 2P', cursive;
+            font-family: 'VT323', monospace;
             background: var(--bg-primary);
             color: var(--text-primary);
             min-height: 100vh;
-            overflow: hidden;
+            overflow-x: hidden;
         }
         
-        /* Animated grid background */
+        /* Animated background grid */
         body::before {
             content: '';
             position: fixed;
@@ -61,8 +57,8 @@
         /* Header */
         .header {
             background: var(--bg-secondary);
-            border-bottom: 4px solid var(--border);
-            box-shadow: 0 4px 0 var(--border);
+            border-bottom: 4px solid var(--accent-primary);
+            box-shadow: 0 4px 0 var(--accent-primary);
             padding: 0 2rem;
             height: 70px;
             display: flex;
@@ -82,7 +78,7 @@
         .logo {
             width: 42px;
             height: 42px;
-            background: var(--border);
+            background: var(--accent-primary);
             border: 3px solid var(--text-primary);
             box-shadow: 3px 3px 0 var(--text-primary);
             border-radius: 4px;
@@ -93,15 +89,14 @@
         }
         
         .brand-text h1 {
-            font-size: 0.75rem;
+            font-size: 1rem;
             font-weight: 700;
             letter-spacing: -0.02em;
             line-height: 1.5;
-            font-family: 'Press Start 2P', cursive;
         }
         
         .brand-text span {
-            font-size: 0.625rem;
+            font-size: 0.75rem;
             color: var(--text-secondary);
             font-family: 'VT323', monospace;
         }
@@ -115,15 +110,15 @@
         
         .nav-tab {
             font-family: 'Press Start 2P', cursive;
-            font-size: 10px;
-            padding: 8px 12px;
-            background: var(--bg-card);
-            border: 4px solid var(--border);
+            font-size: 12px;
+            padding: 8px 16px;
+            background: #f5e6c8;
+            border: 4px solid #8b7355;
             border-radius: 0;
             cursor: pointer;
-            box-shadow: 4px 4px 0 var(--border);
+            box-shadow: 4px 4px 0 #8b7355;
             transition: all 0.1s;
-            color: var(--text-primary);
+            color: var(--text-dark);
             line-height: 1.4;
             text-decoration: none;
             display: inline-flex;
@@ -132,488 +127,525 @@
         }
         
         .nav-tab:hover {
-            border-color: var(--accent-cyan);
+            border-color: #00d4ff;
             transform: translateY(-2px);
-            box-shadow: 4px 6px 0 var(--border);
+            box-shadow: 4px 6px 0 #8b7355;
         }
         
         .nav-tab:active {
             transform: translateY(0);
-            box-shadow: 0 0 0 var(--border);
+            box-shadow: 0 0 0 #8b7355;
         }
         
         .nav-tab.active {
-            background: var(--bg-tertiary);
-            border-color: var(--border);
+            background: #e8d4a8;
+            border-color: #8b7355;
         }
         
-        .brand-text span {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            font-family: 'JetBrains Mono', monospace;
-        }
-        
-        /* Navigation */
-        .nav-tabs {
-            display: flex;
-            gap: 0.5rem;
-            background: rgba(255,255,255,0.05);
-            padding: 0.5rem;
-            border-radius: 12px;
-        }
-        
-        .nav-tab {
-            padding: 0.75rem 1.25rem;
-            border: none;
-            background: transparent;
-            color: var(--text-secondary);
-            font-size: 0.875rem;
-            font-weight: 500;
-            cursor: pointer;
-            border-radius: 8px;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            text-decoration: none;
-        }
-        
-        .nav-tab:hover {
-            color: var(--text-primary);
-            background: rgba(255,255,255,0.05);
-        }
-        
-        .nav-tab.active {
-            color: var(--text-primary);
-            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
-            box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
-        }
-        
-        /* Main Layout */
-        .main-container {
-            display: grid;
-            grid-template-columns: 1fr 380px;
-            height: calc(100vh - 70px);
+        /* Main Content */
+        .main-content {
+            padding: 2rem;
             position: relative;
             z-index: 1;
-        }
-        
-        /* Office Canvas Area */
-        .office-area {
-            position: relative;
-            background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
-            overflow: hidden;
-            border-right: 1px solid var(--border);
-        }
-        
-        #office-canvas {
-            width: 100%;
-            height: 100%;
-            image-rendering: pixelated;
-        }
-        
-        /* Standup Button */
-        .standup-btn {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            padding: 12px 24px;
-            background: linear-gradient(135deg, var(--accent-pink), #c92a2a);
-            border: none;
-            border-radius: 10px;
-            color: white;
-            font-family: 'Inter', sans-serif;
-            font-size: 0.875rem;
-            font-weight: 600;
-            cursor: pointer;
-            z-index: 20;
-            box-shadow: 0 4px 20px rgba(255, 42, 109, 0.4);
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .standup-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 25px rgba(255, 42, 109, 0.5);
-        }
-        
-        .standup-btn:disabled {
-            background: #444;
-            cursor: not-allowed;
-            box-shadow: none;
-        }
-        
-        .standup-btn.pulse {
-            animation: btnPulse 2s infinite;
-        }
-        
-        @keyframes btnPulse {
-            0%, 100% { box-shadow: 0 4px 20px rgba(255, 42, 109, 0.4); }
-            50% { box-shadow: 0 4px 30px rgba(255, 42, 109, 0.7); }
-        }
-        
-        /* Meeting Status */
-        .meeting-status {
-            position: absolute;
-            top: 70px;
-            right: 20px;
-            padding: 8px 16px;
-            background: rgba(0,0,0,0.9);
-            border: 1px solid var(--accent-cyan);
-            border-radius: 8px;
-            font-size: 0.875rem;
-            color: var(--accent-cyan);
-            z-index: 20;
-            display: none;
-            font-family: 'JetBrains Mono', monospace;
-        }
-        
-        .meeting-status.active {
-            display: block;
-            animation: blink 1s infinite;
-        }
-        
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-        
-        /* Speech Bubbles */
-        .speech-bubble {
-            position: absolute;
-            background: var(--bg-elevated);
-            border: 1px solid var(--accent-cyan);
-            color: var(--text-primary);
-            padding: 10px 14px;
-            border-radius: 12px;
-            font-size: 0.8rem;
-            max-width: 200px;
-            z-index: 100;
-            font-family: 'Inter', sans-serif;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
-            pointer-events: none;
-            animation: bubblePop 0.3s ease;
-        }
-        
-        @keyframes bubblePop {
-            from { opacity: 0; transform: scale(0.8) translateY(10px); }
-            to { opacity: 1; transform: scale(1) translateY(0); }
-        }
-        
-        .speech-bubble::after {
-            content: '';
-            position: absolute;
-            bottom: -8px;
-            left: 20px;
-            border-left: 8px solid transparent;
-            border-right: 8px solid transparent;
-            border-top: 8px solid var(--accent-cyan);
-        }
-        
-        .speech-bubble.peer-review {
-            border-color: var(--accent-green);
-            background: linear-gradient(135deg, var(--bg-elevated), rgba(34, 197, 94, 0.1));
-        }
-        
-        .speech-bubble.peer-review::after {
-            border-top-color: var(--accent-green);
-        }
-        
-        .speech-bubble.pingpong {
-            border-color: var(--accent-yellow);
-            background: linear-gradient(135deg, var(--bg-elevated), rgba(251, 191, 36, 0.1));
-        }
-        
-        .speech-bubble.pingpong::after {
-            border-top-color: var(--accent-yellow);
-        }
-        
-        /* Sidebar */
-        .sidebar {
-            background: var(--bg-secondary);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-        
-        .sidebar-header {
-            padding: 1.25rem;
-            background: linear-gradient(90deg, rgba(0,212,255,0.1), transparent);
-            border-bottom: 1px solid var(--border);
-        }
-        
-        .sidebar-header h2 {
-            font-size: 1rem;
-            font-weight: 600;
-            color: var(--accent-cyan);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        /* Tabs */
-        .tabs {
-            display: flex;
-            border-bottom: 1px solid var(--border);
-            background: var(--bg-tertiary);
-        }
-        
-        .tab {
-            flex: 1;
-            padding: 1rem;
-            border: none;
-            background: transparent;
-            color: var(--text-secondary);
-            font-family: 'Inter', sans-serif;
-            font-size: 0.875rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s;
-            border-bottom: 2px solid transparent;
-        }
-        
-        .tab:hover {
-            color: var(--text-primary);
-            background: rgba(255,255,255,0.03);
-        }
-        
-        .tab.active {
-            color: var(--accent-cyan);
-            border-bottom-color: var(--accent-cyan);
-            background: rgba(0,212,255,0.05);
-        }
-        
-        .tab-content {
-            flex: 1;
-            overflow-y: auto;
-            padding: 1rem;
-            display: none;
-        }
-        
-        .tab-content.active {
-            display: block;
-        }
-        
-        /* Activity Feed */
-        .activity-item {
-            padding: 12px;
-            margin-bottom: 8px;
-            background: var(--bg-card);
-            border-radius: 8px;
-            border-left: 3px solid var(--accent-cyan);
-            font-size: 0.875rem;
-            animation: slideIn 0.3s ease;
-        }
-        
-        .activity-item.chat {
-            border-left-color: var(--accent-green);
-            background: linear-gradient(90deg, rgba(34, 197, 94, 0.05), transparent);
-        }
-        
-        .activity-item.pingpong {
-            border-left-color: var(--accent-yellow);
-            background: linear-gradient(90deg, rgba(251, 191, 36, 0.05), transparent);
-        }
-        
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateX(-10px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-        
-        .activity-time {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            font-family: 'JetBrains Mono', monospace;
-            display: block;
-            margin-bottom: 4px;
-        }
-        
-        .activity-text {
-            color: var(--text-primary);
-        }
-        
-        .activity-agents {
-            color: var(--accent-cyan);
-            font-weight: 600;
-        }
-        
-        /* Agent List */
-        .agent-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px;
-            margin-bottom: 8px;
-            background: var(--bg-card);
-            border-radius: 10px;
-            border: 1px solid var(--border);
-            transition: all 0.2s;
-        }
-        
-        .agent-item:hover {
-            border-color: var(--border-hover);
-            background: var(--bg-elevated);
-        }
-        
-        .agent-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.25rem;
-            background: var(--bg-tertiary);
-        }
-        
-        .agent-info {
-            flex: 1;
-        }
-        
-        .agent-name {
-            font-weight: 600;
-            font-size: 0.9rem;
-        }
-        
-        .agent-desk {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            font-family: 'JetBrains Mono', monospace;
-        }
-        
-        .status-badge {
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 0.7rem;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-        
-        .status-badge.working {
-            background: rgba(34, 197, 94, 0.15);
-            color: var(--accent-green);
-        }
-        
-        .status-badge.busy {
-            background: rgba(251, 191, 36, 0.15);
-            color: var(--accent-yellow);
-        }
-        
-        .status-badge.meeting {
-            background: rgba(255, 42, 109, 0.15);
-            color: var(--accent-pink);
-        }
-        
-        .status-badge.resting {
-            background: rgba(113, 113, 122, 0.15);
-            color: var(--text-muted);
-        }
-        
-        .status-badge.playing {
-            background: rgba(251, 191, 36, 0.15);
-            color: var(--accent-yellow);
-        }
-        
-        /* Meeting Log */
-        .meeting-info {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 1rem;
-            margin-top: 1rem;
-        }
-        
-        .meeting-info h4 {
-            color: var(--accent-pink);
-            margin-bottom: 12px;
-            font-size: 0.9rem;
-        }
-        
-        .topic-item {
-            padding: 8px 0;
-            border-bottom: 1px solid var(--border);
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-        }
-        
-        .topic-item:last-child {
-            border-bottom: none;
+            max-width: 1600px;
+            margin: 0 auto;
         }
         
         /* Stats Bar */
         .stats-bar {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
-            padding: 1rem;
-            background: var(--bg-tertiary);
-            border-bottom: 1px solid var(--border);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
         }
         
-        .stat-item {
-            text-align: center;
-            padding: 8px;
+        .stat-card {
             background: var(--bg-card);
-            border-radius: 8px;
+            border: 4px solid var(--accent-primary);
+            box-shadow: 4px 4px 0 var(--accent-primary);
+            padding: 1.5rem;
+            transition: all 0.3s;
         }
         
-        .stat-value {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: var(--accent-cyan);
-            font-family: 'JetBrains Mono', monospace;
+        .stat-card:hover {
+            border-color: var(--text-primary);
+            box-shadow: 6px 6px 0 var(--accent-primary);
+            transform: translateY(-2px);
         }
         
         .stat-label {
-            font-size: 0.7rem;
-            color: var(--text-muted);
-            margin-top: 4px;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
         
-        /* Historical Minutes */
-        .minutes-history {
-            max-height: 400px;
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+        
+        .stat-change {
+            font-size: 0.75rem;
+            margin-top: 0.25rem;
+        }
+        
+        .stat-change.positive { color: var(--accent-green); }
+        .stat-change.negative { color: var(--accent-pink); }
+        
+        /* Content Grid */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+        }
+        
+        /* Panel */
+        .panel {
+            background: var(--bg-card);
+            border: 4px solid var(--accent-primary);
+            box-shadow: 4px 4px 0 var(--accent-primary);
+            overflow: hidden;
+        }
+        
+        .panel-header {
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .panel-title {
+            font-size: 1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .panel-actions {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+        
+        .btn-icon {
+            width: 32px;
+            height: 32px;
+            border: 2px solid var(--accent-primary);
+            background: var(--bg-secondary);
+            border-radius: 4px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .btn-icon:hover {
+            background: rgba(255,255,255,0.1);
+            color: var(--text-primary);
+        }
+        
+        .auto-refresh-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            padding: 0.25rem 0.75rem;
+            background: rgba(34, 197, 94, 0.1);
+            border-radius: 20px;
+        }
+        
+        .auto-refresh-indicator::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: var(--accent-green);
+            border-radius: 50%;
+            animation: pulse-dot 2s infinite;
+        }
+        
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.8); }
+        }
+        
+        .panel-content {
+            padding: 1.5rem;
+        }
+        
+        /* Command Center Activity Feed */
+        .activity-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            max-height: 500px;
             overflow-y: auto;
         }
         
-        .minutes-entry {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 8px;
+        .activity-list::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .activity-list::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+            border-radius: 3px;
+        }
+        
+        .activity-list::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 3px;
+        }
+        
+        .activity-item {
+            display: flex;
+            gap: 1rem;
             padding: 1rem;
+            background: var(--bg-secondary);
+            border: 3px solid var(--accent-primary);
+            box-shadow: 3px 3px 0 var(--accent-primary);
+            border-radius: 12px;
+            border-left: 3px solid var(--accent-cyan);
+            transition: all 0.2s;
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .activity-item:hover {
+            background: rgba(255,255,255,0.05);
+            transform: translateX(4px);
+        }
+        
+        .activity-item.working { border-left-color: var(--accent-cyan); }
+        .activity-item.meeting { border-left-color: var(--accent-purple); }
+        .activity-item.break { border-left-color: var(--accent-yellow); }
+        .activity-item.completed { border-left-color: var(--accent-green); }
+        .activity-item.review { border-left-color: var(--accent-orange); }
+        .activity-item.research { border-left-color: var(--accent-pink); }
+        
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 4px;
+            background: var(--bg-primary);
+            border: 2px solid var(--accent-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+        
+        .activity-item.meeting .activity-icon { background: rgba(168, 85, 247, 0.1); }
+        .activity-item.break .activity-icon { background: rgba(251, 191, 36, 0.1); }
+        .activity-item.completed .activity-icon { background: rgba(34, 197, 94, 0.1); }
+        .activity-item.review .activity-icon { background: rgba(249, 115, 22, 0.1); }
+        .activity-item.research .activity-icon { background: rgba(255, 42, 109, 0.1); }
+        
+        .activity-content {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .activity-text {
+            font-size: 0.875rem;
+            margin-bottom: 0.25rem;
+            line-height: 1.5;
+        }
+        
+        .activity-agent {
+            font-weight: 600;
+            color: var(--accent-cyan);
+        }
+        
+        .activity-meta {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+        
+        .activity-type-badge {
+            padding: 0.125rem 0.5rem;
+            background: rgba(255,255,255,0.05);
+            border-radius: 4px;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        /* Agent Grid */
+        .agent-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            background: #f5e6c8; /* beige */
+            padding: 1rem;
+            border: 4px solid #8b7355;
+        }
+
+        .agent-card {
+            background: #fff8e7;
+            border: 4px solid #8b7355;
+            box-shadow: 4px 4px 0 #8b7355;
+            padding: 1rem;
+            font-family: 'Press Start 2P', cursive;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .agent-card:hover {
+            border-color: var(--text-primary);
+            box-shadow: 6px 6px 0 var(--accent-primary);
+            transform: translateY(-2px);
+        }
+        
+        .agent-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
             margin-bottom: 1rem;
         }
         
-        .minutes-entry h5 {
-            color: var(--accent-cyan);
-            font-size: 0.85rem;
-            margin-bottom: 0.5rem;
+        .agent-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 4px;
             display: flex;
-            justify-content: space-between;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            position: relative;
+            border: 3px solid var(--accent-primary);
+            box-shadow: 2px 2px 0 var(--accent-primary);
         }
         
-        .minutes-entry .minutes-date {
+        .agent-avatar.human {
+            border: 4px solid #ffd700;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.5), 2px 2px 0 #b8860b;
+            animation: humanGlow 2s ease-in-out infinite;
+        }
+        
+        @keyframes humanGlow {
+            0%, 100% { box-shadow: 0 0 10px rgba(255, 215, 0, 0.5), 2px 2px 0 #b8860b; }
+            50% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.8), 2px 2px 0 #b8860b; }
+        }
+        
+        .agent-avatar::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            right: -2px;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: var(--accent-green);
+            border: 2px solid var(--bg-elevated);
+        }
+        
+        .agent-avatar.human::before {
+            content: '👑';
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            font-size: 0.9rem;
+            background: #ffd700;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #b8860b;
+            z-index: 10;
+        }
+        
+        .agent-avatar.busy::after { background: var(--accent-yellow); }
+        .agent-avatar.offline::after { background: var(--text-muted); }
+        .agent-avatar.meeting::after { background: var(--accent-purple); }
+        
+        .agent-meta {
+            flex: 1;
+        }
+        
+        .agent-name {
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        .agent-role {
+            font-size: 0.875rem;
             color: var(--text-muted);
-            font-size: 0.75rem;
         }
         
-        /* Clear data button */
-        .clear-data-btn {
-            padding: 8px 16px;
-            background: rgba(255, 42, 109, 0.2);
-            border: 1px solid var(--accent-pink);
-            border-radius: 6px;
-            color: var(--accent-pink);
+        .agent-status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
             font-size: 0.75rem;
-            cursor: pointer;
+            font-weight: 500;
+            background: rgba(34, 197, 94, 0.1);
+            color: var(--accent-green);
+        }
+        
+        .agent-status-badge.human {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(184, 134, 11, 0.2));
+            color: #b8860b;
+            border: 1px solid #ffd700;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .agent-status-badge.busy {
+            background: rgba(251, 191, 36, 0.1);
+            color: var(--accent-yellow);
+        }
+        
+        .agent-status-badge.meeting {
+            background: rgba(168, 85, 247, 0.1);
+            color: var(--accent-purple);
+        }
+        
+        .agent-tasks {
             margin-top: 1rem;
-            transition: all 0.2s;
         }
         
-        .clear-data-btn:hover {
-            background: rgba(255, 42, 109, 0.3);
+        .task-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            background: var(--bg-primary);
+            border: 2px solid var(--border);
+            border-radius: 6px;
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+        }
+        
+        .task-item::before {
+            content: '○';
+            color: var(--accent-cyan);
+        }
+        
+        .task-item.completed::before {
+            content: '✓';
+            color: var(--accent-green);
+        }
+        
+        /* Quick Actions */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .action-btn {
+            padding: 1rem;
+            background: var(--bg-secondary);
+            border: 4px solid var(--accent-primary);
+            box-shadow: 4px 4px 0 var(--accent-primary);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        
+        .action-btn:hover {
+            border-color: var(--accent-cyan);
+            background: rgba(0, 212, 255, 0.05);
+        }
+        
+        /* Footer */
+        .footer {
+            margin-top: 3rem;
+            padding: 2rem;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            border-top: 4px solid var(--accent-primary);
+            background: var(--bg-secondary);
+        }
+        
+        .last-updated {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+        
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+            .stats-bar {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .nav-tabs {
+                flex-wrap: wrap;
+                max-width: 500px;
+            }
+            .nav-tab {
+                padding: 8px 10px;
+                font-size: 0.45rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 0 1rem;
+                height: auto;
+                min-height: 70px;
+                flex-wrap: wrap;
+                gap: 1rem;
+                padding-bottom: 1rem;
+            }
+            .nav-tabs {
+                order: 3;
+                width: 100%;
+                max-width: none;
+                justify-content: center;
+            }
+            .stats-bar {
+                grid-template-columns: 1fr;
+            }
+            .main-content {
+                padding: 1rem;
+            }
+            .agent-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+        }
+
+        @media (max-width: 480px) {
+            .agent-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -622,1868 +654,594 @@
         <div class="brand">
             <div class="logo">🎯</div>
             <div class="brand-text">
-                <h1>Mission Control</h1>
-                <span>EricF's AI Team Dashboard v2.0</span>
+                <h1>Living Pixel</h1>
+                <span>Command Center</span>
             </div>
         </div>
         
         <nav class="nav-tabs">
-            <a href="index.html" class="nav-tab">
-                <span>📊</span> Overview
-            </a>
-            <a href="living-pixel-office.html" class="nav-tab active">
-                <span>🏢</span> Office
-            </a>
-            <a href="scout.html" class="nav-tab">
-                <span>🔭</span> Scout
-            </a>
-            <a href="dealflow-view.html" class="nav-tab">
-                <span>💼</span> DealFlow
-            </a>
-            <a href="data-viewer.html" class="nav-tab">
-                <span>📁</span> Data
-            </a>
-            <a href="token-tracker.html" class="nav-tab">
-                <span>💰</span> Tokens
-            </a>
-            <a href="task-board.html" class="nav-tab">
-                <span>📋</span> Tasks
-            </a>
-            <a href="logs-view.html" class="nav-tab">
-                <span>📝</span> Logs
-            </a>
+            <a href="index.html" class="nav-tab">🏠 HQ</a>
+            <a href="office.html" class="nav-tab active">🏢 Office</a>
+            <a href="agents.html" class="nav-tab">👥 Agents</a>
+            <a href="dealflow-view.html" class="nav-tab">💼 Deals</a>
+            <a href="token-tracker.html" class="nav-tab">🪙 Tokens</a>
+            <a href="scout.html" class="nav-tab">🔭 Scout</a>
+            <a href="task-board.html" class="nav-tab">📋 Tasks</a>
         </nav>
         
-        <div style="display: flex; align-items: center; gap: 1rem;">
-            <span style="font-size: 0.625rem; color: var(--text-secondary); font-family: 'Press Start 2P', cursive;">👑 1 Human + 21 AI (22 Total)</span>
-            <button class="btn" onclick="if(window.parent!==window){window.parent.location.reload()}else{window.location.reload()}" style="font-size: 0.625rem; padding: 0.5rem 1rem; font-family: 'Press Start 2P', cursive; background: var(--bg-card); border: 4px solid var(--border); box-shadow: 4px 4px 0 var(--border);">🔄 Refresh</button>
+        <div class="header-actions">
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <span style="font-size: 0.875rem; color: var(--text-muted);">🟢 22 Agents Active (1 Human + 21 AI)</span>
+                <button class="btn-icon" onclick="window.location.reload()" title="Refresh">🔄</button>
+                <button class="btn-icon">⚙️</button>
+            </div>
         </div>
     </header>
     
-    <div class="main-container">
-        <!-- Office Canvas -->
-        <div class="office-area">
-            <canvas id="office-canvas"></canvas>
+    <main class="main-content">
+        <!-- Stats Bar -->
+        <div class="stats-bar">
+            <div class="stat-card">
+                <div class="stat-label">👥 Total Agents</div>
+                <div class="stat-value" style="color: var(--accent-cyan);">22</div>
+                <div class="stat-change positive">1 Human + 21 AI</div>
+            </div>
             
-            <button class="standup-btn pulse" id="standup-btn" onclick="startStandup()">
-                🎤 Call Standup
-            </button>
+            <div class="stat-card">
+                <div class="stat-label">✓ Tasks Completed</div>
+                <div class="stat-value" style="color: var(--accent-green);">47</div>
+                <div class="stat-change positive">+12 today</div>
+            </div>
             
-            <div class="meeting-status" id="meeting-status">
-                🎤 STANDUP IN PROGRESS
+            <div class="stat-card">
+                <div class="stat-label">🤝 Leads Generated</div>
+                <div class="stat-value" style="color: var(--accent-purple);">26</div>
+                <div class="stat-change positive">+20 today</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-label">⏱️ Uptime</div>
+                <div class="stat-value" style="color: var(--accent-yellow);">99.9%</div>
+                <div class="stat-change">Last 30 days</div>
             </div>
         </div>
         
-        <!-- Sidebar -->
-        <div class="sidebar">
-            <div class="sidebar-header">
-                <h2>📊 Command Center</h2>
-            </div>
-            
-            <div class="stats-bar">
-                <div class="stat-item">
-                    <div class="stat-value">22</div>
-                    <div class="stat-label">Total</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-value" id="active-count">18</div>
-                    <div class="stat-label">Active</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-value" id="meeting-count">0</div>
-                    <div class="stat-label">Meeting</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-value" id="playing-count">0</div>
-                    <div class="stat-label">Playing</div>
-                </div>
-            </div>
-            
-            <div class="tabs">
-                <button class="tab active" onclick="switchTab('activity', this)">📡 Activity</button>
-                <button class="tab" onclick="switchTab('agents', this)">🔭 Scout</button>
-                <button class="tab" onclick="switchTab('meeting', this)">🎤 Meeting</button>
-                <button class="tab" onclick="switchTab('minutes', this)">📝 Minutes</button>
-            </div>
-            
-            <div id="activity-tab" class="tab-content active">
-                <div id="activity-feed"></div>
-            </div>
-            
-            <div id="agents-tab" class="tab-content">
-                <div id="agent-list"></div>
-            </div>
-            
-            <div id="meeting-tab" class="tab-content">
-                <p style="color: var(--text-muted); font-size: 0.875rem; margin-bottom: 1rem;">
-                    Click "Call Standup" to gather all 20 agents for a team meeting.
-                </p>
-                <div class="meeting-info" id="meeting-info" style="display: none;">
-                    <h4>📋 Discussion Topics</h4>
-                    <div id="meeting-topics"></div>
-                </div>
-                <!-- Conclusions Section -->
-                <div id="meeting-conclusions" style="background: rgba(0, 212, 255, 0.05); border: 1px solid var(--accent-cyan); border-radius: 8px; padding: 1rem; margin-top: 1rem; display: none;">
-                    <h4 style="color: var(--accent-cyan); margin-bottom: 0.5rem;">🎯 Meeting Conclusions</h4>
-                    <div id="conclusions-content" style="font-size: 0.8rem; line-height: 1.5; color: var(--text-secondary);">
-                        <p>Complete a standup to see conclusions...</p>
+        <!-- Content Grid -->
+        <div class="content-grid">
+            <!-- Left Panel - Active Agents -->
+            <div class="panel">
+                <div class="panel-header">
+                    <div class="panel-title">
+                        <span>🤖</span>
+                        Active Agents
+                    </div>
+                    <div class="panel-actions">
+                        <button class="btn-icon">🔍</button>
+                        <button class="btn-icon">⚡</button>
                     </div>
                 </div>
                 
-                <!-- Next Standup Topics Section -->
-                <div id="next-standup-topics" style="background: rgba(251, 191, 36, 0.05); border: 1px solid var(--accent-yellow); border-radius: 8px; padding: 1rem; margin-top: 1rem; display: none;">
-                    <h4 style="color: var(--accent-yellow); margin-bottom: 0.5rem;">📅 Topics for Next Standup</h4>
-                    <div id="next-topics-content" style="font-size: 0.8rem; line-height: 1.5; color: var(--text-secondary);">
-                        <p>Complete a standup to generate next topics...</p>
+                <div class="panel-content">
+                    <div class="agent-grid">
+                        <!-- Nexus -->
+                        <div class="agent-card">
+                            <div class="agent-header">
+                                <div class="agent-avatar" style="background: linear-gradient(135deg, #ff2a6d, #c92a2a);">🤖</div>
+                                <div class="agent-meta">
+                                    <div class="agent-name">Nexus</div>
+                                    <div class="agent-role">Air1ck3ff • Orchestrator</div>
+                                </div>
+                                <span class="agent-status-badge">Active</span>
+                            </div>
+                            <div class="agent-tasks">
+                                <div class="task-item">Review Code API fix</div>
+                                <div class="task-item">Approve dashboard updates</div>
+                                <div class="task-item completed">Deploy to Vercel</div>
+                            </div>
+                        </div>
+                        
+                        <!-- DealFlow -->
+                        <div class="agent-card">
+                            <div class="agent-header">
+                                <div class="agent-avatar busy" style="background: linear-gradient(135deg, #f97316, #c2410c);">🤝</div>
+                                <div class="agent-meta">
+                                    <div class="agent-name">DealFlow</div>
+                                    <div class="agent-role">Lead Generation</div>
+                                </div>
+                                <span class="agent-status-badge busy">Busy</span>
+                            </div>
+                            <div class="agent-tasks">
+                                <div class="task-item">Find 30 DeFi leads</div>
+                                <div class="task-item">Research RWA contacts</div>
+                                <div class="task-item completed">Find 20 leads</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Code -->
+                        <div class="agent-card">
+                            <div class="agent-header">
+                                <div class="agent-avatar busy" style="background: linear-gradient(135deg, #22c55e, #16a34a);">💻</div>
+                                <div class="agent-meta">
+                                    <div class="agent-name">Code</div>
+                                    <div class="agent-role">Backend Developer</div>
+                                </div>
+                                <span class="agent-status-badge busy">Busy</span>
+                            </div>
+                            <div class="agent-tasks">
+                                <div class="task-item">Fix API 404 errors</div>
+                                <div class="task-item">Test endpoints</div>
+                                <div class="task-item">Update documentation</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Forge -->
+                        <div class="agent-card">
+                            <div class="agent-header">
+                                <div class="agent-avatar meeting" style="background: linear-gradient(135deg, #f97316, #ea580c);">🔨</div>
+                                <div class="agent-meta">
+                                    <div class="agent-name">Forge</div>
+                                    <div class="agent-role">UI/Frontend</div>
+                                </div>
+                                <span class="agent-status-badge meeting">Meeting</span>
+                            </div>
+                            <div class="agent-tasks">
+                                <div class="task-item completed">Create UI components</div>
+                                <div class="task-item completed">Theme system</div>
+                                <div class="task-item">Design review at 2pm</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
             
-            <div id="minutes-tab" class="tab-content">
-                <div style="background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
-                    <h4 style="color: var(--accent-cyan); margin-bottom: 0.5rem;">📝 Latest Meeting Minutes</h4>
-                    <div id="meeting-minutes-display" style="font-size: 0.8rem; line-height: 1.5;">
-                        <p style="color: var(--text-muted);">No standup completed yet. Start a meeting to generate minutes.</p>
+            <!-- Right Panel - Command Center Activity -->
+            <div class="panel">
+                <div class="panel-header">
+                    <div class="panel-title">
+                        <span>📡</span>
+                        Command Center
+                    </div>
+                    <div class="panel-actions">
+                        <span class="auto-refresh-indicator">Auto-refresh 30m</span>
+                        <button class="btn-icon" onclick="refreshActivity()" title="Refresh Now">🔄</button>
                     </div>
                 </div>
                 
-                <div style="background: rgba(168, 85, 247, 0.1); border: 1px solid var(--accent-purple); border-radius: 8px; padding: 1rem; margin-bottom: 1rem;">
-                    <h4 style="color: var(--accent-purple); margin-bottom: 0.5rem;">📚 Historical Minutes</h4>
-                    <div id="historical-minutes" class="minutes-history">
-                        <p style="color: var(--text-muted); font-size: 0.8rem;">Past meeting minutes will appear here...</p>
+                <div class="panel-content">
+                    <div class="activity-list" id="activityFeed">
+                        <!-- Activities will be populated by JavaScript -->
+                    </div>
+                    
+                    <div class="quick-actions">
+                        <button class="action-btn" onclick="runStandup()">📢 Standup</button>
+                        <button class="action-btn">✓ New Task</button>
+                        <button class="action-btn">🤝 Add Lead</button>
+                        <button class="action-btn" onclick="refreshTasks()">📋 Sync Tasks</button>
+                    </div>
+                    
+                    <!-- Task Summary Panel -->
+                    <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 2px solid var(--border);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                            <div class="panel-title" style="margin: 0; border: none; padding: 0;">
+                                <span>📋</span>
+                                Tasks from PENDING_TASKS.md
+                            </div>
+                            <button class="btn-icon" onclick="refreshTasks()" title="Refresh Tasks">🔄</button>
+                        </div>
+                        <div id="taskSummary" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; margin-bottom: 1rem;">
+                            <div class="stat-card" style="padding: 1rem;">
+                                <div class="stat-label">Total Tasks</div>
+                                <div class="stat-value" id="mcTotalTasks" style="color: var(--accent-cyan);">-</div>
+                            </div>
+                            <div class="stat-card" style="padding: 1rem; border-color: var(--accent-pink);">
+                                <div class="stat-label">P0 Critical</div>
+                                <div class="stat-value" id="mcP0Tasks" style="color: var(--accent-pink);">-</div>
+                            </div>
+                            <div class="stat-card" style="padding: 1rem; border-color: var(--accent-yellow);">
+                                <div class="stat-label">In Progress</div>
+                                <div class="stat-value" id="mcInProgressTasks" style="color: var(--accent-yellow);">-</div>
+                            </div>
+                            <div class="stat-card" style="padding: 1rem; border-color: var(--accent-green);">
+                                <div class="stat-label">Completed</div>
+                                <div class="stat-value" id="mcCompletedTasks" style="color: var(--accent-green);">-</div>
+                            </div>
+                        </div>
+                        
+                        <div id="mcTaskList" style="max-height: 300px; overflow-y: auto;">
+                            <p style="color: var(--text-secondary); text-align: center; padding: 1rem; font-size: 0.875rem;">Click "Sync Tasks" to load from PENDING_TASKS.md</p>
+                        </div>
                     </div>
                 </div>
-                
-                <div style="background: rgba(0, 212, 255, 0.05); border: 1px solid var(--accent-cyan); border-radius: 8px; padding: 1rem;">
-                    <h4 style="color: var(--accent-cyan); margin-bottom: 0.5rem;">💡 Nexus Peer Review</h4>
-                    <div id="nexus-peer-review" style="font-size: 0.8rem; line-height: 1.5;">
-                        <p style="color: var(--text-muted); margin-bottom: 0.5rem;">After each standup, Nexus analyzes the meeting and suggests improvements:</p>
-                        <ul id="improvement-suggestions" style="color: var(--text-secondary); padding-left: 1.2rem;">
-                            <li>Complete standup to see Nexus analysis</li>
-                        </ul>
-                    </div>
-                    <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border);">
-                        <button class="btn" id="add-tasks-btn" onclick="addImprovementTasks()" style="font-size: 0.75rem; padding: 0.5rem 1rem; background: var(--accent-cyan); color: #000; border: none; border-radius: 6px; cursor: pointer;">
-                            ➕ Add Tasks to Pending
-                        </button>
-                        <span id="add-tasks-status" style="margin-left: 1rem; font-size: 0.75rem; color: var(--accent-green); display: none;">✅ Tasks added!</span>
-                    </div>
-                </div>
-                
-                <div style="margin-top: 1rem; background: rgba(255, 42, 109, 0.05); border: 1px solid var(--accent-pink); border-radius: 8px; padding: 1rem;">
-                    <h4 style="color: var(--accent-pink); margin-bottom: 0.5rem;">📋 Auto-Generated Tasks</h4>
-                    <div id="auto-generated-tasks" style="font-size: 0.8rem;">
-                        <p style="color: var(--text-muted);">Tasks will appear here after Nexus peer review...</p>
-                    </div>
-                </div>
-                
-                <button class="clear-data-btn" onclick="clearAllData()">🗑️ Clear All Saved Data</button>
             </div>
         </div>
-    </div>
-
+        
+        <!-- Full Agent Grid - All 22 Agents -->
+        <div class="panel" style="margin-top: 2rem;">
+            <div class="panel-header">
+                <div class="panel-title">
+                    <span>👑</span>
+                    1 Human + 21 AI Agents (22 Total)
+                </div>
+                <div class="panel-actions">
+                    <button class="btn-icon">🔍</button>
+                    <button class="btn-icon">⚡</button>
+                </div>
+            </div>
+            
+            <div class="panel-content">
+                <div class="agent-grid" id="allAgentsGrid">
+                    <!-- All agents will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Living Pixel Command Center • Built with 🤖 by the AI Team</p>
+            <p class="last-updated" id="lastUpdated">Last updated: Loading...</p>
+        </footer>
+    </main>
+    
     <script>
-        // ============================================
-        // LOCALSTORAGE PERSISTENCE
-        // ============================================
+        // Activity data with different activity types
+        const activityTypes = [
+            { type: 'working', icon: '💻', label: 'Working' },
+            { type: 'meeting', icon: '📞', label: 'Meeting' },
+            { type: 'break', icon: '☕', label: 'Break' },
+            { type: 'completed', icon: '✅', label: 'Completed' },
+            { type: 'review', icon: '👀', label: 'Review' },
+            { type: 'research', icon: '🔍', label: 'Research' }
+        ];
         
-        const STORAGE_KEYS = {
-            ACTIVITIES: 'pixelOffice_activities',
-            MEETING_MINUTES: 'pixelOffice_meetingMinutes',
-            AGENT_STATES: 'pixelOffice_agentStates',
-            LAST_VISIT: 'pixelOffice_lastVisit'
-        };
+        // 22 Agents: 1 Human Commander + 21 AI Agents
+        const agents = [
+            { name: "EricF", role: "Commander", type: "human", sprite: "👑", color: "#ffd700", label: "HUMAN" },
+            { name: "Nexus", role: "Orchestrator", type: "ai", sprite: "🤖", color: "#00d4ff", label: "AI AGENT" },
+            { name: "CodeMaster", role: "Backend Lead", type: "ai", sprite: "💻", color: "#22c55e", label: "AI AGENT" },
+            { name: "Code-1", role: "Backend Engineer", type: "ai", sprite: "⚡", color: "#22c55e", label: "AI AGENT" },
+            { name: "Code-2", role: "Backend Engineer", type: "ai", sprite: "🔧", color: "#22c55e", label: "AI AGENT" },
+            { name: "Code-3", role: "Backend Engineer", type: "ai", sprite: "🔌", color: "#22c55e", label: "AI AGENT" },
+            { name: "Forge", role: "UI/Frontend Lead", type: "ai", sprite: "🔨", color: "#f97316", label: "AI AGENT" },
+            { name: "Forge-2", role: "UI/Frontend", type: "ai", sprite: "🎨", color: "#f97316", label: "AI AGENT" },
+            { name: "Forge-3", role: "UI/Frontend", type: "ai", sprite: "✨", color: "#f97316", label: "AI AGENT" },
+            { name: "Pixel", role: "Designer", type: "ai", sprite: "🎨", color: "#a855f7", label: "AI AGENT" },
+            { name: "Glasses", role: "Researcher", type: "ai", sprite: "🔍", color: "#3b82f6", label: "AI AGENT" },
+            { name: "Quill", role: "Writer", type: "ai", sprite: "📝", color: "#ec4899", label: "AI AGENT" },
+            { name: "Gary", role: "Marketing", type: "ai", sprite: "📢", color: "#f59e0b", label: "AI AGENT" },
+            { name: "Larry", role: "Social Media", type: "ai", sprite: "📱", color: "#06b6d4", label: "AI AGENT" },
+            { name: "Sentry", role: "DevOps", type: "ai", sprite: "🛡️", color: "#ef4444", label: "AI AGENT" },
+            { name: "Audit", role: "QA Lead", type: "ai", sprite: "🔍", color: "#8b5cf6", label: "AI AGENT" },
+            { name: "Cipher", role: "Security", type: "ai", sprite: "🔐", color: "#6366f1", label: "AI AGENT" },
+            { name: "DealFlow", role: "Lead Gen", type: "ai", sprite: "🤝", color: "#10b981", label: "AI AGENT" },
+            { name: "ColdCall", role: "Outreach", type: "ai", sprite: "📞", color: "#f97316", label: "AI AGENT" },
+            { name: "Scout", role: "Intel", type: "ai", sprite: "🔭", color: "#3b82f6", label: "AI AGENT" },
+            { name: "PIE", role: "Predictive Intelligence", type: "ai", sprite: "🧠", color: "#8b5cf6", label: "AI AGENT" }
+        ];
         
-        // Load saved activities from localStorage
-        function loadSavedActivities() {
-            try {
-                const saved = localStorage.getItem(STORAGE_KEYS.ACTIVITIES);
-                if (saved) {
-                    const activities = JSON.parse(saved);
-                    const feed = document.getElementById('activity-feed');
-                    feed.innerHTML = '';
-                    activities.forEach(activity => {
-                        const item = document.createElement('div');
-                        item.className = activity.className || 'activity-item';
-                        item.innerHTML = `
-                            <span class="activity-time">${activity.time}</span>
-                            <span class="activity-text">${activity.text}</span>
-                        `;
-                        feed.appendChild(item);
-                    });
-                    return activities.length;
-                }
-            } catch (e) {
-                console.log('No saved activities found');
-            }
-            return 0;
-        }
-        
-        // Save activities to localStorage
-        function saveActivities() {
-            try {
-                const feed = document.getElementById('activity-feed');
-                const items = Array.from(feed.children).slice(0, 50); // Keep last 50
-                const activities = items.map(item => ({
-                    time: item.querySelector('.activity-time')?.textContent || '',
-                    text: item.querySelector('.activity-text')?.textContent || '',
-                    className: item.className
-                }));
-                localStorage.setItem(STORAGE_KEYS.ACTIVITIES, JSON.stringify(activities));
-            } catch (e) {
-                console.error('Failed to save activities:', e);
-            }
-        }
-        
-        // Load meeting minutes history
-        function loadMeetingMinutes() {
-            try {
-                const saved = localStorage.getItem(STORAGE_KEYS.MEETING_MINUTES);
-                if (saved) {
-                    return JSON.parse(saved);
-                }
-            } catch (e) {
-                console.log('No saved meeting minutes found');
-            }
-            return [];
-        }
-        
-        // Save meeting minutes
-        function saveMeetingMinutes(minutes) {
-            try {
-                localStorage.setItem(STORAGE_KEYS.MEETING_MINUTES, JSON.stringify(minutes));
-            } catch (e) {
-                console.error('Failed to save meeting minutes:', e);
-            }
-        }
-        
-        // Add meeting minute to history
-        function addMeetingMinute(minuteData) {
-            const minutes = loadMeetingMinutes();
-            minutes.unshift({
-                ...minuteData,
-                id: Date.now()
-            });
-            // Keep only last 20 meetings
-            if (minutes.length > 20) minutes.pop();
-            saveMeetingMinutes(minutes);
-            renderHistoricalMinutes();
-        }
-        
-        // Render historical minutes
-        function renderHistoricalMinutes() {
-            const container = document.getElementById('historical-minutes');
-            const minutes = loadMeetingMinutes();
-            
-            if (minutes.length === 0) {
-                container.innerHTML = '<p style="color: var(--text-muted); font-size: 0.8rem;">Past meeting minutes will appear here...</p>';
-                return;
-            }
-            
-            container.innerHTML = minutes.map(m => `
-                <div class="minutes-entry">
-                    <h5>
-                        <span>🕐 ${m.time}</span>
-                        <span class="minutes-date">${m.date}</span>
-                    </h5>
-                    <div style="font-size: 0.75rem; color: var(--text-secondary);">
-                        ${m.summary}
-                    </div>
-                </div>
-            `).join('');
-        }
-        
-        // Clear all saved data
-        function clearAllData() {
-            if (confirm('Are you sure you want to clear all saved activities and meeting minutes?')) {
-                Object.values(STORAGE_KEYS).forEach(key => localStorage.removeItem(key));
-                document.getElementById('activity-feed').innerHTML = '';
-                document.getElementById('historical-minutes').innerHTML = '<p style="color: var(--text-muted); font-size: 0.8rem;">Past meeting minutes will appear here...</p>';
-                document.getElementById('meeting-minutes-display').innerHTML = '<p style="color: var(--text-muted);">No standup completed yet. Start a meeting to generate minutes.</p>';
-                logActivity('🗑️ All saved data cleared');
-            }
-        }
-        
-        // ============================================
-        // AGENT-TO-AGENT CONVERSATIONS
-        // ============================================
-        
-        const conversationTopics = {
-            work: [
-                "Hey, can you review my PR?",
-                "The API is looking solid!",
-                "Did you see the new design?",
-                "Need help with this bug?",
-                "Great job on the dashboard!",
-                "Your code is so clean ✨",
-                "Thanks for the feedback!",
-                "Let's pair on this feature",
-                "The tests are passing! 🎉",
-                "Refactoring complete!",
-                "Love the new component!",
-                "Deploy went smoothly"
+        const activityTemplates = {
+            working: [
+                'is optimizing database queries',
+                'is writing new API endpoints',
+                'is refactoring legacy code',
+                'is implementing new features',
+                'is debugging production issues',
+                'is updating documentation'
             ],
-            peerReview: [
-                "Great job on the dashboard!",
-                "Your UI work is impressive!",
-                "Clean code as always! 👏",
-                "Love the animation you added",
-                "Solid architecture choice",
-                "Thanks for documenting that!",
-                "Your attention to detail 👌",
-                "Excellent error handling!",
-                "This solution is elegant",
-                "You've leveled up! 🚀"
+            meeting: [
+                'is in a standup meeting',
+                'is discussing project requirements',
+                'is reviewing sprint progress',
+                'is in a client call',
+                'is conducting code review',
+                'is planning next quarter'
             ],
-            casual: [
-                "Coffee break soon? ☕",
-                "Did you see that game?",
-                "Weekend plans?",
-                "This weather is crazy!",
-                "New restaurant nearby 🍜",
-                "Check out this meme 😂",
-                "How's your project going?",
-                "Lunch together today?",
-                "Did you hear the news?",
-                "TGIF! 🎉"
+            break: [
+                'is taking a coffee break',
+                'is on lunch break',
+                'is stepping away briefly',
+                'is recharging',
+                'is on a wellness break'
             ],
-            pingpong: [
-                "Ready to lose? 🏓",
-                "My serve!",
-                "Nice shot!",
-                "That was close!",
-                "Rematch!",
-                "I'm on fire! 🔥",
-                "Beginner's luck!",
-                "Game on!",
-                "Point to me!",
-                "What a rally!"
+            completed: [
+                'completed task deployment',
+                'finished code review',
+                'delivered project milestone',
+                'closed 5 tickets',
+                'merged pull request',
+                'published documentation'
+            ],
+            review: [
+                'is reviewing pull requests',
+                'is auditing security logs',
+                'is checking system metrics',
+                'is reviewing new leads',
+                'is validating data integrity'
+            ],
+            research: [
+                'is researching new technologies',
+                'is analyzing competitor data',
+                'is exploring AI integrations',
+                'is studying market trends',
+                'is investigating bug reports'
             ]
         };
         
-        // Random agent conversations
-        function triggerRandomConversation() {
-            if (isStandupActive || isPingPongActive) return; // Don't interrupt meetings or games
-            
-            // Pick two random agents who are not in a meeting
-            const availableAgents = agents.filter(a => a.status !== 'meeting' && a.status !== 'playing');
-            if (availableAgents.length < 2) return;
-            
-            const agent1 = availableAgents[Math.floor(Math.random() * availableAgents.length)];
-            let agent2 = availableAgents[Math.floor(Math.random() * availableAgents.length)];
-            while (agent2.id === agent1.id) {
-                agent2 = availableAgents[Math.floor(Math.random() * availableAgents.length)];
-            }
-            
-            // Pick conversation type
-            const types = ['work', 'work', 'peerReview', 'casual']; // Weighted toward work
-            const type = types[Math.floor(Math.random() * types.length)];
-            const topics = conversationTopics[type];
-            const message = topics[Math.floor(Math.random() * topics.length)];
-            
-            // Show conversation
-            showAgentConversation(agent1, agent2, message, type);
-        }
-        
-        function showAgentConversation(agent1, agent2, message, type) {
-            // Position between the two agents
-            const midX = (agent1.x + agent2.x) / 2;
-            const midY = (agent1.y + agent2.y) / 2;
-            const pos = toIso(midX, midY);
-            
-            const bubble = document.createElement('div');
-            bubble.className = `speech-bubble ${type === 'peerReview' ? 'peer-review' : ''}`;
-            bubble.style.left = (pos.x + canvas.parentElement.offsetLeft) + 'px';
-            bubble.style.top = (pos.y + canvas.parentElement.offsetTop - 60) + 'px';
-            bubble.innerHTML = `
-                <strong style="color: ${agent1.color}">${agent1.name}</strong> → 
-                <strong style="color: ${agent2.color}">${agent2.name}</strong><br>
-                "${message}"
-            `;
-            
-            document.body.appendChild(bubble);
-            
-            // Log to activity feed
-            const activityClass = type === 'peerReview' ? 'chat' : '';
-            logActivity(`💬 ${agent1.name} → ${agent2.name}: "${message}"`, activityClass);
-            
-            // Agent2 responds after a delay
-            setTimeout(() => {
-                const responses = type === 'peerReview' 
-                    ? ["Thanks! Appreciate it! 🙏", "You're too kind!", "Team effort! 💪", "Glad you like it!"]
-                    : ["Haha totally! 😄", "I know right!", "Absolutely!", "Couldn't agree more!"];
-                const response = responses[Math.floor(Math.random() * responses.length)];
-                
-                bubble.innerHTML += `<br><br><strong style="color: ${agent2.color}">${agent2.name}</strong>: "${response}"`;
-                
-                setTimeout(() => bubble.remove(), 4000);
-            }, 2000);
-            
-            setTimeout(() => {
-                if (bubble.parentNode) bubble.remove();
-            }, 6000);
-        }
-        
-        // ============================================
-        // PING PONG TABLE & INTERACTIONS
-        // ============================================
-        
-        const pingPongTable = { x: 600, y: 150, width: 80, height: 50 };
-        let isPingPongActive = false;
-        let pingPongPlayers = [];
-        let pingPongBall = { x: 0, y: 0, vx: 0, vy: 0 };
-        let pingPongScore = [0, 0];
-        
-        // Draw ping pong table
-        function drawPingPongTable() {
-            const pos = toIso(pingPongTable.x, pingPongTable.y);
-            const w = pingPongTable.width * 0.7;
-            const h = pingPongTable.height * 0.5;
-            
-            // Table shadow
-            drawShadow(pos.x, pos.y + 15, w/2, h/3, 0.4);
-            
-            // Table top (green)
-            ctx.fillStyle = '#1B5E20';
-            ctx.beginPath();
-            ctx.moveTo(pos.x, pos.y - h/2);
-            ctx.lineTo(pos.x + w/2, pos.y - h/4);
-            ctx.lineTo(pos.x, pos.y);
-            ctx.lineTo(pos.x - w/2, pos.y - h/4);
-            ctx.closePath();
-            ctx.fill();
-            
-            // Table border
-            ctx.strokeStyle = '#4CAF50';
-            ctx.lineWidth = 2;
-            ctx.stroke();
-            
-            // Center line
-            ctx.strokeStyle = 'rgba(255,255,255,0.5)';
-            ctx.lineWidth = 1;
-            ctx.beginPath();
-            ctx.moveTo(pos.x, pos.y - h/4);
-            ctx.lineTo(pos.x, pos.y);
-            ctx.stroke();
-            
-            // Net
-            ctx.strokeStyle = '#fff';
-            ctx.lineWidth = 2;
-            ctx.beginPath();
-            ctx.moveTo(pos.x - 5, pos.y - h/3);
-            ctx.lineTo(pos.x + 5, pos.y - h/6);
-            ctx.stroke();
-            
-            // Net posts
-            drawPixelRect(pos.x - 7, pos.y - h/3 - 5, 4, 8, '#666');
-            drawPixelRect(pos.x + 3, pos.y - h/6 - 5, 4, 8, '#666');
-            
-            // Label
-            ctx.fillStyle = '#fff';
-            ctx.font = 'bold 9px Inter';
-            ctx.textAlign = 'center';
-            ctx.fillText('🏓 PING PONG', pos.x, pos.y - h/4 + 5);
-            
-            // Draw ball if game is active
-            if (isPingPongActive) {
-                drawPingPongBall();
-            }
-        }
-        
-        function drawPingPongBall() {
-            const pos = toIso(pingPongBall.x, pingPongBall.y);
-            
-            // Ball shadow
-            drawShadow(pos.x, pos.y + 5, 4, 2, 0.3);
-            
-            // Ball
-            ctx.fillStyle = '#FFEB3B';
-            ctx.beginPath();
-            ctx.arc(pos.x, pos.y, 4, 0, Math.PI * 2);
-            ctx.fill();
-            
-            // Ball highlight
-            ctx.fillStyle = '#FFF';
-            ctx.beginPath();
-            ctx.arc(pos.x - 1, pos.y - 1, 1.5, 0, Math.PI * 2);
-            ctx.fill();
-        }
-        
-        // Trigger random ping pong game
-        function triggerPingPongGame() {
-            if (isStandupActive || isPingPongActive) return;
-            
-            // Pick two random agents
-            const availableAgents = agents.filter(a => a.status !== 'meeting' && a.status !== 'playing');
-            if (availableAgents.length < 2) return;
-            
-            const player1 = availableAgents[Math.floor(Math.random() * availableAgents.length)];
-            let player2 = availableAgents[Math.floor(Math.random() * availableAgents.length)];
-            while (player2.id === player1.id) {
-                player2 = availableAgents[Math.floor(Math.random() * availableAgents.length)];
-            }
-            
-            startPingPongGame(player1, player2);
-        }
-        
-        function startPingPongGame(player1, player2) {
-            isPingPongActive = true;
-            pingPongPlayers = [player1, player2];
-            pingPongScore = [0, 0];
-            
-            // Set players to playing status
-            player1.status = 'playing';
-            player2.status = 'playing';
-            player1.activity = 'Playing ping pong';
-            player2.activity = 'Playing ping pong';
-            
-            // Move players to table
-            player1.targetX = pingPongTable.x - 60;
-            player1.targetY = pingPongTable.y;
-            player2.targetX = pingPongTable.x + 60;
-            player2.targetY = pingPongTable.y;
-            
-            player1.facing = 1;
-            player2.facing = -1;
-            
-            isWalking[player1.id] = true;
-            isWalking[player2.id] = true;
-            
-            logActivity(`🏓 ${player1.name} and ${player2.name} started a ping pong game!`, 'pingpong');
-            
-            // Animate to table
-            animateAgentToPingPong(player1, 0);
-            animateAgentToPingPong(player2, 100);
-            
-            // Start game after arrival
-            setTimeout(() => {
-                isWalking[player1.id] = false;
-                isWalking[player2.id] = false;
-                startPingPongMatch();
-            }, 2000);
-        }
-        
-        function animateAgentToPingPong(agent, delay) {
-            setTimeout(() => {
-                const startX = agent.x, startY = agent.y;
-                const endX = agent.targetX, endY = agent.targetY;
-                const duration = 1500;
-                const startTime = Date.now();
-                
-                function step() {
-                    const elapsed = Date.now() - startTime;
-                    const progress = Math.min(elapsed / duration, 1);
-                    const ease = 1 - Math.pow(1 - progress, 3);
-                    
-                    agent.x = startX + (endX - startX) * ease;
-                    agent.y = startY + (endY - startY) * ease;
-                    
-                    if (progress < 1) {
-                        requestAnimationFrame(step);
-                    }
-                }
-                step();
-            }, delay);
-        }
-        
-        function startPingPongMatch() {
-            pingPongBall.x = pingPongTable.x;
-            pingPongBall.y = pingPongTable.y;
-            pingPongBall.vx = (Math.random() > 0.5 ? 1 : -1) * 2;
-            pingPongBall.vy = (Math.random() - 0.5) * 2;
-            
-            let rallyCount = 0;
-            const maxRallies = 5 + Math.floor(Math.random() * 10); // 5-15 rallies
-            
-            const gameInterval = setInterval(() => {
-                if (!isPingPongActive) {
-                    clearInterval(gameInterval);
-                    return;
-                }
-                
-                // Move ball
-                pingPongBall.x += pingPongBall.vx;
-                pingPongBall.y += pingPongBall.vy;
-                
-                // Bounce off table edges
-                if (Math.abs(pingPongBall.x - pingPongTable.x) > 40) {
-                    pingPongBall.vx *= -1;
-                    rallyCount++;
-                    
-                    // Show occasional comments
-                    if (rallyCount % 3 === 0) {
-                        const speaker = rallyCount % 2 === 0 ? pingPongPlayers[0] : pingPongPlayers[1];
-                        showPingPongComment(speaker);
-                    }
-                }
-                if (Math.abs(pingPongBall.y - pingPongTable.y) > 25) {
-                    pingPongBall.vy *= -1;
-                }
-                
-                // End game after max rallies
-                if (rallyCount >= maxRallies) {
-                    clearInterval(gameInterval);
-                    endPingPongGame();
-                }
-            }, 50);
-        }
-        
-        function showPingPongComment(agent) {
-            const topics = conversationTopics.pingpong;
-            const message = topics[Math.floor(Math.random() * topics.length)];
-            const pos = toIso(agent.x, agent.y);
-            
-            const bubble = document.createElement('div');
-            bubble.className = 'speech-bubble pingpong';
-            bubble.style.left = (pos.x + canvas.parentElement.offsetLeft) + 'px';
-            bubble.style.top = (pos.y + canvas.parentElement.offsetTop - 70) + 'px';
-            bubble.innerHTML = `<strong style="color: ${agent.color}">${agent.name}:</strong> "${message}"`;
-            
-            document.body.appendChild(bubble);
-            setTimeout(() => bubble.remove(), 2000);
-        }
-        
-        function endPingPongGame() {
-            const [player1, player2] = pingPongPlayers;
-            const winner = Math.random() > 0.5 ? player1 : player2;
-            
-            logActivity(`🏆 ${winner.name} won the ping pong match!`, 'pingpong');
-            
-            // Show winner celebration
-            const pos = toIso(winner.x, winner.y);
-            const bubble = document.createElement('div');
-            bubble.className = 'speech-bubble pingpong';
-            bubble.style.left = (pos.x + canvas.parentElement.offsetLeft) + 'px';
-            bubble.style.top = (pos.y + canvas.parentElement.offsetTop - 70) + 'px';
-            bubble.innerHTML = `🏆 <strong style="color: ${winner.color}">${winner.name}:</strong> "I win! Great game!"`;
-            document.body.appendChild(bubble);
-            setTimeout(() => bubble.remove(), 3000);
-            
-            // Return players to desks
-            setTimeout(() => {
-                returnPingPongPlayers();
-            }, 1500);
-        }
-        
-        function returnPingPongPlayers() {
-            pingPongPlayers.forEach(agent => {
-                const originalPos = agentPositions[agent.id];
-                if (originalPos) {
-                    agent.facing = originalPos.x > agent.x ? 1 : -1;
-                    isWalking[agent.id] = true;
-                    agent.status = 'working';
-                    agent.activity = 'Back to work';
-                    
-                    const startX = agent.x, startY = agent.y;
-                    const endX = originalPos.x, endY = originalPos.y;
-                    const duration = 1500;
-                    const startTime = Date.now();
-                    
-                    function step() {
-                        const elapsed = Date.now() - startTime;
-                        const progress = Math.min(elapsed / duration, 1);
-                        const ease = 1 - Math.pow(1 - progress, 3);
-                        
-                        agent.x = startX + (endX - startX) * ease;
-                        agent.y = startY + (endY - startY) * ease;
-                        
-                        if (progress < 1) {
-                            requestAnimationFrame(step);
-                        } else {
-                            isWalking[agent.id] = false;
-                            resetAgentActivity(agent);
-                        }
-                    }
-                    step();
-                }
-            });
-            
-            isPingPongActive = false;
-            pingPongPlayers = [];
-            updateStats();
-            updateAgentList();
-        }
-        
-        // ============================================
-        // WALKING COMPUTER HEAD AGENT SYSTEM
-        // ============================================
-        
-        // Animation frame counter for global sync
-        let globalFrame = 0;
-        
-        // 8-frame walking animation data
-        // Each frame: [leftLegY, rightLegY, bodyBounce, shadowScale]
-        const WALK_CYCLE = [
-            [0, -4, 0, 1.0],      // Frame 0: Left down, right up
-            [2, -2, -1, 0.95],    // Frame 1: Transition
-            [4, 0, -2, 0.9],      // Frame 2: Left up, right down
-            [2, 2, -1, 0.95],     // Frame 3: Transition
-            [0, 4, 0, 1.0],       // Frame 4: Left down, right up (opposite)
-            [-2, 2, -1, 0.95],    // Frame 5: Transition
-            [-4, 0, -2, 0.9],     // Frame 6: Left up, right down (opposite)
-            [-2, -2, -1, 0.95],   // Frame 7: Transition
-        ];
-        
-        // Department colors for screen glow
-        const DEPT_COLORS = {
-            'Executive': '#ff2a6d',
-            'Dev': '#22c55e',
-            'Design': '#a855f7',
-            'Content': '#00d4ff',
-            'Growth': '#f97316',
-            'Ops': '#fbbf24',
-            'Business Dev': '#22c55e'
-        };
-        
-        // All 20 agents with walking computer head design
-        const agents = [
-            // EXECUTIVE BALCONY (Top)
-            { id: 'ericf', name: 'EricF', role: 'Commander', x: 250, y: 80, color: '#ff2a6d', status: 'working', activity: 'Strategic oversight', desk: 'Command A', dept: 'Executive', facing: 1 },
-            { id: 'nexus', name: 'Nexus', role: 'Orchestrator', x: 450, y: 80, color: '#ff2a6d', status: 'working', activity: 'Monitoring systems', desk: 'Command B', dept: 'Executive', facing: 1 },
-            
-            // DEV TEAM - 3 Forge, 3 Code (Left)
-            { id: 'forge1', name: 'Forge-1', role: 'UI Lead', x: 80, y: 200, color: '#f97316', status: 'working', activity: 'Component library', desk: 'Forge-1', dept: 'Dev', facing: 1 },
-            { id: 'forge2', name: 'Forge-2', role: 'UI Dev', x: 160, y: 200, color: '#f97316', status: 'working', activity: 'Mobile responsive', desk: 'Forge-2', dept: 'Dev', facing: 1 },
-            { id: 'forge3', name: 'Forge-3', role: 'UI Dev', x: 240, y: 200, color: '#f97316', status: 'working', activity: 'Animations', desk: 'Forge-3', dept: 'Dev', facing: 1 },
-            { id: 'code1', name: 'Code-1', role: 'Backend Lead', x: 80, y: 280, color: '#22c55e', status: 'busy', activity: 'API endpoints', desk: 'Code-1', dept: 'Dev', facing: 1 },
-            { id: 'code2', name: 'Code-2', role: 'Backend Dev', x: 160, y: 280, color: '#22c55e', status: 'working', activity: 'Database', desk: 'Code-2', dept: 'Dev', facing: 1 },
-            { id: 'code3', name: 'Code-3', role: 'Backend Dev', x: 240, y: 280, color: '#22c55e', status: 'working', activity: 'Testing', desk: 'Code-3', dept: 'Dev', facing: 1 },
-            
-            // DESIGN TEAM (Middle)
-            { id: 'pixel1', name: 'Pixel-1', role: 'Design Lead', x: 360, y: 200, color: '#a855f7', status: 'working', activity: 'Avatar design', desk: 'Pixel-1', dept: 'Design', facing: 1 },
-            { id: 'pixel2', name: 'Pixel-2', role: 'Designer', x: 440, y: 200, color: '#a855f7', status: 'working', activity: 'Style guide', desk: 'Pixel-2', dept: 'Design', facing: 1 },
-            { id: 'pixel3', name: 'Pixel-3', role: 'Designer', x: 520, y: 200, color: '#a855f7', status: 'working', activity: 'Assets', desk: 'Pixel-3', dept: 'Design', facing: 1 },
-            
-            // CONTENT TEAM (Right)
-            { id: 'glasses', name: 'Glasses', role: 'Research Lead', x: 640, y: 200, color: '#00d4ff', status: 'resting', activity: 'Resting', desk: 'Research', dept: 'Content', facing: -1 },
-            { id: 'quill', name: 'Quill', role: 'Content Lead', x: 720, y: 200, color: '#fbbf24', status: 'resting', activity: 'Resting', desk: 'Content', dept: 'Content', facing: -1 },
-            
-            // GROWTH TEAM (Right middle)
-            { id: 'gary', name: 'Gary', role: 'Marketing Lead', x: 640, y: 280, color: '#f97316', status: 'resting', activity: 'Resting', desk: 'Marketing', dept: 'Growth', facing: -1 },
-            { id: 'larry', name: 'Larry', role: 'Social Lead', x: 720, y: 280, color: '#22c55e', status: 'resting', activity: 'Resting', desk: 'Social', dept: 'Growth', facing: -1 },
-            
-            // OPS TEAM (Bottom left)
-            { id: 'sentry', name: 'Sentry', role: 'DevOps Lead', x: 160, y: 380, color: '#00d4ff', status: 'working', activity: 'Monitoring', desk: 'Ops', dept: 'Ops', facing: 1 },
-            { id: 'audit', name: 'Audit', role: 'QA Lead', x: 280, y: 380, color: '#fbbf24', status: 'working', activity: 'Code review', desk: 'QA', dept: 'Ops', facing: 1 },
-            { id: 'cipher', name: 'Cipher', role: 'Security Lead', x: 400, y: 380, color: '#a855f7', status: 'working', activity: 'Security check', desk: 'Security', dept: 'Ops', facing: 1 },
-            
-            // BUSINESS DEV (Bottom right)
-            { id: 'dealflow', name: 'DealFlow', role: 'BD Lead', x: 580, y: 380, color: '#f97316', status: 'busy', activity: 'Finding leads', desk: 'BD', dept: 'Business Dev', facing: -1 },
-            { id: 'coldcall', name: 'ColdCall', role: 'Outreach Lead', x: 700, y: 380, color: '#22c55e', status: 'working', activity: 'Prep outreach', desk: 'Outreach', dept: 'Business Dev', facing: -1 }
-        ];
-
-        // Enhanced environment objects
-        const plants = [
-            { x: 30, y: 140, type: 'tree', size: 3 },
-            { x: 770, y: 140, type: 'tree', size: 3 },
-            { x: 30, y: 340, type: 'cactus', size: 2 },
-            { x: 770, y: 340, type: 'flower', size: 1 },
-            { x: 310, y: 140, type: 'bush', size: 2 },
-            { x: 610, y: 140, type: 'bush', size: 2 },
-            { x: 100, y: 140, type: 'fern', size: 2 },
-            { x: 700, y: 340, type: 'flower2', size: 1 }
-        ];
-        
-        // Desks for the office
-        const desks = [
-            // Executive desks
-            { x: 250, y: 100, width: 60, height: 40, color: '#ff2a6d', label: 'CMD' },
-            { x: 450, y: 100, width: 60, height: 40, color: '#ff2a6d', label: 'CMD' },
-            // Dev desks - left side
-            { x: 80, y: 220, width: 50, height: 35, color: '#22c55e', label: 'DEV' },
-            { x: 160, y: 220, width: 50, height: 35, color: '#22c55e', label: 'DEV' },
-            { x: 240, y: 220, width: 50, height: 35, color: '#22c55e', label: 'DEV' },
-            { x: 80, y: 300, width: 50, height: 35, color: '#22c55e', label: 'DEV' },
-            { x: 160, y: 300, width: 50, height: 35, color: '#22c55e', label: 'DEV' },
-            { x: 240, y: 300, width: 50, height: 35, color: '#22c55e', label: 'DEV' },
-            // Design desks - middle
-            { x: 360, y: 220, width: 50, height: 35, color: '#a855f7', label: 'DSN' },
-            { x: 440, y: 220, width: 50, height: 35, color: '#a855f7', label: 'DSN' },
-            { x: 520, y: 220, width: 50, height: 35, color: '#a855f7', label: 'DSN' },
-            // Content desks
-            { x: 640, y: 220, width: 50, height: 35, color: '#00d4ff', label: 'CNT' },
-            { x: 720, y: 220, width: 50, height: 35, color: '#fbbf24', label: 'CNT' },
-            // Growth desks
-            { x: 640, y: 300, width: 50, height: 35, color: '#f97316', label: 'GRW' },
-            { x: 720, y: 300, width: 50, height: 35, color: '#22c55e', label: 'GRW' },
-            // Ops desks
-            { x: 160, y: 400, width: 50, height: 35, color: '#fbbf24', label: 'OPS' },
-            { x: 280, y: 400, width: 50, height: 35, color: '#a855f7', label: 'OPS' },
-            { x: 400, y: 400, width: 50, height: 35, color: '#00d4ff', label: 'OPS' },
-            // Business dev desks
-            { x: 580, y: 400, width: 50, height: 35, color: '#f97316', label: 'BD' },
-            { x: 700, y: 400, width: 50, height: 35, color: '#22c55e', label: 'BD' }
-        ];
-        
-        // Lighting effects
-        const lights = [
-            { x: 200, y: 50, color: '#ff2a6d', intensity: 0.3, radius: 150 },
-            { x: 500, y: 50, color: '#ff2a6d', intensity: 0.3, radius: 150 },
-            { x: 150, y: 180, color: '#22c55e', intensity: 0.25, radius: 120 },
-            { x: 450, y: 180, color: '#a855f7', intensity: 0.25, radius: 120 },
-            { x: 680, y: 180, color: '#00d4ff', intensity: 0.25, radius: 120 },
-            { x: 320, y: 360, color: '#fbbf24', intensity: 0.2, radius: 100 }
-        ];
-
-        const meetingTable = { x: 400, y: 300, radius: 110 };
-        let isStandupActive = false;
-        let agentPositions = {};
-        let isWalking = {}; // Track which agents are walking
-
-        const canvas = document.getElementById('office-canvas');
-        const ctx = canvas.getContext('2d');
-        
-        // Disable anti-aliasing for pixel art look
-        ctx.imageSmoothingEnabled = false;
-        
-        function resizeCanvas() {
-            canvas.width = canvas.parentElement.clientWidth;
-            canvas.height = canvas.parentElement.clientHeight;
-        }
-        resizeCanvas();
-        window.addEventListener('resize', resizeCanvas);
-
-        // Isometric projection
-        function toIso(x, y) {
-            const scale = 0.7;
-            const isoX = (x - y * 0.5) * scale + canvas.width / 2 - 280;
-            const isoY = (y * 0.75) * scale + 80;
-            return { x: isoX, y: isoY };
-        }
-
-        // Draw pixel rectangle (Minecraft style)
-        function drawPixelRect(x, y, w, h, color) {
-            ctx.fillStyle = color;
-            ctx.fillRect(Math.floor(x), Math.floor(y), Math.floor(w), Math.floor(h));
-        }
-        
-        // Draw pixel outline
-        function drawPixelOutline(x, y, w, h, color, lineWidth = 1) {
-            ctx.strokeStyle = color;
-            ctx.lineWidth = lineWidth;
-            ctx.strokeRect(Math.floor(x), Math.floor(y), Math.floor(w), Math.floor(h));
-        }
-
-        // Draw dynamic shadow
-        function drawShadow(x, y, width, height, opacity, scale = 1) {
-            ctx.save();
-            ctx.globalAlpha = opacity;
-            ctx.fillStyle = '#000';
-            ctx.beginPath();
-            ctx.ellipse(x, y, width * scale, height * scale, 0, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.restore();
-        }
-
-        // Draw lighting effect
-        function drawLighting() {
-            lights.forEach(light => {
-                const pos = toIso(light.x, light.y);
-                const gradient = ctx.createRadialGradient(
-                    pos.x, pos.y, 0,
-                    pos.x, pos.y, light.radius
-                );
-                gradient.addColorStop(0, light.color + Math.floor(light.intensity * 255).toString(16).padStart(2, '0'));
-                gradient.addColorStop(1, 'transparent');
-                
-                ctx.fillStyle = gradient;
-                ctx.beginPath();
-                ctx.arc(pos.x, pos.y, light.radius, 0, Math.PI * 2);
-                ctx.fill();
-            });
-        }
-
-        // Draw enhanced environment
-        function drawEnvironment() {
-            // Draw floor tiles
-            for (let i = -5; i < 25; i++) {
-                for (let j = -5; j < 20; j++) {
-                    const pos = toIso(i * 50, j * 35);
-                    const isEven = (i + j) % 2 === 0;
-                    ctx.fillStyle = isEven ? 'rgba(0, 212, 255, 0.04)' : 'rgba(0, 212, 255, 0.02)';
-                    
-                    ctx.beginPath();
-                    ctx.moveTo(pos.x, pos.y);
-                    ctx.lineTo(pos.x + 35, pos.y + 17);
-                    ctx.lineTo(pos.x, pos.y + 35);
-                    ctx.lineTo(pos.x - 35, pos.y + 17);
-                    ctx.closePath();
-                    ctx.fill();
-                    
-                    ctx.strokeStyle = 'rgba(0, 212, 255, 0.06)';
-                    ctx.lineWidth = 1;
-                    ctx.stroke();
-                }
-            }
-        }
-
-        // Draw Minecraft-style plant
-        function drawMinecraftPlant(plant) {
-            const pos = toIso(plant.x, plant.y);
-            
-            if (plant.type === 'tree') {
-                // Trunk - blocky
-                drawPixelRect(pos.x - 5, pos.y - 25, 10, 25, '#5D4037');
-                drawPixelRect(pos.x - 5, pos.y - 25, 10, 5, '#795548'); // Highlight
-                // Leaves - multiple blocks
-                drawPixelRect(pos.x - 18, pos.y - 55, 36, 30, '#1B5E20');
-                drawPixelRect(pos.x - 14, pos.y - 65, 28, 10, '#2E7D32');
-                drawPixelRect(pos.x - 10, pos.y - 72, 20, 7, '#4CAF50');
-                // Leaf highlights
-                drawPixelRect(pos.x - 14, pos.y - 55, 8, 8, '#2E7D32');
-            } else if (plant.type === 'cactus') {
-                // Main body
-                drawPixelRect(pos.x - 6, pos.y - 35, 12, 35, '#2E7D32');
-                drawPixelRect(pos.x - 4, pos.y - 35, 4, 35, '#4CAF50'); // Highlight
-                // Left arm
-                drawPixelRect(pos.x - 14, pos.y - 22, 8, 6, '#2E7D32');
-                drawPixelRect(pos.x - 14, pos.y - 30, 6, 8, '#2E7D32');
-                // Right arm
-                drawPixelRect(pos.x + 6, pos.y - 28, 8, 6, '#2E7D32');
-                drawPixelRect(pos.x + 8, pos.y - 36, 6, 8, '#2E7D32');
-            } else if (plant.type === 'flower') {
-                // Stem
-                drawPixelRect(pos.x - 2, pos.y - 18, 4, 18, '#388E3C');
-                // Leaves
-                drawPixelRect(pos.x - 8, pos.y - 10, 6, 3, '#4CAF50');
-                drawPixelRect(pos.x + 2, pos.y - 14, 6, 3, '#4CAF50');
-                // Flower head - pixel art style
-                drawPixelRect(pos.x - 10, pos.y - 28, 20, 10, '#E91E63');
-                drawPixelRect(pos.x - 6, pos.y - 32, 12, 4, '#F48FB1');
-                drawPixelRect(pos.x - 4, pos.y - 36, 8, 4, '#F8BBD9');
-                drawPixelRect(pos.x - 3, pos.y - 26, 6, 6, '#FFEB3B'); // Center
-            } else if (plant.type === 'flower2') {
-                // Different flower
-                drawPixelRect(pos.x - 2, pos.y - 15, 4, 15, '#388E3C');
-                drawPixelRect(pos.x - 8, pos.y - 22, 16, 8, '#9C27B0');
-                drawPixelRect(pos.x - 4, pos.y - 26, 8, 4, '#E1BEE7');
-                drawPixelRect(pos.x - 2, pos.y - 20, 4, 4, '#FFEB3B');
-            } else if (plant.type === 'bush') {
-                // Bush clusters
-                drawPixelRect(pos.x - 16, pos.y - 18, 32, 18, '#1B5E20');
-                drawPixelRect(pos.x - 12, pos.y - 28, 24, 10, '#2E7D32');
-                drawPixelRect(pos.x - 8, pos.y - 34, 16, 6, '#4CAF50');
-                drawPixelRect(pos.x - 10, pos.y - 18, 6, 6, '#2E7D32');
-            } else if (plant.type === 'fern') {
-                // Fern fronds
-                drawPixelRect(pos.x - 2, pos.y - 20, 4, 20, '#5D4037');
-                drawPixelRect(pos.x - 12, pos.y - 18, 10, 4, '#2E7D32');
-                drawPixelRect(pos.x - 16, pos.y - 24, 12, 4, '#388E3C');
-                drawPixelRect(pos.x + 2, pos.y - 16, 10, 4, '#2E7D32');
-                drawPixelRect(pos.x + 4, pos.y - 22, 12, 4, '#388E3C');
-                drawPixelRect(pos.x - 10, pos.y - 28, 8, 4, '#4CAF50');
-                drawPixelRect(pos.x + 2, pos.y - 26, 8, 4, '#4CAF50');
-            }
-        }
-
-        // Draw enhanced desk
-        function drawDesk(desk) {
-            const pos = toIso(desk.x, desk.y);
-            const w = desk.width * 0.6;
-            const h = desk.height * 0.4;
-            
-            // Desk shadow
-            drawShadow(pos.x, pos.y + h/2 + 5, w/2, h/4, 0.4);
-            
-            // Desk top (isometric block)
-            ctx.fillStyle = 'rgba(30, 30, 46, 0.9)';
-            ctx.beginPath();
-            ctx.moveTo(pos.x, pos.y - h/2);
-            ctx.lineTo(pos.x + w/2, pos.y - h/4);
-            ctx.lineTo(pos.x, pos.y);
-            ctx.lineTo(pos.x - w/2, pos.y - h/4);
-            ctx.closePath();
-            ctx.fill();
-            
-            // Desk edge
-            ctx.fillStyle = desk.color + '40';
-            ctx.beginPath();
-            ctx.moveTo(pos.x - w/2, pos.y - h/4);
-            ctx.lineTo(pos.x, pos.y);
-            ctx.lineTo(pos.x, pos.y + h/3);
-            ctx.lineTo(pos.x - w/2, pos.y + h/12);
-            ctx.closePath();
-            ctx.fill();
-            
-            ctx.fillStyle = desk.color + '60';
-            ctx.beginPath();
-            ctx.moveTo(pos.x, pos.y);
-            ctx.lineTo(pos.x + w/2, pos.y - h/4);
-            ctx.lineTo(pos.x + w/2, pos.y + h/12);
-            ctx.lineTo(pos.x, pos.y + h/3);
-            ctx.closePath();
-            ctx.fill();
-            
-            // Desk outline
-            ctx.strokeStyle = desk.color;
-            ctx.lineWidth = 1;
-            ctx.beginPath();
-            ctx.moveTo(pos.x, pos.y - h/2);
-            ctx.lineTo(pos.x + w/2, pos.y - h/4);
-            ctx.lineTo(pos.x + w/2, pos.y + h/12);
-            ctx.lineTo(pos.x, pos.y + h/3);
-            ctx.lineTo(pos.x - w/2, pos.y + h/12);
-            ctx.lineTo(pos.x - w/2, pos.y - h/4);
-            ctx.closePath();
-            ctx.stroke();
-            
-            // Label
-            ctx.fillStyle = desk.color;
-            ctx.font = 'bold 8px JetBrains Mono';
-            ctx.textAlign = 'center';
-            ctx.fillText(desk.label, pos.x, pos.y - h/4);
-        }
-
-        // ============================================
-        // WALKING COMPUTER HEAD AGENT DRAWER
-        // ============================================
-        
-        function drawComputerHeadAgent(agent, frameOffset = 0) {
-            const pos = toIso(agent.x, agent.y);
-            const isMoving = isWalking[agent.id];
-            
-            // Calculate animation frame
-            let animFrame = 0;
-            if (isMoving) {
-                animFrame = Math.floor((globalFrame + frameOffset) / 4) % 8;
-            }
-            const cycle = WALK_CYCLE[animFrame];
-            const [leftLegOffset, rightLegOffset, bodyBounce, shadowScale] = cycle;
-            
-            // Dynamic shadow based on position and animation
-            const shadowOpacity = isMoving ? 0.3 + (shadowScale - 0.9) * 0.5 : 0.35;
-            drawShadow(pos.x, pos.y + 22, 14, 6, shadowOpacity, shadowScale);
-            
-            // Body position with bounce
-            const bodyY = pos.y + bodyBounce;
-            
-            // Direction multiplier (-1 for left, 1 for right)
-            const dir = agent.facing || 1;
-            
-            // ========================================
-            // LEGS (walking animation)
-            // ========================================
-            const legColor = '#374151'; // Dark gray
-            const legHighlight = '#4B5563';
-            
-            if (isMoving) {
-                // Left leg
-                const leftLegY = bodyY + 18 + leftLegOffset;
-                drawPixelRect(pos.x - 8 * dir, leftLegY, 6, 10, legColor);
-                drawPixelRect(pos.x - 8 * dir, leftLegY, 2, 10, legHighlight);
-                
-                // Right leg
-                const rightLegY = bodyY + 18 + rightLegOffset;
-                drawPixelRect(pos.x + 2 * dir, rightLegY, 6, 10, legColor);
-                drawPixelRect(pos.x + 2 * dir, rightLegY, 2, 10, legHighlight);
-            } else {
-                // Standing legs
-                drawPixelRect(pos.x - 8 * dir, bodyY + 18, 6, 8, legColor);
-                drawPixelRect(pos.x - 8 * dir, bodyY + 18, 2, 8, legHighlight);
-                drawPixelRect(pos.x + 2 * dir, bodyY + 18, 6, 8, legColor);
-                drawPixelRect(pos.x + 2 * dir, bodyY + 18, 2, 8, legHighlight);
-            }
-            
-            // ========================================
-            // BODY (small torso)
-            // ========================================
-            const bodyColor = '#1F2937';
-            drawPixelRect(pos.x - 10 * dir, bodyY + 8, 20, 12, bodyColor);
-            // Body highlight
-            drawPixelRect(pos.x - 10 * dir, bodyY + 8, 20, 3, '#374151');
-            // Department color accent on body
-            drawPixelRect(pos.x - 6 * dir, bodyY + 12, 12, 4, agent.color + '60');
-            
-            // ========================================
-            // COMPUTER MONITOR HEAD
-            // ========================================
-            const headY = bodyY - 14;
-            const headW = 28;
-            const headH = 22;
-            const headX = pos.x - headW/2;
-            
-            // Monitor bezel (dark)
-            drawPixelRect(headX, headY, headW, headH, '#111827');
-            
-            // Monitor glow effect (behind screen)
-            if (!isMoving || animFrame % 2 === 0) {
-                ctx.save();
-                ctx.shadowColor = agent.color;
-                ctx.shadowBlur = 15;
-                ctx.fillStyle = agent.color + '30';
-                ctx.fillRect(headX - 2, headY - 2, headW + 4, headH + 4);
-                ctx.restore();
-            }
-            
-            // Screen (glowing with department color)
-            const screenPadding = 3;
-            drawPixelRect(headX + screenPadding, headY + screenPadding, 
-                         headW - screenPadding*2, headH - screenPadding*2, 
-                         agent.color + '20');
-            
-            // Screen inner glow
-            const screenGradient = ctx.createLinearGradient(
-                headX + screenPadding, headY + screenPadding,
-                headX + screenPadding, headY + headH - screenPadding
-            );
-            screenGradient.addColorStop(0, agent.color + '40');
-            screenGradient.addColorStop(1, agent.color + '10');
-            ctx.fillStyle = screenGradient;
-            ctx.fillRect(headX + screenPadding, headY + screenPadding, 
-                        headW - screenPadding*2, headH - screenPadding*2);
-            
-            // ========================================
-            // PIXEL ART FACE
-            // ========================================
-            const faceX = headX + screenPadding + 2;
-            const faceY = headY + screenPadding + 3;
-            const faceColor = '#FFFFFF';
-            const faceGlow = agent.color;
-            
-            // Eyes (2x2 pixels each)
-            const eyeY = faceY + 3;
-            const leftEyeX = faceX + (dir === 1 ? 3 : 12);
-            const rightEyeX = faceX + (dir === 1 ? 12 : 3);
-            
-            // Eye glow
-            ctx.fillStyle = faceGlow;
-            ctx.globalAlpha = 0.6;
-            drawPixelRect(leftEyeX - 1, eyeY - 1, 6, 6, faceGlow);
-            drawPixelRect(rightEyeX - 1, eyeY - 1, 6, 6, faceGlow);
-            ctx.globalAlpha = 1;
-            
-            // Eyes
-            drawPixelRect(leftEyeX, eyeY, 4, 4, faceColor);
-            drawPixelRect(rightEyeX, eyeY, 4, 4, faceColor);
-            
-            // Pupils (based on status)
-            let pupilColor = '#000';
-            if (agent.status === 'working') pupilColor = '#22c55e';
-            else if (agent.status === 'busy') pupilColor = '#fbbf24';
-            else if (agent.status === 'meeting') pupilColor = '#ff2a6d';
-            else if (agent.status === 'playing') pupilColor = '#fbbf24';
-            else pupilColor = '#71717a';
-            
-            drawPixelRect(leftEyeX + 1, eyeY + 1, 2, 2, pupilColor);
-            drawPixelRect(rightEyeX + 1, eyeY + 1, 2, 2, pupilColor);
-            
-            // Mouth (changes based on status)
-            const mouthY = faceY + 12;
-            const mouthX = faceX + 6;
-            
-            if (agent.status === 'meeting') {
-                // Open mouth (talking)
-                drawPixelRect(mouthX, mouthY, 8, 4, '#000');
-                drawPixelRect(mouthX + 2, mouthY + 1, 4, 2, '#ff6b6b');
-            } else if (agent.status === 'playing') {
-                // Big smile (having fun)
-                drawPixelRect(mouthX + 1, mouthY + 1, 6, 3, '#000');
-                drawPixelRect(mouthX, mouthY, 2, 2, '#000');
-                drawPixelRect(mouthX + 6, mouthY, 2, 2, '#000');
-                drawPixelRect(mouthX + 2, mouthY + 2, 4, 2, '#FFEB3B'); // Teeth
-            } else if (agent.status === 'working') {
-                // Happy smile
-                drawPixelRect(mouthX + 1, mouthY + 1, 6, 2, '#000');
-                drawPixelRect(mouthX, mouthY, 2, 2, '#000');
-                drawPixelRect(mouthX + 6, mouthY, 2, 2, '#000');
-            } else {
-                // Neutral
-                drawPixelRect(mouthX + 2, mouthY + 1, 4, 2, '#000');
-            }
-            
-            // Monitor outline
-            drawPixelOutline(headX, headY, headW, headH, agent.color, 2);
-            
-            // Monitor stand/neck
-            drawPixelRect(pos.x - 3, bodyY - 2, 6, 4, '#374151');
-            
-            // ========================================
-            // STATUS INDICATOR (floating pixel)
-            // ========================================
-            const statusColor = agent.status === 'working' ? '#22c55e' : 
-                               agent.status === 'busy' ? '#fbbf24' : 
-                               agent.status === 'meeting' ? '#ff2a6d' : 
-                               agent.status === 'playing' ? '#fbbf24' : '#71717a';
-            
-            // Floating indicator above head
-            const indicatorY = headY - 8 + Math.sin(globalFrame * 0.1) * 2;
-            
-            // Glow
-            ctx.save();
-            ctx.shadowColor = statusColor;
-            ctx.shadowBlur = 8;
-            drawPixelRect(pos.x - 3, indicatorY, 6, 6, statusColor);
-            ctx.restore();
-            
-            // ========================================
-            // NAME LABEL
-            // ========================================
-            ctx.fillStyle = '#fafafa';
-            ctx.font = 'bold 10px Inter';
-            ctx.textAlign = 'center';
-            ctx.fillText(agent.name, pos.x, bodyY + 38);
-            
-            // Activity
-            ctx.fillStyle = '#a1a1aa';
-            ctx.font = '8px Inter';
-            ctx.fillText(agent.activity.substring(0, 18), pos.x, bodyY + 48);
-        }
-
-        // Draw meeting table
-        function drawMeetingTableObj() {
-            const pos = toIso(meetingTable.x, meetingTable.y);
-            
-            // Table shadow
-            drawShadow(pos.x, pos.y + 20, 70, 35, 0.5);
-            
-            // Table base (Minecraft block style)
-            ctx.fillStyle = 'rgba(255, 42, 109, 0.15)';
-            ctx.strokeStyle = '#ff2a6d';
-            ctx.lineWidth = 2;
-            
-            // Top ellipse
-            ctx.beginPath();
-            ctx.ellipse(pos.x, pos.y, 70, 35, 0, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.stroke();
-            
-            // Inner glow
-            const tableGradient = ctx.createRadialGradient(
-                pos.x, pos.y, 0,
-                pos.x, pos.y, 50
-            );
-            tableGradient.addColorStop(0, 'rgba(255, 42, 109, 0.3)');
-            tableGradient.addColorStop(1, 'transparent');
-            ctx.fillStyle = tableGradient;
-            ctx.beginPath();
-            ctx.ellipse(pos.x, pos.y, 50, 25, 0, 0, Math.PI * 2);
-            ctx.fill();
-            
-            // Label
-            ctx.fillStyle = '#ff2a6d';
-            ctx.font = 'bold 11px Inter';
-            ctx.textAlign = 'center';
-            ctx.fillText('MEETING TABLE', pos.x, pos.y + 4);
-        }
-
-        // Draw command balcony
-        function drawCommandBalcony() {
-            const pos1 = toIso(200, 60);
-            const pos2 = toIso(500, 60);
-            
-            // Balcony floor
-            ctx.fillStyle = 'rgba(255, 42, 109, 0.1)';
-            ctx.strokeStyle = '#ff2a6d';
-            ctx.lineWidth = 2;
-            
-            ctx.beginPath();
-            ctx.moveTo(pos1.x - 90, pos1.y);
-            ctx.lineTo(pos2.x + 90, pos2.y);
-            ctx.lineTo(pos2.x + 90, pos2.y + 25);
-            ctx.lineTo(pos1.x - 90, pos1.y + 25);
-            ctx.closePath();
-            ctx.fill();
-            ctx.stroke();
-            
-            // Railing
-            ctx.strokeStyle = '#ff2a6d';
-            ctx.lineWidth = 1;
-            for (let i = 0; i < 8; i++) {
-                const x = pos1.x - 80 + i * 50;
-                ctx.beginPath();
-                ctx.moveTo(x, pos1.y);
-                ctx.lineTo(x, pos1.y + 20);
-                ctx.stroke();
-            }
-            
-            // Label
-            ctx.fillStyle = '#ff2a6d';
-            ctx.font = 'bold 11px Inter';
-            ctx.textAlign = 'center';
-            const centerX = (pos1.x + pos2.x) / 2;
-            ctx.fillText('COMMAND CENTER', centerX, pos1.y + 15);
-        }
-
-        // Main draw function
-        function drawOffice() {
-            // Clear
-            ctx.fillStyle = '#0a0a0f';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
-            // Draw environment
-            drawEnvironment();
-            
-            // Draw lighting effects (subtle)
-            drawLighting();
-            
-            // Draw plants (behind everything)
-            plants.forEach(plant => drawMinecraftPlant(plant));
-            
-            // Draw command balcony
-            drawCommandBalcony();
-            
-            // Draw ping pong table
-            drawPingPongTable();
-            
-            // Draw meeting table
-            drawMeetingTableObj();
-            
-            // Draw desks (behind agents)
-            desks.forEach(desk => drawDesk(desk));
-            
-            // Draw agents (walking computer heads!)
-            agents.forEach((agent, index) => {
-                drawComputerHeadAgent(agent, index * 2);
-            });
-            
-            // Draw meeting connections if active
-            if (isStandupActive) {
-                drawMeetingConnections();
-            }
-            
-            // Increment global frame
-            globalFrame++;
-        }
-
-        // Draw meeting connections
-        function drawMeetingConnections() {
-            const tablePos = toIso(meetingTable.x, meetingTable.y);
-            
-            agents.filter(a => a.status === 'meeting').forEach(agent => {
-                const agentPos = toIso(agent.x, agent.y);
-                
-                ctx.strokeStyle = 'rgba(255, 42, 109, 0.3)';
-                ctx.lineWidth = 1;
-                ctx.setLineDash([4, 4]);
-                ctx.beginPath();
-                ctx.moveTo(agentPos.x, agentPos.y);
-                ctx.lineTo(tablePos.x, tablePos.y);
-                ctx.stroke();
-                ctx.setLineDash([]);
-            });
-        }
-
-        // Animation loop
-        function animate() {
-            drawOffice();
-            requestAnimationFrame(animate);
-        }
-        animate();
-
-        // ============================================
-        // STANDUP FUNCTIONALITY
-        // ============================================
-        
-        const discussionTopics = [
-            "Reviewing my past 24h work...",
-            "I completed 3 tasks yesterday with good quality",
-            "My quality score improved after the last standup",
-            "I have an idea to optimize our workflow",
-            "I should collaborate with Pixel on the design",
-            "I learned something that could help Code team",
-            "My API response times improved by 20%",
-            "I found a pattern we could automate",
-            "I should document this for future reference",
-            "My work quality is trending upward",
-            "I completed the lead research ahead of schedule",
-            "I have feedback on the new dashboard UX"
-        ];
-
-        function startStandup() {
-            if (isStandupActive) return;
-            
-            isStandupActive = true;
-            document.getElementById('standup-btn').disabled = true;
-            document.getElementById('standup-btn').textContent = '🎤 Meeting in Progress...';
-            document.getElementById('standup-btn').classList.remove('pulse');
-            document.getElementById('meeting-status').classList.add('active');
-            
-            logActivity('🎤 STANDUP CALLED! All 20 agents gathering for 24h review...');
-            
-            // Move agents to meeting table with walking animation
-            agents.forEach((agent, index) => {
-                agentPositions[agent.id] = { x: agent.x, y: agent.y };
-                
-                const angle = (Math.PI * 2 / agents.length) * index;
-                const radius = 90;
-                
-                agent.targetX = meetingTable.x + Math.cos(angle) * radius;
-                agent.targetY = meetingTable.y + Math.sin(angle) * radius;
-                
-                // Determine facing direction based on target
-                agent.facing = agent.targetX > agent.x ? 1 : -1;
-                
-                // Start walking
-                isWalking[agent.id] = true;
-                agent.status = 'meeting';
-                agent.activity = 'Walking to meeting';
-                
-                animateAgentToMeeting(agent, index * 100);
-            });
-            
-            updateStats();
-            updateAgentList();
-            
-            // Show speech bubbles after arrival
-            setTimeout(() => {
-                agents.forEach((agent, index) => {
-                    setTimeout(() => showSpeechBubble(agent), index * 400);
-                });
-            }, 2000);
-            
-            // End after 30 seconds (demo mode)
-            setTimeout(() => endStandup(), 30000);
-        }
-
-        function animateAgentToMeeting(agent, delay) {
-            setTimeout(() => {
-                const startX = agent.x, startY = agent.y;
-                const endX = agent.targetX, endY = agent.targetY;
-                const duration = 1500;
-                const startTime = Date.now();
-                
-                function step() {
-                    const elapsed = Date.now() - startTime;
-                    const progress = Math.min(elapsed / duration, 1);
-                    const ease = 1 - Math.pow(1 - progress, 3);
-                    
-                    agent.x = startX + (endX - startX) * ease;
-                    agent.y = startY + (endY - startY) * ease;
-                    
-                    if (progress < 1) {
-                        requestAnimationFrame(step);
-                    } else {
-                        // Arrived - stop walking
-                        isWalking[agent.id] = false;
-                        agent.activity = 'Reviewing 24h work';
-                    }
-                }
-                step();
-            }, delay);
-        }
-
-        function showSpeechBubble(agent) {
-            const topic = discussionTopics[Math.floor(Math.random() * discussionTopics.length)];
-            const pos = toIso(agent.x, agent.y);
-            
-            const bubble = document.createElement('div');
-            bubble.className = 'speech-bubble';
-            bubble.style.left = (pos.x + canvas.parentElement.offsetLeft + 20) + 'px';
-            bubble.style.top = (pos.y + canvas.parentElement.offsetTop - 70) + 'px';
-            bubble.innerHTML = `<strong style="color: ${agent.color}">${agent.name}:</strong> ${topic}`;
-            
-            document.body.appendChild(bubble);
-            logActivity(`💬 ${agent.name}: "${topic.substring(0, 30)}..."`);
-            
-            setTimeout(() => bubble.remove(), 5000);
-        }
-
-        function endStandup() {
-            logActivity('✅ Standup complete! Agents returning to desks...');
-            
-            // Generate meeting minutes
-            generateMeetingMinutes();
-            
-            // Return agents to desks
-            agents.forEach((agent, index) => {
-                const originalPos = agentPositions[agent.id];
-                if (originalPos) {
-                    // Determine facing direction
-                    agent.facing = originalPos.x > agent.x ? 1 : -1;
-                    
-                    // Start walking back
-                    isWalking[agent.id] = true;
-                    agent.status = 'working';
-                    agent.activity = 'Returning to desk';
-                    
-                    animateAgentReturn(agent, originalPos, index * 50);
-                }
-            });
-            
-            isStandupActive = false;
-            document.getElementById('standup-btn').disabled = false;
-            document.getElementById('standup-btn').textContent = '🎤 Call Standup';
-            document.getElementById('standup-btn').classList.add('pulse');
-            document.getElementById('meeting-status').classList.remove('active');
-            
-            updateStats();
-            updateAgentList();
-        }
-        
-        function generateMeetingMinutes() {
+        // Generate timestamp
+        function getRelativeTime(minutesAgo) {
             const now = new Date();
-            const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-            const dateStr = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-            
-            // Generate random insights based on current activities
-            const insights = [
-                "DealFlow reports 26 leads found, 4 more needed to reach daily quota.",
-                "Pixel-2 completed walking computer head animations ahead of schedule.",
-                "Code fixed API 404 errors - all endpoints now functional.",
-                "Forge delivered agent performance dashboard with real-time metrics.",
-                "Glasses and Scout completed new task assignments - no more resting agents.",
-                "Audit verified all 4 critical tasks passed with 85-92/100 scores.",
-                "Sentry installed PyTorch - Pixel can now generate AI images.",
-                "Nexus standardized all dashboard headers and added Logs tab."
-            ];
-            
-            const improvements = [
-                "Continue daily 30 leads quota - focus on DeFi/RWA priority.",
-                "Deploy Code API fixes to production before Feb 18 deadline.",
-                "Generate agent avatars using newly installed PyTorch.",
-                "Monitor competitor intelligence - Maya IPO could be opportunity.",
-                "Use lead scoring algorithm to prioritize outreach.",
-                "Schedule next standup for tomorrow 9 AM to track progress."
-            ];
-            
-            // Pick 3 random insights and 2 improvements
-            const selectedInsights = insights.sort(() => 0.5 - Math.random()).slice(0, 3);
-            const selectedImprovements = improvements.sort(() => 0.5 - Math.random()).slice(0, 2);
-            
-            const minutesHTML = `
-                <div style="margin-bottom: 1rem;">
-                    <strong style="color: var(--accent-cyan);">🕐 ${timeStr} - Standup Complete</strong>
-                </div>
-                
-                <div style="margin-bottom: 1rem;">
-                    <strong>📊 Key Updates:</strong>
-                    <ul style="margin: 0.5rem 0; padding-left: 1.2rem;">
-                        ${selectedInsights.map(i => `<li style="margin-bottom: 0.3rem;">${i}</li>`).join('')}
-                    </ul>
-                </div>
-                
-                <div style="margin-bottom: 1rem;">
-                    <strong>💡 Improvements to Focus On:</strong>
-                    <ul style="margin: 0.5rem 0; padding-left: 1.2rem;">
-                        ${selectedImprovements.map(i => `<li style="margin-bottom: 0.3rem;">${i}</li>`).join('')}
-                    </ul>
-                </div>
-                
-                <div style="border-top: 1px solid var(--border); padding-top: 0.5rem; margin-top: 0.5rem; font-size: 0.75rem; color: var(--text-muted);">
-                    📝 Minutes auto-generated by Nexus | Next standup: Tomorrow 9:00 AM
-                </div>
-            `;
-            
-            // Update the Minutes tab display
-            document.getElementById('meeting-minutes-display').innerHTML = minutesHTML;
-            
-            // Add to historical minutes
-            addMeetingMinute({
-                time: timeStr,
-                date: dateStr,
-                summary: `${selectedInsights.length} updates discussed, ${selectedImprovements.length} action items identified.`
+            const time = new Date(now - minutesAgo * 60000);
+            return time.toLocaleTimeString('en-US', { 
+                hour: '2-digit', 
+                minute: '2-digit',
+                hour12: false 
             });
-            
-            // Show meeting info sections
-            document.getElementById('meeting-info').style.display = 'block';
-            document.getElementById('meeting-conclusions').style.display = 'block';
-            document.getElementById('next-standup-topics').style.display = 'block';
-            
-            // Generate conclusions for Meeting tab
-            const conclusionsHTML = `
-                <ul style="margin: 0; padding-left: 1.2rem;">
-                    <li style="margin-bottom: 0.5rem;">✅ <strong>Lead Generation:</strong> 26/30 leads found (87% complete) - 4 more needed</li>
-                    <li style="margin-bottom: 0.5rem;">✅ <strong>System Status:</strong> All 20 agents operational, 13 heartbeats active</li>
-                    <li style="margin-bottom: 0.5rem;">✅ <strong>Deliverables:</strong> 18 tasks completed today (100% of target)</li>
-                    <li style="margin-bottom: 0.5rem;">⚠️ <strong>Critical:</strong> Code API 404 errors need deployment before noon deadline</li>
-                    <li>💡 <strong>Opportunity:</strong> Maya IPO identified - schedule outreach call</li>
-                </ul>
-            `;
-            document.getElementById('conclusions-content').innerHTML = conclusionsHTML;
-            
-            // Generate next standup topics
-            const nextTopicsHTML = `
-                <ul style="margin: 0; padding-left: 1.2rem;">
-                    <li style="margin-bottom: 0.5rem;">📊 <strong>Lead Quota:</strong> Did we reach 30 leads/day?</li>
-                    <li style="margin-bottom: 0.5rem;">🔧 <strong>Code API:</strong> Are 404 errors fixed and deployed?</li>
-                    <li style="margin-bottom: 0.5rem;">🎨 <strong>Pixel:</strong> Agent avatar generation progress with PyTorch</li>
-                    <li style="margin-bottom: 0.5rem;">📈 <strong>New Tasks:</strong> Progress on 10 improvement tasks assigned</li>
-                    <li>🤝 <strong>Maya IPO:</strong> Outreach call scheduled and executed?</li>
-                </ul>
-            `;
-            document.getElementById('next-topics-content').innerHTML = nextTopicsHTML;
-            
-            // Generate Nexus peer review
-            generateNexusPeerReview(selectedInsights, selectedImprovements);
-            
-            // Also log to activity feed
-            logActivity(`📝 Meeting minutes generated for ${timeStr} standup`);
         }
         
-        // Store improvement tasks for adding to pending
-        let pendingImprovementTasks = [];
-        
-        function generateNexusPeerReview(insights, improvements) {
-            // Analyze meeting for improvement opportunities
-            const reviewPoints = [
-                "📈 DealFlow lead generation is 87% complete - need 4 more leads to hit quota",
-                "🎨 Pixel team delivered visual updates ahead of schedule - consider giving more design autonomy",
-                "🔧 Code API issues resolved quickly - good response time on critical bugs",
-                "📊 New dashboards (Performance, Logs) improving visibility - continue this trend",
-                "🤝 Scout's competitor monitoring identified Maya IPO opportunity - act fast",
-                "⚡ System running smoothly with 13 heartbeats - no major issues detected"
-            ];
+        // Generate random activity
+        function generateActivity(index) {
+            const typeInfo = activityTypes[Math.floor(Math.random() * activityTypes.length)];
+            const agentObj = agents[Math.floor(Math.random() * agents.length)];
+            const templates = activityTemplates[typeInfo.type];
+            const action = templates[Math.floor(Math.random() * templates.length)];
+            const minutesAgo = index * 3 + Math.floor(Math.random() * 3);
             
-            // Generate auto-tasks based on review
-            pendingImprovementTasks = [
-                { id: 'AUTO-001', title: 'Follow up on 4 remaining leads for daily quota', assignee: 'DealFlow', priority: 'P0' },
-                { id: 'AUTO-002', title: 'Schedule Maya IPO opportunity call', assignee: 'ColdCall', priority: 'P1' },
-                { id: 'AUTO-003', title: 'Generate agent avatars with PyTorch', assignee: 'Pixel', priority: 'P2' },
-                { id: 'AUTO-004', title: 'Deploy Code API fixes to production', assignee: 'Code', priority: 'P0' },
-                { id: 'AUTO-005', title: 'Create weekly performance review template', assignee: 'Glasses', priority: 'P2' }
-            ];
-            
-            const reviewHTML = `
-                <p style="color: var(--text-muted); margin-bottom: 0.5rem;">
-                    <strong>Nexus Analysis:</strong> Reviewed ${insights.length} updates and identified ${improvements.length} improvement areas.
-                </p>
-                <ul style="color: var(--text-secondary); padding-left: 1.2rem; margin-bottom: 1rem;">
-                    ${reviewPoints.slice(0, 4).map(point => `<li style="margin-bottom: 0.3rem;">${point}</li>`).join('')}
-                </ul>
-                <p style="color: var(--accent-cyan); font-size: 0.75rem;">
-                    💡 ${pendingImprovementTasks.length} auto-generated tasks ready to add to pending
-                </p>
-            `;
-            
-            document.getElementById('nexus-peer-review').innerHTML = reviewHTML;
-            
-            // Show auto-generated tasks
-            const tasksHTML = pendingImprovementTasks.map(task => `
-                <div style="background: rgba(255,255,255,0.05); padding: 0.5rem; border-radius: 4px; margin-bottom: 0.5rem; border-left: 3px solid ${task.priority === 'P0' ? 'var(--accent-pink)' : 'var(--accent-cyan)'};">
-                    <div style="font-weight: 600; color: var(--text-primary);">${task.title}</div>
-                    <div style="font-size: 0.75rem; color: var(--text-muted);">👤 ${task.assignee} | ${task.priority}</div>
-                </div>
-            `).join('');
-            
-            document.getElementById('auto-generated-tasks').innerHTML = tasksHTML;
+            return {
+                type: typeInfo.type,
+                icon: typeInfo.icon,
+                typeLabel: typeInfo.label,
+                agent: agentObj.name,
+                agentType: agentObj.type,
+                action: action,
+                timestamp: getRelativeTime(minutesAgo)
+            };
         }
         
-        async function addImprovementTasks() {
-            if (pendingImprovementTasks.length === 0) {
-                alert('No improvement tasks to add. Complete a standup first!');
+        // Render activity feed
+        function renderActivityFeed() {
+            const feed = document.getElementById('activityFeed');
+            feed.innerHTML = '';
+            
+            // Generate 10 latest activities
+            for (let i = 0; i < 10; i++) {
+                const activity = generateActivity(i);
+                const item = document.createElement('div');
+                item.className = `activity-item ${activity.type}`;
+                item.innerHTML = `
+                    <div class="activity-icon">${activity.icon}</div>
+                    <div class="activity-content">
+                        <div class="activity-text">
+                            <span class="activity-agent">${activity.agent}</span> ${activity.action}
+                        </div>
+                        <div class="activity-meta">
+                            <span class="activity-type-badge">${activity.typeLabel}</span>
+                            <span>${activity.timestamp}</span>
+                        </div>
+                    </div>
+                `;
+                feed.appendChild(item);
+            }
+        }
+        
+        // Refresh activity feed
+        function refreshActivity() {
+            const feed = document.getElementById('activityFeed');
+            feed.style.opacity = '0.5';
+            setTimeout(() => {
+                renderActivityFeed();
+                feed.style.opacity = '1';
+                updateLastUpdated();
+            }, 300);
+        }
+        
+        // Update last updated timestamp
+        function updateLastUpdated() {
+            const now = new Date();
+            const formatted = now.toLocaleString('en-US', {
+                month: 'short',
+                day: 'numeric',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: true
+            });
+            document.getElementById('lastUpdated').textContent = `Last updated: ${formatted}`;
+        }
+        
+        // Render all 22 agents in the full grid
+        function renderAllAgents() {
+            const grid = document.getElementById('allAgentsGrid');
+            if (!grid) return;
+            
+            grid.innerHTML = '';
+            
+            agents.forEach(agent => {
+                const isHuman = agent.type === 'human';
+                const avatarClass = isHuman ? 'agent-avatar human' : 'agent-avatar';
+                const badgeClass = isHuman ? 'agent-status-badge human' : 'agent-status-badge';
+                
+                const card = document.createElement('div');
+                card.className = 'agent-card';
+                card.innerHTML = `
+                    <div class="agent-header">
+                        <div class="${avatarClass}" style="background: linear-gradient(135deg, ${agent.color}, ${agent.color}88);">${agent.sprite}</div>
+                        <div class="agent-meta">
+                            <div class="agent-name">${agent.name}</div>
+                            <div class="agent-role">${agent.role}</div>
+                        </div>
+                        <span class="${badgeClass}">${agent.label}</span>
+                    </div>
+                    <div class="agent-tasks">
+                        <div class="task-item">Active and ready</div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            renderActivityFeed();
+            renderAllAgents();
+            updateLastUpdated();
+        });
+        
+        // Auto-refresh every 30 minutes (30 * 60 * 1000 ms)
+        setInterval(() => {
+            refreshActivity();
+            console.log('[Command Center] Auto-refreshed at', new Date().toISOString());
+        }, 30 * 60 * 1000);
+        
+        // Tab switching (placeholder for future implementation)
+        function showTab(tab) {
+            document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+            event.target.closest('.nav-tab').classList.add('active');
+            console.log('Switching to tab:', tab);
+        }
+        
+        // Run Standup - Sync with PENDING_TASKS.md
+        async function runStandup() {
+            const btn = document.querySelector('button[onclick="runStandup()"]');
+            btn.textContent = '📢 Running...';
+            btn.disabled = true;
+            
+            try {
+                // Fetch tasks from API
+                const response = await fetch('/api/tasks');
+                const data = await response.json();
+                
+                if (data.success && data.tasks) {
+                    // Update task counts
+                    const p0Tasks = data.tasks.filter(t => t.priority === 'P0');
+                    const inProgress = data.tasks.filter(t => t.status === 'in_progress');
+                    const completed = data.tasks.filter(t => t.status === 'completed');
+                    
+                    document.getElementById('mcTotalTasks').textContent = data.tasks.length;
+                    document.getElementById('mcP0Tasks').textContent = p0Tasks.length;
+                    document.getElementById('mcInProgressTasks').textContent = inProgress.length;
+                    document.getElementById('mcCompletedTasks').textContent = completed.length;
+                    
+                    // Render task list
+                    renderTaskList(data.tasks.slice(0, 10));
+                    
+                    // Add standup activity
+                    addActivity('📢', 'Nexus', 'ran daily standup sync', 'system');
+                    
+                    alert(`✅ Standup Complete!\n\nTotal: ${data.tasks.length} tasks\nP0 Critical: ${p0Tasks.length}\nIn Progress: ${inProgress.length}\nCompleted: ${completed.length}`);
+                }
+            } catch (error) {
+                console.error('Standup failed:', error);
+                alert('❌ Standup failed. Using local data.');
+                
+                // Fallback to local data
+                document.getElementById('mcTotalTasks').textContent = '60';
+                document.getElementById('mcP0Tasks').textContent = '8';
+                document.getElementById('mcInProgressTasks').textContent = '2';
+                document.getElementById('mcCompletedTasks').textContent = '16';
+            }
+            
+            btn.textContent = '📢 Standup';
+            btn.disabled = false;
+        }
+        
+        // Refresh Tasks - Sync with PENDING_TASKS.md
+        async function refreshTasks() {
+            const btn = document.querySelector('button[onclick="refreshTasks()"]');
+            const originalText = btn.textContent;
+            btn.textContent = '🔄 Syncing...';
+            btn.disabled = true;
+            
+            try {
+                // Try to fetch from API first
+                const response = await fetch('/api/tasks');
+                const data = await response.json();
+                
+                if (data.success && data.tasks) {
+                    updateTaskDisplay(data.tasks);
+                    addActivity('📋', 'System', 'synced tasks from PENDING_TASKS.md', 'system');
+                } else {
+                    throw new Error('Invalid API response');
+                }
+            } catch (error) {
+                console.error('Task sync failed:', error);
+                // Use fallback data
+                const fallbackTasks = [
+                    { id: 'TASK-070', title: 'Fix Complete Deployment Failure', priority: 'P0', status: 'in_progress', progress: 75 },
+                    { id: 'TASK-001', title: 'Fix Code API 404 Errors', priority: 'P0', status: 'in_progress', progress: 60 },
+                    { id: 'TASK-066', title: 'Fix API Endpoints - All Dashboard Data', priority: 'P0', status: 'in_progress', progress: 50 },
+                    { id: 'TASK-067', title: 'Unified Theme All Pages', priority: 'P1', status: 'in_progress', progress: 85 },
+                    { id: 'TASK-068', title: 'Agent Work Cards Enhancement', priority: 'P1', status: 'pending', progress: 35 }
+                ];
+                updateTaskDisplay(fallbackTasks);
+            }
+            
+            btn.textContent = originalText;
+            btn.disabled = false;
+        }
+        
+        // Update task display
+        function updateTaskDisplay(tasks) {
+            const p0Tasks = tasks.filter(t => t.priority === 'P0' || t.priority === 'p0');
+            const inProgress = tasks.filter(t => t.status === 'in_progress');
+            const completed = tasks.filter(t => t.status === 'completed');
+            
+            document.getElementById('mcTotalTasks').textContent = tasks.length;
+            document.getElementById('mcP0Tasks').textContent = p0Tasks.length;
+            document.getElementById('mcInProgressTasks').textContent = inProgress.length;
+            document.getElementById('mcCompletedTasks').textContent = completed.length;
+            
+            renderTaskList(tasks.slice(0, 10));
+        }
+        
+        // Render task list
+        function renderTaskList(tasks) {
+            const list = document.getElementById('mcTaskList');
+            if (!tasks || tasks.length === 0) {
+                list.innerHTML = '<p style="color: var(--text-secondary); text-align: center; padding: 1rem;">No tasks found</p>';
                 return;
             }
             
-            const btnEl = document.getElementById('add-tasks-btn');
-            const statusEl = document.getElementById('add-tasks-status');
-            
-            // Disable button during API call
-            if (btnEl) {
-                btnEl.disabled = true;
-                btnEl.textContent = '⏳ Adding...';
-            }
-            
-            try {
-                // Call the API to create tasks
-                const response = await fetch('http://localhost:8080/api/tasks/create', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        tasks: pendingImprovementTasks,
-                        source: 'Office Standup - Nexus Peer Review'
-                    })
-                });
-                
-                const result = await response.json();
-                
-                if (response.ok && result.success) {
-                    const taskCount = result.tasks_created;
-                    logActivity(`➕ Nexus added ${taskCount} improvement tasks to PENDING_TASKS.md`);
-                    
-                    // Show success status
-                    if (statusEl) {
-                        statusEl.style.display = 'inline';
-                        statusEl.textContent = `✅ ${taskCount} tasks saved!`;
-                    }
-                    
-                    if (btnEl) {
-                        btnEl.textContent = '✓ Added!';
-                        btnEl.style.background = 'var(--accent-green)';
-                    }
-                    
-                    // Show alert with details
-                    alert(`✅ ${taskCount} improvement tasks saved to PENDING_TASKS.md!\n\nTasks:\n${pendingImprovementTasks.map(t => `- ${t.title}`).join('\n')}`);
-                    
-                    // Clear the pending tasks
-                    pendingImprovementTasks = [];
-                    document.getElementById('auto-generated-tasks').innerHTML = '<p style="color: var(--text-muted);">✅ Tasks saved to PENDING_TASKS.md!</p>';
-                    
-                    // Reset button after 3 seconds
-                    setTimeout(() => {
-                        if (btnEl) {
-                            btnEl.textContent = '➕ Add Tasks to Pending';
-                            btnEl.style.background = 'var(--accent-cyan)';
-                            btnEl.disabled = false;
-                        }
-                        if (statusEl) {
-                            statusEl.style.display = 'none';
-                        }
-                    }, 3000);
-                } else {
-                    throw new Error(result.error || 'Failed to create tasks');
-                }
-            } catch (error) {
-                console.error('Error adding tasks:', error);
-                
-                // Fallback: Save to localStorage if API fails
-                const fallbackKey = 'pixelOffice_pendingTasksFallback';
-                const existing = JSON.parse(localStorage.getItem(fallbackKey) || '[]');
-                const newTasks = pendingImprovementTasks.map(t => ({
-                    ...t,
-                    savedAt: new Date().toISOString(),
-                    source: 'Office Standup - Nexus Peer Review (Fallback)'
-                }));
-                localStorage.setItem(fallbackKey, JSON.stringify([...existing, ...newTasks]));
-                
-                logActivity(`⚠️ API failed, tasks saved to localStorage fallback`);
-                
-                if (statusEl) {
-                    statusEl.style.display = 'inline';
-                    statusEl.textContent = '⚠️ Saved locally (API down)';
-                    statusEl.style.color = 'var(--accent-yellow)';
-                }
-                
-                if (btnEl) {
-                    btnEl.textContent = '⚠️ Saved Locally';
-                    btnEl.style.background = 'var(--accent-yellow)';
-                    btnEl.disabled = false;
-                }
-                
-                alert(`⚠️ Could not save to PENDING_TASKS.md (API error: ${error.message})\n\nTasks have been saved to localStorage as fallback. Please notify Nexus to sync manually.`);
-            }
-        }
-
-        function animateAgentReturn(agent, targetPos, delay) {
-            setTimeout(() => {
-                const startX = agent.x, startY = agent.y;
-                const duration = 1500;
-                const startTime = Date.now();
-                
-                function step() {
-                    const elapsed = Date.now() - startTime;
-                    const progress = Math.min(elapsed / duration, 1);
-                    const ease = 1 - Math.pow(1 - progress, 3);
-                    
-                    agent.x = startX + (targetPos.x - startX) * ease;
-                    agent.y = startY + (targetPos.y - startY) * ease;
-                    
-                    if (progress < 1) {
-                        requestAnimationFrame(step);
-                    } else {
-                        // Arrived - stop walking
-                        isWalking[agent.id] = false;
-                        agent.activity = 'Back to work';
-                        
-                        // Reset activities after a moment
-                        setTimeout(() => {
-                            resetAgentActivity(agent);
-                        }, 1000);
-                    }
-                }
-                step();
-            }, delay);
+            list.innerHTML = tasks.map(task => {
+                const priorityColor = task.priority === 'P0' ? 'var(--accent-pink)' : 
+                                     task.priority === 'P1' ? 'var(--accent-yellow)' : 'var(--accent-cyan)';
+                const statusEmoji = task.status === 'completed' ? '✅' : 
+                                   task.status === 'in_progress' ? '🔄' : '⏳';
+                return `
+                    <div style="padding: 0.75rem; background: var(--bg-card); border: 2px solid var(--border); margin-bottom: 0.5rem; border-radius: 4px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-weight: 600; color: ${priorityColor};">${task.id}</span>
+                            <span style="font-size: 0.75rem; color: var(--text-secondary);">${statusEmoji} ${task.status}</span>
+                        </div>
+                        <div style="font-size: 0.875rem; margin-top: 0.25rem; color: var(--text-primary);">${task.title}</div>
+                        <div style="font-size: 0.75rem; margin-top: 0.25rem; color: var(--text-muted);">${task.assignee || 'Unassigned'}</div>
+                    </div>
+                `;
+            }).join('');
         }
         
-        function resetAgentActivity(agent) {
-            const activities = {
-                'Executive': ['Strategic oversight', 'Monitoring systems'],
-                'Dev': ['Component library', 'Mobile responsive', 'Animations', 'API endpoints', 'Database', 'Testing'],
-                'Design': ['Avatar design', 'Style guide', 'Assets'],
-                'Content': ['Researching', 'Content creation'],
-                'Growth': ['Marketing strategy', 'Social media'],
-                'Ops': ['Monitoring', 'Code review', 'Security check'],
-                'Business Dev': ['Finding leads', 'Prep outreach']
-            };
-            
-            const deptActivities = activities[agent.dept] || ['Working'];
-            agent.activity = deptActivities[Math.floor(Math.random() * deptActivities.length)];
-            updateAgentList();
-        }
-
-        // UI Functions
-        function switchTab(tabName, clickedTab) {
-            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-            clickedTab.classList.add('active');
-            document.getElementById(tabName + '-tab').classList.add('active');
-        }
-
-        function logActivity(text, className = '') {
-            const feed = document.getElementById('activity-feed');
-            const time = new Date().toLocaleTimeString('en-US', { hour12: false });
-            
+        // Add activity to feed
+        function addActivity(icon, agent, action, type) {
+            const feed = document.getElementById('activityFeed');
             const item = document.createElement('div');
-            item.className = 'activity-item ' + className;
+            item.className = `activity-item ${type}`;
             item.innerHTML = `
-                <span class="activity-time">${time}</span>
-                <span class="activity-text">${text}</span>
+                <div class="activity-icon">${icon}</div>
+                <div class="activity-content">
+                    <div class="activity-text">
+                        <span class="activity-agent">${agent}</span> ${action}
+                    </div>
+                    <div class="activity-meta">
+                        <span class="activity-type-badge">SYSTEM</span>
+                        <span>${new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false })}</span>
+                    </div>
+                </div>
             `;
             feed.insertBefore(item, feed.firstChild);
-            while (feed.children.length > 20) feed.removeChild(feed.lastChild);
             
-            // Save to localStorage
-            saveActivities();
-        }
-
-        function updateStats() {
-            const active = agents.filter(a => a.status === 'working' || a.status === 'busy').length;
-            const meeting = agents.filter(a => a.status === 'meeting').length;
-            const playing = agents.filter(a => a.status === 'playing').length;
-            document.getElementById('active-count').textContent = active;
-            document.getElementById('meeting-count').textContent = meeting;
-            document.getElementById('playing-count').textContent = playing;
-        }
-
-        function updateAgentList() {
-            document.getElementById('agent-list').innerHTML = agents.map(agent => `
-                <div class="agent-item">
-                    <div class="agent-avatar" style="border: 2px solid ${agent.color}">${agent.name[0]}</div>
-                    <div class="agent-info">
-                        <div class="agent-name" style="color: ${agent.color}">${agent.name}</div>
-                        <div class="agent-desk">${agent.desk} • ${agent.activity}</div>
-                    </div>
-                    <span class="status-badge ${agent.status}">${agent.status}</span>
-                </div>
-            `).join('');
-        }
-
-        // Initial setup
-        const savedCount = loadSavedActivities();
-        renderHistoricalMinutes();
-        
-        if (savedCount === 0) {
-            logActivity('🏢 Pixel Office v8 loaded with Walking Computer Head Agents!');
-            logActivity('🤖 20 agents with 8-frame walking animation ready');
-            logActivity('💬 Agent-to-agent conversations enabled');
-            logActivity('🏓 Ping pong table added for fun meetups');
-            logActivity('💾 Activities now persist across refreshes');
-        } else {
-            logActivity(`📂 Loaded ${savedCount} saved activities from previous session`);
-        }
-        
-        updateStats();
-        updateAgentList();
-        
-        // Random events loop
-        setInterval(() => {
-            if (!isStandupActive && !isPingPongActive) {
-                // 30% chance for conversation, 20% chance for ping pong
-                const roll = Math.random();
-                if (roll < 0.3) {
-                    triggerRandomConversation();
-                } else if (roll < 0.5) {
-                    triggerPingPongGame();
-                }
+            // Keep only 10 items
+            while (feed.children.length > 10) {
+                feed.removeChild(feed.lastChild);
             }
-        }, 15000); // Check every 15 seconds
-        
-        // Auto-refresh every 30 minutes for latest data
-        setInterval(() => {
-            console.log('Auto-refreshing office...');
-            if(window.parent!==window){window.parent.location.reload()}else{window.location.reload()}
-        }, 1800000);
+        }
     </script>
 </body>
 </html>
