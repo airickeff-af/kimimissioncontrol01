@@ -6,28 +6,28 @@
   "installCommand": null,
   "framework": null,
   "functions": {
-    "api/health.js": {
+    "mission-control/dashboard/api/health.js": {
       "maxDuration": 10
     },
-    "api/agents.js": {
+    "mission-control/dashboard/api/agents.js": {
       "maxDuration": 10
     },
-    "api/tasks.js": {
+    "mission-control/dashboard/api/tasks.js": {
       "maxDuration": 10
     },
-    "api/tokens.js": {
+    "mission-control/dashboard/api/tokens.js": {
       "maxDuration": 10
     },
-    "api/metrics.js": {
+    "mission-control/dashboard/api/metrics.js": {
       "maxDuration": 10
     },
-    "api/logs/activity.js": {
+    "mission-control/dashboard/api/logs/activity.js": {
       "maxDuration": 10
     },
-    "api/logs/index.js": {
+    "mission-control/dashboard/api/logs/index.js": {
       "maxDuration": 10
     },
-    "api/test.js": {
+    "mission-control/dashboard/api/test.js": {
       "maxDuration": 10
     }
   },
