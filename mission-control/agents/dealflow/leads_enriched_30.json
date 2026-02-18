@@ -1,0 +1,5415 @@
+{
+  "generated_at": "2026-02-18T10:52:15.103Z",
+  "summary": {
+    "total_leads": 30,
+    "average_readiness_score": 60,
+    "ready_for_handoff": 7,
+    "needs_work": 23,
+    "email_coverage_percent": 37,
+    "verified_email_coverage_percent": 0,
+    "linkedin_coverage_percent": 63
+  },
+  "handoff_candidates": [
+    {
+      "lead_id": "lead_009",
+      "company": "PayMongo",
+      "contact_name": "Jojo Malolos",
+      "title": "CEO",
+      "readiness_score": 71,
+      "priority": "P2",
+      "status": "NEEDS_MINOR_WORK",
+      "contact": {
+        "email": "jojo@paymongo.com",
+        "email_verified": false,
+        "linkedin": "https://ph.linkedin.com/in/jojo-malolos",
+        "phone": "+63 2 7623 1545"
+      },
+      "handoff_package": {
+        "lead_id": "lead_009",
+        "handoff_status": "ready_for_outreach",
+        "handoff_at": "2026-02-18T10:52:15.101Z",
+        "contact": {
+          "name": "Jojo Malolos",
+          "title": "CEO",
+          "email": "jojo@paymongo.com",
+          "email_verified": false,
+          "email_confidence": "high",
+          "linkedin": "https://ph.linkedin.com/in/jojo-malolos",
+          "phone": "+63 2 7623 1545",
+          "telegram": null,
+          "preferred_channel": "linkedin"
+        },
+        "company_intel": {
+          "name": "PayMongo",
+          "domain": "paymongo.com",
+          "recent_news": "Fastest growing payment platform in PH",
+          "partnership_angles": [
+            "Payment gateway integration",
+            "Merchant crypto acceptance",
+            "API partnership"
+          ]
+        },
+        "outreach_intel": {
+          "optimal_time": "Tuesday 2:00 PM PHT",
+          "personalization_hook": "Impressive growth as YC alum",
+          "mutual_connections": [],
+          "suggested_subject": "Partnership opportunity: PayMongo + coins.ph",
+          "key_talking_points": [
+            "coins.ph is the leading crypto exchange in the Philippines with 18M+ users",
+            "Recently launched coins.xyz for international expansion",
+            "Looking for strategic partners in Southeast Asia",
+            "Potential integration points: Payment gateway integration, Merchant crypto acceptance, API partnership"
+          ]
+        },
+        "priority": "P1",
+        "dealflow_notes": [
+          "Verify email address using Hunter.io or similar service",
+          "Limited contact options - consider alternative channels"
+        ],
+        "pie_signals": []
+      }
+    },
+    {
+      "lead_id": "lead_011",
+      "company": "Xendit Group",
+      "contact_name": "Moses Lo",
+      "title": "CEO & Co-Founder",
+      "readiness_score": 71,
+      "priority": "P2",
+      "status": "NEEDS_MINOR_WORK",
+      "contact": {
+        "email": "moses@xendit.co",
+        "email_verified": false,
+        "linkedin": "https://www.linkedin.com/in/moseslo",
+        "phone": "+61 422 167 859"
+      },
+      "handoff_package": {
+        "lead_id": "lead_011",
+        "handoff_status": "ready_for_outreach",
+        "handoff_at": "2026-02-18T10:52:15.102Z",
+        "contact": {
+          "name": "Moses Lo",
+          "title": "CEO & Co-Founder",
+          "email": "moses@xendit.co",
+          "email_verified": false,
+          "email_confidence": "high",
+          "linkedin": "https://www.linkedin.com/in/moseslo",
+          "phone": "+61 422 167 859",
+          "telegram": null,
+          "preferred_channel": "linkedin"
+        },
+        "company_intel": {
+          "name": "Xendit Group",
+          "domain": "xenditgroup.com",
+          "recent_news": "YCombinator alum, Forbes 30 Under 30",
+          "partnership_angles": [
+            "SEA expansion",
+            "Payment infrastructure",
+            "Crypto on/off ramps"
+          ]
+        },
+        "outreach_intel": {
+          "optimal_time": "Monday 11:00 AM PHT",
+          "personalization_hook": "Congratulations on Xendit's growth across SEA",
+          "mutual_connections": [],
+          "suggested_subject": "Quick question about Xendit Group's expansion",
+          "key_talking_points": [
+            "coins.ph is the leading crypto exchange in the Philippines with 18M+ users",
+            "Recently launched coins.xyz for international expansion",
+            "Looking for strategic partners in Southeast Asia",
+            "Potential integration points: SEA expansion, Payment infrastructure, Crypto on/off ramps"
+          ]
+        },
+        "priority": "P1",
+        "dealflow_notes": [
+          "Verify email address using Hunter.io or similar service",
+          "Limited contact options - consider alternative channels"
+        ],
+        "pie_signals": []
+      }
+    },
+    {
+      "lead_id": "lead_012",
+      "company": "Angkas",
+      "contact_name": "George Royeca",
+      "title": "CEO",
+      "readiness_score": 71,
+      "priority": "P2",
+      "status": "NEEDS_MINOR_WORK",
+      "contact": {
+        "email": "george@angkas.com",
+        "email_verified": false,
+        "linkedin": "https://ph.linkedin.com/in/george-royeca-b3276b34",
+        "phone": "+63 998 996 4527"
+      },
+      "handoff_package": {
+        "lead_id": "lead_012",
+        "handoff_status": "ready_for_outreach",
+        "handoff_at": "2026-02-18T10:52:15.102Z",
+        "contact": {
+          "name": "George Royeca",
+          "title": "CEO",
+          "email": "george@angkas.com",
+          "email_verified": false,
+          "email_confidence": "high",
+          "linkedin": "https://ph.linkedin.com/in/george-royeca-b3276b34",
+          "phone": "+63 998 996 4527",
+          "telegram": null,
+          "preferred_channel": "linkedin"
+        },
+        "company_intel": {
+          "name": "Angkas",
+          "domain": "angkas.com",
+          "recent_news": "Working with DOTr on motorcycle taxi regulations",
+          "partnership_angles": [
+            "Driver payment solutions",
+            "Fintech integration",
+            "Mobile wallet partnership"
+          ]
+        },
+        "outreach_intel": {
+          "optimal_time": "Friday 2:00 PM PHT",
+          "personalization_hook": "Impressive work with DOTr on regulations",
+          "mutual_connections": [],
+          "suggested_subject": "Crypto payment integration for Angkas",
+          "key_talking_points": [
+            "coins.ph is the leading crypto exchange in the Philippines with 18M+ users",
+            "Recently launched coins.xyz for international expansion",
+            "Looking for strategic partners in Southeast Asia",
+            "Potential integration points: Driver payment solutions, Fintech integration, Mobile wallet partnership"
+          ]
+        },
+        "priority": "P1",
+        "dealflow_notes": [
+          "Verify email address using Hunter.io or similar service",
+          "Limited contact options - consider alternative channels"
+        ],
+        "pie_signals": []
+      }
+    },
+    {
+      "lead_id": "lead_016",
+      "company": "GCash (Mynt)",
+      "contact_name": "Martha Sazon",
+      "title": "President & CEO",
+      "readiness_score": 71,
+      "priority": "P2",
+      "status": "NEEDS_MINOR_WORK",
+      "contact": {
+        "email": "martha.sazon@gcash.com",
+        "email_verified": false,
+        "linkedin": "https://ph.linkedin.com/in/marthasazon",
+        "phone": "+1 772 538 6831"
+      },
+      "handoff_package": {
+        "lead_id": "lead_016",
+        "handoff_status": "ready_for_outreach",
+        "handoff_at": "2026-02-18T10:52:15.102Z",
+        "contact": {
+          "name": "Martha Sazon",
+          "title": "President & CEO",
+          "email": "martha.sazon@gcash.com",
+          "email_verified": false,
+          "email_confidence": "high",
+          "linkedin": "https://ph.linkedin.com/in/marthasazon",
+          "phone": "+1 772 538 6831",
+          "telegram": null,
+          "preferred_channel": "linkedin"
+        },
+        "company_intel": {
+          "name": "GCash (Mynt)",
+          "domain": "gcashmynt.com",
+          "recent_news": "80M+ users, #1 Finance Super App, profitable",
+          "partnership_angles": [
+            "Super app integration",
+            "Crypto services",
+            "Massive user base"
+          ]
+        },
+        "outreach_intel": {
+          "optimal_time": "Monday 10:00 AM PHT",
+          "personalization_hook": "Congratulations on 80M users and profitability",
+          "mutual_connections": [],
+          "suggested_subject": "Partnership opportunity: GCash (Mynt) + coins.ph",
+          "key_talking_points": [
+            "coins.ph is the leading crypto exchange in the Philippines with 18M+ users",
+            "Recently launched coins.xyz for international expansion",
+            "Looking for strategic partners in Southeast Asia",
+            "Potential integration points: Super app integration, Crypto services, Massive user base"
+          ]
+        },
+        "priority": "P1",
+        "dealflow_notes": [
+          "Verify email address using Hunter.io or similar service",
+          "Limited contact options - consider alternative channels"
+        ],
+        "pie_signals": []
+      }
+    },
+    {
+      "lead_id": "lead_027",
+      "company": "Crypto.com",
+      "contact_name": "Kris Marszalek",
+      "title": "CEO & Co-Founder",
+      "readiness_score": 78,
+      "priority": "P1",
+      "status": "NEEDS_MINOR_WORK",
+      "contact": {
+        "email": null,
+        "email_verified": false,
+        "linkedin": "https://www.linkedin.com/in/krismarszalek",
+        "phone": null
+      },
+      "handoff_package": {
+        "lead_id": "lead_027",
+        "handoff_status": "ready_for_outreach",
+        "handoff_at": "2026-02-18T10:52:15.103Z",
+        "contact": {
+          "name": "Kris Marszalek",
+          "title": "CEO & Co-Founder",
+          "email": null,
+          "email_verified": false,
+          "email_confidence": "low",
+          "linkedin": "https://www.linkedin.com/in/krismarszalek",
+          "phone": null,
+          "telegram": null,
+          "preferred_channel": "linkedin"
+        },
+        "company_intel": {
+          "name": "Crypto.com",
+          "domain": "crypto.com",
+          "funding": "Well-funded, IPO preparation",
+          "employees": 4000,
+          "market": "Singapore",
+          "recent_news": "Launched AI agent platform Feb 2026",
+          "partnership_angles": [
+            "AI agent payments",
+            "Global exchange partnership",
+            "Crypto infrastructure"
+          ]
+        },
+        "outreach_intel": {
+          "optimal_time": "Monday 11:00 AM SGT",
+          "personalization_hook": "Congratulations on the AI agent platform launch",
+          "mutual_connections": [],
+          "suggested_subject": "Crypto payment integration for Crypto.com",
+          "key_talking_points": [
+            "coins.ph is the leading crypto exchange in the Philippines with 18M+ users",
+            "Recently launched coins.xyz for international expansion",
+            "Looking for strategic partners in Singapore",
+            "Potential integration points: AI agent payments, Global exchange partnership, Crypto infrastructure"
+          ]
+        },
+        "priority": "P1",
+        "dealflow_notes": [
+          "PRIORITY: Find verified email address via Hunter.io or LinkedIn",
+          "Limited contact options - consider alternative channels"
+        ],
+        "pie_signals": []
+      }
+    },
+    {
+      "lead_id": "lead_028",
+      "company": "Plentina",
+      "contact_name": "Kevin Gabayan",
+      "title": "CEO & Co-Founder",
+      "readiness_score": 73,
+      "priority": "P2",
+      "status": "NEEDS_MINOR_WORK",
+      "contact": {
+        "email": null,
+        "email_verified": false,
+        "linkedin": "https://ph.linkedin.com/in/kevin-gabayan",
+        "phone": null
+      },
+      "handoff_package": {
+        "lead_id": "lead_028",
+        "handoff_status": "ready_for_outreach",
+        "handoff_at": "2026-02-18T10:52:15.103Z",
+        "contact": {
+          "name": "Kevin Gabayan",
+          "title": "CEO & Co-Founder",
+          "email": null,
+          "email_verified": false,
+          "email_confidence": "low",
+          "linkedin": "https://ph.linkedin.com/in/kevin-gabayan",
+          "phone": null,
+          "telegram": null,
+          "preferred_channel": "linkedin"
+        },
+        "company_intel": {
+          "name": "Plentina",
+          "domain": "plentina.com",
+          "funding": "$10M+ Series A",
+          "employees": 100,
+          "market": "Philippines",
+          "recent_news": "$10M+ Series A, strong PH growth",
+          "partnership_angles": [
+            "BNPL integration",
+            "Consumer lending",
+            "Financial inclusion"
+          ]
+        },
+        "outreach_intel": {
+          "optimal_time": "Wednesday 10:00 AM PHT",
+          "personalization_hook": "Impressive growth with Series A",
+          "mutual_connections": [],
+          "suggested_subject": "Southeast Asia partnership - Plentina",
+          "key_talking_points": [
+            "coins.ph is the leading crypto exchange in the Philippines with 18M+ users",
+            "Recently launched coins.xyz for international expansion",
+            "Looking for strategic partners in Philippines",
+            "Potential integration points: BNPL integration, Consumer lending, Financial inclusion"
+          ]
+        },
+        "priority": "P1",
+        "dealflow_notes": [
+          "PRIORITY: Find verified email address via Hunter.io or LinkedIn",
+          "Limited contact options - consider alternative channels"
+        ],
+        "pie_signals": []
+      }
+    },
+    {
+      "lead_id": "lead_029",
+      "company": "First Digital Trust",
+      "contact_name": "Vincent Chok",
+      "title": "CEO",
+      "readiness_score": 73,
+      "priority": "P2",
+      "status": "NEEDS_MINOR_WORK",
+      "contact": {
+        "email": null,
+        "email_verified": false,
+        "linkedin": "https://hk.linkedin.com/in/vincent-chok",
+        "phone": null
+      },
+      "handoff_package": {
+        "lead_id": "lead_029",
+        "handoff_status": "ready_for_outreach",
+        "handoff_at": "2026-02-18T10:52:15.103Z",
+        "contact": {
+          "name": "Vincent Chok",
+          "title": "CEO",
+          "email": null,
+          "email_verified": false,
+          "email_confidence": "low",
+          "linkedin": "https://hk.linkedin.com/in/vincent-chok",
+          "phone": null,
+          "telegram": null,
+          "preferred_channel": "linkedin"
+        },
+        "company_intel": {
+          "name": "First Digital Trust",
+          "domain": "firstdigitalexchange.com",
+          "funding": "Privately funded",
+          "employees": 50,
+          "market": "Hong Kong",
+          "recent_news": "FDUSD stablecoin issuer, Hong Kong licensed",
+          "partnership_angles": [
+            "Stablecoin integration",
+            "Custody solutions",
+            "Institutional partnership"
+          ]
+        },
+        "outreach_intel": {
+          "optimal_time": "Tuesday 9:00 AM HKT",
+          "personalization_hook": "Impressive work with FDUSD in Asia",
+          "mutual_connections": [],
+          "suggested_subject": "Quick question about First Digital Trust's expansion",
+          "key_talking_points": [
+            "coins.ph is the leading crypto exchange in the Philippines with 18M+ users",
+            "Recently launched coins.xyz for international expansion",
+            "Looking for strategic partners in Hong Kong",
+            "Potential integration points: Stablecoin integration, Custody solutions, Institutional partnership"
+          ]
+        },
+        "priority": "P1",
+        "dealflow_notes": [
+          "PRIORITY: Find verified email address via Hunter.io or LinkedIn",
+          "Limited contact options - consider alternative channels"
+        ],
+        "pie_signals": []
+      }
+    }
+  ],
+  "leads": [
+    {
+      "id": "lead_001",
+      "company": "Coins.ph",
+      "contact_name": "Wei Zhou",
+      "title": "CEO & Founder",
+      "email": "wei.zhou@coins.ph",
+      "email_verified": false,
+      "linkedin": "https://www.linkedin.com/company/coins-ph",
+      "linkedin_personal": null,
+      "twitter": "https://x.com/coinsph",
+      "phone": null,
+      "telegram": null,
+      "status": "new",
+      "priority": "P0",
+      "notes": "Former Binance CFO (2018-2021). Acquired Coins.ph from Gojek in 2022. Leading crypto exchange in Philippines with 18M+ users. Expanding globally with Coins.xyz. Speaker at Consensus, Money20/20. Focus on remittance and financial inclusion through crypto.",
+      "research_sources": [
+        "https://www.coins.xyz/en/about",
+        "https://consensus-hongkong2025.coindesk.com/agenda/speaker/-wei-zhou"
+      ],
+      "last_researched": "2026-02-18",
+      "company_domain": "coinsph.com",
+      "email_patterns": null,
+      "enrichment": {
+        "accessibility": {
+          "score": 40,
+          "rawScore": 40,
+          "seniorityMultiplier": 1,
+          "seniorityLevel": "ceo",
+          "channelsAvailable": 3,
+          "channels": [
+            "email_unverified",
+            "linkedin_company",
+            "twitter"
+          ],
+          "details": {
+            "email": {
+              "has": true,
+              "verified": false,
+              "score": 15
+            },
+            "linkedin": {
+              "has": true,
+              "type": "company",
+              "score": 10
+            },
+            "twitter": {
+              "has": true,
+              "active": false,
+              "score": 15
+            },
+            "phone": {
+              "has": false,
+              "type": null,
+              "score": 0
+            },
+            "telegram": {
+              "has": false,
+              "score": 0
+            },
+            "warmIntro": {
+              "has": false,
+              "score": 0
+            }
+          },
+          "recommendations": [
+            "Verify email address using Hunter.io or similar service",
+            "Limited contact options - consider alternative channels"
+          ]
+        },
+        "readiness": {
+          "leadId": "lead_001",
+          "company": "Coins.ph",
+          "contactName": "Wei Zhou",
+          "score": 69,
+          "maxScore": 100,
+          "status": "NEEDS_MINOR_WORK",
+          "action": "Quick research then handoff",
+          "priority": "P2",
+          "criteria": {
+            "contactVerified": {
+              "score": 40,
+              "weight": 30,
+              "weighted": 12,
+              "met": false
+            },
+            "decisionMakerConfirmed": {
+              "score": 100,
+              "weight": 25,
+              "weighted": 25,
+              "met": true
+            },
+            "companyIntelComplete": {
+              "score": 45,
+              "weight": 20,
+              "weighted": 9,
+              "met": false
+            },
+            "outreachTimingIdentified": {
+              "score": 100,
+              "weight": 15,
+              "weighted": 15,
+              "met": true
+            },
+            "personalizationAngle": {
+              "score": 80,
+              "weight": 10,
+              "weighted": 8,
+              "met": true
+            }
+          },
+          "improvementPlan": [
+            {
+              "task": "Find verified contact channels",
+              "priority": "CRITICAL",
+              "estimatedTime": "15-30 min",
+              "actions": [
+                "Search Hunter.io for email patterns",
+                "Check LinkedIn for personal profile",
+                "Look for mutual connections",
+                "Check company website contact page"
+              ]
+            },
+            {
+              "task": "Complete company research",
+              "priority": "MEDIUM",
+              "estimatedTime": "20-30 min",
+              "actions": [
+                "Check Crunchbase for funding",
+                "Review recent news",
+                "Analyze competitive landscape",
+                "Identify partnership opportunities"
+              ]
+            }
+          ],
+          "timeToReady": {
+            "minutes": 48,
+            "display": "~1 hour",
+            "category": "medium"
+          },
+          "readyForHandoff": false,
+          "scoredAt": "2026-02-18T10:52:15.099Z",
+          "version": "1.0.0"
+        },
+        "pie_intel": {
+          "signal_type": "expansion",
+          "signal_strength": 0.95,
+          "optimal_time": "Tuesday 10:00 AM PHT",
+          "recent_news": "Coins.xyz launched in Brazil January 2025",
+          "partnership_angles": [
+            "Global expansion partnership",
+            "Cross-border remittance",
+            "Crypto payment integration"
+          ],
+          "personalization_hook": "Congratulations on the Brazil launch"
+        },
+        "enriched_at": "2026-02-18T10:52:15.099Z",
+        "enrichment_version": "1.0.0"
+      }
+    },
+    {
+      "id": "lead_002",
+      "company": "Coins.xyz",
+      "contact_name": "Wei Zhou",
+      "title": "CEO & Founder",
+      "email": null,
+      "email_verified": false,
+      "linkedin": "https://www.linkedin.com/company/coins-xyz",
+      "linkedin_personal": null,
+      "twitter": null,
+      "phone": null,
+      "telegram": null,
+      "status": "new",
+      "priority": "P0",
+      "notes": "SAME CEO as Coins.ph (Wei Zhou). Global expansion of Coins.ph. Launched Brazil Jan 2025. Led by ex-Binance executives. Focus on real-world disbursements, contractor payments, supplier settlements.",
+      "research_sources": [
+        "https://www.coins.xyz/en/about",
+        "https://ffnews.com/newsarticle/cryptocurrency/coins-xyz-launches-in-brazil"
+      ],
+      "last_researched": "2026-02-18",
+      "company_domain": "coinsxyz.com",
+      "email_patterns": [
+        "wei@coinsxyz.com",
+        "wei.zhou@coinsxyz.com",
+        "weizhou@coinsxyz.com",
+        "wzhou@coinsxyz.com",
+        "wei_zhou@coinsxyz.com",
+        "wei-zhou@coinsxyz.com",
+        "zhou@coinsxyz.com",
+        "weiz@coinsxyz.com"
+      ],
+      "enrichment": {
+        "accessibility": {
+          "score": 10,
+          "rawScore": 10,
+          "seniorityMultiplier": 1,
+          "seniorityLevel": "ceo",
+          "channelsAvailable": 1,
+          "channels": [
+            "linkedin_company"
+          ],
+          "details": {
+            "email": {
+              "has": false,
+              "verified": false,
+              "score": 0
+            },
+            "linkedin": {
+              "has": true,
+              "type": "company",
+              "score": 10
+            },
+            "twitter": {
+              "has": false,
+              "active": false,
+              "score": 0
+            },
+            "phone": {
+              "has": false,
+              "type": null,
+              "score": 0
+            },
+            "telegram": {
+              "has": false,
+              "score": 0
+            },
+            "warmIntro": {
+              "has": false,
+              "score": 0
+            }
+          },
+          "recommendations": [
+            "PRIORITY: Find verified email address via Hunter.io or LinkedIn",
+            "Limited contact options - consider alternative channels"
+          ]
+        },
+        "readiness": {
+          "leadId": "lead_002",
+          "company": "Coins.xyz",
+          "contactName": "Wei Zhou",
+          "score": 59,
+          "maxScore": 100,
+          "status": "NEEDS_WORK",
+          "action": "Additional research required",
+          "priority": "P3",
+          "criteria": {
+            "contactVerified": {
+              "score": 10,
+              "weight": 30,
+              "weighted": 3,
+              "met": false
+            },
+            "decisionMakerConfirmed": {
+              "score": 100,
+              "weight": 25,
+              "weighted": 25,
+              "met": true
+            },
+            "companyIntelComplete": {
+              "score": 45,
+              "weight": 20,
+              "weighted": 9,
+              "met": false
+            },
+            "outreachTimingIdentified": {
+              "score": 100,
+              "weight": 15,
+              "weighted": 15,
+              "met": true
+            },
+            "personalizationAngle": {
+              "score": 70,
+              "weight": 10,
+              "weighted": 7,
+              "met": true
+            }
+          },
+          "improvementPlan": [
+            {
+              "task": "Find verified contact channels",
+              "priority": "CRITICAL",
+              "estimatedTime": "15-30 min",
+              "actions": [
+                "Search Hunter.io for email patterns",
+                "Check LinkedIn for personal profile",
+                "Look for mutual connections",
+                "Check company website contact page"
+              ]
+            },
+            {
+              "task": "Complete company research",
+              "priority": "MEDIUM",
+              "estimatedTime": "20-30 min",
+              "actions": [
+                "Check Crunchbase for funding",
+                "Review recent news",
+                "Analyze competitive landscape",
+                "Identify partnership opportunities"
+              ]
+            }
+          ],
+          "timeToReady": {
+            "minutes": 48,
+            "display": "~1 hour",
+            "category": "medium"
+          },
+          "readyForHandoff": false,
+          "scoredAt": "2026-02-18T10:52:15.100Z",
+          "version": "1.0.0"
+        },
+        "pie_intel": {
+          "signal_type": "expansion",
+          "signal_strength": 0.92,
+          "optimal_time": "Wednesday 2:00 PM PHT",
+          "recent_news": "Same leadership as Coins.ph, focusing on global markets",
+          "partnership_angles": [
+            "International corridor expansion",
+            "B2B payment solutions",
+            "Contractor payments"
+          ],
+          "personalization_hook": "Interested in your global expansion strategy"
+        },
+        "enriched_at": "2026-02-18T10:52:15.100Z",
+        "enrichment_version": "1.0.0"
+      }
+    },
+    {
+      "id": "lead_003",
+      "company": "PDAX",
+      "contact_name": "Nichel Gaba",
+      "title": "Founder & CEO",
+      "email": "nichel@pdax.ph",
+      "email_verified": false,
+      "linkedin": "https://ph.linkedin.com/in/nichel-gaba-cfa-57864a96",
+      "linkedin_personal": "https://ph.linkedin.com/in/nichel-gaba-cfa-57864a96",
+      "twitter": null,
+      "phone": null,
+      "telegram": null,
+      "status": "new",
+      "priority": "P1",
+      "notes": "CFA charterholder. Wharton grad. Founded PDAX in 2018. Philippines' largest homegrown crypto exchange. $51.1M raised in funding. BSP licensed. Based in Quezon City.",
+      "research_sources": [
+        "https://ph.linkedin.com/in/nichel-gaba-cfa-57864a96",
+        "https://www.theasianbanker.com/finance-philippines-2025/speakers"
+      ],
+      "last_researched": "2026-02-18",
+      "company_domain": "pdax.com",
+      "email_patterns": null,
+      "enrichment": {
+        "accessibility": {
+          "score": 35,
+          "rawScore": 35,
+          "seniorityMultiplier": 1,
+          "seniorityLevel": "ceo",
+          "channelsAvailable": 2,
+          "channels": [
+            "email_unverified",
+            "linkedin_personal"
+          ],
+          "details": {
+            "email": {
+              "has": true,
+              "verified": false,
+              "score": 15
+            },
+            "linkedin": {
+              "has": true,
+              "type": "personal",
+              "score": 20
+            },
+            "twitter": {
+              "has": false,
+              "active": false,
+              "score": 0
+            },
+            "phone": {
+              "has": false,
+              "type": null,
+              "score": 0
+            },
+            "telegram": {
+              "has": false,
+              "score": 0
+            },
+            "warmIntro": {
+              "has": false,
+              "score": 0
+            }
+          },
+          "recommendations": [
+            "Verify email address using Hunter.io or similar service",
+            "Limited contact options - consider alternative channels"
+          ]
+        },
+        "readiness": {
+          "leadId": "lead_003",
+          "company": "PDAX",
+          "contactName": "Nichel Gaba",
+          "score": 67,
+          "maxScore": 100,
+          "status": "NEEDS_MINOR_WORK",
+          "action": "Quick research then handoff",
+          "priority": "P2",
+          "criteria": {
+            "contactVerified": {
+              "score": 35,
+              "weight": 30,
+              "weighted": 11,
+              "met": false
+            },
+            "decisionMakerConfirmed": {
+              "score": 100,
+              "weight": 25,
+              "weighted": 25,
+              "met": true
+            },
+            "companyIntelComplete": {
+              "score": 45,
+              "weight": 20,
+              "weighted": 9,
+              "met": false
+            },
+            "outreachTimingIdentified": {
+              "score": 100,
+              "weight": 15,
+              "weighted": 15,
+              "met": true
+            },
+            "personalizationAngle": {
+              "score": 70,
+              "weight": 10,
+              "weighted": 7,
+              "met": true
+            }
+          },
+          "improvementPlan": [
+            {
+              "task": "Find verified contact channels",
+              "priority": "CRITICAL",
+              "estimatedTime": "15-30 min",
+              "actions": [
+                "Search Hunter.io for email patterns",
+                "Check LinkedIn for personal profile",
+                "Look for mutual connections",
+                "Check company website contact page"
+              ]
+            },
+            {
+              "task": "Complete company research",
+              "priority": "MEDIUM",
+              "estimatedTime": "20-30 min",
+              "actions": [
+                "Check Crunchbase for funding",
+                "Review recent news",
+                "Analyze competitive landscape",
+                "Identify partnership opportunities"
+              ]
+            }
+          ],
+          "timeToReady": {
+            "minutes": 48,
+            "display": "~1 hour",
+            "category": "medium"
+          },
+          "readyForHandoff": false,
+          "scoredAt": "2026-02-18T10:52:15.100Z",
+          "version": "1.0.0"
+        },
+        "pie_intel": {
+          "signal_type": "funding",
+          "signal_strength": 0.85,
+          "optimal_time": "Thursday 11:00 AM PHT",
+          "recent_news": "$51.1M raised, BSP licensed",
+          "partnership_angles": [
+            "Regulatory-compliant partnership",
+            "Institutional integration",
+            "Market making"
+          ],
+          "personalization_hook": "Impressive growth with BSP license"
+        },
+        "enriched_at": "2026-02-18T10:52:15.100Z",
+        "enrichment_version": "1.0.0"
+      }
+    },
+    {
+      "id": "lead_004",
+      "company": "BloomX",
+      "contact_name": "Luis Buenaventura II",
+      "title": "Co-Founder (former CSO) / NOW Head of GCrypto at GCash",
+      "email": null,
+      "email_verified": false,
+      "linkedin": "https://ph.linkedin.com/in/helloluis",
+      "linkedin_personal": "https://ph.linkedin.com/in/helloluis",
+      "twitter": "https://x.com/helloluis",
+      "phone": null,
+      "telegram": null,
+      "status": "new",
+      "priority": "P1",
+      "notes": "Filipino crypto author, artist, entrepreneur. Co-founded BloomX 2015. Former YGG PH Country Manager. NOW Head of GCrypto at GCash. President of Blockchain Council of Philippines. Pioneer since 2014.",
+      "research_sources": [
+        "https://ph.linkedin.com/in/helloluis",
+        "https://www.getprog.ai/profile/15738"
+      ],
+      "last_researched": "2026-02-18",
+      "company_domain": "bloomx.com",
+      "email_patterns": [
+        "luis@bloomx.com",
+        "luis.buenaventura ii@bloomx.com",
+        "luisbuenaventura ii@bloomx.com",
+        "lbuenaventura ii@bloomx.com",
+        "luis_buenaventura ii@bloomx.com",
+        "luis-buenaventura ii@bloomx.com",
+        "buenaventura ii@bloomx.com",
+        "luisb@bloomx.com"
+      ],
+      "enrichment": {
+        "accessibility": {
+          "score": 35,
+          "rawScore": 35,
+          "seniorityMultiplier": 1,
+          "seniorityLevel": "founder",
+          "channelsAvailable": 2,
+          "channels": [
+            "linkedin_personal",
+            "twitter"
+          ],
+          "details": {
+            "email": {
+              "has": false,
+              "verified": false,
+              "score": 0
+            },
+            "linkedin": {
+              "has": true,
+              "type": "personal",
+              "score": 20
+            },
+            "twitter": {
+              "has": true,
+              "active": false,
+              "score": 15
+            },
+            "phone": {
+              "has": false,
+              "type": null,
+              "score": 0
+            },
+            "telegram": {
+              "has": false,
+              "score": 0
+            },
+            "warmIntro": {
+              "has": false,
+              "score": 0
+            }
+          },
+          "recommendations": [
+            "PRIORITY: Find verified email address via Hunter.io or LinkedIn",
+            "Limited contact options - consider alternative channels"
+          ]
+        },
+        "readiness": {
+          "leadId": "lead_004",
+          "company": "BloomX",
+          "contactName": "Luis Buenaventura II",
+          "score": 67,
+          "maxScore": 100,
+          "status": "NEEDS_MINOR_WORK",
+          "action": "Quick research then handoff",
+          "priority": "P2",
+          "criteria": {
+            "contactVerified": {
+              "score": 35,
+              "weight": 30,
+              "weighted": 11,
+              "met": false
+            },
+            "decisionMakerConfirmed": {
+              "score": 100,
+              "weight": 25,
+              "weighted": 25,
+              "met": true
+            },
+            "companyIntelComplete": {
+              "score": 45,
+              "weight": 20,
+              "weighted": 9,
+              "met": false
+            },
+            "outreachTimingIdentified": {
+              "score": 100,
+              "weight": 15,
+              "weighted": 15,
+              "met": true
+            },
+            "personalizationAngle": {
+              "score": 70,
+              "weight": 10,
+              "weighted": 7,
+              "met": true
+            }
+          },
+          "improvementPlan": [
+            {
+              "task": "Find verified contact channels",
+              "priority": "CRITICAL",
+              "estimatedTime": "15-30 min",
+              "actions": [
+                "Search Hunter.io for email patterns",
+                "Check LinkedIn for personal profile",
+                "Look for mutual connections",
+                "Check company website contact page"
+              ]
+            },
+            {
+              "task": "Complete company research",
+              "priority": "MEDIUM",
+              "estimatedTime": "20-30 min",
+              "actions": [
+                "Check Crunchbase for funding",
+                "Review recent news",
+                "Analyze competitive landscape",
+                "Identify partnership opportunities"
+              ]
+            }
+          ],
+          "timeToReady": {
+            "minutes": 48,
+            "display": "~1 hour",
+            "category": "medium"
+          },
+          "readyForHandoff": false,
+          "scoredAt": "2026-02-18T10:52:15.100Z",
+          "version": "1.0.0"
+        },
+        "pie_intel": {
+          "signal_type": "career_move",
+          "signal_strength": 0.8,
+          "optimal_time": "Tuesday 3:00 PM PHT",
+          "recent_news": "Recently moved to GCash as Head of GCrypto",
+          "partnership_angles": [
+            "GCash crypto integration",
+            "80M user base access",
+            "Mobile-first partnership"
+          ],
+          "personalization_hook": "Congratulations on the new role at GCash"
+        },
+        "enriched_at": "2026-02-18T10:52:15.100Z",
+        "enrichment_version": "1.0.0"
+      }
+    },
+    {
+      "id": "lead_005",
+      "company": "Rebit.ph",
+      "contact_name": "Miguel Cuneta",
+      "title": "Co-Founder & Chief Community Officer",
+      "email": null,
+      "email_verified": false,
+      "linkedin": "https://ph.linkedin.com/in/miguel-cuneta-a335b093",
+      "linkedin_personal": "https://ph.linkedin.com/in/miguel-cuneta-a335b093",
+      "twitter": null,
+      "phone": null,
+      "telegram": null,
+      "status": "new",
+      "priority": "P2",
+      "notes": "In Bitcoin since 2013. Co-founded SCI (Satoshi Citadel Industries) 2014. Rebit.ph is Bitcoin remittance service under SCI. Also co-founded Bitbit with Jardine Gerodias and John Bailon.",
+      "research_sources": [
+        "https://ph.linkedin.com/in/miguel-cuneta-a335b093",
+        "https://bitpinas.com/feature/miguel-cuneta-sci-ventures-ph-2019-crypto-blockchain-year-review"
+      ],
+      "last_researched": "2026-02-18",
+      "company_domain": "rebitph.com",
+      "email_patterns": [
+        "miguel@rebitph.com",
+        "miguel.cuneta@rebitph.com",
+        "miguelcuneta@rebitph.com",
+        "mcuneta@rebitph.com",
+        "miguel_cuneta@rebitph.com",
+        "miguel-cuneta@rebitph.com",
+        "cuneta@rebitph.com",
+        "miguelc@rebitph.com"
+      ],
+      "enrichment": {
+        "accessibility": {
+          "score": 20,
+          "rawScore": 20,
+          "seniorityMultiplier": 1,
+          "seniorityLevel": "founder",
+          "channelsAvailable": 1,
+          "channels": [
+            "linkedin_personal"
+          ],
+          "details": {
+            "email": {
+              "has": false,
+              "verified": false,
+              "score": 0
+            },
+            "linkedin": {
+              "has": true,
+              "type": "personal",
+              "score": 20
+            },
+            "twitter": {
+              "has": false,
+              "active": false,
+              "score": 0
+            },
+            "phone": {
+              "has": false,
+              "type": null,
+              "score": 0
+            },
+            "telegram": {
+              "has": false,
+              "score": 0
+            },
+            "warmIntro": {
+              "has": false,
+              "score": 0
+            }
+          },
+          "recommendations": [
+            "PRIORITY: Find verified email address via Hunter.io or LinkedIn",
+            "Limited contact options - consider alternative channels"
+          ]
+        },
+        "readiness": {
+          "leadId": "lead_005",
+          "company": "Rebit.ph",
+          "contactName": "Miguel Cuneta",
+          "score": 62,
+          "maxScore": 100,
+          "status": "NEEDS_MINOR_WORK",
+          "action": "Quick research then handoff",
+          "priority": "P2",
+          "criteria": {
+            "contactVerified": {
+              "score": 20,
+              "weight": 30,
+              "weighted": 6,
+              "met": false
+            },
+            "decisionMakerConfirmed": {
+              "score": 100,
+              "weight": 25,
+              "weighted": 25,
+              "met": true
+            },
+            "companyIntelComplete": {
+              "score": 45,
+              "weight": 20,
+              "weighted": 9,
+              "met": false
+            },
+            "outreachTimingIdentified": {
+              "score": 100,
+              "weight": 15,
+              "weighted": 15,
+              "met": true
+            },
+            "personalizationAngle": {
+              "score": 70,
+              "weight": 10,
+              "weighted": 7,
+              "met": true
+            }
+          },
+          "improvementPlan": [
+            {
+              "task": "Find verified contact channels",
+              "priority": "CRITICAL",
+              "estimatedTime": "15-30 min",
+              "actions": [
+                "Search Hunter.io for email patterns",
+                "Check LinkedIn for personal profile",
+                "Look for mutual connections",
+                "Check company website contact page"
+              ]
+            },
+            {
+              "task": "Complete company research",
+              "priority": "MEDIUM",
+              "estimatedTime": "20-30 min",
+              "actions": [
+                "Check Crunchbase for funding",
+                "Review recent news",
+                "Analyze competitive landscape",
+                "Identify partnership opportunities"
+              ]
+            }
+          ],
+          "timeToReady": {
+            "minutes": 48,
+            "display": "~1 hour",
+            "category": "medium"
+          },
+          "readyForHandoff": false,
+          "scoredAt": "2026-02-18T10:52:15.101Z",
+          "version": "1.0.0"
+        },
+        "pie_intel": {
+          "signal_type": "pioneer",
+          "signal_strength": 0.7,
+          "optimal_time": "Friday 10:00 AM PHT",
+          "recent_news": "Long-standing Bitcoin advocate in PH",
+          "partnership_angles": [
+            "Bitcoin remittance corridor",
+            "Community partnership",
+            "Education initiatives"
+          ],
+          "personalization_hook": "Admire your work since 2013 in PH crypto"
+        },
+        "enriched_at": "2026-02-18T10:52:15.101Z",
+        "enrichment_version": "1.0.0"
+      }
+    },
+    {
+      "id": "lead_006",
+      "company": "Binance Philippines",
+      "contact_name": "Kenneth Stern",
+      "title": "Former General Manager",
+      "email": null,
+      "email_verified": false,
+      "linkedin": null,
+      "linkedin_personal": null,
+      "twitter": null,
+      "phone": null,
+      "telegram": null,
+      "status": "new",
+      "priority": "P1",
+      "notes": "LEFT Binance in Nov 2023 amid regulatory challenges. Former Lamudi Philippines CEO. Need to find current contact info or replacement at Binance PH.",
+      "research_sources": [
+        "https://fintechalliance.ph/kenneth-stern-leaves-binance-amidst-regulatory-challenges-in-the-philippines/",
+        "https://www.techinasia.com/binances-top-philippine-exec-exits-the-firm"
+      ],
+      "last_researched": "2026-02-18",
+      "company_domain": "binancephilippines.com",
+      "email_patterns": [
+        "kenneth@binancephilippines.com",
+        "kenneth.stern@binancephilippines.com",
+        "kennethstern@binancephilippines.com",
+        "kstern@binancephilippines.com",
+        "kenneth_stern@binancephilippines.com",
+        "kenneth-stern@binancephilippines.com",
+        "stern@binancephilippines.com",
+        "kenneths@binancephilippines.com"
+      ],
+      "enrichment": {
+        "accessibility": {
+          "score": 0,
+          "rawScore": 0,
+          "seniorityMultiplier": 0.8,
+          "seniorityLevel": "manager",
+          "channelsAvailable": 0,
+          "channels": [],
+          "details": {
+            "email": {
+              "has": false,
+              "verified": false,
+              "score": 0
+            },
+            "linkedin": {
+              "has": false,
+              "type": null,
+              "score": 0
+            },
+            "twitter": {
+              "has": false,
+              "active": false,
+              "score": 0
+            },
+            "phone": {
+              "has": false,
+              "type": null,
+              "score": 0
+            },
+            "telegram": {
+              "has": false,
+              "score": 0
+            },
+            "warmIntro": {
+              "has": false,
+              "score": 0
+            }
+          },
+          "recommendations": [
+            "PRIORITY: Find verified email address via Hunter.io or LinkedIn",
+            "Find personal LinkedIn profile for warm outreach",
+            "Limited contact options - consider alternative channels"
+          ]
+        },
+        "readiness": {
+          "leadId": "lead_006",
+          "company": "Binance Philippines",
+          "contactName": "Kenneth Stern",
+          "score": 27,
+          "maxScore": 100,
+          "status": "NOT_READY",
+          "action": "Nurture or archive",
+          "priority": "Cold",
+          "criteria": {
+            "contactVerified": {
+              "score": 0,
+              "weight": 30,
+              "weighted": 0,
+              "met": false
+            },
+            "decisionMakerConfirmed": {
+              "score": 40,
+              "weight": 25,
+              "weighted": 10,
+              "met": false
+            },
+            "companyIntelComplete": {
+              "score": 45,
+              "weight": 20,
+              "weighted": 9,
+              "met": false
+            },
+            "outreachTimingIdentified": {
+              "score": 30,
+              "weight": 15,
+              "weighted": 5,
+              "met": false
+            },
+            "personalizationAngle": {
+              "score": 30,
+              "weight": 10,
+              "weighted": 3,
+              "met": false
+            }
+          },
+          "improvementPlan": [
+            {
+              "task": "Find verified contact channels",
+              "priority": "CRITICAL",
+              "estimatedTime": "15-30 min",
+              "actions": [
+                "Search Hunter.io for email patterns",
+                "Check LinkedIn for personal profile",
+                "Look for mutual connections",
+                "Check company website contact page"
+              ]
+            },
+            {
+              "task": "Confirm decision maker identity",
+              "priority": "HIGH",
+              "estimatedTime": "10-15 min",
+              "actions": [
+                "Verify title on LinkedIn",
+                "Check if they lead partnerships/BD",
+                "Find org chart if available",
+                "Look for recent interviews/articles"
+              ]
+            },
+            {
+              "task": "Complete company research",
+              "priority": "MEDIUM",
+              "estimatedTime": "20-30 min",
+              "actions": [
+                "Check Crunchbase for funding",
+                "Review recent news",
+                "Analyze competitive landscape",
+                "Identify partnership opportunities"
+              ]
+            },
+            {
+              "task": "Identify optimal outreach timing",
+              "priority": "MEDIUM",
+              "estimatedTime": "10 min",
+              "actions": [
+                "Check PIE for timing signals",
+                "Review contact activity patterns",
+                "Consider timezone differences",
+                "Avoid holidays/industry events"
+              ]
+            },
+            {
+              "task": "Develop personalization angle",
+              "priority": "LOW",
+              "estimatedTime": "10-15 min",
+              "actions": [
+                "Find recent company news",
+                "Check contact social media",
+                "Look for shared connections",
+                "Reference recent achievements"
+              ]
+            }
+          ],
+          "timeToReady": {
+            "minutes": 83,
+            "display": "~1.4 hours",
+            "category": "long"
+          },
+          "readyForHandoff": false,
+          "scoredAt": "2026-02-18T10:52:15.101Z",
+          "version": "1.0.0"
+        },
+        "pie_intel": {
+          "signal_type": "regulatory_challenge",
+          "signal_strength": 0.5,
+          "optimal_time": null,
+          "recent_news": "Kenneth Stern left in Nov 2023, need new contact",
+          "partnership_angles": [],
+          "personalization_hook": null
+        },
+        "enriched_at": "2026-02-18T10:52:15.101Z",
+        "enrichment_version": "1.0.0"
+      }
+    },
+    {
+      "id": "lead_007",
+      "company": "Maya",
+      "contact_name": "Shailesh Baidwan",
+      "title": "Group President & Co-Founder",
+      "email": "shailesh.baidwan@maya.ph",
+      "email_verified": false,
+      "linkedin": "https://ph.linkedin.com/in/shaileshbaidwan",
+      "linkedin_personal": "https://ph.linkedin.com/in/shaileshbaidwan",
+      "twitter": null,
+      "phone": null,
+      "telegram": null,
+      "status": "new",
+      "priority": "P0",
+      "notes": "Digital banking and payments super app. Formerly PayMaya. Licensed VASP by BSP. Maya Bank co-founder. IIM Bangalore alum. Driving financial inclusion in PH.",
+      "research_sources": [
+        "https://ph.linkedin.com/in/shaileshbaidwan",
+        "https://www.maya.ph",
+        "https://www.theasianbanker.com/press-releases/maya-redefines-banking-with-record-growth-in-2024"
+      ],
+      "last_researched": "2026-02-18",
+      "company_domain": "maya.com",
+      "email_patterns": null,
+      "enrichment": {
+        "accessibility": {
+          "score": 35,
+          "rawScore": 35,
+          "seniorityMultiplier": 1,
+          "seniorityLevel": "founder",
+          "channelsAvailable": 2,
+          "channels": [
+            "email_unverified",
+            "linkedin_personal"
+          ],
+          "details": {
+            "email": {
+              "has": true,
+              "verified": false,
+              "score": 15
+            },
+            "linkedin": {
+              "has": true,
+              "type": "personal",
+              "score": 20
+            },
+            "twitter": {
+              "has": false,
+              "active": false,
+              "score": 0
+            },
+            "phone": {
+              "has": false,
+              "type": null,
+              "score": 0
+            },
+            "telegram": {
+              "has": false,
+              "score": 0
+            },
+            "warmIntro": {
+              "has": false,
+              "score": 0
+            }
+          },
+          "recommendations": [
+            "Verify email address using Hunter.io or similar service",
+            "Limited contact options - consider alternative channels"
+          ]
+        },
+        "readiness": {
+          "leadId": "lead_007",
+          "company": "Maya",
+          "contactName": "Shailesh Baidwan",
+          "score": 67,
+          "maxScore": 100,
+          "status": "NEEDS_MINOR_WORK",
+          "action": "Quick research then handoff",
+          "priority": "P2",
+          "criteria": {
+            "contactVerified": {
+              "score": 35,
+              "weight": 30,
+              "weighted": 11,
+              "met": false
+            },
+            "decisionMakerConfirmed": {
+              "score": 100,
+              "weight": 25,
+              "weighted": 25,
+              "met": true
+            },
+            "companyIntelComplete": {
+              "score": 45,
+              "weight": 20,
+              "weighted": 9,
+              "met": false
+            },
+            "outreachTimingIdentified": {
+              "score": 100,
+              "weight": 15,
+              "weighted": 15,
+              "met": true
+            },
+            "personalizationAngle": {
+              "score": 70,
+              "weight": 10,
+              "weighted": 7,
+              "met": true
+            }
+          },
+          "improvementPlan": [
+            {
+              "task": "Find verified contact channels",
+              "priority": "CRITICAL",
+              "estimatedTime": "15-30 min",
+              "actions": [
+                "Search Hunter.io for email patterns",
+                "Check LinkedIn for personal profile",
+                "Look for mutual connections",
+                "Check company website contact page"
+              ]
+            },
+            {
+              "task": "Complete company research",
+              "priority": "MEDIUM",
+              "estimatedTime": "20-30 min",
+              "actions": [
+                "Check Crunchbase for funding",
+                "Review recent news",
+                "Analyze competitive landscape",
+                "Identify partnership opportunities"
+              ]
+            }
+          ],
+          "timeToReady": {
+            "minutes": 48,
+            "display": "~1 hour",
+            "category": "medium"
+          },
+          "readyForHandoff": false,
+          "scoredAt": "2026-02-18T10:52:15.101Z",
+          "version": "1.0.0"
+        },
+        "pie_intel": {
+          "signal_type": "growth",
+          "signal_strength": 0.9,
+          "optimal_time": "Monday 9:00 AM PHT",
+          "recent_news": "Record growth in 2024, profitable ahead of target",
+          "partnership_angles": [
+            "Digital banking integration",
+            "Crypto payments",
+            "80M user ecosystem"
+          ],
+          "personalization_hook": "Congratulations on profitability ahead of target"
+        },
+        "enriched_at": "2026-02-18T10:52:15.101Z",
+        "enrichment_version": "1.0.0"
+      }
+    },
+    {
+      "id": "lead_008",
+      "company": "Tala Philippines",
+      "contact_name": "Shivani Siroya",
+      "title": "Founder & CEO",
+      "email": "shivani@tala.co",
+      "email_verified": false,
+      "linkedin": "https://www.linkedin.com/in/shivanisiroya",
+      "linkedin_personal": "https://www.linkedin.com/in/shivanisiroya",
+      "twitter": null,
+      "phone": null,
+      "telegram": null,
+      "status": "new",
+      "priority": "P1",
+      "notes": "Global fintech for underserved. $350M+ raised. Operating in PH, Kenya, Mexico, India. Santa Monica based. Former UN analyst. Echoing Green fellow.",
+      "research_sources": [
+        "https://www.linkedin.com/in/shivanisiroya",
+        "https://tala.co/about/",
+        "https://www.weforum.org/people/shivani-siroya/"
+      ],
+      "last_researched": "2026-02-18",
+      "company_domain": "talaphilippines.com",
+      "email_patterns": null,
+      "enrichment": {
+        "accessibility": {
+          "score": 35,
+          "rawScore": 35,
+          "seniorityMultiplier": 1,
+          "seniorityLevel": "ceo",
+          "channelsAvailable": 2,
+          "channels": [
+            "email_unverified",
+            "linkedin_personal"
+          ],
+          "details": {
+            "email": {
+              "has": true,
+              "verified": false,
+              "score": 15
+            },
+            "linkedin": {
+              "has": true,
+              "type": "personal",
+              "score": 20
+            },
+            "twitter": {
+              "has": false,
+              "active": false,
+              "score": 0
+            },
+            "phone": {
+              "has": false,
+              "type": null,
+              "score": 0
+            },
+            "telegram": {
+              "has": false,
+              "score": 0
+            },
+            "warmIntro": {
+              "has": false,
+              "score": 0
+            }
+          },
+          "recommendations": [
+            "Verify email address using Hunter.io or similar service",
+            "Limited contact options - consider alternative channels"
+          ]
+        },
+        "readiness": {
+          "leadId": "lead_008",
+          "company": "Tala Philippines",
+          "contactName": "Shivani Siroya",
+          "score": 67,
+          "maxScore": 100,
+          "status": "NEEDS_MINOR_WORK",
+          "action": "Quick research then handoff",
+          "priority": "P2",
+          "criteria": {
+            "contactVerified": {
+              "score": 35,
+              "weight": 30,
+              "weighted": 11,
+              "met": false
+            },
+            "decisionMakerConfirmed": {
+              "score": 100,
+              "weight": 25,
+              "weighted": 25,
+              "met": true
+            },
+            "companyIntelComplete": {
+              "score": 45,
+              "weight": 20,
+              "weighted": 9,
+              "met": false
+            },
+            "outreachTimingIdentified": {
+              "score": 100,
+              "weight": 15,
+              "weighted": 15,
+              "met": true
+            },
+            "personalizationAngle": {
+              "score": 70,
+              "weight": 10,
+              "weighted": 7,
+              "met": true
+            }
+          },
+          "improvementPlan": [
+            {
+              "task": "Find verified contact channels",
+              "priority": "CRITICAL",
+              "estimatedTime": "15-30 min",
+              "actions": [
+                "Search Hunter.io for email patterns",
+                "Check LinkedIn for personal profile",
+                "Look for mutual connections",
+                "Check company website contact page"
+              ]
+            },
+            {
+              "task": "Complete company research",
+              "priority": "MEDIUM",
+              "estimatedTime": "20-30 min",
+              "actions": [
+                "Check Crunchbase for funding",
+                "Review recent news",
+                "Analyze competitive landscape",
+                "Identify partnership opportunities"
+              ]
+            }
+          ],
+          "timeToReady": {
+            "minutes": 48,
+            "display": "~1 hour",
+            "category": "medium"
+          },
+          "readyForHandoff": false,
+          "scoredAt": "2026-02-18T10:52:15.101Z",
+          "version": "1.0.0"
+        },
+        "pie_intel": {
+          "signal_type": "funding",
+          "signal_strength": 0.85,
+          "optimal_time": "Wednesday 11:00 AM PHT",
+          "recent_news": "$350M+ raised, expanding globally",
+          "partnership_angles": [
+            "Underserved market lending",
+            "Cross-border loans",
+            "Financial inclusion"
+          ],
+          "personalization_hook": "Impressive mission for financial inclusion"
+        },
+        "enriched_at": "2026-02-18T10:52:15.101Z",
+        "enrichment_version": "1.0.0"
+      }
+    },
+    {
+      "id": "lead_009",
+      "company": "PayMongo",
+      "contact_name": "Jojo Malolos",
+      "title": "CEO",
+      "email": "jojo@paymongo.com",
+      "email_verified": false,
+      "linkedin": "https://ph.linkedin.com/in/jojo-malolos",
+      "linkedin_personal": "https://ph.linkedin.com/in/jojo-malolos",
+      "twitter": null,
+      "phone": "+63 2 7623 1545",
+      "telegram": null,
+      "status": "new",
+      "priority": "P1",
+      "notes": "Payment gateway for PH businesses. Former Smart Money team member. YCombinator alum. Fastest growing online payment platform in PH.",
+      "research_sources": [
+        "https://www.paymongo.com/about",
+        "https://www.crunchbase.com/organization/paymongo",
+        "https://ph.linkedin.com/in/jojo-malolos"
+      ],
+      "last_researched": "2026-02-18",
+      "company_domain": "paymongo.com",
+      "email_patterns": null,
+      "enrichment": {
+        "accessibility": {
+          "score": 50,
+          "rawScore": 50,
+          "seniorityMultiplier": 1,
+          "seniorityLevel": "ceo",
+          "channelsAvailable": 3,
+          "channels": [
+            "email_unverified",
+            "linkedin_personal",
+            "phone"
+          ],
+          "details": {
+            "email": {
+              "has": true,
+              "verified": false,
+              "score": 15
+            },
+            "linkedin": {
+              "has": true,
+              "type": "personal",
+              "score": 20
+            },
+            "twitter": {
+              "has": false,
+              "active": false,
+              "score": 0
+            },
+            "phone": {
+              "has": true,
+              "type": "unknown",
+              "score": 15
+            },
+            "telegram": {
+              "has": false,
+              "score": 0
+            },
+            "warmIntro": {
+              "has": false,
+              "score": 0
+            }
+          },
+          "recommendations": [
+            "Verify email address using Hunter.io or similar service",
+            "Limited contact options - consider alternative channels"
+          ]
+        },
+        "readiness": {
+          "leadId": "lead_009",
+          "company": "PayMongo",
+          "contactName": "Jojo Malolos",
+          "score": 71,
+          "maxScore": 100,
+          "status": "NEEDS_MINOR_WORK",
+          "action": "Quick research then handoff",
+          "priority": "P2",
+          "criteria": {
+            "contactVerified": {
+              "score": 50,
+              "weight": 30,
+              "weighted": 15,
+              "met": true
+            },
+            "decisionMakerConfirmed": {
+              "score": 100,
+              "weight": 25,
+              "weighted": 25,
+              "met": true
+            },
+            "companyIntelComplete": {
+              "score": 45,
+              "weight": 20,
+              "weighted": 9,
+              "met": false
+            },
+            "outreachTimingIdentified": {
+              "score": 100,
+              "weight": 15,
+              "weighted": 15,
+              "met": true
+            },
+            "personalizationAngle": {
+              "score": 70,
+              "weight": 10,
+              "weighted": 7,
+              "met": true
+            }
+          },
+          "improvementPlan": [
+            {
+              "task": "Complete company research",
+              "priority": "MEDIUM",
+              "estimatedTime": "20-30 min",
+              "actions": [
+                "Check Crunchbase for funding",
+                "Review recent news",
+                "Analyze competitive landscape",
+                "Identify partnership opportunities"
+              ]
+            }
+          ],
+          "timeToReady": {
+            "minutes": 25,
+            "display": "~30 minutes",
+            "category": "short"
+          },
+          "readyForHandoff": false,
+          "scoredAt": "2026-02-18T10:52:15.101Z",
+          "version": "1.0.0"
+        },
+        "pie_intel": {
+          "signal_type": "growth",
+          "signal_strength": 0.82,
+          "optimal_time": "Tuesday 2:00 PM PHT",
+          "recent_news": "Fastest growing payment platform in PH",
+          "partnership_angles": [
+            "Payment gateway integration",
+            "Merchant crypto acceptance",
+            "API partnership"
+          ],
+          "personalization_hook": "Impressive growth as YC alum"
+        },
+        "enriched_at": "2026-02-18T10:52:15.101Z",
+        "enrichment_version": "1.0.0"
+      }
+    },
+    {
+      "id": "lead_010",
+      "company": "Xendit Philippines",
+      "contact_name": "Yang Yang Zhang",
+      "title": "Managing Director - Philippines",
+      "email": null,
+      "email_verified": false,
+      "linkedin": "https://my.linkedin.com/in/yang-yang-zhang-06105053",
+      "linkedin_personal": "https://my.linkedin.com/in/yang-yang-zhang-06105053",
+      "twitter": null,
+      "phone": null,
+      "telegram": null,
+      "status": "new",
+      "priority": "P1",
+      "notes": "Southeast Asia payment solutions. Managing Director for Philippines operations. Women in Fintech finalist. Also Chief Innovation Officer at Xendit Group.",
+      "research_sources": [
+        "https://my.linkedin.com/in/yang-yang-zhang-06105053",
+        "https://www.rappler.com/business/business-sense-episode-xendit-philippines-managing-director-yang-yang-zhang/"
+      ],
+      "last_researched": "2026-02-18",
+      "company_domain": "xenditphilippines.com",
+      "email_patterns": [
+        "yang@xenditphilippines.com",
+        "yang.yang zhang@xenditphilippines.com",
+        "yangyang zhang@xenditphilippines.com",
+        "yyang zhang@xenditphilippines.com",
+        "yang_yang zhang@xenditphilippines.com",
+        "yang-yang zhang@xenditphilippines.com",
+        "yang zhang@xenditphilippines.com",
+        "yangy@xenditphilippines.com"
+      ],
+      "enrichment": {
+        "accessibility": {
+          "score": 19,
+          "rawScore": 20,
+          "seniorityMultiplier": 0.95,
+          "seniorityLevel": "c-level",
+          "channelsAvailable": 1,
+          "channels": [
+            "linkedin_personal"
+          ],
+          "details": {
+            "email": {
+              "has": false,
+              "verified": false,
+              "score": 0
+            },
+            "linkedin": {
+              "has": true,
+              "type": "personal",
+              "score": 20
+            },
+            "twitter": {
+              "has": false,
+              "active": false,
+              "score": 0
+            },
+            "phone": {
+              "has": false,
+              "type": null,
+              "score": 0
+            },
+            "telegram": {
+              "has": false,
+              "score": 0
+            },
+            "warmIntro": {
+              "has": false,
+              "score": 0
+            }
+          },
+          "recommendations": [
+            "PRIORITY: Find verified email address via Hunter.io or LinkedIn",
+            "Limited contact options - consider alternative channels"
+          ]
+        },
+        "readiness": {
+          "leadId": "lead_010",
+          "company": "Xendit Philippines",
+          "contactName": "Yang Yang Zhang",
+          "score": 62,
+          "maxScore": 100,
+          "status": "NEEDS_MINOR_WORK",
+          "action": "Quick research then handoff",
+          "priority": "P2",
+          "criteria": {
+            "contactVerified": {
+              "score": 19,
+              "weight": 30,
+              "weighted": 6,
+              "met": false
+            },
+            "decisionMakerConfirmed": {
+              "score": 100,
+              "weight": 25,
+              "weighted": 25,
+              "met": true
+            },
+            "companyIntelComplete": {
+              "score": 45,
+              "weight": 20,
+              "weighted": 9,
+              "met": false
+            },
+            "outreachTimingIdentified": {
+              "score": 100,
+              "weight": 15,
+              "weighted": 15,
+              "met": true
+            },
+            "personalizationAngle": {
+              "score": 70,
+              "weight": 10,
+              "weighted": 7,
+              "met": true
+            }
+          },
+          "improvementPlan": [
+            {
+              "task": "Find verified contact channels",
+              "priority": "CRITICAL",
+              "estimatedTime": "15-30 min",
+              "actions": [
+                "Search Hunter.io for email patterns",
+                "Check LinkedIn for personal profile",
+                "Look for mutual connections",
+                "Check company website contact page"
+              ]
+            },
+            {
+              "task": "Complete company research",
+              "priority": "MEDIUM",
+              "estimatedTime": "20-30 min",
+              "actions": [
+                "Check Crunchbase for funding",
+                "Review recent news",
+                "Analyze competitive landscape",
+                "Identify partnership opportunities"
+              ]
+            }
+          ],
+          "timeToReady": {
+            "minutes": 48,
+            "display": "~1 hour",
+            "category": "medium"
+          },
+          "readyForHandoff": false,
+          "scoredAt": "2026-02-18T10:52:15.102Z",
+          "version": "1.0.0"
+        },
+        "pie_intel": {
+          "signal_type": "expansion",
+          "signal_strength": 0.78,
+          "optimal_time": "Thursday 10:00 AM PHT",
+          "recent_news": "Managing Philippines operations for Xendit",
+          "partnership_angles": [
+            "SEA payment rails",
+            "Cross-border settlement",
+            "B2B payments"
+          ],
+          "personalization_hook": "Interested in your Philippines expansion"
+        },
+        "enriched_at": "2026-02-18T10:52:15.102Z",
+        "enrichment_version": "1.0.0"
+      }
+    },
+    {
+      "id": "lead_011",
+      "company": "Xendit Group",
+      "contact_name": "Moses Lo",
+      "title": "CEO & Co-Founder",
+      "email": "moses@xendit.co",
+      "email_verified": false,
+      "linkedin": "https://www.linkedin.com/in/moseslo",
+      "linkedin_personal": "https://www.linkedin.com/in/moseslo",
+      "twitter": null,
+      "phone": "+61 422 167 859",
+      "telegram": null,
+      "status": "new",
+      "priority": "P0",
+      "notes": "Payment infrastructure across SEA. YCombinator alum. Forbes 30 Under 30. UNSW alum. Expanding to Philippines 2020. HQ in Singapore.",
+      "research_sources": [
+        "https://www.linkedin.com/in/moseslo",
+        "https://www.xendit.co/en/company/",
+        "https://www.scalingtoday.com/post/moses-lo-xendit"
+      ],
+      "last_researched": "2026-02-18",
+      "company_domain": "xenditgroup.com",
+      "email_patterns": null,
+      "enrichment": {
+        "accessibility": {
+          "score": 50,
+          "rawScore": 50,
+          "seniorityMultiplier": 1,
+          "seniorityLevel": "ceo",
+          "channelsAvailable": 3,
+          "channels": [
+            "email_unverified",
+            "linkedin_personal",
+            "phone"
+          ],
+          "details": {
+            "email": {
+              "has": true,
+              "verified": false,
+              "score": 15
+            },
+            "linkedin": {
+              "has": true,
+              "type": "personal",
+              "score": 20
+            },
+            "twitter": {
+              "has": false,
+              "active": false,
+              "score": 0
+            },
+            "phone": {
+              "has": true,
+              "type": "unknown",
+              "score": 15
+            },
+            "telegram": {
+              "has": false,
+              "score": 0
+            },
+            "warmIntro": {
+              "has": false,
+              "score": 0
+            }
+          },
+          "recommendations": [
+            "Verify email address using Hunter.io or similar service",
+            "Limited contact options - consider alternative channels"
+          ]
+        },
+        "readiness": {
+          "leadId": "lead_011",
+          "company": "Xendit Group",
+          "contactName": "Moses Lo",
+          "score": 71,
+          "maxScore": 100,
+          "status": "NEEDS_MINOR_WORK",
+          "action": "Quick research then handoff",
+          "priority": "P2",
+          "criteria": {
+            "contactVerified": {
+              "score": 50,
+              "weight": 30,
+              "weighted": 15,
+              "met": true
+            },
+            "decisionMakerConfirmed": {
+              "score": 100,
+              "weight": 25,
+              "weighted": 25,
+              "met": true
+            },
+            "companyIntelComplete": {
+              "score": 45,
+              "weight": 20,
+              "weighted": 9,
+              "met": false
+            },
+            "outreachTimingIdentified": {
+              "score": 100,
+              "weight": 15,
+              "weighted": 15,
+              "met": true
+            },
+            "personalizationAngle": {
+              "score": 70,
+              "weight": 10,
+              "weighted": 7,
+              "met": true
+            }
+          },
+          "improvementPlan": [
+            {
+              "task": "Complete company research",
+              "priority": "MEDIUM",
+              "estimatedTime": "20-30 min",
+              "actions": [
+                "Check Crunchbase for funding",
+                "Review recent news",
+                "Analyze competitive landscape",
+                "Identify partnership opportunities"
+              ]
+            }
+          ],
+          "timeToReady": {
+            "minutes": 25,
+            "display": "~30 minutes",
+            "category": "short"
+          },
+          "readyForHandoff": false,
+          "scoredAt": "2026-02-18T10:52:15.102Z",
+          "version": "1.0.0"
+        },
+        "pie_intel": {
+          "signal_type": "growth",
+          "signal_strength": 0.88,
+          "optimal_time": "Monday 11:00 AM PHT",
+          "recent_news": "YCombinator alum, Forbes 30 Under 30",
+          "partnership_angles": [
+            "SEA expansion",
+            "Payment infrastructure",
+            "Crypto on/off ramps"
+          ],
+          "personalization_hook": "Congratulations on Xendit's growth across SEA"
+        },
+        "enriched_at": "2026-02-18T10:52:15.102Z",
+        "enrichment_version": "1.0.0"
+      }
+    },
+    {
+      "id": "lead_012",
+      "company": "Angkas",
+      "contact_name": "George Royeca",
+      "title": "CEO",
+      "email": "george@angkas.com",
+      "email_verified": false,
+      "linkedin": "https://ph.linkedin.com/in/george-royeca-b3276b34",
+      "linkedin_personal": "https://ph.linkedin.com/in/george-royeca-b3276b34",
+      "twitter": null,
+      "phone": "+63 998 996 4527",
+      "telegram": null,
+      "status": "new",
+      "priority": "P2",
+      "notes": "Leading motorcycle taxi app in Philippines. Husband of co-founder Angeline Tham. Working with DOTr on regulations. Fintech Philippines Association board.",
+      "research_sources": [
+        "https://ph.linkedin.com/in/george-royeca-b3276b34",
+        "https://www.tatlerasia.com/people/george-royeca"
+      ],
+      "last_researched": "2026-02-18",
+      "company_domain": "angkas.com",
+      "email_patterns": null,
+      "enrichment": {
+        "accessibility": {
+          "score": 50,
+          "rawScore": 50,
+          "seniorityMultiplier": 1,
+          "seniorityLevel": "ceo",
+          "channelsAvailable": 3,
+          "channels": [
+            "email_unverified",
+            "linkedin_personal",
+            "phone"
+          ],
+          "details": {
+            "email": {
+              "has": true,
+              "verified": false,
+              "score": 15
+            },
+            "linkedin": {
+              "has": true,
+              "type": "personal",
+              "score": 20
+            },
+            "twitter": {
+              "has": false,
+              "active": false,
+              "score": 0
+            },
+            "phone": {
+              "has": true,
+              "type": "unknown",
+              "score": 15
+            },
+            "telegram": {
+              "has": false,
+              "score": 0
+            },
+            "warmIntro": {
+              "has": false,
+              "score": 0
+            }
+          },
+          "recommendations": [
+            "Verify email address using Hunter.io or similar service",
+            "Limited contact options - consider alternative channels"
+          ]
+        },
+        "readiness": {
+          "leadId": "lead_012",
+          "company": "Angkas",
+          "contactName": "George Royeca",
+          "score": 71,
+          "maxScore": 100,
+          "status": "NEEDS_MINOR_WORK",
+          "action": "Quick research then handoff",
+          "priority": "P2",
+          "criteria": {
+            "contactVerified": {
+              "score": 50,
+              "weight": 30,
+              "weighted": 15,
+              "met": true
+            },
+            "decisionMakerConfirmed": {
+              "score": 100,
+              "weight": 25,
+              "weighted": 25,
+              "met": true
+            },
+            "companyIntelComplete": {
+              "score": 45,
+              "weight": 20,
+              "weighted": 9,
+              "met": false
+            },
+            "outreachTimingIdentified": {
+              "score": 100,
+              "weight": 15,
+              "weighted": 15,
+              "met": true
+            },
+            "personalizationAngle": {
+              "score": 70,
+              "weight": 10,
+              "weighted": 7,
+              "met": true
+            }
+          },
+          "improvementPlan": [
+            {
+              "task": "Complete company research",
+              "priority": "MEDIUM",
+              "estimatedTime": "20-30 min",
+              "actions": [
+                "Check Crunchbase for funding",
+                "Review recent news",
+                "Analyze competitive landscape",
+                "Identify partnership opportunities"
+              ]
+            }
+          ],
+          "timeToReady": {
+            "minutes": 25,
+            "display": "~30 minutes",
+            "category": "short"
+          },
+          "readyForHandoff": false,
+          "scoredAt": "2026-02-18T10:52:15.102Z",
+          "version": "1.0.0"
+        },
+        "pie_intel": {
+          "signal_type": "regulatory_progress",
+          "signal_strength": 0.65,
+          "optimal_time": "Friday 2:00 PM PHT",
+          "recent_news": "Working with DOTr on motorcycle taxi regulations",
+          "partnership_angles": [
+            "Driver payment solutions",
+            "Fintech integration",
+            "Mobile wallet partnership"
+          ],
+          "personalization_hook": "Impressive work with DOTr on regulations"
+        },
+        "enriched_at": "2026-02-18T10:52:15.102Z",
+        "enrichment_version": "1.0.0"
+      }
+    },
+    {
+      "id": "lead_013",
+      "company": "GoTyme Bank",
+      "contact_name": "Albert Tinio",
+      "title": "Co-CEO & Co-Founder",
+      "email": "albert.tinio@gotyme.com.ph",
+      "email_verified": false,
+      "linkedin": "https://ph.linkedin.com/in/alberttinio",
+      "linkedin_personal": "https://ph.linkedin.com/in/alberttinio",
+      "twitter": null,
+      "phone": null,
+      "telegram": null,
+      "status": "new",
+      "priority": "P1",
+      "notes": "Digital bank with physical kiosks. Partnership with Robinsons Group. Former Robinsons Bank VP. Oxford Saïd Business School. Fintech PH Association Vice Chairman.",
+      "research_sources": [
+        "https://ph.linkedin.com/in/alberttinio",
+        "https://www.gotyme.com.ph",
+        "https://fintechmagazine.com/company-reports/gotyme-bank-bringing-financial-inclusion-to-the-philippines"
+      ],
+      "last_researched": "2026-02-18",
+      "company_domain": "gotymebank.com",
+      "email_patterns": null,
+      "enrichment": {
+        "accessibility": {
+          "score": 35,
+          "rawScore": 35,
+          "seniorityMultiplier": 1,
+          "seniorityLevel": "ceo",
+          "channelsAvailable": 2,
+          "channels": [
+            "email_unverified",
+            "linkedin_personal"
+          ],
+          "details": {
+            "email": {
+              "has": true,
+              "verified": false,
+              "score": 15
+            },
+            "linkedin": {
+              "has": true,
+              "type": "personal",
+              "score": 20
+            },
+            "twitter": {
+              "has": false,
+              "active": false,
+              "score": 0
+            },
+            "phone": {
+              "has": false,
+              "type": null,
+              "score": 0
+            },
+            "telegram": {
+              "has": false,
+              "score": 0
+            },
+            "warmIntro": {
+              "has": false,
+              "score": 0
+            }
+          },
+          "recommendations": [
+            "Verify email address using Hunter.io or similar service",
+            "Limited contact options - consider alternative channels"
+          ]
+        },
+        "readiness": {
+          "leadId": "lead_013",
+          "company": "GoTyme Bank",
+          "contactName": "Albert Tinio",
+          "score": 67,
+          "maxScore": 100,
+          "status": "NEEDS_MINOR_WORK",
+          "action": "Quick research then handoff",
+          "priority": "P2",
+          "criteria": {
+            "contactVerified": {
+              "score": 35,
+              "weight": 30,
+              "weighted": 11,
+              "met": false
+            },
+            "decisionMakerConfirmed": {
+              "score": 100,
+              "weight": 25,
+              "weighted": 25,
+              "met": true
+            },
+            "companyIntelComplete": {
+              "score": 45,
+              "weight": 20,
+              "weighted": 9,
+              "met": false
+            },
+            "outreachTimingIdentified": {
+              "score": 100,
+              "weight": 15,
+              "weighted": 15,
+              "met": true
+            },
+            "personalizationAngle": {
+              "score": 70,
+              "weight": 10,
+              "weighted": 7,
+              "met": true
+            }
+          },
+          "improvementPlan": [
+            {
+              "task": "Find verified contact channels",
+              "priority": "CRITICAL",
+              "estimatedTime": "15-30 min",
+              "actions": [
+                "Search Hunter.io for email patterns",
+                "Check LinkedIn for personal profile",
+                "Look for mutual connections",
+                "Check company website contact page"
+              ]
+            },
+            {
+              "task": "Complete company research",
+              "priority": "MEDIUM",
+              "estimatedTime": "20-30 min",
+              "actions": [
+                "Check Crunchbase for funding",
+                "Review recent news",
+                "Analyze competitive landscape",
+                "Identify partnership opportunities"
+              ]
+            }
+          ],
+          "timeToReady": {
+            "minutes": 48,
+            "display": "~1 hour",
+            "category": "medium"
+          },
+          "readyForHandoff": false,
+          "scoredAt": "2026-02-18T10:52:15.102Z",
+          "version": "1.0.0"
+        },
+        "pie_intel": {
+          "signal_type": "growth",
+          "signal_strength": 0.8,
+          "optimal_time": "Wednesday 9:00 AM PHT",
+          "recent_news": "Digital bank with physical kiosks, Robinsons partnership",
+          "partnership_angles": [
+            "Banking integration",
+            "Crypto custody",
+            "Retail on/off ramps"
+          ],
+          "personalization_hook": "Innovative approach with physical kiosks"
+        },
+        "enriched_at": "2026-02-18T10:52:15.102Z",
+        "enrichment_version": "1.0.0"
+      }
+    },
+    {
+      "id": "lead_014",
+      "company": "Dragonpay",
+      "contact_name": "Robertson Chiang",
+      "title": "Founder, CEO & CTO",
+      "email": "robertson.chiang@dragonpay.ph",
+      "email_verified": false,
+      "linkedin": "https://ph.linkedin.com/in/robertson-chiang",
+      "linkedin_personal": "https://ph.linkedin.com/in/robertson-chiang",
+      "twitter": null,
+      "phone": null,
+      "telegram": null,
+      "status": "new",
+      "priority": "P1",
+      "notes": "Alternative payment gateway in PH. President of Fintech Philippines Association. Babson College MBA. Offers crypto payments to merchants via Triple-A partnership.",
+      "research_sources": [
+        "https://ph.linkedin.com/in/robertson-chiang",
+        "https://www.dragonpay.ph",
+        "https://www.crunchbase.com/person/robertson-chiang"
+      ],
+      "last_researched": "2026-02-18",
+      "company_domain": "dragonpay.com",
+      "email_patterns": null,
+      "enrichment": {
+        "accessibility": {
+          "score": 35,
+          "rawScore": 35,
+          "seniorityMultiplier": 1,
+          "seniorityLevel": "ceo",
+          "channelsAvailable": 2,
+          "channels": [
+            "email_unverified",
+            "linkedin_personal"
+          ],
+          "details": {
+            "email": {
+              "has": true,
+              "verified": false,
+              "score": 15
+            },
+            "linkedin": {
+              "has": true,
+              "type": "personal",
+              "score": 20
+            },
+            "twitter": {
+              "has": false,
+              "active": false,
+              "score": 0
+            },
+            "phone": {
+              "has": false,
+              "type": null,
+              "score": 0
+            },
+            "telegram": {
+              "has": false,
+              "score": 0
+            },
+            "warmIntro": {
+              "has": false,
+              "score": 0
+            }
+          },
+          "recommendations": [
+            "Verify email address using Hunter.io or similar service",
+            "Limited contact options - consider alternative channels"
+          ]
+        },
+        "readiness": {
+          "leadId": "lead_014",
+          "company": "Dragonpay",
+          "contactName": "Robertson Chiang",
+          "score": 67,
+          "maxScore": 100,
+          "status": "NEEDS_MINOR_WORK",
+          "action": "Quick research then handoff",
+          "priority": "P2",
+          "criteria": {
+            "contactVerified": {
+              "score": 35,
+              "weight": 30,
+              "weighted": 11,
+              "met": false
+            },
+            "decisionMakerConfirmed": {
+              "score": 100,
+              "weight": 25,
+              "weighted": 25,
+              "met": true
+            },
+            "companyIntelComplete": {
+              "score": 45,
+              "weight": 20,
+              "weighted": 9,
+              "met": false
+            },
+            "outreachTimingIdentified": {
+              "score": 100,
+              "weight": 15,
+              "weighted": 15,
+              "met": true
+            },
+            "personalizationAngle": {
+              "score": 70,
+              "weight": 10,
+              "weighted": 7,
+              "met": true
+            }
+          },
+          "improvementPlan": [
+            {
+              "task": "Find verified contact channels",
+              "priority": "CRITICAL",
+              "estimatedTime": "15-30 min",
+              "actions": [
+                "Search Hunter.io for email patterns",
+                "Check LinkedIn for personal profile",
+                "Look for mutual connections",
+                "Check company website contact page"
+              ]
+            },
+            {
+              "task": "Complete company research",
+              "priority": "MEDIUM",
+              "estimatedTime": "20-30 min",
+              "actions": [
+                "Check Crunchbase for funding",
+                "Review recent news",
+                "Analyze competitive landscape",
+                "Identify partnership opportunities"
+              ]
+            }
+          ],
+          "timeToReady": {
+            "minutes": 48,
+            "display": "~1 hour",
+            "category": "medium"
+          },
+          "readyForHandoff": false,
+          "scoredAt": "2026-02-18T10:52:15.102Z",
+          "version": "1.0.0"
+        },
+        "pie_intel": {
+          "signal_type": "leadership",
+          "signal_strength": 0.82,
+          "optimal_time": "Tuesday 11:00 AM PHT",
+          "recent_news": "President of Fintech Philippines Association",
+          "partnership_angles": [
+            "Industry partnership",
+            "Crypto payments",
+            "Merchant network"
+          ],
+          "personalization_hook": "Your leadership at Fintech PH Association"
+        },
+        "enriched_at": "2026-02-18T10:52:15.102Z",
+        "enrichment_version": "1.0.0"
+      }
+    },
+    {
+      "id": "lead_015",
+      "company": "Satoshi Citadel Industries (SCI)",
+      "contact_name": "John Bailon",
+      "title": "Co-Founder & CEO",
+      "email": "john@sci.ph",
+      "email_verified": false,
+      "linkedin": "https://ph.linkedin.com/in/johnbailon",
+      "linkedin_personal": "https://ph.linkedin.com/in/johnbailon",
+      "twitter": null,
+      "phone": null,
+      "telegram": null,
+      "status": "new",
+      "priority": "P1",
+      "notes": "Pioneer Bitcoin company in PH since 2014. Products: Rebit.ph, Bitbit.cash, Stanible. Tech expert and blockchain advocate. Also co-founder of Baicapture.",
+      "research_sources": [
+        "https://ph.linkedin.com/in/johnbailon",
+        "https://www.tatlerasia.com/people/john-bailon",
+        "https://medium.com/startupph-chronicles/that-bitcoin-startup-in-the-philippines-841b1c22d656"
+      ],
+      "last_researched": "2026-02-18",
+      "company_domain": "satoshicitadelindustriessci.com",
+      "email_patterns": null,
+      "enrichment": {
+        "accessibility": {
+          "score": 35,
+          "rawScore": 35,
+          "seniorityMultiplier": 1,
+          "seniorityLevel": "ceo",
+          "channelsAvailable": 2,
+          "channels": [
+            "email_unverified",
+            "linkedin_personal"
+          ],
+          "details": {
+            "email": {
+              "has": true,
+              "verified": false,
+              "score": 15
+            },
+            "linkedin": {
+              "has": true,
+              "type": "personal",
+              "score": 20
+            },
+            "twitter": {
+              "has": false,
+              "active": false,
+              "score": 0
+            },
+            "phone": {
+              "has": false,
+              "type": null,
+              "score": 0
+            },
+            "telegram": {
+              "has": false,
+              "score": 0
+            },
+            "warmIntro": {
+              "has": false,
+              "score": 0
+            }
+          },
+          "recommendations": [
+            "Verify email address using Hunter.io or similar service",
+            "Limited contact options - consider alternative channels"
+          ]
+        },
+        "readiness": {
+          "leadId": "lead_015",
+          "company": "Satoshi Citadel Industries (SCI)",
+          "contactName": "John Bailon",
+          "score": 67,
+          "maxScore": 100,
+          "status": "NEEDS_MINOR_WORK",
+          "action": "Quick research then handoff",
+          "priority": "P2",
+          "criteria": {
+            "contactVerified": {
+              "score": 35,
+              "weight": 30,
+              "weighted": 11,
+              "met": false
+            },
+            "decisionMakerConfirmed": {
+              "score": 100,
+              "weight": 25,
+              "weighted": 25,
+              "met": true
+            },
+            "companyIntelComplete": {
+              "score": 45,
+              "weight": 20,
+              "weighted": 9,
+              "met": false
+            },
+            "outreachTimingIdentified": {
+              "score": 100,
+              "weight": 15,
+              "weighted": 15,
+              "met": true
+            },
+            "personalizationAngle": {
+              "score": 70,
+              "weight": 10,
+              "weighted": 7,
+              "met": true
+            }
+          },
+          "improvementPlan": [
+            {
+              "task": "Find verified contact channels",
+              "priority": "CRITICAL",
+              "estimatedTime": "15-30 min",
+              "actions": [
+                "Search Hunter.io for email patterns",
+                "Check LinkedIn for personal profile",
+                "Look for mutual connections",
+                "Check company website contact page"
+              ]
+            },
+            {
+              "task": "Complete company research",
+              "priority": "MEDIUM",
+              "estimatedTime": "20-30 min",
+              "actions": [
+                "Check Crunchbase for funding",
+                "Review recent news",
+                "Analyze competitive landscape",
+                "Identify partnership opportunities"
+              ]
+            }
+          ],
+          "timeToReady": {
+            "minutes": 48,
+            "display": "~1 hour",
+            "category": "medium"
+          },
+          "readyForHandoff": false,
+          "scoredAt": "2026-02-18T10:52:15.102Z",
+          "version": "1.0.0"
+        },
+        "pie_intel": {
+          "signal_type": "pioneer",
+          "signal_strength": 0.85,
+          "optimal_time": "Thursday 3:00 PM PHT",
+          "recent_news": "Pioneer since 2014, multiple products under SCI",
+          "partnership_angles": [
+            "Bitcoin ecosystem",
+            "Remittance partnership",
+            "Infrastructure"
+          ],
+          "personalization_hook": "Pioneer in PH Bitcoin since 2014"
+        },
+        "enriched_at": "2026-02-18T10:52:15.102Z",
+        "enrichment_version": "1.0.0"
+      }
+    },
+    {
+      "id": "lead_016",
+      "company": "GCash (Mynt)",
+      "contact_name": "Martha Sazon",
+      "title": "President & CEO",
+      "email": "martha.sazon@gcash.com",
+      "email_verified": false,
+      "linkedin": "https://ph.linkedin.com/in/marthasazon",
+      "linkedin_personal": "https://ph.linkedin.com/in/marthasazon",
+      "twitter": null,
+      "phone": "+1 772 538 6831",
+      "telegram": null,
+      "status": "new",
+      "priority": "P0",
+      "notes": "#1 Finance Super App in Philippines. 80M+ users. Globe Telecom fintech arm. Formerly headed marketing at Globe. 20+ years experience. Made GCash profitable 3 years ahead of target.",
+      "research_sources": [
+        "https://ph.linkedin.com/in/marthasazon",
+        "https://mynt.com.ph/about",
+        "https://www.theasianbanker.com/updates-and-articles/gcash-martha-sazon-we-became-profitable-three-years-ahead-of-target"
+      ],
+      "last_researched": "2026-02-18",
+      "company_domain": "gcashmynt.com",
+      "email_patterns": null,
+      "enrichment": {
+        "accessibility": {
+          "score": 50,
+          "rawScore": 50,
+          "seniorityMultiplier": 1,
+          "seniorityLevel": "ceo",
+          "channelsAvailable": 3,
+          "channels": [
+            "email_unverified",
+            "linkedin_personal",
+            "phone"
+          ],
+          "details": {
+            "email": {
+              "has": true,
+              "verified": false,
+              "score": 15
+            },
+            "linkedin": {
+              "has": true,
+              "type": "personal",
+              "score": 20
+            },
+            "twitter": {
+              "has": false,
+              "active": false,
+              "score": 0
+            },
+            "phone": {
+              "has": true,
+              "type": "unknown",
+              "score": 15
+            },
+            "telegram": {
+              "has": false,
+              "score": 0
+            },
+            "warmIntro": {
+              "has": false,
+              "score": 0
+            }
+          },
+          "recommendations": [
+            "Verify email address using Hunter.io or similar service",
+            "Limited contact options - consider alternative channels"
+          ]
+        },
+        "readiness": {
+          "leadId": "lead_016",
+          "company": "GCash (Mynt)",
+          "contactName": "Martha Sazon",
+          "score": 71,
+          "maxScore": 100,
+          "status": "NEEDS_MINOR_WORK",
+          "action": "Quick research then handoff",
+          "priority": "P2",
+          "criteria": {
+            "contactVerified": {
+              "score": 50,
+              "weight": 30,
+              "weighted": 15,
+              "met": true
+            },
+            "decisionMakerConfirmed": {
+              "score": 100,
+              "weight": 25,
+              "weighted": 25,
+              "met": true
+            },
+            "companyIntelComplete": {
+              "score": 45,
+              "weight": 20,
+              "weighted": 9,
+              "met": false
+            },
+            "outreachTimingIdentified": {
+              "score": 100,
+              "weight": 15,
+              "weighted": 15,
+              "met": true
+            },
+            "personalizationAngle": {
+              "score": 70,
+              "weight": 10,
+              "weighted": 7,
+              "met": true
+            }
+          },
+          "improvementPlan": [
+            {
+              "task": "Complete company research",
+              "priority": "MEDIUM",
+              "estimatedTime": "20-30 min",
+              "actions": [
+                "Check Crunchbase for funding",
+                "Review recent news",
+                "Analyze competitive landscape",
+                "Identify partnership opportunities"
+              ]
+            }
+          ],
+          "timeToReady": {
+            "minutes": 25,
+            "display": "~30 minutes",
+            "category": "short"
+          },
+          "readyForHandoff": false,
+          "scoredAt": "2026-02-18T10:52:15.102Z",
+          "version": "1.0.0"
+        },
+        "pie_intel": {
+          "signal_type": "growth",
+          "signal_strength": 0.95,
+          "optimal_time": "Monday 10:00 AM PHT",
+          "recent_news": "80M+ users, #1 Finance Super App, profitable",
+          "partnership_angles": [
+            "Super app integration",
+            "Crypto services",
+            "Massive user base"
+          ],
+          "personalization_hook": "Congratulations on 80M users and profitability"
+        },
+        "enriched_at": "2026-02-18T10:52:15.102Z",
+        "enrichment_version": "1.0.0"
+      }
+    },
+    {
+      "id": "lead_017",
+      "company": "Moneybees Forex",
+      "contact_name": "TBD",
+      "title": "CEO",
+      "email": null,
+      "email_verified": false,
+      "linkedin": null,
+      "linkedin_personal": null,
+      "twitter": null,
+      "phone": null,
+      "telegram": null,
+      "status": "new",
+      "priority": "P2",
+      "notes": "BSP-licensed virtual currency exchange. Physical crypto exchange locations in malls across PH. Need to find CEO contact.",
+      "research_sources": [
+        "https://bitpinas.com/feature/list-licensed-virtual-currency-exchanges-philippines/"
+      ],
+      "last_researched": "2026-02-18",
+      "company_domain": "moneybeesforex.com",
+      "email_patterns": [
+        "tbd@moneybeesforex.com",
+        "tbd.@moneybeesforex.com",
+        "t@moneybeesforex.com",
+        "tbd_@moneybeesforex.com",
+        "tbd-@moneybeesforex.com",
+        "@moneybeesforex.com"
+      ],
+      "enrichment": {
+        "accessibility": {
+          "score": 0,
+          "rawScore": 0,
+          "seniorityMultiplier": 1,
+          "seniorityLevel": "ceo",
+          "channelsAvailable": 0,
+          "channels": [],
+          "details": {
+            "email": {
+              "has": false,
+              "verified": false,
+              "score": 0
+            },
+            "linkedin": {
+              "has": false,
+              "type": null,
+              "score": 0
+            },
+            "twitter": {
+              "has": false,
+              "active": false,
+              "score": 0
+            },
+            "phone": {
+              "has": false,
+              "type": null,
+              "score": 0
+            },
+            "telegram": {
+              "has": false,
+              "score": 0
+            },
+            "warmIntro": {
+              "has": false,
+              "score": 0
+            }
+          },
+          "recommendations": [
+            "PRIORITY: Find verified email address via Hunter.io or LinkedIn",
+            "Find personal LinkedIn profile for warm outreach",
+            "Limited contact options - consider alternative channels"
+          ]
+        },
+        "readiness": {
+          "leadId": "lead_017",
+          "company": "Moneybees Forex",
+          "contactName": "TBD",
+          "score": 42,
+          "maxScore": 100,
+          "status": "NEEDS_WORK",
+          "action": "Additional research required",
+          "priority": "P3",
+          "criteria": {
+            "contactVerified": {
+              "score": 0,
+              "weight": 30,
+              "weighted": 0,
+              "met": false
+            },
+            "decisionMakerConfirmed": {
+              "score": 100,
+              "weight": 25,
+              "weighted": 25,
+              "met": true
+            },
+            "companyIntelComplete": {
+              "score": 45,
+              "weight": 20,
+              "weighted": 9,
+              "met": false
+            },
+            "outreachTimingIdentified": {
+              "score": 30,
+              "weight": 15,
+              "weighted": 5,
+              "met": false
+            },
+            "personalizationAngle": {
+              "score": 30,
+              "weight": 10,
+              "weighted": 3,
+              "met": false
+            }
+          },
+          "improvementPlan": [
+            {
+              "task": "Find verified contact channels",
+              "priority": "CRITICAL",
+              "estimatedTime": "15-30 min",
+              "actions": [
+                "Search Hunter.io for email patterns",
+                "Check LinkedIn for personal profile",
+                "Look for mutual connections",
+                "Check company website contact page"
+              ]
+            },
+            {
+              "task": "Complete company research",
+              "priority": "MEDIUM",
+              "estimatedTime": "20-30 min",
+              "actions": [
+                "Check Crunchbase for funding",
+                "Review recent news",
+                "Analyze competitive landscape",
+                "Identify partnership opportunities"
+              ]
+            },
+            {
+              "task": "Identify optimal outreach timing",
+              "priority": "MEDIUM",
+              "estimatedTime": "10 min",
+              "actions": [
+                "Check PIE for timing signals",
+                "Review contact activity patterns",
+                "Consider timezone differences",
+                "Avoid holidays/industry events"
+              ]
+            },
+            {
+              "task": "Develop personalization angle",
+              "priority": "LOW",
+              "estimatedTime": "10-15 min",
+              "actions": [
+                "Find recent company news",
+                "Check contact social media",
+                "Look for shared connections",
+                "Reference recent achievements"
+              ]
+            }
+          ],
+          "timeToReady": {
+            "minutes": 70,
+            "display": "~1.2 hours",
+            "category": "long"
+          },
+          "readyForHandoff": false,
+          "scoredAt": "2026-02-18T10:52:15.102Z",
+          "version": "1.0.0"
+        },
+        "pie_intel": {
+          "signal_type": "regulatory",
+          "signal_strength": 0.6,
+          "optimal_time": null,
+          "recent_news": "BSP-licensed virtual currency exchange",
+          "partnership_angles": [
+            "Physical crypto exchange",
+            "Retail presence",
+            "Compliance"
+          ],
+          "personalization_hook": null
+        },
+        "enriched_at": "2026-02-18T10:52:15.102Z",
+        "enrichment_version": "1.0.0"
+      }
+    },
+    {
+      "id": "lead_018",
+      "company": "Bloom Solutions",
+      "contact_name": "Israel Keys",
+      "title": "Co-Founder",
+      "email": null,
+      "email_verified": false,
+      "linkedin": null,
+      "linkedin_personal": null,
+      "twitter": null,
+      "phone": null,
+      "telegram": null,
+      "status": "new",
+      "priority": "P2",
+      "notes": "Co-founded BloomX with Luis Buenaventura in 2015. Blockchain and crypto solutions company. Need to verify current status and contact.",
+      "research_sources": [
+        "https://fintechnews.sg/20428/fintechphilippines/top-10-fintech-startups-in-philippines-2018/"
+      ],
+      "last_researched": "2026-02-18",
+      "company_domain": "bloomsolutions.com",
+      "email_patterns": [
+        "israel@bloomsolutions.com",
+        "israel.keys@bloomsolutions.com",
+        "israelkeys@bloomsolutions.com",
+        "ikeys@bloomsolutions.com",
+        "israel_keys@bloomsolutions.com",
+        "israel-keys@bloomsolutions.com",
+        "keys@bloomsolutions.com",
+        "israelk@bloomsolutions.com"
+      ],
+      "enrichment": {
+        "accessibility": {
+          "score": 0,
+          "rawScore": 0,
+          "seniorityMultiplier": 1,
+          "seniorityLevel": "founder",
+          "channelsAvailable": 0,
+          "channels": [],
+          "details": {
+            "email": {
+              "has": false,
+              "verified": false,
+              "score": 0
+            },
+            "linkedin": {
+              "has": false,
+              "type": null,
+              "score": 0
+            },
+            "twitter": {
+              "has": false,
+              "active": false,
+              "score": 0
+            },
+            "phone": {
+              "has": false,
+              "type": null,
+              "score": 0
+            },
+            "telegram": {
+              "has": false,
+              "score": 0
+            },
+            "warmIntro": {
+              "has": false,
+              "score": 0
+            }
+          },
+          "recommendations": [
+            "PRIORITY: Find verified email address via Hunter.io or LinkedIn",
+            "Find personal LinkedIn profile for warm outreach",
+            "Limited contact options - consider alternative channels"
+          ]
+        },
+        "readiness": {
+          "leadId": "lead_018",
+          "company": "Bloom Solutions",
+          "contactName": "Israel Keys",
+          "score": 42,
+          "maxScore": 100,
+          "status": "NEEDS_WORK",
+          "action": "Additional research required",
+          "priority": "P3",
+          "criteria": {
+            "contactVerified": {
+              "score": 0,
+              "weight": 30,
+              "weighted": 0,
+              "met": false
+            },
+            "decisionMakerConfirmed": {
+              "score": 100,
+              "weight": 25,
+              "weighted": 25,
+              "met": true
+            },
+            "companyIntelComplete": {
+              "score": 45,
+              "weight": 20,
+              "weighted": 9,
+              "met": false
+            },
+            "outreachTimingIdentified": {
+              "score": 30,
+              "weight": 15,
+              "weighted": 5,
+              "met": false
+            },
+            "personalizationAngle": {
+              "score": 30,
+              "weight": 10,
+              "weighted": 3,
+              "met": false
+            }
+          },
+          "improvementPlan": [
+            {
+              "task": "Find verified contact channels",
+              "priority": "CRITICAL",
+              "estimatedTime": "15-30 min",
+              "actions": [
+                "Search Hunter.io for email patterns",
+                "Check LinkedIn for personal profile",
+                "Look for mutual connections",
+                "Check company website contact page"
+              ]
+            },
+            {
+              "task": "Complete company research",
+              "priority": "MEDIUM",
+              "estimatedTime": "20-30 min",
+              "actions": [
+                "Check Crunchbase for funding",
+                "Review recent news",
+                "Analyze competitive landscape",
+                "Identify partnership opportunities"
+              ]
+            },
+            {
+              "task": "Identify optimal outreach timing",
+              "priority": "MEDIUM",
+              "estimatedTime": "10 min",
+              "actions": [
+                "Check PIE for timing signals",
+                "Review contact activity patterns",
+                "Consider timezone differences",
+                "Avoid holidays/industry events"
+              ]
+            },
+            {
+              "task": "Develop personalization angle",
+              "priority": "LOW",
+              "estimatedTime": "10-15 min",
+              "actions": [
+                "Find recent company news",
+                "Check contact social media",
+                "Look for shared connections",
+                "Reference recent achievements"
+              ]
+            }
+          ],
+          "timeToReady": {
+            "minutes": 70,
+            "display": "~1.2 hours",
+            "category": "long"
+          },
+          "readyForHandoff": false,
+          "scoredAt": "2026-02-18T10:52:15.102Z",
+          "version": "1.0.0"
+        },
+        "pie_intel": {
+          "signal_type": "pioneer",
+          "signal_strength": 0.65,
+          "optimal_time": null,
+          "recent_news": "Co-founded BloomX in 2015",
+          "partnership_angles": [
+            "Blockchain solutions",
+            "Enterprise partnerships"
+          ],
+          "personalization_hook": null
+        },
+        "enriched_at": "2026-02-18T10:52:15.102Z",
+        "enrichment_version": "1.0.0"
+      }
+    },
+    {
+      "id": "lead_019",
+      "company": "Bitbit.cash",
+      "contact_name": "Jardine Gerodias",
+      "title": "Chairman",
+      "email": null,
+      "email_verified": false,
+      "linkedin": "https://ph.linkedin.com/in/jardinegerodias",
+      "linkedin_personal": "https://ph.linkedin.com/in/jardinegerodias",
+      "twitter": null,
+      "phone": null,
+      "telegram": null,
+      "status": "new",
+      "priority": "P2",
+      "notes": "Bitcoin wallet under SCI Ventures. Founded 2014 with Miguel Cuneta and John Bailon. Chairman and Visionary of Expedise. Serial entrepreneur.",
+      "research_sources": [
+        "https://ph.linkedin.com/in/jardinegerodias",
+        "https://tracxn.com/d/companies/bitbit/"
+      ],
+      "last_researched": "2026-02-18",
+      "company_domain": "bitbitcash.com",
+      "email_patterns": [
+        "jardine@bitbitcash.com",
+        "jardine.gerodias@bitbitcash.com",
+        "jardinegerodias@bitbitcash.com",
+        "jgerodias@bitbitcash.com",
+        "jardine_gerodias@bitbitcash.com",
+        "jardine-gerodias@bitbitcash.com",
+        "gerodias@bitbitcash.com",
+        "jardineg@bitbitcash.com"
+      ],
+      "enrichment": {
+        "accessibility": {
+          "score": 15,
+          "rawScore": 20,
+          "seniorityMultiplier": 0.75,
+          "seniorityLevel": "other",
+          "channelsAvailable": 1,
+          "channels": [
+            "linkedin_personal"
+          ],
+          "details": {
+            "email": {
+              "has": false,
+              "verified": false,
+              "score": 0
+            },
+            "linkedin": {
+              "has": true,
+              "type": "personal",
+              "score": 20
+            },
+            "twitter": {
+              "has": false,
+              "active": false,
+              "score": 0
+            },
+            "phone": {
+              "has": false,
+              "type": null,
+              "score": 0
+            },
+            "telegram": {
+              "has": false,
+              "score": 0
+            },
+            "warmIntro": {
+              "has": false,
+              "score": 0
+            }
+          },
+          "recommendations": [
+            "PRIORITY: Find verified email address via Hunter.io or LinkedIn",
+            "Limited contact options - consider alternative channels"
+          ]
+        },
+        "readiness": {
+          "leadId": "lead_019",
+          "company": "Bitbit.cash",
+          "contactName": "Jardine Gerodias",
+          "score": 44,
+          "maxScore": 100,
+          "status": "NEEDS_WORK",
+          "action": "Additional research required",
+          "priority": "P3",
+          "criteria": {
+            "contactVerified": {
+              "score": 15,
+              "weight": 30,
+              "weighted": 5,
+              "met": false
+            },
+            "decisionMakerConfirmed": {
+              "score": 30,
+              "weight": 25,
+              "weighted": 8,
+              "met": false
+            },
+            "companyIntelComplete": {
+              "score": 45,
+              "weight": 20,
+              "weighted": 9,
+              "met": false
+            },
+            "outreachTimingIdentified": {
+              "score": 100,
+              "weight": 15,
+              "weighted": 15,
+              "met": true
+            },
+            "personalizationAngle": {
+              "score": 70,
+              "weight": 10,
+              "weighted": 7,
+              "met": true
+            }
+          },
+          "improvementPlan": [
+            {
+              "task": "Find verified contact channels",
+              "priority": "CRITICAL",
+              "estimatedTime": "15-30 min",
+              "actions": [
+                "Search Hunter.io for email patterns",
+                "Check LinkedIn for personal profile",
+                "Look for mutual connections",
+                "Check company website contact page"
+              ]
+            },
+            {
+              "task": "Confirm decision maker identity",
+              "priority": "HIGH",
+              "estimatedTime": "10-15 min",
+              "actions": [
+                "Verify title on LinkedIn",
+                "Check if they lead partnerships/BD",
+                "Find org chart if available",
+                "Look for recent interviews/articles"
+              ]
+            },
+            {
+              "task": "Complete company research",
+              "priority": "MEDIUM",
+              "estimatedTime": "20-30 min",
+              "actions": [
+                "Check Crunchbase for funding",
+                "Review recent news",
+                "Analyze competitive landscape",
+                "Identify partnership opportunities"
+              ]
+            }
+          ],
+          "timeToReady": {
+            "minutes": 60,
+            "display": "~1 hour",
+            "category": "medium"
+          },
+          "readyForHandoff": false,
+          "scoredAt": "2026-02-18T10:52:15.102Z",
+          "version": "1.0.0"
+        },
+        "pie_intel": {
+          "signal_type": "pioneer",
+          "signal_strength": 0.7,
+          "optimal_time": "Friday 11:00 AM PHT",
+          "recent_news": "SCI Ventures Chairman, serial entrepreneur",
+          "partnership_angles": [
+            "Bitcoin wallet integration",
+            "Advisory partnership"
+          ],
+          "personalization_hook": "Your work with SCI Ventures since 2014"
+        },
+        "enriched_at": "2026-02-18T10:52:15.102Z",
+        "enrichment_version": "1.0.0"
+      }
+    },
+    {
+      "id": "lead_020",
+      "company": "Yield Guild Games",
+      "contact_name": "Gabby Dizon",
+      "title": "Co-Founder",
+      "email": null,
+      "email_verified": false,
+      "linkedin": null,
+      "linkedin_personal": null,
+      "twitter": "https://x.com/gabusch",
+      "phone": null,
+      "telegram": null,
+      "status": "new",
+      "priority": "P1",
+      "notes": "Leading play-to-earn gaming guild. PH-based but global operations. Pioneer in GameFi. YGG token. Need to find CEO/current leadership contact.",
+      "research_sources": [
+        "https://yieldguild.io"
+      ],
+      "last_researched": "2026-02-18",
+      "company_domain": "yieldguildgames.com",
+      "email_patterns": [
+        "gabby@yieldguildgames.com",
+        "gabby.dizon@yieldguildgames.com",
+        "gabbydizon@yieldguildgames.com",
+        "gdizon@yieldguildgames.com",
+        "gabby_dizon@yieldguildgames.com",
+        "gabby-dizon@yieldguildgames.com",
+        "dizon@yieldguildgames.com",
+        "gabbyd@yieldguildgames.com"
+      ],
+      "enrichment": {
+        "accessibility": {
+          "score": 15,
+          "rawScore": 15,
+          "seniorityMultiplier": 1,
+          "seniorityLevel": "founder",
+          "channelsAvailable": 1,
+          "channels": [
+            "twitter"
+          ],
+          "details": {
+            "email": {
+              "has": false,
+              "verified": false,
+              "score": 0
+            },
+            "linkedin": {
+              "has": false,
+              "type": null,
+              "score": 0
+            },
+            "twitter": {
+              "has": true,
+              "active": false,
+              "score": 15
+            },
+            "phone": {
+              "has": false,
+              "type": null,
+              "score": 0
+            },
+            "telegram": {
+              "has": false,
+              "score": 0
+            },
+            "warmIntro": {
+              "has": false,
+              "score": 0
+            }
+          },
+          "recommendations": [
+            "PRIORITY: Find verified email address via Hunter.io or LinkedIn",
+            "Find personal LinkedIn profile for warm outreach",
+            "Limited contact options - consider alternative channels"
+          ]
+        },
+        "readiness": {
+          "leadId": "lead_020",
+          "company": "Yield Guild Games",
+          "contactName": "Gabby Dizon",
+          "score": 61,
+          "maxScore": 100,
+          "status": "NEEDS_MINOR_WORK",
+          "action": "Quick research then handoff",
+          "priority": "P2",
+          "criteria": {
+            "contactVerified": {
+              "score": 15,
+              "weight": 30,
+              "weighted": 5,
+              "met": false
+            },
+            "decisionMakerConfirmed": {
+              "score": 100,
+              "weight": 25,
+              "weighted": 25,
+              "met": true
+            },
+            "companyIntelComplete": {
+              "score": 45,
+              "weight": 20,
+              "weighted": 9,
+              "met": false
+            },
+            "outreachTimingIdentified": {
+              "score": 100,
+              "weight": 15,
+              "weighted": 15,
+              "met": true
+            },
+            "personalizationAngle": {
+              "score": 70,
+              "weight": 10,
+              "weighted": 7,
+              "met": true
+            }
+          },
+          "improvementPlan": [
+            {
+              "task": "Find verified contact channels",
+              "priority": "CRITICAL",
+              "estimatedTime": "15-30 min",
+              "actions": [
+                "Search Hunter.io for email patterns",
+                "Check LinkedIn for personal profile",
+                "Look for mutual connections",
+                "Check company website contact page"
+              ]
+            },
+            {
+              "task": "Complete company research",
+              "priority": "MEDIUM",
+              "estimatedTime": "20-30 min",
+              "actions": [
+                "Check Crunchbase for funding",
+                "Review recent news",
+                "Analyze competitive landscape",
+                "Identify partnership opportunities"
+              ]
+            }
+          ],
+          "timeToReady": {
+            "minutes": 48,
+            "display": "~1 hour",
+            "category": "medium"
+          },
+          "readyForHandoff": false,
+          "scoredAt": "2026-02-18T10:52:15.102Z",
+          "version": "1.0.0"
+        },
+        "pie_intel": {
+          "signal_type": "market_leader",
+          "signal_strength": 0.8,
+          "optimal_time": "Wednesday 4:00 PM PHT",
+          "recent_news": "Leading play-to-earn gaming guild globally",
+          "partnership_angles": [
+            "Gaming partnerships",
+            "GameFi integration",
+            "Community access"
+          ],
+          "personalization_hook": "Leading the GameFi revolution"
+        },
+        "enriched_at": "2026-02-18T10:52:15.102Z",
+        "enrichment_version": "1.0.0"
+      }
+    },
+    {
+      "id": "lead_021",
+      "company": "BreederDAO",
+      "contact_name": "Renz Chong",
+      "title": "CEO & Co-Founder",
+      "email": null,
+      "email_verified": false,
+      "linkedin": null,
+      "linkedin_personal": null,
+      "twitter": null,
+      "phone": null,
+      "telegram": null,
+      "status": "new",
+      "priority": "P2",
+      "notes": "Digital asset factory for blockchain games. PH-based. $10M+ funding. Need to verify current CEO and contact details.",
+      "research_sources": [],
+      "last_researched": "2026-02-18",
+      "company_domain": "breederdao.com",
+      "email_patterns": [
+        "renz@breederdao.com",
+        "renz.chong@breederdao.com",
+        "renzchong@breederdao.com",
+        "rchong@breederdao.com",
+        "renz_chong@breederdao.com",
+        "renz-chong@breederdao.com",
+        "chong@breederdao.com",
+        "renzc@breederdao.com"
+      ],
+      "enrichment": {
+        "accessibility": {
+          "score": 0,
+          "rawScore": 0,
+          "seniorityMultiplier": 1,
+          "seniorityLevel": "ceo",
+          "channelsAvailable": 0,
+          "channels": [],
+          "details": {
+            "email": {
+              "has": false,
+              "verified": false,
+              "score": 0
+            },
+            "linkedin": {
+              "has": false,
+              "type": null,
+              "score": 0
+            },
+            "twitter": {
+              "has": false,
+              "active": false,
+              "score": 0
+            },
+            "phone": {
+              "has": false,
+              "type": null,
+              "score": 0
+            },
+            "telegram": {
+              "has": false,
+              "score": 0
+            },
+            "warmIntro": {
+              "has": false,
+              "score": 0
+            }
+          },
+          "recommendations": [
+            "PRIORITY: Find verified email address via Hunter.io or LinkedIn",
+            "Find personal LinkedIn profile for warm outreach",
+            "Limited contact options - consider alternative channels"
+          ]
+        },
+        "readiness": {
+          "leadId": "lead_021",
+          "company": "BreederDAO",
+          "contactName": "Renz Chong",
+          "score": 42,
+          "maxScore": 100,
+          "status": "NEEDS_WORK",
+          "action": "Additional research required",
+          "priority": "P3",
+          "criteria": {
+            "contactVerified": {
+              "score": 0,
+              "weight": 30,
+              "weighted": 0,
+              "met": false
+            },
+            "decisionMakerConfirmed": {
+              "score": 100,
+              "weight": 25,
+              "weighted": 25,
+              "met": true
+            },
+            "companyIntelComplete": {
+              "score": 45,
+              "weight": 20,
+              "weighted": 9,
+              "met": false
+            },
+            "outreachTimingIdentified": {
+              "score": 30,
+              "weight": 15,
+              "weighted": 5,
+              "met": false
+            },
+            "personalizationAngle": {
+              "score": 30,
+              "weight": 10,
+              "weighted": 3,
+              "met": false
+            }
+          },
+          "improvementPlan": [
+            {
+              "task": "Find verified contact channels",
+              "priority": "CRITICAL",
+              "estimatedTime": "15-30 min",
+              "actions": [
+                "Search Hunter.io for email patterns",
+                "Check LinkedIn for personal profile",
+                "Look for mutual connections",
+                "Check company website contact page"
+              ]
+            },
+            {
+              "task": "Complete company research",
+              "priority": "MEDIUM",
+              "estimatedTime": "20-30 min",
+              "actions": [
+                "Check Crunchbase for funding",
+                "Review recent news",
+                "Analyze competitive landscape",
+                "Identify partnership opportunities"
+              ]
+            },
+            {
+              "task": "Identify optimal outreach timing",
+              "priority": "MEDIUM",
+              "estimatedTime": "10 min",
+              "actions": [
+                "Check PIE for timing signals",
+                "Review contact activity patterns",
+                "Consider timezone differences",
+                "Avoid holidays/industry events"
+              ]
+            },
+            {
+              "task": "Develop personalization angle",
+              "priority": "LOW",
+              "estimatedTime": "10-15 min",
+              "actions": [
+                "Find recent company news",
+                "Check contact social media",
+                "Look for shared connections",
+                "Reference recent achievements"
+              ]
+            }
+          ],
+          "timeToReady": {
+            "minutes": 70,
+            "display": "~1.2 hours",
+            "category": "long"
+          },
+          "readyForHandoff": false,
+          "scoredAt": "2026-02-18T10:52:15.103Z",
+          "version": "1.0.0"
+        },
+        "pie_intel": {
+          "signal_type": "funding",
+          "signal_strength": 0.7,
+          "optimal_time": null,
+          "recent_news": "$10M+ funding for gaming assets",
+          "partnership_angles": [
+            "Gaming asset factory",
+            "NFT partnerships"
+          ],
+          "personalization_hook": null
+        },
+        "enriched_at": "2026-02-18T10:52:15.103Z",
+        "enrichment_version": "1.0.0"
+      }
+    },
+    {
+      "id": "lead_022",
+      "company": "Axie Infinity (Sky Mavis)",
+      "contact_name": "Jeffrey Zirlin",
+      "title": "Co-Founder",
+      "email": null,
+      "email_verified": false,
+      "linkedin": null,
+      "linkedin_personal": null,
+      "twitter": "https://x.com/Jihoz_Axie",
+      "phone": null,
+      "telegram": null,
+      "status": "new",
+      "priority": "P1",
+      "notes": "Vietnam-based but massive PH user base. Jeffrey 'Jihoz' Zirlin is growth lead. Trung Nguyen is CEO. PH market critical for Axie.",
+      "research_sources": [
+        "https://axieinfinity.com"
+      ],
+      "last_researched": "2026-02-18",
+      "company_domain": "axieinfinityskymavis.com",
+      "email_patterns": [
+        "jeffrey@axieinfinityskymavis.com",
+        "jeffrey.zirlin@axieinfinityskymavis.com",
+        "jeffreyzirlin@axieinfinityskymavis.com",
+        "jzirlin@axieinfinityskymavis.com",
+        "jeffrey_zirlin@axieinfinityskymavis.com",
+        "jeffrey-zirlin@axieinfinityskymavis.com",
+        "zirlin@axieinfinityskymavis.com",
+        "jeffreyz@axieinfinityskymavis.com"
+      ],
+      "enrichment": {
+        "accessibility": {
+          "score": 15,
+          "rawScore": 15,
+          "seniorityMultiplier": 1,
+          "seniorityLevel": "founder",
+          "channelsAvailable": 1,
+          "channels": [
+            "twitter"
+          ],
+          "details": {
+            "email": {
+              "has": false,
+              "verified": false,
+              "score": 0
+            },
+            "linkedin": {
+              "has": false,
+              "type": null,
+              "score": 0
+            },
+            "twitter": {
+              "has": true,
+              "active": false,
+              "score": 15
+            },
+            "phone": {
+              "has": false,
+              "type": null,
+              "score": 0
+            },
+            "telegram": {
+              "has": false,
+              "score": 0
+            },
+            "warmIntro": {
+              "has": false,
+              "score": 0
+            }
+          },
+          "recommendations": [
+            "PRIORITY: Find verified email address via Hunter.io or LinkedIn",
+            "Find personal LinkedIn profile for warm outreach",
+            "Limited contact options - consider alternative channels"
+          ]
+        },
+        "readiness": {
+          "leadId": "lead_022",
+          "company": "Axie Infinity (Sky Mavis)",
+          "contactName": "Jeffrey Zirlin",
+          "score": 61,
+          "maxScore": 100,
+          "status": "NEEDS_MINOR_WORK",
+          "action": "Quick research then handoff",
+          "priority": "P2",
+          "criteria": {
+            "contactVerified": {
+              "score": 15,
+              "weight": 30,
+              "weighted": 5,
+              "met": false
+            },
+            "decisionMakerConfirmed": {
+              "score": 100,
+              "weight": 25,
+              "weighted": 25,
+              "met": true
+            },
+            "companyIntelComplete": {
+              "score": 45,
+              "weight": 20,
+              "weighted": 9,
+              "met": false
+            },
+            "outreachTimingIdentified": {
+              "score": 100,
+              "weight": 15,
+              "weighted": 15,
+              "met": true
+            },
+            "personalizationAngle": {
+              "score": 70,
+              "weight": 10,
+              "weighted": 7,
+              "met": true
+            }
+          },
+          "improvementPlan": [
+            {
+              "task": "Find verified contact channels",
+              "priority": "CRITICAL",
+              "estimatedTime": "15-30 min",
+              "actions": [
+                "Search Hunter.io for email patterns",
+                "Check LinkedIn for personal profile",
+                "Look for mutual connections",
+                "Check company website contact page"
+              ]
+            },
+            {
+              "task": "Complete company research",
+              "priority": "MEDIUM",
+              "estimatedTime": "20-30 min",
+              "actions": [
+                "Check Crunchbase for funding",
+                "Review recent news",
+                "Analyze competitive landscape",
+                "Identify partnership opportunities"
+              ]
+            }
+          ],
+          "timeToReady": {
+            "minutes": 48,
+            "display": "~1 hour",
+            "category": "medium"
+          },
+          "readyForHandoff": false,
+          "scoredAt": "2026-02-18T10:52:15.103Z",
+          "version": "1.0.0"
+        },
+        "pie_intel": {
+          "signal_type": "market_leader",
+          "signal_strength": 0.85,
+          "optimal_time": "Tuesday 1:00 PM PHT",
+          "recent_news": "Massive PH user base for Axie Infinity",
+          "partnership_angles": [
+            "Gaming ecosystem",
+            "PH market access",
+            "Blockchain gaming"
+          ],
+          "personalization_hook": "PH market is critical for Axie"
+        },
+        "enriched_at": "2026-02-18T10:52:15.103Z",
+        "enrichment_version": "1.0.0"
+      }
+    },
+    {
+      "id": "lead_023",
+      "company": "SBC Wallet",
+      "contact_name": "TBD",
+      "title": "CEO",
+      "email": null,
+      "email_verified": false,
+      "linkedin": null,
+      "linkedin_personal": null,
+      "twitter": null,
+      "phone": null,
+      "telegram": null,
+      "status": "new",
+      "priority": "P2",
+      "notes": "Japanese-PH crypto wallet joint venture. Need to research current status and leadership.",
+      "research_sources": [],
+      "last_researched": "2026-02-18",
+      "company_domain": "sbcwallet.com",
+      "email_patterns": [
+        "tbd@sbcwallet.com",
+        "tbd.@sbcwallet.com",
+        "t@sbcwallet.com",
+        "tbd_@sbcwallet.com",
+        "tbd-@sbcwallet.com",
+        "@sbcwallet.com"
+      ],
+      "enrichment": {
+        "accessibility": {
+          "score": 0,
+          "rawScore": 0,
+          "seniorityMultiplier": 1,
+          "seniorityLevel": "ceo",
+          "channelsAvailable": 0,
+          "channels": [],
+          "details": {
+            "email": {
+              "has": false,
+              "verified": false,
+              "score": 0
+            },
+            "linkedin": {
+              "has": false,
+              "type": null,
+              "score": 0
+            },
+            "twitter": {
+              "has": false,
+              "active": false,
+              "score": 0
+            },
+            "phone": {
+              "has": false,
+              "type": null,
+              "score": 0
+            },
+            "telegram": {
+              "has": false,
+              "score": 0
+            },
+            "warmIntro": {
+              "has": false,
+              "score": 0
+            }
+          },
+          "recommendations": [
+            "PRIORITY: Find verified email address via Hunter.io or LinkedIn",
+            "Find personal LinkedIn profile for warm outreach",
+            "Limited contact options - consider alternative channels"
+          ]
+        },
+        "readiness": {
+          "leadId": "lead_023",
+          "company": "SBC Wallet",
+          "contactName": "TBD",
+          "score": 40,
+          "maxScore": 100,
+          "status": "NEEDS_WORK",
+          "action": "Additional research required",
+          "priority": "P3",
+          "criteria": {
+            "contactVerified": {
+              "score": 0,
+              "weight": 30,
+              "weighted": 0,
+              "met": false
+            },
+            "decisionMakerConfirmed": {
+              "score": 100,
+              "weight": 25,
+              "weighted": 25,
+              "met": true
+            },
+            "companyIntelComplete": {
+              "score": 35,
+              "weight": 20,
+              "weighted": 7,
+              "met": false
+            },
+            "outreachTimingIdentified": {
+              "score": 30,
+              "weight": 15,
+              "weighted": 5,
+              "met": false
+            },
+            "personalizationAngle": {
+              "score": 30,
+              "weight": 10,
+              "weighted": 3,
+              "met": false
+            }
+          },
+          "improvementPlan": [
+            {
+              "task": "Find verified contact channels",
+              "priority": "CRITICAL",
+              "estimatedTime": "15-30 min",
+              "actions": [
+                "Search Hunter.io for email patterns",
+                "Check LinkedIn for personal profile",
+                "Look for mutual connections",
+                "Check company website contact page"
+              ]
+            },
+            {
+              "task": "Complete company research",
+              "priority": "MEDIUM",
+              "estimatedTime": "20-30 min",
+              "actions": [
+                "Check Crunchbase for funding",
+                "Review recent news",
+                "Analyze competitive landscape",
+                "Identify partnership opportunities"
+              ]
+            },
+            {
+              "task": "Identify optimal outreach timing",
+              "priority": "MEDIUM",
+              "estimatedTime": "10 min",
+              "actions": [
+                "Check PIE for timing signals",
+                "Review contact activity patterns",
+                "Consider timezone differences",
+                "Avoid holidays/industry events"
+              ]
+            },
+            {
+              "task": "Develop personalization angle",
+              "priority": "LOW",
+              "estimatedTime": "10-15 min",
+              "actions": [
+                "Find recent company news",
+                "Check contact social media",
+                "Look for shared connections",
+                "Reference recent achievements"
+              ]
+            }
+          ],
+          "timeToReady": {
+            "minutes": 70,
+            "display": "~1.2 hours",
+            "category": "long"
+          },
+          "readyForHandoff": false,
+          "scoredAt": "2026-02-18T10:52:15.103Z",
+          "version": "1.0.0"
+        },
+        "pie_intel": {
+          "signal_type": "joint_venture",
+          "signal_strength": 0.55,
+          "optimal_time": null,
+          "recent_news": "Japanese-PH crypto wallet JV",
+          "partnership_angles": [
+            "Cross-border wallet",
+            "Japan market"
+          ],
+          "personalization_hook": null
+        },
+        "enriched_at": "2026-02-18T10:52:15.103Z",
+        "enrichment_version": "1.0.0"
+      }
+    },
+    {
+      "id": "lead_024",
+      "company": "Voyager Innovations (Maya)",
+      "contact_name": "Orlando Vea",
+      "title": "Founder",
+      "email": null,
+      "email_verified": false,
+      "linkedin": null,
+      "linkedin_personal": null,
+      "twitter": null,
+      "phone": null,
+      "telegram": null,
+      "status": "new",
+      "priority": "P2",
+      "notes": "Original founder of PayMaya (now Maya). Former Globe Telecom executive. Pioneer in PH mobile payments. Need current contact info.",
+      "research_sources": [],
+      "last_researched": "2026-02-18",
+      "company_domain": "voyagerinnovationsmaya.com",
+      "email_patterns": [
+        "orlando@voyagerinnovationsmaya.com",
+        "orlando.vea@voyagerinnovationsmaya.com",
+        "orlandovea@voyagerinnovationsmaya.com",
+        "ovea@voyagerinnovationsmaya.com",
+        "orlando_vea@voyagerinnovationsmaya.com",
+        "orlando-vea@voyagerinnovationsmaya.com",
+        "vea@voyagerinnovationsmaya.com",
+        "orlandov@voyagerinnovationsmaya.com"
+      ],
+      "enrichment": {
+        "accessibility": {
+          "score": 0,
+          "rawScore": 0,
+          "seniorityMultiplier": 1,
+          "seniorityLevel": "founder",
+          "channelsAvailable": 0,
+          "channels": [],
+          "details": {
+            "email": {
+              "has": false,
+              "verified": false,
+              "score": 0
+            },
+            "linkedin": {
+              "has": false,
+              "type": null,
+              "score": 0
+            },
+            "twitter": {
+              "has": false,
+              "active": false,
+              "score": 0
+            },
+            "phone": {
+              "has": false,
+              "type": null,
+              "score": 0
+            },
+            "telegram": {
+              "has": false,
+              "score": 0
+            },
+            "warmIntro": {
+              "has": false,
+              "score": 0
+            }
+          },
+          "recommendations": [
+            "PRIORITY: Find verified email address via Hunter.io or LinkedIn",
+            "Find personal LinkedIn profile for warm outreach",
+            "Limited contact options - consider alternative channels"
+          ]
+        },
+        "readiness": {
+          "leadId": "lead_024",
+          "company": "Voyager Innovations (Maya)",
+          "contactName": "Orlando Vea",
+          "score": 42,
+          "maxScore": 100,
+          "status": "NEEDS_WORK",
+          "action": "Additional research required",
+          "priority": "P3",
+          "criteria": {
+            "contactVerified": {
+              "score": 0,
+              "weight": 30,
+              "weighted": 0,
+              "met": false
+            },
+            "decisionMakerConfirmed": {
+              "score": 100,
+              "weight": 25,
+              "weighted": 25,
+              "met": true
+            },
+            "companyIntelComplete": {
+              "score": 45,
+              "weight": 20,
+              "weighted": 9,
+              "met": false
+            },
+            "outreachTimingIdentified": {
+              "score": 30,
+              "weight": 15,
+              "weighted": 5,
+              "met": false
+            },
+            "personalizationAngle": {
+              "score": 30,
+              "weight": 10,
+              "weighted": 3,
+              "met": false
+            }
+          },
+          "improvementPlan": [
+            {
+              "task": "Find verified contact channels",
+              "priority": "CRITICAL",
+              "estimatedTime": "15-30 min",
+              "actions": [
+                "Search Hunter.io for email patterns",
+                "Check LinkedIn for personal profile",
+                "Look for mutual connections",
+                "Check company website contact page"
+              ]
+            },
+            {
+              "task": "Complete company research",
+              "priority": "MEDIUM",
+              "estimatedTime": "20-30 min",
+              "actions": [
+                "Check Crunchbase for funding",
+                "Review recent news",
+                "Analyze competitive landscape",
+                "Identify partnership opportunities"
+              ]
+            },
+            {
+              "task": "Identify optimal outreach timing",
+              "priority": "MEDIUM",
+              "estimatedTime": "10 min",
+              "actions": [
+                "Check PIE for timing signals",
+                "Review contact activity patterns",
+                "Consider timezone differences",
+                "Avoid holidays/industry events"
+              ]
+            },
+            {
+              "task": "Develop personalization angle",
+              "priority": "LOW",
+              "estimatedTime": "10-15 min",
+              "actions": [
+                "Find recent company news",
+                "Check contact social media",
+                "Look for shared connections",
+                "Reference recent achievements"
+              ]
+            }
+          ],
+          "timeToReady": {
+            "minutes": 70,
+            "display": "~1.2 hours",
+            "category": "long"
+          },
+          "readyForHandoff": false,
+          "scoredAt": "2026-02-18T10:52:15.103Z",
+          "version": "1.0.0"
+        },
+        "pie_intel": {
+          "signal_type": "pioneer",
+          "signal_strength": 0.7,
+          "optimal_time": null,
+          "recent_news": "Original founder of PayMaya",
+          "partnership_angles": [
+            "Mobile payments",
+            "Industry connections"
+          ],
+          "personalization_hook": null
+        },
+        "enriched_at": "2026-02-18T10:52:15.103Z",
+        "enrichment_version": "1.0.0"
+      }
+    },
+    {
+      "id": "lead_025",
+      "company": "Fintech Philippines Association",
+      "contact_name": "Amor Maclang",
+      "title": "Executive Director",
+      "email": null,
+      "email_verified": false,
+      "linkedin": null,
+      "linkedin_personal": null,
+      "twitter": null,
+      "phone": null,
+      "telegram": null,
+      "status": "new",
+      "priority": "P2",
+      "notes": "Industry association for PH fintech. Key connector in ecosystem. Can provide warm intros to member companies. Need contact details.",
+      "research_sources": [
+        "https://fintechalliance.ph"
+      ],
+      "last_researched": "2026-02-18",
+      "company_domain": "fintechphilippinesassociation.com",
+      "email_patterns": [
+        "amor@fintechphilippinesassociation.com",
+        "amor.maclang@fintechphilippinesassociation.com",
+        "amormaclang@fintechphilippinesassociation.com",
+        "amaclang@fintechphilippinesassociation.com",
+        "amor_maclang@fintechphilippinesassociation.com",
+        "amor-maclang@fintechphilippinesassociation.com",
+        "maclang@fintechphilippinesassociation.com",
+        "amorm@fintechphilippinesassociation.com"
+      ],
+      "enrichment": {
+        "accessibility": {
+          "score": 0,
+          "rawScore": 0,
+          "seniorityMultiplier": 0.95,
+          "seniorityLevel": "c-level",
+          "channelsAvailable": 0,
+          "channels": [],
+          "details": {
+            "email": {
+              "has": false,
+              "verified": false,
+              "score": 0
+            },
+            "linkedin": {
+              "has": false,
+              "type": null,
+              "score": 0
+            },
+            "twitter": {
+              "has": false,
+              "active": false,
+              "score": 0
+            },
+            "phone": {
+              "has": false,
+              "type": null,
+              "score": 0
+            },
+            "telegram": {
+              "has": false,
+              "score": 0
+            },
+            "warmIntro": {
+              "has": false,
+              "score": 0
+            }
+          },
+          "recommendations": [
+            "PRIORITY: Find verified email address via Hunter.io or LinkedIn",
+            "Find personal LinkedIn profile for warm outreach",
+            "Limited contact options - consider alternative channels"
+          ]
+        },
+        "readiness": {
+          "leadId": "lead_025",
+          "company": "Fintech Philippines Association",
+          "contactName": "Amor Maclang",
+          "score": 36,
+          "maxScore": 100,
+          "status": "NOT_READY",
+          "action": "Nurture or archive",
+          "priority": "Cold",
+          "criteria": {
+            "contactVerified": {
+              "score": 0,
+              "weight": 30,
+              "weighted": 0,
+              "met": false
+            },
+            "decisionMakerConfirmed": {
+              "score": 75,
+              "weight": 25,
+              "weighted": 19,
+              "met": true
+            },
+            "companyIntelComplete": {
+              "score": 45,
+              "weight": 20,
+              "weighted": 9,
+              "met": false
+            },
+            "outreachTimingIdentified": {
+              "score": 30,
+              "weight": 15,
+              "weighted": 5,
+              "met": false
+            },
+            "personalizationAngle": {
+              "score": 30,
+              "weight": 10,
+              "weighted": 3,
+              "met": false
+            }
+          },
+          "improvementPlan": [
+            {
+              "task": "Find verified contact channels",
+              "priority": "CRITICAL",
+              "estimatedTime": "15-30 min",
+              "actions": [
+                "Search Hunter.io for email patterns",
+                "Check LinkedIn for personal profile",
+                "Look for mutual connections",
+                "Check company website contact page"
+              ]
+            },
+            {
+              "task": "Complete company research",
+              "priority": "MEDIUM",
+              "estimatedTime": "20-30 min",
+              "actions": [
+                "Check Crunchbase for funding",
+                "Review recent news",
+                "Analyze competitive landscape",
+                "Identify partnership opportunities"
+              ]
+            },
+            {
+              "task": "Identify optimal outreach timing",
+              "priority": "MEDIUM",
+              "estimatedTime": "10 min",
+              "actions": [
+                "Check PIE for timing signals",
+                "Review contact activity patterns",
+                "Consider timezone differences",
+                "Avoid holidays/industry events"
+              ]
+            },
+            {
+              "task": "Develop personalization angle",
+              "priority": "LOW",
+              "estimatedTime": "10-15 min",
+              "actions": [
+                "Find recent company news",
+                "Check contact social media",
+                "Look for shared connections",
+                "Reference recent achievements"
+              ]
+            }
+          ],
+          "timeToReady": {
+            "minutes": 70,
+            "display": "~1.2 hours",
+            "category": "long"
+          },
+          "readyForHandoff": false,
+          "scoredAt": "2026-02-18T10:52:15.103Z",
+          "version": "1.0.0"
+        },
+        "pie_intel": {
+          "signal_type": "connector",
+          "signal_strength": 0.75,
+          "optimal_time": null,
+          "recent_news": "Key connector in PH fintech ecosystem",
+          "partnership_angles": [
+            "Warm intros",
+            "Industry network"
+          ],
+          "personalization_hook": null
+        },
+        "enriched_at": "2026-02-18T10:52:15.103Z",
+        "enrichment_version": "1.0.0"
+      }
+    },
+    {
+      "id": "lead_026",
+      "company": "Blockchain Council of the Philippines",
+      "contact_name": "Luis Buenaventura II",
+      "title": "President",
+      "email": null,
+      "email_verified": false,
+      "linkedin": "https://ph.linkedin.com/in/helloluis",
+      "linkedin_personal": "https://ph.linkedin.com/in/helloluis",
+      "twitter": "https://x.com/helloluis",
+      "phone": null,
+      "telegram": null,
+      "status": "new",
+      "priority": "P2",
+      "notes": "Industry body for blockchain advocacy in PH. Luis is President (same as Lead 004). Good for policy discussions and industry connections.",
+      "research_sources": [
+        "https://www.linkedin.com/company/blockchain-council-of-the-philippines"
+      ],
+      "last_researched": "2026-02-18",
+      "company_domain": "blockchaincouncilofthephilippines.com",
+      "email_patterns": [
+        "luis@blockchaincouncilofthephilippines.com",
+        "luis.buenaventura ii@blockchaincouncilofthephilippines.com",
+        "luisbuenaventura ii@blockchaincouncilofthephilippines.com",
+        "lbuenaventura ii@blockchaincouncilofthephilippines.com",
+        "luis_buenaventura ii@blockchaincouncilofthephilippines.com",
+        "luis-buenaventura ii@blockchaincouncilofthephilippines.com",
+        "buenaventura ii@blockchaincouncilofthephilippines.com",
+        "luisb@blockchaincouncilofthephilippines.com"
+      ],
+      "enrichment": {
+        "accessibility": {
+          "score": 26,
+          "rawScore": 35,
+          "seniorityMultiplier": 0.75,
+          "seniorityLevel": "other",
+          "channelsAvailable": 2,
+          "channels": [
+            "linkedin_personal",
+            "twitter"
+          ],
+          "details": {
+            "email": {
+              "has": false,
+              "verified": false,
+              "score": 0
+            },
+            "linkedin": {
+              "has": true,
+              "type": "personal",
+              "score": 20
+            },
+            "twitter": {
+              "has": true,
+              "active": false,
+              "score": 15
+            },
+            "phone": {
+              "has": false,
+              "type": null,
+              "score": 0
+            },
+            "telegram": {
+              "has": false,
+              "score": 0
+            },
+            "warmIntro": {
+              "has": false,
+              "score": 0
+            }
+          },
+          "recommendations": [
+            "PRIORITY: Find verified email address via Hunter.io or LinkedIn",
+            "Limited contact options - consider alternative channels"
+          ]
+        },
+        "readiness": {
+          "leadId": "lead_026",
+          "company": "Blockchain Council of the Philippines",
+          "contactName": "Luis Buenaventura II",
+          "score": 64,
+          "maxScore": 100,
+          "status": "NEEDS_MINOR_WORK",
+          "action": "Quick research then handoff",
+          "priority": "P2",
+          "criteria": {
+            "contactVerified": {
+              "score": 26,
+              "weight": 30,
+              "weighted": 8,
+              "met": false
+            },
+            "decisionMakerConfirmed": {
+              "score": 100,
+              "weight": 25,
+              "weighted": 25,
+              "met": true
+            },
+            "companyIntelComplete": {
+              "score": 45,
+              "weight": 20,
+              "weighted": 9,
+              "met": false
+            },
+            "outreachTimingIdentified": {
+              "score": 100,
+              "weight": 15,
+              "weighted": 15,
+              "met": true
+            },
+            "personalizationAngle": {
+              "score": 70,
+              "weight": 10,
+              "weighted": 7,
+              "met": true
+            }
+          },
+          "improvementPlan": [
+            {
+              "task": "Find verified contact channels",
+              "priority": "CRITICAL",
+              "estimatedTime": "15-30 min",
+              "actions": [
+                "Search Hunter.io for email patterns",
+                "Check LinkedIn for personal profile",
+                "Look for mutual connections",
+                "Check company website contact page"
+              ]
+            },
+            {
+              "task": "Complete company research",
+              "priority": "MEDIUM",
+              "estimatedTime": "20-30 min",
+              "actions": [
+                "Check Crunchbase for funding",
+                "Review recent news",
+                "Analyze competitive landscape",
+                "Identify partnership opportunities"
+              ]
+            }
+          ],
+          "timeToReady": {
+            "minutes": 48,
+            "display": "~1 hour",
+            "category": "medium"
+          },
+          "readyForHandoff": false,
+          "scoredAt": "2026-02-18T10:52:15.103Z",
+          "version": "1.0.0"
+        },
+        "pie_intel": {
+          "signal_type": "leadership",
+          "signal_strength": 0.75,
+          "optimal_time": "Thursday 2:00 PM PHT",
+          "recent_news": "President of Blockchain Council PH",
+          "partnership_angles": [
+            "Policy discussions",
+            "Industry connections"
+          ],
+          "personalization_hook": "Your leadership at Blockchain Council PH"
+        },
+        "enriched_at": "2026-02-18T10:52:15.103Z",
+        "enrichment_version": "1.0.0"
+      }
+    },
+    {
+      "id": "lead_027",
+      "company": "Crypto.com",
+      "contact_name": "Kris Marszalek",
+      "title": "CEO & Co-Founder",
+      "email": null,
+      "email_verified": false,
+      "linkedin": "https://www.linkedin.com/in/krismarszalek",
+      "linkedin_personal": "https://www.linkedin.com/in/krismarszalek",
+      "twitter": "https://x.com/kris",
+      "phone": null,
+      "telegram": null,
+      "status": "new",
+      "priority": "P0",
+      "notes": "Global cryptocurrency exchange with strong Asia presence. Recently launched AI agent platform Feb 2026. Major player for potential partnerships. Based in Singapore.",
+      "research_sources": [
+        "https://crypto.com",
+        "https://www.linkedin.com/in/krismarszalek"
+      ],
+      "last_researched": "2026-02-18",
+      "company_domain": "crypto.com",
+      "funding": "Well-funded, IPO preparation",
+      "employees": 4000,
+      "market": "Global",
+      "region": "Singapore",
+      "email_patterns": [
+        "kris@crypto.com",
+        "kris.marszalek@crypto.com",
+        "krismarszalek@crypto.com",
+        "kmarszalek@crypto.com",
+        "kris_marszalek@crypto.com",
+        "kris-marszalek@crypto.com",
+        "marszalek@crypto.com",
+        "krism@crypto.com"
+      ],
+      "enrichment": {
+        "accessibility": {
+          "score": 35,
+          "rawScore": 35,
+          "seniorityMultiplier": 1,
+          "seniorityLevel": "ceo",
+          "channelsAvailable": 2,
+          "channels": [
+            "linkedin_personal",
+            "twitter"
+          ],
+          "details": {
+            "email": {
+              "has": false,
+              "verified": false,
+              "score": 0
+            },
+            "linkedin": {
+              "has": true,
+              "type": "personal",
+              "score": 20
+            },
+            "twitter": {
+              "has": true,
+              "active": false,
+              "score": 15
+            },
+            "phone": {
+              "has": false,
+              "type": null,
+              "score": 0
+            },
+            "telegram": {
+              "has": false,
+              "score": 0
+            },
+            "warmIntro": {
+              "has": false,
+              "score": 0
+            }
+          },
+          "recommendations": [
+            "PRIORITY: Find verified email address via Hunter.io or LinkedIn",
+            "Limited contact options - consider alternative channels"
+          ]
+        },
+        "readiness": {
+          "leadId": "lead_027",
+          "company": "Crypto.com",
+          "contactName": "Kris Marszalek",
+          "score": 78,
+          "maxScore": 100,
+          "status": "NEEDS_MINOR_WORK",
+          "action": "Quick research then handoff",
+          "priority": "P1",
+          "criteria": {
+            "contactVerified": {
+              "score": 35,
+              "weight": 30,
+              "weighted": 11,
+              "met": false
+            },
+            "decisionMakerConfirmed": {
+              "score": 100,
+              "weight": 25,
+              "weighted": 25,
+              "met": true
+            },
+            "companyIntelComplete": {
+              "score": 100,
+              "weight": 20,
+              "weighted": 20,
+              "met": true
+            },
+            "outreachTimingIdentified": {
+              "score": 100,
+              "weight": 15,
+              "weighted": 15,
+              "met": true
+            },
+            "personalizationAngle": {
+              "score": 70,
+              "weight": 10,
+              "weighted": 7,
+              "met": true
+            }
+          },
+          "improvementPlan": [
+            {
+              "task": "Find verified contact channels",
+              "priority": "CRITICAL",
+              "estimatedTime": "15-30 min",
+              "actions": [
+                "Search Hunter.io for email patterns",
+                "Check LinkedIn for personal profile",
+                "Look for mutual connections",
+                "Check company website contact page"
+              ]
+            }
+          ],
+          "timeToReady": {
+            "minutes": 23,
+            "display": "~30 minutes",
+            "category": "short"
+          },
+          "readyForHandoff": false,
+          "scoredAt": "2026-02-18T10:52:15.103Z",
+          "version": "1.0.0"
+        },
+        "pie_intel": {
+          "signal_type": "ai_launch",
+          "signal_strength": 0.92,
+          "optimal_time": "Monday 11:00 AM SGT",
+          "recent_news": "Launched AI agent platform Feb 2026",
+          "partnership_angles": [
+            "AI agent payments",
+            "Global exchange partnership",
+            "Crypto infrastructure"
+          ],
+          "personalization_hook": "Congratulations on the AI agent platform launch"
+        },
+        "enriched_at": "2026-02-18T10:52:15.103Z",
+        "enrichment_version": "1.0.0"
+      }
+    },
+    {
+      "id": "lead_028",
+      "company": "Plentina",
+      "contact_name": "Kevin Gabayan",
+      "title": "CEO & Co-Founder",
+      "email": null,
+      "email_verified": false,
+      "linkedin": "https://ph.linkedin.com/in/kevin-gabayan",
+      "linkedin_personal": "https://ph.linkedin.com/in/kevin-gabayan",
+      "twitter": null,
+      "phone": null,
+      "telegram": null,
+      "status": "new",
+      "priority": "P1",
+      "notes": "Filipino fintech providing buy-now-pay-later and financial services. Backed by Silicon Valley investors. Strong growth trajectory in PH market. Potential integration partner.",
+      "research_sources": [
+        "https://plentina.com",
+        "https://ph.linkedin.com/in/kevin-gabayan"
+      ],
+      "last_researched": "2026-02-18",
+      "company_domain": "plentina.com",
+      "funding": "$10M+ Series A",
+      "employees": 100,
+      "market": "Philippines",
+      "region": "Philippines",
+      "email_patterns": [
+        "kevin@plentina.com",
+        "kevin.gabayan@plentina.com",
+        "kevingabayan@plentina.com",
+        "kgabayan@plentina.com",
+        "kevin_gabayan@plentina.com",
+        "kevin-gabayan@plentina.com",
+        "gabayan@plentina.com",
+        "keving@plentina.com"
+      ],
+      "enrichment": {
+        "accessibility": {
+          "score": 20,
+          "rawScore": 20,
+          "seniorityMultiplier": 1,
+          "seniorityLevel": "ceo",
+          "channelsAvailable": 1,
+          "channels": [
+            "linkedin_personal"
+          ],
+          "details": {
+            "email": {
+              "has": false,
+              "verified": false,
+              "score": 0
+            },
+            "linkedin": {
+              "has": true,
+              "type": "personal",
+              "score": 20
+            },
+            "twitter": {
+              "has": false,
+              "active": false,
+              "score": 0
+            },
+            "phone": {
+              "has": false,
+              "type": null,
+              "score": 0
+            },
+            "telegram": {
+              "has": false,
+              "score": 0
+            },
+            "warmIntro": {
+              "has": false,
+              "score": 0
+            }
+          },
+          "recommendations": [
+            "PRIORITY: Find verified email address via Hunter.io or LinkedIn",
+            "Limited contact options - consider alternative channels"
+          ]
+        },
+        "readiness": {
+          "leadId": "lead_028",
+          "company": "Plentina",
+          "contactName": "Kevin Gabayan",
+          "score": 73,
+          "maxScore": 100,
+          "status": "NEEDS_MINOR_WORK",
+          "action": "Quick research then handoff",
+          "priority": "P2",
+          "criteria": {
+            "contactVerified": {
+              "score": 20,
+              "weight": 30,
+              "weighted": 6,
+              "met": false
+            },
+            "decisionMakerConfirmed": {
+              "score": 100,
+              "weight": 25,
+              "weighted": 25,
+              "met": true
+            },
+            "companyIntelComplete": {
+              "score": 100,
+              "weight": 20,
+              "weighted": 20,
+              "met": true
+            },
+            "outreachTimingIdentified": {
+              "score": 100,
+              "weight": 15,
+              "weighted": 15,
+              "met": true
+            },
+            "personalizationAngle": {
+              "score": 70,
+              "weight": 10,
+              "weighted": 7,
+              "met": true
+            }
+          },
+          "improvementPlan": [
+            {
+              "task": "Find verified contact channels",
+              "priority": "CRITICAL",
+              "estimatedTime": "15-30 min",
+              "actions": [
+                "Search Hunter.io for email patterns",
+                "Check LinkedIn for personal profile",
+                "Look for mutual connections",
+                "Check company website contact page"
+              ]
+            }
+          ],
+          "timeToReady": {
+            "minutes": 23,
+            "display": "~30 minutes",
+            "category": "short"
+          },
+          "readyForHandoff": false,
+          "scoredAt": "2026-02-18T10:52:15.103Z",
+          "version": "1.0.0"
+        },
+        "pie_intel": {
+          "signal_type": "funding",
+          "signal_strength": 0.8,
+          "optimal_time": "Wednesday 10:00 AM PHT",
+          "recent_news": "$10M+ Series A, strong PH growth",
+          "partnership_angles": [
+            "BNPL integration",
+            "Consumer lending",
+            "Financial inclusion"
+          ],
+          "personalization_hook": "Impressive growth with Series A"
+        },
+        "enriched_at": "2026-02-18T10:52:15.103Z",
+        "enrichment_version": "1.0.0"
+      }
+    },
+    {
+      "id": "lead_029",
+      "company": "First Digital Trust",
+      "contact_name": "Vincent Chok",
+      "title": "CEO",
+      "email": null,
+      "email_verified": false,
+      "linkedin": "https://hk.linkedin.com/in/vincent-chok",
+      "linkedin_personal": "https://hk.linkedin.com/in/vincent-chok",
+      "twitter": null,
+      "phone": null,
+      "telegram": null,
+      "status": "new",
+      "priority": "P1",
+      "notes": "Hong Kong-based digital asset custody and trust company. Issuer of FDUSD stablecoin. Key infrastructure player in Asia crypto ecosystem. Regulatory-compliant institutional partner.",
+      "research_sources": [
+        "https://firstdigitalexchange.com",
+        "https://hk.linkedin.com/in/vincent-chok"
+      ],
+      "last_researched": "2026-02-18",
+      "company_domain": "firstdigitalexchange.com",
+      "funding": "Privately funded",
+      "employees": 50,
+      "market": "Asia-Pacific",
+      "region": "Hong Kong",
+      "email_patterns": [
+        "vincent@firstdigitalexchange.com",
+        "vincent.chok@firstdigitalexchange.com",
+        "vincentchok@firstdigitalexchange.com",
+        "vchok@firstdigitalexchange.com",
+        "vincent_chok@firstdigitalexchange.com",
+        "vincent-chok@firstdigitalexchange.com",
+        "chok@firstdigitalexchange.com",
+        "vincentc@firstdigitalexchange.com"
+      ],
+      "enrichment": {
+        "accessibility": {
+          "score": 20,
+          "rawScore": 20,
+          "seniorityMultiplier": 1,
+          "seniorityLevel": "ceo",
+          "channelsAvailable": 1,
+          "channels": [
+            "linkedin_personal"
+          ],
+          "details": {
+            "email": {
+              "has": false,
+              "verified": false,
+              "score": 0
+            },
+            "linkedin": {
+              "has": true,
+              "type": "personal",
+              "score": 20
+            },
+            "twitter": {
+              "has": false,
+              "active": false,
+              "score": 0
+            },
+            "phone": {
+              "has": false,
+              "type": null,
+              "score": 0
+            },
+            "telegram": {
+              "has": false,
+              "score": 0
+            },
+            "warmIntro": {
+              "has": false,
+              "score": 0
+            }
+          },
+          "recommendations": [
+            "PRIORITY: Find verified email address via Hunter.io or LinkedIn",
+            "Limited contact options - consider alternative channels"
+          ]
+        },
+        "readiness": {
+          "leadId": "lead_029",
+          "company": "First Digital Trust",
+          "contactName": "Vincent Chok",
+          "score": 73,
+          "maxScore": 100,
+          "status": "NEEDS_MINOR_WORK",
+          "action": "Quick research then handoff",
+          "priority": "P2",
+          "criteria": {
+            "contactVerified": {
+              "score": 20,
+              "weight": 30,
+              "weighted": 6,
+              "met": false
+            },
+            "decisionMakerConfirmed": {
+              "score": 100,
+              "weight": 25,
+              "weighted": 25,
+              "met": true
+            },
+            "companyIntelComplete": {
+              "score": 100,
+              "weight": 20,
+              "weighted": 20,
+              "met": true
+            },
+            "outreachTimingIdentified": {
+              "score": 100,
+              "weight": 15,
+              "weighted": 15,
+              "met": true
+            },
+            "personalizationAngle": {
+              "score": 70,
+              "weight": 10,
+              "weighted": 7,
+              "met": true
+            }
+          },
+          "improvementPlan": [
+            {
+              "task": "Find verified contact channels",
+              "priority": "CRITICAL",
+              "estimatedTime": "15-30 min",
+              "actions": [
+                "Search Hunter.io for email patterns",
+                "Check LinkedIn for personal profile",
+                "Look for mutual connections",
+                "Check company website contact page"
+              ]
+            }
+          ],
+          "timeToReady": {
+            "minutes": 23,
+            "display": "~30 minutes",
+            "category": "short"
+          },
+          "readyForHandoff": false,
+          "scoredAt": "2026-02-18T10:52:15.103Z",
+          "version": "1.0.0"
+        },
+        "pie_intel": {
+          "signal_type": "stablecoin",
+          "signal_strength": 0.88,
+          "optimal_time": "Tuesday 9:00 AM HKT",
+          "recent_news": "FDUSD stablecoin issuer, Hong Kong licensed",
+          "partnership_angles": [
+            "Stablecoin integration",
+            "Custody solutions",
+            "Institutional partnership"
+          ],
+          "personalization_hook": "Impressive work with FDUSD in Asia"
+        },
+        "enriched_at": "2026-02-18T10:52:15.103Z",
+        "enrichment_version": "1.0.0"
+      }
+    },
+    {
+      "id": "lead_030",
+      "company": "Coins.ph",
+      "contact_name": "Naomi Mclaughlin",
+      "title": "Head of Partnerships",
+      "email": null,
+      "email_verified": false,
+      "linkedin": "https://ph.linkedin.com/in/naomi-mclaughlin",
+      "linkedin_personal": "https://ph.linkedin.com/in/naomi-mclaughlin",
+      "twitter": null,
+      "phone": null,
+      "telegram": null,
+      "status": "new",
+      "priority": "P0",
+      "notes": "Head of Partnerships at Coins.ph. Alternative contact to Wei Zhou for partnership discussions. Specializes in strategic alliances and business development. Direct path to partnership discussions.",
+      "research_sources": [
+        "https://www.coins.ph",
+        "https://ph.linkedin.com/in/naomi-mclaughlin"
+      ],
+      "last_researched": "2026-02-18",
+      "company_domain": "coins.ph",
+      "funding": "Part of Coins.ph group",
+      "employees": 200,
+      "market": "Philippines/Global",
+      "region": "Philippines",
+      "email_patterns": [
+        "naomi@coins.ph",
+        "naomi.mclaughlin@coins.ph",
+        "naomimclaughlin@coins.ph",
+        "nmclaughlin@coins.ph",
+        "naomi_mclaughlin@coins.ph",
+        "naomi-mclaughlin@coins.ph",
+        "mclaughlin@coins.ph",
+        "naomim@coins.ph"
+      ],
+      "enrichment": {
+        "accessibility": {
+          "score": 18,
+          "rawScore": 20,
+          "seniorityMultiplier": 0.9,
+          "seniorityLevel": "vp",
+          "channelsAvailable": 1,
+          "channels": [
+            "linkedin_personal"
+          ],
+          "details": {
+            "email": {
+              "has": false,
+              "verified": false,
+              "score": 0
+            },
+            "linkedin": {
+              "has": true,
+              "type": "personal",
+              "score": 20
+            },
+            "twitter": {
+              "has": false,
+              "active": false,
+              "score": 0
+            },
+            "phone": {
+              "has": false,
+              "type": null,
+              "score": 0
+            },
+            "telegram": {
+              "has": false,
+              "score": 0
+            },
+            "warmIntro": {
+              "has": false,
+              "score": 0
+            }
+          },
+          "recommendations": [
+            "PRIORITY: Find verified email address via Hunter.io or LinkedIn",
+            "Limited contact options - consider alternative channels"
+          ]
+        },
+        "readiness": {
+          "leadId": "lead_030",
+          "company": "Coins.ph",
+          "contactName": "Naomi Mclaughlin",
+          "score": 66,
+          "maxScore": 100,
+          "status": "NEEDS_MINOR_WORK",
+          "action": "Quick research then handoff",
+          "priority": "P2",
+          "criteria": {
+            "contactVerified": {
+              "score": 18,
+              "weight": 30,
+              "weighted": 5,
+              "met": false
+            },
+            "decisionMakerConfirmed": {
+              "score": 75,
+              "weight": 25,
+              "weighted": 19,
+              "met": true
+            },
+            "companyIntelComplete": {
+              "score": 100,
+              "weight": 20,
+              "weighted": 20,
+              "met": true
+            },
+            "outreachTimingIdentified": {
+              "score": 100,
+              "weight": 15,
+              "weighted": 15,
+              "met": true
+            },
+            "personalizationAngle": {
+              "score": 70,
+              "weight": 10,
+              "weighted": 7,
+              "met": true
+            }
+          },
+          "improvementPlan": [
+            {
+              "task": "Find verified contact channels",
+              "priority": "CRITICAL",
+              "estimatedTime": "15-30 min",
+              "actions": [
+                "Search Hunter.io for email patterns",
+                "Check LinkedIn for personal profile",
+                "Look for mutual connections",
+                "Check company website contact page"
+              ]
+            }
+          ],
+          "timeToReady": {
+            "minutes": 23,
+            "display": "~30 minutes",
+            "category": "short"
+          },
+          "readyForHandoff": false,
+          "scoredAt": "2026-02-18T10:52:15.103Z",
+          "version": "1.0.0"
+        },
+        "pie_intel": {
+          "signal_type": "partnership_access",
+          "signal_strength": 0.9,
+          "optimal_time": "Tuesday 10:00 AM PHT",
+          "recent_news": "Head of Partnerships at Coins.ph",
+          "partnership_angles": [
+            "Direct partnership path",
+            "Strategic alliances",
+            "Business development"
+          ],
+          "personalization_hook": "Interested in partnership opportunities"
+        },
+        "enriched_at": "2026-02-18T10:52:15.103Z",
+        "enrichment_version": "1.0.0"
+      }
+    }
+  ]
+}

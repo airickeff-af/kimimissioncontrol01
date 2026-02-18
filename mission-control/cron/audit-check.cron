@@ -16,7 +16,7 @@
     {
       "type": "quality_scores",
       "dashboard_url": "https://dashboard-ten-sand-20.vercel.app",
-      "metrics_endpoint": "/api/metrics"
+      "metrics_endpoint": "/api/tokens"
     }
   ],
   "checks": [

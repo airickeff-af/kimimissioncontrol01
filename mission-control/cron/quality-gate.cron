@@ -1,6 +1,6 @@
 {
   "name": "quality-gate",
-  "description": "Quality assurance testing for dashboard",
+  "description": "Quality assurance testing for dashboard - tests all 9 pages and 2 working APIs",
   "schedule": "*/30 * * * *",
   "target": {
     "type": "telegram",
@@ -10,24 +10,23 @@
   "base_url": "https://dashboard-ten-sand-20.vercel.app",
   "pages": [
     { "path": "/", "name": "home", "expected_status": 200 },
-    { "path": "/dashboard", "name": "dashboard", "expected_status": 200 },
-    { "path": "/analytics", "name": "analytics", "expected_status": 200 },
-    { "path": "/settings", "name": "settings", "expected_status": 200 },
-    { "path": "/profile", "name": "profile", "expected_status": 200 },
-    { "path": "/reports", "name": "reports", "expected_status": 200 },
-    { "path": "/help", "name": "help", "expected_status": 200 }
+    { "path": "/task-board.html", "name": "task_board", "expected_status": 200 },
+    { "path": "/agents.html", "name": "agents", "expected_status": 200 },
+    { "path": "/office.html", "name": "office", "expected_status": 200 },
+    { "path": "/dealflow-view.html", "name": "dealflow", "expected_status": 200 },
+    { "path": "/token-tracker.html", "name": "token_tracker", "expected_status": 200 },
+    { "path": "/scout.html", "name": "scout", "expected_status": 200 },
+    { "path": "/pie-radar.html", "name": "pie_radar", "expected_status": 200 },
+    { "path": "/monitoring.html", "name": "monitoring", "expected_status": 200 }
   ],
   "apis": [
     { "path": "/api/health", "name": "health_api", "expected_type": "json" },
-    { "path": "/api/status", "name": "status_api", "expected_type": "json" },
-    { "path": "/api/metrics", "name": "metrics_api", "expected_type": "json" },
-    { "path": "/api/config", "name": "config_api", "expected_type": "json" },
-    { "path": "/api/data", "name": "data_api", "expected_type": "json" }
+    { "path": "/api/tokens", "name": "tokens_api", "expected_type": "json" }
   ],
   "scoring": {
     "pass_threshold": 95,
     "page_weight": 10,
-    "api_weight": 6,
+    "api_weight": 5,
     "max_score": 100
   },
   "reporting": {

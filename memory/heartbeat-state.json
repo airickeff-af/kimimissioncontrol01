@@ -1,1 +1,71 @@
-{\n  \"lastChecks\": {\n    \"agentHealth\": 1771379229,\n    \"taskQueue\": 1771404480,\n    \"systemResources\": 1771384629,\n    \"memoryMaintenance\": 1771362420\n  },\n  \"checkRotation\": {\n    \"current\": \"B\",\n    \"sequence\": [\"A\", \"B\", \"C\", \"D\"],\n    \"lastRotation\": 1771404480,\n    \"counter\": 50\n  },\n  \"alertSuppression\": {\n    \"lastAlertSent\": 1771341429,\n    \"suppressedAlerts\": [],\n    \"alertCooldownMinutes\": 30,\n    \"maxAlertsPerHour\": 3\n  },\n  \"agentHealth\": {\n    \"lastFullCheck\": 1771379229,\n    \"abortedSessions\": [\n      {\n        \"sessionId\": \"51f195e7-8974-4823-9e1a-a182b5c2daa9\",\n        \"label\": \"nexus-voyage-setup\",\n        \"detectedAt\": 1771376747,\n        \"recoveryStatus\": \"pending\",\n        \"recoveryProtocolApplied\": false\n      }\n    ],\n    \"abortPattern\": {\n      \"last24h\": 2,\n      \"byAgentType\": {\n        \"dealflow\": 1,\n        \"nexus\": 1\n      }\n    }\n  },\n  \"tokenUsage\": {\n    \"mainSession\": 87433,\n    \"threshold\": 200000,\n    \"lastChecked\": 1771404480,\n    \"alertsSent\": 0,\n    \"trend\": \"stable\",\n    \"growthRate\": 0\n  },\n  \"systemResources\": {\n    \"diskSpace\": {\n      \"total\": \"40G\",\n      \"used\": \"10G\",\n      \"available\": \"28G\",\n      \"usePercent\": 27\n    },\n    \"lastChecked\": 1771404480\n  },\n  \"metrics\": {\n    \"heartbeatsCompleted\": 32,\n    \"alertsTriggered\": 1,\n    \"tasksProcessed\": 10,\n    \"selfImprovements\": 3,\n    \"frictionPointsIdentified\": 4,\n    \"blockedTasks\": 27,\n    \"overdueP0Tasks\": 0\n  }\n}
+{
+  "lastChecks": {
+    "agentHealth": 1771410782,
+    "taskQueue": 1771410782,
+    "systemResources": 1771384629,
+    "memoryMaintenance": 1771362420
+  },
+  "checkRotation": {
+    "current": "C",
+    "sequence": ["A", "B", "C", "D"],
+    "lastRotation": 1771410782,
+    "counter": 51
+  },
+  "alertSuppression": {
+    "lastAlertSent": 1771341429,
+    "suppressedAlerts": [],
+    "alertCooldownMinutes": 30,
+    "maxAlertsPerHour": 3
+  },
+  "agentHealth": {
+    "lastFullCheck": 1771410782,
+    "abortedSessions": [
+      {
+        "sessionId": "59f5387c-82d9-4f2f-b7a5-8df3346ab3a2",
+        "label": "forge-2-pixel-polish",
+        "detectedAt": 1771410733,
+        "recoveryStatus": "pending",
+        "recoveryProtocolApplied": false
+      },
+      {
+        "sessionId": "2f82f264-a7dc-4c91-a860-66c8512657fe",
+        "label": "forge-fix-data-issues",
+        "detectedAt": 1771410606,
+        "recoveryStatus": "pending",
+        "recoveryProtocolApplied": false
+      }
+    ],
+    "abortPattern": {
+      "last24h": 2,
+      "byAgentType": {
+        "forge": 2
+      }
+    }
+  },
+  "tokenUsage": {
+    "mainSession": 164000,
+    "threshold": 200000,
+    "lastChecked": 1771410782,
+    "alertsSent": 0,
+    "trend": "stable",
+    "growthRate": 0
+  },
+  "systemResources": {
+    "diskSpace": {
+      "total": "40G",
+      "used": "10G",
+      "available": "28G",
+      "usePercent": 27
+    },
+    "lastChecked": 1771404480
+  },
+  "metrics": {
+    "heartbeatsCompleted": 33,
+    "alertsTriggered": 1,
+    "tasksProcessed": 10,
+    "selfImprovements": 3,
+    "frictionPointsIdentified": 4,
+    "blockedTasks": 27,
+    "overdueP0Tasks": 1
+  }
+}

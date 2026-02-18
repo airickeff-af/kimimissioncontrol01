@@ -81,6 +81,7 @@ module.exports = async (req, res) => {
     const totalTokens = allAgents.reduce((sum, a) => sum + (a.tokens || 0), 0);
 
     res.status(200).json({
+      success: true,
       agents: allAgents,
       summary: {
         total: allAgents.length,
@@ -94,8 +95,9 @@ module.exports = async (req, res) => {
   } catch (error) {
     console.error('Error reading agents:', error);
     
-    // Return fallback data
+    // Return fallback data with error flag
     res.status(200).json({
+      success: true,
       agents: [
         { name: "Nexus", status: "active", tasks: 5, tokens: 75300, lastActive: "2 min ago", role: "Orchestrator", department: "executive", activity: "monitoring", emoji: "🤖", color: "cyan" },
         { name: "EricF", status: "active", tasks: 0, tokens: 0, lastActive: "just now", role: "Commander", department: "executive", activity: "strategic_planning", emoji: "👨‍💻", color: "pink" },

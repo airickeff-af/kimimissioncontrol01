@@ -1,6 +1,6 @@
 {
   "name": "sentry-monitor",
-  "description": "Deployment health and page load time monitoring",
+  "description": "Deployment health and page load time monitoring - every 7.5 minutes",
   "schedule": "*/7 * * * *",
   "target": {
     "type": "telegram",
@@ -14,7 +14,8 @@
       "name": "deployment_status",
       "endpoints": [
         "/",
-        "/api/health"
+        "/api/health",
+        "/task-board.html"
       ]
     },
     {
@@ -26,8 +27,8 @@
       },
       "pages": [
         "/",
-        "/dashboard",
-        "/analytics"
+        "/task-board.html",
+        "/agents.html"
       ]
     },
     {

@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="description" content="Office - Living Pixel Office | 22 Agents">
+    <meta name="theme-color" content="#f5e6c8">
+    
+    <title>Office | Living Pixel Office</title>
+    
+    <!-- Kairosoft-style Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* Kairosoft Color Palette */
+            --bg-primary: #f5e6c8;
+            --bg-secondary: #e8d4a8;
+            --panel-bg: #f5e6c8;
+            --panel-border: #8b7355;
+            --panel-shadow: #8b7355;
+            --text-dark: #2c1810;
+            --text-light: #f5e6c8;
+            --accent-cyan: #00d4ff;
+            --accent-pink: #ff6b6b;
+            --accent-green: #51cf66;
+            --accent-blue: #339af0;
+            --accent-yellow: #fcc419;
+            --accent-purple: #da77f2;
+            --accent-orange: #ff8787;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            image-rendering: pixelated;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        html {
+            font-family: 'VT323', monospace;
+            background: var(--bg-primary);
+            color: var(--text-dark);
+            line-height: 1.4;
+        }
+        
+        body {
+            min-height: 100vh;
+            overflow-x: hidden;
+            background: var(--bg-primary);
+        }
+        
+        /* Game Container */
+        .game-container {
+            position: relative;
+            z-index: 1;
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 15px;
+            min-height: 100vh;
+            padding-bottom: 100px;
+        }
+        
+        /* Header */
+        .game-header {
+            background: var(--bg-secondary);
+            border: 4px solid var(--panel-border);
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin-bottom: 15px;
+            box-shadow: 4px 4px 0 var(--panel-shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .game-title {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 14px;
+            color: var(--text-dark);
+            letter-spacing: 2px;
+            line-height: 1.8;
+        }
+        
+        .game-stats {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .stat-box {
+            background: var(--panel-bg);
+            border: 4px solid var(--panel-border);
+            border-radius: 4px;
+            padding: 8px 12px;
+            min-width: 80px;
+            text-align: center;
+            box-shadow: 4px 4px 0 var(--panel-shadow);
+        }
+        
+        .stat-label {
+            color: var(--panel-border);
+            font-size: 12px;
+            font-family: 'Press Start 2P', cursive;
+        }
+        
+        .stat-value {
+            color: var(--text-dark);
+            font-family: 'Press Start 2P', cursive;
+            font-size: 12px;
+            margin-top: 4px;
+        }
+        
+        /* Navigation */
+        .nav-tabs {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+        
+        .nav-tab {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 12px;
+            padding: 10px 14px;
+            background: var(--bg-secondary);
+            border: 4px solid var(--panel-border);
+            border-radius: 6px;
+            cursor: pointer;
+            box-shadow: 4px 4px 0 var(--panel-shadow);
+            transition: all 0.1s;
+            color: var(--text-dark);
+            line-height: 1.4;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .nav-tab:hover {
+            transform: translateY(-2px);
+            box-shadow: 6px 6px 0 var(--panel-shadow);
+            border-color: var(--accent-cyan);
+        }
+        
+        .nav-tab:active {
+            transform: translateY(4px);
+            box-shadow: 0 0 0 var(--panel-shadow);
+        }
+        
+        .nav-tab.active {
+            background: var(--accent-green);
+        }
+        
+        /* Panel Box Style */
+        .panel-box {
+            background: var(--panel-bg);
+            border: 4px solid var(--panel-border);
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 4px 4px 0 var(--panel-shadow);
+            margin-bottom: 15px;
+        }
+        
+        .panel-title {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 14px;
+            color: var(--panel-border);
+            margin-bottom: 12px;
+            padding-bottom: 10px;
+            border-bottom: 4px solid var(--panel-border);
+            line-height: 1.6;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .panel-title .emoji {
+            font-size: 16px;
+        }
+        
+        /* Office Canvas Container */
+        .office-container {
+            background: var(--bg-secondary);
+            border: 4px solid var(--panel-border);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 4px 4px 0 var(--panel-shadow);
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        #officeCanvas {
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+            border: 4px solid var(--panel-border);
+            border-radius: 4px;
+            max-width: 100%;
+            height: auto;
+        }
+        
+        /* Agent Grid */
+        .agent-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 12px;
+        }
+        
+        .agent-card {
+            background: linear-gradient(180deg, #fff 0%, #f0e6d3 100%);
+            border: 4px solid var(--panel-border);
+            border-radius: 6px;
+            padding: 12px;
+            transition: all 0.2s;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 4px 4px 0 var(--panel-shadow);
+        }
+        
+        .agent-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 4px;
+            background: var(--agent-color, var(--accent-cyan));
+        }
+        
+        .agent-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 6px 6px 0 var(--panel-shadow);
+            border-color: var(--accent-cyan);
+        }
+        
+        .agent-card:active {
+            transform: translateY(0);
+            box-shadow: 2px 2px 0 var(--panel-shadow);
+        }
+        
+        .agent-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+        
+        .agent-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+            border: 4px solid var(--text-dark);
+            box-shadow: 2px 2px 0 rgba(0,0,0,0.2);
+        }
+        
+        .agent-info {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .agent-name {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 12px;
+            color: var(--text-dark);
+            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .agent-role {
+            font-size: 14px;
+            color: #666;
+            font-family: 'VT323', monospace;
+        }
+        
+        .agent-status {
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-family: 'Press Start 2P', cursive;
+            white-space: nowrap;
+            border: 3px solid;
+        }
+        
+        .agent-status.active {
+            background: rgba(81, 207, 102, 0.2);
+            color: #2b8a3e;
+            border-color: #51cf66;
+        }
+        
+        .agent-status.busy {
+            background: rgba(252, 196, 25, 0.2);
+            color: #e67700;
+            border-color: #fcc419;
+        }
+        
+        .agent-status.idle {
+            background: rgba(134, 142, 153, 0.2);
+            color: #495057;
+            border-color: #adb5bd;
+        }
+        
+        .agent-status.meeting {
+            background: rgba(218, 119, 242, 0.2);
+            color: #9c36b5;
+            border-color: #da77f2;
+        }
+        
+        /* Zone Legend */
+        .legend-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            background: rgba(255,255,255,0.5);
+            border: 4px solid var(--panel-border);
+            border-radius: 6px;
+            box-shadow: 2px 2px 0 var(--panel-shadow);
+        }
+        
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            border: 2px solid var(--text-dark);
+        }
+        
+        .legend-text {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 10px;
+            color: var(--text-dark);
+        }
+        
+        /* Mobile Navigation */
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-secondary);
+            border-top: 4px solid var(--panel-border);
+            padding: 10px;
+            z-index: 101;
+            justify-content: space-around;
+        }
+        
+        .mobile-nav-btn {
+            padding: 8px 10px;
+            background: var(--panel-bg);
+            border: 4px solid var(--panel-border);
+            border-radius: 6px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 10px;
+            color: var(--text-dark);
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+            line-height: 1.4;
+            box-shadow: 2px 2px 0 var(--panel-shadow);
+        }
+        
+        .mobile-nav-btn:active {
+            transform: translateY(3px);
+            box-shadow: 0 0 0 var(--panel-shadow);
+        }
+        
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--panel-bg);
+            border-radius: 5px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--panel-border);
+            border-radius: 5px;
+            border: 2px solid var(--panel-bg);
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #6b5a45;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .game-container {
+                padding: 10px;
+                padding-bottom: 90px;
+            }
+            
+            .game-title {
+                font-size: 12px;
+            }
+            
+            .nav-tab {
+                font-size: 10px;
+                padding: 8px 10px;
+            }
+            
+            .panel-title {
+                font-size: 12px;
+            }
+            
+            .agent-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .agent-name {
+                font-size: 10px;
+            }
+            
+            .mobile-nav {
+                display: flex;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <!-- Header -->
+        <header class="game-header">
+            <div class="game-title">🏢 LIVING PIXEL OFFICE</div>
+            <div class="game-stats">
+                <div class="stat-box">
+                    <div class="stat-label">AGENTS</div>
+                    <div class="stat-value" style="color: #51cf66;">22</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">ACTIVE</div>
+                    <div class="stat-value" style="color: #339af0;">18</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">ZONES</div>
+                    <div class="stat-value" style="color: #fcc419;">12</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="nav-tabs">
+            <a href="index.html" class="nav-tab">🏠 HQ</a>
+            <a href="office.html" class="nav-tab active">🏢 Office</a>
+            <a href="agents.html" class="nav-tab">👥 Agents</a>
+            <a href="dealflow-view.html" class="nav-tab">💼 Deals</a>
+            <a href="token-tracker.html" class="nav-tab">🪙 Tokens</a>
+            <a href="scout.html" class="nav-tab">🔭 Scout</a>
+            <a href="task-board.html" class="nav-tab">📋 Tasks</a>
+        </nav>
+
+        <!-- Office Canvas -->
+        <div class="office-container">
+            <canvas id="officeCanvas" width="1200" height="800"></canvas>
+        </div>
+
+        <!-- Zone Legend -->
+        <div class="panel-box">
+            <div class="panel-title">
+                <span class="emoji">🗺️</span>
+                OFFICE ZONES
+            </div>
+            <div class="legend-grid">
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #22c55e;"></div>
+                    <span class="legend-text">Dev Area (Code/Forge)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #a855f7;"></div>
+                    <span class="legend-text">Meeting Room</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #f97316;"></div>
+                    <span class="legend-text">Recreation</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #fbbf24;"></div>
+                    <span class="legend-text">Coffee Corner</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #00d4ff;"></div>
+                    <span class="legend-text">CEO Office</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #ec4899;"></div>
+                    <span class="legend-text">Sales/Marketing</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Agent Status -->
+        <div class="panel-box">
+            <div class="panel-title">
+                <span class="emoji">🤖</span>
+                AGENTS IN OFFICE
+            </div>
+            <div class="agent-grid" id="agentGrid"></div>
+        </div>
+    </div>
+
+    <!-- Mobile Navigation -->
+    <nav class="mobile-nav">
+        <a href="index.html" class="mobile-nav-btn">🏠<br>HQ</a>
+        <a href="office.html" class="mobile-nav-btn" style="background: #69db7c;">🏢<br>Office</a>
+        <a href="agents.html" class="mobile-nav-btn">👥<br>Agents</a>
+        <a href="dealflow-view.html" class="mobile-nav-btn">💼<br>Deals</a>
+    </nav>
+
+    <script>
+        // 22 Agents Data
+        const agents = [
+            { id: "nexus", name: "Nexus", role: "CEO / Orchestrator", emoji: "◈", status: "active", color: "#ff6b6b" },
+            { id: "audit-1", name: "Audit-1", role: "QA / Auditor", emoji: "🔍", status: "active", color: "#ffc078" },
+            { id: "audit-2", name: "Audit-2", role: "QA / Auditor", emoji: "🔎", status: "idle", color: "#ffc078" },
+            { id: "code-1", name: "Code-1", role: "Backend Developer", emoji: "💻", status: "busy", color: "#38d9a9" },
+            { id: "code-2", name: "Code-2", role: "Backend Developer", emoji: "⚙️", status: "active", color: "#38d9a9" },
+            { id: "code-3", name: "Code-3", role: "Backend Developer", emoji: "🔧", status: "idle", color: "#38d9a9" },
+            { id: "forge-1", name: "Forge-1", role: "Frontend Developer", emoji: "⚒️", status: "busy", color: "#ff8787" },
+            { id: "forge-2", name: "Forge-2", role: "Frontend Developer", emoji: "🔨", status: "active", color: "#ff8787" },
+            { id: "forge-3", name: "Forge-3", role: "Frontend Developer", emoji: "🛠️", status: "meeting", color: "#ff8787" },
+            { id: "cipher", name: "Cipher", role: "Security", emoji: "🔒", status: "active", color: "#adb5bd" },
+            { id: "dealflow", name: "DealFlow", role: "Lead Generation", emoji: "🤝", status: "busy", color: "#e599f7" },
+            { id: "gary", name: "Gary", role: "Marketing", emoji: "📢", status: "active", color: "#69db7c" },
+            { id: "glasses", name: "Glasses", role: "Researcher", emoji: "🔭", status: "active", color: "#4dabf7" },
+            { id: "larry", name: "Larry", role: "Social Media", emoji: "📱", status: "idle", color: "#ffd43b" },
+            { id: "pie", name: "PIE", role: "Predictive Intelligence", emoji: "🧠", status: "active", color: "#cc5de8" },
+            { id: "pixel", name: "Pixel", role: "Designer", emoji: "🎨", status: "busy", color: "#da77f2" },
+            { id: "quill", name: "Quill", role: "Writer", emoji: "✍️", status: "active", color: "#ffa94d" },
+            { id: "scout", name: "Scout", role: "Researcher", emoji: "🎯", status: "busy", color: "#ffa8a8" },
+            { id: "sentry", name: "Sentry", role: "DevOps", emoji: "🛡️", status: "active", color: "#74c0fc" },
+            { id: "vault", name: "Vault", role: "Data Engineer", emoji: "🗄️", status: "busy", color: "#0891b2" },
+            { id: "spark", name: "Spark", role: "Creative Lead", emoji: "✨", status: "active", color: "#e879f9" },
+            { id: "pulse", name: "Pulse", role: "Analytics", emoji: "📊", status: "active", color: "#10b981" }
+        ];
+
+        // Render Agent Cards
+        function renderAgents() {
+            const grid = document.getElementById('agentGrid');
+            grid.innerHTML = agents.map(agent => `
+                <div class="agent-card" style="--agent-color: ${agent.color}" data-status="${agent.status}">
+                    <div class="agent-header">
+                        <div class="agent-avatar" style="background: ${agent.color}20; color: ${agent.color};">
+                            ${agent.emoji}
+                        </div>
+                        <div class="agent-info">
+                            <div class="agent-name">${agent.name}</div>
+                            <div class="agent-role">${agent.role}</div>
+                        </div>
+                        <span class="agent-status ${agent.status}">${agent.status.toUpperCase()}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Canvas Animation
+        const canvas = document.getElementById('officeCanvas');
+        const ctx = canvas.getContext('2d');
+        ctx.imageSmoothingEnabled = false;
+
+        let frame = 0;
+
+        function drawOffice() {
+            // Clear
+            ctx.fillStyle = '#f5e6c8';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Draw grid pattern
+            ctx.strokeStyle = '#e8d4a8';
+            ctx.lineWidth = 2;
+            for (let x = 0; x < canvas.width; x += 40) {
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, canvas.height);
+                ctx.stroke();
+            }
+            for (let y = 0; y < canvas.height; y += 40) {
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(canvas.width, y);
+                ctx.stroke();
+            }
+
+            // Draw zones
+            const zones = [
+                { x: 100, y: 100, w: 200, h: 150, color: '#00d4ff', name: 'CEO Office' },
+                { x: 400, y: 100, w: 250, h: 200, color: '#a855f7', name: 'Meeting Room' },
+                { x: 750, y: 100, w: 200, h: 150, color: '#8b5cf6', name: 'Research' },
+                { x: 100, y: 350, w: 180, h: 180, color: '#312e81', name: 'Security' },
+                { x: 350, y: 350, w: 300, h: 200, color: '#22c55e', name: 'Dev Area' },
+                { x: 700, y: 350, w: 250, h: 200, color: '#f97316', name: 'Frontend' },
+                { x: 100, y: 600, w: 200, h: 150, color: '#1e3a8a', name: 'Sales' },
+                { x: 350, y: 600, w: 200, h: 150, color: '#fbbf24', name: 'Coffee' },
+                { x: 600, y: 600, w: 200, h: 150, color: '#be185d', name: 'Design' },
+                { x: 850, y: 600, w: 150, h: 150, color: '#9a3412', name: 'Recreation' }
+            ];
+
+            zones.forEach(zone => {
+                // Zone background
+                ctx.fillStyle = zone.color + '30';
+                ctx.fillRect(zone.x, zone.y, zone.w, zone.h);
+                
+                // Zone border
+                ctx.strokeStyle = zone.color;
+                ctx.lineWidth = 4;
+                ctx.strokeRect(zone.x, zone.y, zone.w, zone.h);
+                
+                // Zone label
+                ctx.fillStyle = '#2c1810';
+                ctx.font = 'bold 14px "Press Start 2P", monospace';
+                ctx.fillText(zone.name, zone.x + 10, zone.y + 25);
+            });
+
+            // Draw agents
+            agents.forEach((agent, i) => {
+                const x = 150 + (i % 7) * 150;
+                const y = 200 + Math.floor(i / 7) * 180;
+                const bobY = Math.sin(frame * 0.1 + i) * 3;
+
+                // Agent shadow
+                ctx.fillStyle = 'rgba(0,0,0,0.2)';
+                ctx.beginPath();
+                ctx.ellipse(x, y + 35, 20, 8, 0, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Agent body
+                ctx.fillStyle = agent.color;
+                ctx.beginPath();
+                ctx.roundRect(x - 20, y - 20 + bobY, 40, 40, 8);
+                ctx.fill();
+
+                // Agent border
+                ctx.strokeStyle = '#2c1810';
+                ctx.lineWidth = 3;
+                ctx.stroke();
+
+                // Agent emoji
+                ctx.font = '20px Arial';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(agent.emoji, x, y + bobY);
+
+                // Agent name
+                ctx.fillStyle = '#2c1810';
+                ctx.font = '10px "Press Start 2P", monospace';
+                ctx.fillText(agent.name, x, y + 50);
+
+                // Status dot
+                const statusColors = {
+                    active: '#22c55e',
+                    busy: '#fbbf24',
+                    meeting: '#a855f7',
+                    idle: '#6b7280'
+                };
+                ctx.fillStyle = statusColors[agent.status] || '#6b7280';
+                ctx.beginPath();
+                ctx.arc(x + 18, y - 15 + bobY, 5, 0, Math.PI * 2);
+                ctx.fill();
+            });
+
+            frame++;
+            requestAnimationFrame(drawOffice);
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            renderAgents();
+            drawOffice();
+        });
+    </script>
+</body>
+</html>
