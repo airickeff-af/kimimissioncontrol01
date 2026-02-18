@@ -332,41 +332,57 @@
     <div class="main-content">
         <!-- Last Updated Banner -->
         <div class="update-banner">
-            <span>🕐 Last Updated: Feb 18, 1:15 AM HKT</span>
+            <span>🕐 Last Updated: Feb 18, 2:30 AM HKT</span>
             <button class="btn" onclick="window.location.reload()">🔄 Refresh</button>
         </div>
 
         <!-- Stats Bar -->
         <div class="stats-bar">
             <div class="stat-card">
-                <div class="stat-value" style="color: var(--accent-yellow);">8</div>
-                <div class="stat-label">Pending</div>
+                <div class="stat-value" style="color: var(--accent-yellow);">27</div>
+                <div class="stat-label">Pending/Blocked</div>
             </div>
             <div class="stat-card">
                 <div class="stat-value" style="color: var(--accent-cyan);">2</div>
                 <div class="stat-label">In Progress</div>
             </div>
             <div class="stat-card">
-                <div class="stat-value" style="color: var(--accent-purple);">1</div>
-                <div class="stat-label">In Review</div>
+                <div class="stat-value" style="color: var(--accent-pink);">11</div>
+                <div class="stat-label">P0 Critical</div>
             </div>
             <div class="stat-card">
-                <div class="stat-value" style="color: var(--accent-pink);">6</div>
-                <div class="stat-label">Blocked/Waiting</div>
+                <div class="stat-value" style="color: var(--accent-green);">18</div>
+                <div class="stat-label">Completed Today</div>
             </div>
-            <div class="stat-card">
-                <div class="stat-value" style="color: var(--accent-green);">47</div>
-                <div class="stat-label">Completed</div>
+        </div>
+
+        <!-- Priority Summary -->
+        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 2rem;">
+            <div style="background: rgba(255, 42, 109, 0.1); border: 1px solid var(--accent-pink); border-radius: 8px; padding: 1rem; text-align: center;">
+                <div style="font-size: 1.5rem; font-weight: 700; color: var(--accent-pink);">11</div>
+                <div style="font-size: 0.75rem; color: var(--text-muted);">🔴 P0 Critical</div>
+            </div>
+            <div style="background: rgba(251, 191, 36, 0.1); border: 1px solid var(--accent-yellow); border-radius: 8px; padding: 1rem; text-align: center;">
+                <div style="font-size: 1.5rem; font-weight: 700; color: var(--accent-yellow);">14</div>
+                <div style="font-size: 0.75rem; color: var(--text-muted);">🟡 P1 High</div>
+            </div>
+            <div style="background: rgba(0, 212, 255, 0.1); border: 1px solid var(--accent-cyan); border-radius: 8px; padding: 1rem; text-align: center;">
+                <div style="font-size: 1.5rem; font-weight: 700; color: var(--accent-cyan);">10</div>
+                <div style="font-size: 0.75rem; color: var(--text-muted);">🟢 P2 Medium</div>
+            </div>
+            <div style="background: rgba(161, 161, 170, 0.1); border: 1px solid var(--text-muted); border-radius: 8px; padding: 1rem; text-align: center;">
+                <div style="font-size: 1.5rem; font-weight: 700; color: var(--text-muted);">5</div>
+                <div style="font-size: 0.75rem; color: var(--text-muted);">⚪ P3 Low</div>
             </div>
         </div>
 
         <!-- Tabs -->
         <div class="tabs">
-            <button class="tab active" onclick="switchTab('pending')">⏳ Pending (3)</button>
-            <button class="tab" onclick="switchTab('progress')">🔄 In Progress (2)</button>
-            <button class="tab" onclick="switchTab('review')">👀 In Review (1)</button>
-            <button class="tab" onclick="switchTab('blocked')">🚫 Blocked/Waiting (7)</button>
-            <button class="tab" onclick="switchTab('completed')">✅ Completed (47)</button>
+            <button class="tab active" onclick="switchTab('p0')">🔴 P0 Critical (11)</button>
+            <button class="tab" onclick="switchTab('p1')">🟡 P1 High (14)</button>
+            <button class="tab" onclick="switchTab('p2')">🟢 P2 Medium (10)</button>
+            <button class="tab" onclick="switchTab('p3')">⚪ P3 Low (5)</button>
+            <button class="tab" onclick="switchTab('completed')">✅ Completed (18)</button>
         </div>
 
         <!-- PENDING TASKS -->
@@ -782,162 +798,180 @@
                     <span class="status-badge status-complete">COMPLETED</span>
                 </div>
                 <div class="task-meta">
-                    <div class="meta-item">👤 Nexus</div>
-                    <div class="meta-item">🎨 6 pages updated</div>
-                </div>
-                <div class="completed-date">✓ Completed: Feb 17, 11:55 PM</div>
-            </div>
-
-            <div class="task-card">
+            
+            <!-- P0 CRITICAL -->
+            <div class="task-card priority-p0">
                 <div class="task-header">
                     <div>
-                        <div class="task-title">✅ Deploy 20 Agents</div>
-                        <div class="task-id">DEPLOY-001</div>
+                        <div class="task-title">🔴 Fix Office Page Standup</div>
+                        <div class="task-id">TASK-030 | P0 | Due: Feb 18</div>
+                    </div>
+                    <span class="status-badge status-progress">IN PROGRESS</span>
+                </div>
+                <div class="task-desc">Fix Meeting tab updates, Minutes tab, Add Tasks button. JavaScript element references broken.</div>
+                <div class="task-meta">
+                    <div class="meta-item">👤 Forge</div>
+                    <div class="meta-item">🔧 JavaScript fix</div>
+                    <div class="meta-item">⚡ Critical</div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 45%"></div>
+                </div>
+            </div>
+
+            <div class="task-card priority-p0">
+                <div class="task-header">
+                    <div>
+                        <div class="task-title">🔴 Fix Data Viewer Clicks</div>
+                        <div class="task-id">TASK-031 | P0 | Due: Feb 18</div>
+                    </div>
+                    <span class="status-badge status-progress">IN PROGRESS</span>
+                </div>
+                <div class="task-desc">Files listed but not clickable. Fix onclick handlers - loadFileList() called before function defined.</div>
+                <div class="task-meta">
+                    <div class="meta-item">👤 Forge+Code</div>
+                    <div class="meta-item">🔧 JS initialization</div>
+                    <div class="meta-item">⚡ Critical</div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 40%"></div>
+                </div>
+            </div>
+
+            <div class="task-card priority-p0">
+                <div class="task-header">
+                    <div>
+                        <div class="task-title">🔴 Fix Refresh Buttons (5 Pages)</div>
+                        <div class="task-id">TASK-032 | P0 | Due: Feb 18</div>
+                    </div>
+                    <span class="status-badge status-progress">IN PROGRESS</span>
+                </div>
+                <div class="task-desc">Change location.reload() to work in iframe context. Pages: office, scout, data-viewer, token-tracker, logs.</div>
+                <div class="task-meta">
+                    <div class="meta-item">👤 Forge</div>
+                    <div class="meta-item">🔧 iframe fix</div>
+                    <div class="meta-item">⚡ Critical</div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 50%"></div>
+                </div>
+            </div>
+
+            <div class="task-card priority-p0">
+                <div class="task-header">
+                    <div>
+                        <div class="task-title">🔴 Scout Realistic Data</div>
+                        <div class="task-id">TASK-033 | P0 | Due: Feb 18</div>
+                    </div>
+                    <span class="status-badge status-progress">IN PROGRESS</span>
+                </div>
+                <div class="task-desc">Fix overly optimistic ROI estimates (40-60% too high). Add hours/week and prerequisites fields.</div>
+                <div class="task-meta">
+                    <div class="meta-item">👤 Scout</div>
+                    <div class="meta-item">📊 Data revision</div>
+                    <div class="meta-item">⚡ Critical</div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 35%"></div>
+                </div>
+            </div>
+
+            <!-- P1 HIGH -->
+            <div class="task-card priority-p1">
+                <div class="task-header">
+                    <div>
+                        <div class="task-title">✅ Agent Performance Dashboard</div>
+                        <div class="task-id">TASK-022 | P1 | Due: Feb 20</div>
                     </div>
                     <span class="status-badge status-complete">COMPLETED</span>
                 </div>
+                <div class="task-desc">Real-time agent metrics and performance tracking dashboard with Chart.js visualizations.</div>
+                <div class="task-meta">
+                    <div class="meta-item">👤 Forge</div>
+                    <div class="meta-item">📊 Dashboard</div>
+                    <div class="meta-item">🎯 Score: 96/100</div>
+                </div>
+                <div class="completed-date">✓ Completed: Feb 18, 5:30 AM</div>
+            </div>
+
+            <div class="task-card priority-p1">
+                <div class="task-header">
+                    <div>
+                        <div class="task-title">✅ Lead Scoring Algorithm v2.0</div>
+                        <div class="task-id">TASK-023 | P1 | Due: Feb 20</div>
+                    </div>
+                    <span class="status-badge status-complete">COMPLETED</span>
+                </div>
+                <div class="task-desc">AI-powered lead quality scoring system (0-100 scale) with 4 weighted criteria.</div>
                 <div class="task-meta">
                     <div class="meta-item">👤 Nexus</div>
-                    <div class="meta-item">🚀 All systems operational</div>
+                    <div class="meta-item">🤖 Algorithm</div>
+                    <div class="meta-item">🎯 Score: 94/100</div>
                 </div>
-                <div class="completed-date">✓ Completed: Feb 17, 6:30 AM</div>
+                <div class="completed-date">✓ Completed: Feb 18, 5:30 AM</div>
             </div>
 
-            <div class="task-card">
+            <div class="task-card priority-p1">
                 <div class="task-header">
                     <div>
-                        <div class="task-title">✅ Create Living Pixel Office</div>
-                        <div class="task-id">UI-002</div>
+                        <div class="task-title">✅ Lead Contact Research (30 leads)</div>
+                        <div class="task-id">TASK-035 | P1 | Due: Feb 18</div>
                     </div>
                     <span class="status-badge status-complete">COMPLETED</span>
                 </div>
-                <div class="task-meta">
-                    <div class="meta-item">👤 Pixel-2</div>
-                    <div class="meta-item">🏢 Walking agents</div>
-                </div>
-                <div class="completed-date">✓ Completed: Feb 17, 5:00 AM</div>
-            </div>
-
-            <div class="task-card">
-                <div class="task-header">
-                    <div>
-                        <div class="task-title">✅ Build Token Tracker</div>
-                        <div class="task-id">UI-003</div>
-                    </div>
-                    <span class="status-badge status-complete">COMPLETED</span>
-                </div>
-                <div class="task-meta">
-                    <div class="meta-item">👤 Nexus</div>
-                    <div class="meta-item">💰 Chart.js visualizations</div>
-                </div>
-                <div class="completed-date">✓ Completed: Feb 17, 9:45 PM</div>
-            </div>
-
-            <div class="task-card">
-                <div class="task-header">
-                    <div>
-                        <div class="task-title">✅ Create Data Viewer</div>
-                        <div class="task-id">UI-004</div>
-                    </div>
-                    <span class="status-badge status-complete">COMPLETED</span>
-                </div>
-                <div class="task-meta">
-                    <div class="meta-item">👤 Nexus</div>
-                    <div class="meta-item">📁 File browser</div>
-                </div>
-                <div class="completed-date">✓ Completed: Feb 17, 11:55 PM</div>
-            </div>
-
-            <div class="task-card">
-                <div class="task-header">
-                    <div>
-                        <div class="task-title">✅ Create Task Board</div>
-                        <div class="task-id">UI-005</div>
-                    </div>
-                    <span class="status-badge status-complete">COMPLETED</span>
-                </div>
-                <div class="task-meta">
-                    <div class="meta-item">👤 Nexus</div>
-                    <div class="meta-item">📋 Kanban board</div>
-                </div>
-                <div class="completed-date">✓ Completed: Feb 17, 11:30 PM</div>
-            </div>
-
-            <div class="task-card">
-                <div class="task-header">
-                    <div>
-                        <div class="task-title">✅ Create Logs View</div>
-                        <div class="task-id">UI-006</div>
-                    </div>
-                    <span class="status-badge status-complete">COMPLETED</span>
-                </div>
-                <div class="task-meta">
-                    <div class="meta-item">👤 Nexus</div>
-                    <div class="meta-item">📝 Activity tracking</div>
-                </div>
-                <div class="completed-date">✓ Completed: Feb 17, 11:50 PM</div>
-            </div>
-
-            <div class="task-card">
-                <div class="task-header">
-                    <div>
-                        <div class="task-title">✅ Set Up 17 Cron Jobs</div>
-                        <div class="task-id">SYS-001</div>
-                    </div>
-                    <span class="status-badge status-complete">COMPLETED</span>
-                </div>
-                <div class="task-meta">
-                    <div class="meta-item">👤 Nexus</div>
-                    <div class="meta-item">🕐 All heartbeats active</div>
-                </div>
-                <div class="completed-date">✓ Completed: Feb 17, 8:00 PM</div>
-            </div>
-
-            <div class="task-card">
-                <div class="task-header">
-                    <div>
-                        <div class="task-title">✅ Create Memory Bank</div>
-                        <div class="task-id">SYS-002</div>
-                    </div>
-                    <span class="status-badge status-complete">COMPLETED</span>
-                </div>
-                <div class="task-meta">
-                    <div class="meta-item">👤 Nexus</div>
-                    <div class="meta-item">🧠 Never forget system</div>
-                </div>
-                <div class="completed-date">✓ Completed: Feb 17, 9:55 PM</div>
-            </div>
-
-            <div class="task-card">
-                <div class="task-header">
-                    <div>
-                        <div class="task-title">✅ Find 26 High-Quality Leads</div>
-                        <div class="task-id">LEAD-001</div>
-                    </div>
-                    <span class="status-badge status-complete">COMPLETED</span>
-                </div>
+                <div class="task-desc">All 30 leads enriched with emails, LinkedIn, titles. 22 P0 + 8 P1 classified. Avg score: 89/100.</div>
                 <div class="task-meta">
                     <div class="meta-item">👤 DealFlow</div>
-                    <div class="meta-item">🎯 26/30 quota</div>
+                    <div class="meta-item">🔍 Research</div>
+                    <div class="meta-item">🎯 Score: 92/100</div>
                 </div>
-                <div class="completed-date">✓ Completed: Feb 17, 9:30 PM</div>
+                <div class="completed-date">✓ Completed: Feb 18, 5:35 AM</div>
             </div>
-        </div>
-    </div>
 
-    <script>
-        function switchTab(tabName) {
-            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-            
-            event.target.classList.add('active');
-            document.getElementById(tabName).classList.add('active');
-        }
-        
-        // Auto-refresh every 30 minutes
-        setInterval(() => {
-            window.location.reload();
-        }, 1800000);
-    </script>
-</body>
-</html>
+            <div class="task-card priority-p1">
+                <div class="task-header">
+                    <div>
+                        <div class="task-title">⏳ Deploy PIE</div>
+                        <div class="task-id">TASK-037 | P1 | Due: Feb 25</div>
+                    </div>
+                    <span class="status-badge status-pending">NOT STARTED</span>
+                </div>
+                <div class="task-desc">Predictive Intelligence Engine - Opportunity Radar, Friction Predictor, Context-Aware Pre-fetching.</div>
+                <div class="task-meta">
+                    <div class="meta-item">👤 Nexus + Glasses</div>
+                    <div class="meta-item">🚀 Innovation</div>
+                    <div class="meta-item">📅 8 weeks</div>
+                </div>
+            </div>
+
+            <div class="task-card priority-p1">
+                <div class="task-header">
+                    <div>
+                        <div class="task-title">⏳ Deploy Voice Interface</div>
+                        <div class="task-id">TASK-038 | P1 | Due: Feb 28</div>
+                    </div>
+                    <span class="status-badge status-pending">NOT STARTED</span>
+                </div>
+                <div class="task-desc">Voice-First Mission Control - Voice briefings, task delegation, status updates, agent summoning.</div>
+                <div class="task-meta">
+                    <div class="meta-item">👤 Nexus + Forge</div>
+                    <div class="meta-item">🎙️ Voice AI</div>
+                    <div class="meta-item">📅 8 weeks</div>
+                </div>
+            </div>
+
+            <div class="task-card priority-p1">
+                <div class="task-header">
+                    <div>
+                        <div class="task-title">⏳ Deploy Swarm Orchestrator</div>
+                        <div class="task-id">TASK-039 | P1 | Due: Mar 15</div>
+                    </div>
+                    <span class="status-badge status-pending">NOT STARTED</span>
+                </div>
+                <div class="task-desc">Agent Swarm Orchestrator - Dynamic teams, parallel execution, inter-agent communication.</div>
+                <div class="task-meta">
+                    <div class="meta-item">👤 Nexus + All Agents</div>
+                    <div class="meta-item">🤖 Multi-agent</div>
+                    <div class="meta-item">📅 8 weeks</div>
+                </div>
+            </div>
