@@ -13,6 +13,7 @@
     }
   ],
   "rewrites": [
+    { "source": "/api/(.*)", "destination": "/mission-control/dashboard/api/$1" },
     { "source": "/css/(.*)", "destination": "/mission-control/dashboard/css/$1" },
     { "source": "/js/(.*)", "destination": "/mission-control/dashboard/js/$1" },
     { "source": "/assets/(.*)", "destination": "/assets/$1" },
