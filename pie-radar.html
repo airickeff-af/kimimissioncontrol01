@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="theme-color" content="#2d1b4e">
+    <title>🔭 PIE Radar | Mission Control</title>
+    
+    <!-- Kairosoft Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* Kairosoft Color Palette */
+            --bg-primary: #2d1b4e;
+            --bg-secondary: #3d2652;
+            --panel-bg: #f4e4c1;
+            --panel-border: #8b7355;
+            --panel-shadow: #5c4a3a;
+            --text-dark: #2c1810;
+            --text-light: #f4e4c1;
+            --accent-cyan: #00d4ff;
+            --accent-pink: #ff6b6b;
+            --accent-green: #51cf66;
+            --accent-blue: #339af0;
+            --accent-yellow: #fcc419;
+            --accent-purple: #da77f2;
+            --accent-orange: #ff8787;
+        }
+        
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box;
+            image-rendering: pixelated;
+        }
+        
+        body {
+            font-family: 'VT323', monospace;
+            background: var(--bg-primary);
+            color: var(--text-light);
+            min-height: 100vh;
+            line-height: 1.4;
+        }
+        
+        /* Pixel Grid Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.15) 2px, rgba(0,0,0,0.15) 4px),
+                repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0,0,0,0.15) 2px, rgba(0,0,0,0.15) 4px);
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .game-container {
+            position: relative;
+            z-index: 1;
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 15px;
+            min-height: 100vh;
+            padding-bottom: 100px;
+        }
+        
+        /* Header */
+        .game-header {
+            background: linear-gradient(180deg, #5c3d7a 0%, #3d2652 100%);
+            border: 4px solid #2d1b4e;
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 0 #1a0f2e, inset 0 2px 0 rgba(255,255,255,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .game-title {
+            font-family: 'Press Start 2P', cursive;
+            font-size: clamp(0.6rem, 2vw, 0.85rem);
+            color: var(--accent-yellow);
+            text-shadow: 3px 3px 0 #2d1b4e;
+            letter-spacing: 2px;
+            line-height: 1.6;
+        }
+        
+        .game-subtitle {
+            font-size: 1rem;
+            color: var(--text-light);
+            opacity: 0.8;
+            margin-top: 5px;
+        }
+        
+        /* Navigation */
+        .nav-panel {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .nav-btn {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.5rem;
+            padding: 10px 14px;
+            background: linear-gradient(180deg, #74c0fc 0%, #339af0 100%);
+            border: 3px solid #2d1b4e;
+            border-radius: 6px;
+            cursor: pointer;
+            box-shadow: 0 4px 0 #2d1b4e;
+            transition: all 0.1s;
+            color: var(--text-dark);
+            line-height: 1.4;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 0 #2d1b4e;
+        }
+        
+        .nav-btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 0 0 #2d1b4e;
+        }
+        
+        .nav-btn.active {
+            background: linear-gradient(180deg, #69db7c 0%, #51cf66 100%);
+        }
+        
+        /* Panel Box */
+        .panel-box {
+            background: var(--panel-bg);
+            border: 4px solid var(--panel-border);
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 4px 0 var(--panel-shadow), inset 0 2px 0 rgba(255,255,255,0.5);
+            margin-bottom: 15px;
+        }
+        
+        .panel-title {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.65rem;
+            color: var(--panel-border);
+            margin-bottom: 12px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid var(--panel-border);
+            line-height: 1.6;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        /* Radar Display */
+        .radar-container {
+            position: relative;
+            width: 100%;
+            height: 300px;
+            background: radial-gradient(circle, rgba(0,212,255,0.1) 0%, transparent 70%);
+            border: 3px solid var(--panel-border);
+            border-radius: 50%;
+            margin: 20px auto;
+            max-width: 300px;
+            overflow: hidden;
+        }
+        
+        .radar-sweep {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 50%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent-cyan), transparent);
+            transform-origin: left center;
+            animation: radarSweep 4s linear infinite;
+        }
+        
+        @keyframes radarSweep {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .radar-grid {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+        }
+        
+        .radar-ring {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 1px solid rgba(0,212,255,0.2);
+            border-radius: 50%;
+        }
+        
+        .radar-ring:nth-child(1) { width: 25%; height: 25%; }
+        .radar-ring:nth-child(2) { width: 50%; height: 50%; }
+        .radar-ring:nth-child(3) { width: 75%; height: 75%; }
+        
+        .radar-blip {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            animation: blipPulse 2s ease-in-out infinite;
+        }
+        
+        .radar-blip.opportunity { background: var(--accent-green); box-shadow: 0 0 10px var(--accent-green); }
+        .radar-blip.threat { background: var(--accent-pink); box-shadow: 0 0 10px var(--accent-pink); }
+        .radar-blip.alert { background: var(--accent-yellow); box-shadow: 0 0 10px var(--accent-yellow); }
+        
+        @keyframes blipPulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.5); opacity: 0.5; }
+        }
+        
+        /* Intel Cards */
+        .intel-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 15px;
+        }
+        
+        .intel-card {
+            background: linear-gradient(180deg, #fff 0%, #f0e6d3 100%);
+            border: 3px solid var(--panel-border);
+            border-radius: 6px;
+            padding: 15px;
+            transition: all 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .intel-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 4px;
+            background: var(--intel-color, var(--accent-cyan));
+        }
+        
+        .intel-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 0 var(--panel-shadow);
+        }
+        
+        .intel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+        
+        .intel-type {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.5rem;
+            padding: 4px 8px;
+            border-radius: 4px;
+            border: 2px solid;
+        }
+        
+        .intel-type.funding { background: rgba(81, 207, 102, 0.2); color: #2b8a3e; border-color: #51cf66; }
+        .intel-type.partnership { background: rgba(0, 212, 255, 0.2); color: #0066cc; border-color: #00d4ff; }
+        .intel-type.competitor { background: rgba(255, 107, 107, 0.2); color: #c92a2a; border-color: #ff6b6b; }
+        .intel-type.market { background: rgba(252, 196, 25, 0.2); color: #e67700; border-color: #fcc419; }
+        
+        .intel-title {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.6rem;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+        
+        .intel-desc {
+            color: #5c4a3a;
+            font-size: 1rem;
+            margin-bottom: 10px;
+            line-height: 1.3;
+        }
+        
+        .intel-meta {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            font-size: 0.85rem;
+            color: var(--text-dark);
+        }
+        
+        .intel-score {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.7rem;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+        
+        .intel-score.high { background: #51cf66; color: white; }
+        .intel-score.medium { background: #fcc419; color: #2d1b4e; }
+        .intel-score.low { background: #ff6b6b; color: white; }
+        
+        /* Alert Banner */
+        .alert-banner {
+            background: linear-gradient(180deg, rgba(255, 107, 107, 0.3) 0%, rgba(201, 42, 42, 0.2) 100%);
+            border: 3px solid #ff6b6b;
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 15px;
+            animation: alertPulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes alertPulse {
+            0%, 100% { border-color: #ff6b6b; }
+            50% { border-color: #ff8787; }
+        }
+        
+        .alert-title {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.6rem;
+            color: #ff6b6b;
+            margin-bottom: 8px;
+        }
+        
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .stat-box {
+            background: var(--panel-bg);
+            border: 3px solid var(--panel-border);
+            border-radius: 4px;
+            padding: 12px;
+            text-align: center;
+            box-shadow: 0 3px 0 var(--panel-shadow);
+        }
+        
+        .stat-value {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 1rem;
+            color: var(--text-dark);
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            color: #8b7355;
+            font-size: 0.75rem;
+        }
+        
+        /* Competitor Tracker */
+        .competitor-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .competitor-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px;
+            background: rgba(0,0,0,0.1);
+            border-radius: 6px;
+        }
+        
+        .competitor-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            background: var(--bg-secondary);
+        }
+        
+        .competitor-info {
+            flex: 1;
+        }
+        
+        .competitor-name {
+            font-weight: bold;
+            color: var(--text-dark);
+            font-size: 1.1rem;
+        }
+        
+        .competitor-status {
+            font-size: 0.85rem;
+            color: #8b7355;
+        }
+        
+        .threat-indicator {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.5rem;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+        
+        .threat-indicator.high { background: #ff6b6b; color: white; }
+        .threat-indicator.medium { background: #fcc419; color: #2d1b4e; }
+        .threat-indicator.low { background: #51cf66; color: white; }
+        
+        /* Mobile Nav */
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #3d2652;
+            border-top: 4px solid #2d1b4e;
+            padding: 10px;
+            z-index: 101;
+            justify-content: space-around;
+        }
+        
+        .mobile-nav-btn {
+            padding: 10px 14px;
+            background: var(--panel-bg);
+            border: 3px solid var(--panel-border);
+            border-radius: 6px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.5rem;
+            color: var(--text-dark);
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+            line-height: 1.4;
+            box-shadow: 0 3px 0 var(--panel-shadow);
+        }
+        
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: var(--panel-bg); border-radius: 5px; }
+        ::-webkit-scrollbar-thumb { background: var(--panel-border); border-radius: 5px; border: 2px solid var(--panel-bg); }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .game-container { padding: 10px; padding-bottom: 90px; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .nav-panel { display: none; }
+            .mobile-nav { display: flex; }
+            .intel-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <!-- Header -->
+        <header class="game-header">
+            <div>
+                <div class="game-title">🔭 PIE RADAR</div>
+                <div class="game-subtitle">Predictive Intelligence Engine</div>
+            </div>
+            
+            <nav class="nav-panel">
+                <a href="index.html" class="nav-btn">📊 HQ</a>
+                <a href="living-pixel-office.html" class="nav-btn">🏢 OFFICE</a>
+                <a href="scout.html" class="nav-btn">🔭 SCOUT</a>
+                <a href="pie-radar.html" class="nav-btn active">📡 RADAR</a>
+                <a href="dealflow-view.html" class="nav-btn">💼 DEALS</a>
+                <a href="task-board.html" class="nav-btn">📋 TASKS</a>
+            </nav>
+        </header>
+
+        <!-- Critical Alert -->
+        <div class="alert-banner">
+            <div class="alert-title">🚨 CRITICAL INTEL</div>
+            <div style="color: var(--text-light); font-size: 1rem;">
+                HashKey Group raised $100M Series B • Coins.xyz expanding to Brazil • Binance PH leadership change detected
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-grid">
+            <div class="stat-box">
+                <div class="stat-value" style="color: #51cf66;">12</div>
+                <div class="stat-label">OPPORTUNITIES</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-value" style="color: #ff6b6b;">3</div>
+                <div class="stat-label">THREATS</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-value" style="color: #fcc419;">8</div>
+                <div class="stat-label">ALERTS</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-value" style="color: #00d4ff;">94%</div>
+                <div class="stat-label">ACCURACY</div>
+            </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 15px;">
+            <!-- Radar Visual -->
+            <div class="panel-box">
+                <div class="panel-title">📡 LIVE RADAR</div>
+                <div class="radar-container">
+                    <div class="radar-grid">
+                        <div class="radar-ring"></div>
+                        <div class="radar-ring"></div>
+                        <div class="radar-ring"></div>
+                    </div>
+                    <div class="radar-sweep"></div>
+                    <!-- Radar blips -->
+                    <div class="radar-blip opportunity" style="top: 30%; left: 60%;"></div>
+                    <div class="radar-blip opportunity" style="top: 60%; left: 40%;"></div>
+                    <div class="radar-blip threat" style="top: 40%; left: 30%;"></div>
+                    <div class="radar-blip alert" style="top: 70%; left: 70%;"></div>
+                </div>
+                <div style="text-align: center; margin-top: 10px; font-size: 0.8rem; color: #8b7355;">
+                    Scanning: SEA Crypto Market
+                </div>
+            </div>
+
+            <!-- Competitor Tracker -->
+            <div class="panel-box">
+                <div class="panel-title">🎯 COMPETITOR WATCH</div>
+                <div class="competitor-list">
+                    <div class="competitor-item">
+                        <div class="competitor-logo">🏦</div>
+                        <div class="competitor-info">
+                            <div class="competitor-name">HashKey Group</div>
+                            <div class="competitor-status">$100M Series B • HK Expansion</div>
+                        </div>
+                        <span class="threat-indicator high">HIGH</span>
+                    </div>
+                    
+                    <div class="competitor-item">
+                        <div class="competitor-logo">💰</div>
+                        <div class="competitor-info">
+                            <div class="competitor-name">Coins.xyz</div>
+                            <div class="competitor-status">Brazil Launch • Global Expansion</div>
+                        </div>
+                        <span class="threat-indicator medium">MED</span>
+                    </div>
+                    
+                    <div class="competitor-item">
+                        <div class="competitor-logo">🔄</div>
+                        <div class="competitor-info">
+                            <div class="competitor-name">Binance PH</div>
+                            <div class="competitor-status">Leadership Change • Regulatory</div>
+                        </div>
+                        <span class="threat-indicator low">LOW</span>
+                    </div>
+                    
+                    <div class="competitor-item">
+                        <div class="competitor-logo">🏛️</div>
+                        <div class="competitor-info">
+                            <div class="competitor-name">PDAX</div>
+                            <div class="competitor-status">$51M Raised • BSP Licensed</div>
+                        </div>
+                        <span class="threat-indicator medium">MED</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Intelligence Feed -->
+        <div class="panel-box">
+            <div class="panel-title">📊 INTELLIGENCE FEED</div>
+            
+            <div class="intel-grid">
+                <!-- Funding Intel -->
+                <div class="intel-card" style="--intel-color: #51cf66;">
+                    <span class="intel-score high">92</span>
+                    <div class="intel-header">
+                        <span class="intel-type funding">FUNDING</span>
+                    </div>
+                    <div class="intel-title">HashKey Group $100M Series B</div>
+                    <div class="intel-desc">Hong Kong digital asset exchange raised $100M led by Bain Capital Crypto. Expanding institutional services.</div>
+                    <div class="intel-meta">
+                        <span>📍 Hong Kong</span>
+                        <span>💰 $100M</span>
+                        <span>⏱️ 2h ago</span>
+                    </div>
+                </div>
+
+                <!-- Partnership Intel -->
+                <div class="intel-card" style="--intel-color: #00d4ff;">
+                    <span class="intel-score high">88</span>
+                    <div class="intel-header">
+                        <span class="intel-type partnership">PARTNERSHIP</span>
+                    </div>
+                    <div class="intel-title">Coins.xyz Brazil Launch</div>
+                    <div class="intel-desc">Global expansion of Coins.ph launched in Brazil January 2025. Led by ex-Binance executives. Real-world disbursement focus.</div>
+                    <div class="intel-meta">
+                        <span>📍 Brazil</span>
+                        <span>🚀 Launch</span>
+                        <span>⏱️ 5h ago</span>
+                    </div>
+                </div>
+
+                <!-- Market Intel -->
+                <div class="intel-card" style="--intel-color: #fcc419;">
+                    <span class="intel-score medium">75</span>
+                    <div class="intel-header">
+                        <span class="intel-type market">MARKET</span>
+                    </div>
+                    <div class="intel-title">HK Stablecoin Regulation</div>
+                    <div class="intel-desc">HKMA expanding sandbox for stablecoin issuers. RD Technologies and others applying for licenses.</div>
+                    <div class="intel-meta">
+                        <span>📍 Hong Kong</span>
+                        <span>⚖️ Regulation</span>
+                        <span>⏱️ 8h ago</span>
+                    </div>
+                </div>
+
+                <!-- Competitor Intel -->
+                <div class="intel-card" style="--intel-color: #ff6b6b;">
+                    <span class="intel-score medium">68</span>
+                    <div class="intel-header">
+                        <span class="intel-type competitor">COMPETITOR</span>
+                    </div>
+                    <div class="intel-title">Binance PH Leadership Change</div>
+                    <div class="intel-desc">Kenneth Stern departed Nov 2023. Regulatory challenges continue. Opportunity for alternative partnerships.</div>
+                    <div class="intel-meta">
+                        <span>📍 Philippines</span>
+                        <span>👤 Personnel</span>
+                        <span>⏱️ 1d ago</span>
+                    </div>
+                </div>
+
+                <!-- Funding Intel -->
+                <div class="intel-card" style="--intel-color: #51cf66;">
+                    <span class="intel-score high">85</span>
+                    <div class="intel-header">
+                        <span class="intel-type funding">FUNDING</span>
+                    </div>
+                    <div class="intel-title">ZA Bank Crypto Trading</div>
+                    <div class="intel-desc">Hong Kong's first virtual bank exploring crypto trading services. 800K+ customers. Strong backing from ZhongAn.</div>
+                    <div class="intel-meta">
+                        <span>📍 Hong Kong</span>
+                        <span>🏦 Virtual Bank</span>
+                        <span>⏱️ 1d ago</span>
+                    </div>
+                </div>
+
+                <!-- Partnership Intel -->
+                <div class="intel-card" style="--intel-color: #00d4ff;">
+                    <span class="intel-score medium">72</span>
+                    <div class="intel-header">
+                        <span class="intel-type partnership">PARTNERSHIP</span>
+                    </div>
+                    <div class="intel-title">RedotPay Visa Partnership</div>
+                    <div class="intel-desc">Hong Kong crypto payment card provider secured Visa/Mastercard partnerships. Fastest growing in Asia.</div>
+                    <div class="intel-meta">
+                        <span>📍 Hong Kong</span>
+                        <span>💳 Payments</span>
+                        <span>⏱️ 2d ago</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Navigation -->
+    <nav class="mobile-nav">
+        <a href="index.html" class="mobile-nav-btn">📊<br>HQ</a>
+        <a href="scout.html" class="mobile-nav-btn">🔭<br>SCOUT</a>
+        <a href="pie-radar.html" class="mobile-nav-btn" style="background: #69db7c;">📡<br>RADAR</a>
+        <a href="dealflow-view.html" class="mobile-nav-btn">💼<br>DEALS</a>
+    </nav>
+</body>
+</html>

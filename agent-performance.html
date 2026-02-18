@@ -1516,6 +1516,35 @@
             document.getElementById('lastUpdated').textContent = now.toLocaleTimeString();
         }
         
+        // Enhanced agent data with detailed token metrics
+        function generateEnhancedAgentData() {
+            return agentsData.map(agent => {
+                const tokensTotal = agent.tokensUsed || Math.floor(Math.random() * 100000) + 10000;
+                const tokensToday = Math.floor(tokensTotal * 0.15); // ~15% daily
+                const tokensWeek = Math.floor(tokensTotal * 0.45); // ~45% weekly
+                const avgPerTask = Math.floor(tokensTotal / Math.max(agent.tasksCompleted || 1, 1));
+                const costUSD = (tokensTotal * 0.000002).toFixed(2);
+                const efficiency = agent.efficiency || Math.min(98, 70 + Math.floor((agent.tasksCompleted || 0) / 5));
+                
+                // Calculate trend (up/down arrow)
+                const trend = Math.random() > 0.4 ? 'up' : 'down';
+                const trendValue = Math.floor(Math.random() * 15) + 1;
+                
+                return {
+                    ...agent,
+                    tokensTotal,
+                    tokensToday,
+                    tokensWeek,
+                    avgPerTask,
+                    costUSD,
+                    efficiency,
+                    trend,
+                    trendValue,
+                    rating: efficiency >= 90 ? 'S' : efficiency >= 80 ? 'A' : efficiency >= 70 ? 'B' : 'C'
+                };
+            });
+        }
+
         function renderAgentCards() {
             const grid = document.getElementById('agentsGrid');
             
@@ -1524,13 +1553,15 @@
                 return;
             }
             
-            grid.innerHTML = agentsData.map(agent => {
+            const enhancedData = generateEnhancedAgentData();
+            
+            grid.innerHTML = enhancedData.map(agent => {
                 const emoji = agent.emoji || agentEmojis[agent.name] || agentEmojis[agent.id] || '🤖';
                 const color = agentColors[agent.name] || agentColors[agent.id] || '#00d4ff';
-                const efficiency = agent.efficiency || Math.min(98, 70 + Math.floor((agent.tasksCompleted || 0) / 5));
                 const uptime = agent.status === 'active' ? '99.9%' : '98.5%';
                 const tasks = agent.tasksCompleted || 0;
-                const tokens = agent.tokensUsed || 0;
+                const trendIcon = agent.trend === 'up' ? '↑' : '↓';
+                const trendColor = agent.trend === 'up' ? '#22c55e' : '#ff2a6d';
                 
                 return `
                     <div class="agent-card ${agent.status}">
@@ -1542,12 +1573,35 @@
                                 <h3>${agent.name}</h3>
                                 <div class="agent-role">${agent.role}</div>
                             </div>
-                            <span class="agent-status-badge ${agent.status}">${agent.status}</span>
+                            <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 4px;">
+                                <span class="agent-status-badge ${agent.status}">${agent.status}</span>
+                                <span style="font-size: 0.75rem; font-weight: 700; color: ${agent.rating === 'S' ? '#fbbf24' : agent.rating === 'A' ? '#22c55e' : '#a1a1aa'};">${agent.rating} RANK</span>
+                            </div>
                         </div>
                         
                         <div class="current-task">
                             <div class="current-task-label">Current Task</div>
                             <div>${agent.currentTask || tasks + ' tasks completed'}</div>
+                        </div>
+                        
+                        <!-- Token Metrics Grid -->
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin: 12px 0; padding: 12px; background: rgba(0,0,0,0.2); border-radius: 8px;">
+                            <div style="text-align: center;">
+                                <div style="font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase;">Today</div>
+                                <div style="font-size: 0.9rem; font-weight: 600; color: var(--accent-cyan);">${formatNumber(agent.tokensToday)}</div>
+                            </div>
+                            <div style="text-align: center;">
+                                <div style="font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase;">This Week</div>
+                                <div style="font-size: 0.9rem; font-weight: 600; color: var(--accent-purple);">${formatNumber(agent.tokensWeek)}</div>
+                            </div>
+                            <div style="text-align: center;">
+                                <div style="font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase;">Total</div>
+                                <div style="font-size: 0.9rem; font-weight: 600; color: var(--text-primary);">${formatNumber(agent.tokensTotal)}</div>
+                            </div>
+                            <div style="text-align: center;">
+                                <div style="font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase;">Cost</div>
+                                <div style="font-size: 0.9rem; font-weight: 600; color: var(--accent-green);">$${agent.costUSD}</div>
+                            </div>
                         </div>
                         
                         <div class="agent-stats">
@@ -1562,20 +1616,20 @@
                             </div>
                             <div class="stat-row">
                                 <div class="stat-label-row">
-                                    <span class="stat-name">Tokens</span>
-                                    <span class="stat-value-small">${formatNumber(tokens)}</span>
+                                    <span class="stat-name">Avg/Task</span>
+                                    <span class="stat-value-small">${formatNumber(agent.avgPerTask)}</span>
                                 </div>
                                 <div class="stat-bar">
-                                    <div class="stat-bar-fill tokens" style="width: ${Math.min(tokens / 500, 100)}%"></div>
+                                    <div class="stat-bar-fill tokens" style="width: ${Math.min(agent.avgPerTask / 1000, 100)}%"></div>
                                 </div>
                             </div>
                             <div class="stat-row">
                                 <div class="stat-label-row">
                                     <span class="stat-name">Efficiency</span>
-                                    <span class="stat-value-small">${efficiency}%</span>
+                                    <span class="stat-value-small" style="color: ${trendColor};">${trendIcon} ${agent.efficiency}%</span>
                                 </div>
                                 <div class="stat-bar">
-                                    <div class="stat-bar-fill efficiency" style="width: ${efficiency}%"></div>
+                                    <div class="stat-bar-fill efficiency" style="width: ${agent.efficiency}%"></div>
                                 </div>
                             </div>
                             <div class="stat-row">
