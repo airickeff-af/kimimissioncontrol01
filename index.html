@@ -884,6 +884,21 @@
                 list.style.opacity = '1';
             }, 300);
         }
+        
+        // Auto-refresh every 30 minutes (1800000 ms)
+        setInterval(() => {
+            console.log('Auto-refreshing page...');
+            window.location.reload();
+        }, 1800000);
+        
+        // Show countdown to next refresh
+        let timeUntilRefresh = 1800000;
+        setInterval(() => {
+            timeUntilRefresh -= 60000; // Subtract 1 minute
+            if (timeUntilRefresh <= 0) timeUntilRefresh = 1800000;
+            const minutes = Math.floor(timeUntilRefresh / 60000);
+            console.log(`Next auto-refresh in ${minutes} minutes`);
+        }, 60000);
     </script>
 </body>
 </html>
