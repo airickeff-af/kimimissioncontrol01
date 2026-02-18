@@ -7,11 +7,23 @@
       "use": "@vercel/static"
     },
     {
+      "src": "api/*.js",
+      "use": "@vercel/node"
+    },
+    {
       "src": "api/**/*.js",
       "use": "@vercel/node"
     }
   ],
   "routes": [
+    {
+      "src": "/api/logs/activity",
+      "dest": "/api/logs-activity.js"
+    },
+    {
+      "src": "/api/logs",
+      "dest": "/api/logs/index.js"
+    },
     {
       "src": "/api/(.*)",
       "dest": "/api/$1"
