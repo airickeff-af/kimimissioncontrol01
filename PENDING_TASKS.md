@@ -10,6 +10,78 @@
 ## 🆕 NEW TASKS FROM QUALITY GATE (P0 CRITICAL)
 #### Batch: 2026-02-18 3:45 PM
 
+### **TASK-093: P0 - Fix HQ Refresh Button + Add Auto-Refresh to All Pages**
+- **Assigned:** Forge
+- **Due:** Feb 19, 9:00 AM (with TASK-092)
+- **Status:** 🟡 IN PROGRESS
+- **Priority:** P0
+
+**Audit Finding:** Only 3/10 pages use real API data, 5/10 have working refresh
+
+**Tasks:**
+1. **HQ (index.html) Refresh Button**
+   - [ ] Add working refresh button
+   - [ ] Reload data from /api/agents, /api/stats (not page reload)
+   - [ ] Show loading state
+
+2. **Auto-Refresh All Pages (30 min)**
+   - [ ] index.html - Auto-refresh every 30 min
+   - [ ] office.html - Auto-refresh every 30 min
+   - [ ] pixel-office.html - Auto-refresh every 30 min
+   - [ ] agents.html - Auto-refresh every 30 min
+   - [ ] projects.html - Auto-refresh every 30 min
+   - [ ] token-tracker.html - Auto-refresh every 30 min
+   - [ ] task-board.html - Auto-refresh every 30 min
+   - [ ] data-viewer.html - Auto-refresh every 30 min
+   - [ ] scout.html - Auto-refresh every 30 min
+   - [ ] dealflow-view.html - Auto-refresh every 30 min
+
+**Code Pattern:**
+```javascript
+setInterval(() => {
+  console.log('[Auto-Refresh] Reloading data...');
+  loadData();
+}, 30 * 60 * 1000);
+```
+
+---
+
+### **TASK-094: P0 - Pixel Office Agent Hierarchy Table**
+- **Assigned:** Forge
+- **Due:** Feb 19, 9:00 AM (with TASK-092)
+- **Status:** 🟡 IN PROGRESS
+- **Priority:** P0
+
+**Description:** Add hierarchy table under pixel office canvas
+
+**Requirements:**
+- [ ] Table showing agent hierarchy (Commander → Leads → Specialists)
+- [ ] EricF at top (Commander)
+- [ ] Nexus as AI Lead
+- [ ] Team leads: CodeMaster, Forge, Glasses, Scout, etc.
+- [ ] All 22 agents organized by team
+- [ ] Click agent in table → center camera on them in office
+- [ ] Show role, status, current task in table
+- [ ] Real-time updates (sync with office)
+
+**Hierarchy Structure:**
+```
+Commander: EricF
+├── AI Lead: Nexus
+├── Dev Team: CodeMaster
+│   ├── Code-1, Code-2, Code-3
+├── Design Team: Forge
+│   ├── Forge-2, Forge-3, Pixel
+├── Research Team: Glasses
+│   ├── Scout
+├── Operations: Sentry, Cipher
+├── Content: Quill, Larry
+├── Marketing: Gary, ColdCall
+└── Audit: Audit-1, Audit-2
+```
+
+---
+
 ### **TASK-092: P0 - Isometric Pixel Office with Real Agent Activity**
 - **Assigned:** CodeMaster (Python Backend) + Forge + Pixel (Frontend/Visual)
 - **Due:** Feb 19, 9:00 AM (9 hours) - ACCELERATED
