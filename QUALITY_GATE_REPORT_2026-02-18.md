@@ -1,6 +1,6 @@
 # POST-DEPLOY QUALITY GATE REPORT
 **Date:** Wednesday, February 18, 2026 - 3:45 PM (Asia/Shanghai)  
-**Deployment:** https://kimimissioncontrol01.vercel.app  
+**Deployment:** https://dashboard-ten-sand-20.vercel.app  
 **Quality Gate Status:** 🔴 **FAIL**
 **Overall Score:** 0/100
 

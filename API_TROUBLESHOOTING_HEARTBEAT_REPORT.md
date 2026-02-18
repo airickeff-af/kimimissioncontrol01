@@ -69,7 +69,7 @@ Based on extensive research of Vercel documentation and community forums, the 40
 **File:** `/test-vercel-api.sh`
 ```bash
 #!/bin/bash
-BASE_URL="https://kimimissioncontrol01.vercel.app"
+BASE_URL="https://dashboard-ten-sand-20.vercel.app"
 endpoints=("/api/test" "/api/health" "/api/logs/activity" "/api/logs")
 # Tests all endpoints and reports status
 ```
@@ -107,7 +107,7 @@ endpoints=("/api/test" "/api/health" "/api/logs/activity" "/api/logs")
 
 1. **Go to Vercel Dashboard:**
    - https://vercel.com/dashboard
-   - Select `kimimissioncontrol01` project
+   - Select `dashboard-ten-sand-20` project
 
 2. **Check Build & Development Settings:**
    - Navigate to **Settings** → **Build & Development Settings**
@@ -155,7 +155,7 @@ After deployment, verify with:
 
 ```bash
 # Test the main endpoint
-curl https://kimimissioncontrol01.vercel.app/api/logs/activity
+curl https://dashboard-ten-sand-20.vercel.app/api/logs/activity
 
 # Expected response:
 # {
@@ -166,9 +166,9 @@ curl https://kimimissioncontrol01.vercel.app/api/logs/activity
 # }
 
 # Test other endpoints
-curl https://kimimissioncontrol01.vercel.app/api/test
-curl https://kimimissioncontrol01.vercel.app/api/health
-curl https://kimimissioncontrol01.vercel.app/api/agents
+curl https://dashboard-ten-sand-20.vercel.app/api/test
+curl https://dashboard-ten-sand-20.vercel.app/api/health
+curl https://dashboard-ten-sand-20.vercel.app/api/agents
 ```
 
 ---

@@ -65,7 +65,7 @@ All pages and API endpoints return 404. Site completely inaccessible.
    ```
 
 **Acceptance Criteria:**
-- [ ] https://kimimissioncontrol01.vercel.app/ loads (200 OK)
+- [ ] https://dashboard-ten-sand-20.vercel.app/ loads (200 OK)
 - [ ] /api/logs/activity returns JSON (200 OK)
 - [ ] /api/agents returns JSON (200 OK)
 - [ ] /api/health returns JSON (200 OK)
@@ -88,7 +88,7 @@ If not resolved by 5:00 PM, escalate to EricF immediately.
 - **Priority:** P1
 - **Description:** Apply Pixel's Kairosoft theme to all pages + DealFlow with COMPLETE contact info for ColdCall
 - **Result:** DealFlow page deployed with 26 leads, full contact info, ColdCall action buttons, Kairosoft theme
-- **Live:** https://kimimissioncontrol01.vercel.app/dealflow-view.html
+- **Live:** https://dashboard-ten-sand-20.vercel.app/dealflow-view.html
 
 **DealFlow Page Requirements:**
 - Kairosoft pixel theme

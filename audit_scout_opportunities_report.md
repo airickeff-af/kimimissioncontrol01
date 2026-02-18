@@ -2,7 +2,7 @@
 
 **Date:** 2026-02-18  
 **Auditor:** Subagent  
-**Page:** https://kimimissioncontrol01.vercel.app/scout.html  
+**Page:** https://dashboard-ten-sand-20.vercel.app/scout.html  
 **Total Opportunities Reviewed:** 30
 
 ---

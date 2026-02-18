@@ -30,4 +30,4 @@ jobs:
       - name: Health Check
         run: |
           sleep 10
-          curl -sf https://kimimissioncontrol01.vercel.app/api/health || exit 1
+          curl -sf https://dashboard-ten-sand-20.vercel.app/api/health || exit 1

@@ -2,7 +2,7 @@
 ## Post-Deploy Quality Gate - FAILED
 
 **Timestamp:** 2026-02-18 3:30 PM CST  
-**Deployment URL:** https://mission-control-seven.vercel.app  
+**Deployment URL:** https://dashboard-ten-sand-20.vercel.app  
 **Status:** ❌ **FAIL** (Score: 15/100)
 
 ---

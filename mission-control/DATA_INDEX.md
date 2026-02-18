@@ -19,6 +19,6 @@
 
 ## How to Access
 All files are accessible via the data viewer at:
-https://kimimissioncontrol01.vercel.app/data-viewer.html
+https://dashboard-ten-sand-20.vercel.app/data-viewer.html
 
 Password: 0000

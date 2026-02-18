@@ -38,7 +38,7 @@ Features:
 Usage:
 ```bash
 ./scripts/health-check.sh [DEPLOY_URL]
-# Default: https://kimimissioncontrol01.vercel.app
+# Default: https://dashboard-ten-sand-20.vercel.app
 ```
 
 ### 3. Rollback Script

@@ -38,7 +38,7 @@
 - **Deployed:** Feb 17, 2026 ~8:00 AM HKT
 - **Agents:** 20 total
 - **Status:** Fully operational
-- **URL:** https://kimimissioncontrol01.vercel.app
+- **URL:** https://dashboard-ten-sand-20.vercel.app
 
 ### **Key Systems:**
 - Dashboard v2.0 ✅
@@ -242,7 +242,7 @@
 - **Leads:** 26 crypto + 15 manufacturing = 41 total
 - **Agents:** 20 deployed
 - **Cost:** $0.52 today, $27/month projected
-- **URL:** kimimissioncontrol01.vercel.app
+- **URL:** dashboard-ten-sand-20.vercel.app
 - **Timezone:** GMT+8 (Hong Kong)
 - **Critical:** Code API fix needed
 - **Completed Today:** 18 tasks

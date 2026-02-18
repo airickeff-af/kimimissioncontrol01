@@ -32,7 +32,7 @@ Applying Kairosoft pixel-art game aesthetic to all Mission Control dashboard pag
 - Opportunity cards with risk indicators
 - Stats grid with hover effects
 - Mobile responsive navigation
-- **Live:** https://kimimissioncontrol01.vercel.app/scout.html
+- **Live:** https://dashboard-ten-sand-20.vercel.app/scout.html
 
 #### ✅ Overview Page (index.html) - TASK-046 + Enhancements
 **Status:** Complete with TASK-046 requirements
@@ -82,7 +82,7 @@ Applying Kairosoft pixel-art game aesthetic to all Mission Control dashboard pag
 
 ## Deployment Status
 
-- **URL:** https://kimimissioncontrol01.vercel.app
+- **URL:** https://dashboard-ten-sand-20.vercel.app
 - **Last Deploy:** 2026-02-18 12:35
 - **Commit:** 5572ea1
 

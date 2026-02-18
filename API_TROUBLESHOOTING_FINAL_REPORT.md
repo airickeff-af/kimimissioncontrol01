@@ -58,7 +58,7 @@ After extensive testing, the issue is **NOT** with the code structure. The probl
 
 ### Step 1: Check Vercel Dashboard
 1. Go to https://vercel.com/dashboard
-2. Select `kimimissioncontrol01` project
+2. Select `dashboard-ten-sand-20` project
 3. Go to **Settings** → **Build & Development Settings**
 
 ### Step 2: Verify Framework Preset
@@ -135,13 +135,13 @@ mission-control/dashboard/
 Once fixed, verify with:
 ```bash
 # Test the main endpoint
-curl https://kimimissioncontrol01.vercel.app/api/logs/activity
+curl https://dashboard-ten-sand-20.vercel.app/api/logs/activity
 
 # Test simple endpoint
-curl https://kimimissioncontrol01.vercel.app/api/test
+curl https://dashboard-ten-sand-20.vercel.app/api/test
 
 # Test health endpoint
-curl https://kimimissioncontrol01.vercel.app/api/health
+curl https://dashboard-ten-sand-20.vercel.app/api/health
 ```
 
 ---

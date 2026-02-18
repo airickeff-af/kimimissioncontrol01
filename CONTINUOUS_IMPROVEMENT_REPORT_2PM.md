@@ -18,8 +18,8 @@
 | **Audit Fast Vercel Check** | ✅ COMPLETED | Rapid deployment verification system |
 
 **Live URLs:**
-- DealFlow: https://kimimissioncontrol01.vercel.app/dealflow-view.html
-- Office: https://kimimissioncontrol01.vercel.app/living-pixel-office.html
+- DealFlow: https://dashboard-ten-sand-20.vercel.app/dealflow-view.html
+- Office: https://dashboard-ten-sand-20.vercel.app/living-pixel-office.html
 
 ---
 

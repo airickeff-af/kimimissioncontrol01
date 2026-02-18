@@ -118,7 +118,7 @@ Agent data compiled from:
 
 ## Deployment
 
-- **URL:** https://kimimissioncontrol01.vercel.app
+- **URL:** https://dashboard-ten-sand-20.vercel.app
 - **Status:** Live and operational
 - **Commit:** dacbf2f
 

@@ -1,11 +1,11 @@
 {
-    "timestamp": "2026-02-18T16:00:10+08:00",
-    "hour": 16,
-    "state": "review_qa",
-    "zone": "qa_station",
-    "description": "Review and QA session",
+    "timestamp": "2026-02-18T17:00:13+08:00",
+    "hour": 17,
+    "state": "strategy_planning",
+    "zone": "command",
+    "description": "Strategic planning - EricF + Air1ck3ff",
     "positions": {
-        "air1ck3ff": "command_center",
+        "air1ck3ff": "conference",
         "glasses": "content_desk",
         "quill": "content_desk",
         "pixel": "content_desk",

@@ -5,7 +5,7 @@
 #
 
 DASHBOARD_DIR="/root/.openclaw/workspace/mission-control/dashboard"
-API_URL="https://kimimissioncontrol01.vercel.app/api"
+API_URL="https://dashboard-ten-sand-20.vercel.app/api"
 
 echo "=== DASHBOARD REFRESH AUDIT ==="
 echo "Date: $(date)"
@@ -83,5 +83,5 @@ fi
 echo ""
 echo "=== AUDIT SUMMARY ==="
 echo "Run 'vercel --prod' to deploy updates"
-echo "Dashboard URL: https://kimimissioncontrol01.vercel.app"
+echo "Dashboard URL: https://dashboard-ten-sand-20.vercel.app"
 echo ""

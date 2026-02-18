@@ -2,10 +2,10 @@
 # Test script for Vercel API endpoints
 
 echo "=== Vercel API Test Script ==="
-echo "Testing endpoints on kimimissioncontrol01.vercel.app"
+echo "Testing endpoints on dashboard-ten-sand-20.vercel.app"
 echo ""
 
-BASE_URL="https://kimimissioncontrol01.vercel.app"
+BASE_URL="https://dashboard-ten-sand-20.vercel.app"
 
 # Test endpoints
 endpoints=(

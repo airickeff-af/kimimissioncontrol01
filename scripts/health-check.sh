@@ -7,7 +7,7 @@
 set -e
 
 # Configuration
-DEPLOY_URL="${1:-https://kimimissioncontrol01.vercel.app}"
+DEPLOY_URL="${1:-https://dashboard-ten-sand-20.vercel.app}"
 HEALTH_ENDPOINT="/api/health"
 MAX_RETRIES=5
 RETRY_DELAY=5

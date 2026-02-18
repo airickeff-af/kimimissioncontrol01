@@ -51,7 +51,7 @@ The Vercel project likely has a **"Root Directory"** configured in the dashboard
 ### Option 1: Update Vercel Dashboard Settings (Recommended)
 
 1. Go to https://vercel.com/dashboard
-2. Select the `kimimissioncontrol01` project
+2. Select the `dashboard-ten-sand-20` project
 3. Go to **Settings** → **Build & Development Settings**
 4. Check **Root Directory** setting
 5. If it's set to anything other than `./`, change it to `./`

@@ -66,19 +66,19 @@ jobs:
     - name: Post-Deploy Verification
       run: |
         echo "🚀 Deployment complete!"
-        echo "URL: https://kimimissioncontrol01.vercel.app"
+        echo "URL: https://dashboard-ten-sand-20.vercel.app"
         
         # Wait for deployment to propagate
         sleep 15
         
         # Verify endpoints
         echo "Checking main page..."
-        curl -sf https://kimimissioncontrol01.vercel.app/ || echo "⚠️ Main page check failed"
+        curl -sf https://dashboard-ten-sand-20.vercel.app/ || echo "⚠️ Main page check failed"
         
         echo "Checking API health..."
-        curl -sf https://kimimissioncontrol01.vercel.app/api/health || echo "⚠️ Health check failed"
+        curl -sf https://dashboard-ten-sand-20.vercel.app/api/health || echo "⚠️ Health check failed"
         
         echo "Checking logs API..."
-        curl -sf https://kimimissioncontrol01.vercel.app/api/logs/activity || echo "⚠️ Logs API failed"
+        curl -sf https://dashboard-ten-sand-20.vercel.app/api/logs/activity || echo "⚠️ Logs API failed"
         
         echo "✅ Deployment verification complete"

@@ -113,8 +113,8 @@ Next.js has better Vercel integration and fewer 404 issues.
 
 After each fix attempt:
 ```bash
-curl https://kimimissioncontrol01.vercel.app/api/test
-curl https://kimimissioncontrol01.vercel.app/api/logs/activity
+curl https://dashboard-ten-sand-20.vercel.app/api/test
+curl https://dashboard-ten-sand-20.vercel.app/api/logs/activity
 ```
 
 ---
