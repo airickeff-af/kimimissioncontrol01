@@ -1,108 +1,88 @@
 {
   "version": 2,
   "name": "mission-control",
-  "buildCommand": null,
-  "outputDirectory": "mission-control/dashboard",
-  "installCommand": null,
-  "framework": null,
-  "functions": {
-    "mission-control/dashboard/api/health.js": {
-      "maxDuration": 10
+  "builds": [
+    {
+      "src": "mission-control/dashboard/**",
+      "use": "@vercel/static"
     },
-    "mission-control/dashboard/api/agents.js": {
-      "maxDuration": 10
-    },
-    "mission-control/dashboard/api/tasks.js": {
-      "maxDuration": 10
-    },
-    "mission-control/dashboard/api/tokens.js": {
-      "maxDuration": 10
-    },
-    "mission-control/dashboard/api/metrics.js": {
-      "maxDuration": 10
-    },
-    "mission-control/dashboard/api/logs/activity.js": {
-      "maxDuration": 10
-    },
-    "mission-control/dashboard/api/logs/index.js": {
-      "maxDuration": 10
-    },
-    "mission-control/dashboard/api/test.js": {
-      "maxDuration": 10
+    {
+      "src": "api/**/*.js",
+      "use": "@vercel/node"
     }
-  },
-  "rewrites": [
+  ],
+  "routes": [
     {
-      "source": "/api/health",
-      "destination": "/api/health.js"
+      "src": "/api/health",
+      "dest": "/api/health.js"
     },
     {
-      "source": "/api/agents",
-      "destination": "/api/agents.js"
+      "src": "/api/agents",
+      "dest": "/api/agents.js"
     },
     {
-      "source": "/api/tasks",
-      "destination": "/api/tasks.js"
+      "src": "/api/tasks",
+      "dest": "/api/tasks.js"
     },
     {
-      "source": "/api/tokens",
-      "destination": "/api/tokens.js"
+      "src": "/api/tokens",
+      "dest": "/api/tokens.js"
     },
     {
-      "source": "/api/metrics",
-      "destination": "/api/metrics.js"
+      "src": "/api/metrics",
+      "dest": "/api/metrics.js"
     },
     {
-      "source": "/api/logs/activity",
-      "destination": "/api/logs/activity.js"
+      "src": "/api/logs/activity",
+      "dest": "/api/logs/activity.js"
     },
     {
-      "source": "/api/logs",
-      "destination": "/api/logs/index.js"
+      "src": "/api/logs",
+      "dest": "/api/logs/index.js"
     },
     {
-      "source": "/api/test",
-      "destination": "/api/test.js"
+      "src": "/api/test",
+      "dest": "/api/test.js"
     },
     {
-      "source": "/logs-view",
-      "destination": "/logs-view.html"
+      "src": "/logs-view",
+      "dest": "/mission-control/dashboard/logs-view.html"
     },
     {
-      "source": "/agents",
-      "destination": "/agents.html"
+      "src": "/agents",
+      "dest": "/mission-control/dashboard/agents.html"
     },
     {
-      "source": "/office",
-      "destination": "/animated-office.html"
+      "src": "/office",
+      "dest": "/mission-control/dashboard/animated-office.html"
     },
     {
-      "source": "/data-viewer",
-      "destination": "/data-viewer.html"
+      "src": "/data-viewer",
+      "dest": "/mission-control/dashboard/data-viewer.html"
     },
     {
-      "source": "/task-board",
-      "destination": "/task-board.html"
+      "src": "/task-board",
+      "dest": "/mission-control/dashboard/task-board.html"
     },
     {
-      "source": "/dealflow",
-      "destination": "/dealflow-view.html"
+      "src": "/dealflow",
+      "dest": "/mission-control/dashboard/dealflow-view.html"
     },
     {
-      "source": "/scout",
-      "destination": "/scout.html"
+      "src": "/scout",
+      "dest": "/mission-control/dashboard/scout.html"
     },
     {
-      "source": "/tokens",
-      "destination": "/token-tracker.html"
+      "src": "/tokens",
+      "dest": "/mission-control/dashboard/token-tracker.html"
     },
     {
-      "source": "/hq",
-      "destination": "/hq.html"
+      "src": "/hq",
+      "dest": "/mission-control/dashboard/hq.html"
     },
     {
-      "source": "/((?!api/).*)",
-      "destination": "/index.html"
+      "src": "/((?!api/).*)",
+      "dest": "/mission-control/dashboard/index.html"
     }
   ],
   "headers": [
