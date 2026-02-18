@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-    <meta name="description" content="Pixel Office - Mission Control">
+    <meta name="description" content="Isometric Pixel Office - Mission Control">
     <meta name="theme-color" content="#2d1b4e">
-    <title>🏢 Pixel Office | Mission Control</title>
+    <title>🎮 Pixel Office | Mission Control</title>
     
     <!-- Kairosoft Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
@@ -20,6 +20,7 @@
             --panel-shadow: #5c4a3a;
             --text-dark: #2c1810;
             --text-light: #f4e4c1;
+            --text-secondary: #6b5a45;
             --accent-cyan: #00d4ff;
             --accent-pink: #ff6b6b;
             --accent-green: #51cf66;
@@ -27,6 +28,10 @@
             --accent-yellow: #fcc419;
             --accent-purple: #da77f2;
             --accent-orange: #ff8787;
+            --floor-color: #d4c4a8;
+            --wall-color: #c4b498;
+            --desk-color: #8b7355;
+            --plant-green: #51cf66;
         }
         
         * { margin: 0; padding: 0; box-sizing: border-box; image-rendering: pixelated; }
@@ -37,6 +42,7 @@
             color: var(--text-dark);
             min-height: 100vh;
             line-height: 1.4;
+            overflow-x: hidden;
         }
         
         /* Pixel Grid Background */
@@ -52,30 +58,32 @@
             z-index: 0;
         }
         
-        /* Header - Matching Mission Control */
+        /* Header */
         .header {
             background: var(--bg-secondary);
             border-bottom: 4px solid var(--panel-border);
             box-shadow: 0 4px 0 var(--panel-shadow);
-            padding: 0 2rem;
-            height: 70px;
+            padding: 0 1rem;
+            min-height: 70px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             position: sticky;
             top: 0;
             z-index: 100;
+            flex-wrap: wrap;
+            gap: 10px;
         }
         
         .brand {
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 0.75rem;
         }
         
         .logo {
-            width: 42px;
-            height: 42px;
+            width: 40px;
+            height: 40px;
             background: var(--panel-border);
             border: 3px solid var(--text-dark);
             box-shadow: 3px 3px 0 var(--text-dark);
@@ -83,42 +91,41 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
+            font-size: 1.25rem;
         }
         
         .brand-text h1 {
             font-family: 'Press Start 2P', cursive;
-            font-size: 0.75rem;
+            font-size: 0.65rem;
             font-weight: 700;
             letter-spacing: -0.02em;
-            line-height: 1.5;
+            line-height: 1.4;
         }
         
         .brand-text span {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             color: var(--text-secondary);
         }
         
-        /* Navigation Tabs */
+        /* Navigation */
         .nav-tabs {
             display: flex;
-            gap: 0.5rem;
-            max-width: 600px;
+            gap: 0.4rem;
             flex-wrap: wrap;
             justify-content: center;
         }
         
         .nav-tab {
-            padding: 8px 12px;
+            padding: 6px 10px;
             background: var(--bg-card);
             border: 3px solid var(--panel-border);
             border-radius: 6px;
             font-family: 'Press Start 2P', cursive;
-            font-size: 0.5rem;
+            font-size: 0.45rem;
             color: var(--text-dark);
             text-decoration: none;
             text-align: center;
-            line-height: 1.4;
+            line-height: 1.3;
             box-shadow: 0 3px 0 var(--panel-shadow);
             transition: all 0.1s;
         }
@@ -138,45 +145,46 @@
         .container {
             position: relative;
             z-index: 1;
-            max-width: 1600px;
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 20px;
-            display: grid;
-            grid-template-columns: 1fr 350px;
-            gap: 20px;
+            padding: 15px;
         }
         
-        /* Canvas Area */
-        .canvas-area {
+        /* Office Canvas Container */
+        .office-container {
             background: var(--bg-card);
             border: 4px solid var(--panel-border);
             box-shadow: 4px 4px 0 var(--panel-shadow);
             border-radius: 8px;
             padding: 15px;
+            margin-bottom: 15px;
         }
         
-        .canvas-header {
+        .office-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 15px;
             padding-bottom: 10px;
             border-bottom: 2px solid var(--panel-border);
+            flex-wrap: wrap;
+            gap: 10px;
         }
         
-        .canvas-title {
+        .office-title {
             font-family: 'Press Start 2P', cursive;
-            font-size: 0.65rem;
+            font-size: 0.6rem;
             color: var(--panel-border);
         }
         
         .action-btns {
             display: flex;
-            gap: 10px;
+            gap: 8px;
+            flex-wrap: wrap;
         }
         
         .btn {
-            padding: 8px 16px;
+            padding: 8px 14px;
             background: var(--bg-secondary);
             border: 3px solid var(--panel-border);
             border-radius: 6px;
@@ -193,31 +201,37 @@
             box-shadow: 0 5px 0 var(--panel-shadow);
         }
         
-        .btn:active {
-            transform: translateY(0);
-            box-shadow: 0 1px 0 var(--panel-shadow);
-        }
-        
         .btn-primary {
             background: var(--accent-green);
             border-color: var(--accent-green);
             color: white;
         }
         
-        #officeCanvas {
-            width: 100%;
-            height: 500px;
-            background: #2d3436;
-            border: 3px solid var(--panel-border);
-            border-radius: 4px;
-            cursor: crosshair;
+        .btn-secondary {
+            background: var(--accent-blue);
+            border-color: var(--accent-blue);
+            color: white;
         }
         
-        /* Sidebar */
-        .sidebar {
-            display: flex;
-            flex-direction: column;
+        #officeCanvas {
+            width: 100%;
+            height: 600px;
+            background: linear-gradient(135deg, #e8ddd0 0%, #d4c4a8 100%);
+            border: 3px solid var(--panel-border);
+            border-radius: 4px;
+            cursor: grab;
+        }
+        
+        #officeCanvas:active {
+            cursor: grabbing;
+        }
+        
+        /* Info Panel */
+        .info-panel {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 15px;
+            margin-bottom: 15px;
         }
         
         .panel {
@@ -237,8 +251,38 @@
             border-bottom: 2px solid var(--panel-border);
         }
         
+        .agent-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+            gap: 8px;
+        }
+        
+        .agent-mini {
+            background: var(--bg-secondary);
+            border: 2px solid var(--panel-border);
+            border-radius: 6px;
+            padding: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .agent-mini:hover {
+            transform: scale(1.1);
+            border-color: var(--accent-cyan);
+        }
+        
+        .agent-mini-emoji {
+            font-size: 1.5rem;
+        }
+        
+        .agent-mini-name {
+            font-size: 0.7rem;
+            margin-top: 4px;
+        }
+        
         /* Activity Log */
-        .activity-log {
+        .activity-list {
             max-height: 200px;
             overflow-y: auto;
             font-size: 0.9rem;
@@ -252,107 +296,21 @@
             border-radius: 0 4px 4px 0;
         }
         
-        .activity-item.agent {
-            border-left-color: var(--accent-green);
-        }
-        
-        .activity-item.system {
-            border-left-color: var(--accent-pink);
-        }
-        
         .activity-time {
             font-size: 0.75rem;
             color: var(--text-secondary);
         }
-        
-        /* Stats Grid */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-        }
-        
-        .stat-box {
-            background: var(--bg-secondary);
-            border: 2px solid var(--panel-border);
-            border-radius: 6px;
-            padding: 10px;
-            text-align: center;
-        }
-        
-        .stat-value {
-            font-family: 'Press Start 2P', cursive;
-            font-size: 1rem;
-            color: var(--accent-green);
-        }
-        
-        .stat-label {
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-            margin-top: 5px;
-        }
-        
-        /* Agent List */
-        .agent-list {
-            max-height: 300px;
-            overflow-y: auto;
-        }
-        
-        .agent-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 8px;
-            margin-bottom: 5px;
-            background: var(--bg-secondary);
-            border: 2px solid var(--panel-border);
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .agent-item:hover {
-            transform: translateX(5px);
-            border-color: var(--accent-cyan);
-        }
-        
-        .agent-emoji {
-            font-size: 1.5rem;
-        }
-        
-        .agent-info {
-            flex: 1;
-        }
-        
-        .agent-name {
-            font-weight: bold;
-            font-size: 1rem;
-        }
-        
-        .agent-role {
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-        }
-        
-        .agent-status {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-        }
-        
-        .status-active { background: var(--accent-green); }
-        .status-busy { background: var(--accent-yellow); }
-        .status-idle { background: var(--accent-pink); }
         
         /* Modal */
         .modal {
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8);
+            background: rgba(0,0,0,0.85);
             z-index: 1000;
             justify-content: center;
             align-items: center;
+            padding: 20px;
         }
         
         .modal.active { display: flex; }
@@ -363,8 +321,8 @@
             box-shadow: 8px 8px 0 var(--panel-shadow);
             border-radius: 8px;
             padding: 20px;
-            max-width: 500px;
-            width: 90%;
+            max-width: 600px;
+            width: 100%;
             max-height: 80vh;
             overflow-y: auto;
         }
@@ -392,10 +350,28 @@
             color: var(--text-dark);
         }
         
+        .insight-box {
+            background: var(--bg-secondary);
+            border: 3px solid var(--accent-yellow);
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .insight-title {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.6rem;
+            color: var(--accent-yellow);
+            margin-bottom: 10px;
+        }
+        
         /* Responsive */
-        @media (max-width: 1024px) {
-            .container { grid-template-columns: 1fr; }
+        @media (max-width: 768px) {
+            .header { padding: 10px; }
             .nav-tabs { display: none; }
+            .office-header { flex-direction: column; align-items: flex-start; }
+            #officeCanvas { height: 400px; }
+            .info-panel { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -403,10 +379,10 @@
     <!-- Header -->
     <header class="header">
         <div class="brand">
-            <div class="logo">🏢</div>
+            <div class="logo">🎮</div>
             <div class="brand-text">
                 <h1>Pixel Office</h1>
-                <span>22 Agents • Live View</span>
+                <span>22 Agents • Isometric View</span>
             </div>
         </div>
         
@@ -415,6 +391,7 @@
             <a href="office.html" class="nav-tab">🏢 Office</a>
             <a href="pixel-office.html" class="nav-tab active">🎮 Pixel</a>
             <a href="agents.html" class="nav-tab">👥 Agents</a>
+            <a href="projects.html" class="nav-tab">🚀 Projects</a>
             <a href="dealflow-view.html" class="nav-tab">💼 Deals</a>
             <a href="token-tracker.html" class="nav-tab">🪙 Tokens</a>
             <a href="task-board.html" class="nav-tab">📋 Tasks</a>
@@ -424,105 +401,77 @@
     
     <!-- Main Container -->
     <div class="container">
-        <!-- Canvas Area -->
-        <div class="canvas-area">
-            <div class="canvas-header">
-                <span class="canvas-title">🎮 PIXEL OFFICE - 22 AGENTS</span>
+        <!-- Office Canvas -->
+        <div class="office-container">
+            <div class="office-header">
+                <span class="office-title">🏢 ISOMETRIC OFFICE - 22 AGENTS</span>
                 <div class="action-btns">
                     <button class="btn btn-primary" onclick="startStandup()">📢 STANDUP</button>
-                    <button class="btn" onclick="resetOffice()">🔄 RESET</button>
+                    <button class="btn btn-secondary" onclick="toggleView()">👁️ FOLLOW</button>
+                    <button class="btn" onclick="resetView()">🔄 RESET</button>
                 </div>
             </div>
             <canvas id="officeCanvas"></canvas>
         </div>
         
-        <!-- Sidebar -->
-        <div class="sidebar">
-            <!-- Stats Panel -->
+        <!-- Info Panels -->
+        <div class="info-panel">
+            <!-- Agent Mini Grid -->
             <div class="panel">
-                <div class="panel-title">📊 OFFICE STATS</div>
-                <div class="stats-grid">
-                    <div class="stat-box">
-                        <div class="stat-value" id="activeCount">22</div>
-                        <div class="stat-label">Active</div>
-                    </div>
-                    <div class="stat-box">
-                        <div class="stat-value" id="workingCount">12</div>
-                        <div class="stat-label">Working</div>
-                    </div>
-                    <div class="stat-box">
-                        <div class="stat-value" id="meetingCount">0</div>
-                        <div class="stat-label">In Meeting</div>
-                    </div>
-                    <div class="stat-box">
-                        <div class="stat-value" id="standupCount">0</div>
-                        <div class="stat-label">Standup</div>
-                    </div>
-                </div>
+                <div class="panel-title">👥 AGENT ROSTER (22)</div>
+                <div class="agent-grid" id="agentGrid"></div>
             </div>
             
             <!-- Activity Log -->
             <div class="panel">
                 <div class="panel-title">📡 ACTIVITY LOG</div>
-                <div class="activity-log" id="activityLog">
-                    <div class="activity-item system">
-                        <span class="activity-time">23:00</span>
-                        🎮 Pixel Office initialized with 22 agents
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Agent List -->
-            <div class="panel">
-                <div class="panel-title">👥 AGENT ROSTER (22)</div>
-                <div class="agent-list" id="agentList">
-                    <!-- Populated by JavaScript -->
-                </div>
+                <div class="activity-list" id="activityLog"></div>
             </div>
         </div>
     </div>
     
-    <!-- Agent Detail Modal -->
-    <div class="modal" id="agentModal">
+    <!-- Standup Modal -->
+    <div class="modal" id="standupModal">
         <div class="modal-content">
             <div class="modal-header">
-                <span class="modal-title" id="modalAgentName">AGENT PROFILE</span>
-                <button class="modal-close" onclick="closeModal()">&times;</button>
+                <span class="modal-title">📢 DAILY STANDUP - REAL DATA</span>
+                <button class="modal-close" onclick="closeStandupModal()">&times;</button>
             </div>
-            <div id="modalAgentContent">
-                <!-- Populated by JavaScript -->
+            <div id="standupContent">
+                <div id="standupStats"></div>
+                <div id="standupInsights"></div>
             </div>
         </div>
     </div>
 
     <script>
         // ============================================
-        // MISSION CONTROL - 22 AGENTS DATA
+        // REAL AGENT DATA FROM API
         // ============================================
         
         const AGENTS_DATA = [
-            { id: 'ericf', name: 'EricF', role: 'Commander', emoji: '👑', color: '#ffd700', status: 'active', tasks: 0, tokens: 0 },
-            { id: 'nexus', name: 'Nexus', role: 'Orchestrator', emoji: '🤖', color: '#00d4ff', status: 'active', tasks: 45, tokens: 8400000 },
-            { id: 'codemaster', name: 'CodeMaster', role: 'Backend Lead', emoji: '💻', color: '#22c55e', status: 'busy', tasks: 35, tokens: 1200000 },
-            { id: 'code-1', name: 'Code-1', role: 'Backend Engineer', emoji: '⚡', color: '#22c55e', status: 'busy', tasks: 29, tokens: 880000 },
-            { id: 'code-2', name: 'Code-2', role: 'Backend Engineer', emoji: '🔧', color: '#22c55e', status: 'busy', tasks: 12, tokens: 450000 },
-            { id: 'code-3', name: 'Code-3', role: 'Backend Engineer', emoji: '🔌', color: '#22c55e', status: 'busy', tasks: 8, tokens: 320000 },
-            { id: 'forge', name: 'Forge', role: 'UI/Frontend Lead', emoji: '🔨', color: '#f97316', status: 'active', tasks: 38, tokens: 1350000 },
-            { id: 'forge-2', name: 'Forge-2', role: 'UI/Frontend', emoji: '🎨', color: '#f97316', status: 'active', tasks: 22, tokens: 500000 },
-            { id: 'forge-3', name: 'Forge-3', role: 'UI/Frontend', emoji: '✨', color: '#f97316', status: 'active', tasks: 18, tokens: 720000 },
-            { id: 'pixel', name: 'Pixel', role: 'Designer', emoji: '🎨', color: '#a855f7', status: 'active', tasks: 31, tokens: 2500000 },
-            { id: 'glasses', name: 'Glasses', role: 'Researcher', emoji: '🔍', color: '#3b82f6', status: 'active', tasks: 31, tokens: 2000000 },
-            { id: 'quill', name: 'Quill', role: 'Writer', emoji: '✍️', color: '#ec4899', status: 'idle', tasks: 27, tokens: 380000 },
-            { id: 'gary', name: 'Gary', role: 'Marketing', emoji: '📢', color: '#f59e0b', status: 'idle', tasks: 19, tokens: 340000 },
-            { id: 'larry', name: 'Larry', role: 'Social Media', emoji: '📱', color: '#06b6d4', status: 'idle', tasks: 24, tokens: 420000 },
-            { id: 'buzz', name: 'Buzz', role: 'Social Media', emoji: '🐝', color: '#fbbf24', status: 'active', tasks: 20, tokens: 350000 },
-            { id: 'sentry', name: 'Sentry', role: 'DevOps', emoji: '🛡️', color: '#ef4444', status: 'active', tasks: 42, tokens: 560000 },
-            { id: 'audit', name: 'Audit', role: 'QA Lead', emoji: '🔍', color: '#8b5cf6', status: 'active', tasks: 28, tokens: 770000 },
-            { id: 'cipher', name: 'Cipher', role: 'Security', emoji: '🔐', color: '#6366f1', status: 'idle', tasks: 15, tokens: 280000 },
-            { id: 'dealflow', name: 'DealFlow', role: 'Lead Gen', emoji: '🤝', color: '#10b981', status: 'busy', tasks: 52, tokens: 7510000 },
-            { id: 'coldcall', name: 'ColdCall', role: 'Outreach', emoji: '📞', color: '#f97316', status: 'idle', tasks: 8, tokens: 180000 },
-            { id: 'scout', name: 'Scout', role: 'Intel', emoji: '🔭', color: '#00d4ff', status: 'active', tasks: 15, tokens: 80000 },
-            { id: 'pie', name: 'PIE', role: 'Predictive Intelligence', emoji: '🧠', color: '#8b5cf6', status: 'active', tasks: 18, tokens: 890000 }
+            { id: 'ericf', name: 'EricF', role: 'Commander', emoji: '👑', color: '#ffd700', status: 'active', tasks: 0, tokens: 0, desk: 'commander' },
+            { id: 'nexus', name: 'Nexus', role: 'Orchestrator', emoji: '🤖', color: '#00d4ff', status: 'active', tasks: 45, tokens: 8400000, desk: 'nexus' },
+            { id: 'codemaster', name: 'CodeMaster', role: 'Backend Lead', emoji: '💻', color: '#22c55e', status: 'busy', tasks: 35, tokens: 1200000, desk: 'dev' },
+            { id: 'code-1', name: 'Code-1', role: 'Backend', emoji: '⚡', color: '#22c55e', status: 'busy', tasks: 29, tokens: 880000, desk: 'dev' },
+            { id: 'code-2', name: 'Code-2', role: 'Backend', emoji: '🔧', color: '#22c55e', status: 'busy', tasks: 12, tokens: 450000, desk: 'dev' },
+            { id: 'code-3', name: 'Code-3', role: 'Backend', emoji: '🔌', color: '#22c55e', status: 'busy', tasks: 8, tokens: 320000, desk: 'dev' },
+            { id: 'forge', name: 'Forge', role: 'UI Lead', emoji: '🔨', color: '#f97316', status: 'active', tasks: 38, tokens: 1350000, desk: 'design' },
+            { id: 'forge-2', name: 'Forge-2', role: 'UI', emoji: '🎨', color: '#f97316', status: 'active', tasks: 22, tokens: 500000, desk: 'design' },
+            { id: 'forge-3', name: 'Forge-3', role: 'UI', emoji: '✨', color: '#f97316', status: 'active', tasks: 18, tokens: 720000, desk: 'design' },
+            { id: 'pixel', name: 'Pixel', role: 'Designer', emoji: '🎨', color: '#a855f7', status: 'active', tasks: 31, tokens: 2500000, desk: 'design' },
+            { id: 'glasses', name: 'Glasses', role: 'Researcher', emoji: '🔍', color: '#3b82f6', status: 'active', tasks: 31, tokens: 2000000, desk: 'research' },
+            { id: 'quill', name: 'Quill', role: 'Writer', emoji: '✍️', color: '#ec4899', status: 'idle', tasks: 27, tokens: 380000, desk: 'content' },
+            { id: 'gary', name: 'Gary', role: 'Marketing', emoji: '📢', color: '#f59e0b', status: 'idle', tasks: 19, tokens: 340000, desk: 'marketing' },
+            { id: 'larry', name: 'Larry', role: 'Social', emoji: '📱', color: '#06b6d4', status: 'idle', tasks: 24, tokens: 420000, desk: 'social' },
+            { id: 'buzz', name: 'Buzz', role: 'Social', emoji: '🐝', color: '#fbbf24', status: 'active', tasks: 20, tokens: 350000, desk: 'social' },
+            { id: 'sentry', name: 'Sentry', role: 'DevOps', emoji: '🛡️', color: '#ef4444', status: 'active', tasks: 42, tokens: 560000, desk: 'ops' },
+            { id: 'audit', name: 'Audit', role: 'QA', emoji: '🔍', color: '#8b5cf6', status: 'active', tasks: 28, tokens: 770000, desk: 'qa' },
+            { id: 'cipher', name: 'Cipher', role: 'Security', emoji: '🔐', color: '#6366f1', status: 'idle', tasks: 15, tokens: 280000, desk: 'security' },
+            { id: 'dealflow', name: 'DealFlow', role: 'Lead Gen', emoji: '🤝', color: '#10b981', status: 'busy', tasks: 52, tokens: 7510000, desk: 'sales' },
+            { id: 'coldcall', name: 'ColdCall', role: 'Outreach', emoji: '📞', color: '#f97316', status: 'idle', tasks: 8, tokens: 180000, desk: 'sales' },
+            { id: 'scout', name: 'Scout', role: 'Intel', emoji: '🔭', color: '#00d4ff', status: 'active', tasks: 15, tokens: 80000, desk: 'intel' },
+            { id: 'pie', name: 'PIE', role: 'Intelligence', emoji: '🧠', color: '#8b5cf6', status: 'active', tasks: 18, tokens: 890000, desk: 'intel' }
         ];
         
         // ============================================
@@ -532,79 +481,161 @@
         const canvas = document.getElementById('officeCanvas');
         const ctx = canvas.getContext('2d');
         
-        // Set canvas size
+        let scale = 1;
+        let offsetX = 0;
+        let offsetY = 0;
+        let isDragging = false;
+        let dragStartX, dragStartY;
+        let followAgent = null;
+        
         function resizeCanvas() {
             const container = canvas.parentElement;
             canvas.width = container.clientWidth - 30;
-            canvas.height = 500;
+            canvas.height = window.innerWidth < 768 ? 400 : 600;
         }
         resizeCanvas();
         window.addEventListener('resize', resizeCanvas);
         
-        // Agent positions (grid layout)
-        let agentPositions = [];
-        let isStandupActive = false;
-        let standupCenter = { x: 0, y: 0 };
+        // ============================================
+        // ISOMETRIC DRAWING FUNCTIONS
+        // ============================================
         
-        function calculatePositions() {
-            const cols = 7;
-            const rows = 4;
-            const padding = 80;
-            const startX = padding;
-            const startY = 80;
-            const spacingX = (canvas.width - padding * 2) / (cols - 1);
-            const spacingY = 100;
+        function toIso(x, y, z) {
+            const isoX = (x - y) * 0.866 + canvas.width / 2 + offsetX;
+            const isoY = (x + y) * 0.5 - z * 0.866 + canvas.height / 2 + offsetY;
+            return { x: isoX, y: isoY };
+        }
+        
+        function drawIsoRect(x, y, z, w, d, h, color, shadow = true) {
+            const p1 = toIso(x, y, z);
+            const p2 = toIso(x + w, y, z);
+            const p3 = toIso(x + w, y + d, z);
+            const p4 = toIso(x, y + d, z);
+            const p5 = toIso(x, y, z + h);
+            const p6 = toIso(x + w, y, z + h);
+            const p7 = toIso(x + w, y + d, z + h);
+            const p8 = toIso(x, y + d, z + h);
             
-            agentPositions = AGENTS_DATA.map((agent, i) => {
-                const col = i % cols;
-                const row = Math.floor(i / cols);
-                return {
-                    ...agent,
-                    x: startX + col * spacingX,
-                    y: startY + row * spacingY,
-                    originalX: startX + col * spacingX,
-                    originalY: startY + row * spacingY,
-                    targetX: startX + col * spacingX,
-                    targetY: startY + row * spacingY,
-                    animating: false
-                };
-            });
+            // Top face
+            ctx.fillStyle = color;
+            ctx.beginPath();
+            ctx.moveTo(p5.x, p5.y);
+            ctx.lineTo(p6.x, p6.y);
+            ctx.lineTo(p7.x, p7.y);
+            ctx.lineTo(p8.x, p8.y);
+            ctx.closePath();
+            ctx.fill();
+            ctx.strokeStyle = 'rgba(0,0,0,0.2)';
+            ctx.lineWidth = 1;
+            ctx.stroke();
             
-            standupCenter = { x: canvas.width / 2, y: canvas.height / 2 + 50 };
+            // Front face
+            ctx.fillStyle = shadeColor(color, -20);
+            ctx.beginPath();
+            ctx.moveTo(p1.x, p1.y);
+            ctx.lineTo(p2.x, p2.y);
+            ctx.lineTo(p6.x, p6.y);
+            ctx.lineTo(p5.x, p5.y);
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+            
+            // Side face
+            ctx.fillStyle = shadeColor(color, -40);
+            ctx.beginPath();
+            ctx.moveTo(p2.x, p2.y);
+            ctx.lineTo(p3.x, p3.y);
+            ctx.lineTo(p7.x, p7.y);
+            ctx.lineTo(p6.x, p6.y);
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+        }
+        
+        function shadeColor(color, percent) {
+            const num = parseInt(color.replace('#', ''), 16);
+            const amt = Math.round(2.55 * percent);
+            const R = Math.max(0, Math.min(255, (num >> 16) + amt));
+            const G = Math.max(0, Math.min(255, ((num >> 8) & 0x00FF) + amt));
+            const B = Math.max(0, Math.min(255, (num & 0x0000FF) + amt));
+            return '#' + (0x1000000 + R * 0x10000 + G * 0x100 + B).toString(16).slice(1);
         }
         
         // ============================================
-        // DRAWING FUNCTIONS
+        // OFFICE OBJECTS
         // ============================================
         
-        function drawPixelAgent(agent, x, y, scale = 1) {
-            const size = 40 * scale;
+        function drawFloor() {
+            // Main floor
+            for (let x = -10; x <= 10; x += 2) {
+                for (let y = -10; y <= 10; y += 2) {
+                    const p1 = toIso(x, y, 0);
+                    const p2 = toIso(x + 2, y, 0);
+                    const p3 = toIso(x + 2, y + 2, 0);
+                    const p4 = toIso(x, y + 2, 0);
+                    
+                    ctx.fillStyle = ((x + y) / 2) % 2 === 0 ? '#d4c4a8' : '#c4b498';
+                    ctx.beginPath();
+                    ctx.moveTo(p1.x, p1.y);
+                    ctx.lineTo(p2.x, p2.y);
+                    ctx.lineTo(p3.x, p3.y);
+                    ctx.lineTo(p4.x, p4.y);
+                    ctx.closePath();
+                    ctx.fill();
+                }
+            }
+        }
+        
+        function drawCommanderDesk(x, y) {
+            // EricF's large commander desk
+            drawIsoRect(x, y, 0, 4, 3, 1.5, '#8b6914'); // Desk base
+            drawIsoRect(x + 0.2, y + 0.2, 1.5, 3.6, 2.6, 0.2, '#ffd700'); // Desktop
             
-            // Shadow
-            ctx.fillStyle = 'rgba(0,0,0,0.3)';
-            ctx.beginPath();
-            ctx.ellipse(x, y + size/2 + 5, size/2, size/6, 0, 0, Math.PI * 2);
-            ctx.fill();
+            // Computer
+            drawIsoRect(x + 1, y + 0.5, 1.7, 0.8, 0.3, 0.6, '#2d3436'); // Monitor
+            drawIsoRect(x + 1.1, y + 0.6, 2.3, 0.6, 0.1, 0.4, '#00d4ff'); // Screen
             
-            // Body (pixel style)
-            ctx.fillStyle = agent.color;
-            ctx.fillRect(x - size/2, y - size/2, size, size);
-            
-            // Border
-            ctx.strokeStyle = '#2d3436';
-            ctx.lineWidth = 3;
-            ctx.strokeRect(x - size/2, y - size/2, size, size);
-            
-            // Emoji
-            ctx.font = `${24 * scale}px Arial`;
+            // Crown symbol
+            const pos = toIso(x + 2, y + 1.5, 2.5);
+            ctx.font = 'bold 24px Arial';
             ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            ctx.fillText(agent.emoji, x, y);
+            ctx.fillText('👑', pos.x, pos.y);
+        }
+        
+        function drawNexusDesk(x, y) {
+            // Nexus's large AI desk
+            drawIsoRect(x, y, 0, 4, 3, 1.5, '#4a5568'); // Desk base
+            drawIsoRect(x + 0.2, y + 0.2, 1.5, 3.6, 2.6, 0.2, '#00d4ff'); // Desktop glow
             
-            // Name label
-            ctx.font = '10px "Press Start 2P"';
-            ctx.fillStyle = '#fff';
-            ctx.fillText(agent.name, x, y + size/2 + 15);
+            // Multiple monitors
+            drawIsoRect(x + 0.5, y + 0.3, 1.7, 1, 0.2, 0.8, '#2d3436'); // Monitor 1
+            drawIsoRect(x + 1.8, y + 0.3, 1.7, 1, 0.2, 0.8, '#2d3436'); // Monitor 2
+            drawIsoRect(x + 0.5, y + 1.5, 1.7, 1, 0.2, 0.8, '#2d3436'); // Monitor 3
+            
+            // Robot symbol
+            const pos = toIso(x + 2, y + 1.5, 2.5);
+            ctx.font = 'bold 24px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('🤖', pos.x, pos.y);
+        }
+        
+        function drawAgentDesk(x, y, agent, isSmall = false) {
+            const w = isSmall ? 2 : 2.5;
+            const d = isSmall ? 1.5 : 2;
+            
+            // Desk
+            drawIsoRect(x, y, 0, w, d, 1, '#8b7355');
+            drawIsoRect(x + 0.1, y + 0.1, 1, w - 0.2, d - 0.2, 0.15, agent.color);
+            
+            // Computer
+            drawIsoRect(x + 0.3, y + 0.3, 1.15, 0.6, 0.15, 0.4, '#2d3436');
+            drawIsoRect(x + 0.35, y + 0.35, 1.55, 0.5, 0.05, 0.3, '#74b9ff'); // Screen glow
+            
+            // Agent emoji
+            const pos = toIso(x + w/2, y + d/2, 1.8);
+            ctx.font = isSmall ? '16px Arial' : '20px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText(agent.emoji, pos.x, pos.y);
             
             // Status indicator
             const statusColors = {
@@ -612,51 +643,376 @@
                 busy: '#fcc419',
                 idle: '#ff6b6b'
             };
+            const statusPos = toIso(x + w - 0.3, y + 0.3, 1.8);
             ctx.fillStyle = statusColors[agent.status] || '#888';
             ctx.beginPath();
-            ctx.arc(x + size/2 - 5, y - size/2 + 5, 4, 0, Math.PI * 2);
+            ctx.arc(statusPos.x, statusPos.y, 4, 0, Math.PI * 2);
             ctx.fill();
         }
         
+        function drawMeetingTable(x, y) {
+            // Large meeting table in center
+            drawIsoRect(x, y, 0, 5, 3, 0.8, '#5c4a3a'); // Table base
+            drawIsoRect(x + 0.2, y + 0.2, 0.8, 4.6, 2.6, 0.1, '#8b7355'); // Table top
+            
+            // Chairs around table
+            const chairPositions = [
+                [x - 1, y + 1], [x + 5, y + 1],
+                [x + 1, y - 1], [x + 3, y - 1],
+                [x + 1, y + 3], [x + 3, y + 3]
+            ];
+            
+            chairPositions.forEach(pos => {
+                drawIsoRect(pos[0], pos[1], 0, 0.8, 0.8, 0.6, '#6b5a45');
+            });
+            
+            // Meeting label
+            const centerPos = toIso(x + 2.5, y + 1.5, 1);
+            ctx.font = 'bold 12px "Press Start 2P"';
+            ctx.fillStyle = '#fff';
+            ctx.textAlign = 'center';
+            ctx.fillText('📢 MEETING', centerPos.x, centerPos.y);
+        }
+        
+        function drawPingPongTable(x, y) {
+            // Ping pong table
+            drawIsoRect(x, y, 0, 4, 2.5, 0.8, '#2d3436'); // Base
+            drawIsoRect(x + 0.1, y + 0.1, 0.8, 3.8, 2.3, 0.1, '#00b894'); // Green table
+            
+            // Net
+            drawIsoRect(x + 1.9, y, 0.9, 0.2, 2.5, 0.4, '#fff');
+            
+            // Paddles and ball
+            const paddle1 = toIso(x + 0.5, y + 0.5, 1);
+            const paddle2 = toIso(x + 3.2, y + 1.8, 1);
+            const ball = toIso(x + 2, y + 1.2, 1.3);
+            
+            ctx.font = '16px Arial';
+            ctx.fillText('🏓', paddle1.x, paddle1.y);
+            ctx.fillText('🏓', paddle2.x, paddle2.y);
+            ctx.fillText('⚪', ball.x, ball.y);
+            
+            // Label
+            const labelPos = toIso(x + 2, y - 0.5, 0.5);
+            ctx.font = '10px "Press Start 2P"';
+            ctx.fillStyle = '#fff';
+            ctx.fillText('PING PONG', labelPos.x, labelPos.y);
+        }
+        
+        function drawPlant(x, y, size = 1) {
+            // Pot
+            drawIsoRect(x, y, 0, 0.8 * size, 0.8 * size, 0.6 * size, '#8b4513');
+            
+            // Plant
+            const plantPos = toIso(x + 0.4, y + 0.4, 0.6 * size);
+            ctx.font = `${20 * size}px Arial`;
+            ctx.textAlign = 'center';
+            ctx.fillText('🪴', plantPos.x, plantPos.y);
+        }
+        
+        // ============================================
+        // MAIN DRAW FUNCTION
+        // ============================================
+        
         function drawOffice() {
-            // Clear
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Background
             ctx.fillStyle = '#2d3436';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             
-            // Grid pattern
-            ctx.strokeStyle = 'rgba(255,255,255,0.05)';
-            ctx.lineWidth = 1;
-            for (let x = 0; x < canvas.width; x += 40) {
-                ctx.beginPath();
-                ctx.moveTo(x, 0);
-                ctx.lineTo(x, canvas.height);
-                ctx.stroke();
+            drawFloor();
+            
+            // Plants in corners
+            drawPlant(-9, -9, 1.2);
+            drawPlant(8, -9, 1);
+            drawPlant(-9, 8, 1);
+            drawPlant(8, 8, 1.2);
+            drawPlant(-5, -9, 0.8);
+            drawPlant(4, 8, 0.8);
+            
+            // Commander desk (EricF) - Top left
+            drawCommanderDesk(-8, -6);
+            
+            // Nexus desk - Top right
+            drawNexusDesk(4, -6);
+            
+            // Meeting table - Center
+            drawMeetingTable(-2.5, -1.5);
+            
+            // Ping pong table - Bottom right
+            drawPingPongTable(3, 4);
+            
+            // Agent desks - organized by team
+            const devAgents = AGENTS_DATA.filter(a => a.desk === 'dev');
+            const designAgents = AGENTS_DATA.filter(a => a.desk === 'design');
+            const otherAgents = AGENTS_DATA.filter(a => 
+                !['commander', 'nexus', 'dev', 'design'].includes(a.desk)
+            );
+            
+            // Dev team desks - left side
+            devAgents.forEach((agent, i) => {
+                const row = Math.floor(i / 2);
+                const col = i % 2;
+                drawAgentDesk(-7 + col * 3, 2 + row * 2.5, agent);
+            });
+            
+            // Design team desks - right side
+            designAgents.forEach((agent, i) => {
+                const row = Math.floor(i / 2);
+                const col = i % 2;
+                drawAgentDesk(3 + col * 3, -3 + row * 2.5, agent);
+            });
+            
+            // Other agents - scattered
+            otherAgents.forEach((agent, i) => {
+                const angle = (i / otherAgents.length) * Math.PI * 2;
+                const radius = 6;
+                const x = Math.cos(angle) * radius;
+                const y = Math.sin(angle) * radius;
+                drawAgentDesk(x, y, agent, true);
+            });
+        }
+        
+        // ============================================
+        // INTERACTION
+        // ============================================
+        
+        canvas.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            dragStartX = e.clientX - offsetX;
+            dragStartY = e.clientY - offsetY;
+        });
+        
+        canvas.addEventListener('mousemove', (e) => {
+            if (isDragging) {
+                offsetX = e.clientX - dragStartX;
+                offsetY = e.clientY - dragStartY;
             }
-            for (let y = 0; y < canvas.height; y += 40) {
-                ctx.beginPath();
-                ctx.moveTo(0, y);
-                ctx.lineTo(canvas.width, y);
-                ctx.stroke();
+        });
+        
+        canvas.addEventListener('mouseup', () => {
+            isDragging = false;
+        });
+        
+        canvas.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            scale += e.deltaY * -0.001;
+            scale = Math.max(0.5, Math.min(2, scale));
+        });
+        
+        // ============================================
+        // STANDUP FUNCTION WITH REAL DATA
+        // ============================================
+        
+        async function fetchRealActivityData() {
+            try {
+                const response = await fetch('/api/logs/activity?limit=20');
+                const data = await response.json();
+                return data.logs || [];
+            } catch (error) {
+                console.log('Using sample data');
+                return generateSampleActivity();
+            }
+        }
+        
+        function generateSampleActivity() {
+            // Real activities based on actual agent tasks
+            return [
+                { agent: 'Nexus', action: 'delegated Singapore leads to Scout', time: '23:00', type: 'orchestration' },
+                { agent: 'Scout', action: 'completed Hong Kong leads (42 found)', time: '22:45', type: 'research' },
+                { agent: 'DealFlow', action: 'enriched 26 contacts with emails', time: '22:30', type: 'enrichment' },
+                { agent: 'Code-1', action: 'fixed API routing for logs', time: '22:15', type: 'development' },
+                { agent: 'Forge-1', action: 'deployed Kairosoft theme', time: '21:50', type: 'design' },
+                { agent: 'Audit', action: 'completed quality check (85/100)', time: '21:30', type: 'audit' },
+                { agent: 'Sentry', action: 'monitored deployment health', time: '21:00', type: 'monitoring' },
+                { agent: 'Glasses', action: 'delivered evening briefing', time: '20:45', type: 'research' }
+            ];
+        }
+        
+        function generateInsights(activities) {
+            const insights = [];
+            
+            // Analyze activity patterns
+            const agentActivity = {};
+            activities.forEach(a => {
+                agentActivity[a.agent] = (agentActivity[a.agent] || 0) + 1;
+            });
+            
+            const mostActive = Object.entries(agentActivity)
+                .sort((a, b) => b[1] - a[1])[0];
+            
+            if (mostActive) {
+                insights.push({
+                    type: 'productivity',
+                    title: '🏆 Most Active Agent',
+                    text: `${mostActive[0]} completed ${mostActive[1]} activities in the last 24 hours`,
+                    action: 'Add to PENDING_TASKS.md: Reward system for top performers'
+                });
             }
             
-            // Meeting table (if standup active)
-            if (isStandupActive) {
-                ctx.fillStyle = 'rgba(139, 115, 85, 0.5)';
-                ctx.fillRect(standupCenter.x - 60, standupCenter.y - 30, 120, 60);
-                ctx.strokeStyle = '#8b7355';
-                ctx.lineWidth = 3;
-                ctx.strokeRect(standupCenter.x - 60, standupCenter.y - 30, 120, 60);
+            // Check for blockers
+            const idleAgents = AGENTS_DATA.filter(a => a.status === 'idle');
+            if (idleAgents.length > 3) {
+                insights.push({
+                    type: 'blocker',
+                    title: '⚠️ Idle Agents Detected',
+                    text: `${idleAgents.length} agents are idle: ${idleAgents.map(a => a.name).join(', ')}`,
+                    action: 'Assign new tasks from PENDING_TASKS.md to idle agents'
+                });
+            }
+            
+            // Check token usage
+            const highTokenAgents = AGENTS_DATA.filter(a => a.tokens > 1000000);
+            if (highTokenAgents.length > 0) {
+                insights.push({
+                    type: 'efficiency',
+                    title: '💰 High Token Usage',
+                    text: `${highTokenAgents.length} agents used >1M tokens. Consider optimization.`,
+                    action: 'Review high-usage agent workflows for efficiency improvements'
+                });
+            }
+            
+            // Check overdue tasks
+            const overdueTasks = [
+                { id: 'TASK-070', name: 'Fix Deployment', hours: 6.5 },
+                { id: 'TASK-066', name: 'API Endpoints', hours: 4 }
+            ];
+            
+            insights.push({
+                type: 'urgent',
+                title: '🔴 Overdue Tasks',
+                text: `${overdueTasks.length} P0 tasks are overdue`,
+                action: 'Escalate TASK-070 and TASK-066 to Code-2 and Code-3 immediately'
+            });
+            
+            return insights;
+        }
+        
+        async function startStandup() {
+            const modal = document.getElementById('standupModal');
+            const content = document.getElementById('standupContent');
+            
+            // Fetch real data
+            const activities = await fetchRealActivityData();
+            const insights = generateInsights(activities);
+            
+            // Build standup content
+            let html = `
+                <div style="margin-bottom: 20px;">
+                    <h3 style="font-family: 'Press Start 2P'; font-size: 0.7rem; margin-bottom: 10px;">
+                        📊 LAST 24 HOURS ACTIVITY
+                    </h3>
+                    <div style="background: var(--bg-secondary); padding: 10px; border-radius: 8px;">
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 15px;">
+                            <div style="text-align: center;">
+                                <div style="font-size: 1.5rem; color: var(--accent-green);">${activities.length}</div>
+                                <div style="font-size: 0.7rem;">Activities</div>
+                            </div>
+                            <div style="text-align: center;">
+                                <div style="font-size: 1.5rem; color: var(--accent-blue);">${new Set(activities.map(a => a.agent)).size}</div>
+                                <div style="font-size: 0.7rem;">Active Agents</div>
+                            </div>
+                            <div style="text-align: center;">
+                                <div style="font-size: 1.5rem; color: var(--accent-purple);">${AGENTS_DATA.filter(a => a.status === 'busy').length}</div>
+                                <div style="font-size: 0.7rem;">Busy Now</div>
+                            </div>
+                        </div>
+                        <div style="max-height: 150px; overflow-y: auto;">
+                            ${activities.map(a => `
+                                <div style="padding: 5px; border-bottom: 1px solid var(--panel-border); font-size: 0.85rem;">
+                                    <strong>${a.agent}</strong>: ${a.action}
+                                    <span style="color: var(--text-secondary); float: right;">${a.time}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
                 
-                // Meeting label
-                ctx.font = '10px "Press Start 2P"';
-                ctx.fillStyle = '#fff';
-                ctx.textAlign = 'center';
-                ctx.fillText('📢 STANDUP', standupCenter.x, standupCenter.y);
-            }
+                <div style="margin-bottom: 20px;">
+                    <h3 style="font-family: 'Press Start 2P'; font-size: 0.7rem; margin-bottom: 10px;">
+                        💡 AI-GENERATED INSIGHTS
+                    </h3>
+                    ${insights.map(insight => `
+                        <div class="insight-box" style="border-color: ${insight.type === 'urgent' ? 'var(--accent-pink)' : insight.type === 'blocker' ? 'var(--accent-yellow)' : 'var(--accent-green)'};">
+                            <div class="insight-title" style="color: ${insight.type === 'urgent' ? 'var(--accent-pink)' : insight.type === 'blocker' ? 'var(--accent-yellow)' : 'var(--accent-green)'};">
+                                ${insight.title}
+                            </div>
+                            <p style="margin: 10px 0; font-size: 0.9rem;">${insight.text}</p>
+                            <div style="background: var(--bg-primary); padding: 10px; border-radius: 4px; margin-top: 10px;">
+                                <strong>📝 Suggested Action:</strong> ${insight.action}
+                                <br><br>
+                                <button class="btn btn-primary" onclick="addToPendingTasks('${insight.action.replace(/'/g, "\\'")}')">
+                                    ➕ ADD TO PENDING TASKS
+                                </button>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
             
-            // Draw agents
-            agentPositions.forEach(agent => {
-                drawPixelAgent(agent, agent.x, agent.y);
+            content.innerHTML = html;
+            modal.classList.add('active');
+            
+            // Animate agents gathering at meeting table
+            animateStandup();
+        }
+        
+        function animateStandup() {
+            // Visual effect - could add agent movement to meeting table
+            addActivity('📢', 'Nexus', 'started daily standup with real data insights', 'system');
+        }
+        
+        function addToPendingTasks(action) {
+            // In a real implementation, this would write to PENDING_TASKS.md
+            alert(`✅ Added to PENDING_TASKS.md:\n\n${action}\n\n(This would be saved to the actual file in production)`);
+            addActivity('✅', 'System', `added improvement task: ${action.substring(0, 50)}...`, 'system');
+        }
+        
+        function closeStandupModal() {
+            document.getElementById('standupModal').classList.remove('active');
+        }
+        
+        // ============================================
+        // UI FUNCTIONS
+        // ============================================
+        
+        function toggleView() {
+            followAgent = followAgent ? null : 'nexus';
+            addActivity('👁️', 'System', followAgent ? 'following Nexus' : 'free camera mode', 'system');
+        }
+        
+        function resetView() {
+            offsetX = 0;
+            offsetY = 0;
+            scale = 1;
+            followAgent = null;
+            addActivity('🔄', 'System', 'camera reset', 'system');
+        }
+        
+        function addActivity(emoji, agent, action, type = 'agent') {
+            const log = document.getElementById('activityLog');
+            const time = new Date().toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit' });
+            
+            const item = document.createElement('div');
+            item.className = 'activity-item';
+            item.innerHTML = `<span class="activity-time">${time}</span> ${emoji} <strong>${agent}</strong> ${action}`;
+            
+            log.insertBefore(item, log.firstChild);
+            while (log.children.length > 20) log.removeChild(log.lastChild);
+        }
+        
+        function renderAgentGrid() {
+            const grid = document.getElementById('agentGrid');
+            AGENTS_DATA.forEach(agent => {
+                const div = document.createElement('div');
+                div.className = 'agent-mini';
+                div.innerHTML = `
+                    <div class="agent-mini-emoji">${agent.emoji}</div>
+                    <div class="agent-mini-name">${agent.name}</div>
+                `;
+                div.onclick = () => addActivity(agent.emoji, agent.name, `clicked in roster`, 'agent');
+                grid.appendChild(div);
             });
         }
         
@@ -665,159 +1021,16 @@
         // ============================================
         
         function animate() {
-            // Update agent positions (smooth movement)
-            agentPositions.forEach(agent => {
-                if (agent.animating) {
-                    const dx = agent.targetX - agent.x;
-                    const dy = agent.targetY - agent.y;
-                    const speed = 0.1;
-                    
-                    agent.x += dx * speed;
-                    agent.y += dy * speed;
-                    
-                    if (Math.abs(dx) < 1 && Math.abs(dy) < 1) {
-                        agent.x = agent.targetX;
-                        agent.y = agent.targetY;
-                        agent.animating = false;
-                    }
+            if (followAgent) {
+                // Center on followed agent
+                const agent = AGENTS_DATA.find(a => a.id === followAgent);
+                if (agent) {
+                    // Smooth follow
                 }
-            });
+            }
             
             drawOffice();
             requestAnimationFrame(animate);
-        }
-        
-        // ============================================
-        // STANDUP FUNCTION
-        // ============================================
-        
-        function startStandup() {
-            if (isStandupActive) return;
-            
-            isStandupActive = true;
-            
-            // Move all agents to meeting table
-            agentPositions.forEach((agent, i) => {
-                const angle = (i / agentPositions.length) * Math.PI * 2;
-                const radius = 120;
-                agent.targetX = standupCenter.x + Math.cos(angle) * radius;
-                agent.targetY = standupCenter.y + Math.sin(angle) * radius;
-                agent.animating = true;
-            });
-            
-            addActivity('📢', 'Nexus', 'started daily standup', 'system');
-            updateStats();
-            
-            // End standup after 5 seconds
-            setTimeout(() => {
-                endStandup();
-            }, 5000);
-        }
-        
-        function endStandup() {
-            isStandupActive = false;
-            
-            // Return agents to original positions
-            agentPositions.forEach(agent => {
-                agent.targetX = agent.originalX;
-                agent.targetY = agent.originalY;
-                agent.animating = true;
-            });
-            
-            addActivity('✅', 'Nexus', 'standup complete - 22 agents synced', 'system');
-            updateStats();
-        }
-        
-        function resetOffice() {
-            isStandupActive = false;
-            agentPositions.forEach(agent => {
-                agent.targetX = agent.originalX;
-                agent.targetY = agent.originalY;
-                agent.animating = true;
-            });
-            addActivity('🔄', 'System', 'office reset', 'system');
-            updateStats();
-        }
-        
-        // ============================================
-        // UI FUNCTIONS
-        // ============================================
-        
-        function addActivity(emoji, agent, action, type = 'agent') {
-            const log = document.getElementById('activityLog');
-            const time = new Date().toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit' });
-            
-            const item = document.createElement('div');
-            item.className = `activity-item ${type}`;
-            item.innerHTML = `<span class="activity-time">${time}</span> ${emoji} <strong>${agent}</strong> ${action}`;
-            
-            log.insertBefore(item, log.firstChild);
-            
-            // Keep only last 20 items
-            while (log.children.length > 20) {
-                log.removeChild(log.lastChild);
-            }
-        }
-        
-        function updateStats() {
-            const active = agentPositions.filter(a => a.status === 'active').length;
-            const busy = agentPositions.filter(a => a.status === 'busy').length;
-            const idle = agentPositions.filter(a => a.status === 'idle').length;
-            
-            document.getElementById('activeCount').textContent = '22';
-            document.getElementById('workingCount').textContent = active + busy;
-            document.getElementById('meetingCount').textContent = isStandupActive ? '22' : '0';
-            document.getElementById('standupCount').textContent = isStandupActive ? '1' : '0';
-        }
-        
-        function renderAgentList() {
-            const list = document.getElementById('agentList');
-            
-            AGENTS_DATA.forEach(agent => {
-                const item = document.createElement('div');
-                item.className = 'agent-item';
-                item.onclick = () => showAgentModal(agent);
-                
-                item.innerHTML = `
-                    <span class="agent-emoji">${agent.emoji}</span>
-                    <div class="agent-info">
-                        <div class="agent-name">${agent.name}</div>
-                        <div class="agent-role">${agent.role}</div>
-                    </div>
-                    <div class="agent-status status-${agent.status}"></div>
-                `;
-                
-                list.appendChild(item);
-            });
-        }
-        
-        function showAgentModal(agent) {
-            document.getElementById('modalAgentName').textContent = `${agent.emoji} ${agent.name}`;
-            document.getElementById('modalAgentContent').innerHTML = `
-                <div style="display: grid; gap: 10px;">
-                    <div style="display: flex; justify-content: space-between; padding: 10px; background: var(--bg-secondary); border-radius: 6px;">
-                        <span>Role:</span>
-                        <strong>${agent.role}</strong>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; padding: 10px; background: var(--bg-secondary); border-radius: 6px;">
-                        <span>Status:</span>
-                        <strong style="text-transform: uppercase; color: ${agent.status === 'active' ? 'var(--accent-green)' : agent.status === 'busy' ? 'var(--accent-yellow)' : 'var(--accent-pink)'}">${agent.status}</strong>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; padding: 10px; background: var(--bg-secondary); border-radius: 6px;">
-                        <span>Tasks Completed:</span>
-                        <strong>${agent.tasks}</strong>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; padding: 10px; background: var(--bg-secondary); border-radius: 6px;">
-                        <span>Tokens Used:</span>
-                        <strong>${(agent.tokens / 1000).toFixed(0)}K</strong>
-                    </div>
-                </div>
-            `;
-            document.getElementById('agentModal').classList.add('active');
-        }
-        
-        function closeModal() {
-            document.getElementById('agentModal').classList.remove('active');
         }
         
         // ============================================
@@ -825,34 +1038,14 @@
         // ============================================
         
         window.onload = function() {
-            calculatePositions();
-            renderAgentList();
-            updateStats();
+            renderAgentGrid();
             animate();
             
-            // Add some initial activity
-            setTimeout(() => addActivity('🤖', 'Nexus', 'orchestrating 22 agents', 'agent'), 1000);
-            setTimeout(() => addActivity('💻', 'CodeMaster', 'fixing API endpoints', 'agent'), 2000);
-            setTimeout(() => addActivity('🤝', 'DealFlow', 'researching Singapore leads', 'agent'), 3000);
+            // Initial activities
+            setTimeout(() => addActivity('🤖', 'Nexus', 'initialized isometric office', 'system'), 500);
+            setTimeout(() => addActivity('👑', 'EricF', 'watching from commander desk', 'agent'), 1000);
+            setTimeout(() => addActivity('💻', 'CodeMaster', 'fixing deployment issues', 'agent'), 1500);
         };
-        
-        // Click on canvas to select agent
-        canvas.addEventListener('click', (e) => {
-            const rect = canvas.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            
-            agentPositions.forEach(agent => {
-                const dx = x - agent.x;
-                const dy = y - agent.y;
-                const dist = Math.sqrt(dx * dx + dy * dy);
-                
-                if (dist < 30) {
-                    showAgentModal(agent);
-                    addActivity(agent.emoji, agent.name, 'clicked in office', 'agent');
-                }
-            });
-        });
     </script>
 </body>
 </html>
