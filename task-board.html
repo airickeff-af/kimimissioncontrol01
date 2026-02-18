@@ -471,7 +471,11 @@
             <div class="panel-title">📊 TASK STATS</div>
             <div class="stats-bar">
                 <div class="stat-box">
-                    <div class="stat-value" style="color: #fcc419;">16</div>
+                    <div class="stat-value" style="color: #00d4ff;">90</div>
+                    <div class="stat-label">TOTAL</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" style="color: #fcc419;">59</div>
                     <div class="stat-label">PENDING</div>
                 </div>
                 <div class="stat-box">
@@ -479,11 +483,11 @@
                     <div class="stat-label">BLOCKED</div>
                 </div>
                 <div class="stat-box">
-                    <div class="stat-value" style="color: #00d4ff;">4</div>
+                    <div class="stat-value" style="color: #00d4ff;">6</div>
                     <div class="stat-label">IN PROGRESS</div>
                 </div>
                 <div class="stat-box">
-                    <div class="stat-value" style="color: #51cf66;">24</div>
+                    <div class="stat-value" style="color: #51cf66;">31</div>
                     <div class="stat-label">COMPLETED</div>
                 </div>
             </div>
@@ -492,29 +496,29 @@
         <!-- Priority Summary -->
         <div class="priority-grid">
             <div class="priority-box p0">
-                <div class="count">11</div>
+                <div class="count">2</div>
                 <div class="label">🔴 P0 CRITICAL</div>
             </div>
             <div class="priority-box p1">
-                <div class="count">14</div>
+                <div class="count">20</div>
                 <div class="label">🟡 P1 HIGH</div>
             </div>
             <div class="priority-box p2">
-                <div class="count">10</div>
+                <div class="count">35</div>
                 <div class="label">🟢 P2 MEDIUM</div>
             </div>
             <div class="priority-box p3">
-                <div class="count">5</div>
+                <div class="count">2</div>
                 <div class="label">⚪ P3 LOW</div>
             </div>
         </div>
 
         <!-- Tabs -->
         <div class="tabs">
-            <button class="tab-btn active" onclick="switchTab('p0')">🔴 P0 (11)</button>
-            <button class="tab-btn" onclick="switchTab('p1')">🟡 P1 (14)</button>
-            <button class="tab-btn" onclick="switchTab('p2')">🟢 P2 (10)</button>
-            <button class="tab-btn" onclick="switchTab('completed')">✅ DONE (24)</button>
+            <button class="tab-btn active" onclick="switchTab('p0')">🔴 P0 (2)</button>
+            <button class="tab-btn" onclick="switchTab('p1')">🟡 P1 (20)</button>
+            <button class="tab-btn" onclick="switchTab('p2')">🟢 P2 (35)</button>
+            <button class="tab-btn" onclick="switchTab('completed')">✅ DONE (31)</button>
         </div>
 
         <!-- P0 Tasks -->
@@ -823,23 +827,78 @@
     </nav>
 
     <script>
+        // Live task data
+        let taskData = {
+            total: 90,
+            completed: 31,
+            inProgress: 6,
+            p0: { total: 8, completed: 6, pending: 2 },
+            p1: { total: 32, completed: 12, pending: 20 },
+            p2: { total: 43, completed: 8, pending: 35 },
+            p3: { total: 7, completed: 5, pending: 2 }
+        };
+
+        // Fetch live task data from API
+        async function fetchTaskData() {
+            try {
+                const response = await fetch('/api/tasks');
+                const data = await response.json();
+                if (data.success && data.summary) {
+                    updateTaskDisplay(data.summary);
+                }
+            } catch (error) {
+                console.log('Using cached task data');
+                updateTaskDisplay(taskData);
+            }
+        }
+
+        // Update task counts on page
+        function updateTaskDisplay(data) {
+            // Update stat boxes
+            document.querySelector('.stat-box:nth-child(1) .stat-value').textContent = data.total || 90;
+            document.querySelector('.stat-box:nth-child(2) .stat-value').textContent = data.pending || 59;
+            document.querySelector('.stat-box:nth-child(3) .stat-value').textContent = data.in_progress || 6;
+            document.querySelector('.stat-box:nth-child(4) .stat-value').textContent = data.completed || 31;
+
+            // Update priority boxes
+            document.querySelector('.priority-box.p0 .count').textContent = taskData.p0.pending;
+            document.querySelector('.priority-box.p1 .count').textContent = taskData.p1.pending;
+            document.querySelector('.priority-box.p2 .count').textContent = taskData.p2.pending;
+            document.querySelector('.priority-box.p3 .count').textContent = taskData.p3.pending;
+
+            // Update tab buttons
+            document.querySelector('.tab-btn:nth-child(1)').textContent = `🔴 P0 (${taskData.p0.pending})`;
+            document.querySelector('.tab-btn:nth-child(2)').textContent = `🟡 P1 (${taskData.p1.pending})`;
+            document.querySelector('.tab-btn:nth-child(3)').textContent = `🟢 P2 (${taskData.p2.pending})`;
+            document.querySelector('.tab-btn:nth-child(4)').textContent = `✅ DONE (${data.completed || 31})`;
+        }
+
+        // Switch tabs
         function switchTab(tabId) {
-            // Hide all tabs
             document.querySelectorAll('.tab-content').forEach(tab => {
                 tab.classList.remove('active');
             });
-            
-            // Remove active from buttons
             document.querySelectorAll('.tab-btn').forEach(btn => {
                 btn.classList.remove('active');
             });
-            
-            // Show selected tab
             document.getElementById(tabId).classList.add('active');
-            
-            // Add active to clicked button
             event.target.classList.add('active');
         }
+
+        // Refresh button handler
+        function refreshTasks() {
+            const btn = document.querySelector('.refresh-btn');
+            btn.style.transform = 'rotate(360deg)';
+            setTimeout(() => btn.style.transform = '', 500);
+            fetchTaskData();
+        }
+
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchTaskData();
+            // Auto-refresh every 30 minutes
+            setInterval(fetchTaskData, 30 * 60 * 1000);
+        });
     </script>
 </body>
 </html>
