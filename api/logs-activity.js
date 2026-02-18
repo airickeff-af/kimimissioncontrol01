@@ -1,6 +1,6 @@
 // Vercel Serverless Function: /api/logs-activity.js
-// Flat structure alternative for /api/logs/activity
-// Returns agent activity logs for the logs-view dashboard
+// Alternative flat structure approach - simpler for Vercel
+// Located at: /api/logs-activity.js (flat, no subfolder)
 
 module.exports = (req, res) => {
   // Set CORS headers

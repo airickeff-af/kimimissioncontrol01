@@ -1,0 +1,8 @@
+{
+  "version": 2,
+  "name": "mission-control",
+  "rewrites": [
+    { "source": "/api/logs/activity", "destination": "/api/logs-activity.js" },
+    { "source": "/api/(.*)", "destination": "/api/$1" }
+  ]
+}
