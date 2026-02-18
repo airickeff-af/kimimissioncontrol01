@@ -652,10 +652,10 @@
 <body>
     <header class="header">
         <div class="brand">
-            <div class="logo">🎯</div>
+            <div class="logo">🏢</div>
             <div class="brand-text">
-                <h1>Living Pixel</h1>
-                <span>Command Center</span>
+                <h1>Office</h1>
+                <span>22 Agents Active</span>
             </div>
         </div>
         
@@ -673,7 +673,7 @@
         <div class="header-actions">
             <div style="display: flex; align-items: center; gap: 1rem;">
                 <span style="font-size: 0.875rem; color: var(--text-muted);">🟢 22 Agents Active (1 Human + 21 AI)</span>
-                <button class="btn-icon" onclick="window.location.reload()" title="Refresh">🔄</button>
+                <button class="btn-icon" onclick="refreshData()" title="Refresh">🔄</button>
                 <button class="btn-icon">⚙️</button>
             </div>
         </div>
@@ -1090,7 +1090,32 @@
                 console.log('[Auto-Refresh] Reloading data...');
                 refreshActivity();
                 refreshTasks();
+                renderAllAgents();
+                updateLastUpdated();
             }, 30 * 60 * 1000);
+            
+            // Global refresh function
+            window.refreshData = function() {
+                console.log('[Manual Refresh] Reloading all data...');
+                refreshActivity();
+                refreshTasks();
+                renderAllAgents();
+                updateLastUpdated();
+                showToast('✅ Data refreshed!');
+            };
+            
+            // Toast notification helper
+            function showToast(message) {
+                const toast = document.createElement('div');
+                toast.style.cssText = 'position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:#51cf66;color:#2b8a3e;padding:12px 24px;border-radius:8px;font-family:"Press Start 2P",cursive;font-size:0.55rem;box-shadow:0 4px 0 #2b8a3e;z-index:1001;opacity:0;transition:opacity 0.3s;';
+                toast.textContent = message;
+                document.body.appendChild(toast);
+                setTimeout(() => toast.style.opacity = '1', 10);
+                setTimeout(() => {
+                    toast.style.opacity = '0';
+                    setTimeout(() => toast.remove(), 300);
+                }, 2000);
+            }
         });
         
         // Tab switching (placeholder for future implementation)

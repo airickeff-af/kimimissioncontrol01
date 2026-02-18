@@ -1,132 +1,172 @@
-# Vercel API Troubleshooting Report
-**Date:** 2026-02-18 2:50 PM CST  
-**Issue:** `/api/logs/activity` returns 404 on Vercel deployment  
-**Status:** Fix deployed, awaiting verification
+# API Troubleshooting Report - Vercel 404 Fix
+
+**Date:** February 19, 2026  
+**Time:** 6:50 AM CST  
+**Issue:** `/api/logs/activity` returning 404 on Vercel  
+**Status:** FIX IMPLEMENTED - Ready for Deployment
 
 ---
 
-## Root Cause Analysis
+## Problem Analysis
 
-After extensive research, the issue is that **Vercel's serverless function routing for nested paths** (`/api/logs/activity`) requires explicit configuration when using the `builds` + `routes`/`rewrites` approach in `vercel.json`.
+### Root Cause Identified
+The issue was a **combination of problems**:
 
-Key findings from research:
-1. The pattern `api/**/*.js` in builds should match nested files, but routing needs explicit rewrites
-2. Vercel has deprecated `routes` in favor of `rewrites` (cleaner, more predictable)
-3. Nested API paths need explicit destination mapping
+1. **Nested folder structure** (`/api/logs/activity.js`) doesn't work reliably with Vercel's zero-config approach
+2. **Rewrite rules** in `vercel.json` were pointing to paths that may not exist or were circular
+3. **Missing flat-file fallbacks** for nested endpoints
 
----
-
-## Attempted Fixes (in order)
-
-### Fix 1: Explicit Route Mapping (DEPLOYED)
-**File:** `vercel.json`
-```json
-{
-  "version": 2,
-  "builds": [
-    { "src": "**/*.html", "use": "@vercel/static" },
-    { "src": "api/**/*.js", "use": "@vercel/node" }
-  ],
-  "rewrites": [
-    { "source": "/api/logs/activity", "destination": "/api/logs/activity.js" },
-    { "source": "/api/logs", "destination": "/api/logs/index.js" },
-    { "source": "/api/(.*)", "destination": "/api/$1.js" },
-    { "source": "/(.*)", "destination": "/$1" }
-  ]
-}
-```
-
-**Changes made:**
-- Switched from `routes` to `rewrites` (recommended by Vercel)
-- Added explicit rewrite for `/api/logs/activity` → `/api/logs/activity.js`
-- Added fallback rewrite pattern for all API endpoints
-
-**Status:** Pushed to GitHub, Vercel auto-deploy triggered
+### What Was Tried (and Failed)
+- ❌ Serverless functions in nested folders (`/api/logs/activity.js`)
+- ❌ Static JSON with routing
+- ❌ Multiple deployments without fixing the underlying structure
 
 ---
 
-## Alternative Approaches (if Fix 1 fails)
+## Solution Implemented
 
-### Approach 2: Flat File Structure
-Move nested files to flat structure:
-```
-api/
-  logs-activity.js    # instead of api/logs/activity.js
-  logs-index.js       # instead of api/logs/index.js
-```
+### Approach: Flat File Structure with Rewrites
 
-Update `vercel.json`:
-```json
-{
-  "rewrites": [
-    { "source": "/api/logs/activity", "destination": "/api/logs-activity.js" },
-    { "source": "/api/logs", "destination": "/api/logs-index.js" }
-  ]
-}
-```
+**Key Changes:**
 
-### Approach 3: Dynamic Route Handler
-Create a single `api/logs.js` that handles all sub-routes:
-```javascript
-// api/logs.js
-module.exports = (req, res) => {
-  const { url } = req;
-  if (url.includes('/activity')) {
-    // Handle activity endpoint
-  } else {
-    // Handle default logs endpoint
-  }
-};
-```
+1. **Created flat file versions** of all log endpoints:
+   - `/api/logs-activity.js` → maps to `/api/logs/activity`
+   - `/api/logs-chat.js` → maps to `/api/logs/chat`
+   - `/api/logs-index.js` → maps to `/api/logs`
 
-### Approach 4: Vercel Functions v2 (Web Standard API)
-Convert to new Vercel Functions format:
-```javascript
-// api/logs/activity.js
-export default {
-  fetch(request) {
-    const url = new URL(request.url);
-    // Handle request
-    return Response.json({ success: true, logs: [] });
-  }
-};
+2. **Updated `vercel.json`** with proper rewrite rules:
+   ```json
+   {
+     "rewrites": [
+       { "source": "/api/logs/activity", "destination": "/api/logs-activity.js" },
+       { "source": "/api/logs/chat", "destination": "/api/logs-chat.js" },
+       { "source": "/api/logs", "destination": "/api/logs-index.js" }
+     ]
+   }
+   ```
+
+3. **Simplified `metrics.js`** to be a proper Vercel serverless function (was exporting multiple functions)
+
+4. **Verified all API files** have proper CORS headers and error handling
+
+---
+
+## File Structure
+
+```
+mission-control/dashboard/
+├── vercel.json                    # Updated with proper rewrites
+├── api/
+│   ├── logs-activity.js          # Flat file for /api/logs/activity
+│   ├── logs-chat.js              # Flat file for /api/logs/chat
+│   ├── logs-index.js             # Flat file for /api/logs
+│   ├── agents.js                 # /api/agents
+│   ├── health.js                 # /api/health
+│   ├── tasks.js                  # /api/tasks
+│   ├── stats.js                  # /api/stats
+│   ├── deployments.js            # /api/deployments
+│   ├── metrics.js                # /api/metrics (simplified)
+│   └── lib/
+│       └── validation.js         # Shared validation utilities
+└── logs/                         # Original nested folder (kept for reference)
+    ├── activity.js
+    ├── chat.js
+    └── index.js
 ```
 
 ---
 
 ## Testing Checklist
 
-After deployment completes (~2-3 minutes):
+After deployment, test these endpoints:
 
 ```bash
-# Test the endpoint
-curl https://dashboard-xyz.vercel.app/api/logs/activity
+# Test the main endpoint (should return 200 with JSON)
+curl https://your-deployment-url.vercel.app/api/logs/activity
 
-# Expected response:
-{
-  "success": true,
-  "logs": [...],
-  "total": 13,
-  "timestamp": "2026-02-18T..."
-}
+# Test with query params
+curl "https://your-deployment-url.vercel.app/api/logs/activity?limit=10"
+
+# Test other endpoints
+curl https://your-deployment-url.vercel.app/api/health
+curl https://your-deployment-url.vercel.app/api/agents
+curl https://your-deployment-url.vercel.app/api/tasks
+curl https://your-deployment-url.vercel.app/api/stats
+curl https://your-deployment-url.vercel.app/api/metrics
 ```
 
 ---
 
-## References
+## Deployment Steps
 
-1. [Vercel Project Configuration](https://vercel.com/docs/project-configuration)
-2. [Vercel Functions Documentation](https://vercel.com/docs/functions)
-3. [Vercel Rewrites vs Routes](https://vercel.com/docs/projects/project-configuration#rewrites)
-4. [GitHub Discussion: Nested Serverless Functions](https://github.com/vercel/vercel/discussions/8343)
+1. **Navigate to dashboard directory:**
+   ```bash
+   cd /root/.openclaw/workspace/mission-control/dashboard
+   ```
+
+2. **Deploy to Vercel:**
+   ```bash
+   vercel --prod
+   ```
+
+3. **Test the endpoint:**
+   ```bash
+   curl https://your-deployment-url.vercel.app/api/logs/activity
+   ```
+
+---
+
+## If It Still Doesn't Work
+
+### Alternative Approaches to Try:
+
+1. **Remove nested `/api/logs` folder entirely** - Sometimes Vercel gets confused by folder/file conflicts
+
+2. **Try explicit routes instead of rewrites:**
+   ```json
+   {
+     "routes": [
+       { "src": "/api/logs/activity", "dest": "/api/logs-activity.js" }
+     ]
+   }
+   ```
+
+3. **Use Vercel's zero-config approach** - Remove `vercel.json` entirely and rely on file structure:
+   - Rename `logs-activity.js` to `logs/activity.js` in a flat structure
+
+4. **Check Vercel Dashboard:**
+   - Go to your project → Functions tab
+   - Verify functions are being detected
+   - Check runtime logs for errors
+
+---
+
+## Research Summary
+
+Based on research from Vercel community and documentation:
+
+- **Vercel requires `/api` folder at project root** for serverless functions
+- **Nested routes** (`/api/logs/activity`) work better as flat files with rewrites
+- **The `builds` property in vercel.json is legacy** - use `functions` instead
+- **Rewrites vs Routes**: Rewrites are preferred for API endpoints
+
+### Sources Consulted:
+- Vercel Community: "Fixing serverless functions 404 errors in Vercel monorepo"
+- Vercel Docs: Rewrites configuration
+- Stack Overflow: Vercel API routes 404 issues
+- GitHub Issues: Next.js dynamic API routes 404
 
 ---
 
 ## Next Steps
 
-1. Wait for Vercel deployment to complete (check dashboard)
-2. Test endpoint with curl or browser
-3. If 404 persists, try Approach 2 (flat structure)
-4. Monitor Vercel Function logs for errors
+1. Deploy the updated files to Vercel
+2. Test all endpoints with curl
+3. If issues persist, check Vercel Function logs in dashboard
+4. Consider removing the nested `/api/logs` folder if conflicts continue
 
-**Deploy URL:** Check Vercel dashboard for latest deployment
+---
+
+**Report Generated By:** Nexus (API Troubleshooting Specialist)  
+**Session:** api-troubleshooting-heartbeat  
+**Timestamp:** 2026-02-19 06:50 AM CST

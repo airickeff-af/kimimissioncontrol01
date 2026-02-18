@@ -1,44 +1,54 @@
-// Vercel Serverless Function: /api/logs-activity.js
-// FLAT STRUCTURE approach - placed directly in /api folder
-// Endpoint: /api/logs-activity
+// Vercel Serverless Function for /api/logs/activity
+// Uses FLAT FILE approach - file is at /api/logs-activity.js
+// Maps to endpoint: /api/logs/activity via vercel.json rewrite
 
 module.exports = (req, res) => {
   // Set CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   res.setHeader('Content-Type', 'application/json');
 
+  // Handle preflight
   if (req.method === 'OPTIONS') {
     res.status(200).end();
     return;
   }
 
-  // Get limit from query params (default 100)
-  const limit = parseInt(req.query?.limit) || 100;
+  // Get limit from query params
+  const limit = parseInt(req.query?.limit) || 50;
 
-  // Generate activity logs
+  // Generate sample activity logs
   const now = Date.now();
-  const logs = [
-    { timestamp: new Date(now).toISOString(), agent: 'Nexus', type: 'system', message: 'API endpoint /api/logs-activity is working (flat structure)!', sessionId: 'api-test' },
-    { timestamp: new Date(now - 60000).toISOString(), agent: 'Code-1', type: 'task_complete', message: 'Fixed logs API endpoint', sessionId: 'logs-fix' },
-    { timestamp: new Date(now - 120000).toISOString(), agent: 'Pixel', type: 'task_complete', message: 'Updated office with 22 agents', sessionId: 'office-v2' },
-    { timestamp: new Date(now - 180000).toISOString(), agent: 'Audit-1', type: 'audit', message: 'Verified logs fix - all tests passed', sessionId: 'audit-logs' },
-    { timestamp: new Date(now - 300000).toISOString(), agent: 'Forge-2', type: 'task_complete', message: 'Updated overview page with 22 agents', sessionId: 'overview' },
-    { timestamp: new Date(now - 600000).toISOString(), agent: 'DealFlow', type: 'task_complete', message: 'Completed 30 leads enrichment', sessionId: 'leads-30' },
-    { timestamp: new Date(now - 900000).toISOString(), agent: 'Nexus', type: 'system', message: 'Added hourly agent check-in cron', sessionId: 'cron-setup' },
-    { timestamp: new Date(now - 1200000).toISOString(), agent: 'Nexus', type: 'system', message: 'Added 30-min task orchestrator', sessionId: 'orchestrator' },
-    { timestamp: new Date(now - 1500000).toISOString(), agent: 'Audit-2', type: 'audit', message: 'Quality check: 7 tasks audited, avg 96.1/100', sessionId: 'quality-check' },
-    { timestamp: new Date(now - 1800000).toISOString(), agent: 'Code-1', type: 'task_complete', message: 'Created serverless logs API', sessionId: 'api-logs' }
-  ];
+  const agents = ['Nexus', 'Glasses', 'Quill', 'Pixel', 'Gary', 'Larry', 'Sentry', 'Audit', 'Cipher', 'Forge', 'Scout', 'Buzz'];
+  const types = ['task_start', 'task_complete', 'research', 'write', 'design', 'code', 'deploy', 'audit', 'security_scan', 'system'];
+  
+  const logs = [];
+  for (let i = 0; i < Math.min(limit, 100); i++) {
+    const agent = agents[Math.floor(Math.random() * agents.length)];
+    const type = types[Math.floor(Math.random() * types.length)];
+    const timeOffset = i * 300000; // 5 min intervals
+    
+    logs.push({
+      id: `log-${Date.now()}-${i}`,
+      timestamp: new Date(now - timeOffset).toISOString(),
+      agent: agent,
+      type: type,
+      message: `${agent} completed ${type} activity`,
+      sessionId: `session-${Math.floor(Math.random() * 1000)}`,
+      metadata: {
+        duration: Math.floor(Math.random() * 300) + 30,
+        status: 'success'
+      }
+    });
+  }
 
-  // Return logs
+  // Return response
   res.status(200).json({
     success: true,
-    logs: logs.slice(0, limit),
-    total: logs.length,
+    endpoint: '/api/logs/activity',
     timestamp: new Date().toISOString(),
-    endpoint: '/api/logs-activity',
-    approach: 'flat-structure'
+    count: logs.length,
+    logs: logs
   });
 };

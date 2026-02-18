@@ -644,7 +644,7 @@
     <div class="game-container">
         <!-- Header -->
         <header class="game-header">
-            <div class="game-title">💼 CRM PIPELINE | COLDCALL READY</div>
+            <div class="game-title">💼 Deals</div>
             <div class="game-stats">
                 <div class="stat-box">
                     <div class="stat-label">TOTAL</div>
@@ -670,6 +670,7 @@
             <nav class="nav-desktop">
                 <a href="index.html" class="nav-btn">🏠 HQ</a>
                 <a href="office.html" class="nav-btn">🏢 Office</a>
+                <a href="pixel-office.html" class="nav-btn">🎮 Pixel</a>
                 <a href="agents.html" class="nav-btn">👥 Agents</a>
                 <a href="dealflow-view.html" class="nav-btn active">💼 Deals</a>
                 <a href="token-tracker.html" class="nav-btn">🪙 Tokens</a>
@@ -696,6 +697,7 @@
                 </div>
                 <input type="text" class="search-box" id="searchBox" placeholder="🔍 Search deals..." oninput="searchDeals(this.value)">
                 <button class="nav-btn primary" onclick="openAddModal()">➕ Add Lead</button>
+                <button class="nav-btn" onclick="refreshData()" id="refreshBtn">🔄 Refresh</button>
             </div>
         </div>
 
@@ -890,7 +892,35 @@
         document.addEventListener('DOMContentLoaded', () => {
             loadDeals();
             setupDragAndDrop();
+            
+            // Auto-refresh every 30 minutes
+            setInterval(() => {
+                console.log('[Auto-Refresh] Reloading deals data...');
+                loadDeals();
+            }, 30 * 60 * 1000);
         });
+        
+        // Global refresh function
+        window.refreshData = function() {
+            const btn = document.getElementById('refreshBtn');
+            if (btn) {
+                btn.textContent = '⏳';
+                btn.disabled = true;
+            }
+            
+            console.log('[Manual Refresh] Reloading deals data...');
+            
+            loadDeals().then(() => {
+                showToast('✅ Deals refreshed!');
+            }).catch(() => {
+                showToast('❌ Refresh failed');
+            }).finally(() => {
+                if (btn) {
+                    btn.textContent = '🔄 Refresh';
+                    btn.disabled = false;
+                }
+            });
+        };
 
         // Load deals from API or localStorage
         async function loadDeals() {

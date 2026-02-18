@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ColdCall Execution Dashboard | Mission Control</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --bg-primary: #1a1a2e;
+            --bg-secondary: #16213e;
+            --bg-card: #0f3460;
+            --accent-cyan: #00d4ff;
+            --accent-purple: #e94560;
+            --accent-green: #00ff88;
+            --accent-yellow: #ffc107;
+            --accent-orange: #ff8c42;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --border-color: #2a2a4a;
+            --kairo-beige: #f4e4c1;
+            --kairo-brown: #8b7355;
+            --kairo-green: #4a7c59;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+        
+        /* Kairosoft Header */
+        .header {
+            background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+            border-bottom: 4px solid var(--kairo-brown);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+        
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .logo {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            border: 3px solid var(--kairo-beige);
+            box-shadow: 0 4px 0 var(--kairo-brown);
+        }
+        
+        .brand-text h1 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 1rem;
+            color: var(--kairo-beige);
+            text-shadow: 2px 2px 0 var(--kairo-brown);
+            margin-bottom: 0.25rem;
+        }
+        
+        .brand-text span {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+        
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        
+        .approval-badge {
+            background: var(--accent-yellow);
+            color: #000;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.875rem;
+            border: 2px solid var(--kairo-brown);
+            box-shadow: 0 3px 0 var(--kairo-brown);
+        }
+        
+        .approval-badge.blocked {
+            background: #ff4444;
+            color: white;
+        }
+        
+        .refresh-btn {
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-green));
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            color: white;
+            font-weight: 700;
+            cursor: pointer;
+            border: 2px solid var(--kairo-brown);
+            box-shadow: 0 4px 0 var(--kairo-brown);
+            transition: all 0.2s;
+        }
+        
+        .refresh-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 0 var(--kairo-brown);
+        }
+        
+        .refresh-btn:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 var(--kairo-brown);
+        }
+        
+        /* Navigation */
+        .nav-tabs {
+            display: flex;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            background: var(--bg-secondary);
+            border-bottom: 2px solid var(--border-color);
+            overflow-x: auto;
+        }
+        
+        .nav-tab {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            background: var(--bg-card);
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 8px;
+            border: 2px solid var(--border-color);
+            transition: all 0.2s;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .nav-tab:hover {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+        }
+        
+        .nav-tab.active {
+            background: var(--accent-cyan);
+            color: #000;
+            border-color: var(--kairo-brown);
+            box-shadow: 0 3px 0 var(--kairo-brown);
+        }
+        
+        /* Main Content */
+        .main-content {
+            padding: 2rem;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+        
+        /* Alert Banner */
+        .alert-banner {
+            background: linear-gradient(90deg, #ff4444, #ff8844);
+            border: 3px solid var(--kairo-brown);
+            border-radius: 12px;
+            padding: 1rem 1.5rem;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            box-shadow: 0 4px 0 var(--kairo-brown);
+        }
+        
+        .alert-banner.blocker {
+            background: linear-gradient(90deg, #ff4444, #cc3333);
+        }
+        
+        .alert-icon {
+            font-size: 1.5rem;
+        }
+        
+        .alert-content {
+            flex: 1;
+        }
+        
+        .alert-title {
+            font-weight: 700;
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        .alert-text {
+            font-size: 0.875rem;
+            opacity: 0.9;
+        }
+        
+        /* KPI Cards */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .kpi-card {
+            background: var(--bg-card);
+            border: 3px solid var(--kairo-brown);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.2s;
+            box-shadow: 0 4px 0 var(--kairo-brown);
+        }
+        
+        .kpi-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 0 var(--kairo-brown);
+        }
+        
+        .kpi-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 600;
+        }
+        
+        .kpi-value {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .kpi-change {
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        
+        .kpi-change.positive { color: var(--accent-green); }
+        .kpi-change.negative { color: var(--accent-purple); }
+        
+        /* Queue Section */
+        .queue-section {
+            background: var(--bg-card);
+            border: 3px solid var(--kairo-brown);
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            overflow: hidden;
+            box-shadow: 0 4px 0 var(--kairo-brown);
+        }
+        
+        .section-header {
+            background: var(--bg-secondary);
+            padding: 1rem 1.5rem;
+            border-bottom: 2px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .section-title {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.875rem;
+            color: var(--kairo-beige);
+        }
+        
+        .section-actions {
+            display: flex;
+            gap: 0.75rem;
+        }
+        
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.875rem;
+            cursor: pointer;
+            border: 2px solid var(--kairo-brown);
+            transition: all 0.2s;
+        }
+        
+        .btn-primary {
+            background: var(--accent-green);
+            color: #000;
+            box-shadow: 0 3px 0 var(--kairo-brown);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 0 var(--kairo-brown);
+        }
+        
+        .btn-primary:disabled {
+            background: #666;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .btn-secondary {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+        }
+        
+        /* Lead Cards */
+        .lead-list {
+            padding: 1rem;
+        }
+        
+        .lead-card {
+            background: var(--bg-primary);
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            display: grid;
+            grid-template-columns: auto 1fr auto auto auto;
+            gap: 1rem;
+            align-items: center;
+            transition: all 0.2s;
+        }
+        
+        .lead-card:hover {
+            border-color: var(--accent-cyan);
+        }
+        
+        .lead-card.selected {
+            border-color: var(--accent-green);
+            background: rgba(0, 255, 136, 0.1);
+        }
+        
+        .lead-checkbox {
+            width: 20px;
+            height: 20px;
+            accent-color: var(--accent-green);
+        }
+        
+        .lead-info {
+            min-width: 0;
+        }
+        
+        .lead-company {
+            font-weight: 700;
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        .lead-contact {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+        
+        .lead-meta {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        
+        .lead-badge {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+        
+        .badge-p0 { background: #ff4444; color: white; }
+        .badge-p1 { background: var(--accent-orange); color: white; }
+        .badge-p2 { background: var(--accent-yellow); color: #000; }
+        
+        .badge-score {
+            background: var(--accent-cyan);
+            color: #000;
+        }
+        
+        .lead-template {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+        
+        .lead-schedule {
+            text-align: right;
+        }
+        
+        .schedule-time {
+            font-weight: 600;
+            color: var(--accent-green);
+        }
+        
+        .schedule-date {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+        
+        .lead-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .action-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 6px;
+            border: 2px solid var(--border-color);
+            background: var(--bg-secondary);
+            color: var(--text-secondary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        
+        .action-btn:hover {
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
+        }
+        
+        /* Schedule Calendar */
+        .calendar-section {
+            background: var(--bg-card);
+            border: 3px solid var(--kairo-brown);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 0 var(--kairo-brown);
+        }
+        
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .calendar-day {
+            background: var(--bg-primary);
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1rem;
+            min-height: 150px;
+        }
+        
+        .calendar-day-header {
+            font-weight: 700;
+            font-size: 0.875rem;
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .calendar-slot {
+            background: var(--bg-secondary);
+            border-radius: 4px;
+            padding: 0.5rem;
+            margin-bottom: 0.5rem;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .calendar-slot:hover {
+            background: var(--accent-cyan);
+            color: #000;
+        }
+        
+        .calendar-slot.scheduled {
+            background: var(--accent-green);
+            color: #000;
+        }
+        
+        /* Response Center */
+        .response-section {
+            background: var(--bg-card);
+            border: 3px solid var(--kairo-brown);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 0 var(--kairo-brown);
+        }
+        
+        .response-list {
+            padding: 1rem;
+        }
+        
+        .response-card {
+            background: var(--bg-primary);
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .response-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+        
+        .response-from {
+            font-weight: 700;
+        }
+        
+        .response-time {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+        
+        .response-classification {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+        
+        .class-positive { background: var(--accent-green); color: #000; }
+        .class-negative { background: #ff4444; color: white; }
+        .class-neutral { background: var(--accent-yellow); color: #000; }
+        .class-referral { background: var(--accent-cyan); color: #000; }
+        .class-question { background: var(--accent-purple); color: white; }
+        
+        .response-preview {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+        
+        .response-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+        }
+        
+        /* Tab Panels */
+        .tab-panel {
+            display: none;
+        }
+        
+        .tab-panel.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-secondary);
+        }
+        
+        .empty-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .calendar-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem;
+            }
+            
+            .main-content {
+                padding: 1rem;
+            }
+            
+            .kpi-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .calendar-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .lead-card {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="brand">
+            <div class="logo">📞</div>
+            <div class="brand-text">
+                <h1>COLDCALL</h1>
+                <span>Outreach Execution Dashboard</span>
+            </div>
+        </div>
+        <div class="header-actions">
+            <span class="approval-badge blocked" id="approvalBadge">⛔ WAITING APPROVAL</span>
+            <button class="refresh-btn" onclick="refreshData()">🔄 Refresh</button>
+        </div>
+    </header>
+    
+    <nav class="nav-tabs">
+        <button class="nav-tab active" onclick="switchTab('queue')">
+            <span>📋</span> Queue
+        </button>
+        <button class="nav-tab" onclick="switchTab('schedule')">
+            <span>📅</span> Schedule
+        </button>
+        <button class="nav-tab" onclick="switchTab('responses')">
+            <span>📨</span> Responses
+        </button>
+        <button class="nav-tab" onclick="switchTab('analytics')">
+            <span>📊</span> Analytics
+        </button>
+    </nav>
+    
+    <main class="main-content">
+        <!-- Blocker Alert -->
+        <div class="alert-banner blocker" id="blockerAlert">
+            <span class="alert-icon">🚫</span>
+            <div class="alert-content">
+                <div class="alert-title">TASK-019: Approval Required</div>
+                <div class="alert-text">
+                    Cold outreach is currently blocked pending EricF approval. 
+                    All preparation is complete - 9 leads ready for outreach. 
+                    Estimated time to first send: < 30 minutes after approval.
+                </div>
+            </div>
+        </div>
+        
+        <!-- KPI Cards -->
+        <div class="kpi-grid">
+            <div class="kpi-card">
+                <div class="kpi-label">Leads in Queue</div>
+                <div class="kpi-value" style="color: var(--accent-cyan);">9</div>
+                <div class="kpi-change positive">Ready for outreach</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-label">Avg Lead Score</div>
+                <div class="kpi-value" style="color: var(--accent-green);">78</div>
+                <div class="kpi-change positive">/100</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-label">Scheduled Sends</div>
+                <div class="kpi-value" style="color: var(--accent-yellow);">0</div>
+                <div class="kpi-change">Pending approval</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-label">Responses</div>
+                <div class="kpi-value" style="color: var(--accent-purple);">0</div>
+                <div class="kpi-change">This week</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-label">Meetings Booked</div>
+                <div class="kpi-value" style="color: var(--accent-green);">0</div>
+                <div class="kpi-change">From outreach</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-label">Expected Open Rate</div>
+                <div class="kpi-value" style="color: var(--accent-cyan);">51%</div>
+                <div class="kpi-change positive">Based on optimal timing</div>
+            </div>
+        </div>
+        
+        <!-- Queue Tab -->
+        <div class="tab-panel active" id="queue-panel">
+            <div class="queue-section">
+                <div class="section-header">
+                    <span class="section-title">📋 OUTREACH QUEUE</span>
+                    <div class="section-actions">
+                        <button class="btn btn-secondary" onclick="selectAll()">Select All</button>
+                        <button class="btn btn-primary" id="scheduleBtn" onclick="scheduleSelected()" disabled>
+                            Schedule Selected
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="lead-list" id="leadList">
+                    <!-- Lead cards will be populated by JS -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- Schedule Tab -->
+        <div class="tab-panel" id="schedule-panel">
+            <div class="calendar-section">
+                <div class="section-title">📅 WEEKLY SEND SCHEDULE</div>
+                <div class="calendar-grid" id="calendarGrid">
+                    <!-- Calendar will be populated by JS -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- Responses Tab -->
+        <div class="tab-panel" id="responses-panel">
+            <div class="response-section">
+                <div class="section-header">
+                    <span class="section-title">📨 INCOMING RESPONSES</span>
+                    <div class="section-actions">
+                        <button class="btn btn-secondary">Filter</button>
+                    </div>
+                </div>
+                
+                <div class="response-list" id="responseList">
+                    <div class="empty-state">
+                        <div class="empty-icon">📭</div>
+                        <div>No responses yet</div>
+                        <div style="font-size: 0.875rem; margin-top: 0.5rem;">
+                            Responses will appear here once outreach begins
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Analytics Tab -->
+        <div class="tab-panel" id="analytics-panel">
+            <div class="calendar-section">
+                <div class="section-title">📊 PERFORMANCE ANALYTICS</div>
+                <div style="padding: 3rem; text-align: center; color: var(--text-secondary);">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">📈</div>
+                    <div>Analytics will be available after first sends</div>
+                    <div style="font-size: 0.875rem; margin-top: 0.5rem;">
+                        Current data: Historical averages from 2,847 emails
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <script>
+        // Lead data
+        const leads = [
+            {
+                id: 'lead_001',
+                company: 'Coins.ph',
+                contact: 'Wei Zhou',
+                title: 'CEO & Founder',
+                priority: 'P0',
+                score: 79,
+                template: 'Initial Cold Outreach',
+                scheduledTime: 'Wed, Feb 25, 10:00 AM',
+                timezone: 'PHT'
+            },
+            {
+                id: 'lead_007',
+                company: 'Maya',
+                contact: 'Shailesh Baidwan',
+                title: 'Group President',
+                priority: 'P0',
+                score: 79,
+                template: 'Initial Cold Outreach',
+                scheduledTime: 'Wed, Feb 25, 11:00 AM',
+                timezone: 'PHT'
+            },
+            {
+                id: 'lead_011',
+                company: 'Xendit Group',
+                contact: 'Moses Lo',
+                title: 'CEO & Co-Founder',
+                priority: 'P0',
+                score: 82,
+                template: 'Initial Cold Outreach',
+                scheduledTime: 'Tue, Feb 24, 10:00 AM',
+                timezone: 'SGT'
+            },
+            {
+                id: 'lead_016',
+                company: 'GCash (Mynt)',
+                contact: 'Martha Sazon',
+                title: 'President & CEO',
+                priority: 'P0',
+                score: 81,
+                template: 'Initial Cold Outreach',
+                scheduledTime: 'Tue, Feb 24, 2:00 PM',
+                timezone: 'PHT'
+            },
+            {
+                id: 'lead_003',
+                company: 'PDAX',
+                contact: 'Nichel Gaba',
+                title: 'Founder & CEO',
+                priority: 'P1',
+                score: 77,
+                template: 'Initial Cold Outreach',
+                scheduledTime: 'Thu, Feb 26, 10:00 AM',
+                timezone: 'PHT'
+            },
+            {
+                id: 'lead_009',
+                company: 'PayMongo',
+                contact: 'Jojo Malolos',
+                title: 'CEO',
+                priority: 'P1',
+                score: 77,
+                template: 'Initial Cold Outreach',
+                scheduledTime: 'Thu, Feb 26, 11:00 AM',
+                timezone: 'PHT'
+            },
+            {
+                id: 'lead_013',
+                company: 'GoTyme Bank',
+                contact: 'Albert Tinio',
+                title: 'Co-CEO & Co-Founder',
+                priority: 'P1',
+                score: 76,
+                template: 'Initial Cold Outreach',
+                scheduledTime: 'Wed, Feb 25, 2:00 PM',
+                timezone: 'PHT'
+            },
+            {
+                id: 'lead_014',
+                company: 'Dragonpay',
+                contact: 'Robertson Chiang',
+                title: 'Founder, CEO & CTO',
+                priority: 'P1',
+                score: 77,
+                template: 'Initial Cold Outreach',
+                scheduledTime: 'Thu, Feb 26, 9:00 AM',
+                timezone: 'PHT'
+            },
+            {
+                id: 'lead_008',
+                company: 'Tala Philippines',
+                contact: 'Shivani Siroya',
+                title: 'Founder & CEO',
+                priority: 'P1',
+                score: 77,
+                template: 'Initial Cold Outreach',
+                scheduledTime: 'Tue, Feb 24, 11:00 AM',
+                timezone: 'PHT'
+            }
+        ];
+        
+        // Initialize dashboard
+        function initDashboard() {
+            renderLeadList();
+            renderCalendar();
+            checkApprovalStatus();
+        }
+        
+        // Render lead list
+        function renderLeadList() {
+            const container = document.getElementById('leadList');
+            container.innerHTML = leads.map(lead => `
+                <div class="lead-card" data-lead-id="${lead.id}">
+                    <input type="checkbox" class="lead-checkbox" onchange="toggleSelection('${lead.id}')">
+                    
+                    <div class="lead-info">
+                        <div class="lead-company">${lead.company}</div>
+                        <div class="lead-contact">${lead.contact} · ${lead.title}</div>
+                        <div class="lead-meta">
+                            <span class="lead-badge badge-${lead.priority.toLowerCase()}">${lead.priority}</span>
+                            <span class="lead-badge badge-score">Score: ${lead.score}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="lead-template">${lead.template}</div>
+                    
+                    <div class="lead-schedule">
+                        <div class="schedule-time">${lead.scheduledTime}</div>
+                        <div class="schedule-date">${lead.timezone}</div>
+                    </div>
+                    
+                    <div class="lead-actions">
+                        <button class="action-btn" title="Preview Email">👁️</button>
+                        <button class="action-btn" title="Edit">✏️</button>
+                        <button class="action-btn" title="Remove">🗑️</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // Render calendar
+        function renderCalendar() {
+            const days = ['Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+            const container = document.getElementById('calendarGrid');
+            
+            container.innerHTML = days.map(day => {
+                const dayLeads = leads.filter(l => l.scheduledTime.includes(day.substring(0, 3)));
+                
+                return `
+                    <div class="calendar-day">
+                        <div class="calendar-day-header">${day}</div>
+                        ${dayLeads.map(lead => `
+                            <div class="calendar-slot scheduled">
+                                <div style="font-weight: 600;">${lead.scheduledTime.split(',')[2]}</div>
+                                <div style="font-size: 0.7rem; opacity: 0.8;">${lead.company}</div>
+                            </div>
+                        `).join('')}
+                        ${dayLeads.length === 0 ? '<div style="color: var(--text-secondary); font-size: 0.75rem;">No sends scheduled</div>' : ''}
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        // Tab switching
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-panel').forEach(panel => {
+                panel.classList.remove('active');
+            });
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            document.getElementById(tabName + '-panel').classList.add('active');
+            event.target.closest('.nav-tab').classList.add('active');
+        }
+        
+        // Toggle lead selection
+        function toggleSelection(leadId) {
+            const card = document.querySelector(`[data-lead-id="${leadId}"]`);
+            card.classList.toggle('selected');
+            updateScheduleButton();
+        }
+        
+        // Select all leads
+        function selectAll() {
+            const checkboxes = document.querySelectorAll('.lead-checkbox');
+            const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+            
+            checkboxes.forEach(cb => {
+                cb.checked = !allChecked;
+            });
+            
+            document.querySelectorAll('.lead-card').forEach(card => {
+                if (!allChecked) {
+                    card.classList.add('selected');
+                } else {
+                    card.classList.remove('selected');
+                }
+            });
+            
+            updateScheduleButton();
+        }
+        
+        // Update schedule button state
+        function updateScheduleButton() {
+            const selected = document.querySelectorAll('.lead-card.selected').length;
+            const btn = document.getElementById('scheduleBtn');
+            const isApproved = checkApprovalStatus();
+            
+            btn.disabled = selected === 0 || !isApproved;
+            btn.textContent = isApproved 
+                ? `Schedule Selected (${selected})` 
+                : 'Waiting Approval';
+        }
+        
+        // Check approval status
+        function checkApprovalStatus() {
+            // In real implementation, this would check TASK-019 status
+            const isApproved = false; // Currently blocked
+            
+            const badge = document.getElementById('approvalBadge');
+            const alert = document.getElementById('blockerAlert');
+            
+            if (isApproved) {
+                badge.textContent = '✅ APPROVED';
+                badge.classList.remove('blocked');
+                alert.style.display = 'none';
+            } else {
+                badge.textContent = '⛔ WAITING APPROVAL';
+                badge.classList.add('blocked');
+                alert.style.display = 'flex';
+            }
+            
+            return isApproved;
+        }
+        
+        // Schedule selected leads
+        function scheduleSelected() {
+            const selected = document.querySelectorAll('.lead-card.selected');
+            alert(`Scheduling ${selected.length} leads for outreach...`);
+        }
+        
+        // Refresh data
+        function refreshData() {
+            location.reload();
+        }
+        
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', initDashboard);
+    </script>
+</body>
+</html>

@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="description" content="Enhanced Pixel Office - Mission Control with Agent Interactions">
+    <meta name="theme-color" content="#2d1b4e">
+    <title>🎮 Pixel Office Enhanced | Mission Control</title>
+    
+    <!-- Kairosoft Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-primary: #f5e6c8;
+            --bg-secondary: #e8d4a8;
+            --bg-card: #fff8e7;
+            --panel-bg: #f4e4c1;
+            --panel-border: #8b7355;
+            --panel-shadow: #5c4a3a;
+            --text-dark: #2c1810;
+            --text-light: #f4e4c1;
+            --text-secondary: #6b5a45;
+            --accent-cyan: #00d4ff;
+            --accent-pink: #ff6b6b;
+            --accent-green: #51cf66;
+            --accent-blue: #339af0;
+            --accent-yellow: #fcc419;
+            --accent-purple: #da77f2;
+            --accent-orange: #ff8787;
+            --accent-red: #ef4444;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; image-rendering: pixelated; }
+        
+        body {
+            font-family: 'VT323', monospace;
+            background: var(--bg-primary);
+            color: var(--text-dark);
+            min-height: 100vh;
+            line-height: 1.4;
+            overflow-x: hidden;
+        }
+        
+        /* Pixel Grid Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        /* Header */
+        .header {
+            background: var(--bg-secondary);
+            border-bottom: 4px solid var(--panel-border);
+            box-shadow: 0 4px 0 var(--panel-shadow);
+            padding: 0 1rem;
+            min-height: 70px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .brand { display: flex; align-items: center; gap: 0.75rem; }
+        
+        .logo {
+            width: 40px; height: 40px;
+            background: var(--panel-border);
+            border: 3px solid var(--text-dark);
+            box-shadow: 3px 3px 0 var(--text-dark);
+            border-radius: 4px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.25rem;
+        }
+        
+        .brand-text h1 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.65rem; font-weight: 700;
+            letter-spacing: -0.02em; line-height: 1.4;
+        }
+        
+        .brand-text span { font-size: 0.65rem; color: var(--text-secondary); }
+        
+        /* Navigation */
+        .nav-tabs { display: flex; gap: 0.4rem; flex-wrap: wrap; justify-content: center; }
+        
+        .nav-tab {
+            padding: 6px 10px;
+            background: var(--bg-card);
+            border: 3px solid var(--panel-border);
+            border-radius: 6px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.45rem;
+            color: var(--text-dark);
+            text-decoration: none;
+            text-align: center;
+            line-height: 1.3;
+            box-shadow: 0 3px 0 var(--panel-shadow);
+            transition: all 0.1s;
+        }
+        
+        .nav-tab:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 0 var(--panel-shadow);
+        }
+        
+        .nav-tab.active { background: var(--accent-green); border-color: var(--accent-green); color: white; }
+        
+        /* Main Container */
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 15px;
+        }
+        
+        /* Office Canvas Container */
+        .office-container {
+            background: var(--bg-card);
+            border: 4px solid var(--panel-border);
+            box-shadow: 4px 4px 0 var(--panel-shadow);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .office-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--panel-border);
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .office-title {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.6rem;
+            color: var(--panel-border);
+        }
+        
+        .action-btns { display: flex; gap: 8px; flex-wrap: wrap; }
+        
+        .btn {
+            padding: 8px 14px;
+            background: var(--bg-secondary);
+            border: 3px solid var(--panel-border);
+            border-radius: 6px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.5rem;
+            color: var(--text-dark);
+            cursor: pointer;
+            box-shadow: 0 3px 0 var(--panel-shadow);
+            transition: all 0.1s;
+        }
+        
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 5px 0 var(--panel-shadow); }
+        .btn:active { transform: translateY(0); box-shadow: 0 0 0 var(--panel-shadow); }
+        
+        .btn-primary { background: var(--accent-green); border-color: var(--accent-green); color: white; }
+        .btn-secondary { background: var(--accent-blue); border-color: var(--accent-blue); color: white; }
+        .btn-warning { background: var(--accent-yellow); border-color: var(--accent-yellow); color: var(--text-dark); }
+        .btn-danger { background: var(--accent-red); border-color: var(--accent-red); color: white; }
+        .btn-coffee { background: #8B4513; border-color: #5D3A1A; color: white; }
+        
+        #officeCanvas {
+            width: 100%;
+            height: 600px;
+            border: 3px solid var(--panel-border);
+            border-radius: 4px;
+            cursor: grab;
+            background: #2d3436;
+        }
+        
+        #officeCanvas:active { cursor: grabbing; }
+        
+        /* Info Panel */
+        .info-panel {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+        }
+        
+        .panel {
+            background: var(--bg-card);
+            border: 4px solid var(--panel-border);
+            box-shadow: 4px 4px 0 var(--panel-shadow);
+            border-radius: 8px;
+            padding: 15px;
+        }
+        
+        .panel-title {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.6rem;
+            color: var(--panel-border);
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--panel-border);
+        }
+        
+        /* Agent Grid */
+        .agent-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+            gap: 8px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        .agent-mini {
+            background: var(--bg-secondary);
+            border: 2px solid var(--panel-border);
+            border-radius: 6px;
+            padding: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+        
+        .agent-mini:hover { transform: scale(1.1); border-color: var(--accent-cyan); }
+        .agent-mini.sleeping { background: #e8d4ff; border-color: #9c27b0; }
+        .agent-mini.working { background: #d4edda; border-color: var(--accent-green); }
+        .agent-mini.busy { background: #fff3cd; border-color: var(--accent-yellow); }
+        
+        .agent-mini-emoji { font-size: 1.5rem; }
+        .agent-mini-name { font-size: 0.7rem; margin-top: 4px; }
+        .agent-mini-status {
+            width: 8px; height: 8px; border-radius: 50%;
+            margin: 4px auto 0;
+        }
+        .status-idle { background: #888; }
+        .status-working { background: var(--accent-green); }
+        .status-busy { background: var(--accent-yellow); }
+        .status-sleeping { background: #9c27b0; }
+        
+        /* Activity Log */
+        .activity-list {
+            max-height: 200px;
+            overflow-y: auto;
+            font-size: 0.9rem;
+        }
+        
+        .activity-item {
+            padding: 8px;
+            margin-bottom: 5px;
+            background: var(--bg-secondary);
+            border-left: 3px solid var(--accent-cyan);
+            border-radius: 0 4px 4px 0;
+            animation: slideIn 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .activity-time { font-size: 0.75rem; color: var(--text-secondary); }
+        .activity-item.celebration { border-left-color: var(--accent-pink); background: #ffe6f0; }
+        .activity-item.urgent { border-left-color: var(--accent-red); background: #ffe6e6; }
+        .activity-item.social { border-left-color: var(--accent-purple); background: #f3e5f5; }
+        
+        /* Weather Widget */
+        .weather-widget {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        
+        .weather-icon { font-size: 2rem; }
+        .weather-info { flex: 1; }
+        .weather-temp { font-size: 1.5rem; font-weight: bold; }
+        .weather-location { font-size: 0.8rem; color: var(--text-secondary); }
+        
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+        
+        .stat-box {
+            background: var(--bg-secondary);
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .stat-value { font-size: 1.5rem; font-weight: bold; color: var(--accent-green); }
+        .stat-label { font-size: 0.7rem; color: var(--text-secondary); }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header { padding: 10px; }
+            .nav-tabs { display: none; }
+            .office-header { flex-direction: column; align-items: flex-start; }
+            #officeCanvas { height: 400px; }
+            .info-panel { grid-template-columns: 1fr; }
+            .action-btns { width: 100%; justify-content: center; }
+            .btn { font-size: 0.4rem; padding: 6px 10px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="brand">
+            <div class="logo">🎮</div>
+            <div class="brand-text">
+                <h1>Pixel Office Enhanced</h1>
+                <span>22 Agents • Live Weather • Real-time</span>
+            </div>
+        </div>
+        
+        <nav class="nav-tabs">
+            <a href="index.html" class="nav-tab">🏠 HQ</a>
+            <a href="office.html" class="nav-tab">🏢 Office</a>
+            <a href="pixel-office.html" class="nav-tab">🎮 Classic</a>
+            <a href="pixel-office-enhanced.html" class="nav-tab active">✨ Enhanced</a>
+            <a href="agents.html" class="nav-tab">👥 Agents</a>
+        </nav>
+    </header>
+    
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Office Canvas -->
+        <div class="office-container">
+            <div class="office-header">
+                <span class="office-title">🏢 LIVE OFFICE - SHANGHAI TIME</span>
+                <div class="action-btns">
+                    <button class="btn btn-primary" onclick="startStandup()">📢 STANDUP</button>
+                    <button class="btn btn-coffee" onclick="startCoffee()">☕ COFFEE</button>
+                    <button class="btn btn-warning" onclick="triggerHighFive()">🙌 HIGH FIVE</button>
+                    <button class="btn btn-danger" onclick="triggerEmergency()">🚨 EMERGENCY</button>
+                    <button class="btn" onclick="resetView()">🔄 RESET</button>
+                </div>
+            </div>
+            <canvas id="officeCanvas"></canvas>
+        </div>
+        
+        <!-- Info Panels -->
+        <div class="info-panel">
+            <!-- Weather Panel -->
+            <div class="panel">
+                <div class="panel-title">🌤️ WEATHER - SHANGHAI</div>
+                <div class="weather-widget" id="weatherWidget">
+                    <div class="weather-icon">⏳</div>
+                    <div class="weather-info">
+                        <div class="weather-temp">--°C</div>
+                        <div class="weather-location">Loading...</div>
+                    </div>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <div class="stat-value" id="activeAgents">0</div>
+                        <div class="stat-label">Active</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value" id="sleepingAgents">0</div>
+                        <div class="stat-label">Sleeping</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Agent Grid -->
+            <div class="panel">
+                <div class="panel-title">👥 AGENT ROSTER (22)</div>
+                <div class="agent-grid" id="agentGrid"></div>
+            </div>
+            
+            <!-- Activity Log -->
+            <div class="panel">
+                <div class="panel-title">📡 LIVE ACTIVITY</div>
+                <div class="activity-list" id="activityLog"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="pixel-office-enhanced.js"></script>
+    <script>
+        // ============================================
+        // AGENT DATA - All 22 agents
+        // ============================================
+        const AGENTS_DATA = [
+            { id: 'ericf', name: 'EricF', role: 'Commander', emoji: '👑', color: '#ffd700', status: 'active', x: -8, y: -6 },
+            { id: 'nexus', name: 'Nexus', role: 'Orchestrator', emoji: '🤖', color: '#00d4ff', status: 'active', x: 4, y: -6 },
+            { id: 'codemaster', name: 'CodeMaster', role: 'Backend Lead', emoji: '💻', color: '#22c55e', status: 'busy', x: -7, y: 2 },
+            { id: 'code-1', name: 'Code-1', role: 'Backend', emoji: '⚡', color: '#22c55e', status: 'busy', x: -4, y: 2 },
+            { id: 'code-2', name: 'Code-2', role: 'Backend', emoji: '🔧', color: '#22c55e', status: 'busy', x: -7, y: 4.5 },
+            { id: 'code-3', name: 'Code-3', role: 'Backend', emoji: '🔌', color: '#22c55e', status: 'busy', x: -4, y: 4.5 },
+            { id: 'forge', name: 'Forge', role: 'UI Lead', emoji: '🔨', color: '#f97316', status: 'active', x: 3, y: -3 },
+            { id: 'forge-2', name: 'Forge-2', role: 'UI', emoji: '🎨', color: '#f97316', status: 'active', x: 6, y: -3 },
+            { id: 'forge-3', name: 'Forge-3', role: 'UI', emoji: '✨', color: '#f97316', status: 'active', x: 3, y: -0.5 },
+            { id: 'pixel', name: 'Pixel', role: 'Designer', emoji: '🎨', color: '#a855f7', status: 'active', x: 6, y: -0.5 },
+            { id: 'glasses', name: 'Glasses', role: 'Researcher', emoji: '🔍', color: '#3b82f6', status: 'active', x: 3, y: 2 },
+            { id: 'quill', name: 'Quill', role: 'Writer', emoji: '✍️', color: '#ec4899', status: 'idle', x: 6, y: 2 },
+            { id: 'gary', name: 'Gary', role: 'Marketing', emoji: '📢', color: '#f59e0b', status: 'idle', x: -2, y: 6 },
+            { id: 'larry', name: 'Larry', role: 'Social', emoji: '📱', color: '#06b6d4', status: 'idle', x: 1, y: 6 },
+            { id: 'buzz', name: 'Buzz', role: 'Social', emoji: '🐝', color: '#fbbf24', status: 'active', x: 4, y: 6 },
+            { id: 'sentry', name: 'Sentry', role: 'DevOps', emoji: '🛡️', color: '#ef4444', status: 'active', x: -5, y: 7 },
+            { id: 'audit', name: 'Audit', role: 'QA', emoji: '🔍', color: '#8b5cf6', status: 'active', x: -2, y: 7 },
+            { id: 'cipher', name: 'Cipher', role: 'Security', emoji: '🔐', color: '#6366f1', status: 'idle', x: 1, y: 7 },
+            { id: 'dealflow', name: 'DealFlow', role: 'Lead Gen', emoji: '🤝', color: '#10b981', status: 'busy', x: 4, y: 7 },
+            { id: 'coldcall', name: 'ColdCall', role: 'Outreach', emoji: '📞', color: '#f97316', status: 'idle', x: -6, y: 6 },
+            { id: 'scout', name: 'Scout', role: 'Intel', emoji: '🔭', color: '#00d4ff', status: 'active', x: 7, y: 4 },
+            { id: 'pie', name: 'PIE', role: 'Intelligence', emoji: '🧠', color: '#8b5cf6', status: 'active', x: 7, y: 6 },
+        ];
+        
+        // ============================================
+        // MAIN INITIALIZATION
+        // ============================================
+        let office;
+        
+        async function init() {
+            // Create office instance
+            office = new PixelOfficeEnhanced('officeCanvas', {
+                location: { lat: 31.2304, lon: 121.4737, name: 'Shanghai' },
+                enableWeather: true,
+                enableTime: true
+            });
+            
+            // Add all agents
+            AGENTS_DATA.forEach(data => {
+                office.addAgent(data);
+            });
+            
+            // Add furniture
+            office.addFurniture('meeting_table', 0, 0, 5, 3);
+            office.addFurniture('coffee_machine', -8, 8, 2, 1);
+            
+            // Add desks for each agent
+            AGENTS_DATA.forEach(agent => {
+                office.addFurniture('desk', agent.x, agent.y, 2, 2);
+            });
+            
+            // Start the office
+            office.start();
+            
+            // Render agent grid
+            renderAgentGrid();
+            
+            // Listen for activities
+            document.addEventListener('pixel-office-activity', (e) => {
+                addActivity(e.detail.emoji, e.detail.agent, e.detail.action, e.detail.type);
+            });
+            
+            // Initial activity
+            addActivity('🎮', 'System', 'Pixel Office Enhanced initialized', 'system');
+            
+            // Update stats periodically
+            setInterval(updateStats, 1000);
+            
+            // Update weather display
+            setTimeout(updateWeatherDisplay, 2000);
+        }
+        
+        // ============================================
+        // UI FUNCTIONS
+        // ============================================
+        
+        function renderAgentGrid() {
+            const grid = document.getElementById('agentGrid');
+            grid.innerHTML = '';
+            
+            AGENTS_DATA.forEach(agent => {
+                const div = document.createElement('div');
+                div.className = 'agent-mini';
+                div.id = `agent-mini-${agent.id}`;
+                div.innerHTML = `
+                    <div class="agent-mini-emoji">${agent.emoji}</div>
+                    <div class="agent-mini-name">${agent.name}</div>
+                    <div class="agent-mini-status status-${agent.status}"></div>
+                `;
+                div.onclick = () => {
+                    // Focus on agent
+                    office.camera.x = agent.x * 32;
+                    office.camera.y = agent.y * 16;
+                    addActivity('👁️', 'System', `Focused on ${agent.name}`, 'system');
+                };
+                grid.appendChild(div);
+            });
+        }
+        
+        function updateAgentGridStatus() {
+            for (const agent of office.agents.values()) {
+                const mini = document.getElementById(`agent-mini-${agent.id}`);
+                if (mini) {
+                    mini.className = `agent-mini ${agent.state}`;
+                    const statusDot = mini.querySelector('.agent-mini-status');
+                    statusDot.className = `agent-mini-status status-${agent.state}`;
+                }
+            }
+        }
+        
+        function addActivity(emoji, agent, action, type = 'agent') {
+            const log = document.getElementById('activityLog');
+            const time = new Date().toLocaleTimeString('en-US', { 
+                hour12: false, hour: '2-digit', minute: '2-digit' 
+            });
+            
+            const item = document.createElement('div');
+            item.className = `activity-item ${type}`;
+            item.innerHTML = `<span class="activity-time">${time}</span> ${emoji} <strong>${agent}</strong> ${action}`;
+            
+            log.insertBefore(item, log.firstChild);
+            while (log.children.length > 20) log.removeChild(log.lastChild);
+        }
+        
+        function updateStats() {
+            if (!office) return;
+            
+            const agents = Array.from(office.agents.values());
+            const active = agents.filter(a => a.state === 'walking' || a.state === 'working').length;
+            const sleeping = agents.filter(a => a.state === 'sleeping').length;
+            
+            document.getElementById('activeAgents').textContent = active;
+            document.getElementById('sleepingAgents').textContent = sleeping;
+            
+            updateAgentGridStatus();
+        }
+        
+        function updateWeatherDisplay() {
+            if (!office || !office.weather.lastUpdate) return;
+            
+            const widget = document.getElementById('weatherWidget');
+            const icons = {
+                'clear': office.weather.isDay ? '☀️' : '🌙',
+                'clouds': '☁️',
+                'rain': '🌧️',
+                'snow': '❄️',
+                'fog': '🌫️'
+            };
+            
+            widget.innerHTML = `
+                <div class="weather-icon">${icons[office.weather.condition] || '☀️'}</div>
+                <div class="weather-info">
+                    <div class="weather-temp">${office.weather.temperature}°C</div>
+                    <div class="weather-location">${office.options.location.name}</div>
+                </div>
+            `;
+        }
+        
+        // ============================================
+        // INTERACTION BUTTONS
+        // ============================================
+        
+        function startStandup() {
+            if (office) {
+                office.startStandup();
+            }
+        }
+        
+        function startCoffee() {
+            if (office) {
+                office.startCoffeeChat();
+            }
+        }
+        
+        function triggerHighFive() {
+            if (!office) return;
+            
+            // Pick two random agents
+            const agents = Array.from(office.agents.keys());
+            if (agents.length < 2) return;
+            
+            const idx1 = Math.floor(Math.random() * agents.length);
+            let idx2 = Math.floor(Math.random() * agents.length);
+            while (idx2 === idx1) idx2 = Math.floor(Math.random() * agents.length);
+            
+            office.triggerHighFive(agents[idx1], agents[idx2]);
+        }
+        
+        function triggerEmergency() {
+            if (office) {
+                office.triggerEmergencyAlert();
+            }
+        }
+        
+        function resetView() {
+            if (office) {
+                office.camera.x = 0;
+                office.camera.y = 0;
+                office.camera.zoom = 1;
+                addActivity('🔄', 'System', 'Camera reset', 'system');
+            }
+        }
+        
+        // Initialize on load
+        window.addEventListener('load', init);
+    </script>
+</body>
+</html>

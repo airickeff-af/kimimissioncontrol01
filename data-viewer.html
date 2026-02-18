@@ -674,7 +674,7 @@
         
         <div style="display: flex; align-items: center; gap: 1rem;">
             <span style="font-size: 0.875rem; color: var(--text-muted); display: none;">🟢 20 Agents</span>
-            <button class="btn" onclick="if(window.parent!==window){window.parent.location.reload()}else{window.location.reload()}" style="font-size: 0.75rem; padding: 0.25rem 0.75rem;">🔄</button>
+            <button class="btn" onclick="refreshData()" style="font-size: 0.75rem; padding: 0.25rem 0.75rem;">🔄 REFRESH</button>
         </div>
     </header>
     
@@ -1001,6 +1001,22 @@
             // DOM already loaded, call directly
             loadFileList();
         }
+        
+        // Refresh function
+        window.refreshData = function() {
+            console.log('[Manual Refresh] Reloading file data...');
+            loadFileList();
+            // Try to reload current file if one is selected
+            if (currentFile) {
+                loadFile(currentFile.id);
+            }
+        };
+        
+        // Auto-refresh every 30 minutes
+        setInterval(() => {
+            console.log('[Auto-Refresh] Reloading data...');
+            loadFileList();
+        }, 30 * 60 * 1000);
     </script>
 </body>
 </html>

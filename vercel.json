@@ -15,9 +15,8 @@
   ],
   "rewrites": [
     { "source": "/api/logs/activity", "destination": "/api/logs-activity.js" },
-    { "source": "/api/logs-activity", "destination": "/api/logs-activity.js" },
-    { "source": "/api/logs/chat", "destination": "/api/logs/chat.js" },
-    { "source": "/api/logs", "destination": "/api/logs/index.js" },
+    { "source": "/api/logs/chat", "destination": "/api/logs-chat.js" },
+    { "source": "/api/logs", "destination": "/api/logs-index.js" },
     { "source": "/api/agents", "destination": "/api/agents.js" },
     { "source": "/api/health", "destination": "/api/health.js" },
     { "source": "/api/tasks", "destination": "/api/tasks.js" },

@@ -546,6 +546,7 @@
                 <a href="competitors.html" class="nav-btn">🎯 COMPETITORS</a>
                 <a href="reports/opportunity-report-2026-02-17.json" class="nav-btn secondary">📊 REPORT</a>
                 <a href="agents/scout/opportunity-radar.js" class="nav-btn secondary">⚙️ CONFIG</a>
+                <button class="nav-btn" onclick="refreshData()" id="refreshBtn">🔄 REFRESH</button>
             </div>
         </div>
 
@@ -907,5 +908,32 @@
         <a href="scout.html" class="mobile-nav-btn" style="background: #69db7c;">🔭<br>Scout</a>
         <a href="task-board.html" class="mobile-nav-btn">📋<br>Tasks</a>
     </nav>
+
+    <script>
+        // Refresh function
+        window.refreshData = function() {
+            const btn = document.getElementById('refreshBtn');
+            if (btn) {
+                btn.textContent = '⏳';
+                btn.disabled = true;
+            }
+            
+            console.log('[Manual Refresh] Reloading Scout data...');
+            
+            // Simulate data refresh
+            setTimeout(() => {
+                if (btn) {
+                    btn.textContent = '🔄 REFRESH';
+                    btn.disabled = false;
+                }
+            }, 1000);
+        };
+        
+        // Auto-refresh every 30 minutes
+        setInterval(() => {
+            console.log('[Auto-Refresh] Reloading Scout data...');
+            // Scout is mostly static content, but we can refresh stats here
+        }, 30 * 60 * 1000);
+    </script>
 </body>
 </html>

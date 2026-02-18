@@ -355,7 +355,7 @@
     <div class="container">
         <!-- Stats Panel -->
         <div class="stats-panel">
-            <div class="stats-title">📊 PROJECT OVERVIEW</div>
+            <div class="stats-title">📊 PROJECT OVERVIEW <button class="refresh-btn" onclick="refreshData()" style="float:right;padding:6px 12px;font-size:0.5rem;background:var(--accent-green);border:2px solid var(--panel-border);cursor:pointer;">🔄 REFRESH</button></div>
             <div class="stats-grid">
                 <div class="stat-box">
                     <div class="stat-value">3</div>
@@ -475,5 +475,66 @@
             </div>
         </div>
     </div>
+
+    <script>
+        // Fetch project data from API
+        async function loadProjectData() {
+            try {
+                const [agentsRes, statsRes, leadsRes] = await Promise.all([
+                    fetch('/api/agents'),
+                    fetch('/api/stats'),
+                    fetch('/api/deals')
+                ]);
+                
+                const agents = await agentsRes.json();
+                const stats = await statsRes.json();
+                const leads = await leadsRes.json();
+                
+                // Update stats if data available
+                if (stats.success && stats.stats) {
+                    // Could update stats dynamically here
+                    console.log('[Projects] Stats updated:', stats.stats);
+                }
+                
+                if (leads.success && leads.deals) {
+                    const totalLeads = leads.deals.length;
+                    document.querySelector('.stat-box:nth-child(4) .stat-value').textContent = totalLeads;
+                }
+            } catch (error) {
+                console.log('[Projects] Using cached data');
+            }
+        }
+        
+        // Refresh function
+        window.refreshData = function() {
+            const btn = document.querySelector('.refresh-btn');
+            const originalText = btn.textContent;
+            btn.textContent = '⏳';
+            btn.disabled = true;
+            
+            loadProjectData().then(() => {
+                btn.textContent = '✅';
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.disabled = false;
+                }, 1500);
+            }).catch(() => {
+                btn.textContent = '❌';
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.disabled = false;
+                }, 1500);
+            });
+        };
+        
+        // Auto-refresh every 30 minutes
+        setInterval(() => {
+            console.log('[Auto-Refresh] Reloading project data...');
+            loadProjectData();
+        }, 30 * 60 * 1000);
+        
+        // Initial load
+        loadProjectData();
+    </script>
 </body>
 </html>
