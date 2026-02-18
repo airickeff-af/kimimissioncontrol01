@@ -10,6 +10,77 @@
 ## 🆕 NEW TASKS FROM QUALITY GATE (P0 CRITICAL)
 #### Batch: 2026-02-18 3:45 PM
 
+### **TASK-092: P0 - Isometric Pixel Office with Real Agent Activity**
+- **Assigned:** CodeMaster (Python Backend) + Forge (Frontend)
+- **Due:** Feb 19, 5:00 PM (17 hours)
+- **Status:** 🟡 IN PROGRESS
+- **Priority:** P0 - CORE FEATURE
+- **Quality Gate:** 95/100 required
+
+**Description:**
+Build a proper isometric pixel office with Minecraft-style visuals that shows real-time agent activity.
+
+**Requirements:**
+
+**Visual (Forge):**
+- [ ] Minecraft-style 16x16 or 32x32 pixel sprites
+- [ ] Moving agents (walking animations, 60fps)
+- [ ] Activity bars above each agent (current task, progress %)
+- [ ] Agent-to-agent interactions (speech bubbles, collaboration visuals)
+- [ ] Audit agents visibly reviewing other agents' work
+- [ ] Better isometric rendering with depth sorting
+- [ ] Shadows, lighting, particle effects
+- [ ] Mobile responsive
+
+**Backend (CodeMaster):**
+- [ ] Python-based rendering (Pygame or PIL)
+- [ ] Real-time API connection (/api/agents, /api/tasks)
+- [ ] Agent activity simulation based on real data
+- [ ] WebSocket or HTML5 export (Brython)
+- [ ] 60fps animation loop
+
+**Features:**
+- [ ] EricF commander desk (golden, crown)
+- [ ] Nexus AI desk (multiple monitors)
+- [ ] 20 agent desks with team zones
+- [ ] Meeting table for standups
+- [ ] Ping pong table for breaks
+- [ ] Plants and office decor
+- [ ] Standup functionality with real data
+- [ ] Agent conversations based on real tasks
+
+**Real Data Integration:**
+- [ ] Connect to /api/agents for live positions
+- [ ] Connect to /api/tasks for current work
+- [ ] Connect to /api/logs/activity for recent actions
+- [ ] Show actual task progress
+- [ ] Visual representation of Nexus delegations
+- [ ] Visual representation of Audit reviews
+
+**Acceptance Criteria:**
+- [ ] All 22 agents visible and animated
+- [ ] Sprites move smoothly (60fps)
+- [ ] Activity bars show real task data
+- [ ] Agents interact with each other
+- [ ] Standup shows real insights
+- [ ] Audit reviews visible in real-time
+- [ ] Quality score: 95/100
+- [ ] Mobile responsive
+- [ ] Deployed and working
+
+**Files:**
+- `/mission-control/dashboard/pixel-office.html` (current)
+- `/mission-control/dashboard/pixel-office.py` (new Python version)
+- `/mission-control/dashboard/pixel-office-animations.js` (animations)
+
+**Audit Checkpoints:**
+- [ ] 25% - Basic sprites and movement
+- [ ] 50% - Real data connection working
+- [ ] 75% - All features implemented
+- [ ] 100% - Quality check 95/100
+
+---
+
 ### **TASK-071: P0 - Standardize All Tab Headers to Match HQ Design**
 - **Assigned:** Forge-1, Forge-2, Forge-3 (Frontend Team)
 - **Due:** Feb 19, 10:00 AM (12 hours)
