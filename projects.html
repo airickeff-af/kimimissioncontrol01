@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="description" content="Projects | Mission Control">
+    <meta name="theme-color" content="#2d1b4e">
+    <title>🚀 Projects | Mission Control</title>
+    
+    <!-- Kairosoft Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-primary: #f5e6c8;
+            --bg-secondary: #e8d4a8;
+            --bg-card: #fff8e7;
+            --panel-bg: #f4e4c1;
+            --panel-border: #8b7355;
+            --panel-shadow: #5c4a3a;
+            --text-dark: #2c1810;
+            --text-light: #f4e4c1;
+            --text-secondary: #6b5a45;
+            --accent-cyan: #00d4ff;
+            --accent-pink: #ff6b6b;
+            --accent-green: #51cf66;
+            --accent-blue: #339af0;
+            --accent-yellow: #fcc419;
+            --accent-purple: #da77f2;
+            --accent-orange: #ff8787;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; image-rendering: pixelated; }
+        
+        body {
+            font-family: 'VT323', monospace;
+            background: var(--bg-primary);
+            color: var(--text-dark);
+            min-height: 100vh;
+            line-height: 1.4;
+        }
+        
+        /* Pixel Grid Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        /* Header - Matching HQ */
+        .header {
+            background: var(--bg-secondary);
+            border-bottom: 4px solid var(--panel-border);
+            box-shadow: 0 4px 0 var(--panel-shadow);
+            padding: 0 2rem;
+            height: 70px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .logo {
+            width: 42px;
+            height: 42px;
+            background: var(--panel-border);
+            border: 3px solid var(--text-dark);
+            box-shadow: 3px 3px 0 var(--text-dark);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+        
+        .brand-text h1 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            line-height: 1.5;
+        }
+        
+        .brand-text span {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+        }
+        
+        /* Navigation Tabs */
+        .nav-tabs {
+            display: flex;
+            gap: 0.5rem;
+            max-width: 700px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .nav-tab {
+            padding: 8px 12px;
+            background: var(--bg-card);
+            border: 3px solid var(--panel-border);
+            border-radius: 6px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.5rem;
+            color: var(--text-dark);
+            text-decoration: none;
+            text-align: center;
+            line-height: 1.4;
+            box-shadow: 0 3px 0 var(--panel-shadow);
+            transition: all 0.1s;
+        }
+        
+        .nav-tab:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 0 var(--panel-shadow);
+        }
+        
+        .nav-tab.active {
+            background: var(--accent-green);
+            border-color: var(--accent-green);
+            color: white;
+        }
+        
+        /* Main Container */
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Stats Panel */
+        .stats-panel {
+            background: var(--bg-card);
+            border: 4px solid var(--panel-border);
+            box-shadow: 4px 4px 0 var(--panel-shadow);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .stats-title {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.7rem;
+            color: var(--panel-border);
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--panel-border);
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+        }
+        
+        .stat-box {
+            background: var(--bg-secondary);
+            border: 3px solid var(--panel-border);
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 3px 0 var(--panel-shadow);
+        }
+        
+        .stat-value {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 1.5rem;
+            color: var(--accent-green);
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+        
+        /* Projects Grid */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+        }
+        
+        .project-card {
+            background: var(--bg-card);
+            border: 4px solid var(--panel-border);
+            box-shadow: 4px 4px 0 var(--panel-shadow);
+            border-radius: 8px;
+            padding: 20px;
+            transition: all 0.2s;
+        }
+        
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 6px 6px 0 var(--panel-shadow);
+        }
+        
+        .project-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--panel-border);
+        }
+        
+        .project-icon {
+            font-size: 3rem;
+        }
+        
+        .project-title {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.8rem;
+            color: var(--text-dark);
+            margin-bottom: 5px;
+        }
+        
+        .project-status {
+            font-size: 0.75rem;
+            padding: 4px 8px;
+            border-radius: 4px;
+            display: inline-block;
+        }
+        
+        .status-active {
+            background: var(--accent-green);
+            color: white;
+        }
+        
+        .status-beta {
+            background: var(--accent-yellow);
+            color: var(--text-dark);
+        }
+        
+        .status-planned {
+            background: var(--accent-pink);
+            color: white;
+        }
+        
+        .project-desc {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+        
+        .project-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .project-stat {
+            background: var(--bg-secondary);
+            border: 2px solid var(--panel-border);
+            border-radius: 6px;
+            padding: 10px;
+            text-align: center;
+        }
+        
+        .project-stat-value {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.9rem;
+            color: var(--accent-blue);
+        }
+        
+        .project-stat-label {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            margin-top: 3px;
+        }
+        
+        .project-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn {
+            flex: 1;
+            padding: 10px;
+            background: var(--bg-secondary);
+            border: 3px solid var(--panel-border);
+            border-radius: 6px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.5rem;
+            color: var(--text-dark);
+            text-decoration: none;
+            text-align: center;
+            cursor: pointer;
+            box-shadow: 0 3px 0 var(--panel-shadow);
+            transition: all 0.1s;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 0 var(--panel-shadow);
+        }
+        
+        .btn-primary {
+            background: var(--accent-green);
+            border-color: var(--accent-green);
+            color: white;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header { height: auto; padding: 1rem; flex-wrap: wrap; }
+            .nav-tabs { display: none; }
+            .projects-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="brand">
+            <div class="logo">🚀</div>
+            <div class="brand-text">
+                <h1>Projects</h1>
+                <span>3 Active • Mission Control</span>
+            </div>
+        </div>
+        
+        <nav class="nav-tabs">
+            <a href="index.html" class="nav-tab">🏠 HQ</a>
+            <a href="office.html" class="nav-tab">🏢 Office</a>
+            <a href="pixel-office.html" class="nav-tab">🎮 Pixel</a>
+            <a href="agents.html" class="nav-tab">👥 Agents</a>
+            <a href="projects.html" class="nav-tab active">🚀 Projects</a>
+            <a href="dealflow-view.html" class="nav-tab">💼 Deals</a>
+            <a href="token-tracker.html" class="nav-tab">🪙 Tokens</a>
+            <a href="task-board.html" class="nav-tab">📋 Tasks</a>
+            <a href="data-viewer.html" class="nav-tab">📁 Data</a>
+        </nav>
+    </header>
+    
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Stats Panel -->
+        <div class="stats-panel">
+            <div class="stats-title">📊 PROJECT OVERVIEW</div>
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="stat-value">3</div>
+                    <div class="stat-label">ACTIVE PROJECTS</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" style="color: var(--accent-blue);">2</div>
+                    <div class="stat-label">IN BETA</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" style="color: var(--accent-yellow);">1</div>
+                    <div class="stat-label">PLANNED</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" style="color: var(--accent-purple);">84</div>
+                    <div class="stat-label">TOTAL LEADS</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Projects Grid -->
+        <div class="projects-grid">
+            <!-- Scout Project -->
+            <div class="project-card">
+                <div class="project-header">
+                    <span class="project-icon">🔭</span>
+                    <div>
+                        <div class="project-title">SCOUT</div>
+                        <span class="project-status status-active">🟢 ACTIVE</span>
+                    </div>
+                </div>
+                <div class="project-desc">
+                    Intelligence gathering system for regional lead research. Currently tracking 6 regions with 30-50 leads each.
+                </div>
+                <div class="project-stats">
+                    <div class="project-stat">
+                        <div class="project-stat-value">2</div>
+                        <div class="project-stat-label">Regions Done</div>
+                    </div>
+                    <div class="project-stat">
+                        <div class="project-stat-value">84</div>
+                        <div class="project-stat-label">Leads Found</div>
+                    </div>
+                    <div class="project-stat">
+                        <div class="project-stat-value">4</div>
+                        <div class="project-stat-label">Pending</div>
+                    </div>
+                </div>
+                <div class="project-actions">
+                    <a href="scout.html" class="btn btn-primary">OPEN SCOUT</a>
+                    <a href="data-viewer.html" class="btn">VIEW DATA</a>
+                </div>
+            </div>
+            
+            <!-- DealFlow Project -->
+            <div class="project-card">
+                <div class="project-header">
+                    <span class="project-icon">🤝</span>
+                    <div>
+                        <div class="project-title">DEALFLOW</div>
+                        <span class="project-status status-beta">🟡 BETA</span>
+                    </div>
+                </div>
+                <div class="project-desc">
+                    CRM and lead management system with PIE integration. Enrichment pipeline and outreach automation.
+                </div>
+                <div class="project-stats">
+                    <div class="project-stat">
+                        <div class="project-stat-value">26</div>
+                        <div class="project-stat-label">Contacts</div>
+                    </div>
+                    <div class="project-stat">
+                        <div class="project-stat-value">5</div>
+                        <div class="project-stat-label">PIE Modules</div>
+                    </div>
+                    <div class="project-stat">
+                        <div class="project-stat-value">52</div>
+                        <div class="project-stat-label">Tasks Done</div>
+                    </div>
+                </div>
+                <div class="project-actions">
+                    <a href="dealflow-view.html" class="btn btn-primary">OPEN DEALFLOW</a>
+                    <a href="data-viewer.html" class="btn">VIEW LEADS</a>
+                </div>
+            </div>
+            
+            <!-- PIE Project -->
+            <div class="project-card">
+                <div class="project-header">
+                    <span class="project-icon">🧠</span>
+                    <div>
+                        <div class="project-title">PIE</div>
+                        <span class="project-status status-planned">🔴 PLANNED</span>
+                    </div>
+                </div>
+                <div class="project-desc">
+                    Predictive Intelligence Engine. Opportunity radar, competitor war room, and market trend analysis. Coming Feb 25.
+                </div>
+                <div class="project-stats">
+                    <div class="project-stat">
+                        <div class="project-stat-value">5</div>
+                        <div class="project-stat-label">Modules</div>
+                    </div>
+                    <div class="project-stat">
+                        <div class="project-stat-value">18</div>
+                        <div class="project-stat-label">Tasks</div>
+                    </div>
+                    <div class="project-stat">
+                        <div class="project-stat-value">Feb 25</div>
+                        <div class="project-stat-label">Launch</div>
+                    </div>
+                </div>
+                <div class="project-actions">
+                    <button class="btn" disabled style="opacity: 0.5;">COMING SOON</button>
+                    <a href="task-board.html" class="btn">VIEW TASKS</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
