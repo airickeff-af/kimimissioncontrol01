@@ -8,16 +8,8 @@
   },
   "rewrites": [
     {
-      "source": "/api/logs/activity",
-      "destination": "/api/logs-activity.js"
-    },
-    {
-      "source": "/api/logs",
-      "destination": "/api/logs.js"
-    },
-    {
-      "source": "/api/:path*",
-      "destination": "/api/:path*"
+      "source": "/api/(.*)",
+      "destination": "/api/$1"
     },
     {
       "source": "/logs-view.html",
