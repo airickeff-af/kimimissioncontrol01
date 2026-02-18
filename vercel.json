@@ -1,32 +1,35 @@
 {
   "version": 2,
   "name": "mission-control-fresh",
-  "builds": [
-    {
-      "src": "mission-control/dashboard/**/*.html",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "mission-control/dashboard/api/**/*.js",
-      "use": "@vercel/node"
+  "functions": {
+    "api/**/*.js": {
+      "runtime": "nodejs20.x"
     }
-  ],
-  "routes": [
+  },
+  "rewrites": [
     {
-      "src": "/api/logs/activity",
-      "dest": "/mission-control/dashboard/api/logs-activity.json"
+      "source": "/api/logs/activity",
+      "destination": "/api/logs-activity.js"
     },
     {
-      "src": "/logs-view.html",
-      "dest": "/mission-control/dashboard/logs-view.html"
+      "source": "/api/:path*",
+      "destination": "/api/:path*"
     },
     {
-      "src": "/(.*)",
-      "dest": "/mission-control/dashboard/$1"
+      "source": "/logs-view.html",
+      "destination": "/mission-control/dashboard/logs-view.html"
     },
     {
-      "src": "/",
-      "dest": "/mission-control/dashboard/index.html"
+      "source": "/mission-control/dashboard/(.*)",
+      "destination": "/mission-control/dashboard/$1"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/mission-control/dashboard/$1"
+    },
+    {
+      "source": "/",
+      "destination": "/mission-control/dashboard/index.html"
     }
   ]
 }
