@@ -333,25 +333,25 @@
         <!-- Last Updated Banner -->
         <div class="update-banner">
             <span>🕐 Last Updated: Feb 18, 2:30 AM HKT</span>
-            <button class="btn" onclick="window.location.reload()">🔄 Refresh</button>
+            <button class="btn" onclick="if(window.parent!==window){window.parent.location.reload()}else{window.location.reload()}">🔄 Refresh</button>
         </div>
 
         <!-- Stats Bar -->
         <div class="stats-bar">
             <div class="stat-card">
-                <div class="stat-value" style="color: var(--accent-yellow);">27</div>
-                <div class="stat-label">Pending/Blocked</div>
+                <div class="stat-value" style="color: var(--accent-yellow);">16</div>
+                <div class="stat-label">Pending</div>
             </div>
             <div class="stat-card">
-                <div class="stat-value" style="color: var(--accent-cyan);">2</div>
+                <div class="stat-value" style="color: var(--accent-pink);">27</div>
+                <div class="stat-label">Blocked</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" style="color: var(--accent-cyan);">4</div>
                 <div class="stat-label">In Progress</div>
             </div>
             <div class="stat-card">
-                <div class="stat-value" style="color: var(--accent-pink);">11</div>
-                <div class="stat-label">P0 Critical</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value" style="color: var(--accent-green);">18</div>
+                <div class="stat-value" style="color: var(--accent-green);">24</div>
                 <div class="stat-label">Completed Today</div>
             </div>
         </div>
