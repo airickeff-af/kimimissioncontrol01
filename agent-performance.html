@@ -1309,7 +1309,7 @@
         <div class="chart-container" style="margin-top: 1.5rem;">
             <div class="chart-header">
                 <h3 class="chart-title">💰 Detailed Token Usage</h3>
-                <span class="panel-action">Export CSV</span>
+                <span class="panel-action" onclick="exportToCSV()" style="cursor: pointer; padding: 0.5rem 1rem; background: var(--bg-elevated); border-radius: 8px; border: 1px solid var(--border);">📥 Export CSV</span>
             </div>
             <div class="token-table-wrapper">
                 <table class="token-table" id="tokenTable">
@@ -1394,32 +1394,79 @@
         });
         
         // Sample data for demo
-        const agentsData = [
-            { name: 'Nexus', role: 'Orchestrator', status: 'active', tasksCompleted: 45, tokensUsed: 18200 },
-            { name: 'DealFlow', role: 'Lead Gen', status: 'busy', tasksCompleted: 52, tokensUsed: 24100 },
-            { name: 'Code', role: 'Backend Dev', status: 'busy', tasksCompleted: 29, tokensUsed: 12400 },
-            { name: 'Forge', role: 'UI/Frontend', status: 'active', tasksCompleted: 38, tokensUsed: 15800 },
-            { name: 'Scout', role: 'Researcher', status: 'active', tasksCompleted: 38, tokensUsed: 28500 },
-            { name: 'Pixel', role: 'Designer', status: 'busy', tasksCompleted: 31, tokensUsed: 11200 }
-        ];
+        let agentsData = [];
+        let apiSummary = {};
+        
+        const API_BASE_URL = window.location.hostname === 'localhost' ? 'http://localhost:8080' : '';
         
         const agentEmojis = {
             'Nexus': '🤖', 'Code': '💻', 'Scout': '🔭', 'Pixel': '🎨',
-            'Forge': '⚒️', 'DealFlow': '💼', 'Audit': '🔒', 'Cipher': '🔐'
+            'Forge': '⚒️', 'DealFlow': '💼', 'Audit': '🔒', 'Cipher': '🔐',
+            'dealflow': '💼', 'nexus': '🤖', 'code': '💻', 'forge': '⚒️',
+            'scout': '🔭', 'pixel': '🎨', 'audit': '🔒', 'cipher': '🔐',
+            'Coder': '💻', 'coder': '💻', 'Gary': '📈', 'gary': '📈',
+            'Larry': '📱', 'larry': '📱', 'Sentry': '⚙️', 'sentry': '⚙️',
+            'Glasses': '🔭', 'glasses': '🔭', 'Quill': '✍️', 'quill': '✍️',
+            'Pie': '📊', 'pie': '📊'
         };
         
         const agentColors = {
             'Nexus': '#00d4ff', 'Code': '#22c55e', 'Scout': '#a855f7',
-            'Pixel': '#f97316', 'Forge': '#ff2a6d', 'DealFlow': '#f97316'
+            'Pixel': '#f97316', 'Forge': '#ff2a6d', 'DealFlow': '#fbbf24',
+            'dealflow': '#fbbf24', 'nexus': '#00d4ff', 'code': '#22c55e',
+            'scout': '#a855f7', 'pixel': '#f97316', 'forge': '#ff2a6d',
+            'Coder': '#22c55e', 'coder': '#22c55e', 'Audit': '#ef4444',
+            'audit': '#ef4444', 'Cipher': '#8b5cf6', 'cipher': '#8b5cf6'
         };
         
         function formatNumber(num) {
+            if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
             if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
             return num.toString();
         }
         
+        // Fetch live agent data from API
+        async function fetchAgentData() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/agents/status`);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+                agentsData = data.agents || [];
+                apiSummary = data.summary || {};
+                return true;
+            } catch (error) {
+                console.error('Error fetching agent data:', error);
+                showError('Failed to load live data. Using fallback data.');
+                // Fallback to sample data if API fails
+                agentsData = getFallbackData();
+                return false;
+            }
+        }
+        
+        function getFallbackData() {
+            return [
+                { name: 'Nexus', role: 'Orchestrator', status: 'active', tasksCompleted: 45, tokensUsed: 75300, emoji: '🤖' },
+                { name: 'DealFlow', role: 'Lead Gen', status: 'busy', tasksCompleted: 52, tokensUsed: 115300, emoji: '💼' },
+                { name: 'Code', role: 'Backend Dev', status: 'busy', tasksCompleted: 29, tokensUsed: 37000, emoji: '💻' },
+                { name: 'Forge', role: 'UI/Frontend', status: 'active', tasksCompleted: 38, tokensUsed: 45000, emoji: '⚒️' },
+                { name: 'Scout', role: 'Researcher', status: 'active', tasksCompleted: 15, tokensUsed: 8000, emoji: '🔭' },
+                { name: 'Pixel', role: 'Designer', status: 'idle', tasksCompleted: 31, tokensUsed: 25000, emoji: '🎨' }
+            ];
+        }
+        
+        function showError(message) {
+            const errorContainer = document.getElementById('errorContainer');
+            errorContainer.innerHTML = `<div class="error-message">${message}</div>`;
+            setTimeout(() => {
+                errorContainer.innerHTML = '';
+            }, 5000);
+        }
+        
         // Initialize dashboard
-        function initDashboard() {
+        async function initDashboard() {
+            await fetchAgentData();
             updateStats();
             renderAgentCards();
             renderLeaderboard();
@@ -1433,11 +1480,13 @@
         
         function updateStats() {
             const activeAgents = agentsData.filter(a => a.status === 'active').length;
-            const totalTasks = agentsData.reduce((sum, a) => sum + a.tasksCompleted, 0);
-            const totalTokens = agentsData.reduce((sum, a) => sum + a.tokensUsed, 0);
+            const busyAgents = agentsData.filter(a => a.status === 'busy').length;
+            const totalTasks = apiSummary.totalTasks || agentsData.reduce((sum, a) => sum + (a.tasksCompleted || 0), 0);
+            const totalTokens = apiSummary.totalTokens || agentsData.reduce((sum, a) => sum + (a.tokensUsed || 0), 0);
+            const avgEfficiency = apiSummary.avgEfficiency || Math.round(agentsData.reduce((sum, a) => sum + (a.efficiency || 80), 0) / agentsData.length);
             
-            document.getElementById('statAgents').textContent = activeAgents;
-            document.getElementById('statAgentsChange').textContent = `of ${agentsData.length} total`;
+            document.getElementById('statAgents').textContent = activeAgents + busyAgents;
+            document.getElementById('statAgentsChange').textContent = `${activeAgents} active, ${busyAgents} busy of ${agentsData.length} total`;
             document.getElementById('statAgentsChange').className = 'resource-change positive';
             
             document.getElementById('statTasks').textContent = totalTasks;
@@ -1446,7 +1495,7 @@
             document.getElementById('statTokens').textContent = formatNumber(totalTokens);
             document.getElementById('statTokensChange').textContent = 'All time';
             
-            document.getElementById('statEfficiency').textContent = '87%';
+            document.getElementById('statEfficiency').textContent = avgEfficiency + '%';
             document.getElementById('statEfficiencyChange').textContent = 'Avg across agents';
             
             document.getElementById('statUptime').textContent = '99.9%';
@@ -1454,17 +1503,28 @@
             
             document.getElementById('footerTotalTasks').textContent = totalTasks;
             document.getElementById('footerTotalTokens').textContent = formatNumber(totalTokens);
-            document.getElementById('footerTotalCost').textContent = '$' + (totalTokens * 0.00001).toFixed(2);
+            document.getElementById('footerTotalCost').textContent = '$' + ((totalTokens * 0.000002) || 0).toFixed(2);
+            
+            // Update timestamp
+            const now = new Date();
+            document.getElementById('lastUpdated').textContent = now.toLocaleTimeString();
         }
         
         function renderAgentCards() {
             const grid = document.getElementById('agentsGrid');
             
+            if (agentsData.length === 0) {
+                grid.innerHTML = '<div style="text-align: center; padding: 2rem; color: var(--text-muted);">No agents found</div>';
+                return;
+            }
+            
             grid.innerHTML = agentsData.map(agent => {
-                const emoji = agentEmojis[agent.name] || '🤖';
-                const color = agentColors[agent.name] || '#00d4ff';
-                const efficiency = Math.min(98, 70 + Math.floor(agent.tasksCompleted / 5));
+                const emoji = agent.emoji || agentEmojis[agent.name] || agentEmojis[agent.id] || '🤖';
+                const color = agentColors[agent.name] || agentColors[agent.id] || '#00d4ff';
+                const efficiency = agent.efficiency || Math.min(98, 70 + Math.floor((agent.tasksCompleted || 0) / 5));
                 const uptime = agent.status === 'active' ? '99.9%' : '98.5%';
+                const tasks = agent.tasksCompleted || 0;
+                const tokens = agent.tokensUsed || 0;
                 
                 return `
                     <div class="agent-card ${agent.status}">
@@ -1481,26 +1541,26 @@
                         
                         <div class="current-task">
                             <div class="current-task-label">Current Task</div>
-                            <div>${agent.tasksCompleted} tasks completed</div>
+                            <div>${agent.currentTask || tasks + ' tasks completed'}</div>
                         </div>
                         
                         <div class="agent-stats">
                             <div class="stat-row">
                                 <div class="stat-label-row">
                                     <span class="stat-name">Tasks</span>
-                                    <span class="stat-value-small">${agent.tasksCompleted}</span>
+                                    <span class="stat-value-small">${tasks}</span>
                                 </div>
                                 <div class="stat-bar">
-                                    <div class="stat-bar-fill tasks" style="width: ${Math.min(agent.tasksCompleted / 2, 100)}%"></div>
+                                    <div class="stat-bar-fill tasks" style="width: ${Math.min(tasks / 2, 100)}%"></div>
                                 </div>
                             </div>
                             <div class="stat-row">
                                 <div class="stat-label-row">
                                     <span class="stat-name">Tokens</span>
-                                    <span class="stat-value-small">${formatNumber(agent.tokensUsed)}</span>
+                                    <span class="stat-value-small">${formatNumber(tokens)}</span>
                                 </div>
                                 <div class="stat-bar">
-                                    <div class="stat-bar-fill tokens" style="width: ${Math.min(agent.tokensUsed / 500, 100)}%"></div>
+                                    <div class="stat-bar-fill tokens" style="width: ${Math.min(tokens / 500, 100)}%"></div>
                                 </div>
                             </div>
                             <div class="stat-row">
@@ -1528,13 +1588,14 @@
         }
         
         function renderLeaderboard() {
-            const sorted = [...agentsData].sort((a, b) => b.tasksCompleted - a.tasksCompleted).slice(0, 5);
+            if (agentsData.length === 0) return;
+            const sorted = [...agentsData].sort((a, b) => (b.tasksCompleted || 0) - (a.tasksCompleted || 0)).slice(0, 5);
             const list = document.getElementById('leaderboardList');
             
             list.innerHTML = sorted.map((agent, i) => {
                 const rankClass = i === 0 ? 'gold' : i === 1 ? 'silver' : i === 2 ? 'bronze' : 'normal';
-                const emoji = agentEmojis[agent.name] || '🤖';
-                const color = agentColors[agent.name] || '#00d4ff';
+                const emoji = agent.emoji || agentEmojis[agent.name] || agentEmojis[agent.id] || '🤖';
+                const color = agentColors[agent.name] || agentColors[agent.id] || '#00d4ff';
                 
                 return `
                     <div class="leaderboard-item">
@@ -1542,7 +1603,7 @@
                         <div class="leaderboard-avatar" style="background: linear-gradient(135deg, ${color}20, ${color}10);">${emoji}</div>
                         <div class="leaderboard-info">
                             <div class="leaderboard-name">${agent.name}</div>
-                            <div class="leaderboard-score">${agent.tasksCompleted} tasks</div>
+                            <div class="leaderboard-score">${agent.tasksCompleted || 0} tasks</div>
                         </div>
                     </div>
                 `;
@@ -1571,10 +1632,17 @@
         
         function renderTokenTable() {
             const tbody = document.getElementById('tokenTableBody');
+            if (agentsData.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 2rem;">No agent data available</td></tr>';
+                return;
+            }
+            
             tbody.innerHTML = agentsData.map(agent => {
-                const emoji = agentEmojis[agent.name] || '🤖';
-                const efficiency = Math.min(98, 70 + Math.floor(agent.tasksCompleted / 5));
-                const cost = (agent.tokensUsed * 0.00001).toFixed(2);
+                const emoji = agent.emoji || agentEmojis[agent.name] || agentEmojis[agent.id] || '🤖';
+                const efficiency = agent.efficiency || Math.min(98, 70 + Math.floor((agent.tasksCompleted || 0) / 5));
+                const cost = ((agent.tokensUsed || 0) * 0.000002).toFixed(2);
+                const tasks = agent.tasksCompleted || 0;
+                const tokens = agent.tokensUsed || 0;
                 
                 return `
                     <tr>
@@ -1591,13 +1659,13 @@
                         <td>
                             <span class="agent-status-badge ${agent.status}">${agent.status}</span>
                         </td>
-                        <td>${agent.tasksCompleted}</td>
+                        <td>${tasks}</td>
                         <td>
                             <div class="token-bar">
                                 <div class="token-bar-track">
-                                    <div class="token-bar-fill" style="width: ${Math.min(agent.tokensUsed / 500, 100)}%"></div>
+                                    <div class="token-bar-fill" style="width: ${Math.min(tokens / 500, 100)}%"></div>
                                 </div>
-                                <span class="token-value">${formatNumber(agent.tokensUsed)}</span>
+                                <span class="token-value">${formatNumber(tokens)}</span>
                             </div>
                         </td>
                         <td>${efficiency}%</td>
@@ -1608,15 +1676,24 @@
         }
         
         function initCharts() {
-            // Task Chart
             const taskCtx = document.getElementById('taskChart').getContext('2d');
-            new Chart(taskCtx, {
+            
+            // Generate task completion data from agents
+            const taskData = agentsData.slice(0, 7).map(a => a.tasksCompleted || 0);
+            const labels = agentsData.slice(0, 7).map(a => a.name);
+            
+            // Destroy existing chart if it exists
+            if (window.taskChartInstance) {
+                window.taskChartInstance.destroy();
+            }
+            
+            window.taskChartInstance = new Chart(taskCtx, {
                 type: 'line',
                 data: {
-                    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                    labels: labels.length > 0 ? labels : ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
                     datasets: [{
                         label: 'Tasks',
-                        data: [12, 19, 15, 25, 22, 30, 28],
+                        data: taskData.length > 0 ? taskData : [12, 19, 15, 25, 22, 30, 28],
                         borderColor: '#00d4ff',
                         backgroundColor: 'rgba(0, 212, 255, 0.1)',
                         tension: 0.4,
@@ -1634,15 +1711,20 @@
                 }
             });
             
-            // Token Chart
             const tokenCtx = document.getElementById('tokenChart').getContext('2d');
-            new Chart(tokenCtx, {
+            
+            // Destroy existing chart if it exists
+            if (window.tokenChartInstance) {
+                window.tokenChartInstance.destroy();
+            }
+            
+            window.tokenChartInstance = new Chart(tokenCtx, {
                 type: 'doughnut',
                 data: {
                     labels: agentsData.map(a => a.name),
                     datasets: [{
-                        data: agentsData.map(a => a.tokensUsed),
-                        backgroundColor: agentsData.map(a => agentColors[a.name] || '#00d4ff')
+                        data: agentsData.map(a => a.tokensUsed || 0),
+                        backgroundColor: agentsData.map(a => agentColors[a.name] || agentColors[a.id] || '#00d4ff')
                     }]
                 },
                 options: {
@@ -1658,20 +1740,86 @@
             });
         }
         
-        function refreshData() {
+        async function refreshData() {
             const btn = document.getElementById('refreshBtn');
             btn.disabled = true;
             btn.innerHTML = '<span>⏳</span> Loading...';
             
-            setTimeout(() => {
-                initDashboard();
-                btn.disabled = false;
-                btn.innerHTML = '<span>🔄</span> Refresh';
-            }, 1000);
+            // Show loading overlay
+            document.getElementById('loadingOverlay').classList.remove('hidden');
+            
+            await fetchAgentData();
+            updateStats();
+            renderAgentCards();
+            renderLeaderboard();
+            renderActivity();
+            renderTokenTable();
+            initCharts();
+            
+            // Hide loading overlay
+            document.getElementById('loadingOverlay').classList.add('hidden');
+            
+            btn.disabled = false;
+            btn.innerHTML = '<span>🔄</span> Refresh';
+        }
+        
+        // Export CSV functionality
+        function exportToCSV() {
+            if (agentsData.length === 0) {
+                alert('No agent data available to export');
+                return;
+            }
+            
+            // CSV Header
+            const headers = ['Agent Name', 'Role', 'Status', 'Tasks Completed', 'Tokens Used', 'Efficiency %', 'Cost ($)'];
+            
+            // CSV Rows
+            const rows = agentsData.map(agent => [
+                agent.name,
+                agent.role,
+                agent.status,
+                agent.tasksCompleted || 0,
+                agent.tokensUsed || 0,
+                agent.efficiency || 0,
+                ((agent.tokensUsed || 0) * 0.000002).toFixed(2)
+            ]);
+            
+            // Add summary row
+            const totalTokens = agentsData.reduce((sum, a) => sum + (a.tokensUsed || 0), 0);
+            const totalTasks = agentsData.reduce((sum, a) => sum + (a.tasksCompleted || 0), 0);
+            const avgEfficiency = Math.round(agentsData.reduce((sum, a) => sum + (a.efficiency || 0), 0) / agentsData.length);
+            
+            rows.push([]); // Empty row
+            rows.push(['TOTAL', '', '', totalTasks, totalTokens, avgEfficiency, (totalTokens * 0.000002).toFixed(2)]);
+            
+            // Create CSV content
+            const csvContent = [
+                headers.join(','),
+                ...rows.map(row => row.map(cell => `"${cell}"`).join(','))
+            ].join('\n');
+            
+            // Create download link
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const timestamp = new Date().toISOString().slice(0, 19).replace(/:/g, '-');
+            
+            link.href = URL.createObjectURL(blob);
+            link.download = `agent-performance-${timestamp}.csv`;
+            link.style.display = 'none';
+            
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            // Clean up
+            URL.revokeObjectURL(link.href);
         }
         
         // Initialize on load
         document.addEventListener('DOMContentLoaded', initDashboard);
+        
+        // Auto-refresh every 30 seconds
+        setInterval(refreshData, 30000);
     </script>
 </body>
 </html>

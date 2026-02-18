@@ -19,6 +19,8 @@
             --accent-purple: #a855f7;
             --accent-green: #22c55e;
             --accent-yellow: #fbbf24;
+            --accent-red: #ef4444;
+            --accent-orange: #f97316;
             --text-primary: #fafafa;
             --text-secondary: #a1a1aa;
             --text-muted: #71717a;
@@ -217,10 +219,41 @@
         }
         
         .source-nexus { color: var(--accent-cyan); }
+        .source-ericf { color: var(--accent-green); }
         .source-user { color: var(--accent-green); }
         .source-audit { color: var(--accent-yellow); }
         .source-pixel { color: var(--accent-pink); }
         .source-forge { color: var(--accent-purple); }
+        .source-code { color: var(--accent-orange); }
+        .source-dealflow { color: var(--accent-cyan); }
+        .source-scout { color: var(--accent-yellow); }
+        .source-coldcall { color: var(--accent-red); }
+        .source-sentry { color: var(--accent-purple); }
+        .source-cipher { color: var(--accent-red); }
+        .source-glasses { color: var(--accent-yellow); }
+        .source-quill { color: var(--accent-pink); }
+        .source-larry { color: var(--accent-purple); }
+        .source-gary { color: var(--accent-orange); }
+        .source-pie { color: var(--accent-cyan); }
+        .source-agent { color: var(--text-secondary); }
+        .source-system { color: var(--text-muted); }
+        
+        .type-badge {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+        
+        .type-user_message { background: rgba(34, 197, 94, 0.2); color: var(--accent-green); }
+        .type-agent_response { background: rgba(0, 212, 255, 0.2); color: var(--accent-cyan); }
+        .type-task_complete { background: rgba(168, 85, 247, 0.2); color: var(--accent-purple); }
+        .type-deployment { background: rgba(251, 191, 36, 0.2); color: var(--accent-yellow); }
+        .type-error { background: rgba(239, 68, 68, 0.2); color: var(--accent-red); }
+        .type-tool_call { background: rgba(249, 115, 22, 0.2); color: var(--accent-orange); }
+        .type-system { background: rgba(113, 113, 122, 0.2); color: var(--text-muted); }
         
         .message-cell {
             color: var(--text-secondary);
@@ -244,6 +277,86 @@
         .btn:hover {
             border-color: var(--accent-cyan);
             color: var(--accent-cyan);
+        }
+        
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem;
+            color: var(--text-muted);
+        }
+        
+        .loading::after {
+            content: '';
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--border);
+            border-top-color: var(--accent-cyan);
+            border-radius: 50%;
+            margin-left: 0.75rem;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .error-message {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: var(--accent-red);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+        
+        .filter-bar {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .filter-select {
+            padding: 0.5rem 1rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-primary);
+            font-size: 0.875rem;
+        }
+        
+        .refresh-btn {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            padding: 1rem 1.5rem;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(0, 212, 255, 0.3);
+            transition: all 0.3s;
+            z-index: 100;
+        }
+        
+        .refresh-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 30px rgba(0, 212, 255, 0.4);
+        }
+        
+        .session-id {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
         }
     </style>
 </head>
@@ -282,7 +395,7 @@
         </nav>
         
         <div style="display: flex; align-items: center; gap: 1rem;">
-            <span style="font-size: 0.875rem; color: var(--text-muted);">🟢 20 Agents Active</span>
+            <span style="font-size: 0.875rem; color: var(--text-muted);">🟢 Live Data</span>
             <button class="btn" onclick="if(window.parent!==window){window.parent.location.reload()}else{window.location.reload()}" style="font-size: 0.75rem; padding: 0.25rem 0.75rem;">🔄 Refresh</button>
         </div>
     </header>
@@ -292,38 +405,46 @@
         
         <div class="stats-bar">
             <div class="stat-card">
-                <div class="stat-value" style="color: var(--accent-cyan);" id="total-entries">487</div>
+                <div class="stat-value" style="color: var(--accent-cyan);" id="total-entries">-</div>
                 <div class="stat-label">Total Entries (All Time)</div>
             </div>
             <div class="stat-card">
-                <div class="stat-value" style="color: var(--accent-green);" id="user-messages">89</div>
+                <div class="stat-value" style="color: var(--accent-green);" id="user-messages">-</div>
                 <div class="stat-label">EricF Messages</div>
             </div>
             <div class="stat-card">
-                <div class="stat-value" style="color: var(--accent-purple);" id="agent-responses">398</div>
+                <div class="stat-value" style="color: var(--accent-purple);" id="agent-responses">-</div>
                 <div class="stat-label">Agent Responses</div>
             </div>
             <div class="stat-card">
-                <div class="stat-value" style="color: var(--accent-yellow);" id="tasks-created">47</div>
-                <div class="stat-label">Tasks Created</div>
+                <div class="stat-value" style="color: var(--accent-yellow);" id="tasks-completed">-</div>
+                <div class="stat-label">Tasks Completed</div>
             </div>
         </div>
 
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-            <div style="display: flex; gap: 1rem;">
-                <span style="color: var(--text-muted); font-size: 0.875rem;" id="showing-text">Showing most recent 100 entries</span>
+            <div style="display: flex; gap: 1rem; align-items: center;">
+                <span style="color: var(--text-muted); font-size: 0.875rem;" id="showing-text">Loading...</span>
                 <span style="color: var(--text-muted); font-size: 0.875rem;">|</span>
-                <span style="color: var(--accent-cyan); font-size: 0.875rem;">📊 All Time Activity</span>
+                <span style="color: var(--accent-cyan); font-size: 0.875rem;">📊 Real-Time Activity</span>
             </div>
-            <button class="btn" id="expand-btn" onclick="toggleExpand()">📂 Show All Logs</button>
+            <div style="display: flex; gap: 0.5rem;">
+                <button class="btn" id="expand-btn" onclick="toggleExpand()">📂 Show All Logs</button>
+            </div>
         </div>
 
-        <table class="log-table">
+        <div id="error-container"></div>
+        
+        <div id="loading-indicator" class="loading">Loading activity logs...</div>
+
+        <table class="log-table" id="log-table" style="display: none;">
             <thead>
                 <tr>
                     <th>Time</th>
                     <th>Source</th>
-                    <th>Message (First 20 Words)</th>
+                    <th>Type</th>
+                    <th>Message</th>
+                    <th>Session</th>
                 </tr>
             </thead>
             <tbody id="log-body">
@@ -332,59 +453,159 @@
         </table>
     </div>
 
-    <button class="refresh-btn" onclick="refreshLogs()">🔄 Refresh</button>
+    <button class="refresh-btn" onclick="refreshLogs()">🔄 Refresh Data</button>
 
     <script>
-        // Sample log data - in production this would come from API
-        const allLogs = [
-            { time: '23:51', source: 'EricF', message: 'in the real time logs, only show the most recent 100, but if pressed expand at the end, will show all the logs ever, and also change the user to EricF, as that is my name' },
-            { time: '23:50', source: 'Nexus', message: 'PyTorch is already installed! Sentry completed the installation a few minutes ago. Pixel can now generate AI images.' },
-            { time: '23:45', source: 'EricF', message: 'also the page tasks header and page data header is different than the rest, please standaridized to be the same as the overview one...' },
-            { time: '23:45', source: 'Nexus', message: '✅ ALL FIXES COMPLETE Headers standardized, meeting minutes added to office, data viewer file list fixed.' },
-            { time: '23:43', source: 'Nexus', message: '10 NEW TASKS ASSIGNED! 10 new improvement tasks created and assigned to agents. Resting agents now have work.' },
-            { time: '23:38', source: 'Nexus', message: 'Improvement cycle complete - system is stable with 13 healthy cron jobs and empty task queue.' },
-            { time: '23:36', source: 'Audit', message: 'Audit complete - all 4 tasks passed with scores of 85-92/100. Code API works, Pixel Office has walking computer heads.' },
-            { time: '23:35', source: 'Nexus', message: '🔍 AUDIT BOT ENHANCED New Protocol: Deep output verification. Currently auditing Code API, Pixel Office, Data Viewer, Task Board.' },
-            { time: '23:32', source: 'Nexus', message: '✅ HEARTBEAT UPDATED Job #13: Continuous Improvement Delegation changed from every 6 hours to every 4 hours.' },
-            { time: '23:30', source: 'Nexus', message: '🧠 MEMORY BANK UPDATE Good news - I just reviewed all pending tasks. All on track for Feb 18 noon deadline.' },
-            { time: '23:29', source: 'Nexus', message: '✅ HIGGSFIELD API CONFIGURED Updated config with API Key, API ID, API Secret. Status: 🔴 API endpoint not responding.' },
-            { time: '23:28', source: 'EricF', message: 'this is the api key id: 163f556d-976f-4039-910a-407b138afc4f for higgsfield and this is the secret api key: d0cab9b8c1d716295d55f40aded3546f4c79263a6510181454bfbbbb66e68cc3' },
-            { time: '23:24', source: 'Nexus', message: '✅ BRAVE SEARCH INTEGRATED New Research Stack: 🔍 Brave Search 🔍 Kimi Search 🔍 Web Fetch 🔍 Memory Search' },
-            { time: '23:20', source: 'EricF', message: 'change it from 6 hours to 4 hours. Here are all 13 heartbeats in a chart here i want to add and also change the times.' },
-            { time: '23:19', source: 'Nexus', message: '🔧 DATA VIEWER FIXED Issue: Files could not be fetched from different directories. Solution: Embedded all data directly.' },
-            { time: '23:18', source: 'Nexus', message: 'Task queue all clear - all deployments complete, Mission Control operating smoothly.' },
-            { time: '23:17', source: 'Nexus', message: '✅ PIXEL OFFICE + TASK BOARD UPDATES Pixel-2 completed walking computer heads. Due: Feb 18, 5:00 AM. Status: DONE' },
-            { time: '23:14', source: 'EricF', message: '🎨 PIXEL OFFICE UPDATE: Assigned to: Pixel-2 Task: Fix isometric office visuals. Walking computer heads with glowing screens.' },
-            { time: '23:13', source: 'Nexus', message: 'Task queue all clear - 10 tasks completed today, no pending items.' },
-            { time: '23:10', source: 'Nexus', message: 'Task queue all clear - all deployments complete, Mission Control operating smoothly.' }
-        ];
-
+        // Configuration
+        const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
+            ? 'http://localhost:8080' 
+            : '';
+        
+        let allLogs = [];
         let showAll = false;
         const RECENT_COUNT = 100;
-
+        
+        // Format timestamp for display
+        function formatTime(timestamp) {
+            if (!timestamp) return 'Unknown';
+            try {
+                const date = new Date(timestamp);
+                const now = new Date();
+                const isToday = date.toDateString() === now.toDateString();
+                
+                if (isToday) {
+                    return date.toLocaleTimeString('en-US', { 
+                        hour: '2-digit', 
+                        minute: '2-digit',
+                        hour12: false 
+                    });
+                } else {
+                    return date.toLocaleDateString('en-US', { 
+                        month: 'short', 
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        hour12: false
+                    });
+                }
+            } catch (e) {
+                return timestamp;
+            }
+        }
+        
+        // Get source class for styling
+        function getSourceClass(agent) {
+            const agentLower = (agent || 'agent').toLowerCase();
+            const validClasses = ['nexus', 'ericf', 'user', 'audit', 'pixel', 'forge', 'code', 
+                                  'dealflow', 'scout', 'coldcall', 'sentry', 'cipher', 
+                                  'glasses', 'quill', 'larry', 'gary', 'pie', 'system'];
+            return validClasses.includes(agentLower) ? `source-${agentLower}` : 'source-agent';
+        }
+        
+        // Get type badge class
+        function getTypeClass(type) {
+            const validTypes = ['user_message', 'agent_response', 'task_complete', 
+                               'deployment', 'error', 'tool_call', 'system'];
+            return validTypes.includes(type) ? `type-${type}` : 'type-system';
+        }
+        
+        // Get display name for type
+        function getTypeDisplay(type) {
+            const typeNames = {
+                'user_message': 'User',
+                'agent_response': 'Response',
+                'task_complete': 'Task Done',
+                'deployment': 'Deploy',
+                'error': 'Error',
+                'tool_call': 'Tool',
+                'system': 'System'
+            };
+            return typeNames[type] || type;
+        }
+        
+        // Truncate message to first N words
+        function truncateMessage(message, wordCount = 20) {
+            if (!message) return '';
+            const words = message.split(/\s+/);
+            if (words.length <= wordCount) return message;
+            return words.slice(0, wordCount).join(' ') + '...';
+        }
+        
+        // Fetch logs from API
+        async function fetchLogs() {
+            const loadingIndicator = document.getElementById('loading-indicator');
+            const logTable = document.getElementById('log-table');
+            const errorContainer = document.getElementById('error-container');
+            
+            loadingIndicator.style.display = 'flex';
+            logTable.style.display = 'none';
+            errorContainer.innerHTML = '';
+            
+            try {
+                const limit = showAll ? 1000 : RECENT_COUNT;
+                const response = await fetch(`${API_BASE_URL}/api/logs/activity?limit=${limit}`);
+                
+                if (!response.ok) {
+                    throw new Error(`API returned ${response.status}`);
+                }
+                
+                const data = await response.json();
+                allLogs = data.logs || [];
+                
+                renderLogs();
+                updateStats();
+                
+                loadingIndicator.style.display = 'none';
+                logTable.style.display = 'table';
+                
+            } catch (error) {
+                console.error('Error fetching logs:', error);
+                loadingIndicator.style.display = 'none';
+                errorContainer.innerHTML = `
+                    <div class="error-message">
+                        ⚠️ Failed to load logs: ${error.message}. 
+                        Make sure the API server is running on port 8080.
+                    </div>
+                `;
+                // Show empty table
+                logTable.style.display = 'table';
+                renderLogs();
+            }
+        }
+        
+        // Render logs to table
         function renderLogs() {
             const tbody = document.getElementById('log-body');
             const logsToShow = showAll ? allLogs : allLogs.slice(0, RECENT_COUNT);
             const totalLogs = allLogs.length;
             
-            // Update stats
-            document.getElementById('total-entries').textContent = totalLogs;
-            document.getElementById('user-messages').textContent = allLogs.filter(l => l.source === 'EricF').length;
-            document.getElementById('agent-responses').textContent = allLogs.filter(l => l.source !== 'EricF').length;
-            
-            tbody.innerHTML = logsToShow.map(log => {
-                const sourceClass = `source-${log.source.toLowerCase()}`;
-                const words = log.message.split(' ').slice(0, 20).join(' ');
-                const truncated = log.message.split(' ').length > 20 ? words + '...' : words;
-                
-                return `
+            if (logsToShow.length === 0) {
+                tbody.innerHTML = `
                     <tr>
-                        <td class="time-cell">${log.time}</td>
-                        <td class="source-cell ${sourceClass}">${log.source}</td>
-                        <td class="message-cell" title="${log.message}">${truncated}</td>
+                        <td colspan="5" style="text-align: center; padding: 3rem; color: var(--text-muted);">
+                            No activity logs found. Start interacting with agents to see logs here.
+                        </td>
                     </tr>
                 `;
-            }).join('');
+            } else {
+                tbody.innerHTML = logsToShow.map(log => {
+                    const sourceClass = getSourceClass(log.agent);
+                    const typeClass = getTypeClass(log.type);
+                    const typeDisplay = getTypeDisplay(log.type);
+                    const timeDisplay = formatTime(log.timestamp);
+                    const truncatedMessage = truncateMessage(log.message, 20);
+                    
+                    return `
+                        <tr>
+                            <td class="time-cell">${timeDisplay}</td>
+                            <td class="source-cell ${sourceClass}">${log.agent || 'Unknown'}</td>
+                            <td><span class="type-badge ${typeClass}">${typeDisplay}</span></td>
+                            <td class="message-cell" title="${log.message || ''}">${truncatedMessage}</td>
+                            <td class="session-id">${log.sessionId || '-'}</td>
+                        </tr>
+                    `;
+                }).join('');
+            }
             
             // Update showing text
             document.getElementById('showing-text').textContent = showAll 
@@ -396,28 +617,38 @@
                 ? '📂 Show Recent Only' 
                 : '📂 Show All Logs';
         }
-
+        
+        // Update statistics
+        function updateStats() {
+            const totalEntries = allLogs.length;
+            const userMessages = allLogs.filter(l => l.type === 'user_message').length;
+            const agentResponses = allLogs.filter(l => l.type === 'agent_response').length;
+            const tasksCompleted = allLogs.filter(l => l.type === 'task_complete').length;
+            
+            document.getElementById('total-entries').textContent = totalEntries;
+            document.getElementById('user-messages').textContent = userMessages;
+            document.getElementById('agent-responses').textContent = agentResponses;
+            document.getElementById('tasks-completed').textContent = tasksCompleted;
+        }
+        
+        // Toggle between showing all logs and recent only
         function toggleExpand() {
             showAll = !showAll;
-            renderLogs();
+            fetchLogs();
         }
-
-        function refreshLogs() {
-            renderLogs();
-            alert('Logs refreshed!');
-        }
-
-        // Initial render
-        renderLogs();
-
-        // Auto-refresh every 30 seconds for live data
-        setInterval(renderLogs, 30000);
         
-        // Full page refresh every 30 minutes for latest data
-        setInterval(() => {
-            console.log('Auto-refreshing logs page...');
-            if(window.parent!==window){window.parent.location.reload()}else{window.location.reload()}
-        }, 1800000);
+        // Refresh logs manually
+        function refreshLogs() {
+            fetchLogs();
+        }
+        
+        // Initial load
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchLogs();
+        });
+        
+        // Auto-refresh every 30 seconds
+        setInterval(fetchLogs, 30000);
     </script>
 </body>
 </html>
