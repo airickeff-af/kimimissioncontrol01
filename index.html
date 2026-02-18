@@ -4,45 +4,64 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <meta name="description" content="Mission Control HQ - EricF's AI Team Dashboard">
-    <meta name="theme-color" content="#0a0a0f">
+    <meta name="theme-color" content="#2d1b4e">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     
-    <!-- Preconnect to external domains -->
-    <link rel="preconnect" href="https://cdn.jsdelivr.net">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <title>Mission Control HQ | AI Team Dashboard</title>
     
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- Kairosoft-style Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     
-    <title>Mission Control HQ | EricF's AI Team</title>
-    
-    <!-- Critical CSS inline for fastest render -->
     <style>
         :root {
-            --bg-primary: #0a0a0f;
-            --bg-secondary: #111118;
-            --bg-card: #15151d;
-            --bg-elevated: #1e1e2a;
+            /* Kairosoft Color Palette */
+            --bg-primary: #2d1b4e;
+            --bg-secondary: #3d2652;
+            --panel-bg: #f4e4c1;
+            --panel-border: #8b7355;
+            --panel-shadow: #5c4a3a;
+            --text-dark: #2c1810;
+            --text-light: #f4e4c1;
             --accent-cyan: #00d4ff;
-            --accent-pink: #ff2a6d;
-            --accent-purple: #a855f7;
-            --accent-green: #22c55e;
-            --accent-yellow: #fbbf24;
-            --text-primary: #fafafa;
-            --text-secondary: #a1a1aa;
-            --text-muted: #71717a;
-            --border: #27272a;
+            --accent-pink: #ff6b6b;
+            --accent-green: #51cf66;
+            --accent-blue: #339af0;
+            --accent-yellow: #fcc419;
+            --accent-purple: #da77f2;
+            --accent-orange: #ff8787;
+            
+            /* Agent Role Colors */
+            --nexus-color: #ff6b6b;
+            --audit-color: #ffc078;
+            --qa-color: #ffa94d;
+            --code-color: #38d9a9;
+            --forge-color: #ff8787;
+            --cipher-color: #adb5bd;
+            --dealflow-color: #e599f7;
+            --gary-color: #69db7c;
+            --glasses-color: #4dabf7;
+            --larry-color: #ffd43b;
+            --pie-color: #cc5de8;
+            --pixel-color: #da77f2;
+            --quill-color: #ffa94d;
+            --scout-color: #ffa8a8;
+            --sentry-color: #74c0fc;
         }
         
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            image-rendering: pixelated;
+            -webkit-tap-highlight-color: transparent;
+        }
         
         html {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'VT323', monospace;
             background: var(--bg-primary);
-            color: var(--text-primary);
-            line-height: 1.5;
+            color: var(--text-light);
+            line-height: 1.4;
             -webkit-text-size-adjust: 100%;
         }
         
@@ -51,285 +70,175 @@
             overflow-x: hidden;
         }
         
-        /* Animated Grid Background */
+        /* Pixel Grid Background */
         body::before {
             content: '';
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background-image: 
-                linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
-            background-size: 60px 60px;
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.15) 2px, rgba(0,0,0,0.15) 4px),
+                repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0,0,0,0.15) 2px, rgba(0,0,0,0.15) 4px);
             pointer-events: none;
             z-index: 0;
-            animation: gridMove 20s linear infinite;
         }
         
-        @keyframes gridMove {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(60px, 60px); }
+        /* Game Container */
+        .game-container {
+            position: relative;
+            z-index: 1;
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 15px;
+            min-height: 100vh;
+            padding-bottom: 100px;
         }
         
         /* Header */
-        .header {
-            background: rgba(17, 17, 24, 0.95);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border);
-            padding: 0 1rem;
-            height: 70px;
+        .game-header {
+            background: linear-gradient(180deg, #5c3d7a 0%, #3d2652 100%);
+            border: 4px solid #2d1b4e;
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin-bottom: 15px;
+            box-shadow: 
+                0 4px 0 #1a0f2e,
+                inset 0 2px 0 rgba(255,255,255,0.1);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            flex-wrap: wrap;
+            gap: 15px;
         }
         
-        .brand {
+        .game-title {
+            font-family: 'Press Start 2P', cursive;
+            font-size: clamp(0.7rem, 2vw, 1rem);
+            color: var(--accent-yellow);
+            text-shadow: 3px 3px 0 #2d1b4e;
+            letter-spacing: 2px;
+            line-height: 1.8;
+        }
+        
+        .game-stats {
             display: flex;
-            align-items: center;
-            gap: 0.75rem;
+            gap: 10px;
+            flex-wrap: wrap;
         }
         
-        .logo {
-            width: 42px;
-            height: 42px;
-            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            font-weight: 800;
-            box-shadow: 0 0 30px rgba(0, 212, 255, 0.2);
-            flex-shrink: 0;
-        }
-        
-        .brand-text h1 {
-            font-size: 1.25rem;
-            font-weight: 700;
-            letter-spacing: -0.02em;
-            background: linear-gradient(135deg, #fff, var(--accent-cyan));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        .brand-text span {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-        }
-        
-        /* Desktop Navigation */
-        .nav-desktop {
-            display: flex;
-            gap: 0.5rem;
-            background: rgba(255,255,255,0.05);
-            padding: 0.5rem;
-            border-radius: 12px;
-        }
-        
-        .nav-tab {
-            padding: 0.75rem 1.25rem;
-            border: none;
-            background: transparent;
-            color: var(--text-secondary);
-            font-size: 0.875rem;
-            font-weight: 500;
-            cursor: pointer;
-            border-radius: 8px;
-            transition: all 0.2s;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            white-space: nowrap;
-        }
-        
-        .nav-tab:hover {
-            color: var(--text-primary);
-            background: rgba(255,255,255,0.05);
-        }
-        
-        .nav-tab.active {
-            color: var(--text-primary);
-            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
-            box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
-        }
-        
-        /* Mobile Navigation Toggle */
-        .nav-toggle {
-            display: none;
-            width: 44px;
-            height: 44px;
-            background: var(--bg-elevated);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            color: var(--text-primary);
-            font-size: 1.25rem;
-            cursor: pointer;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        /* Mobile Navigation Menu */
-        .nav-dropdown {
-            display: none;
-            position: fixed;
-            top: 70px;
-            left: 0;
-            right: 0;
-            background: var(--bg-secondary);
-            border-bottom: 1px solid var(--border);
-            padding: 1rem;
-            z-index: 99;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-        
-        .nav-dropdown.active {
-            display: flex;
-        }
-        
-        .nav-dropdown .nav-tab {
-            padding: 1rem;
-            justify-content: flex-start;
-        }
-        
-        /* Mobile Bottom Navigation */
-        .nav-mobile {
-            display: none;
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: var(--bg-secondary);
-            border-top: 1px solid var(--border);
-            padding: 0.5rem;
-            z-index: 101;
-            justify-content: space-around;
-        }
-        
-        .nav-mobile .nav-tab {
-            flex: 1;
-            flex-direction: column;
-            padding: 0.5rem 0.25rem;
-            font-size: 0.65rem;
-            gap: 2px;
-        }
-        
-        .nav-mobile .nav-tab .icon {
-            font-size: 1.25rem;
-        }
-        
-        .nav-mobile .nav-tab span:not(.icon) {
-            display: none;
-        }
-        
-        .nav-mobile .nav-tab.active span:not(.icon) {
-            display: block;
-        }
-        
-        /* Main Content */
-        .main-content {
-            padding: 1.5rem;
-            max-width: 1400px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 1;
-        }
-        
-        /* Stats Bar */
-        .stats-bar {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-        }
-        
-        .stat-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 1.25rem;
-            transition: all 0.2s;
-        }
-        
-        .stat-card:hover {
-            border-color: var(--border-hover);
-            transform: translateY(-2px);
+        .stat-box {
+            background: var(--panel-bg);
+            border: 3px solid var(--panel-border);
+            border-radius: 4px;
+            padding: 8px 12px;
+            min-width: 80px;
+            text-align: center;
+            box-shadow: 0 3px 0 var(--panel-shadow);
         }
         
         .stat-label {
-            font-size: 0.875rem;
-            color: var(--text-muted);
-            margin-bottom: 0.5rem;
+            color: #8b7355;
+            font-size: 0.75rem;
+            font-family: 'VT323', monospace;
         }
         
         .stat-value {
-            font-size: 1.75rem;
-            font-weight: 700;
+            color: var(--text-dark);
+            font-weight: bold;
+            font-size: 1.3rem;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.9rem;
         }
         
-        /* Panel Styles */
-        .panel {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
+        /* Main Grid Layout */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 15px;
         }
         
-        .panel-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-            flex-wrap: wrap;
-            gap: 0.5rem;
+        /* Panel Box Style */
+        .panel-box {
+            background: var(--panel-bg);
+            border: 4px solid var(--panel-border);
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 
+                0 4px 0 var(--panel-shadow),
+                inset 0 2px 0 rgba(255,255,255,0.5);
+            margin-bottom: 15px;
         }
         
         .panel-title {
-            font-size: 1.1rem;
-            font-weight: 600;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.65rem;
+            color: var(--panel-border);
+            margin-bottom: 12px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid var(--panel-border);
+            line-height: 1.6;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .panel-title .emoji {
+            font-size: 1rem;
         }
         
         /* Agent Grid */
         .agent-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 1rem;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 12px;
         }
         
         .agent-card {
-            background: var(--bg-elevated);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 1.25rem;
+            background: linear-gradient(180deg, #fff 0%, #f0e6d3 100%);
+            border: 3px solid var(--panel-border);
+            border-radius: 6px;
+            padding: 12px;
             transition: all 0.2s;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .agent-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 4px;
+            background: var(--agent-color, var(--accent-cyan));
         }
         
         .agent-card:hover {
-            border-color: var(--accent-cyan);
-            transform: translateY(-2px);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 0 var(--panel-shadow);
+        }
+        
+        .agent-card:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 0 var(--panel-shadow);
         }
         
         .agent-header {
             display: flex;
             align-items: center;
-            gap: 1rem;
-            margin-bottom: 1rem;
+            gap: 12px;
+            margin-bottom: 10px;
         }
         
         .agent-avatar {
             width: 48px;
             height: 48px;
-            border-radius: 12px;
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 1.5rem;
             flex-shrink: 0;
+            border: 3px solid var(--text-dark);
+            box-shadow: 2px 2px 0 rgba(0,0,0,0.2);
         }
         
         .agent-info {
@@ -338,60 +247,185 @@
         }
         
         .agent-name {
-            font-weight: 600;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.6rem;
+            color: var(--text-dark);
+            margin-bottom: 4px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
         
         .agent-role {
-            font-size: 0.875rem;
-            color: var(--text-muted);
+            font-size: 0.85rem;
+            color: #666;
+            font-family: 'VT323', monospace;
         }
         
         .agent-status {
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 500;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-family: 'Press Start 2P', cursive;
             white-space: nowrap;
+            border: 2px solid;
         }
         
         .agent-status.active {
-            background: rgba(34, 197, 94, 0.1);
-            color: var(--accent-green);
+            background: rgba(81, 207, 102, 0.2);
+            color: #2b8a3e;
+            border-color: #51cf66;
         }
         
         .agent-status.busy {
-            background: rgba(251, 191, 36, 0.1);
-            color: var(--accent-yellow);
+            background: rgba(252, 196, 25, 0.2);
+            color: #e67700;
+            border-color: #fcc419;
+        }
+        
+        .agent-status.idle {
+            background: rgba(134, 142, 153, 0.2);
+            color: #495057;
+            border-color: #adb5bd;
+        }
+        
+        .agent-status.offline {
+            background: rgba(255, 107, 107, 0.2);
+            color: #c92a2a;
+            border-color: #ff6b6b;
+        }
+        
+        .agent-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 2px dashed var(--panel-border);
+        }
+        
+        .agent-stat {
+            text-align: center;
+        }
+        
+        .agent-stat-value {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.55rem;
+            color: var(--text-dark);
+            display: block;
+        }
+        
+        .agent-stat-label {
+            font-size: 0.7rem;
+            color: #8b7355;
+        }
+        
+        /* Agent Productivity Metrics */
+        .agent-productivity {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 2px dashed var(--panel-border);
+        }
+        
+        .productivity-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+            font-size: 0.8rem;
+        }
+        
+        .productivity-label {
+            color: #666;
+            font-family: 'VT323', monospace;
+        }
+        
+        .productivity-value {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.5rem;
+            color: var(--text-dark);
+        }
+        
+        .success-rate-bar {
+            width: 100%;
+            height: 14px;
+            background: #ddd;
+            border: 2px solid var(--text-dark);
+            border-radius: 7px;
+            overflow: hidden;
+            margin-top: 4px;
+            position: relative;
+        }
+        
+        .success-fill {
+            height: 100%;
+            transition: width 0.5s ease;
+        }
+        
+        .success-fill.excellent { background: linear-gradient(90deg, #51cf66, #2b8a3e); }
+        .success-fill.good { background: linear-gradient(90deg, #69db7c, #40c057); }
+        .success-fill.average { background: linear-gradient(90deg, #fcc419, #f59f00); }
+        .success-fill.poor { background: linear-gradient(90deg, #ff8787, #fa5252); }
+        
+        .success-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.45rem;
+            color: var(--text-dark);
+            text-shadow: 1px 1px 0 rgba(255,255,255,0.7);
+        }
+        
+        .last-active {
+            font-size: 0.75rem;
+            color: #8b7355;
+            text-align: center;
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid rgba(139, 115, 85, 0.3);
+        }
+        
+        .last-active .time {
+            color: var(--text-dark);
+            font-weight: bold;
         }
         
         /* Activity Feed */
         .activity-list {
             display: flex;
             flex-direction: column;
-            gap: 0.75rem;
+            gap: 8px;
+            max-height: 800px;
+            overflow-y: auto;
         }
         
         .activity-item {
             display: flex;
-            gap: 1rem;
-            padding: 1rem;
-            background: var(--bg-elevated);
-            border-radius: 12px;
-            border-left: 3px solid var(--accent-cyan);
+            gap: 10px;
+            padding: 10px;
+            background: rgba(255,255,255,0.7);
+            border-radius: 6px;
+            border-left: 4px solid var(--activity-color, var(--accent-cyan));
+            transition: all 0.2s;
+        }
+        
+        .activity-item:hover {
+            background: rgba(255,255,255,0.9);
+            transform: translateX(3px);
         }
         
         .activity-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
+            width: 36px;
+            height: 36px;
+            border-radius: 6px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.25rem;
+            font-size: 1.1rem;
             flex-shrink: 0;
+            border: 2px solid var(--text-dark);
         }
         
         .activity-content {
@@ -400,44 +434,169 @@
         }
         
         .activity-text {
-            font-size: 0.875rem;
-            line-height: 1.4;
+            font-size: 0.9rem;
+            color: var(--text-dark);
+            line-height: 1.3;
+        }
+        
+        .activity-text strong {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.55rem;
         }
         
         .activity-time {
             font-size: 0.75rem;
-            color: var(--text-muted);
-            margin-top: 0.25rem;
+            color: #8b7355;
+            margin-top: 4px;
         }
         
-        /* Quick Actions */
-        .quick-actions {
+        /* System Stats Panel */
+        .system-stats-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1rem;
-            margin-top: 1.5rem;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
         }
         
-        .action-btn {
-            padding: 1rem;
-            background: var(--bg-elevated);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            color: var(--text-primary);
-            font-size: 0.875rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s;
+        .system-stat {
+            background: rgba(255,255,255,0.5);
+            border: 2px solid var(--panel-border);
+            border-radius: 6px;
+            padding: 10px;
             text-align: center;
-            min-height: 44px;
         }
         
-        .action-btn:hover {
-            border-color: var(--accent-cyan);
+        .system-stat-value {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.7rem;
+            color: var(--text-dark);
+            display: block;
+            margin-bottom: 4px;
         }
         
-        .action-btn:active {
-            transform: scale(0.98);
+        .system-stat-label {
+            font-size: 0.7rem;
+            color: #8b7355;
+        }
+        
+        /* Token Bar */
+        .token-bar {
+            background: #ddd;
+            border: 2px solid var(--text-dark);
+            border-radius: 4px;
+            height: 20px;
+            overflow: hidden;
+            margin-top: 8px;
+            position: relative;
+        }
+        
+        .token-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-green), var(--accent-blue));
+            transition: width 0.5s ease;
+        }
+        
+        .token-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.5rem;
+            color: var(--text-dark);
+            text-shadow: 1px 1px 0 rgba(255,255,255,0.5);
+        }
+        
+        /* Navigation */
+        .nav-desktop {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .nav-btn {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.5rem;
+            padding: 10px 14px;
+            background: linear-gradient(180deg, #74c0fc 0%, #339af0 100%);
+            border: 3px solid #2d1b4e;
+            border-radius: 6px;
+            cursor: pointer;
+            box-shadow: 0 4px 0 #2d1b4e;
+            transition: all 0.1s;
+            color: var(--text-dark);
+            line-height: 1.4;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 0 #2d1b4e;
+        }
+        
+        .nav-btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 0 0 #2d1b4e;
+        }
+        
+        .nav-btn.active {
+            background: linear-gradient(180deg, #69db7c 0%, #51cf66 100%);
+        }
+        
+        /* Mobile Navigation */
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #3d2652;
+            border-top: 4px solid #2d1b4e;
+            padding: 10px;
+            z-index: 101;
+            justify-content: space-around;
+        }
+        
+        .mobile-nav-btn {
+            padding: 10px 14px;
+            background: var(--panel-bg);
+            border: 3px solid var(--panel-border);
+            border-radius: 6px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.5rem;
+            color: var(--text-dark);
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+            line-height: 1.4;
+            box-shadow: 0 3px 0 var(--panel-shadow);
+        }
+        
+        .mobile-nav-btn:active {
+            transform: translateY(3px);
+            box-shadow: 0 0 0 var(--panel-shadow);
+        }
+        
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--panel-bg);
+            border-radius: 5px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--panel-border);
+            border-radius: 5px;
+            border: 2px solid var(--panel-bg);
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #6b5a45;
         }
         
         /* Loading Overlay */
@@ -458,459 +617,825 @@
             pointer-events: none;
         }
         
-        .loading-spinner {
-            width: 50px; height: 50px;
-            border: 3px solid var(--border);
-            border-top-color: var(--accent-cyan);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
+        .loading-text {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.8rem;
+            color: var(--accent-yellow);
+            margin-top: 20px;
+            animation: blink 1s infinite;
         }
         
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+        
+        .pixel-spinner {
+            width: 50px;
+            height: 50px;
+            background: var(--accent-cyan);
+            animation: pixelSpin 1s steps(4) infinite;
+        }
+        
+        @keyframes pixelSpin {
+            0% { transform: rotate(0deg); }
+            25% { transform: rotate(90deg); }
+            50% { transform: rotate(180deg); }
+            75% { transform: rotate(270deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Status Filter */
+        .filter-bar {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-btn {
+            padding: 6px 12px;
+            background: rgba(255,255,255,0.5);
+            border: 2px solid var(--panel-border);
+            border-radius: 4px;
+            font-family: 'VT323', monospace;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .filter-btn:hover, .filter-btn.active {
+            background: var(--panel-border);
+            color: var(--panel-bg);
         }
         
         /* Tablet Styles */
-        @media (max-width: 1024px) {
-            .stats-bar {
-                grid-template-columns: repeat(2, 1fr);
+        @media (max-width: 1200px) {
+            .main-grid {
+                grid-template-columns: 1fr;
             }
             
-            .nav-desktop {
-                display: none;
-            }
-            
-            .nav-toggle {
-                display: flex;
-            }
-            
-            .nav-mobile {
-                display: flex;
-            }
-            
-            .main-content {
-                padding-bottom: 5rem;
-            }
-            
-            .quick-actions {
-                grid-template-columns: repeat(2, 1fr);
+            .agent-grid {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             }
         }
         
         /* Mobile Styles */
         @media (max-width: 768px) {
-            .header {
-                height: 60px;
-                padding: 0 0.75rem;
+            .game-container {
+                padding: 10px;
+                padding-bottom: 90px;
             }
             
-            .logo {
-                width: 36px;
-                height: 36px;
-                font-size: 1.2rem;
+            .game-header {
+                padding: 12px 15px;
             }
             
-            .brand-text h1 {
-                font-size: 1rem;
+            .game-title {
+                font-size: 0.55rem;
+                letter-spacing: 1px;
             }
             
-            .brand-text span {
-                display: none;
+            .stat-box {
+                padding: 6px 8px;
+                min-width: 60px;
             }
             
-            .nav-dropdown {
-                top: 60px;
-            }
-            
-            .main-content {
-                padding: 1rem;
-                padding-bottom: 5rem;
-            }
-            
-            .stats-bar {
-                grid-template-columns: 1fr;
-            }
-            
-            .stat-card {
-                padding: 1rem;
-            }
-            
-            .panel {
-                padding: 1rem;
+            .stat-value {
+                font-size: 0.7rem;
             }
             
             .agent-grid {
                 grid-template-columns: 1fr;
             }
             
-            .activity-item {
-                padding: 0.75rem;
+            .panel-box {
+                padding: 12px;
             }
             
-            .quick-actions {
-                grid-template-columns: 1fr;
+            .panel-title {
+                font-size: 0.55rem;
             }
             
-            .panel-header {
-                flex-direction: column;
-                align-items: flex-start;
+            .nav-desktop {
+                display: none;
+            }
+            
+            .mobile-nav {
+                display: flex;
+            }
+            
+            .activity-list {
+                max-height: 500px;
+            }
+            
+            .system-stats-grid {
+                grid-template-columns: repeat(2, 1fr);
             }
         }
         
         /* Small Mobile */
-        @media (max-width: 375px) {
-            .main-content {
-                padding: 0.75rem;
+        @media (max-width: 480px) {
+            .game-title {
+                font-size: 0.45rem;
             }
             
-            .nav-mobile .nav-tab {
-                padding: 0.5rem 0.25rem;
-                font-size: 0.6rem;
+            .agent-card {
+                padding: 10px;
             }
             
-            .nav-mobile .nav-tab .icon {
-                font-size: 1.1rem;
+            .agent-avatar {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+            }
+            
+            .mobile-nav-btn {
+                padding: 8px 10px;
+                font-size: 0.45rem;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Loading overlay -->
-    <div class="loading-overlay" id="initialLoader">
-        <div class="loading-spinner"></div>
-        <div style="margin-top: 1rem; color: var(--text-secondary);">Loading Mission Control...</div>
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loader">
+        <div class="pixel-spinner"></div>
+        <div class="loading-text">LOADING MISSION CONTROL...</div>
     </div>
 
-    <header class="header">
-        <div class="brand">
-            <div class="logo">🎯</div>
-            <div class="brand-text">
-                <h1>Mission Control</h1>
-                <span>AI Team Dashboard v2.1</span>
+    <div class="game-container">
+        <!-- Header -->
+        <header class="game-header">
+            <div class="game-title">◈ MISSION CONTROL HQ</div>
+            <div class="game-stats">
+                <div class="stat-box">
+                    <div class="stat-label">AGENTS</div>
+                    <div class="stat-value" style="color: #51cf66;">22</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">ACTIVE</div>
+                    <div class="stat-value" style="color: #339af0;">18</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">TASKS</div>
+                    <div class="stat-value" style="color: #fcc419;">47</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">TOKENS</div>
+                    <div class="stat-value" style="color: #ff6b6b;">247K</div>
+                </div>
             </div>
-        </div>
-        
-        <!-- Desktop Navigation -->
-        <nav class="nav-desktop">
-            <a href="index.html" class="nav-tab active">
-                <span class="icon">📊</span>
-                <span>Overview</span>
-            </a>
-            <a href="living-pixel-office.html" class="nav-tab">
-                <span class="icon">🏢</span>
-                <span>Office</span>
-            </a>
-            <a href="scout.html" class="nav-tab">
-                <span class="icon">🔭</span>
-                <span>Scout</span>
-            </a>
-            <a href="dealflow-view.html" class="nav-tab">
-                <span class="icon">💼</span>
-                <span>DealFlow</span>
-            </a>
-            <a href="data-viewer.html" class="nav-tab">
-                <span class="icon">📁</span>
-                <span>Data</span>
-            </a>
-            <a href="token-tracker.html" class="nav-tab">
-                <span class="icon">💰</span>
-                <span>Tokens</span>
-            </a>
-            <a href="task-board.html" class="nav-tab">
-                <span class="icon">📋</span>
-                <span>Tasks</span>
-            </a>
-            <a href="logs-view.html" class="nav-tab">
-                <span class="icon">📝</span>
-                <span>Logs</span>
-            </a>
-        </nav>
-        
-        <!-- Mobile Nav Toggle -->
-        <button class="nav-toggle" onclick="toggleNav()" aria-label="Toggle navigation">☰</button>
-        
-        <div style="display: flex; align-items: center; gap: 1rem;">
-            <span id="agentCount" style="font-size: 0.875rem; color: var(--text-muted); display: none;">🟢 20</span>
-            <button onclick="if(window.parent!==window){window.parent.location.reload()}else{window.location.reload()}" class="refresh-btn" style="background: transparent; border: 1px solid var(--border); color: var(--text-secondary); padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; font-size: 0.875rem; min-height: 44px;">🔄</button>
-        </div>
-    </header>
-    
-    <!-- Mobile Dropdown Menu -->
-    <nav class="nav-dropdown" id="navDropdown">
-        <a href="index.html" class="nav-tab active">📊 Overview</a>
-        <a href="living-pixel-office.html" class="nav-tab">🏢 Office</a>
-        <a href="scout.html" class="nav-tab">🔭 Scout</a>
-        <a href="dealflow-view.html" class="nav-tab">💼 DealFlow</a>
-        <a href="data-viewer.html" class="nav-tab">📁 Data</a>
-        <a href="token-tracker.html" class="nav-tab">💰 Tokens</a>
-        <a href="task-board.html" class="nav-tab">📋 Tasks</a>
-        <a href="logs-view.html" class="nav-tab">📝 Logs</a>
-    </nav>
+        </header>
 
-    <main class="main-content">
-        <!-- Stats Bar -->
-        <div class="stats-bar">
-            <div class="stat-card">
-                <div class="stat-label">🤖 Active Agents</div>
-                <div class="stat-value" style="color: var(--accent-cyan);">20</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">✓ Tasks Completed</div>
-                <div class="stat-value" style="color: var(--accent-green);">47</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">🤝 Leads Generated</div>
-                <div class="stat-value" style="color: var(--accent-purple);">26</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">⏱️ Uptime</div>
-                <div class="stat-value" style="color: var(--accent-yellow);">99.9%</div>
+        <!-- Navigation -->
+        <div class="panel-box" style="padding: 12px;">
+            <div class="nav-desktop">
+                <a href="index.html" class="nav-btn active">📊 HQ</a>
+                <a href="living-pixel-office.html" class="nav-btn">🏢 OFFICE</a>
+                <a href="scout.html" class="nav-btn">🔭 SCOUT</a>
+                <a href="dealflow-view.html" class="nav-btn">💼 DEALS</a>
+                <a href="task-board.html" class="nav-btn">📋 TASKS</a>
+                <a href="token-tracker.html" class="nav-btn">💰 TOKENS</a>
+                <a href="logs-view.html" class="nav-btn">📝 LOGS</a>
             </div>
         </div>
 
-        <!-- Performance Metrics Panel -->
-        <div class="panel">
-            <div class="panel-header">
-                <h2 style="font-size: 1.1rem; color: var(--accent-cyan);">⚡ Performance Metrics</h2>
-                <span style="font-size: 0.75rem; color: var(--text-muted);">Live</span>
-            </div>
-            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;">
-                <div>
-                    <div style="font-size: 0.875rem; color: var(--text-muted); margin-bottom: 0.5rem;">First Contentful Paint</div>
-                    <div id="fcpValue" style="font-size: 1.5rem; font-weight: 700; color: var(--accent-green);">--</div>
+        <!-- Main Content Grid -->
+        <div class="main-grid">
+            <!-- Left Column -->
+            <div class="left-column">
+                <!-- Agent Grid Panel -->
+                <div class="panel-box">
+                    <div class="panel-title">
+                        <span class="emoji">🤖</span>
+                        AGENT ROSTER (22)
+                    </div>
+                    <div class="filter-bar">
+                        <button class="filter-btn active" onclick="filterAgents('all')">All</button>
+                        <button class="filter-btn" onclick="filterAgents('active')">Active</button>
+                        <button class="filter-btn" onclick="filterAgents('busy')">Busy</button>
+                        <button class="filter-btn" onclick="filterAgents('idle')">Idle</button>
+                    </div>
+                    <div class="agent-grid" id="agentGrid">
+                        <!-- Agents will be populated by JavaScript -->
+                    </div>
                 </div>
-                <div>
-                    <div style="font-size: 0.875rem; color: var(--text-muted); margin-bottom: 0.5rem;">Time to Interactive</div>
-                    <div id="ttiValue" style="font-size: 1.5rem; font-weight: 700; color: var(--accent-cyan);">--</div>
-                </div>
-                <div>
-                    <div style="font-size: 0.875rem; color: var(--text-muted); margin-bottom: 0.5rem;">Bundle Size</div>
-                    <div id="bundleValue" style="font-size: 1.5rem; font-weight: 700; color: var(--accent-purple);">--</div>
-                </div>
-            </div>
-        </div>
 
-        <!-- Agent Grid -->
-        <div class="panel">
-            <div class="panel-header">
-                <h2 class="panel-title">🤖 Active Agents</h2>
-                <button style="background: transparent; border: 1px solid var(--border); color: var(--text-secondary); padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; font-size: 0.875rem; min-height: 44px;">View All</button>
-            </div>
-            <div class="agent-grid">
-                <div class="agent-card">
-                    <div class="agent-header">
-                        <div class="agent-avatar" style="background: linear-gradient(135deg, #ff2a6d, #c92a2a);">🤖</div>
-                        <div class="agent-info">
-                            <div class="agent-name">Nexus</div>
-                            <div class="agent-role">Orchestrator</div>
+                <!-- System Stats Panel -->
+                <div class="panel-box">
+                    <div class="panel-title">
+                        <span class="emoji">📈</span>
+                        SYSTEM STATISTICS
+                    </div>
+                    <div class="system-stats-grid">
+                        <div class="system-stat">
+                            <span class="system-stat-value" style="color: #339af0;">247.5K</span>
+                            <span class="system-stat-label">Total Tokens</span>
                         </div>
-                        <span class="agent-status active">Active</span>
-                    </div>
-                    <div style="font-size: 0.875rem; color: var(--text-secondary);">3 tasks pending</div>
-                </div>
-                
-                <div class="agent-card">
-                    <div class="agent-header">
-                        <div class="agent-avatar" style="background: linear-gradient(135deg, #f97316, #c2410c);">🤝</div>
-                        <div class="agent-info">
-                            <div class="agent-name">DealFlow</div>
-                            <div class="agent-role">Lead Generation</div>
+                        <div class="system-stat">
+                            <span class="system-stat-value" style="color: #51cf66;">$0.52</span>
+                            <span class="system-stat-label">Total Cost</span>
                         </div>
-                        <span class="agent-status busy">Busy</span>
-                    </div>
-                    <div style="font-size: 0.875rem; color: var(--text-secondary);">Finding leads...</div>
-                </div>
-                
-                <div class="agent-card">
-                    <div class="agent-header">
-                        <div class="agent-avatar" style="background: linear-gradient(135deg, #22c55e, #16a34a);">💻</div>
-                        <div class="agent-info">
-                            <div class="agent-name">Code</div>
-                            <div class="agent-role">Backend Dev</div>
+                        <div class="system-stat">
+                            <span class="system-stat-value" style="color: #ff6b6b;">269</span>
+                            <span class="system-stat-label">Sessions</span>
                         </div>
-                        <span class="agent-status busy">Busy</span>
-                    </div>
-                    <div style="font-size: 0.875rem; color: var(--text-secondary);">Fixing API errors</div>
-                </div>
-                
-                <div class="agent-card">
-                    <div class="agent-header">
-                        <div class="agent-avatar" style="background: linear-gradient(135deg, #f97316, #ea580c);">🔨</div>
-                        <div class="agent-info">
-                            <div class="agent-name">Forge</div>
-                            <div class="agent-role">UI/Frontend</div>
+                        <div class="system-stat">
+                            <span class="system-stat-value" style="color: #fcc419;">1,522</span>
+                            <span class="system-stat-label">Messages</span>
                         </div>
-                        <span class="agent-status active">Active</span>
+                        <div class="system-stat">
+                            <span class="system-stat-value" style="color: #da77f2;">18</span>
+                            <span class="system-stat-label">Active Now</span>
+                        </div>
+                        <div class="system-stat">
+                            <span class="system-stat-value" style="color: #69db7c;">47</span>
+                            <span class="system-stat-label">Deployments</span>
+                        </div>
+                        <div class="system-stat">
+                            <span class="system-stat-value" style="color: #4dabf7;">14h</span>
+                            <span class="system-stat-label">Session Time</span>
+                        </div>
+                        <div class="system-stat">
+                            <span class="system-stat-value" style="color: #ff8787;">99%</span>
+                            <span class="system-stat-label">Uptime</span>
+                        </div>
+                        <div class="system-stat">
+                            <span class="system-stat-value" style="color: #20c997;">424K</span>
+                            <span class="system-stat-label">Daily Proj.</span>
+                        </div>
                     </div>
-                    <div style="font-size: 0.875rem; color: var(--text-secondary);">Dashboard optimization</div>
+                    <div style="margin-top: 15px;">
+                        <div style="font-size: 0.8rem; color: #666; margin-bottom: 5px;">Daily Token Usage</div>
+                        <div class="token-bar">
+                            <div class="token-fill" style="width: 42%;"></div>
+                            <div class="token-text">424K / 1M (42%)</div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Activity Feed -->
-        <div class="panel">
-            <div class="panel-header">
-                <h2 class="panel-title">📡 Live Activity</h2>
-                <button onclick="loadActivity()" style="background: transparent; border: 1px solid var(--border); color: var(--text-secondary); padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; font-size: 0.875rem; min-height: 44px;">🔄 Refresh</button>
-            </div>
-            <div class="activity-list" id="activityList">
-                <div class="activity-item" style="border-left-color: var(--accent-cyan);">
-                    <div class="activity-icon" style="background: rgba(0, 212, 255, 0.1);">🤝</div>
-                    <div class="activity-content">
-                        <div class="activity-text"><strong>DealFlow</strong> completed 20 high-quality leads</div>
-                        <div class="activity-time">2 minutes ago</div>
+            <!-- Right Column -->
+            <div class="right-column">
+                <!-- Activity Feed Panel -->
+                <div class="panel-box">
+                    <div class="panel-title">
+                        <span class="emoji">📡</span>
+                        RECENT ACTIVITY (50)
+                    </div>
+                    <div class="activity-list" id="activityList">
+                        <!-- Activities will be populated by JavaScript -->
                     </div>
                 </div>
-                <div class="activity-item" style="border-left-color: var(--accent-purple);">
-                    <div class="activity-icon" style="background: rgba(168, 85, 247, 0.1);">🎨</div>
-                    <div class="activity-content">
-                        <div class="activity-text"><strong>Pixel</strong> created OK Computers office</div>
-                        <div class="activity-time">15 minutes ago</div>
-                    </div>
-                </div>
-                <div class="activity-item" style="border-left-color: var(--accent-green);">
-                    <div class="activity-icon" style="background: rgba(34, 197, 94, 0.1);">✅</div>
-                    <div class="activity-content">
-                        <div class="activity-text"><strong>Audit</strong> approved DealFlow database</div>
-                        <div class="activity-time">1 hour ago</div>
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        <!-- Quick Actions -->
-        <div class="quick-actions">
-            <button class="action-btn">📞 Call Meeting</button>
-            <button class="action-btn">✓ New Task</button>
-            <button class="action-btn">🤝 Add Lead</button>
-            <button class="action-btn">📊 Reports</button>
+                <!-- Quick Actions -->
+                <div class="panel-box">
+                    <div class="panel-title">
+                        <span class="emoji">⚡</span>
+                        QUICK ACTIONS
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <button class="nav-btn" style="width: 100%; justify-content: center;" onclick="alert('Call feature coming soon!')">📞 CALL</button>
+                        <button class="nav-btn" style="width: 100%; justify-content: center;" onclick="window.location.href='task-board.html'">✓ TASK</button>
+                        <button class="nav-btn" style="width: 100%; justify-content: center;" onclick="window.location.href='dealflow-view.html'">🤝 LEAD</button>
+                        <button class="nav-btn" style="width: 100%; justify-content: center;" onclick="location.reload()">🔄 SYNC</button>
+                    </div>
+                </div>
+            </div>
         </div>
-    </main>
-    
-    <!-- Mobile Bottom Navigation -->
-    <nav class="nav-mobile">
-        <a href="index.html" class="nav-tab active">
-            <span class="icon">📊</span>
-            <span>Overview</span>
-        </a>
-        <a href="living-pixel-office.html" class="nav-tab">
-            <span class="icon">🏢</span>
-            <span>Office</span>
-        </a>
-        <a href="scout.html" class="nav-tab">
-            <span class="icon">🔭</span>
-            <span>Scout</span>
-        </a>
-        <a href="dealflow-view.html" class="nav-tab">
-            <span class="icon">💼</span>
-            <span>DealFlow</span>
-        </a>
-        <a href="data-viewer.html" class="nav-tab">
-            <span class="icon">📁</span>
-            <span>Data</span>
-        </a>
+    </div>
+
+    <!-- Mobile Navigation -->
+    <nav class="mobile-nav">
+        <a href="index.html" class="mobile-nav-btn" style="background: #69db7c;">📊<br>HQ</a>
+        <a href="living-pixel-office.html" class="mobile-nav-btn">🏢<br>OFFICE</a>
+        <a href="task-board.html" class="mobile-nav-btn">📋<br>TASKS</a>
+        <a href="token-tracker.html" class="mobile-nav-btn">💰<br>TOKENS</a>
     </nav>
 
     <script>
-        // Remove loading overlay immediately when DOM ready
-        document.addEventListener('DOMContentLoaded', () => {
-            const loader = document.getElementById('initialLoader');
-            if (loader) {
-                loader.style.opacity = '0';
-                loader.style.pointerEvents = 'none';
-                setTimeout(() => loader.remove(), 300);
+        // Complete 22 Agent Roster with Enhanced Metrics
+        // Data sourced from ACTUAL_TOKEN_USAGE_REPORT.md, AGENT_LOGS_DETAILED.md, ALL_AGENT_TASKS.md
+        const agents = [
+            {
+                id: "nexus",
+                name: "Nexus",
+                role: "CEO / Orchestrator",
+                emoji: "◈",
+                status: "active",
+                tokens: 75300,
+                files: 156,
+                tasks: 47,
+                activities: 12,
+                lastActive: "5 min ago",
+                successRate: 98,
+                color: "#ff6b6b",
+                avatar: "◈"
+            },
+            {
+                id: "air1ck3ff",
+                name: "Air1ck3ff",
+                role: "CEO / Orchestrator",
+                emoji: "👑",
+                status: "active",
+                tokens: 0,
+                files: 0,
+                tasks: 0,
+                activities: 0,
+                lastActive: "1 day ago",
+                successRate: 100,
+                color: "#ff6b6b",
+                avatar: "👑"
+            },
+            {
+                id: "audit-1",
+                name: "Audit-1",
+                role: "QA / Auditor",
+                emoji: "🔍",
+                status: "active",
+                tokens: 12000,
+                files: 89,
+                tasks: 23,
+                activities: 8,
+                lastActive: "1 hour ago",
+                successRate: 96,
+                color: "#ffc078",
+                avatar: "🔍"
+            },
+            {
+                id: "audit-2",
+                name: "Audit-2",
+                role: "QA / Auditor",
+                emoji: "🔎",
+                status: "idle",
+                tokens: 0,
+                files: 12,
+                tasks: 8,
+                activities: 2,
+                lastActive: "1 day ago",
+                successRate: 94,
+                color: "#ffc078",
+                avatar: "🔎"
+            },
+            {
+                id: "qa",
+                name: "QA",
+                role: "Quality Assurance",
+                emoji: "✓",
+                status: "busy",
+                tokens: 0,
+                files: 45,
+                tasks: 15,
+                activities: 5,
+                lastActive: "3 hours ago",
+                successRate: 95,
+                color: "#ffa94d",
+                avatar: "✓"
+            },
+            {
+                id: "code-1",
+                name: "Code-1",
+                role: "Backend Developer",
+                emoji: "💻",
+                status: "busy",
+                tokens: 37000,
+                files: 67,
+                tasks: 31,
+                activities: 7,
+                lastActive: "3 hours ago",
+                successRate: 92,
+                color: "#38d9a9",
+                avatar: "💻"
+            },
+            {
+                id: "code-2",
+                name: "Code-2",
+                role: "Backend Developer",
+                emoji: "⚙️",
+                status: "active",
+                tokens: 0,
+                files: 34,
+                tasks: 18,
+                activities: 4,
+                lastActive: "15 hours ago",
+                successRate: 90,
+                color: "#38d9a9",
+                avatar: "⚙️"
+            },
+            {
+                id: "code-3",
+                name: "Code-3",
+                role: "Backend Developer",
+                emoji: "🔧",
+                status: "idle",
+                tokens: 0,
+                files: 22,
+                tasks: 12,
+                activities: 2,
+                lastActive: "1 day ago",
+                successRate: 88,
+                color: "#38d9a9",
+                avatar: "🔧"
+            },
+            {
+                id: "backend",
+                name: "Backend",
+                role: "Backend Lead",
+                emoji: "🖥️",
+                status: "active",
+                tokens: 0,
+                files: 78,
+                tasks: 42,
+                activities: 6,
+                lastActive: "12 hours ago",
+                successRate: 93,
+                color: "#20c997",
+                avatar: "🖥️"
+            },
+            {
+                id: "forge-1",
+                name: "Forge-1",
+                role: "Frontend Developer",
+                emoji: "⚒️",
+                status: "busy",
+                tokens: 45000,
+                files: 94,
+                tasks: 38,
+                activities: 9,
+                lastActive: "9 hours ago",
+                successRate: 94,
+                color: "#ff8787",
+                avatar: "⚒️"
+            },
+            {
+                id: "forge-2",
+                name: "Forge-2",
+                role: "Frontend Developer",
+                emoji: "🔨",
+                status: "active",
+                tokens: 0,
+                files: 56,
+                tasks: 27,
+                activities: 6,
+                lastActive: "5 min ago",
+                successRate: 93,
+                color: "#ff8787",
+                avatar: "🔨"
+            },
+            {
+                id: "forge-3",
+                name: "Forge-3",
+                role: "Frontend Developer",
+                emoji: "🛠️",
+                status: "idle",
+                tokens: 0,
+                files: 28,
+                tasks: 14,
+                activities: 4,
+                lastActive: "18 hours ago",
+                successRate: 91,
+                color: "#ff8787",
+                avatar: "🛠️"
+            },
+            {
+                id: "frontend",
+                name: "Frontend",
+                role: "Frontend Lead",
+                emoji: "🎨",
+                status: "active",
+                tokens: 0,
+                files: 112,
+                tasks: 52,
+                activities: 8,
+                lastActive: "10 hours ago",
+                successRate: 95,
+                color: "#ff6b6b",
+                avatar: "🎨"
+            },
+            {
+                id: "cipher",
+                name: "Cipher",
+                role: "Security",
+                emoji: "🔒",
+                status: "active",
+                tokens: 0,
+                files: 23,
+                tasks: 19,
+                activities: 5,
+                lastActive: "10 hours ago",
+                successRate: 99,
+                color: "#adb5bd",
+                avatar: "🔒"
+            },
+            {
+                id: "dealflow",
+                name: "DealFlow",
+                role: "Lead Generation",
+                emoji: "🤝",
+                status: "busy",
+                tokens: 115300,
+                files: 45,
+                tasks: 33,
+                activities: 10,
+                lastActive: "2 min ago",
+                successRate: 89,
+                color: "#e599f7",
+                avatar: "🤝"
+            },
+            {
+                id: "gary",
+                name: "Gary",
+                role: "Marketing",
+                emoji: "📢",
+                status: "active",
+                tokens: 0,
+                files: 67,
+                tasks: 29,
+                activities: 6,
+                lastActive: "7 hours ago",
+                successRate: 91,
+                color: "#69db7c",
+                avatar: "📢"
+            },
+            {
+                id: "glasses",
+                name: "Glasses",
+                role: "Researcher",
+                emoji: "🔭",
+                status: "active",
+                tokens: 79637,
+                files: 34,
+                tasks: 21,
+                activities: 7,
+                lastActive: "5 hours ago",
+                successRate: 94,
+                color: "#4dabf7",
+                avatar: "🔭"
+            },
+            {
+                id: "larry",
+                name: "Larry",
+                role: "Social Media",
+                emoji: "📱",
+                status: "idle",
+                tokens: 0,
+                files: 28,
+                tasks: 16,
+                activities: 4,
+                lastActive: "17 hours ago",
+                successRate: 87,
+                color: "#ffd43b",
+                avatar: "📱"
+            },
+            {
+                id: "pie",
+                name: "PIE",
+                role: "Predictive Intelligence",
+                emoji: "🧠",
+                status: "active",
+                tokens: 0,
+                files: 18,
+                tasks: 12,
+                activities: 3,
+                lastActive: "2 hours ago",
+                successRate: 96,
+                color: "#cc5de8",
+                avatar: "🧠"
+            },
+            {
+                id: "pixel",
+                name: "Pixel",
+                role: "Designer",
+                emoji: "🎨",
+                status: "busy",
+                tokens: 25000,
+                files: 89,
+                tasks: 35,
+                activities: 8,
+                lastActive: "2 hours ago",
+                successRate: 93,
+                color: "#da77f2",
+                avatar: "🖼️"
+            },
+            {
+                id: "quill",
+                name: "Quill",
+                role: "Writer",
+                emoji: "✍️",
+                status: "active",
+                tokens: 45016,
+                files: 56,
+                tasks: 24,
+                activities: 7,
+                lastActive: "6 hours ago",
+                successRate: 95,
+                color: "#ffa94d",
+                avatar: "✍️"
+            },
+            {
+                id: "scout",
+                name: "Scout",
+                role: "Researcher",
+                emoji: "🎯",
+                status: "busy",
+                tokens: 8000,
+                files: 42,
+                tasks: 28,
+                activities: 9,
+                lastActive: "4 hours ago",
+                successRate: 92,
+                color: "#ffa8a8",
+                avatar: "🎯"
+            },
+            {
+                id: "sentry",
+                name: "Sentry",
+                role: "DevOps",
+                emoji: "🛡️",
+                status: "active",
+                tokens: 0,
+                files: 38,
+                tasks: 22,
+                activities: 6,
+                lastActive: "8 hours ago",
+                successRate: 97,
+                color: "#74c0fc",
+                avatar: "🛡️"
             }
-            
-            // Track performance metrics
-            trackPerformance();
-        });
-        
-        // Mobile nav toggle
-        function toggleNav() {
-            const dropdown = document.getElementById('navDropdown');
-            dropdown.classList.toggle('active');
+        ];
+
+        // Recent Activity Feed - Last 50 Activities
+        const activities = [
+            { agent: "DealFlow", action: "completed", details: "PIE integration protocol", time: "2 min ago", icon: "🤝", color: "#e599f7" },
+            { agent: "Forge-2", action: "updated", details: "Mission Control overview page", time: "5 min ago", icon: "🔨", color: "#ff8787" },
+            { agent: "Nexus", action: "deployed", details: "cron consolidation (73% savings)", time: "15 min ago", icon: "◈", color: "#ff6b6b" },
+            { agent: "Audit-1", action: "approved", details: "DealFlow database structure", time: "1 hour ago", icon: "🔍", color: "#ffc078" },
+            { agent: "Pixel", action: "created", details: "OK Computers office visual", time: "2 hours ago", icon: "🎨", color: "#da77f2" },
+            { agent: "Code-1", action: "fixed", details: "API 404 errors in endpoints", time: "3 hours ago", icon: "💻", color: "#38d9a9" },
+            { agent: "Scout", action: "found", details: "26 high-quality leads", time: "4 hours ago", icon: "🎯", color: "#ffa8a8" },
+            { agent: "Glasses", action: "researched", details: "AI tools market trends", time: "5 hours ago", icon: "🔭", color: "#4dabf7" },
+            { agent: "Quill", action: "wrote", details: "Twitter thread on AI tools", time: "6 hours ago", icon: "✍️", color: "#ffa94d" },
+            { agent: "Gary", action: "planned", details: "content calendar for next week", time: "7 hours ago", icon: "📢", color: "#69db7c" },
+            { agent: "Sentry", action: "installed", details: "PyTorch for Pixel", time: "8 hours ago", icon: "🛡️", color: "#74c0fc" },
+            { agent: "Forge-1", action: "built", details: "Task Board UI components", time: "9 hours ago", icon: "⚒️", color: "#ff8787" },
+            { agent: "Cipher", action: "secured", details: "all API endpoints", time: "10 hours ago", icon: "🔒", color: "#adb5bd" },
+            { agent: "Nexus", action: "synchronized", details: "Memory Bank systems", time: "11 hours ago", icon: "◈", color: "#ff6b6b" },
+            { agent: "DealFlow", action: "generated", details: "lead scoring algorithm", time: "12 hours ago", icon: "🤝", color: "#e599f7" },
+            { agent: "Audit-1", action: "reviewed", details: "security of critical tasks", time: "13 hours ago", icon: "🔍", color: "#ffc078" },
+            { agent: "Pixel", action: "designed", details: "agent avatar placeholders", time: "14 hours ago", icon: "🎨", color: "#da77f2" },
+            { agent: "Code-2", action: "optimized", details: "database queries", time: "15 hours ago", icon: "⚙️", color: "#38d9a9" },
+            { agent: "Scout", action: "monitored", details: "competitor activities", time: "16 hours ago", icon: "🎯", color: "#ffa8a8" },
+            { agent: "Larry", action: "scheduled", details: "social posts for tomorrow", time: "17 hours ago", icon: "📱", color: "#ffd43b" },
+            { agent: "Forge-3", action: "created", details: "mobile responsive layouts", time: "18 hours ago", icon: "🛠️", color: "#ff8787" },
+            { agent: "Glasses", action: "analyzed", details: "crypto market trends", time: "19 hours ago", icon: "🔭", color: "#4dabf7" },
+            { agent: "Quill", action: "drafted", details: "blog post introduction", time: "20 hours ago", icon: "✍️", color: "#ffa94d" },
+            { agent: "Sentry", action: "configured", details: "watchdog monitoring", time: "21 hours ago", icon: "🛡️", color: "#74c0fc" },
+            { agent: "Nexus", action: "consolidated", details: "13 heartbeats into 1", time: "22 hours ago", icon: "◈", color: "#ff6b6b" },
+            { agent: "DealFlow", action: "enriched", details: "21 lead contact profiles", time: "23 hours ago", icon: "🤝", color: "#e599f7" },
+            { agent: "Audit-2", action: "verified", details: "token usage reports", time: "1 day ago", icon: "🔎", color: "#ffc078" },
+            { agent: "Code-3", action: "debugged", details: "frontend API integration", time: "1 day ago", icon: "🔧", color: "#38d9a9" },
+            { agent: "Pixel", action: "enhanced", details: "Living Pixel Office visuals", time: "1 day ago", icon: "🎨", color: "#da77f2" },
+            { agent: "Gary", action: "identified", details: "4 content calendar gaps", time: "1 day ago", icon: "📢", color: "#69db7c" },
+            { agent: "Scout", action: "researched", details: "DFSA Dubai securities firms", time: "1 day ago", icon: "🎯", color: "#ffa8a8" },
+            { agent: "Forge-1", action: "developed", details: "theme system CSS", time: "1 day ago", icon: "⚒️", color: "#ff8787" },
+            { agent: "Cipher", action: "audited", details: "authentication flows", time: "1 day ago", icon: "🔒", color: "#adb5bd" },
+            { agent: "Nexus", action: "created", details: "Memory Bank system", time: "1 day ago", icon: "◈", color: "#ff6b6b" },
+            { agent: "DealFlow", action: "prioritized", details: "30 leads by readiness", time: "1 day ago", icon: "🤝", color: "#e599f7" },
+            { agent: "Glasses", action: "compiled", details: "AI tools research report", time: "1 day ago", icon: "🔭", color: "#4dabf7" },
+            { agent: "Quill", action: "completed", details: "7-tweet Twitter thread", time: "1 day ago", icon: "✍️", color: "#ffa94d" },
+            { agent: "Sentry", action: "deployed", details: "20 agents to production", time: "1 day ago", icon: "🛡️", color: "#74c0fc" },
+            { agent: "Forge-2", action: "built", details: "UI component library", time: "1 day ago", icon: "🔨", color: "#ff8787" },
+            { agent: "Code-1", action: "implemented", details: "REST API endpoints", time: "1 day ago", icon: "💻", color: "#38d9a9" },
+            { agent: "Pixel", action: "generated", details: "Kairosoft-style avatars", time: "1 day ago", icon: "🎨", color: "#da77f2" },
+            { agent: "Audit-1", action: "checked", details: "system integrity", time: "1 day ago", icon: "🔍", color: "#ffc078" },
+            { agent: "Scout", action: "initialized", details: "competitor tracking", time: "1 day ago", icon: "🎯", color: "#ffa8a8" },
+            { agent: "Nexus", action: "assigned", details: "10 new tasks to agents", time: "1 day ago", icon: "◈", color: "#ff6b6b" },
+            { agent: "Gary", action: "created", details: "5 content pillars", time: "1 day ago", icon: "📢", color: "#69db7c" },
+            { agent: "Larry", action: "prepared", details: "posting schedule", time: "1 day ago", icon: "📱", color: "#ffd43b" },
+            { agent: "Forge-3", action: "designed", details: "animation system", time: "1 day ago", icon: "🛠️", color: "#ff8787" },
+            { agent: "Glasses", action: "researched", details: "crypto projects", time: "1 day ago", icon: "🔭", color: "#4dabf7" },
+            { agent: "Quill", action: "wrote", details: "YouTube video hooks", time: "1 day ago", icon: "✍️", color: "#ffa94d" }
+        ];
+
+        // Format numbers
+        function formatNumber(num) {
+            if (num >= 1000000) {
+                return (num / 1000000).toFixed(1) + 'M';
+            } else if (num >= 1000) {
+                return (num / 1000).toFixed(1) + 'K';
+            }
+            return num.toString();
         }
-        
-        // Close dropdown when clicking outside
-        document.addEventListener('click', (e) => {
-            const dropdown = document.getElementById('navDropdown');
-            const toggle = document.querySelector('.nav-toggle');
-            if (!dropdown.contains(e.target) && !toggle.contains(e.target)) {
-                dropdown.classList.remove('active');
-            }
-        });
-        
-        // Performance tracking
-        function trackPerformance() {
-            // FCP
-            if ('PerformanceObserver' in window) {
-                const observer = new PerformanceObserver((list) => {
-                    const entries = list.getEntries();
-                    entries.forEach(entry => {
-                        if (entry.name === 'first-contentful-paint') {
-                            document.getElementById('fcpValue').textContent = 
-                                entry.startTime < 1000 
-                                    ? entry.startTime.toFixed(0) + 'ms 🟢' 
-                                    : entry.startTime.toFixed(0) + 'ms 🟡';
-                        }
-                    });
-                });
-                observer.observe({ entryTypes: ['paint'] });
-            }
+
+        // Render Agent Cards
+        function renderAgents(filter = 'all') {
+            const grid = document.getElementById('agentGrid');
+            const filteredAgents = filter === 'all' 
+                ? agents 
+                : agents.filter(a => a.status === filter);
             
-            // TTI estimate
-            window.addEventListener('load', () => {
-                setTimeout(() => {
-                    const timing = performance.timing;
-                    const tti = timing.domInteractive - timing.navigationStart;
-                    document.getElementById('ttiValue').textContent = 
-                        tti < 2000 
-                            ? tti + 'ms 🟢' 
-                            : tti < 3500 
-                                ? tti + 'ms 🟡' 
-                                : tti + 'ms 🔴';
-                    
-                    // Bundle size estimate
-                    let totalSize = 0;
-                    performance.getEntriesByType('resource').forEach(r => {
-                        if (r.transferSize) totalSize += r.transferSize;
-                    });
-                    const sizeKB = (totalSize / 1024).toFixed(1);
-                    document.getElementById('bundleValue').textContent = 
-                        totalSize < 500000 
-                            ? sizeKB + 'KB 🟢' 
-                            : totalSize < 1000000 
-                                ? sizeKB + 'KB 🟡' 
-                                : (totalSize / 1024 / 1024).toFixed(2) + 'MB 🔴';
-                }, 0);
+            grid.innerHTML = filteredAgents.map(agent => {
+                const successClass = agent.successRate >= 95 ? 'excellent' : 
+                                    agent.successRate >= 90 ? 'good' : 
+                                    agent.successRate >= 80 ? 'average' : 'poor';
+                return `
+                <div class="agent-card" style="--agent-color: ${agent.color}" data-status="${agent.status}">
+                    <div class="agent-header">
+                        <div class="agent-avatar" style="background: ${agent.color}20; color: ${agent.color};">
+                            ${agent.avatar}
+                        </div>
+                        <div class="agent-info">
+                            <div class="agent-name">${agent.name}</div>
+                            <div class="agent-role">${agent.role}</div>
+                        </div>
+                        <span class="agent-status ${agent.status}">${agent.status.toUpperCase()}</span>
+                    </div>
+                    <div class="agent-stats">
+                        <div class="agent-stat">
+                            <span class="agent-stat-value">${formatNumber(agent.tokens)}</span>
+                            <span class="agent-stat-label">tokens</span>
+                        </div>
+                        <div class="agent-stat">
+                            <span class="agent-stat-value">${agent.files}</span>
+                            <span class="agent-stat-label">files</span>
+                        </div>
+                        <div class="agent-stat">
+                            <span class="agent-stat-value">${agent.tasks}</span>
+                            <span class="agent-stat-label">tasks</span>
+                        </div>
+                    </div>
+                    <div class="agent-productivity">
+                        <div class="productivity-row">
+                            <span class="productivity-label">Activities:</span>
+                            <span class="productivity-value">${agent.activities}</span>
+                        </div>
+                        <div class="productivity-row">
+                            <span class="productivity-label">Success Rate:</span>
+                        </div>
+                        <div class="success-rate-bar">
+                            <div class="success-fill ${successClass}" style="width: ${agent.successRate}%;"></div>
+                            <div class="success-text">${agent.successRate}%</div>
+                        </div>
+                    </div>
+                    <div class="last-active">
+                        Last active: <span class="time">${agent.lastActive}</span>
+                    </div>
+                </div>
+            `}).join('');
+        }
+
+        // Filter agents
+        function filterAgents(status) {
+            // Update active button
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
             });
+            event.target.classList.add('active');
+            
+            // Render filtered agents
+            renderAgents(status);
         }
-        
-        // Activity feed refresh (simulated)
-        function loadActivity() {
+
+        // Render Activity Feed
+        function renderActivities() {
             const list = document.getElementById('activityList');
-            list.style.opacity = '0.5';
-            setTimeout(() => {
-                list.style.opacity = '1';
-            }, 300);
+            list.innerHTML = activities.map(activity => `
+                <div class="activity-item" style="--activity-color: ${activity.color}">
+                    <div class="activity-icon" style="background: ${activity.color}20;">
+                        ${activity.icon}
+                    </div>
+                    <div class="activity-content">
+                        <div class="activity-text">
+                            <strong>${activity.agent}</strong> ${activity.action} ${activity.details}
+                        </div>
+                        <div class="activity-time">${activity.time}</div>
+                    </div>
+                </div>
+            `).join('');
         }
-        
-        // Auto-refresh every 30 minutes (1800000 ms)
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            // Remove loader
+            setTimeout(() => {
+                const loader = document.getElementById('loader');
+                if (loader) {
+                    loader.classList.add('hidden');
+                    setTimeout(() => loader.remove(), 300);
+                }
+            }, 800);
+
+            // Render content
+            renderAgents();
+            renderActivities();
+        });
+
+        // Auto-refresh every 30 minutes
         setInterval(() => {
-            console.log('Auto-refreshing page...');
+            console.log('Auto-refreshing...');
             window.location.reload();
         }, 1800000);
-        
-        // Show countdown to next refresh
-        let timeUntilRefresh = 1800000;
-        setInterval(() => {
-            timeUntilRefresh -= 60000; // Subtract 1 minute
-            if (timeUntilRefresh <= 0) timeUntilRefresh = 1800000;
-            const minutes = Math.floor(timeUntilRefresh / 60000);
-            console.log(`Next auto-refresh in ${minutes} minutes`);
-        }, 60000);
     </script>
 </body>
 </html>
-/* Force redeploy - Wed Feb 18 10:10:15 AM CST 2026 */
-<!-- FORCE REBUILD 1771381759 -->
