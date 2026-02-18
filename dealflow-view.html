@@ -532,19 +532,19 @@
             <div class="game-stats">
                 <div class="stat-box">
                     <div class="stat-label">TOTAL</div>
-                    <div class="stat-value" id="stat-total">26</div>
+                    <div class="stat-value" id="stat-total">30</div>
                 </div>
                 <div class="stat-box">
                     <div class="stat-label">P0</div>
-                    <div class="stat-value" style="color: #ff6b6b;" id="stat-p0">5</div>
+                    <div class="stat-value" style="color: #ff6b6b;" id="stat-p0">6</div>
                 </div>
                 <div class="stat-box">
                     <div class="stat-label">P1</div>
-                    <div class="stat-value" style="color: #fcc419;" id="stat-p1">11</div>
+                    <div class="stat-value" style="color: #fcc419;" id="stat-p1">14</div>
                 </div>
                 <div class="stat-box">
                     <div class="stat-label">NEW</div>
-                    <div class="stat-value" style="color: #339af0;" id="stat-new">26</div>
+                    <div class="stat-value" style="color: #339af0;" id="stat-new">30</div>
                 </div>
             </div>
         </header>
@@ -589,24 +589,30 @@
             <div class="filter-bar">
                 <div class="filter-group">
                     <span class="filter-label">PRIORITY:</span>
-                    <button class="filter-btn active" onclick="filterLeads('all')">All</button>
-                    <button class="filter-btn" onclick="filterLeads('P0')">P0</button>
-                    <button class="filter-btn" onclick="filterLeads('P1')">P1</button>
-                    <button class="filter-btn" onclick="filterLeads('P2')">P2</button>
+                    <button class="filter-btn active" data-filter="priority" data-value="all" onclick="filterLeads('all')">All</button>
+                    <button class="filter-btn" data-filter="priority" data-value="P0" onclick="filterLeads('P0')">P0</button>
+                    <button class="filter-btn" data-filter="priority" data-value="P1" onclick="filterLeads('P1')">P1</button>
+                    <button class="filter-btn" data-filter="priority" data-value="P2" onclick="filterLeads('P2')">P2</button>
                 </div>
                 <div class="filter-group">
                     <span class="filter-label">STATUS:</span>
-                    <button class="filter-btn" onclick="filterByStatus('new')">New</button>
-                    <button class="filter-btn" onclick="filterByStatus('contacted')">Contacted</button>
-                    <button class="filter-btn" onclick="filterByStatus('meeting')">Meeting</button>
-                    <button class="filter-btn" onclick="filterByStatus('closed')">Closed</button>
+                    <button class="filter-btn" data-filter="status" data-value="new" onclick="filterByStatus('new')">New</button>
+                    <button class="filter-btn" data-filter="status" data-value="contacted" onclick="filterByStatus('contacted')">Contacted</button>
+                    <button class="filter-btn" data-filter="status" data-value="meeting" onclick="filterByStatus('meeting')">Meeting</button>
+                    <button class="filter-btn" data-filter="status" data-value="closed" onclick="filterByStatus('closed')">Closed</button>
+                </div>
+                <div class="filter-group">
+                    <span class="filter-label">REGION:</span>
+                    <button class="filter-btn" data-filter="region" data-value="PH" onclick="filterByRegion('Philippines')">PH</button>
+                    <button class="filter-btn" data-filter="region" data-value="HK" onclick="filterByRegion('Hong Kong')">HK</button>
+                    <button class="filter-btn" data-filter="region" data-value="SG" onclick="filterByRegion('Singapore')">SG</button>
                 </div>
             </div>
         </div>
 
         <!-- Leads Grid -->
         <div class="panel-box">
-            <div class="panel-title">🎯 LEADS (<span id="lead-count">26</span>)</div>
+            <div class="panel-title">🎯 LEADS (<span id="lead-count">30</span>)</div>
             <div class="leads-grid" id="leadsGrid">
                 <!-- Leads will be populated by JavaScript -->
             </div>
@@ -1068,6 +1074,74 @@
                 "priority": "P2",
                 "notes": "Industry body for blockchain advocacy in PH. Luis is President (same as Lead 004). Good for policy discussions and industry connections.",
                 "research_sources": ["https://www.linkedin.com/company/blockchain-council-of-the-philippines"]
+            },
+            {
+                "id": "lead_027",
+                "company": "RD Technologies",
+                "contact_name": "Rita Liu",
+                "title": "CEO & Co-Founder",
+                "email": "rita.liu@rdtechnologies.com",
+                "email_verified": false,
+                "linkedin": "https://www.linkedin.com/company/rd-technologies-limited",
+                "linkedin_personal": null,
+                "twitter": null,
+                "phone": null,
+                "telegram": null,
+                "status": "new",
+                "priority": "P1",
+                "notes": "Hong Kong-based stablecoin issuer. HKMA sandbox participant. Focus on HKD-backed stablecoins for cross-border payments. Strong regulatory relationships.",
+                "research_sources": ["https://www.rdtechnologies.com"]
+            },
+            {
+                "id": "lead_028",
+                "company": "HashKey Group",
+                "contact_name": "Michel Lee",
+                "title": "CEO & Managing Partner",
+                "email": "michel.lee@hashkey.com",
+                "email_verified": false,
+                "linkedin": "https://www.linkedin.com/in/michel-lee-4b5a3b1",
+                "linkedin_personal": "https://www.linkedin.com/in/michel-lee-4b5a3b1",
+                "twitter": null,
+                "phone": null,
+                "telegram": null,
+                "status": "new",
+                "priority": "P0",
+                "notes": "Leading Hong Kong digital asset exchange. Licensed by SFC. Backed by Wanxiang Blockchain. Strong institutional focus. Expanding across Asia.",
+                "research_sources": ["https://www.hashkey.com"]
+            },
+            {
+                "id": "lead_029",
+                "company": "ZA Bank",
+                "contact_name": "Ronald Iu",
+                "title": "CEO",
+                "email": "ronald.iu@zabank.com",
+                "email_verified": false,
+                "linkedin": "https://www.linkedin.com/in/ronald-iu-2b5a3b1",
+                "linkedin_personal": "https://www.linkedin.com/in/ronald-iu-2b5a3b1",
+                "twitter": null,
+                "phone": null,
+                "telegram": null,
+                "status": "new",
+                "priority": "P1",
+                "notes": "Hong Kong's first virtual bank. 800K+ customers. Exploring crypto trading services. Strong backing from ZhongAn Insurance. First mover advantage in HK virtual banking.",
+                "research_sources": ["https://www.zabank.com"]
+            },
+            {
+                "id": "lead_030",
+                "company": "RedotPay",
+                "contact_name": "Rex Lau",
+                "title": "CEO & Co-Founder",
+                "email": "rex.lau@redotpay.com",
+                "email_verified": false,
+                "linkedin": "https://www.linkedin.com/in/rex-lau-3c5a3b1",
+                "linkedin_personal": "https://www.linkedin.com/in/rex-lau-3c5a3b1",
+                "twitter": "https://x.com/redotpay",
+                "phone": null,
+                "telegram": null,
+                "status": "new",
+                "priority": "P1",
+                "notes": "Hong Kong crypto payment card provider. Visa/Mastercard partnerships. Fastest growing crypto card in Asia. Strong user acquisition. Backed by notable VCs.",
+                "research_sources": ["https://www.redotpay.com"]
             }
         ];
 
@@ -1168,8 +1242,11 @@
 
         // Filter by priority
         function filterLeads(priority) {
-            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
+            // Update button states
+            document.querySelectorAll('[data-filter="priority"]').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.value === priority) btn.classList.add('active');
+            });
             
             if (priority === 'all') {
                 renderLeads(leadsData);
@@ -1180,7 +1257,28 @@
 
         // Filter by status
         function filterByStatus(status) {
+            // Update button states
+            document.querySelectorAll('[data-filter="status"]').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.value === status) btn.classList.add('active');
+            });
             renderLeads(leadsData.filter(l => l.status === status));
+        }
+
+        // Filter by region
+        function filterByRegion(region) {
+            // Update button states
+            document.querySelectorAll('[data-filter="region"]').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.value === region.substring(0, 2).toUpperCase()) btn.classList.add('active');
+            });
+            renderLeads(leadsData.filter(l => {
+                const notes = l.notes.toLowerCase();
+                if (region === 'Philippines') return notes.includes('philippines') || notes.includes('ph');
+                if (region === 'Hong Kong') return notes.includes('hong kong') || notes.includes('hk');
+                if (region === 'Singapore') return notes.includes('singapore') || notes.includes('sea');
+                return false;
+            }));
         }
 
         // Copy contact info

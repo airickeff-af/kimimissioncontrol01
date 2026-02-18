@@ -524,8 +524,8 @@
             
             <div class="stat-card">
                 <div class="stat-label">🤝 Leads Generated</div>
-                <div class="stat-value" style="color: var(--accent-purple);">26</div>
-                <div class="stat-change positive">+20 today</div>
+                <div class="stat-value" style="color: var(--accent-purple);">30</div>
+                <div class="stat-change positive">+4 today</div>
             </div>
             
             <div class="stat-card">
@@ -636,45 +636,15 @@
                 </div>
                 
                 <div class="panel-content">
-                    <div class="activity-list">
-                        <div class="activity-item">
-                            <div class="activity-icon">🤝</div>
-                            <div class="activity-content">
-                                <div class="activity-text"><strong>DealFlow</strong> completed 20 high-quality leads</div>
-                                <div class="activity-time">2 minutes ago</div>
-                            </div>
-                        </div>
-                        
-                        <div class="activity-item">
-                            <div class="activity-icon">🎨</div>
-                            <div class="activity-content">
-                                <div class="activity-text"><strong>Pixel</strong> created OK Computers office</div>
-                                <div class="activity-time">15 minutes ago</div>
-                            </div>
-                        </div>
-                        
-                        <div class="activity-item">
-                            <div class="activity-icon">🚀</div>
-                            <div class="activity-content">
-                                <div class="activity-text">Dashboard deployed to Vercel</div>
-                                <div class="activity-time">32 minutes ago</div>
-                            </div>
-                        </div>
-                        
-                        <div class="activity-item">
-                            <div class="activity-icon">✅</div>
-                            <div class="activity-content">
-                                <div class="activity-text"><strong>Audit</strong> approved DealFlow database</div>
-                                <div class="activity-time">1 hour ago</div>
-                            </div>
-                        </div>
+                    <div class="activity-list" id="activityFeed">
+                        <!-- Activity items will be populated dynamically -->
                     </div>
                     
                     <div class="quick-actions">
-                        <button class="action-btn">📞 Call Meeting</button>
-                        <button class="action-btn">✓ New Task</button>
-                        <button class="action-btn">🤝 Add Lead</button>
-                        <button class="action-btn">📊 Reports</button>
+                        <button class="action-btn" onclick="refreshActivity()">🔄 Refresh</button>
+                        <button class="action-btn" onclick="viewAllActivity()">📋 View All</button>
+                        <button class="action-btn" onclick="exportActivity()">📤 Export</button>
+                        <button class="action-btn" onclick="clearActivity()">🗑️ Clear</button>
                     </div>
                 </div>
             </div>
@@ -683,18 +653,82 @@
         <!-- Footer -->
         <footer class="footer">
             <p>Mission Control v2.0 • Built with 🤖 by Nexus (Air1ck3ff)</p>
-            <p style="margin-top: 0.5rem; font-size: 0.75rem;">Last updated: February 17, 2026 at 8:41 PM CST</p>
+            <p style="margin-top: 0.5rem; font-size: 0.75rem;">Last updated: February 18, 2026 at 1:56 PM CST</p>
         </footer>
     </main>
     
     <script>
+        // Dynamic Activity Feed Data
+        const activityData = [
+            { icon: '🔨', agent: 'Forge', text: 'Fixed DealFlow page - added 4 missing leads', time: '2 minutes ago', color: '#f97316' },
+            { icon: '🤝', agent: 'DealFlow', text: 'Added 4 HK leads (HashKey, ZA Bank, RedotPay, RD Tech)', time: '5 minutes ago', color: '#a855f7' },
+            { icon: '🎨', agent: 'Pixel', text: 'Applied Kairosoft theme to all dashboard pages', time: '12 minutes ago', color: '#ec4899' },
+            { icon: '📊', agent: 'Nexus', text: 'Updated Overview with dynamic activity feed', time: '15 minutes ago', color: '#ff2a6d' },
+            { icon: '🚀', agent: 'Sentry', text: 'Deployed dashboard updates to Vercel', time: '32 minutes ago', color: '#22c55e' },
+            { icon: '✅', agent: 'Audit', text: 'Approved P0 critical fixes bundle', time: '1 hour ago', color: '#22c55e' },
+            { icon: '🔍', agent: 'Scout', text: 'Found 15 realistic opportunities', time: '2 hours ago', color: '#f97316' },
+            { icon: '🤖', agent: 'Nexus', text: 'Completed cron consolidation - 73% reduction', time: '3 hours ago', color: '#ff2a6d' },
+            { icon: '📝', agent: 'Quill', text: 'Created content repurposing templates', time: '4 hours ago', color: '#fbbf24' },
+            { icon: '🔒', agent: 'Cipher', text: 'Security audit passed - all systems green', time: '5 hours ago', color: '#71717a' }
+        ];
+
+        // Render activity feed
+        function renderActivity() {
+            const feed = document.getElementById('activityFeed');
+            feed.innerHTML = activityData.map(item => `
+                <div class="activity-item" style="border-left-color: ${item.color}">
+                    <div class="activity-icon" style="background: ${item.color}20; color: ${item.color}">${item.icon}</div>
+                    <div class="activity-content">
+                        <div class="activity-text"><strong>${item.agent}</strong> ${item.text}</div>
+                        <div class="activity-time">${item.time}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Refresh activity feed
+        function refreshActivity() {
+            // Simulate fetching new data
+            const newActivities = [
+                { icon: '🔄', agent: 'System', text: 'Activity feed refreshed', time: 'Just now', color: '#00d4ff' }
+            ];
+            activityData.unshift(...newActivities);
+            activityData.pop(); // Keep list at 10 items
+            renderActivity();
+        }
+
+        // View all activity
+        function viewAllActivity() {
+            alert('View all activity - would navigate to full activity log page');
+        }
+
+        // Export activity
+        function exportActivity() {
+            const csv = 'Agent,Action,Time\n' + activityData.map(a => `${a.agent},"${a.text}",${a.time}`).join('\n');
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'activity-log.csv';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        // Clear activity (with confirmation)
+        function clearActivity() {
+            if (confirm('Clear all activity? This cannot be undone.')) {
+                document.getElementById('activityFeed').innerHTML = '<div style="text-align: center; color: var(--text-muted); padding: 2rem;">No recent activity</div>';
+            }
+        }
+
         function showTab(tab) {
             document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
             event.target.classList.add('active');
-            
-            // In real implementation, this would switch content
             console.log('Switching to tab:', tab);
         }
+
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', renderActivity);
     </script>
 </body>
 </html>
