@@ -2810,3 +2810,143 @@ Agents must submit progress reports at each checkpoint:
 **Focus Areas:** Data Viewer (10), Office Environment (10)
 **Created:** 2026-02-18 11:40 PM HKT
 **Added by:** Nexus
+
+---
+
+## 🆕 NEW TASKS FROM CONTINUOUS IMPROVEMENT (Last 4 Hours)
+### Batch: 2026-02-19 2:59 AM
+
+### **TASK-108: P0 - Pixel Office Sprite Integration**
+- **Assigned:** Forge (Lead) + Pixel (Support)
+- **Due:** Feb 19, 9:00 AM (6 hours)
+- **Status:** 🟢 IN PROGRESS
+- **Priority:** P0
+- **Description:** Integrate Pixel's sprite system into main pixel-office.html
+- **Deliverables from Pixel (COMPLETED 00:15 AM):**
+  - ✅ 22 agent sprite sheets (32x32 Minecraft-style)
+  - ✅ 7 animation types × 8 frames each
+  - ✅ Furniture sprites (desks, chairs, plants)
+  - ✅ Effect sprites (shadows, speech bubbles)
+  - ✅ JavaScript sprite system (sprite-system.js)
+  - ✅ Demo page (pixel-office-v2.html)
+- **Forge Tasks:**
+  - [ ] Integrate sprite-system.js into pixel-office.html
+  - [ ] Connect to /api/agents for real positions
+  - [ ] Add activity bars above agents
+  - [ ] Implement agent click-to-focus
+  - [ ] Add speech bubble system
+- **CodeMaster Tasks:**
+  - [ ] Create /api/logs/activity endpoint
+  - [ ] Real-time activity feed
+- **Quality Target:** 95/100 (currently 25/100 from sprites)
+
+---
+
+### **TASK-109: P1 - Regional Lead Research - Singapore**
+- **Assigned:** Scout + DealFlow
+- **Due:** Feb 20, 11:59 PM
+- **Status:** 🟢 IN PROGRESS
+- **Priority:** P1
+- **Description:** Find 30-50 high-quality leads in Singapore
+- **Focus:** Family offices, VCs, crypto funds
+- **Lead Criteria:** AUM >$50M, active in crypto/Web3
+- **Target:** 30 leads with full contact info
+- **Handoff:** Qualified leads → ColdCall via DealFlow
+
+---
+
+### **TASK-110: P1 - Regional Lead Research - Hong Kong**
+- **Assigned:** Scout + DealFlow
+- **Due:** Feb 21, 11:59 PM
+- **Status:** 🟢 IN PROGRESS
+- **Priority:** P1
+- **Description:** Find 30-50 high-quality leads in Hong Kong
+- **Focus:** Trading firms, institutional desks, exchanges
+- **Lead Criteria:** Licensed/applying, trading vol >$10M/day
+- **Target:** 30 leads with full contact info
+
+---
+
+### **TASK-111: P2 - Agent Health Dashboard Script**
+- **Assigned:** Sentry
+- **Due:** Feb 22, 5:00 PM
+- **Status:** ⏳ NOT STARTED
+- **Priority:** P2
+- **Description:** Create automated agent health monitoring script
+- **Features:**
+  - Check all 22 agent sessions for abortedLastRun
+  - Monitor cron job consecutiveErrors
+  - Alert on token usage >200k
+  - Daily health report generation
+- **Output:** `/mission-control/scripts/agent-health-dashboard.sh`
+
+---
+
+### **TASK-112: P2 - Task Auto-Capture Protocol**
+- **Assigned:** Nexus
+- **Due:** Feb 22, 5:00 PM
+- **Status:** ⏳ NOT STARTED
+- **Priority:** P2
+- **Description:** System to capture tasks that fall through cracks
+- **Features:**
+  - Scan all conversations for implied tasks
+  - Auto-create pending tasks from requests
+  - Daily review of uncaptured work
+  - Integration with PENDING_TASKS.md
+
+---
+
+### **TASK-113: P2 - Session Archival Protocol**
+- **Assigned:** Sentry
+- **Due:** Feb 20, 5:00 PM
+- **Status:** ⏳ NOT STARTED
+- **Priority:** P2
+- **Description:** Automated session transcript lifecycle management
+- **Features:**
+  - Archive sessions older than 7 days
+  - Compress transcripts to .gz
+  - Move to /archives/sessions/
+  - Retain last 30 days uncompressed
+
+---
+
+### **TASK-114: P3 - Context Management Protocol**
+- **Assigned:** Nexus
+- **Due:** Feb 23, 5:00 PM
+- **Status:** ⏳ NOT STARTED
+- **Priority:** P3
+- **Description:** Manage main session context near capacity
+- **Trigger:** 90% token usage (235k/262k)
+- **Actions:**
+  - Compress old conversation turns
+  - Archive completed task discussions
+  - Maintain active task context
+  - Preserve critical decisions
+
+---
+
+## 📊 UPDATED TASK DASHBOARD
+
+| Priority | Count | Completed | In Progress | Blocked |
+|----------|-------|-----------|-------------|---------|
+| 🔴 P0 - Critical | 9 | 6 | 3 | 0 |
+| 🟡 P1 - High | 37 | 6 | 2 | 29 |
+| 🟢 P2 - Medium | 47 | 4 | 0 | 43 |
+| ⚪ P3 - Low | 6 | 0 | 0 | 6 |
+| **TOTAL** | **99** | **16** | **5** | **78** |
+
+---
+
+## 🚨 CRITICAL BLOCKERS REQUIRING ERICF ATTENTION
+
+| Blocker | Task ID | Impact | Action Needed |
+|---------|---------|--------|---------------|
+| **Larry API Credentials** | TASK-013 | Larry can't auto-post | Twitter/X & LinkedIn API keys |
+| **ColdCall Approval** | TASK-019 | ColdCall can't start outreach | Approve outreach plan |
+| **Telegram Channels** | TASK-036 | No agent-specific channels | Create 20 channels, add bot |
+| **Deployment Quality** | TASK-070 | Quality gate 75/100 (target 95) | Monitor Code-1 progress |
+
+---
+
+*Last Updated: 2026-02-19 2:59 AM CST*  
+*Maintained by: Nexus (Air1ck3ff)*

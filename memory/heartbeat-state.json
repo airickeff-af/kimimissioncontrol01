@@ -1,15 +1,15 @@
 {
   "lastChecks": {
-    "agentHealth": 1771431482,
-    "taskQueue": 1771431482,
+    "agentHealth": 1771435082,
+    "taskQueue": 1771438682,
     "systemResources": 1771420682,
     "memoryMaintenance": 1771362420
   },
   "checkRotation": {
-    "current": "B",
+    "current": "C",
     "sequence": ["A", "B", "C", "D"],
-    "lastRotation": 1771431482,
-    "counter": 53
+    "lastRotation": 1771438682,
+    "counter": 54
   },
   "alertSuppression": {
     "lastAlertSent": 1771341429,
@@ -43,9 +43,9 @@
     }
   },
   "tokenUsage": {
-    "mainSession": 47849,
+    "mainSession": 20298,
     "threshold": 200000,
-    "lastChecked": 1771431482,
+    "lastChecked": 1771438682,
     "alertsSent": 0,
     "trend": "stable",
     "growthRate": 0
@@ -55,12 +55,12 @@
       "total": "40G",
       "used": "11G",
       "available": "28G",
-      "usePercent": 28
+      "usePercent": 29
     },
     "lastChecked": 1771431482
   },
   "metrics": {
-    "heartbeatsCompleted": 34,
+    "heartbeatsCompleted": 35,
     "alertsTriggered": 1,
     "tasksProcessed": 10,
     "selfImprovements": 3,

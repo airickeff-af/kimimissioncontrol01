@@ -2,6 +2,8 @@
 // Alternative flat path for /api/logs/activity
 // Returns agent activity logs for the logs-view dashboard
 
+const { sendCachedResponse, setCacheBustingHeaders } = require('./lib/cache');
+
 module.exports = (req, res) => {
   // Set CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -12,6 +14,9 @@ module.exports = (req, res) => {
     res.status(200).end();
     return;
   }
+
+  // Handle cache-busting requests (when data is updated)
+  const cacheBust = req.query.bust || req.headers['x-cache-bust'];
 
   try {
     // Get limit from query params (default 100)
@@ -31,17 +36,26 @@ module.exports = (req, res) => {
       { timestamp: new Date(Date.now() - 1800000).toISOString(), agent: 'Code-1', type: 'task_complete', message: 'Created serverless logs API', sessionId: 'api-logs' }
     ];
 
-    // Return logs
-    res.status(200).json({
+    const responseData = {
       success: true,
       logs: logs.slice(0, limit),
       total: logs.length,
       timestamp: new Date().toISOString()
-    });
+    };
+
+    // If cache-busting is requested, disable caching
+    if (cacheBust) {
+      setCacheBustingHeaders(res);
+      return res.status(200).json(responseData);
+    }
+
+    // Send response with caching headers (30 second TTL)
+    return sendCachedResponse(req, res, 'logsActivity', responseData);
   } catch (error) {
     console.error('Error in logs-activity API:', error);
     
-    // Return standardized error response
+    // Return standardized error response (no caching for errors)
+    setCacheBustingHeaders(res);
     res.status(500).json({
       success: false,
       error: 'Internal Server Error',

@@ -1,5 +1,5 @@
-// Vercel Serverless Function: /api/logs/index.js
-// Main logs endpoint - returns all log types
+// Vercel Serverless Function: /api/logs/chat.js
+// Returns chat/conversation logs
 
 module.exports = (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -12,14 +12,14 @@ module.exports = (req, res) => {
     return;
   }
 
+  const logs = [
+    { timestamp: new Date().toISOString(), agent: 'Nexus', message: 'Chat endpoint working (nested)', type: 'info' }
+  ];
+
   res.status(200).json({
     success: true,
-    endpoint: '/api/logs',
-    message: 'Logs API root - use /api/logs/activity or /api/logs/chat',
-    availableEndpoints: [
-      '/api/logs/activity',
-      '/api/logs/chat'
-    ],
+    endpoint: '/api/logs/chat',
+    logs,
     timestamp: new Date().toISOString()
   });
 };

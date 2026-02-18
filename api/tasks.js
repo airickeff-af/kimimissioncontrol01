@@ -3,6 +3,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { sendCachedResponse, setCacheBustingHeaders } = require('./lib/cache');
 
 module.exports = async (req, res) => {
   // Enable CORS
@@ -15,16 +16,31 @@ module.exports = async (req, res) => {
     return res.status(200).end();
   }
 
+  // Handle cache-busting requests
+  const cacheBust = req.query.bust || req.headers['x-cache-bust'];
+
   try {
     const tasksData = await parsePendingTasks();
     
-    res.status(200).json({
+    const responseData = {
       status: 'success',
       timestamp: new Date().toISOString(),
       data: tasksData
-    });
+    };
+
+    // If cache-busting is requested, disable caching
+    if (cacheBust) {
+      setCacheBustingHeaders(res);
+      return res.status(200).json(responseData);
+    }
+
+    // Send response with caching headers (60 second TTL)
+    return sendCachedResponse(req, res, 'tasks', responseData);
   } catch (error) {
     console.error('Error parsing tasks:', error);
+    
+    // Return error without caching
+    setCacheBustingHeaders(res);
     res.status(500).json({
       status: 'error',
       message: 'Failed to load tasks',

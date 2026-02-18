@@ -3,10 +3,14 @@
 
 const fs = require('fs');
 const path = require('path');
+const { sendCachedResponse, setCacheBustingHeaders } = require('./lib/cache');
 
 module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET');
+
+  // Handle cache-busting requests
+  const cacheBust = req.query.bust || req.headers['x-cache-bust'];
 
   try {
     // Read agent data from dashboard
@@ -80,7 +84,7 @@ module.exports = async (req, res) => {
     const blocked = allAgents.filter(a => a.status === 'blocked').length;
     const totalTokens = allAgents.reduce((sum, a) => sum + (a.tokens || 0), 0);
 
-    res.status(200).json({
+    const responseData = {
       success: true,
       agents: allAgents,
       summary: {
@@ -91,11 +95,21 @@ module.exports = async (req, res) => {
         totalTokens: totalTokens
       },
       timestamp: new Date().toISOString()
-    });
+    };
+
+    // If cache-busting is requested, disable caching
+    if (cacheBust) {
+      setCacheBustingHeaders(res);
+      return res.status(200).json(responseData);
+    }
+
+    // Send response with caching headers (60 second TTL)
+    return sendCachedResponse(req, res, 'agents', responseData);
   } catch (error) {
     console.error('Error reading agents:', error);
     
-    // Return fallback data with error flag
+    // Return fallback data with error flag (no caching for errors)
+    setCacheBustingHeaders(res);
     res.status(200).json({
       success: true,
       agents: [

@@ -1,4 +1,7 @@
 // API endpoint for system statistics
+
+const { sendCachedResponse, setCacheBustingHeaders } = require('./lib/cache');
+
 module.exports = async (req, res) => {
   // Set CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -9,6 +12,9 @@ module.exports = async (req, res) => {
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
   }
+
+  // Handle cache-busting requests
+  const cacheBust = req.query.bust || req.headers['x-cache-bust'];
 
   try {
     const stats = {
@@ -48,8 +54,17 @@ module.exports = async (req, res) => {
       }
     };
 
-    return res.status(200).json(stats);
+    // If cache-busting is requested, disable caching
+    if (cacheBust) {
+      setCacheBustingHeaders(res);
+      return res.status(200).json(stats);
+    }
+
+    // Send response with caching headers (60 second TTL)
+    return sendCachedResponse(req, res, 'stats', stats);
   } catch (error) {
+    // Return error without caching
+    setCacheBustingHeaders(res);
     return res.status(500).json({
       error: 'Failed to fetch stats',
       message: error.message
