@@ -1,0 +1,64 @@
+{
+  "name": "task-orchestrator",
+  "description": "Review pending tasks and assign idle agents",
+  "schedule": "0 * * * *",
+  "target": {
+    "type": "telegram",
+    "channel": "1508346957"
+  },
+  "log": "/tmp/mission-control-cron.log",
+  "sources": {
+    "pending_tasks": "/root/.openclaw/workspace/mission-control/PENDING_TASKS.md",
+    "agent_status": "/root/.openclaw/workspace/mission-control/agents/status",
+    "dashboard_url": "https://dashboard-ten-sand-20.vercel.app"
+  },
+  "actions": [
+    {
+      "type": "read_pending_tasks",
+      "name": "task_review",
+      "parse_sections": [
+        "urgent",
+        "high_priority",
+        "medium_priority",
+        "low_priority",
+        "blocked"
+      ]
+    },
+    {
+      "type": "check_agent_status",
+      "name": "agent_availability",
+      "states": ["idle", "active", "busy", "offline"]
+    },
+    {
+      "type": "auto_assign",
+      "name": "task_assignment",
+      "rules": {
+        "match_skills": true,
+        "respect_capacity": true,
+        "priority_weight": 2.0
+      }
+    },
+    {
+      "type": "identify_blockers",
+      "name": "blocker_detection",
+      "categories": [
+        "dependency_waiting",
+        "resource_unavailable",
+        "approval_needed",
+        "technical_issue"
+      ]
+    }
+  ],
+  "reporting": {
+    "on_success": "assignment_summary",
+    "on_failure": "detailed",
+    "report_blockers": true,
+    "report_assignments": true
+  },
+  "error_handling": {
+    "retry_count": 1,
+    "retry_delay_seconds": 30,
+    "continue_on_error": true,
+    "log_errors": true
+  }
+}

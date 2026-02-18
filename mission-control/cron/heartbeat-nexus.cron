@@ -1,0 +1,44 @@
+{
+  "name": "heartbeat-nexus",
+  "description": "Agent health and system resource monitoring",
+  "schedule": "*/15 * * * *",
+  "target": {
+    "type": "telegram",
+    "channel": "1508346957"
+  },
+  "log": "/tmp/mission-control-cron.log",
+  "actions": [
+    {
+      "type": "health_check",
+      "name": "agent_health",
+      "description": "Check agent health status"
+    },
+    {
+      "type": "system_resources",
+      "name": "resource_check",
+      "description": "Check CPU, memory, disk usage",
+      "thresholds": {
+        "cpu_warning": 80,
+        "memory_warning": 85,
+        "disk_warning": 90
+      }
+    },
+    {
+      "type": "dashboard_ping",
+      "name": "dashboard_health",
+      "url": "https://dashboard-ten-sand-20.vercel.app",
+      "expected_status": 200
+    }
+  ],
+  "reporting": {
+    "on_success": "summary",
+    "on_failure": "detailed",
+    "alert_threshold": "any_failure"
+  },
+  "error_handling": {
+    "retry_count": 2,
+    "retry_delay_seconds": 30,
+    "continue_on_error": true,
+    "log_errors": true
+  }
+}

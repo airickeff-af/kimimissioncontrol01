@@ -1,0 +1,44 @@
+{
+  "name": "quality-gate",
+  "description": "Quality assurance testing for dashboard",
+  "schedule": "*/30 * * * *",
+  "target": {
+    "type": "telegram",
+    "channel": "1508346957"
+  },
+  "log": "/tmp/mission-control-cron.log",
+  "base_url": "https://dashboard-ten-sand-20.vercel.app",
+  "pages": [
+    { "path": "/", "name": "home", "expected_status": 200 },
+    { "path": "/dashboard", "name": "dashboard", "expected_status": 200 },
+    { "path": "/analytics", "name": "analytics", "expected_status": 200 },
+    { "path": "/settings", "name": "settings", "expected_status": 200 },
+    { "path": "/profile", "name": "profile", "expected_status": 200 },
+    { "path": "/reports", "name": "reports", "expected_status": 200 },
+    { "path": "/help", "name": "help", "expected_status": 200 }
+  ],
+  "apis": [
+    { "path": "/api/health", "name": "health_api", "expected_type": "json" },
+    { "path": "/api/status", "name": "status_api", "expected_type": "json" },
+    { "path": "/api/metrics", "name": "metrics_api", "expected_type": "json" },
+    { "path": "/api/config", "name": "config_api", "expected_type": "json" },
+    { "path": "/api/data", "name": "data_api", "expected_type": "json" }
+  ],
+  "scoring": {
+    "pass_threshold": 95,
+    "page_weight": 10,
+    "api_weight": 6,
+    "max_score": 100
+  },
+  "reporting": {
+    "on_success": "score_only",
+    "on_failure": "detailed",
+    "alert_on_score_below": 95
+  },
+  "error_handling": {
+    "retry_count": 1,
+    "retry_delay_seconds": 15,
+    "continue_on_error": true,
+    "log_errors": true
+  }
+}

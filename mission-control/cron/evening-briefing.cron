@@ -1,0 +1,80 @@
+{
+  "name": "evening-briefing",
+  "description": "Daily summary and next day preview",
+  "schedule": "0 18 * * *",
+  "target": {
+    "type": "telegram",
+    "channel": "1508346957"
+  },
+  "log": "/tmp/mission-control-cron.log",
+  "timezone": "Asia/Shanghai",
+  "data_sources": {
+    "task_logs": "/root/.openclaw/workspace/mission-control/tasks",
+    "dashboard_url": "https://dashboard-ten-sand-20.vercel.app",
+    "pending_tasks": "/root/.openclaw/workspace/mission-control/PENDING_TASKS.md"
+  },
+  "sections": [
+    {
+      "type": "daily_summary",
+      "name": "today_overview",
+      "metrics": [
+        "tasks_completed",
+        "tasks_created",
+        "agents_active",
+        "system_uptime"
+      ]
+    },
+    {
+      "type": "completion_stats",
+      "name": "performance_metrics",
+      "include": [
+        "completion_rate",
+        "average_quality_score",
+        "time_per_task",
+        "top_contributors"
+      ]
+    },
+    {
+      "type": "quality_summary",
+      "name": "quality_report",
+      "sources": [
+        "quality-gate-results",
+        "audit-check-results"
+      ]
+    },
+    {
+      "type": "blockers_review",
+      "name": "obstacles_summary",
+      "show_resolved": true,
+      "show_outstanding": true
+    },
+    {
+      "type": "next_day_preview",
+      "name": "tomorrow_outlook",
+      "include": [
+        "scheduled_tasks",
+        "upcoming_deadlines",
+        "planned_maintenance",
+        "priority_items"
+      ]
+    }
+  ],
+  "format": {
+    "style": "formatted_report",
+    "include_timestamp": true,
+    "include_emoji": true,
+    "max_length": 4000
+  },
+  "reporting": {
+    "on_success": "full_report",
+    "on_failure": "error_summary",
+    "always_send": true
+  },
+  "error_handling": {
+    "retry_count": 2,
+    "retry_delay_seconds": 60,
+    "continue_on_error": false,
+    "log_errors": true,
+    "fallback_message": "Evening briefing generation failed. Please check logs."
+  }
+}

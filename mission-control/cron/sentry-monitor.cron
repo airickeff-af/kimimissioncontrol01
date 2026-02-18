@@ -1,0 +1,56 @@
+{
+  "name": "sentry-monitor",
+  "description": "Deployment health and page load time monitoring",
+  "schedule": "*/7 * * * *",
+  "target": {
+    "type": "telegram",
+    "channel": "1508346957"
+  },
+  "log": "/tmp/mission-control-cron.log",
+  "base_url": "https://dashboard-ten-sand-20.vercel.app",
+  "checks": [
+    {
+      "type": "deployment_health",
+      "name": "deployment_status",
+      "endpoints": [
+        "/",
+        "/api/health"
+      ]
+    },
+    {
+      "type": "load_time",
+      "name": "page_performance",
+      "thresholds": {
+        "warning_ms": 2000,
+        "critical_ms": 5000
+      },
+      "pages": [
+        "/",
+        "/dashboard",
+        "/analytics"
+      ]
+    },
+    {
+      "type": "error_rate",
+      "name": "error_monitoring",
+      "window_minutes": 10
+    }
+  ],
+  "alerting": {
+    "on_deployment_failure": true,
+    "on_slow_load": true,
+    "on_error_spike": true
+  },
+  "reporting": {
+    "on_success": "silent",
+    "on_failure": "immediate_alert",
+    "include_metrics": true
+  },
+  "error_handling": {
+    "retry_count": 2,
+    "retry_delay_seconds": 20,
+    "continue_on_error": false,
+    "log_errors": true,
+    "escalate_on_failure": true
+  }
+}
