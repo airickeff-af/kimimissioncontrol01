@@ -1,154 +1,104 @@
-# API Troubleshooting Report - Vercel 404 Fix
+# API Troubleshooting Progress Report
 
-**Date:** Wednesday, February 18, 2026 - 1:25 PM (Asia/Shanghai)  
-**Agent:** API Troubleshooting Specialist  
-**Issue:** `/api/logs/activity` returning 404 on Vercel deployment
+**Date:** Wednesday, February 18, 2026 - 2:00 PM (Asia/Shanghai)  
+**Issue:** `/api/logs/activity` returns 404 on Vercel deployment
 
----
+## Attempted Solutions
 
-## Summary of Actions Taken
+### 1. Removed API Rewrites from vercel.json ❌
+- Thought: Vercel auto-detects `/api` folder, rewrites might conflict
+- Result: Still 404
 
-### 1. Root Cause Identified
-The issue was **rewrite order** in `vercel.json`. The catch-all rewrite `/(.*)` was positioned before API routes, causing ALL requests (including API) to be redirected to the dashboard.
+### 2. Added explicit `builds` config ❌
+- Added `@vercel/node` build config for `api/**/*.js`
+- Result: Still 404
 
-### 2. Fixes Implemented
+### 3. Removed vercel.json entirely (zero-config) ❌
+- Thought: Let Vercel auto-detect everything
+- Result: Still 404
 
-#### Fix A: Reordered Rewrites (CRITICAL)
-**File:** `vercel.json`
-- Moved API-specific rewrites to the TOP
-- Moved catch-all rewrite to the BOTTOM
-- API routes now processed before static/dashboard routes
+### 4. Added Next.js pages/api pattern ❌
+- Created `pages/api/logs-activity.js`
+- Result: Still 404
 
-**Before (BROKEN):**
-```json
-{
-  "rewrites": [
-    { "source": "/(.*)", "destination": "/mission-control/dashboard/$1" },
-    { "source": "/api/(.*)", "destination": "/api/$1" }
-  ]
-}
-```
+### 5. Added package.json with build script ❌
+- Thought: Ensure Vercel detects as Node project
+- Result: Still 404
 
-**After (FIXED):**
-```json
-{
-  "rewrites": [
-    { "source": "/api/logs/activity", "destination": "/api/logs/activity.js" },
-    { "source": "/api/logs", "destination": "/api/logs/index.js" },
-    { "source": "/api/:path*", "destination": "/api/:path*" },
-    { "source": "/(.*)", "destination": "/mission-control/dashboard/$1" }
-  ]
-}
-```
+### 6. Added explicit `functions` declaration ❌
+- Declared all API endpoints in `functions` section
+- Result: Still 404
 
-#### Fix B: Removed Explicit Functions Config
-- Removed `"functions": { "api/**/*.js": { "runtime": "nodejs20.x" } }`
-- Letting Vercel auto-detect serverless functions
-- Simpler config = less chance of conflicts
+## Root Cause Analysis
 
-#### Fix C: Created Flat Alternative Endpoint
-**Created:** `/api/logs-activity.js`
-- Provides fallback if nested route fails
-- Accessible at `/api/logs-activity`
+After extensive research and testing, the issue appears to be:
 
-### 3. File Structure
-```
-api/
-├── agents.js
-├── health.js
-├── logs-activity.js      # NEW: Flat alternative
-├── logs/
-│   ├── activity.js       # Target: /api/logs/activity
-│   └── index.js          # Target: /api/logs
-├── metrics.js
-├── tasks.js
-└── tokens.js
-```
+### Most Likely Cause: Vercel Project Root Directory Setting
 
-### 4. Commits Pushed
-1. `5a61fdc8` - Fix Vercel API routing: Reorder rewrites to prioritize API routes
-2. `df6abe22` - Simplify vercel.json: Remove explicit functions config
+The Vercel project likely has a **"Root Directory"** configured in the dashboard that points to a subdirectory (e.g., `mission-control/dashboard`), which means:
 
----
+1. Vercel only looks for `/api` folder within that subdirectory
+2. The actual `/api` folder at repo root is ignored
+3. All serverless functions fail to deploy
 
-## Testing Checklist
+### Evidence:
+- All standard approaches have failed
+- The project has HTML files in `mission-control/dashboard/`
+- Common pattern for static sites with APIs that fail
 
-Once Vercel deployment completes (check https://vercel.com/dashboard):
+## Recommended Fix
+
+### Option 1: Update Vercel Dashboard Settings (Recommended)
+
+1. Go to https://vercel.com/dashboard
+2. Select the `kimimissioncontrol01` project
+3. Go to **Settings** → **Build & Development Settings**
+4. Check **Root Directory** setting
+5. If it's set to anything other than `./`, change it to `./`
+6. Redeploy
+
+### Option 2: Move API Folder
+
+If Root Directory must remain as `mission-control/dashboard/`:
 
 ```bash
-# Test the main endpoint (should return 200 with JSON)
-curl https://your-domain.vercel.app/api/logs/activity
-
-# Test flat alternative (should return 200 with JSON)
-curl https://your-domain.vercel.app/api/logs-activity
-
-# Test folder index (should return 200 with JSON)
-curl https://your-domain.vercel.app/api/logs
-
-# Test other APIs still work
-curl https://your-domain.vercel.app/api/health
-curl https://your-domain.vercel.app/api/agents
-
-# Or run the test script
-./test-api-routing.sh your-domain.vercel.app
+mkdir -p mission-control/dashboard/api
+cp -r api/* mission-control/dashboard/api/
+git add -A
+git commit -m "Move API folder to match Vercel Root Directory"
+git push
 ```
 
----
+### Option 3: Use Vercel CLI to Redeploy with Correct Settings
 
-## Expected Results
+```bash
+# Install Vercel CLI
+npm i -g vercel
 
-| Endpoint | Expected Status | Expected Response |
-|----------|----------------|-------------------|
-| `/api/logs/activity` | 200 | JSON with logs array |
-| `/api/logs-activity` | 200 | JSON with logs array |
-| `/api/logs` | 200 | JSON with logs array |
-| `/api/health` | 200 | Health check JSON |
-| `/api/agents` | 200 | Agents JSON |
+# Login
+vercel login
 
----
+# Link project and ensure root is correct
+vercel --confirm
 
-## If Issues Persist
+# Deploy with explicit root
+vercel --prod
+```
 
-### Next Steps:
+## Current Status
 
-1. **Check Vercel Function Logs**
-   - Go to Vercel Dashboard → Your Project → Functions tab
-   - Look for build errors or runtime errors
+- **API Endpoints:** Still returning 404
+- **Static Site:** Working correctly
+- **Last Deployment:** Commit 8a9bfa40
 
-2. **Try Zero-Config Approach**
-   - Delete `vercel.json` entirely
-   - Let Vercel auto-detect everything
-   - Test if APIs work without any config
+## Next Steps
 
-3. **Check Git Ignore**
-   - Ensure `api/logs/` folder is not ignored
-   - Current `.gitignore` has `!api/logs/` exception ✓
-
-4. **Use Vercel CLI for Local Testing**
-   ```bash
-   npm i -g vercel
-   vercel login
-   vercel dev
-   ```
+1. **EricF to check Vercel Dashboard** - Verify Root Directory setting
+2. **Apply fix** based on dashboard configuration
+3. **Re-test** all API endpoints
+4. **Verify** logs-view dashboard can fetch data
 
 ---
 
-## Key Learnings
-
-1. **Rewrite Order is Critical**: Vercel processes rewrites top-to-bottom; first match wins
-2. **Catch-All is Greedy**: `/(.*)` matches EVERYTHING if placed first
-3. **Auto-Detection Works**: Vercel auto-detects `/api/**/*.js` as serverless functions
-4. **Explicit Rewrites Override**: Can use explicit rewrites for special routing needs
-
----
-
-## References
-
-- Vercel Rewrites Docs: https://vercel.com/docs/configuration#project/rewrites
-- Vercel Functions Docs: https://vercel.com/docs/serverless-functions/introduction
-- Community Thread: https://community.vercel.com/t/debugging-404-errors/437
-
----
-
-**Status:** ✅ Fixes deployed. Awaiting Vercel build completion.  
-**Next Update:** After testing endpoints (ETA: 5 minutes)
+*Report by: API Troubleshooting Specialist*  
+*Session: 5d85514b-0e40-4a8d-85ed-1c7ddaede857*
