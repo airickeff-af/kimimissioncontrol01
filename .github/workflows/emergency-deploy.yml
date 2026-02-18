@@ -1,0 +1,55 @@
+name: Emergency Deploy (P0)
+
+on:
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: 'Emergency deployment reason'
+        required: true
+        default: 'P0 Critical Fix'
+
+jobs:
+  emergency-deploy:
+    name: Emergency Deploy to Vercel
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        
+    - name: Install Vercel CLI
+      run: npm install -g vercel
+      
+    - name: Emergency Deploy to Vercel
+      env:
+        VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+        VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+      run: |
+        echo "🚨 EMERGENCY DEPLOYMENT - ${{ github.event.inputs.reason }}"
+        vercel --token "$VERCEL_TOKEN" --prod --yes
+        
+    - name: Post-Deploy Verification
+      run: |
+        echo "🚀 Emergency deployment complete!"
+        echo "URL: https://kimimissioncontrol01.vercel.app"
+        
+        # Wait for deployment to propagate
+        sleep 15
+        
+        # Verify critical endpoints
+        echo "Checking /api/health..."
+        curl -sf https://kimimissioncontrol01.vercel.app/api/health || echo "⚠️ Health check failed"
+        
+        echo "Checking /api/logs/activity..."
+        curl -sf https://kimimissioncontrol01.vercel.app/api/logs/activity || echo "⚠️ Logs API failed"
+        
+        echo "Checking main page..."
+        curl -sf https://kimimissioncontrol01.vercel.app/ || echo "⚠️ Main page failed"
+        
+        echo "✅ Emergency deployment verification complete"
