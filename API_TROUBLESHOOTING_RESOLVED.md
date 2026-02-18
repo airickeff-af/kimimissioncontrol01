@@ -45,14 +45,14 @@ To:
 
 | Endpoint | URL | Status |
 |----------|-----|--------|
-| `/api/logs/activity` | https://kimimissioncontrol01-uutq.vercel.app/api/logs/activity | ✅ Working |
-| `/api/test` | https://kimimissioncontrol01-uutq.vercel.app/api/test | ✅ Working |
-| `/api/logs` | https://kimimissioncontrol01-uutq.vercel.app/api/logs | ✅ Working |
+| `/api/logs/activity` | https://dashboard-ten-sand-20.vercel.app/api/logs/activity | ✅ Working |
+| `/api/test` | https://dashboard-ten-sand-20.vercel.app/api/test | ✅ Working |
+| `/api/logs` | https://dashboard-ten-sand-20.vercel.app/api/logs | ✅ Working |
 
 ## Test Results
 
 ```bash
-$ curl https://kimimissioncontrol01-uutq.vercel.app/api/logs/activity
+$ curl https://dashboard-ten-sand-20.vercel.app/api/logs/activity
 {
   "success": true,
   "logs": [...],

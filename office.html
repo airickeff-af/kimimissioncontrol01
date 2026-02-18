@@ -895,28 +895,27 @@
         
         // 22 Agents: 1 Human Commander + 21 AI Agents
         const agents = [
-            { name: "EricF", role: "Commander", type: "human", sprite: "👑", color: "#ffd700", label: "COMMANDER" },
+            { name: "EricF", role: "Commander", type: "human", sprite: "👑", color: "#ffd700", label: "HUMAN" },
             { name: "Nexus", role: "Orchestrator", type: "ai", sprite: "🤖", color: "#00d4ff", label: "AI AGENT" },
-            { name: "DealFlow", role: "Lead Generation", type: "ai", sprite: "🤝", color: "#f97316", label: "AI AGENT" },
-            { name: "Code", role: "Backend Developer", type: "ai", sprite: "💻", color: "#22c55e", label: "AI AGENT" },
-            { name: "Forge", role: "UI/Frontend", type: "ai", sprite: "🔨", color: "#f97316", label: "AI AGENT" },
+            { name: "CodeMaster", role: "Backend Lead", type: "ai", sprite: "💻", color: "#22c55e", label: "AI AGENT" },
+            { name: "Code-1", role: "Backend Engineer", type: "ai", sprite: "⚡", color: "#22c55e", label: "AI AGENT" },
+            { name: "Code-2", role: "Backend Engineer", type: "ai", sprite: "🔧", color: "#22c55e", label: "AI AGENT" },
+            { name: "Code-3", role: "Backend Engineer", type: "ai", sprite: "🔌", color: "#22c55e", label: "AI AGENT" },
+            { name: "Forge", role: "UI/Frontend Lead", type: "ai", sprite: "🔨", color: "#f97316", label: "AI AGENT" },
+            { name: "Forge-2", role: "UI/Frontend", type: "ai", sprite: "🎨", color: "#f97316", label: "AI AGENT" },
+            { name: "Forge-3", role: "UI/Frontend", type: "ai", sprite: "✨", color: "#f97316", label: "AI AGENT" },
             { name: "Pixel", role: "Designer", type: "ai", sprite: "🎨", color: "#a855f7", label: "AI AGENT" },
-            { name: "Scout", role: "Researcher", type: "ai", sprite: "🔭", color: "#3b82f6", label: "AI AGENT" },
-            { name: "Audit", role: "Security", type: "ai", sprite: "🔒", color: "#ef4444", label: "AI AGENT" },
-            { name: "DataSync", role: "Data Engineer", type: "ai", sprite: "📊", color: "#10b981", label: "AI AGENT" },
-            { name: "Neural", role: "ML Engineer", type: "ai", sprite: "🧠", color: "#8b5cf6", label: "AI AGENT" },
-            { name: "Cipher", role: "Cryptography", type: "ai", sprite: "🔐", color: "#6366f1", label: "AI AGENT" },
-            { name: "Vector", role: "DevOps", type: "ai", sprite: "⚡", color: "#f59e0b", label: "AI AGENT" },
-            { name: "Spark", role: "Creative AI", type: "ai", sprite: "✨", color: "#ec4899", label: "AI AGENT" },
-            { name: "Pulse", role: "Monitoring", type: "ai", sprite: "📡", color: "#06b6d4", label: "AI AGENT" },
-            { name: "Quark", role: "Quantum Dev", type: "ai", sprite: "⚛️", color: "#84cc16", label: "AI AGENT" },
-            { name: "Flux", role: "Integration", type: "ai", sprite: "🔄", color: "#14b8a6", label: "AI AGENT" },
-            { name: "Prism", role: "Analytics", type: "ai", sprite: "🔮", color: "#d946ef", label: "AI AGENT" },
-            { name: "Core", role: "Systems", type: "ai", sprite: "⚙️", color: "#64748b", label: "AI AGENT" },
-            { name: "Nova", role: "Innovation", type: "ai", sprite: "🌟", color: "#fbbf24", label: "AI AGENT" },
-            { name: "Orbit", role: "Cloud Ops", type: "ai", sprite: "☁️", color: "#60a5fa", label: "AI AGENT" },
-            { name: "Synth", role: "Content AI", type: "ai", sprite: "📝", color: "#a78bfa", label: "AI AGENT" },
-            { name: "Blaze", role: "Performance", type: "ai", sprite: "🔥", color: "#f97316", label: "AI AGENT" }
+            { name: "Glasses", role: "Researcher", type: "ai", sprite: "🔍", color: "#3b82f6", label: "AI AGENT" },
+            { name: "Quill", role: "Writer", type: "ai", sprite: "📝", color: "#ec4899", label: "AI AGENT" },
+            { name: "Gary", role: "Marketing", type: "ai", sprite: "📢", color: "#f59e0b", label: "AI AGENT" },
+            { name: "Larry", role: "Social Media", type: "ai", sprite: "📱", color: "#06b6d4", label: "AI AGENT" },
+            { name: "Sentry", role: "DevOps", type: "ai", sprite: "🛡️", color: "#ef4444", label: "AI AGENT" },
+            { name: "Audit", role: "QA Lead", type: "ai", sprite: "🔍", color: "#8b5cf6", label: "AI AGENT" },
+            { name: "Cipher", role: "Security", type: "ai", sprite: "🔐", color: "#6366f1", label: "AI AGENT" },
+            { name: "DealFlow", role: "Lead Gen", type: "ai", sprite: "🤝", color: "#10b981", label: "AI AGENT" },
+            { name: "ColdCall", role: "Outreach", type: "ai", sprite: "📞", color: "#f97316", label: "AI AGENT" },
+            { name: "Scout", role: "Intel", type: "ai", sprite: "🔭", color: "#3b82f6", label: "AI AGENT" },
+            { name: "PIE", role: "Predictive Intelligence", type: "ai", sprite: "🧠", color: "#8b5cf6", label: "AI AGENT" }
         ];
         
         const activityTemplates = {

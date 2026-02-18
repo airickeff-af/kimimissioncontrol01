@@ -1,0 +1,1311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="theme-color" content="#2d1b4e">
+    <title>💼 DealFlow CRM | Pipeline</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-primary: #f5e6c8;
+            --bg-secondary: #e8d4a8;
+            --panel-bg: #f4e4c1;
+            --panel-border: #8b7355;
+            --panel-shadow: #5c4a3a;
+            --text-dark: #3d3225;
+            --text-light: #2c1810;
+            --accent-cyan: #00d4ff;
+            --accent-pink: #ff6b6b;
+            --accent-green: #51cf66;
+            --accent-blue: #339af0;
+            --accent-yellow: #fcc419;
+            --accent-purple: #da77f2;
+            --accent-orange: #ff8787;
+            
+            /* Pipeline column colors */
+            --col-new: #74c0fc;
+            --col-contacted: #339af0;
+            --col-meeting: #fcc419;
+            --col-proposal: #da77f2;
+            --col-negotiation: #ff8787;
+            --col-won: #51cf66;
+            --col-lost: #868e96;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            image-rendering: pixelated;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        html {
+            font-family: 'VT323', monospace;
+            background: var(--bg-primary);
+            color: var(--text-dark);
+            line-height: 1.4;
+            -webkit-text-size-adjust: 100%;
+        }
+        
+        body {
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        /* Pixel Grid Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.15) 2px, rgba(0,0,0,0.15) 4px),
+                repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0,0,0,0.15) 2px, rgba(0,0,0,0.15) 4px);
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .game-container {
+            position: relative;
+            z-index: 1;
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 15px;
+            min-height: 100vh;
+            padding-bottom: 100px;
+        }
+        
+        /* Header */
+        .game-header {
+            background: linear-gradient(180deg, #5c3d7a 0%, #3d2652 100%);
+            border: 4px solid #2d1b4e;
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 0 #1a0f2e, inset 0 2px 0 rgba(255,255,255,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .game-title {
+            font-family: 'Press Start 2P', cursive;
+            font-size: clamp(0.6rem, 2vw, 0.85rem);
+            color: var(--accent-yellow);
+            text-shadow: 3px 3px 0 #2d1b4e;
+            letter-spacing: 2px;
+            line-height: 1.6;
+        }
+        
+        .game-stats {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .stat-box {
+            background: var(--panel-bg);
+            border: 3px solid var(--panel-border);
+            border-radius: 4px;
+            padding: 8px 12px;
+            min-width: 70px;
+            text-align: center;
+            box-shadow: 0 3px 0 var(--panel-shadow);
+        }
+        
+        .stat-label {
+            color: #8b7355;
+            font-size: 0.7rem;
+        }
+        
+        .stat-value {
+            color: var(--text-dark);
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.75rem;
+        }
+        
+        /* Navigation */
+        .nav-panel {
+            background: var(--panel-bg);
+            border: 4px solid var(--panel-border);
+            border-radius: 8px;
+            padding: 12px;
+            box-shadow: 0 4px 0 var(--panel-shadow), inset 0 2px 0 rgba(255,255,255,0.5);
+            margin-bottom: 15px;
+        }
+        
+        .nav-desktop {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .nav-btn {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 12px;
+            padding: 8px 16px;
+            background: #f5e6c8;
+            border: 4px solid #8b7355;
+            border-radius: 0;
+            cursor: pointer;
+            box-shadow: 4px 4px 0 #8b7355;
+            transition: all 0.1s;
+            color: var(--text-dark);
+            line-height: 1.4;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .nav-btn:hover {
+            border-color: #00d4ff;
+            transform: translateY(-2px);
+            box-shadow: 4px 6px 0 #8b7355;
+        }
+        
+        .nav-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 0 0 #8b7355;
+        }
+        
+        .nav-btn.active {
+            background: #e8d4a8;
+            border-color: #8b7355;
+        }
+        
+        .nav-btn.danger {
+            background: linear-gradient(180deg, #ff8787 0%, #fa5252 100%);
+        }
+        
+        .nav-btn.success {
+            background: linear-gradient(180deg, #69db7c 0%, #51cf66 100%);
+        }
+        
+        /* Pipeline Board */
+        .pipeline-board {
+            display: flex;
+            gap: 15px;
+            overflow-x: auto;
+            padding-bottom: 20px;
+            min-height: 600px;
+        }
+        
+        .pipeline-column {
+            min-width: 280px;
+            max-width: 320px;
+            flex: 1;
+            background: var(--panel-bg);
+            border: 4px solid var(--panel-border);
+            border-radius: 8px;
+            box-shadow: 0 4px 0 var(--panel-shadow), inset 0 2px 0 rgba(255,255,255,0.5);
+            display: flex;
+            flex-direction: column;
+            max-height: 80vh;
+        }
+        
+        .pipeline-column.new { border-top: 6px solid var(--col-new); }
+        .pipeline-column.contacted { border-top: 6px solid var(--col-contacted); }
+        .pipeline-column.meeting { border-top: 6px solid var(--col-meeting); }
+        .pipeline-column.proposal { border-top: 6px solid var(--col-proposal); }
+        .pipeline-column.negotiation { border-top: 6px solid var(--col-negotiation); }
+        .pipeline-column.won { border-top: 6px solid var(--col-won); }
+        .pipeline-column.lost { border-top: 6px solid var(--col-lost); }
+        
+        .column-header {
+            padding: 12px;
+            border-bottom: 3px solid var(--panel-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(0,0,0,0.05);
+        }
+        
+        .column-title {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.6rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .column-count {
+            background: var(--panel-border);
+            color: var(--panel-bg);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.55rem;
+        }
+        
+        .column-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px;
+            min-height: 100px;
+        }
+        
+        .column-content.drag-over {
+            background: rgba(0, 212, 255, 0.1);
+            border: 2px dashed var(--accent-cyan);
+        }
+        
+        /* Deal Cards */
+        .deal-card {
+            background: linear-gradient(180deg, #fff 0%, #f0e6d3 100%);
+            border: 3px solid var(--panel-border);
+            border-radius: 6px;
+            padding: 12px;
+            margin-bottom: 10px;
+            cursor: grab;
+            transition: all 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .deal-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 4px;
+            background: var(--priority-color, var(--accent-blue));
+        }
+        
+        .deal-card.p0::before { background: var(--accent-pink); }
+        .deal-card.p1::before { background: var(--accent-yellow); }
+        .deal-card.p2::before { background: var(--accent-green); }
+        
+        .deal-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 0 var(--panel-shadow);
+        }
+        
+        .deal-card.dragging {
+            opacity: 0.5;
+            transform: rotate(3deg);
+            cursor: grabbing;
+        }
+        
+        .deal-card.moving {
+            animation: cardMove 0.3s ease-out;
+        }
+        
+        @keyframes cardMove {
+            0% { transform: scale(0.95); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .deal-company {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.55rem;
+            color: var(--text-dark);
+            margin-bottom: 4px;
+            line-height: 1.4;
+        }
+        
+        .deal-contact {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 2px;
+        }
+        
+        .deal-title {
+            font-size: 0.75rem;
+            color: #8b7355;
+            margin-bottom: 8px;
+        }
+        
+        .deal-value {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.5rem;
+            color: var(--accent-green);
+            margin-bottom: 8px;
+        }
+        
+        .deal-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 2px dashed var(--panel-border);
+        }
+        
+        .priority-badge {
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.5rem;
+            font-family: 'Press Start 2P', cursive;
+            border: 2px solid;
+        }
+        
+        .priority-badge.p0 { background: rgba(255, 107, 107, 0.2); color: #c92a2a; border-color: #ff6b6b; }
+        .priority-badge.p1 { background: rgba(252, 196, 25, 0.2); color: #e67700; border-color: #fcc419; }
+        .priority-badge.p2 { background: rgba(81, 207, 102, 0.2); color: #2b8a3e; border-color: #51cf66; }
+        
+        .deal-actions {
+            display: flex;
+            gap: 6px;
+        }
+        
+        .deal-btn {
+            width: 24px;
+            height: 24px;
+            border: 2px solid var(--panel-border);
+            border-radius: 4px;
+            background: var(--panel-bg);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            transition: all 0.2s;
+        }
+        
+        .deal-btn:hover {
+            background: var(--accent-cyan);
+            transform: scale(1.1);
+        }
+        
+        /* Calendar Panel */
+        .calendar-panel {
+            background: var(--panel-bg);
+            border: 4px solid var(--panel-border);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 0 var(--panel-shadow), inset 0 2px 0 rgba(255,255,255,0.5);
+        }
+        
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        
+        .calendar-title {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.6rem;
+            color: var(--panel-border);
+        }
+        
+        .calendar-sync-btn {
+            padding: 6px 12px;
+            background: linear-gradient(180deg, #69db7c 0%, #51cf66 100%);
+            border: 3px solid var(--panel-border);
+            border-radius: 4px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.45rem;
+            cursor: pointer;
+            box-shadow: 0 3px 0 var(--panel-shadow);
+        }
+        
+        .calendar-sync-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 0 var(--panel-shadow);
+        }
+        
+        .calendar-events {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 10px;
+        }
+        
+        .calendar-event {
+            background: linear-gradient(180deg, #fff 0%, #f0e6d3 100%);
+            border: 3px solid var(--panel-border);
+            border-radius: 6px;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .event-time {
+            background: var(--accent-blue);
+            color: white;
+            padding: 6px 10px;
+            border-radius: 4px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.45rem;
+            text-align: center;
+            min-width: 60px;
+        }
+        
+        .event-details {
+            flex: 1;
+        }
+        
+        .event-title {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.5rem;
+            margin-bottom: 4px;
+        }
+        
+        .event-company {
+            font-size: 0.8rem;
+            color: #8b7355;
+        }
+        
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.7);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+        
+        .modal-overlay.active {
+            display: flex;
+        }
+        
+        .modal {
+            background: var(--panel-bg);
+            border: 4px solid var(--panel-border);
+            border-radius: 8px;
+            padding: 20px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 8px 0 var(--panel-shadow);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid var(--panel-border);
+        }
+        
+        .modal-title {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.65rem;
+        }
+        
+        .modal-close {
+            background: var(--accent-pink);
+            border: 2px solid var(--panel-border);
+            border-radius: 4px;
+            padding: 6px 12px;
+            cursor: pointer;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.45rem;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-label {
+            display: block;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.5rem;
+            margin-bottom: 6px;
+            color: var(--panel-border);
+        }
+        
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            padding: 10px;
+            border: 3px solid var(--panel-border);
+            border-radius: 4px;
+            background: #fff;
+            font-family: 'VT323', monospace;
+            font-size: 1rem;
+        }
+        
+        .form-textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .btn {
+            flex: 1;
+            padding: 12px;
+            border: 4px solid var(--panel-border);
+            border-radius: 4px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 0 var(--panel-shadow);
+            transition: all 0.1s;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(180deg, #69db7c 0%, #51cf66 100%);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(180deg, #74c0fc 0%, #339af0 100%);
+        }
+        
+        .btn-danger {
+            background: linear-gradient(180deg, #ff8787 0%, #fa5252 100%);
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 0 var(--panel-shadow);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+            box-shadow: 0 0 0 var(--panel-shadow);
+        }
+        
+        /* Confetti Canvas */
+        #confetti-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2000;
+        }
+        
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--accent-green);
+            color: var(--text-dark);
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.55rem;
+            box-shadow: 0 4px 0 #2b8a3e;
+            z-index: 1001;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+        
+        .toast.show {
+            opacity: 1;
+        }
+        
+        /* Mobile Nav */
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #3d2652;
+            border-top: 4px solid #2d1b4e;
+            padding: 10px;
+            z-index: 101;
+            justify-content: space-around;
+        }
+        
+        .mobile-nav-btn {
+            padding: 10px 14px;
+            background: var(--panel-bg);
+            border: 3px solid var(--panel-border);
+            border-radius: 6px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.5rem;
+            color: var(--text-dark);
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+            line-height: 1.4;
+            box-shadow: 0 3px 0 var(--panel-shadow);
+        }
+        
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 10px; height: 10px; }
+        ::-webkit-scrollbar-track { background: var(--panel-bg); border-radius: 5px; }
+        ::-webkit-scrollbar-thumb { background: var(--panel-border); border-radius: 5px; border: 2px solid var(--panel-bg); }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .game-container { padding: 10px; padding-bottom: 90px; }
+            .game-title { font-size: 0.5rem; }
+            .nav-desktop { display: none; }
+            .mobile-nav { display: flex; }
+            .pipeline-board { flex-direction: column; }
+            .pipeline-column { 
+                min-width: 100%; 
+                max-width: 100%; 
+                max-height: none;
+            }
+            .calendar-events { grid-template-columns: 1fr; }
+        }
+        
+        /* Won celebration */
+        .won-celebration {
+            animation: wonPulse 0.5s ease-out;
+        }
+        
+        @keyframes wonPulse {
+            0% { transform: scale(1); }
+            25% { transform: scale(1.1); }
+            50% { transform: scale(1); }
+            75% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="confetti-canvas"></canvas>
+    
+    <div class="game-container">
+        <!-- Header -->
+        <header class="game-header">
+            <div class="game-title">💼 DEALFLOW CRM | PIPELINE</div>
+            <div class="game-stats">
+                <div class="stat-box">
+                    <div class="stat-label">TOTAL</div>
+                    <div class="stat-value" id="stat-total">0</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">WON</div>
+                    <div class="stat-value" style="color: #51cf66;" id="stat-won">0</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">VALUE</div>
+                    <div class="stat-value" style="color: #fcc419;" id="stat-value">$0</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <div class="nav-panel">
+            <nav class="nav-desktop">
+                <a href="index.html" class="nav-btn">🏠 HQ</a>
+                <a href="office.html" class="nav-btn">🏢 Office</a>
+                <a href="agents.html" class="nav-btn">👥 Agents</a>
+                <a href="dealflow-pipeline.html" class="nav-btn active">💼 Pipeline</a>
+                <a href="dealflow-view.html" class="nav-btn">📋 List</a>
+                <a href="token-tracker.html" class="nav-btn">🪙 Tokens</a>
+                <a href="scout.html" class="nav-btn">🔭 Scout</a>
+                <a href="task-board.html" class="nav-btn">📋 Tasks</a>
+                <button class="nav-btn success" onclick="openAddDealModal()">➕ Add Deal</button>
+                <button class="nav-btn" onclick="exportPipelineCSV()">📊 Export CSV</button>
+            </nav>
+        </div>
+
+        <!-- Calendar Panel -->
+        <div class="calendar-panel">
+            <div class="calendar-header">
+                <div class="calendar-title">📅 UPCOMING MEETINGS</div>
+                <button class="calendar-sync-btn" onclick="syncWithCalendar()">🔄 Sync Google Calendar</button>
+            </div>
+            <div class="calendar-events" id="calendarEvents">
+                <div class="calendar-event">
+                    <div class="event-time">TODAY<br>14:00</div>
+                    <div class="event-details">
+                        <div class="event-title">Discovery Call</div>
+                        <div class="event-company">Coins.ph - Wei Zhou</div>
+                    </div>
+                </div>
+                <div class="calendar-event">
+                    <div class="event-time">TOM<br>10:00</div>
+                    <div class="event-details">
+                        <div class="event-title">Proposal Review</div>
+                        <div class="event-company">HashKey Group - Michel Lee</div>
+                    </div>
+                </div>
+                <div class="calendar-event">
+                    <div class="event-time">FRI<br>16:00</div>
+                    <div class="event-details">
+                        <div class="event-title">Contract Negotiation</div>
+                        <div class="event-company">GCash - Martha Sazon</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pipeline Board -->
+        <div class="pipeline-board" id="pipelineBoard">
+            <!-- Columns will be generated by JavaScript -->
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">✅ Action completed!</div>
+
+    <!-- Mobile Navigation -->
+    <nav class="mobile-nav">
+        <a href="index.html" class="mobile-nav-btn">🏠<br>HQ</a>
+        <a href="scout.html" class="mobile-nav-btn">🔭<br>Scout</a>
+        <a href="dealflow-pipeline.html" class="mobile-nav-btn" style="background: #69db7c;">💼<br>Deals</a>
+        <a href="task-board.html" class="mobile-nav-btn">📋<br>Tasks</a>
+    </nav>
+
+    <!-- Add/Edit Deal Modal -->
+    <div class="modal-overlay" id="dealModal">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-title" id="modalTitle">➕ Add New Deal</div>
+                <button class="modal-close" onclick="closeModal()">✕</button>
+            </div>
+            <form id="dealForm" onsubmit="saveDeal(event)">
+                <input type="hidden" id="dealId">
+                <div class="form-group">
+                    <label class="form-label">Company</label>
+                    <input type="text" class="form-input" id="dealCompany" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Contact Name</label>
+                    <input type="text" class="form-input" id="dealContact" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Title</label>
+                    <input type="text" class="form-input" id="dealTitle">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-input" id="dealEmail">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Deal Value</label>
+                    <input type="text" class="form-input" id="dealValue" placeholder="$50,000">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Priority</label>
+                    <select class="form-select" id="dealPriority">
+                        <option value="P0">P0 - Critical</option>
+                        <option value="P1">P1 - High</option>
+                        <option value="P2">P2 - Normal</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Status</label>
+                    <select class="form-select" id="dealStatus">
+                        <option value="new">🆕 New</option>
+                        <option value="contacted">📞 Contacted</option>
+                        <option value="meeting">📅 Meeting Scheduled</option>
+                        <option value="proposal">📄 Proposal Sent</option>
+                        <option value="negotiation">⚖️ Negotiation</option>
+                        <option value="won">✅ Closed Won</option>
+                        <option value="lost">❌ Closed Lost</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Notes</label>
+                    <textarea class="form-textarea" id="dealNotes"></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">💾 Save Deal</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                    <button type="button" class="btn btn-danger" id="deleteBtn" onclick="deleteDeal()" style="display:none;">🗑️ Delete</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Pipeline columns configuration
+        const columns = [
+            { id: 'new', name: '🆕 NEW', color: '#74c0fc' },
+            { id: 'contacted', name: '📞 CONTACTED', color: '#339af0' },
+            { id: 'meeting', name: '📅 MEETING', color: '#fcc419' },
+            { id: 'proposal', name: '📄 PROPOSAL', color: '#da77f2' },
+            { id: 'negotiation', name: '⚖️ NEGOTIATION', color: '#ff8787' },
+            { id: 'won', name: '✅ CLOSED WON', color: '#51cf66' }
+        ];
+
+        // Sample deals data
+        let deals = [
+            { id: 'deal_001', company: 'Coins.ph', contact: 'Wei Zhou', title: 'CEO & Founder', email: 'wei.zhou@coins.ph', value: 150000, priority: 'P0', status: 'meeting', notes: 'Former Binance CFO. Leading crypto exchange with 18M+ users.', createdAt: '2024-01-15' },
+            { id: 'deal_002', company: 'HashKey Group', contact: 'Michel Lee', title: 'CEO', email: 'michel.lee@hashkey.com', value: 200000, priority: 'P0', status: 'proposal', notes: 'Leading HK digital asset exchange. Licensed by SFC.', createdAt: '2024-01-14' },
+            { id: 'deal_003', company: 'GCash', contact: 'Martha Sazon', title: 'President & CEO', email: 'martha.sazon@gcash.com', value: 500000, priority: 'P0', status: 'negotiation', notes: '#1 Finance Super App in Philippines. 80M+ users.', createdAt: '2024-01-10' },
+            { id: 'deal_004', company: 'Maya', contact: 'Shailesh Baidwan', title: 'Group President', email: 'shailesh.baidwan@maya.ph', value: 300000, priority: 'P0', status: 'contacted', notes: 'Digital banking and payments super app. Licensed VASP.', createdAt: '2024-01-16' },
+            { id: 'deal_005', company: 'Xendit Group', contact: 'Moses Lo', title: 'CEO & Co-Founder', email: 'moses@xendit.co', value: 180000, priority: 'P0', status: 'new', notes: 'Payment infrastructure across SEA. YCombinator alum.', createdAt: '2024-01-17' },
+            { id: 'deal_006', company: 'PDAX', contact: 'Nichel Gaba', title: 'Founder & CEO', email: 'nichel@pdax.ph', value: 120000, priority: 'P1', status: 'new', notes: 'Philippines largest homegrown crypto exchange. BSP licensed.', createdAt: '2024-01-12' },
+            { id: 'deal_007', company: 'PayMongo', contact: 'Jojo Malolos', title: 'CEO', email: 'jojo@paymongo.com', value: 90000, priority: 'P1', status: 'contacted', notes: 'Payment gateway for PH businesses. YCombinator alum.', createdAt: '2024-01-11' },
+            { id: 'deal_008', company: 'RD Technologies', contact: 'Rita Liu', title: 'CEO', email: 'rita.liu@rdtechnologies.com', value: 250000, priority: 'P1', status: 'meeting', notes: 'HK-based stablecoin issuer. HKMA sandbox participant.', createdAt: '2024-01-13' },
+            { id: 'deal_009', company: 'ZA Bank', contact: 'Ronald Iu', title: 'CEO', email: 'ronald.iu@zabank.com', value: 175000, priority: 'P1', status: 'proposal', notes: 'HK first virtual bank. 800K+ customers.', createdAt: '2024-01-09' },
+            { id: 'deal_010', company: 'RedotPay', contact: 'Rex Lau', title: 'CEO', email: 'rex.lau@redotpay.com', value: 110000, priority: 'P1', status: 'new', notes: 'HK crypto payment card provider. Visa/Mastercard partner.', createdAt: '2024-01-08' },
+            { id: 'deal_011', company: 'BloomX', contact: 'Luis Buenaventura', title: 'Co-Founder', email: null, value: 75000, priority: 'P1', status: 'new', notes: 'Now Head of GCrypto at GCash. President of Blockchain Council.', createdAt: '2024-01-07' },
+            { id: 'deal_012', company: 'Dragonpay', contact: 'Robertson Chiang', title: 'CEO', email: 'robertson.chiang@dragonpay.ph', value: 85000, priority: 'P1', status: 'contacted', notes: 'Alternative payment gateway. President of Fintech PH Association.', createdAt: '2024-01-06' },
+            { id: 'deal_013', company: 'Yield Guild Games', contact: 'Gabby Dizon', title: 'Co-Founder', email: null, value: 130000, priority: 'P1', status: 'won', notes: 'Leading play-to-earn gaming guild. Pioneer in GameFi.', createdAt: '2024-01-05' },
+            { id: 'deal_014', company: 'Tala Philippines', contact: 'Shivani Siroya', title: 'Founder & CEO', email: 'shivani@tala.co', value: 160000, priority: 'P1', status: 'lost', notes: 'Global fintech for underserved. $350M+ raised.', createdAt: '2024-01-04' }
+        ];
+
+        // Load deals from localStorage
+        function loadDeals() {
+            const saved = localStorage.getItem('dealflow_pipeline');
+            if (saved) {
+                const savedDeals = JSON.parse(saved);
+                // Merge with default deals, keeping saved status
+                savedDeals.forEach(savedDeal => {
+                    const existing = deals.find(d => d.id === savedDeal.id);
+                    if (existing) {
+                        Object.assign(existing, savedDeal);
+                    } else {
+                        deals.push(savedDeal);
+                    }
+                });
+            }
+        }
+
+        // Save deals to localStorage
+        function saveDeals() {
+            localStorage.setItem('dealflow_pipeline', JSON.stringify(deals));
+        }
+
+        // Render pipeline board
+        function renderPipeline() {
+            const board = document.getElementById('pipelineBoard');
+            board.innerHTML = columns.map(col => {
+                const colDeals = deals.filter(d => d.status === col.id);
+                return `
+                    <div class="pipeline-column ${col.id}" data-status="${col.id}">
+                        <div class="column-header">
+                            <div class="column-title" style="color: ${col.color}">${col.name}</div>
+                            <div class="column-count">${colDeals.length}</div>
+                        </div>
+                        <div class="column-content" 
+                             ondrop="drop(event, '${col.id}')" 
+                             ondragover="allowDrop(event)"
+                             ondragenter="dragEnter(event)"
+                             ondragleave="dragLeave(event)">
+                            ${colDeals.map(deal => renderDealCard(deal)).join('')}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            updateStats();
+        }
+
+        // Render individual deal card
+        function renderDealCard(deal) {
+            const value = deal.value ? `$${deal.value.toLocaleString()}` : 'TBD';
+            return `
+                <div class="deal-card ${deal.priority.toLowerCase()}" 
+                     draggable="true" 
+                     data-id="${deal.id}"
+                     ondragstart="drag(event)"
+                     onclick="openEditModal('${deal.id}')">
+                    <div class="deal-company">${deal.company}</div>
+                    <div class="deal-contact">${deal.contact}</div>
+                    <div class="deal-title">${deal.title}</div>
+                    <div class="deal-value">${value}</div>
+                    <div class="deal-meta">
+                        <span class="priority-badge ${deal.priority.toLowerCase()}">${deal.priority}</span>
+                        <div class="deal-actions" onclick="event.stopPropagation()">
+                            <button class="deal-btn" onclick="openEditModal('${deal.id}')" title="Edit">✏️</button>
+                            <button class="deal-btn" onclick="copyDealInfo('${deal.id}')" title="Copy">📋</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Drag and Drop handlers
+        function drag(ev) {
+            ev.dataTransfer.setData("dealId", ev.target.dataset.id);
+            ev.target.classList.add('dragging');
+        }
+
+        function allowDrop(ev) {
+            ev.preventDefault();
+        }
+
+        function dragEnter(ev) {
+            ev.preventDefault();
+            if (ev.target.classList.contains('column-content')) {
+                ev.target.classList.add('drag-over');
+            }
+        }
+
+        function dragLeave(ev) {
+            if (ev.target.classList.contains('column-content')) {
+                ev.target.classList.remove('drag-over');
+            }
+        }
+
+        function drop(ev, newStatus) {
+            ev.preventDefault();
+            const dealId = ev.dataTransfer.getData("dealId");
+            const deal = deals.find(d => d.id === dealId);
+            
+            if (deal && deal.status !== newStatus) {
+                const oldStatus = deal.status;
+                deal.status = newStatus;
+                saveDeals();
+                renderPipeline();
+                
+                // Animation for moved card
+                setTimeout(() => {
+                    const card = document.querySelector(`[data-id="${dealId}"]`);
+                    if (card) {
+                        card.classList.add('moving');
+                        setTimeout(() => card.classList.remove('moving'), 300);
+                    }
+                }, 50);
+                
+                // Celebration for won deals
+                if (newStatus === 'won') {
+                    celebrateWin(deal);
+                }
+                
+                showToast(`✅ Moved to ${columns.find(c => c.id === newStatus).name}`);
+                
+                // Play sound effect if enabled
+                playSound(newStatus);
+            }
+            
+            // Remove drag-over class
+            document.querySelectorAll('.column-content').forEach(el => {
+                el.classList.remove('drag-over');
+            });
+            document.querySelectorAll('.deal-card').forEach(el => {
+                el.classList.remove('dragging');
+            });
+        }
+
+        // Update statistics
+        function updateStats() {
+            document.getElementById('stat-total').textContent = deals.length;
+            document.getElementById('stat-won').textContent = deals.filter(d => d.status === 'won').length;
+            
+            const totalValue = deals
+                .filter(d => d.status === 'won')
+                .reduce((sum, d) => sum + (d.value || 0), 0);
+            document.getElementById('stat-value').textContent = `$${(totalValue / 1000).toFixed(0)}K`;
+        }
+
+        // Modal functions
+        function openAddDealModal() {
+            document.getElementById('dealModal').classList.add('active');
+            document.getElementById('modalTitle').textContent = '➕ Add New Deal';
+            document.getElementById('dealForm').reset();
+            document.getElementById('dealId').value = '';
+            document.getElementById('deleteBtn').style.display = 'none';
+        }
+
+        function openEditModal(dealId) {
+            const deal = deals.find(d => d.id === dealId);
+            if (!deal) return;
+            
+            document.getElementById('dealModal').classList.add('active');
+            document.getElementById('modalTitle').textContent = '✏️ Edit Deal';
+            document.getElementById('dealId').value = deal.id;
+            document.getElementById('dealCompany').value = deal.company;
+            document.getElementById('dealContact').value = deal.contact;
+            document.getElementById('dealTitle').value = deal.title || '';
+            document.getElementById('dealEmail').value = deal.email || '';
+            document.getElementById('dealValue').value = deal.value ? `$${deal.value.toLocaleString()}` : '';
+            document.getElementById('dealPriority').value = deal.priority;
+            document.getElementById('dealStatus').value = deal.status;
+            document.getElementById('dealNotes').value = deal.notes || '';
+            document.getElementById('deleteBtn').style.display = 'inline-block';
+        }
+
+        function closeModal() {
+            document.getElementById('dealModal').classList.remove('active');
+        }
+
+        function saveDeal(event) {
+            event.preventDefault();
+            
+            const dealId = document.getElementById('dealId').value;
+            const valueStr = document.getElementById('dealValue').value.replace(/[$,]/g, '');
+            const newStatus = document.getElementById('dealStatus').value;
+            
+            const dealData = {
+                company: document.getElementById('dealCompany').value,
+                contact: document.getElementById('dealContact').value,
+                title: document.getElementById('dealTitle').value,
+                email: document.getElementById('dealEmail').value,
+                value: valueStr ? parseInt(valueStr) : 0,
+                priority: document.getElementById('dealPriority').value,
+                status: newStatus,
+                notes: document.getElementById('dealNotes').value
+            };
+            
+            const wasWon = dealId && deals.find(d => d.id === dealId)?.status === 'won';
+            
+            if (dealId) {
+                // Update existing
+                const index = deals.findIndex(d => d.id === dealId);
+                if (index !== -1) {
+                    deals[index] = { ...deals[index], ...dealData };
+                }
+            } else {
+                // Create new
+                const newDeal = {
+                    id: 'deal_' + Date.now(),
+                    ...dealData,
+                    createdAt: new Date().toISOString().split('T')[0]
+                };
+                deals.push(newDeal);
+            }
+            
+            saveDeals();
+            renderPipeline();
+            closeModal();
+            showToast('💾 Deal saved!');
+            
+            // Celebrate if newly won
+            if (newStatus === 'won' && !wasWon) {
+                celebrateWin(dealData);
+            }
+        }
+
+        function deleteDeal() {
+            const dealId = document.getElementById('dealId').value;
+            if (confirm('Are you sure you want to delete this deal?')) {
+                deals = deals.filter(d => d.id !== dealId);
+                saveDeals();
+                renderPipeline();
+                closeModal();
+                showToast('🗑️ Deal deleted!');
+            }
+        }
+
+        // Copy deal info
+        function copyDealInfo(dealId) {
+            const deal = deals.find(d => d.id === dealId);
+            if (!deal) return;
+            
+            const info = `
+Company: ${deal.company}
+Contact: ${deal.contact}
+Title: ${deal.title || 'N/A'}
+Email: ${deal.email || 'N/A'}
+Value: ${deal.value ? '$' + deal.value.toLocaleString() : 'TBD'}
+Priority: ${deal.priority}
+Status: ${deal.status}
+Notes: ${deal.notes || 'N/A'}
+            `.trim();
+            
+            navigator.clipboard.writeText(info).then(() => {
+                showToast('📋 Copied to clipboard!');
+            });
+        }
+
+        // Export to CSV
+        function exportPipelineCSV() {
+            const headers = ['ID', 'Company', 'Contact', 'Title', 'Email', 'Value', 'Priority', 'Status', 'Notes', 'Created'];
+            const rows = deals.map(d => [
+                d.id,
+                d.company,
+                d.contact,
+                d.title || '',
+                d.email || '',
+                d.value || 0,
+                d.priority,
+                d.status,
+                (d.notes || '').replace(/,/g, ';').replace(/\n/g, ' '),
+                d.createdAt
+            ]);
+            
+            const csv = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `dealflow-pipeline-${new Date().toISOString().split('T')[0]}.csv`;
+            a.click();
+            URL.revokeObjectURL(url);
+            
+            showToast('📊 CSV exported!');
+        }
+
+        // Google Calendar sync (placeholder)
+        function syncWithCalendar() {
+            showToast('🔄 Syncing with Google Calendar...');
+            
+            // Simulate API call
+            setTimeout(() => {
+                showToast('✅ Calendar synced! 3 meetings found.');
+            }, 1500);
+        }
+
+        // Show toast
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2000);
+        }
+
+        // Celebration effects
+        function celebrateWin(deal) {
+            // Confetti
+            fireConfetti();
+            
+            // Sound
+            playWinSound();
+            
+            // Toast
+            setTimeout(() => {
+                showToast(`🎉 DEAL WON! ${deal.company} - $${(deal.value || 0).toLocaleString()}`);
+            }, 300);
+        }
+
+        // Confetti effect
+        function fireConfetti() {
+            const canvas = document.getElementById('confetti-canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            
+            const particles = [];
+            const colors = ['#ff6b6b', '#fcc419', '#51cf66', '#339af0', '#da77f2', '#ff8787'];
+            
+            for (let i = 0; i < 150; i++) {
+                particles.push({
+                    x: canvas.width / 2,
+                    y: canvas.height / 2,
+                    vx: (Math.random() - 0.5) * 20,
+                    vy: (Math.random() - 0.5) * 20 - 5,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    size: Math.random() * 8 + 4,
+                    rotation: Math.random() * 360,
+                    rotationSpeed: (Math.random() - 0.5) * 10
+                });
+            }
+            
+            let animationId;
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                particles.forEach((p, i) => {
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.vy += 0.3; // gravity
+                    p.rotation += p.rotationSpeed;
+                    
+                    ctx.save();
+                    ctx.translate(p.x, p.y);
+                    ctx.rotate(p.rotation * Math.PI / 180);
+                    ctx.fillStyle = p.color;
+                    ctx.fillRect(-p.size/2, -p.size/2, p.size, p.size);
+                    ctx.restore();
+                    
+                    if (p.y > canvas.height + 50) {
+                        particles.splice(i, 1);
+                    }
+                });
+                
+                if (particles.length > 0) {
+                    animationId = requestAnimationFrame(animate);
+                } else {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                }
+            }
+            
+            animate();
+            
+            // Stop after 3 seconds
+            setTimeout(() => {
+                cancelAnimationFrame(animationId);
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+            }, 3000);
+        }
+
+        // Sound effects
+        function playSound(status) {
+            // Simple beep using Web Audio API
+            try {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioCtx.createOscillator();
+                const gainNode = audioCtx.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioCtx.destination);
+                
+                const frequencies = {
+                    new: 440,
+                    contacted: 523,
+                    meeting: 659,
+                    proposal: 784,
+                    negotiation: 880,
+                    won: 1047,
+                    lost: 220
+                };
+                
+                oscillator.frequency.value = frequencies[status] || 440;
+                oscillator.type = 'sine';
+                
+                gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
+                
+                oscillator.start(audioCtx.currentTime);
+                oscillator.stop(audioCtx.currentTime + 0.2);
+            } catch (e) {
+                // Audio not supported
+            }
+        }
+
+        function playWinSound() {
+            try {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                
+                // Victory arpeggio
+                const notes = [523, 659, 784, 1047]; // C, E, G, C
+                notes.forEach((freq, i) => {
+                    setTimeout(() => {
+                        const oscillator = audioCtx.createOscillator();
+                        const gainNode = audioCtx.createGain();
+                        
+                        oscillator.connect(gainNode);
+                        gainNode.connect(audioCtx.destination);
+                        
+                        oscillator.frequency.value = freq;
+                        oscillator.type = 'square';
+                        
+                        gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                        gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+                        
+                        oscillator.start(audioCtx.currentTime);
+                        oscillator.stop(audioCtx.currentTime + 0.3);
+                    }, i * 100);
+                });
+            } catch (e) {
+                // Audio not supported
+            }
+        }
+
+        // Close modal on outside click
+        document.getElementById('dealModal').addEventListener('click', (e) => {
+            if (e.target.id === 'dealModal') {
+                closeModal();
+            }
+        });
+
+        // Handle window resize for confetti
+        window.addEventListener('resize', () => {
+            const canvas = document.getElementById('confetti-canvas');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            loadDeals();
+            renderPipeline();
+        });
+    </script>
+</body>
+</html>

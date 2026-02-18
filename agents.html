@@ -3,119 +3,165 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agent Dashboard | Mission Control</title>
+    <title>🤖 Agent Dashboard | Mission Control</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+    
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
-        
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
         :root {
-            --bg-primary: #0a0a0f;
-            --bg-secondary: #111118;
-            --bg-card: #15151d;
-            --bg-elevated: #1e1e2a;
+            --bg-primary: #f5e6c8;
+            --bg-secondary: #e8d4a8;
+            --panel-bg: #f4e4c1;
+            --panel-border: #8b7355;
+            --panel-shadow: #5c4a3a;
+            --text-dark: #2c1810;
+            --text-light: #f4e4c1;
             --accent-cyan: #00d4ff;
-            --accent-pink: #ff2a6d;
-            --accent-purple: #a855f7;
-            --accent-green: #22c55e;
-            --accent-yellow: #fbbf24;
-            --text-primary: #fafafa;
-            --text-secondary: #a1a1aa;
-            --text-muted: #71717a;
-            --border: #27272a;
+            --accent-pink: #ff6b6b;
+            --accent-green: #51cf66;
+            --accent-blue: #339af0;
+            --accent-yellow: #fcc419;
+            --accent-purple: #da77f2;
+            --accent-orange: #ff8787;
+        }
+        
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box;
+            image-rendering: pixelated;
         }
         
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'VT323', monospace;
             background: var(--bg-primary);
-            color: var(--text-primary);
+            color: var(--text-dark);
             min-height: 100vh;
+            line-height: 1.4;
         }
         
+        /* Pixel Grid Background */
         body::before {
             content: '';
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background-image: 
-                linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
-            background-size: 60px 60px;
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.05) 2px, rgba(0,0,0,0.05) 4px),
+                repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0,0,0,0.05) 2px, rgba(0,0,0,0.05) 4px);
             pointer-events: none;
             z-index: 0;
         }
         
-        .header {
-            background: rgba(17, 17, 24, 0.95);
-            border-bottom: 1px solid var(--border);
-            padding: 0 2rem;
-            height: 70px;
+        .game-container {
+            position: relative;
+            z-index: 1;
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 15px;
+            min-height: 100vh;
+            padding-bottom: 100px;
+        }
+        
+        /* Header */
+        .game-header {
+            background: linear-gradient(180deg, #5c3d7a 0%, #3d2652 100%);
+            border: 4px solid #2d1b4e;
+            border-radius: 0;
+            padding: 15px 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 0 #1a0f2e, inset 0 2px 0 rgba(255,255,255,0.1);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            flex-wrap: wrap;
+            gap: 15px;
         }
         
-        .brand {
+        .game-title {
+            font-family: 'Press Start 2P', cursive;
+            font-size: clamp(0.6rem, 2vw, 0.85rem);
+            color: var(--accent-yellow);
+            text-shadow: 3px 3px 0 #2d1b4e;
+            letter-spacing: 2px;
+            line-height: 1.6;
+        }
+        
+        .game-subtitle {
+            font-size: 1rem;
+            color: var(--text-light);
+            opacity: 0.8;
+            margin-top: 5px;
+        }
+        
+        /* Navigation */
+        .nav-panel {
             display: flex;
-            align-items: center;
-            gap: 1rem;
+            gap: 8px;
+            flex-wrap: wrap;
         }
         
-        .logo {
-            width: 42px;
-            height: 42px;
-            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-        }
-        
-        .nav-tabs {
-            display: flex;
-            gap: 0.5rem;
-            background: rgba(255,255,255,0.05);
-            padding: 0.5rem;
-            border-radius: 12px;
-        }
-        
-        .nav-tab {
-            padding: 0.75rem 1.25rem;
-            border: none;
-            background: transparent;
-            color: var(--text-secondary);
-            font-size: 0.875rem;
-            font-weight: 500;
+        .nav-btn {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 12px;
+            padding: 8px 16px;
+            background: #f5e6c8;
+            border: 4px solid #8b7355;
+            border-radius: 0;
             cursor: pointer;
-            border-radius: 8px;
-            transition: all 0.2s;
+            box-shadow: 4px 4px 0 #8b7355;
+            transition: all 0.1s;
+            color: var(--text-dark);
+            line-height: 1.4;
             text-decoration: none;
-            display: flex;
+            display: inline-flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 6px;
         }
         
-        .nav-tab:hover, .nav-tab.active {
-            color: var(--text-primary);
-            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+        .nav-btn:hover {
+            border-color: #00d4ff;
+            transform: translateY(-2px);
+            box-shadow: 4px 6px 0 #8b7355;
         }
         
+        .nav-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 0 0 #8b7355;
+        }
+        
+        .nav-btn.active {
+            background: #e8d4a8;
+            border-color: #8b7355;
+        }
+        
+        /* Main Content Grid */
         .main-content {
-            padding: 2rem;
-            max-width: 1600px;
-            margin: 0 auto;
             display: grid;
             grid-template-columns: 1fr 400px;
-            gap: 2rem;
+            gap: 1.5rem;
         }
         
-        h2 {
-            color: var(--accent-cyan);
-            margin-bottom: 1.5rem;
-            font-size: 1.5rem;
+        /* Panel Box */
+        .panel-box {
+            background: var(--panel-bg);
+            border: 4px solid var(--panel-border);
+            border-radius: 0;
+            padding: 15px;
+            box-shadow: 0 4px 0 var(--panel-shadow), inset 0 2px 0 rgba(255,255,255,0.5);
+            margin-bottom: 15px;
+        }
+        
+        .panel-title {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.65rem;
+            color: var(--panel-border);
+            margin-bottom: 12px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid var(--panel-border);
+            line-height: 1.6;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
         
         /* Agent Grid */
@@ -126,16 +172,17 @@
         }
         
         .agent-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
+            background: linear-gradient(180deg, #fff 0%, #f0e6d3 100%);
+            border: 4px solid var(--panel-border);
+            border-radius: 0;
             padding: 1.25rem;
+            box-shadow: 0 4px 0 var(--panel-shadow);
             transition: all 0.2s;
         }
         
         .agent-card:hover {
-            border-color: var(--accent-cyan);
-            transform: translateY(-2px);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 0 var(--panel-shadow);
         }
         
         .agent-header {
@@ -148,37 +195,42 @@
         .agent-avatar {
             width: 48px;
             height: 48px;
-            border-radius: 12px;
+            border: 3px solid var(--panel-border);
+            border-radius: 0;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 1.5rem;
-            background: var(--bg-elevated);
+            background: var(--bg-secondary);
         }
         
         .agent-info h3 {
-            font-size: 1rem;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.65rem;
+            color: var(--text-dark);
             margin-bottom: 0.25rem;
+            line-height: 1.4;
         }
         
         .agent-role {
-            font-size: 0.75rem;
-            color: var(--text-muted);
+            font-size: 0.9rem;
+            color: #8b7355;
         }
         
         .agent-status {
             display: inline-block;
             padding: 0.25rem 0.5rem;
-            border-radius: 4px;
-            font-size: 0.7rem;
-            font-weight: 600;
+            border: 2px solid;
+            border-radius: 0;
+            font-size: 0.55rem;
+            font-family: 'Press Start 2P', cursive;
             text-transform: uppercase;
             margin-left: auto;
         }
         
-        .status-active { background: rgba(34, 197, 94, 0.2); color: var(--accent-green); }
-        .status-busy { background: rgba(251, 191, 36, 0.2); color: var(--accent-yellow); }
-        .status-resting { background: rgba(161, 161, 170, 0.2); color: var(--text-muted); }
+        .status-active { background: rgba(81, 207, 102, 0.2); color: #2b8a3e; border-color: #51cf66; }
+        .status-busy { background: rgba(252, 196, 25, 0.2); color: #e67700; border-color: #fcc419; }
+        .status-resting { background: rgba(134, 142, 153, 0.2); color: #495057; border-color: #adb5bd; }
         
         .agent-stats {
             display: grid;
@@ -186,7 +238,7 @@
             gap: 0.5rem;
             margin-top: 0.75rem;
             padding-top: 0.75rem;
-            border-top: 1px solid var(--border);
+            border-top: 3px dashed var(--panel-border);
         }
         
         .stat {
@@ -194,30 +246,35 @@
         }
         
         .stat-value {
-            font-size: 1rem;
-            font-weight: 700;
-            color: var(--accent-cyan);
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.75rem;
+            color: var(--text-dark);
         }
         
         .stat-label {
-            font-size: 0.65rem;
-            color: var(--text-muted);
+            font-size: 0.7rem;
+            color: #8b7355;
             text-transform: uppercase;
+            margin-top: 4px;
         }
         
         .agent-experience {
             margin-top: 0.75rem;
-            font-size: 0.8rem;
-            color: var(--text-secondary);
+            font-size: 0.9rem;
+            color: #5c4a3a;
             line-height: 1.4;
+            padding: 8px;
+            background: rgba(139, 115, 85, 0.1);
+            border-left: 3px solid var(--panel-border);
         }
         
         /* Activity Feed */
         .activity-panel {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
+            background: var(--panel-bg);
+            border: 4px solid var(--panel-border);
+            border-radius: 0;
             padding: 1.5rem;
+            box-shadow: 0 4px 0 var(--panel-shadow), inset 0 2px 0 rgba(255,255,255,0.5);
             height: fit-content;
             position: sticky;
             top: 90px;
@@ -227,7 +284,7 @@
             display: flex;
             gap: 0.75rem;
             padding: 0.75rem 0;
-            border-bottom: 1px solid var(--border);
+            border-bottom: 2px dashed var(--panel-border);
         }
         
         .activity-item:last-child {
@@ -235,77 +292,153 @@
         }
         
         .activity-time {
-            font-size: 0.7rem;
-            color: var(--text-muted);
-            font-family: 'JetBrains Mono', monospace;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.5rem;
+            color: #8b7355;
             white-space: nowrap;
+            min-width: 50px;
         }
         
         .activity-text {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
+            font-size: 0.9rem;
+            color: var(--text-dark);
             line-height: 1.4;
+        }
+        
+        .activity-text strong {
+            color: var(--panel-border);
         }
         
         .refresh-btn {
             width: 100%;
             padding: 0.75rem;
             margin-top: 1rem;
-            background: var(--bg-elevated);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            color: var(--text-secondary);
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.55rem;
+            background: linear-gradient(180deg, #fcc419 0%, #f59f00 100%);
+            border: 3px solid #2d1b4e;
+            border-radius: 0;
+            color: var(--text-dark);
             cursor: pointer;
-            transition: all 0.2s;
+            box-shadow: 0 4px 0 #2d1b4e;
+            transition: all 0.1s;
         }
         
         .refresh-btn:hover {
-            border-color: var(--accent-cyan);
-            color: var(--accent-cyan);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 0 #2d1b4e;
+        }
+        
+        .refresh-btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 0 0 #2d1b4e;
+        }
+        
+        /* Mobile Nav */
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #3d2652;
+            border-top: 4px solid #2d1b4e;
+            padding: 10px;
+            z-index: 101;
+            justify-content: space-around;
+        }
+        
+        .mobile-nav-btn {
+            padding: 10px 14px;
+            background: var(--panel-bg);
+            border: 3px solid var(--panel-border);
+            border-radius: 0;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.5rem;
+            color: var(--text-dark);
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+            line-height: 1.4;
+            box-shadow: 0 3px 0 var(--panel-shadow);
+        }
+        
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: var(--panel-bg); border-radius: 0; }
+        ::-webkit-scrollbar-thumb { background: var(--panel-border); border-radius: 0; border: 2px solid var(--panel-bg); }
+        
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            .activity-panel {
+                position: static;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .game-container { padding: 10px; padding-bottom: 90px; }
+            .game-title { font-size: 0.5rem; }
+            .nav-panel { display: none; }
+            .mobile-nav { display: flex; }
+            .agent-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
-    <header class="header">
-        <div class="brand">
-            <div class="logo">🤖</div>
+    <div class="game-container">
+        <!-- Header -->
+        <header class="game-header">
             <div>
-                <h1 style="font-size: 1.25rem;">All Agents</h1>
-                <span style="font-size: 0.75rem; color: var(--text-muted);">Mission Control HQ</span>
+                <div class="game-title">🤖 ALL AGENTS</div>
+                <div class="game-subtitle">Mission Control HQ</div>
             </div>
-        </div>
-        
-        <nav class="nav-tabs">
-            <a href="index.html" class="nav-tab">📊 Overview</a>
-            <a href="living-pixel-office.html" class="nav-tab">🏢 Office</a>
-            <a href="data-viewer.html" class="nav-tab">📁 Data</a>
-            <a href="token-tracker.html" class="nav-tab">💰 Tokens</a>
-            <a href="task-board.html" class="nav-tab">📋 Tasks</a>
-            <a href="logs-view.html" class="nav-tab">📝 Logs</a>
-        </nav>
-        
-        <div style="display: flex; align-items: center; gap: 1rem;">
-            <span style="font-size: 0.875rem; color: var(--text-muted);">🟢 20 Agents Active</span>
-            <button class="refresh-btn" onclick="window.location.reload()" style="width: auto; padding: 0.5rem 1rem; margin: 0;">🔄 Refresh</button>
-        </div>
-    </header>
+            
+            <nav class="nav-panel">
+                <a href="index.html" class="nav-btn">📊 HQ</a>
+                <a href="office.html" class="nav-btn">🏢 Office</a>
+                <a href="agents.html" class="nav-btn active">👥 Agents</a>
+                <a href="dealflow-view.html" class="nav-btn">💼 Deals</a>
+                <a href="token-tracker.html" class="nav-btn">🪙 Tokens</a>
+                <a href="scout.html" class="nav-btn">🔭 Scout</a>
+                <a href="task-board.html" class="nav-btn">📋 Tasks</a>
+            </nav>
+            
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <span style="font-size: 0.875rem; color: var(--text-light);">🟢 20 Agents Active</span>
+                <button class="refresh-btn" onclick="window.location.reload()" style="width: auto; padding: 0.5rem 1rem; margin: 0;">🔄 REFRESH</button>
+            </div>
+        </header>
 
-    <div class="main-content">
-        <div>
-            <h2>🤖 All 20 Agents</h2>
-            <div class="agent-grid" id="agent-grid">
-                <!-- Agents populated by JavaScript -->
+        <div class="main-content">
+            <div>
+                <div class="panel-box">
+                    <div class="panel-title">🤖 ALL 20 AGENTS</div>
+                    <div class="agent-grid" id="agent-grid">
+                        <!-- Agents populated by JavaScript -->
+                    </div>
+                </div>
             </div>
-        </div>
-        
-        <div class="activity-panel">
-            <h2>📡 Live Activity Feed</h2>
-            <div id="activity-feed">
-                <!-- Activities populated by JavaScript -->
+            
+            <div class="activity-panel">
+                <div class="panel-title">📡 LIVE ACTIVITY</div>
+                <div id="activity-feed">
+                    <!-- Activities populated by JavaScript -->
+                </div>
+                <button class="refresh-btn" onclick="loadActivities()">🔄 LOAD MORE</button>
             </div>
-            <button class="refresh-btn" onclick="loadActivities()">🔄 Load More Activities</button>
         </div>
     </div>
+
+    <!-- Mobile Navigation -->
+    <nav class="mobile-nav">
+        <a href="index.html" class="mobile-nav-btn">📊<br>HQ</a>
+        <a href="office.html" class="mobile-nav-btn">🏢<br>Office</a>
+        <a href="agents.html" class="mobile-nav-btn" style="background: #69db7c;">👥<br>Agents</a>
+        <a href="token-tracker.html" class="mobile-nav-btn">🪙<br>Tokens</a>
+    </nav>
 
     <script>
         // All 20 Agents Data
@@ -364,7 +497,7 @@
             grid.innerHTML = agents.map(agent => `
                 <div class="agent-card">
                     <div class="agent-header">
-                        <div class="agent-avatar" style="border: 2px solid ${agent.color}">${agent.emoji}</div>
+                        <div class="agent-avatar" style="border-color: ${agent.color}">${agent.emoji}</div>
                         <div class="agent-info">
                             <h3>${agent.name}</h3>
                             <div class="agent-role">${agent.role}</div>
@@ -405,7 +538,6 @@
         }
 
         function loadActivities() {
-            // In real implementation, this would fetch more activities
             alert('Loading more activities... (In production, this would fetch from API)');
         }
 

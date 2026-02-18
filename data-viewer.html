@@ -6,25 +6,18 @@
     <meta name="theme-color" content="#0a0a0f">
     <title>Data Viewer | Mission Control</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --bg-primary: #0a0a0f;
-            --bg-secondary: #111118;
-            --bg-card: #15151d;
-            --bg-elevated: #1e1e2a;
-            --accent-cyan: #00d4ff;
-            --accent-pink: #ff2a6d;
-            --accent-purple: #a855f7;
-            --accent-green: #22c55e;
-            --accent-yellow: #fbbf24;
-            --text-primary: #fafafa;
-            --text-secondary: #a1a1aa;
-            --text-muted: #71717a;
-            --border: #27272a;
-            --border-hover: #3f3f46;
+            --bg-primary: #f5e6c8;
+            --bg-secondary: #e8d4a8;
+            --bg-card: #fff8e7;
+            --accent-primary: #8b7355;
+            --text-primary: #3d3225;
+            --border: #c4b090;
         }
+        body { font-family: 'Press Start 2P', cursive; }
         
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
@@ -983,15 +976,13 @@
             URL.revokeObjectURL(url);
         }
         
-        // Initialize - moved to end to ensure all functions are defined
-        document.addEventListener('DOMContentLoaded', () => {
-            // Ensure DOM is fully loaded before calling loadFileList
-            if (document.readyState === 'complete' || document.readyState === 'interactive') {
-                loadFileList();
-            } else {
-                window.addEventListener('load', loadFileList);
-            }
-        });
+        // Initialize - ensure all functions are defined before calling
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', loadFileList);
+        } else {
+            // DOM already loaded, call directly
+            loadFileList();
+        }
     </script>
 </body>
 </html>

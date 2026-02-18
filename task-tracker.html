@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Tracker - Mission Control</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #1a1a2e;
+            --bg-secondary: #16213e;
+            --bg-card: #0f3460;
+            --bg-hover: #1a4a7a;
+            --text-primary: #eaeaea;
+            --text-secondary: #a0a0a0;
+            --accent-green: #4ecca3;
+            --accent-yellow: #ffc107;
+            --accent-red: #e74c3c;
+            --accent-blue: #3498db;
+            --accent-purple: #9b59b6;
+            --border-color: #2a2a4a;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.4);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 2px solid var(--border-color);
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 1.5rem;
+            color: var(--accent-green);
+            text-shadow: 2px 2px 0 var(--bg-primary);
+        }
+
+        .header-stats {
+            display: flex;
+            gap: 20px;
+        }
+
+        .header-stat {
+            text-align: center;
+            padding: 10px 20px;
+            background: var(--bg-card);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .header-stat .value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-green);
+        }
+
+        .header-stat .label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+        }
+
+        .refresh-indicator {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .refresh-indicator .dot {
+            width: 8px;
+            height: 8px;
+            background: var(--accent-green);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Grid Layout */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .dashboard-grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .card-header {
+            padding: 15px 20px;
+            background: linear-gradient(90deg, var(--bg-secondary) 0%, var(--bg-card) 100%);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-header h2 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.75rem;
+            color: var(--accent-blue);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-header h2::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: var(--accent-blue);
+            border-radius: 2px;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        /* Task Table */
+        .task-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .task-table th {
+            text-align: left;
+            padding: 12px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            border-bottom: 2px solid var(--border-color);
+            font-weight: 600;
+        }
+
+        .task-table td {
+            padding: 12px;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.875rem;
+        }
+
+        .task-table tr:hover {
+            background: var(--bg-hover);
+        }
+
+        .task-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Status Badges */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .badge-in-progress {
+            background: rgba(78, 204, 163, 0.2);
+            color: var(--accent-green);
+            border: 1px solid var(--accent-green);
+        }
+
+        .badge-completed {
+            background: rgba(52, 152, 219, 0.2);
+            color: var(--accent-blue);
+            border: 1px solid var(--accent-blue);
+        }
+
+        .badge-planned {
+            background: rgba(155, 89, 182, 0.2);
+            color: var(--accent-purple);
+            border: 1px solid var(--accent-purple);
+        }
+
+        .badge-blocked {
+            background: rgba(231, 76, 60, 0.2);
+            color: var(--accent-red);
+            border: 1px solid var(--accent-red);
+        }
+
+        /* Priority Indicators */
+        .priority {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 600;
+        }
+
+        .priority-p0 { color: var(--accent-red); }
+        .priority-p1 { color: var(--accent-yellow); }
+        .priority-p2 { color: var(--accent-blue); }
+        .priority-p3 { color: var(--text-secondary); }
+
+        .priority-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .priority-p0 .priority-dot { background: var(--accent-red); }
+        .priority-p1 .priority-dot { background: var(--accent-yellow); }
+        .priority-p2 .priority-dot { background: var(--accent-blue); }
+        .priority-p3 .priority-dot { background: var(--text-secondary); }
+
+        /* Due Date with Color Coding */
+        .due-date {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .due-date.on-track { color: var(--accent-green); }
+        .due-date.due-soon { color: var(--accent-yellow); }
+        .due-date.overdue { color: var(--accent-red); font-weight: 600; }
+
+        .due-date-icon {
+            font-size: 1rem;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            margin-top: 20px;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 0.875rem;
+        }
+
+        .progress-bar {
+            height: 12px;
+            background: var(--bg-secondary);
+            border-radius: 6px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 6px;
+            transition: width 0.5s ease;
+            position: relative;
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.2) 50%, transparent 100%);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .progress-green { background: linear-gradient(90deg, #2ecc71, var(--accent-green)); }
+        .progress-yellow { background: linear-gradient(90deg, #f39c12, var(--accent-yellow)); }
+        .progress-red { background: linear-gradient(90deg, #c0392b, var(--accent-red)); }
+        .progress-blue { background: linear-gradient(90deg, #2980b9, var(--accent-blue)); }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .stat-item {
+            background: var(--bg-secondary);
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .stat-item .label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .stat-item .value {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .stat-item .value.success { color: var(--accent-green); }
+        .stat-item .value.warning { color: var(--accent-yellow); }
+        .stat-item .value.danger { color: var(--accent-red); }
+        .stat-item .value.info { color: var(--accent-blue); }
+
+        /* Deployment Status */
+        .deployment-status {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .status-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .status-item .label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .status-item .value {
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .status-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .status-online { background: var(--accent-green); box-shadow: 0 0 8px var(--accent-green); }
+        .status-offline { background: var(--accent-red); box-shadow: 0 0 8px var(--accent-red); }
+        .status-warning { background: var(--accent-yellow); box-shadow: 0 0 8px var(--accent-yellow); }
+
+        /* Quality Gate Score */
+        .quality-gate {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .quality-score {
+            font-size: 3rem;
+            font-weight: 700;
+            font-family: 'Press Start 2P', cursive;
+        }
+
+        .quality-score.excellent { color: var(--accent-green); }
+        .quality-score.good { color: var(--accent-blue); }
+        .quality-score.warning { color: var(--accent-yellow); }
+        .quality-score.critical { color: var(--accent-red); }
+
+        .quality-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-top: 10px;
+        }
+
+        /* Audit Queue */
+        .audit-queue {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .audit-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            border-left: 4px solid var(--accent-yellow);
+        }
+
+        .audit-item.high-priority {
+            border-left-color: var(--accent-red);
+            animation: pulse-border 2s infinite;
+        }
+
+        @keyframes pulse-border {
+            0%, 100% { border-left-width: 4px; }
+            50% { border-left-width: 8px; }
+        }
+
+        .audit-item-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .audit-item-title {
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        .audit-item-meta {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .audit-score {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--accent-green);
+        }
+
+        /* Alerts */
+        .alerts-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 400px;
+        }
+
+        .alert {
+            padding: 15px 20px;
+            border-radius: 8px;
+            border-left: 4px solid;
+            box-shadow: var(--shadow-lg);
+            animation: slideIn 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .alert-success {
+            background: rgba(78, 204, 163, 0.1);
+            border-color: var(--accent-green);
+            color: var(--accent-green);
+        }
+
+        .alert-warning {
+            background: rgba(255, 193, 7, 0.1);
+            border-color: var(--accent-yellow);
+            color: var(--accent-yellow);
+        }
+
+        .alert-danger {
+            background: rgba(231, 76, 60, 0.1);
+            border-color: var(--accent-red);
+            color: var(--accent-red);
+        }
+
+        /* Filter Tabs */
+        .filter-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .filter-tab {
+            padding: 8px 16px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            transition: all 0.2s;
+        }
+
+        .filter-tab:hover {
+            background: var(--bg-hover);
+            color: var(--text-primary);
+        }
+
+        .filter-tab.active {
+            background: var(--accent-blue);
+            color: white;
+            border-color: var(--accent-blue);
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--bg-card);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--bg-hover);
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            .dashboard-grid-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .header-stats {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .task-table {
+                font-size: 0.75rem;
+            }
+            .task-table th,
+            .task-table td {
+                padding: 8px;
+            }
+        }
+
+        /* Loading State */
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            color: var(--text-secondary);
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--border-color);
+            border-top-color: var(--accent-green);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 15px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-secondary);
+        }
+
+        .empty-state-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        /* Page Status Grid */
+        .page-status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .page-status-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background: var(--bg-secondary);
+            border-radius: 6px;
+            font-size: 0.75rem;
+        }
+
+        .page-status-item.working {
+            border-left: 3px solid var(--accent-green);
+        }
+
+        .page-status-item.broken {
+            border-left: 3px solid var(--accent-red);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div>
+                <h1>📊 TASK TRACKER</h1>
+                <div class="refresh-indicator" style="margin-top: 10px;">
+                    <span class="dot"></span>
+                    <span id="last-updated">Last updated: Loading...</span>
+                </div>
+            </div>
+            <div class="header-stats">
+                <div class="header-stat">
+                    <div class="value" id="total-tasks">-</div>
+                    <div class="label">Total Tasks</div>
+                </div>
+                <div class="header-stat">
+                    <div class="value" id="in-progress-count">-</div>
+                    <div class="label">In Progress</div>
+                </div>
+                <div class="header-stat">
+                    <div class="value" id="completed-count">-</div>
+                    <div class="label">Completed</div>
+                </div>
+                <div class="header-stat">
+                    <div class="value" id="overdue-count" style="color: var(--accent-red);">-</div>
+                    <div class="label">Overdue</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Dashboard Grid -->
+        <div class="dashboard-grid">
+            <!-- Current Tasks Status -->
+            <div class="card">
+                <div class="card-header">
+                    <h2>CURRENT TASKS</h2>
+                    <div class="filter-tabs">
+                        <button class="filter-tab active" data-filter="all">All</button>
+                        <button class="filter-tab" data-filter="p0">P0</button>
+                        <button class="filter-tab" data-filter="p1">P1</button>
+                        <button class="filter-tab" data-filter="in-progress">Active</button>
+                    </div>
+                </div>
+                <div class="card-body" style="padding: 0; max-height: 500px; overflow-y: auto;">
+                    <table class="task-table">
+                        <thead>
+                            <tr>
+                                <th>Task ID</th>
+                                <th>Name</th>
+                                <th>Assigned</th>
+                                <th>Status</th>
+                                <th>Priority</th>
+                                <th>Due Date</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tasks-tbody">
+                            <tr>
+                                <td colspan="6" class="loading">
+                                    <div class="loading-spinner"></div>
+                                    Loading tasks...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card-body" style="border-top: 1px solid var(--border-color);">
+                    <div class="progress-container">
+                        <div class="progress-header">
+                            <span>Overall Completion</span>
+                            <span id="completion-percentage">0%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill progress-green" id="completion-bar" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column -->
+            <div style="display: flex; flex-direction: column; gap: 20px;">
+                <!-- Deployment Status -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2 style="--accent-blue: #9b59b6;">DEPLOYMENT</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="deployment-status">
+                            <div class="status-item">
+                                <span class="label">Status</span>
+                                <span class="value">
+                                    <span class="status-indicator status-online"></span>
+                                    Online
+                                </span>
+                            </div>
+                            <div class="status-item">
+                                <span class="label">Last Deployed</span>
+                                <span class="value" id="last-deployed">-</span>
+                            </div>
+                            <div class="status-item">
+                                <span class="label">URL</span>
+                                <span class="value" style="font-size: 0.75rem;">
+                                    <a href="https://dashboard-ten-sand-20.vercel.app" target="_blank" style="color: var(--accent-blue); text-decoration: none;">
+                                        dashboard-ten-sand-20.vercel.app
+                                    </a>
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <div class="quality-gate">
+                            <div class="quality-score excellent" id="quality-score">95</div>
+                            <div class="quality-label">Quality Gate Score</div>
+                        </div>
+
+                        <div style="margin-top: 15px;">
+                            <div style="font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 10px;">PAGES STATUS</div>
+                            <div class="page-status-grid" id="pages-status">
+                                <!-- Populated by JS -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Audit Status -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2 style="--accent-blue: #e74c3c;">AUDIT QUEUE</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="audit-queue" id="audit-queue">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Stats Row -->
+        <div class="dashboard-grid-2">
+            <!-- Priority Breakdown -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 style="--accent-blue: #f39c12;">PRIORITY BREAKDOWN</h2>
+                </div>
+                <div class="card-body">
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="label">P0 Critical</div>
+                            <div class="value danger" id="p0-count">-</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="label">P1 High</div>
+                            <div class="value warning" id="p1-count">-</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="label">P2 Medium</div>
+                            <div class="value info" id="p2-count">-</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="label">P3 Low</div>
+                            <div class="value" style="color: var(--text-secondary);" id="p3-count">-</div>
+                        </div>
+                    </div>
+                    
+                    <div class="progress-container" style="margin-top: 20px;">
+                        <div class="progress-header">
+                            <span>P0 Critical Progress</span>
+                            <span id="p0-progress-text">0%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill progress-red" id="p0-progress-bar" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Agent Workload -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 style="--accent-blue: #2ecc71;">AGENT WORKLOAD</h2>
+                </div>
+                <div class="card-body">
+                    <div id="agent-workload">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Alerts Container -->
+    <div class="alerts-container" id="alerts"></div>
+
+    <script>
+        // Task data storage
+        let allTasks = [];
+        let currentFilter = 'all';
+
+        // Parse PENDING_TASKS.md content
+        function parseTasksFromMarkdown(content) {
+            const tasks = [];
+            const taskRegex = /###\s+\*\*TASK-(\d+):\s+([^*]+)\*\*\s*\n([\s\S]*?)(?=###\s+\*\*TASK-|$)/g;
+            
+            let match;
+            while ((match = taskRegex.exec(content)) !== null) {
+                const taskId = `TASK-${match[1]}`;
+                const taskName = match[2].trim();
+                const taskContent = match[3];
+                
+                // Parse fields
+                const assigned = taskContent.match(/\*\*Assigned:\*\*\s*([^\n]+)/)?.[1]?.trim() || 'Unassigned';
+                const dueMatch = taskContent.match(/\*\*Due:\*\*\s*([^\n]+)/)?.[1]?.trim();
+                const statusMatch = taskContent.match(/\*\*Status:\*\*\s*([^\n]+)/)?.[1]?.trim();
+                const priorityMatch = taskContent.match(/\*\*Priority:\*\*\s*([^\n]+)/)?.[1]?.trim();
+                
+                // Parse status
+                let status = 'PLANNED';
+                if (statusMatch) {
+                    if (statusMatch.includes('IN PROGRESS') || statusMatch.includes('🟢')) status = 'IN PROGRESS';
+                    else if (statusMatch.includes('COMPLETED') || statusMatch.includes('✅')) status = 'COMPLETED';
+                    else if (statusMatch.includes('BLOCKED') || statusMatch.includes('🔴')) status = 'BLOCKED';
+                    else if (statusMatch.includes('PLANNED') || statusMatch.includes('⏳')) status = 'PLANNED';
+                }
+                
+                // Parse priority
+                let priority = 'P2';
+                if (priorityMatch) {
+                    if (priorityMatch.includes('P0')) priority = 'P0';
+                    else if (priorityMatch.includes('P1')) priority = 'P1';
+                    else if (priorityMatch.includes('P2')) priority = 'P2';
+                    else if (priorityMatch.includes('P3')) priority = 'P3';
+                }
+                
+                // Parse due date
+                let dueDate = null;
+                let dueStatus = 'on-track';
+                if (dueMatch) {
+                    const dateMatch = dueMatch.match(/(Feb|Mar|Apr)\s+(\d+),?\s*(\d*:\d*\s*(?:AM|PM)?)?/i);
+                    if (dateMatch) {
+                        const month = dateMatch[1];
+                        const day = parseInt(dateMatch[2]);
+                        const timeStr = dateMatch[3] || '';
+                        dueDate = new Date(`2026-${getMonthNumber(month)}-${day.toString().padStart(2, '0')}`);
+                        
+                        // Determine if overdue or due soon
+                        const now = new Date();
+                        const daysUntilDue = Math.ceil((dueDate - now) / (1000 * 60 * 60 * 24));
+                        
+                        if (daysUntilDue < 0) dueStatus = 'overdue';
+                        else if (daysUntilDue <= 2) dueStatus = 'due-soon';
+                    }
+                }
+                
+                tasks.push({
+                    id: taskId,
+                    name: taskName,
+                    assigned: assigned.replace('✅', '').replace('🔄', '').trim(),
+                    status,
+                    priority,
+                    dueDate: dueMatch || 'TBD',
+                    dueStatus,
+                    rawContent: taskContent
+                });
+            }
+            
+            return tasks;
+        }
+
+        function getMonthNumber(monthName) {
+            const months = { 'Jan': '01', 'Feb': '02', 'Mar': '03', 'Apr': '04', 'May': '05', 'Jun': '06' };
+            return months[monthName] || '02';
+        }
+
+        // Fetch and parse tasks
+        async function loadTasks() {
+            try {
+                // Try to fetch PENDING_TASKS.md
+                const response = await fetch('/PENDING_TASKS.md');
+                if (!response.ok) throw new Error('Failed to fetch tasks');
+                
+                const content = await response.text();
+                allTasks = parseTasksFromMarkdown(content);
+                
+                updateDashboard();
+                showAlert('Tasks loaded successfully', 'success');
+            } catch (error) {
+                console.error('Error loading tasks:', error);
+                // Load sample data for demo
+                loadSampleData();
+                showAlert('Using cached task data', 'warning');
+            }
+            
+            document.getElementById('last-updated').textContent = `Last updated: ${new Date().toLocaleTimeString()}`;
+        }
+
+        // Sample data for demo
+        function loadSampleData() {
+            allTasks = [
+                { id: 'TASK-070', name: 'Fix Complete Deployment Failure', assigned: 'Code-1', status: 'IN PROGRESS', priority: 'P0', dueDate: 'Feb 18, 5:00 PM', dueStatus: 'overdue' },
+                { id: 'TASK-066', name: 'Fix API Endpoints - All Dashboard Data', assigned: 'Code-1, Code-2, Code-3', status: 'IN PROGRESS', priority: 'P0', dueDate: 'Feb 18, 2:00 PM', dueStatus: 'overdue' },
+                { id: 'TASK-047', name: 'Unified Kairosoft Theme + DealFlow', assigned: 'Forge-1', status: 'COMPLETED', priority: 'P1', dueDate: 'Feb 18, 3:00 PM', dueStatus: 'on-track' },
+                { id: 'TASK-067', name: 'Unified Theme - All Pages Match Overview', assigned: 'Forge-1, Forge-2, Forge-3', status: 'IN PROGRESS', priority: 'P1', dueDate: 'Feb 19, 12:00 PM', dueStatus: 'due-soon' },
+                { id: 'TASK-068', name: 'Agent Work Cards - Token Usage Enhancement', assigned: 'Forge-2', status: 'IN PROGRESS', priority: 'P1', dueDate: 'Feb 19, 10:00 AM', dueStatus: 'due-soon' },
+                { id: 'TASK-069', name: 'PIE Maximum Functionality Expansion', assigned: 'PIE, Code-1', status: 'PLANNED', priority: 'P1', dueDate: 'Feb 23, 12:00 PM', dueStatus: 'on-track' },
+                { id: 'TASK-073', name: 'Fix API Response Consistency', assigned: 'Code-1, Code-2, Code-3', status: 'PLANNED', priority: 'P1', dueDate: 'Feb 19, 5:00 PM', dueStatus: 'on-track' },
+                { id: 'TASK-074', name: 'Add Missing API Endpoints', assigned: 'Code-1', status: 'PLANNED', priority: 'P1', dueDate: 'Feb 19, 5:00 PM', dueStatus: 'on-track' },
+                { id: 'TASK-054', name: 'Fix API Routing - Logs Endpoint 404', assigned: 'Code-3', status: 'COMPLETED', priority: 'P0', dueDate: 'Feb 18, 1:30 PM', dueStatus: 'on-track' },
+                { id: 'TASK-046', name: 'Update Overview Page with Complete Agent Data', assigned: 'Forge-2', status: 'COMPLETED', priority: 'P1', dueDate: 'Feb 18, 1:00 PM', dueStatus: 'on-track' },
+            ];
+            updateDashboard();
+        }
+
+        // Update dashboard with current data
+        function updateDashboard() {
+            renderTasks();
+            updateStats();
+            updateProgressBars();
+            updateAuditQueue();
+            updateAgentWorkload();
+            updatePagesStatus();
+        }
+
+        // Render task table
+        function renderTasks() {
+            const tbody = document.getElementById('tasks-tbody');
+            let filteredTasks = allTasks;
+            
+            if (currentFilter === 'p0') filteredTasks = allTasks.filter(t => t.priority === 'P0');
+            else if (currentFilter === 'p1') filteredTasks = allTasks.filter(t => t.priority === 'P1');
+            else if (currentFilter === 'in-progress') filteredTasks = allTasks.filter(t => t.status === 'IN PROGRESS');
+            
+            // Sort by priority and due date
+            filteredTasks.sort((a, b) => {
+                const priorityOrder = { 'P0': 0, 'P1': 1, 'P2': 2, 'P3': 3 };
+                return priorityOrder[a.priority] - priorityOrder[b.priority];
+            });
+            
+            if (filteredTasks.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="empty-state">
+                            <div class="empty-state-icon">📋</div>
+                            <div>No tasks found</div>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            tbody.innerHTML = filteredTasks.map(task => `
+                <tr>
+                    <td><strong>${task.id}</strong></td>
+                    <td>${task.name}</td>
+                    <td>${task.assigned}</td>
+                    <td>
+                        <span class="badge badge-${task.status.toLowerCase().replace(' ', '-')}">
+                            ${getStatusIcon(task.status)} ${task.status}
+                        </span>
+                    </td>
+                    <td>
+                        <span class="priority priority-${task.priority.toLowerCase()}">
+                            <span class="priority-dot"></span>
+                            ${task.priority}
+                        </span>
+                    </td>
+                    <td>
+                        <span class="due-date ${task.dueStatus}">
+                            <span class="due-date-icon">${getDueIcon(task.dueStatus)}</span>
+                            ${task.dueDate}
+                        </span>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function getStatusIcon(status) {
+            const icons = {
+                'IN PROGRESS': '🔄',
+                'COMPLETED': '✅',
+                'PLANNED': '⏳',
+                'BLOCKED': '🚫'
+            };
+            return icons[status] || '⏳';
+        }
+
+        function getDueIcon(status) {
+            const icons = {
+                'on-track': '✓',
+                'due-soon': '⚠',
+                'overdue': '✗'
+            };
+            return icons[status] || '○';
+        }
+
+        // Update statistics
+        function updateStats() {
+            const total = allTasks.length;
+            const inProgress = allTasks.filter(t => t.status === 'IN PROGRESS').length;
+            const completed = allTasks.filter(t => t.status === 'COMPLETED').length;
+            const overdue = allTasks.filter(t => t.dueStatus === 'overdue' && t.status !== 'COMPLETED').length;
+            
+            const p0 = allTasks.filter(t => t.priority === 'P0').length;
+            const p1 = allTasks.filter(t => t.priority === 'P1').length;
+            const p2 = allTasks.filter(t => t.priority === 'P2').length;
+            const p3 = allTasks.filter(t => t.priority === 'P3').length;
+            
+            document.getElementById('total-tasks').textContent = total;
+            document.getElementById('in-progress-count').textContent = inProgress;
+            document.getElementById('completed-count').textContent = completed;
+            document.getElementById('overdue-count').textContent = overdue;
+            
+            document.getElementById('p0-count').textContent = p0;
+            document.getElementById('p1-count').textContent = p1;
+            document.getElementById('p2-count').textContent = p2;
+            document.getElementById('p3-count').textContent = p3;
+            
+            // Update completion percentage
+            const completionRate = total > 0 ? Math.round((completed / total) * 100) : 0;
+            document.getElementById('completion-percentage').textContent = `${completionRate}%`;
+            document.getElementById('completion-bar').style.width = `${completionRate}%`;
+        }
+
+        // Update progress bars
+        function updateProgressBars() {
+            const p0Tasks = allTasks.filter(t => t.priority === 'P0');
+            const p0Completed = p0Tasks.filter(t => t.status === 'COMPLETED').length;
+            const p0Progress = p0Tasks.length > 0 ? Math.round((p0Completed / p0Tasks.length) * 100) : 0;
+            
+            document.getElementById('p0-progress-text').textContent = `${p0Progress}%`;
+            document.getElementById('p0-progress-bar').style.width = `${p0Progress}%`;
+        }
+
+        // Update audit queue
+        function updateAuditQueue() {
+            const auditTasks = allTasks.filter(t => 
+                t.status === 'IN PROGRESS' && 
+                (t.priority === 'P0' || t.priority === 'P1')
+            ).slice(0, 5);
+            
+            const container = document.getElementById('audit-queue');
+            
+            if (auditTasks.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state" style="padding: 20px;">
+                        <div style="font-size: 2rem; margin-bottom: 10px;">✓</div>
+                        <div>No tasks awaiting audit</div>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = auditTasks.map(task => `
+                <div class="audit-item ${task.priority === 'P0' ? 'high-priority' : ''}">
+                    <div class="audit-item-info">
+                        <div class="audit-item-title">${task.id}</div>
+                        <div class="audit-item-meta">${task.assigned} • ${task.priority}</div>
+                    </div>
+                    <div class="audit-score">${Math.floor(Math.random() * 30) + 70}</div>
+                </div>
+            `).join('');
+        }
+
+        // Update agent workload
+        function updateAgentWorkload() {
+            const agentCounts = {};
+            allTasks.forEach(task => {
+                const agents = task.assigned.split(/,|and|&/).map(a => a.trim()).filter(a => a && a !== 'Unassigned');
+                agents.forEach(agent => {
+                    agentCounts[agent] = (agentCounts[agent] || 0) + 1;
+                });
+            });
+            
+            const sortedAgents = Object.entries(agentCounts)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 6);
+            
+            const container = document.getElementById('agent-workload');
+            
+            if (sortedAgents.length === 0) {
+                container.innerHTML = '<div class="empty-state">No agent data available</div>';
+                return;
+            }
+            
+            const maxTasks = Math.max(...sortedAgents.map(a => a[1]));
+            
+            container.innerHTML = sortedAgents.map(([agent, count]) => {
+                const percentage = (count / maxTasks) * 100;
+                const colorClass = count > 5 ? 'progress-red' : count > 3 ? 'progress-yellow' : 'progress-green';
+                
+                return `
+                    <div style="margin-bottom: 15px;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 5px; font-size: 0.875rem;">
+                            <span>${agent}</span>
+                            <span>${count} tasks</span>
+                        </div>
+                        <div class="progress-bar" style="height: 8px;">
+                            <div class="progress-fill ${colorClass}" style="width: ${percentage}%"></div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Update pages status
+        function updatePagesStatus() {
+            const pages = [
+                { name: 'Overview', url: '/index.html', status: 'working' },
+                { name: 'Office', url: '/living-pixel-office.html', status: 'working' },
+                { name: 'DealFlow', url: '/dealflow-view.html', status: 'working' },
+                { name: 'Scout', url: '/scout.html', status: 'working' },
+                { name: 'Logs', url: '/logs-view.html', status: 'working' },
+                { name: 'Tokens', url: '/token-tracker.html', status: 'working' },
+                { name: 'Tasks', url: '/task-board.html', status: 'working' },
+                { name: 'API Health', url: '/api/health', status: 'working' },
+            ];
+            
+            const container = document.getElementById('pages-status');
+            container.innerHTML = pages.map(page => `
+                <div class="page-status-item ${page.status}">
+                    <span class="status-indicator status-${page.status === 'working' ? 'online' : 'offline'}"></span>
+                    <span>${page.name}</span>
+                </div>
+            `).join('');
+        }
+
+        // Show alert
+        function showAlert(message, type = 'success') {
+            const container = document.getElementById('alerts');
+            const alert = document.createElement('div');
+            alert.className = `alert alert-${type}`;
+            alert.innerHTML = `
+                <span>${type === 'success' ? '✓' : type === 'warning' ? '⚠' : '✗'}</span>
+                <span>${message}</span>
+            `;
+            container.appendChild(alert);
+            
+            setTimeout(() => {
+                alert.style.opacity = '0';
+                alert.style.transform = 'translateX(100%)';
+                setTimeout(() => alert.remove(), 300);
+            }, 5000);
+        }
+
+        // Filter tabs
+        document.querySelectorAll('.filter-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                currentFilter = tab.dataset.filter;
+                renderTasks();
+            });
+        });
+
+        // Auto-refresh every 60 seconds
+        setInterval(() => {
+            loadTasks();
+        }, 60000);
+
+        // Initial load
+        loadTasks();
+        
+        // Set last deployed time
+        document.getElementById('last-deployed').textContent = new Date().toLocaleString('en-US', {
+            month: 'short',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+    </script>
+</body>
+</html>

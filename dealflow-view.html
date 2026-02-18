@@ -4,19 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <meta name="theme-color" content="#2d1b4e">
-    <title>💼 DealFlow | ColdCall Ready</title>
+    <title>💼 CRM Pipeline | ColdCall Ready</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --bg-primary: #2d1b4e;
-            --bg-secondary: #3d2652;
+            --bg-primary: #f5e6c8;
+            --bg-secondary: #e8d4a8;
             --panel-bg: #f4e4c1;
             --panel-border: #8b7355;
             --panel-shadow: #5c4a3a;
-            --text-dark: #2c1810;
-            --text-light: #f4e4c1;
+            --text-dark: #3d3225;
+            --text-muted: #6b5a45;
             --accent-cyan: #00d4ff;
             --accent-pink: #ff6b6b;
             --accent-green: #51cf66;
@@ -24,6 +24,14 @@
             --accent-yellow: #fcc419;
             --accent-purple: #da77f2;
             --accent-orange: #ff8787;
+            
+            /* Column colors */
+            --col-new: #00d4ff;
+            --col-contacted: #339af0;
+            --col-meeting: #fcc419;
+            --col-proposal: #a855f7;
+            --col-won: #51cf66;
+            --col-lost: #6b7280;
         }
         
         * {
@@ -37,7 +45,7 @@
         html {
             font-family: 'VT323', monospace;
             background: var(--bg-primary);
-            color: var(--text-light);
+            color: var(--text-dark);
             line-height: 1.4;
             -webkit-text-size-adjust: 100%;
         }
@@ -62,7 +70,7 @@
         .game-container {
             position: relative;
             z-index: 1;
-            max-width: 1600px;
+            max-width: 1800px;
             margin: 0 auto;
             padding: 15px;
             min-height: 100vh;
@@ -138,13 +146,13 @@
         
         .nav-btn {
             font-family: 'Press Start 2P', cursive;
-            font-size: 0.5rem;
-            padding: 10px 14px;
-            background: linear-gradient(180deg, #74c0fc 0%, #339af0 100%);
-            border: 3px solid #2d1b4e;
-            border-radius: 6px;
+            font-size: 12px;
+            padding: 8px 16px;
+            background: #f5e6c8;
+            border: 4px solid #8b7355;
+            border-radius: 0;
             cursor: pointer;
-            box-shadow: 0 4px 0 #2d1b4e;
+            box-shadow: 4px 4px 0 #8b7355;
             transition: all 0.1s;
             color: var(--text-dark);
             line-height: 1.4;
@@ -155,25 +163,27 @@
         }
         
         .nav-btn:hover {
+            border-color: #00d4ff;
             transform: translateY(-2px);
-            box-shadow: 0 6px 0 #2d1b4e;
+            box-shadow: 4px 6px 0 #8b7355;
         }
         
         .nav-btn:active {
-            transform: translateY(4px);
-            box-shadow: 0 0 0 #2d1b4e;
+            transform: translateY(0);
+            box-shadow: 0 0 0 #8b7355;
         }
         
         .nav-btn.active {
+            background: #e8d4a8;
+            border-color: #8b7355;
+        }
+        
+        .nav-btn.primary {
             background: linear-gradient(180deg, #69db7c 0%, #51cf66 100%);
         }
         
-        .nav-btn.danger {
-            background: linear-gradient(180deg, #ff8787 0%, #fa5252 100%);
-        }
-        
-        /* Panel */
-        .panel-box {
+        /* Controls Panel */
+        .controls-panel {
             background: var(--panel-bg);
             border: 4px solid var(--panel-border);
             border-radius: 8px;
@@ -182,32 +192,19 @@
             margin-bottom: 15px;
         }
         
-        .panel-title {
-            font-family: 'Press Start 2P', cursive;
-            font-size: 0.65rem;
-            color: var(--panel-border);
-            margin-bottom: 12px;
-            padding-bottom: 10px;
-            border-bottom: 3px solid var(--panel-border);
-            line-height: 1.6;
+        .controls-row {
             display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        /* Filter Bar */
-        .filter-bar {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
+            gap: 15px;
             flex-wrap: wrap;
             align-items: center;
+            justify-content: space-between;
         }
         
         .filter-group {
             display: flex;
-            gap: 6px;
+            gap: 8px;
             align-items: center;
+            flex-wrap: wrap;
         }
         
         .filter-label {
@@ -219,7 +216,7 @@
         .filter-btn {
             padding: 6px 12px;
             background: rgba(255,255,255,0.5);
-            border: 2px solid var(--panel-border);
+            border: 3px solid var(--panel-border);
             border-radius: 4px;
             font-family: 'VT323', monospace;
             font-size: 0.9rem;
@@ -232,69 +229,156 @@
             color: var(--panel-bg);
         }
         
-        /* Lead Cards Grid */
-        .leads-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
-            gap: 15px;
+        .search-box {
+            padding: 8px 12px;
+            background: rgba(255,255,255,0.5);
+            border: 3px solid var(--panel-border);
+            border-radius: 4px;
+            font-family: 'VT323', monospace;
+            font-size: 1rem;
+            width: 250px;
         }
         
-        .lead-card {
-            background: linear-gradient(180deg, #fff 0%, #f0e6d3 100%);
-            border: 3px solid var(--panel-border);
+        .search-box:focus {
+            outline: none;
+            border-color: var(--accent-cyan);
+        }
+        
+        /* Kanban Board */
+        .kanban-board {
+            display: flex;
+            gap: 15px;
+            overflow-x: auto;
+            padding-bottom: 20px;
+            min-height: 600px;
+        }
+        
+        .kanban-column {
+            flex: 0 0 280px;
+            background: var(--bg-secondary);
+            border: 4px solid var(--panel-border);
+            border-radius: 8px;
+            box-shadow: 0 4px 0 var(--panel-shadow);
+            display: flex;
+            flex-direction: column;
+            max-height: calc(100vh - 250px);
+        }
+        
+        .kanban-column.drag-over {
+            border-color: var(--accent-cyan);
+            box-shadow: 0 4px 0 var(--accent-cyan), 0 0 20px rgba(0, 212, 255, 0.3);
+        }
+        
+        .column-header {
+            padding: 12px;
+            border-bottom: 4px solid var(--panel-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.55rem;
+            background: var(--panel-bg);
+            border-radius: 4px 4px 0 0;
+        }
+        
+        .column-header.new { border-bottom-color: var(--col-new); }
+        .column-header.contacted { border-bottom-color: var(--col-contacted); }
+        .column-header.meeting { border-bottom-color: var(--col-meeting); }
+        .column-header.proposal { border-bottom-color: var(--col-proposal); }
+        .column-header.won { border-bottom-color: var(--col-won); }
+        .column-header.lost { border-bottom-color: var(--col-lost); }
+        
+        .column-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .column-count {
+            background: var(--panel-border);
+            color: var(--panel-bg);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.5rem;
+        }
+        
+        .column-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        /* Deal Cards */
+        .deal-card {
+            background: #fff8e7;
+            border: 4px solid var(--panel-border);
             border-radius: 6px;
-            padding: 15px;
+            padding: 12px;
+            cursor: grab;
             transition: all 0.2s;
             position: relative;
-            overflow: hidden;
+            box-shadow: 3px 3px 0 var(--panel-shadow);
         }
         
-        .lead-card::before {
+        .deal-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 4px 6px 0 var(--panel-shadow);
+        }
+        
+        .deal-card.dragging {
+            opacity: 0.5;
+            cursor: grabbing;
+            transform: rotate(3deg);
+        }
+        
+        .deal-card::before {
             content: '';
             position: absolute;
             top: 0; left: 0; right: 0;
             height: 4px;
             background: var(--priority-color, var(--accent-blue));
+            border-radius: 2px 2px 0 0;
         }
         
-        .lead-card.p0::before { background: var(--accent-pink); }
-        .lead-card.p1::before { background: var(--accent-yellow); }
-        .lead-card.p2::before { background: var(--accent-green); }
-        .lead-card.contacted::before { background: var(--accent-blue); }
+        .deal-card.p0::before { background: var(--accent-pink); }
+        .deal-card.p1::before { background: var(--accent-yellow); }
+        .deal-card.p2::before { background: var(--accent-green); }
         
-        .lead-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 0 var(--panel-shadow);
-        }
-        
-        .lead-header {
+        .deal-header {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
         
-        .lead-company {
+        .deal-company {
             font-family: 'Press Start 2P', cursive;
-            font-size: 0.6rem;
+            font-size: 0.55rem;
             color: var(--text-dark);
-            margin-bottom: 4px;
+            line-height: 1.5;
+            word-break: break-word;
         }
         
-        .lead-contact {
-            font-size: 1rem;
-            color: #666;
+        .deal-contact {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-top: 4px;
         }
         
-        .lead-title {
-            font-size: 0.85rem;
-            color: #8b7355;
+        .deal-meta {
+            display: flex;
+            gap: 6px;
+            margin-top: 8px;
+            flex-wrap: wrap;
         }
         
         .priority-badge {
-            padding: 4px 10px;
+            padding: 3px 8px;
             border-radius: 4px;
-            font-size: 0.65rem;
+            font-size: 0.55rem;
             font-family: 'Press Start 2P', cursive;
             border: 2px solid;
         }
@@ -303,123 +387,167 @@
         .priority-badge.p1 { background: rgba(252, 196, 25, 0.2); color: #e67700; border-color: #fcc419; }
         .priority-badge.p2 { background: rgba(81, 207, 102, 0.2); color: #2b8a3e; border-color: #51cf66; }
         
-        .status-badge {
+        .value-badge {
             padding: 3px 8px;
             border-radius: 4px;
-            font-size: 0.6rem;
+            font-size: 0.55rem;
             font-family: 'Press Start 2P', cursive;
-            margin-left: 8px;
+            background: rgba(0, 212, 255, 0.2);
+            color: #0066cc;
+            border: 2px solid #00d4ff;
         }
         
-        .status-badge.new { background: rgba(0, 212, 255, 0.2); color: #0066cc; }
-        .status-badge.contacted { background: rgba(51, 154, 240, 0.2); color: #1864ab; }
-        .status-badge.meeting { background: rgba(252, 196, 25, 0.2); color: #e67700; }
-        .status-badge.closed { background: rgba(81, 207, 102, 0.2); color: #2b8a3e; }
-        
-        /* Contact Info */
-        .contact-section {
-            margin: 12px 0;
-            padding: 12px 0;
-            border-top: 2px dashed var(--panel-border);
-            border-bottom: 2px dashed var(--panel-border);
-        }
-        
-        .contact-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 8px;
-        }
-        
-        .contact-item {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 0.85rem;
+        .region-badge {
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.55rem;
+            font-family: 'Press Start 2P', cursive;
+            background: rgba(139, 115, 85, 0.2);
             color: var(--text-dark);
+            border: 2px solid var(--panel-border);
         }
         
-        .contact-item .label {
-            font-family: 'Press Start 2P', cursive;
-            font-size: 0.45rem;
-            color: #8b7355;
-            min-width: 50px;
-        }
-        
-        .contact-item .value {
-            flex: 1;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-        
-        .contact-item a {
-            color: var(--accent-blue);
-            text-decoration: none;
-        }
-        
-        .contact-item a:hover {
-            text-decoration: underline;
-        }
-        
-        .contact-item.missing {
-            opacity: 0.5;
-        }
-        
-        .contact-item.missing .value {
-            font-style: italic;
-            color: #999;
-        }
-        
-        /* Notes */
-        .lead-notes {
-            font-size: 0.85rem;
-            color: #666;
-            margin: 10px 0;
-            line-height: 1.4;
-            max-height: 80px;
-            overflow-y: auto;
-        }
-        
-        /* Action Buttons */
-        .lead-actions {
+        .deal-actions {
             display: flex;
-            gap: 8px;
+            gap: 6px;
             margin-top: 10px;
         }
         
-        .action-btn {
+        .deal-btn {
             flex: 1;
-            padding: 8px 12px;
+            padding: 6px 8px;
             font-family: 'Press Start 2P', cursive;
-            font-size: 0.45rem;
+            font-size: 0.4rem;
             border: 2px solid var(--panel-border);
             border-radius: 4px;
             cursor: pointer;
             transition: all 0.2s;
-            display: flex;
-            align-items: center;
+            background: var(--bg-secondary);
+        }
+        
+        .deal-btn:hover {
+            background: var(--panel-border);
+            color: var(--panel-bg);
+        }
+        
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.7);
+            display: none;
             justify-content: center;
-            gap: 4px;
+            align-items: center;
+            z-index: 1000;
         }
         
-        .action-btn.copy {
-            background: linear-gradient(180deg, #74c0fc 0%, #339af0 100%);
+        .modal-overlay.active {
+            display: flex;
+        }
+        
+        .modal {
+            background: var(--panel-bg);
+            border: 4px solid var(--panel-border);
+            border-radius: 8px;
+            padding: 20px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 8px 0 var(--panel-shadow);
+        }
+        
+        .modal-header {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.7rem;
+            color: var(--panel-border);
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid var(--panel-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
             color: var(--text-dark);
         }
         
-        .action-btn.contact {
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-label {
+            display: block;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.5rem;
+            color: #8b7355;
+            margin-bottom: 6px;
+        }
+        
+        .form-input, .form-select {
+            width: 100%;
+            padding: 10px;
+            background: rgba(255,255,255,0.5);
+            border: 3px solid var(--panel-border);
+            border-radius: 4px;
+            font-family: 'VT323', monospace;
+            font-size: 1rem;
+        }
+        
+        .form-input:focus, .form-select:focus {
+            outline: none;
+            border-color: var(--accent-cyan);
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        
+        .btn-primary {
+            padding: 12px 20px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.55rem;
             background: linear-gradient(180deg, #69db7c 0%, #51cf66 100%);
+            border: 4px solid #2b8a3e;
+            border-radius: 4px;
+            cursor: pointer;
+            box-shadow: 0 4px 0 #2b8a3e;
+            transition: all 0.1s;
             color: var(--text-dark);
         }
         
-        .action-btn:hover {
+        .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 3px 0 var(--panel-shadow);
+            box-shadow: 0 6px 0 #2b8a3e;
         }
         
-        .action-btn:active {
+        .btn-primary:active {
             transform: translateY(0);
-            box-shadow: 0 0 0 var(--panel-shadow);
+            box-shadow: 0 0 0 #2b8a3e;
+        }
+        
+        .btn-secondary {
+            padding: 12px 20px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.55rem;
+            background: var(--bg-secondary);
+            border: 4px solid var(--panel-border);
+            border-radius: 4px;
+            cursor: pointer;
+            box-shadow: 0 4px 0 var(--panel-shadow);
+            transition: all 0.1s;
+            color: var(--text-dark);
+        }
+        
+        .btn-secondary:hover {
+            transform: translateY(-2px);
         }
         
         /* Toast Notification */
@@ -435,7 +563,7 @@
             font-family: 'Press Start 2P', cursive;
             font-size: 0.55rem;
             box-shadow: 0 4px 0 #2b8a3e;
-            z-index: 1000;
+            z-index: 1001;
             opacity: 0;
             transition: opacity 0.3s;
             pointer-events: none;
@@ -443,39 +571,6 @@
         
         .toast.show {
             opacity: 1;
-        }
-        
-        /* Export Panel */
-        .export-panel {
-            background: linear-gradient(180deg, rgba(252, 196, 25, 0.2) 0%, rgba(245, 159, 0, 0.1) 100%);
-            border: 3px solid var(--accent-yellow);
-            border-radius: 6px;
-            padding: 15px;
-            margin-bottom: 15px;
-        }
-        
-        .export-panel h3 {
-            font-family: 'Press Start 2P', cursive;
-            font-size: 0.6rem;
-            color: #e67700;
-            margin-bottom: 10px;
-        }
-        
-        .export-stats {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 10px;
-            flex-wrap: wrap;
-        }
-        
-        .export-stat {
-            font-size: 0.9rem;
-        }
-        
-        .export-stat strong {
-            font-family: 'Press Start 2P', cursive;
-            font-size: 0.55rem;
-            color: var(--text-dark);
         }
         
         /* Mobile Nav */
@@ -508,19 +603,40 @@
         }
         
         /* Scrollbar */
-        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar { width: 10px; height: 10px; }
         ::-webkit-scrollbar-track { background: var(--panel-bg); border-radius: 5px; }
         ::-webkit-scrollbar-thumb { background: var(--panel-border); border-radius: 5px; border: 2px solid var(--panel-bg); }
         
         /* Responsive */
+        @media (max-width: 1200px) {
+            .kanban-column {
+                flex: 0 0 260px;
+            }
+        }
+        
         @media (max-width: 768px) {
             .game-container { padding: 10px; padding-bottom: 90px; }
             .game-title { font-size: 0.5rem; }
             .nav-desktop { display: none; }
             .mobile-nav { display: flex; }
-            .leads-grid { grid-template-columns: 1fr; }
-            .contact-grid { grid-template-columns: 1fr; }
-            .filter-bar { flex-direction: column; align-items: flex-start; }
+            .kanban-board { 
+                flex-direction: column;
+                overflow-x: visible;
+            }
+            .kanban-column {
+                flex: 0 0 auto;
+                max-height: none;
+            }
+            .column-content {
+                max-height: 400px;
+            }
+            .controls-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .search-box {
+                width: 100%;
+            }
         }
     </style>
 </head>
@@ -528,866 +644,578 @@
     <div class="game-container">
         <!-- Header -->
         <header class="game-header">
-            <div class="game-title">💼 DEALFLOW | COLDCALL READY</div>
+            <div class="game-title">💼 CRM PIPELINE | COLDCALL READY</div>
             <div class="game-stats">
                 <div class="stat-box">
                     <div class="stat-label">TOTAL</div>
-                    <div class="stat-value" id="stat-total">30</div>
+                    <div class="stat-value" id="stat-total">0</div>
                 </div>
                 <div class="stat-box">
                     <div class="stat-label">P0</div>
-                    <div class="stat-value" style="color: #ff6b6b;" id="stat-p0">6</div>
+                    <div class="stat-value" style="color: #ff6b6b;" id="stat-p0">0</div>
                 </div>
                 <div class="stat-box">
-                    <div class="stat-label">P1</div>
-                    <div class="stat-value" style="color: #fcc419;" id="stat-p1">14</div>
+                    <div class="stat-label">VALUE</div>
+                    <div class="stat-value" style="color: #51cf66;" id="stat-value">$0</div>
                 </div>
                 <div class="stat-box">
-                    <div class="stat-label">NEW</div>
-                    <div class="stat-value" style="color: #339af0;" id="stat-new">30</div>
+                    <div class="stat-label">WON</div>
+                    <div class="stat-value" style="color: #339af0;" id="stat-won">0</div>
                 </div>
             </div>
         </header>
 
         <!-- Navigation -->
         <div class="nav-panel">
-            <div class="nav-desktop">
-                <a href="index.html" class="nav-btn">📊 HQ</a>
-                <a href="living-pixel-office.html" class="nav-btn">🏢 OFFICE</a>
-                <a href="scout.html" class="nav-btn">🔭 SCOUT</a>
-                <a href="dealflow-view.html" class="nav-btn active">💼 DEALS</a>
-                <a href="task-board.html" class="nav-btn">📋 TASKS</a>
-                <a href="token-tracker.html" class="nav-btn">💰 TOKENS</a>
-                <a href="logs-view.html" class="nav-btn">📝 LOGS</a>
-            </div>
+            <nav class="nav-desktop">
+                <a href="index.html" class="nav-btn">🏠 HQ</a>
+                <a href="office.html" class="nav-btn">🏢 Office</a>
+                <a href="agents.html" class="nav-btn">👥 Agents</a>
+                <a href="dealflow-pipeline.html" class="nav-btn">💼 Pipeline</a>
+                <a href="dealflow-view.html" class="nav-btn active">📋 List</a>
+                <a href="token-tracker.html" class="nav-btn">🪙 Tokens</a>
+                <a href="scout.html" class="nav-btn">🔭 Scout</a>
+                <a href="task-board.html" class="nav-btn">📋 Tasks</a>
+            </nav>
         </div>
 
-        <!-- Export Panel -->
-        <div class="export-panel">
-            <h3>📤 COLDCALL EXPORT</h3>
-            <div class="export-stats">
-                <div class="export-stat">
-                    <strong>With Email:</strong> <span id="export-email-count">0</span>
-                </div>
-                <div class="export-stat">
-                    <strong>With LinkedIn:</strong> <span id="export-linkedin-count">0</span>
-                </div>
-                <div class="export-stat">
-                    <strong>With Phone:</strong> <span id="export-phone-count">0</span>
-                </div>
-            </div>
-            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                <button class="nav-btn" onclick="exportForColdCall()">📋 Export for ColdCall</button>
-                <button class="nav-btn secondary" onclick="exportCSV()">📊 Export CSV</button>
-                <button class="nav-btn danger" onclick="resetAllStatus()">🔄 Reset All Status</button>
-            </div>
-        </div>
-
-        <!-- Filters -->
-        <div class="panel-box">
-            <div class="panel-title">🔍 FILTERS</div>
-            <div class="filter-bar">
+        <!-- Controls Panel -->
+        <div class="controls-panel">
+            <div class="controls-row">
                 <div class="filter-group">
-                    <span class="filter-label">PRIORITY:</span>
-                    <button class="filter-btn active" data-filter="priority" data-value="all" onclick="filterLeads('all')">All</button>
-                    <button class="filter-btn" data-filter="priority" data-value="P0" onclick="filterLeads('P0')">P0</button>
-                    <button class="filter-btn" data-filter="priority" data-value="P1" onclick="filterLeads('P1')">P1</button>
-                    <button class="filter-btn" data-filter="priority" data-value="P2" onclick="filterLeads('P2')">P2</button>
-                </div>
-                <div class="filter-group">
-                    <span class="filter-label">STATUS:</span>
-                    <button class="filter-btn" data-filter="status" data-value="new" onclick="filterByStatus('new')">New</button>
-                    <button class="filter-btn" data-filter="status" data-value="contacted" onclick="filterByStatus('contacted')">Contacted</button>
-                    <button class="filter-btn" data-filter="status" data-value="meeting" onclick="filterByStatus('meeting')">Meeting</button>
-                    <button class="filter-btn" data-filter="status" data-value="closed" onclick="filterByStatus('closed')">Closed</button>
+                    <span class="filter-label">FILTER:</span>
+                    <button class="filter-btn active" onclick="filterDeals('all')">All</button>
+                    <button class="filter-btn" onclick="filterDeals('P0')">P0</button>
+                    <button class="filter-btn" onclick="filterDeals('P1')">P1</button>
+                    <button class="filter-btn" onclick="filterDeals('P2')">P2</button>
                 </div>
                 <div class="filter-group">
                     <span class="filter-label">REGION:</span>
-                    <button class="filter-btn" data-filter="region" data-value="PH" onclick="filterByRegion('Philippines')">PH</button>
-                    <button class="filter-btn" data-filter="region" data-value="HK" onclick="filterByRegion('Hong Kong')">HK</button>
-                    <button class="filter-btn" data-filter="region" data-value="SG" onclick="filterByRegion('Singapore')">SG</button>
+                    <button class="filter-btn" onclick="filterByRegion('PH')">PH</button>
+                    <button class="filter-btn" onclick="filterByRegion('HK')">HK</button>
+                    <button class="filter-btn" onclick="filterByRegion('SG')">SG</button>
                 </div>
+                <input type="text" class="search-box" id="searchBox" placeholder="🔍 Search deals..." oninput="searchDeals(this.value)">
+                <button class="nav-btn primary" onclick="openAddModal()">➕ Add Lead</button>
             </div>
         </div>
 
-        <!-- Leads Grid -->
-        <div class="panel-box">
-            <div class="panel-title">🎯 LEADS (<span id="lead-count">30</span>)</div>
-            <div class="leads-grid" id="leadsGrid">
-                <!-- Leads will be populated by JavaScript -->
+        <!-- Kanban Board -->
+        <div class="kanban-board" id="kanbanBoard">
+            <!-- New Leads Column -->
+            <div class="kanban-column" data-status="new">
+                <div class="column-header new">
+                    <div class="column-title">📥 NEW LEADS</div>
+                    <div class="column-count" id="count-new">0</div>
+                </div>
+                <div class="column-content" id="column-new"></div>
+            </div>
+
+            <!-- Contacted Column -->
+            <div class="kanban-column" data-status="contacted">
+                <div class="column-header contacted">
+                    <div class="column-title">📧 CONTACTED</div>
+                    <div class="column-count" id="count-contacted">0</div>
+                </div>
+                <div class="column-content" id="column-contacted"></div>
+            </div>
+
+            <!-- Meeting Scheduled Column -->
+            <div class="kanban-column" data-status="meeting">
+                <div class="column-header meeting">
+                    <div class="column-title">🤝 MEETING</div>
+                    <div class="column-count" id="count-meeting">0</div>
+                </div>
+                <div class="column-content" id="column-meeting"></div>
+            </div>
+
+            <!-- Proposal Sent Column -->
+            <div class="kanban-column" data-status="proposal">
+                <div class="column-header proposal">
+                    <div class="column-title">💼 PROPOSAL</div>
+                    <div class="column-count" id="count-proposal">0</div>
+                </div>
+                <div class="column-content" id="column-proposal"></div>
+            </div>
+
+            <!-- Closed Won Column -->
+            <div class="kanban-column" data-status="won">
+                <div class="column-header won">
+                    <div class="column-title">✅ CLOSED WON</div>
+                    <div class="column-count" id="count-won">0</div>
+                </div>
+                <div class="column-content" id="column-won"></div>
+            </div>
+
+            <!-- Closed Lost Column -->
+            <div class="kanban-column" data-status="lost">
+                <div class="column-header lost">
+                    <div class="column-title">❌ CLOSED LOST</div>
+                    <div class="column-count" id="count-lost">0</div>
+                </div>
+                <div class="column-content" id="column-lost"></div>
             </div>
         </div>
     </div>
 
+    <!-- Add Lead Modal -->
+    <div class="modal-overlay" id="addModal">
+        <div class="modal">
+            <div class="modal-header">
+                <span>➕ ADD NEW LEAD</span>
+                <button class="modal-close" onclick="closeAddModal()">×</button>
+            </div>
+            <form id="addLeadForm" onsubmit="addNewLead(event)">
+                <div class="form-group">
+                    <label class="form-label">COMPANY NAME</label>
+                    <input type="text" class="form-input" name="company" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">CONTACT NAME</label>
+                        <input type="text" class="form-input" name="contact_name" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">TITLE</label>
+                        <input type="text" class="form-input" name="title">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">PRIORITY</label>
+                        <select class="form-select" name="priority">
+                            <option value="P0">P0 - Critical</option>
+                            <option value="P1" selected>P1 - High</option>
+                            <option value="P2">P2 - Normal</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">VALUE ($)</label>
+                        <input type="number" class="form-input" name="value" placeholder="50000">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">REGION</label>
+                        <select class="form-select" name="region">
+                            <option value="PH">Philippines</option>
+                            <option value="HK">Hong Kong</option>
+                            <option value="SG">Singapore</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">EMAIL</label>
+                        <input type="email" class="form-input" name="email">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">NOTES</label>
+                    <textarea class="form-input" name="notes" rows="3"></textarea>
+                </div>
+                <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                    <button type="button" class="btn-secondary" onclick="closeAddModal()">CANCEL</button>
+                    <button type="submit" class="btn-primary">ADD LEAD</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Deal Modal -->
+    <div class="modal-overlay" id="editModal">
+        <div class="modal">
+            <div class="modal-header">
+                <span>✏️ EDIT DEAL</span>
+                <button class="modal-close" onclick="closeEditModal()">×</button>
+            </div>
+            <form id="editDealForm" onsubmit="updateDeal(event)">
+                <input type="hidden" name="dealId">
+                <div class="form-group">
+                    <label class="form-label">STATUS</label>
+                    <select class="form-select" name="status">
+                        <option value="new">📥 New Lead</option>
+                        <option value="contacted">📧 Contacted</option>
+                        <option value="meeting">🤝 Meeting Scheduled</option>
+                        <option value="proposal">💼 Proposal Sent</option>
+                        <option value="won">✅ Closed Won</option>
+                        <option value="lost">❌ Closed Lost</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">PRIORITY</label>
+                    <select class="form-select" name="priority">
+                        <option value="P0">P0 - Critical</option>
+                        <option value="P1">P1 - High</option>
+                        <option value="P2">P2 - Normal</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">VALUE ($)</label>
+                    <input type="number" class="form-input" name="value">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">NOTES</label>
+                    <textarea class="form-input" name="notes" rows="3"></textarea>
+                </div>
+                <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                    <button type="button" class="btn-secondary" onclick="closeEditModal()">CANCEL</button>
+                    <button type="submit" class="btn-primary">SAVE CHANGES</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- Toast Notification -->
-    <div class="toast" id="toast">✅ Copied to clipboard!</div>
+    <div class="toast" id="toast">✅ Action completed!</div>
 
     <!-- Mobile Navigation -->
     <nav class="mobile-nav">
-        <a href="index.html" class="mobile-nav-btn">📊<br>HQ</a>
-        <a href="scout.html" class="mobile-nav-btn">🔭<br>SCOUT</a>
-        <a href="dealflow-view.html" class="mobile-nav-btn" style="background: #69db7c;">💼<br>DEALS</a>
-        <a href="task-board.html" class="mobile-nav-btn">📋<br>TASKS</a>
+        <a href="index.html" class="mobile-nav-btn">🏠<br>HQ</a>
+        <a href="scout.html" class="mobile-nav-btn">🔭<br>Scout</a>
+        <a href="dealflow-view.html" class="mobile-nav-btn" style="background: #69db7c;">💼<br>Deals</a>
+        <a href="task-board.html" class="mobile-nav-btn">📋<br>Tasks</a>
     </nav>
 
     <script>
-        // Complete leads data from leads_complete_26.json
-        const leadsData = [
-            {
-                "id": "lead_001",
-                "company": "Coins.ph",
-                "contact_name": "Wei Zhou",
-                "title": "CEO & Founder",
-                "email": "wei.zhou@coins.ph",
-                "email_verified": false,
-                "linkedin": "https://www.linkedin.com/company/coins-ph",
-                "linkedin_personal": null,
-                "twitter": "https://x.com/coinsph",
-                "phone": null,
-                "telegram": null,
-                "status": "new",
-                "priority": "P0",
-                "notes": "Former Binance CFO (2018-2021). Acquired Coins.ph from Gojek in 2022. Leading crypto exchange in Philippines with 18M+ users. Expanding globally with Coins.xyz.",
-                "research_sources": ["https://www.coins.xyz/en/about"]
-            },
-            {
-                "id": "lead_002",
-                "company": "Coins.xyz",
-                "contact_name": "Wei Zhou",
-                "title": "CEO & Founder",
-                "email": null,
-                "email_verified": false,
-                "linkedin": "https://www.linkedin.com/company/coins-xyz",
-                "linkedin_personal": null,
-                "twitter": null,
-                "phone": null,
-                "telegram": null,
-                "status": "new",
-                "priority": "P0",
-                "notes": "SAME CEO as Coins.ph (Wei Zhou). Global expansion of Coins.ph. Launched Brazil Jan 2025. Led by ex-Binance executives. Focus on real-world disbursements.",
-                "research_sources": ["https://www.coins.xyz/en/about"]
-            },
-            {
-                "id": "lead_003",
-                "company": "PDAX",
-                "contact_name": "Nichel Gaba",
-                "title": "Founder & CEO",
-                "email": "nichel@pdax.ph",
-                "email_verified": false,
-                "linkedin": "https://ph.linkedin.com/in/nichel-gaba-cfa-57864a96",
-                "linkedin_personal": "https://ph.linkedin.com/in/nichel-gaba-cfa-57864a96",
-                "twitter": null,
-                "phone": null,
-                "telegram": null,
-                "status": "new",
-                "priority": "P1",
-                "notes": "CFA charterholder. Wharton grad. Founded PDAX in 2018. Philippines' largest homegrown crypto exchange. $51.1M raised in funding. BSP licensed.",
-                "research_sources": ["https://ph.linkedin.com/in/nichel-gaba-cfa-57864a96"]
-            },
-            {
-                "id": "lead_004",
-                "company": "BloomX",
-                "contact_name": "Luis Buenaventura II",
-                "title": "Co-Founder / Head of GCrypto at GCash",
-                "email": null,
-                "email_verified": false,
-                "linkedin": "https://ph.linkedin.com/in/helloluis",
-                "linkedin_personal": "https://ph.linkedin.com/in/helloluis",
-                "twitter": "https://x.com/helloluis",
-                "phone": null,
-                "telegram": null,
-                "status": "new",
-                "priority": "P1",
-                "notes": "Filipino crypto author, artist, entrepreneur. Co-founded BloomX 2015. NOW Head of GCrypto at GCash. President of Blockchain Council of Philippines.",
-                "research_sources": ["https://ph.linkedin.com/in/helloluis"]
-            },
-            {
-                "id": "lead_005",
-                "company": "Rebit.ph",
-                "contact_name": "Miguel Cuneta",
-                "title": "Co-Founder & Chief Community Officer",
-                "email": null,
-                "email_verified": false,
-                "linkedin": "https://ph.linkedin.com/in/miguel-cuneta-a335b093",
-                "linkedin_personal": "https://ph.linkedin.com/in/miguel-cuneta-a335b093",
-                "twitter": null,
-                "phone": null,
-                "telegram": null,
-                "status": "new",
-                "priority": "P2",
-                "notes": "In Bitcoin since 2013. Co-founded SCI (Satoshi Citadel Industries) 2014. Rebit.ph is Bitcoin remittance service under SCI.",
-                "research_sources": ["https://ph.linkedin.com/in/miguel-cuneta-a335b093"]
-            },
-            {
-                "id": "lead_006",
-                "company": "Binance Philippines",
-                "contact_name": "Kenneth Stern",
-                "title": "Former General Manager",
-                "email": null,
-                "email_verified": false,
-                "linkedin": null,
-                "linkedin_personal": null,
-                "twitter": null,
-                "phone": null,
-                "telegram": null,
-                "status": "new",
-                "priority": "P1",
-                "notes": "LEFT Binance in Nov 2023 amid regulatory challenges. Former Lamudi Philippines CEO. Need to find current contact info or replacement at Binance PH.",
-                "research_sources": []
-            },
-            {
-                "id": "lead_007",
-                "company": "Maya",
-                "contact_name": "Shailesh Baidwan",
-                "title": "Group President & Co-Founder",
-                "email": "shailesh.baidwan@maya.ph",
-                "email_verified": false,
-                "linkedin": "https://ph.linkedin.com/in/shaileshbaidwan",
-                "linkedin_personal": "https://ph.linkedin.com/in/shaileshbaidwan",
-                "twitter": null,
-                "phone": null,
-                "telegram": null,
-                "status": "new",
-                "priority": "P0",
-                "notes": "Digital banking and payments super app. Formerly PayMaya. Licensed VASP by BSP. Maya Bank co-founder. IIM Bangalore alum.",
-                "research_sources": ["https://ph.linkedin.com/in/shaileshbaidwan"]
-            },
-            {
-                "id": "lead_008",
-                "company": "Tala Philippines",
-                "contact_name": "Shivani Siroya",
-                "title": "Founder & CEO",
-                "email": "shivani@tala.co",
-                "email_verified": false,
-                "linkedin": "https://www.linkedin.com/in/shivanisiroya",
-                "linkedin_personal": "https://www.linkedin.com/in/shivanisiroya",
-                "twitter": null,
-                "phone": null,
-                "telegram": null,
-                "status": "new",
-                "priority": "P1",
-                "notes": "Global fintech for underserved. $350M+ raised. Operating in PH, Kenya, Mexico, India. Santa Monica based. Former UN analyst.",
-                "research_sources": ["https://www.linkedin.com/in/shivanisiroya"]
-            },
-            {
-                "id": "lead_009",
-                "company": "PayMongo",
-                "contact_name": "Jojo Malolos",
-                "title": "CEO",
-                "email": "jojo@paymongo.com",
-                "email_verified": false,
-                "linkedin": "https://ph.linkedin.com/in/jojo-malolos",
-                "linkedin_personal": "https://ph.linkedin.com/in/jojo-malolos",
-                "twitter": null,
-                "phone": "+63 2 7623 1545",
-                "telegram": null,
-                "status": "new",
-                "priority": "P1",
-                "notes": "Payment gateway for PH businesses. Former Smart Money team member. YCombinator alum. Fastest growing online payment platform in PH.",
-                "research_sources": ["https://www.paymongo.com/about"]
-            },
-            {
-                "id": "lead_010",
-                "company": "Xendit Philippines",
-                "contact_name": "Yang Yang Zhang",
-                "title": "Managing Director - Philippines",
-                "email": null,
-                "email_verified": false,
-                "linkedin": "https://my.linkedin.com/in/yang-yang-zhang-06105053",
-                "linkedin_personal": "https://my.linkedin.com/in/yang-yang-zhang-06105053",
-                "twitter": null,
-                "phone": null,
-                "telegram": null,
-                "status": "new",
-                "priority": "P1",
-                "notes": "Southeast Asia payment solutions. Managing Director for Philippines operations. Women in Fintech finalist. Also Chief Innovation Officer at Xendit Group.",
-                "research_sources": ["https://my.linkedin.com/in/yang-yang-zhang-06105053"]
-            },
-            {
-                "id": "lead_011",
-                "company": "Xendit Group",
-                "contact_name": "Moses Lo",
-                "title": "CEO & Co-Founder",
-                "email": "moses@xendit.co",
-                "email_verified": false,
-                "linkedin": "https://www.linkedin.com/in/moseslo",
-                "linkedin_personal": "https://www.linkedin.com/in/moseslo",
-                "twitter": null,
-                "phone": "+61 422 167 859",
-                "telegram": null,
-                "status": "new",
-                "priority": "P0",
-                "notes": "Payment infrastructure across SEA. YCombinator alum. Forbes 30 Under 30. UNSW alum. Expanding to Philippines 2020. HQ in Singapore.",
-                "research_sources": ["https://www.linkedin.com/in/moseslo"]
-            },
-            {
-                "id": "lead_012",
-                "company": "Angkas",
-                "contact_name": "George Royeca",
-                "title": "CEO",
-                "email": "george@angkas.com",
-                "email_verified": false,
-                "linkedin": "https://ph.linkedin.com/in/george-royeca-b3276b34",
-                "linkedin_personal": "https://ph.linkedin.com/in/george-royeca-b3276b34",
-                "twitter": null,
-                "phone": "+63 998 996 4527",
-                "telegram": null,
-                "status": "new",
-                "priority": "P2",
-                "notes": "Leading motorcycle taxi app in Philippines. Husband of co-founder Angeline Tham. Working with DOTr on regulations. Fintech Philippines Association board.",
-                "research_sources": ["https://ph.linkedin.com/in/george-royeca-b3276b34"]
-            },
-            {
-                "id": "lead_013",
-                "company": "GoTyme Bank",
-                "contact_name": "Albert Tinio",
-                "title": "Co-CEO & Co-Founder",
-                "email": "albert.tinio@gotyme.com.ph",
-                "email_verified": false,
-                "linkedin": "https://ph.linkedin.com/in/alberttinio",
-                "linkedin_personal": "https://ph.linkedin.com/in/alberttinio",
-                "twitter": null,
-                "phone": null,
-                "telegram": null,
-                "status": "new",
-                "priority": "P1",
-                "notes": "Digital bank with physical kiosks. Partnership with Robinsons Group. Former Robinsons Bank VP. Oxford Saïd Business School. Fintech PH Association Vice Chairman.",
-                "research_sources": ["https://ph.linkedin.com/in/alberttinio"]
-            },
-            {
-                "id": "lead_014",
-                "company": "Dragonpay",
-                "contact_name": "Robertson Chiang",
-                "title": "Founder, CEO & CTO",
-                "email": "robertson.chiang@dragonpay.ph",
-                "email_verified": false,
-                "linkedin": "https://ph.linkedin.com/in/robertson-chiang",
-                "linkedin_personal": "https://ph.linkedin.com/in/robertson-chiang",
-                "twitter": null,
-                "phone": null,
-                "telegram": null,
-                "status": "new",
-                "priority": "P1",
-                "notes": "Alternative payment gateway in PH. President of Fintech Philippines Association. Babson College MBA. Offers crypto payments to merchants via Triple-A partnership.",
-                "research_sources": ["https://ph.linkedin.com/in/robertson-chiang"]
-            },
-            {
-                "id": "lead_015",
-                "company": "Satoshi Citadel Industries (SCI)",
-                "contact_name": "John Bailon",
-                "title": "Co-Founder & CEO",
-                "email": "john@sci.ph",
-                "email_verified": false,
-                "linkedin": "https://ph.linkedin.com/in/johnbailon",
-                "linkedin_personal": "https://ph.linkedin.com/in/johnbailon",
-                "twitter": null,
-                "phone": null,
-                "telegram": null,
-                "status": "new",
-                "priority": "P1",
-                "notes": "Pioneer Bitcoin company in PH since 2014. Products: Rebit.ph, Bitbit.cash, Stanible. Tech expert and blockchain advocate.",
-                "research_sources": ["https://ph.linkedin.com/in/johnbailon"]
-            },
-            {
-                "id": "lead_016",
-                "company": "GCash (Mynt)",
-                "contact_name": "Martha Sazon",
-                "title": "President & CEO",
-                "email": "martha.sazon@gcash.com",
-                "email_verified": false,
-                "linkedin": "https://ph.linkedin.com/in/marthasazon",
-                "linkedin_personal": "https://ph.linkedin.com/in/marthasazon",
-                "twitter": null,
-                "phone": "+1 772 538 6831",
-                "telegram": null,
-                "status": "new",
-                "priority": "P0",
-                "notes": "#1 Finance Super App in Philippines. 80M+ users. Globe Telecom fintech arm. Formerly headed marketing at Globe. Made GCash profitable 3 years ahead of target.",
-                "research_sources": ["https://ph.linkedin.com/in/marthasazon"]
-            },
-            {
-                "id": "lead_017",
-                "company": "Moneybees Forex",
-                "contact_name": "TBD",
-                "title": "CEO",
-                "email": null,
-                "email_verified": false,
-                "linkedin": null,
-                "linkedin_personal": null,
-                "twitter": null,
-                "phone": null,
-                "telegram": null,
-                "status": "new",
-                "priority": "P2",
-                "notes": "BSP-licensed virtual currency exchange. Physical crypto exchange locations in malls across PH. Need to find CEO contact.",
-                "research_sources": []
-            },
-            {
-                "id": "lead_018",
-                "company": "Bloom Solutions",
-                "contact_name": "Israel Keys",
-                "title": "Co-Founder",
-                "email": null,
-                "email_verified": false,
-                "linkedin": null,
-                "linkedin_personal": null,
-                "twitter": null,
-                "phone": null,
-                "telegram": null,
-                "status": "new",
-                "priority": "P2",
-                "notes": "Co-founded BloomX with Luis Buenaventura in 2015. Blockchain and crypto solutions company. Need to verify current status and contact.",
-                "research_sources": []
-            },
-            {
-                "id": "lead_019",
-                "company": "Bitbit.cash",
-                "contact_name": "Jardine Gerodias",
-                "title": "Chairman",
-                "email": null,
-                "email_verified": false,
-                "linkedin": "https://ph.linkedin.com/in/jardinegerodias",
-                "linkedin_personal": "https://ph.linkedin.com/in/jardinegerodias",
-                "twitter": null,
-                "phone": null,
-                "telegram": null,
-                "status": "new",
-                "priority": "P2",
-                "notes": "Bitcoin wallet under SCI Ventures. Founded 2014 with Miguel Cuneta and John Bailon. Chairman and Visionary of Expedise. Serial entrepreneur.",
-                "research_sources": ["https://ph.linkedin.com/in/jardinegerodias"]
-            },
-            {
-                "id": "lead_020",
-                "company": "Yield Guild Games",
-                "contact_name": "Gabby Dizon",
-                "title": "Co-Founder",
-                "email": null,
-                "email_verified": false,
-                "linkedin": null,
-                "linkedin_personal": null,
-                "twitter": "https://x.com/gabusch",
-                "phone": null,
-                "telegram": null,
-                "status": "new",
-                "priority": "P1",
-                "notes": "Leading play-to-earn gaming guild. PH-based but global operations. Pioneer in GameFi. YGG token. Need to find CEO/current leadership contact.",
-                "research_sources": ["https://yieldguild.io"]
-            },
-            {
-                "id": "lead_021",
-                "company": "BreederDAO",
-                "contact_name": "Renz Chong",
-                "title": "CEO & Co-Founder",
-                "email": null,
-                "email_verified": false,
-                "linkedin": null,
-                "linkedin_personal": null,
-                "twitter": null,
-                "phone": null,
-                "telegram": null,
-                "status": "new",
-                "priority": "P2",
-                "notes": "Digital asset factory for blockchain games. PH-based. $10M+ funding. Need to verify current CEO and contact details.",
-                "research_sources": []
-            },
-            {
-                "id": "lead_022",
-                "company": "Axie Infinity (Sky Mavis)",
-                "contact_name": "Jeffrey Zirlin",
-                "title": "Co-Founder",
-                "email": null,
-                "email_verified": false,
-                "linkedin": null,
-                "linkedin_personal": null,
-                "twitter": "https://x.com/Jihoz_Axie",
-                "phone": null,
-                "telegram": null,
-                "status": "new",
-                "priority": "P1",
-                "notes": "Vietnam-based but massive PH user base. Jeffrey 'Jihoz' Zirlin is growth lead. Trung Nguyen is CEO. PH market critical for Axie.",
-                "research_sources": ["https://axieinfinity.com"]
-            },
-            {
-                "id": "lead_023",
-                "company": "SBC Wallet",
-                "contact_name": "TBD",
-                "title": "CEO",
-                "email": null,
-                "email_verified": false,
-                "linkedin": null,
-                "linkedin_personal": null,
-                "twitter": null,
-                "phone": null,
-                "telegram": null,
-                "status": "new",
-                "priority": "P2",
-                "notes": "Japanese-PH crypto wallet joint venture. Need to research current status and leadership.",
-                "research_sources": []
-            },
-            {
-                "id": "lead_024",
-                "company": "Voyager Innovations (Maya)",
-                "contact_name": "Orlando Vea",
-                "title": "Founder",
-                "email": null,
-                "email_verified": false,
-                "linkedin": null,
-                "linkedin_personal": null,
-                "twitter": null,
-                "phone": null,
-                "telegram": null,
-                "status": "new",
-                "priority": "P2",
-                "notes": "Original founder of PayMaya (now Maya). Former Globe Telecom executive. Pioneer in PH mobile payments. Need current contact info.",
-                "research_sources": []
-            },
-            {
-                "id": "lead_025",
-                "company": "Fintech Philippines Association",
-                "contact_name": "Amor Maclang",
-                "title": "Executive Director",
-                "email": null,
-                "email_verified": false,
-                "linkedin": null,
-                "linkedin_personal": null,
-                "twitter": null,
-                "phone": null,
-                "telegram": null,
-                "status": "new",
-                "priority": "P2",
-                "notes": "Industry association for PH fintech. Key connector in ecosystem. Can provide warm intros to member companies. Need contact details.",
-                "research_sources": ["https://fintechalliance.ph"]
-            },
-            {
-                "id": "lead_026",
-                "company": "Blockchain Council of the Philippines",
-                "contact_name": "Luis Buenaventura II",
-                "title": "President",
-                "email": null,
-                "email_verified": false,
-                "linkedin": "https://ph.linkedin.com/in/helloluis",
-                "linkedin_personal": "https://ph.linkedin.com/in/helloluis",
-                "twitter": "https://x.com/helloluis",
-                "phone": null,
-                "telegram": null,
-                "status": "new",
-                "priority": "P2",
-                "notes": "Industry body for blockchain advocacy in PH. Luis is President (same as Lead 004). Good for policy discussions and industry connections.",
-                "research_sources": ["https://www.linkedin.com/company/blockchain-council-of-the-philippines"]
-            },
-            {
-                "id": "lead_027",
-                "company": "RD Technologies",
-                "contact_name": "Rita Liu",
-                "title": "CEO & Co-Founder",
-                "email": "rita.liu@rdtechnologies.com",
-                "email_verified": false,
-                "linkedin": "https://www.linkedin.com/company/rd-technologies-limited",
-                "linkedin_personal": null,
-                "twitter": null,
-                "phone": null,
-                "telegram": null,
-                "status": "new",
-                "priority": "P1",
-                "notes": "Hong Kong-based stablecoin issuer. HKMA sandbox participant. Focus on HKD-backed stablecoins for cross-border payments. Strong regulatory relationships.",
-                "research_sources": ["https://www.rdtechnologies.com"]
-            },
-            {
-                "id": "lead_028",
-                "company": "HashKey Group",
-                "contact_name": "Michel Lee",
-                "title": "CEO & Managing Partner",
-                "email": "michel.lee@hashkey.com",
-                "email_verified": false,
-                "linkedin": "https://www.linkedin.com/in/michel-lee-4b5a3b1",
-                "linkedin_personal": "https://www.linkedin.com/in/michel-lee-4b5a3b1",
-                "twitter": null,
-                "phone": null,
-                "telegram": null,
-                "status": "new",
-                "priority": "P0",
-                "notes": "Leading Hong Kong digital asset exchange. Licensed by SFC. Backed by Wanxiang Blockchain. Strong institutional focus. Expanding across Asia.",
-                "research_sources": ["https://www.hashkey.com"]
-            },
-            {
-                "id": "lead_029",
-                "company": "ZA Bank",
-                "contact_name": "Ronald Iu",
-                "title": "CEO",
-                "email": "ronald.iu@zabank.com",
-                "email_verified": false,
-                "linkedin": "https://www.linkedin.com/in/ronald-iu-2b5a3b1",
-                "linkedin_personal": "https://www.linkedin.com/in/ronald-iu-2b5a3b1",
-                "twitter": null,
-                "phone": null,
-                "telegram": null,
-                "status": "new",
-                "priority": "P1",
-                "notes": "Hong Kong's first virtual bank. 800K+ customers. Exploring crypto trading services. Strong backing from ZhongAn Insurance. First mover advantage in HK virtual banking.",
-                "research_sources": ["https://www.zabank.com"]
-            },
-            {
-                "id": "lead_030",
-                "company": "RedotPay",
-                "contact_name": "Rex Lau",
-                "title": "CEO & Co-Founder",
-                "email": "rex.lau@redotpay.com",
-                "email_verified": false,
-                "linkedin": "https://www.linkedin.com/in/rex-lau-3c5a3b1",
-                "linkedin_personal": "https://www.linkedin.com/in/rex-lau-3c5a3b1",
-                "twitter": "https://x.com/redotpay",
-                "phone": null,
-                "telegram": null,
-                "status": "new",
-                "priority": "P1",
-                "notes": "Hong Kong crypto payment card provider. Visa/Mastercard partnerships. Fastest growing crypto card in Asia. Strong user acquisition. Backed by notable VCs.",
-                "research_sources": ["https://www.redotpay.com"]
-            }
-        ];
+        // Deal data
+        let dealsData = [];
+        let currentFilter = 'all';
+        let currentRegion = null;
+        let searchQuery = '';
+        let draggedDeal = null;
 
-        // Load status from localStorage
-        function loadStatus() {
-            const saved = localStorage.getItem('dealflow_status');
-            if (saved) {
-                const statusMap = JSON.parse(saved);
-                leadsData.forEach(lead => {
-                    if (statusMap[lead.id]) {
-                        lead.status = statusMap[lead.id];
-                    }
-                });
+        // Column configuration
+        const columns = ['new', 'contacted', 'meeting', 'proposal', 'won', 'lost'];
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            loadDeals();
+            setupDragAndDrop();
+        });
+
+        // Load deals from API or localStorage
+        async function loadDeals() {
+            try {
+                const response = await fetch('/api/deals');
+                if (response.ok) {
+                    const data = await response.json();
+                    dealsData = data.deals || [];
+                } else {
+                    throw new Error('API error');
+                }
+            } catch (error) {
+                console.log('Using fallback data');
+                // Fallback to localStorage or default data
+                const saved = localStorage.getItem('crm_deals');
+                if (saved) {
+                    dealsData = JSON.parse(saved);
+                } else {
+                    dealsData = getDefaultDeals();
+                }
             }
+            renderBoard();
+            updateStats();
         }
 
-        // Save status to localStorage
-        function saveStatus() {
-            const statusMap = {};
-            leadsData.forEach(lead => {
-                statusMap[lead.id] = lead.status;
+        // Default deals data
+        function getDefaultDeals() {
+            return [
+                { id: 'deal_001', company: 'Coins.ph', contact_name: 'Wei Zhou', title: 'CEO & Founder', email: 'wei.zhou@coins.ph', status: 'new', priority: 'P0', value: 100000, region: 'PH', notes: 'Former Binance CFO. Leading crypto exchange in Philippines with 18M+ users.' },
+                { id: 'deal_002', company: 'HashKey Group', contact_name: 'Michel Lee', title: 'CEO & Managing Partner', email: 'michel.lee@hashkey.com', status: 'contacted', priority: 'P0', value: 250000, region: 'HK', notes: 'Leading Hong Kong digital asset exchange. Licensed by SFC.' },
+                { id: 'deal_003', company: 'GCash (Mynt)', contact_name: 'Martha Sazon', title: 'President & CEO', email: 'martha.sazon@gcash.com', status: 'meeting', priority: 'P0', value: 500000, region: 'PH', notes: '#1 Finance Super App in Philippines. 80M+ users.' },
+                { id: 'deal_004', company: 'Maya', contact_name: 'Shailesh Baidwan', title: 'Group President', email: 'shailesh.baidwan@maya.ph', status: 'proposal', priority: 'P0', value: 300000, region: 'PH', notes: 'Digital banking and payments super app. Licensed VASP by BSP.' },
+                { id: 'deal_005', company: 'Xendit Group', contact_name: 'Moses Lo', title: 'CEO & Co-Founder', email: 'moses@xendit.co', status: 'won', priority: 'P0', value: 200000, region: 'SG', notes: 'Payment infrastructure across SEA. YCombinator alum.' },
+                { id: 'deal_006', company: 'PDAX', contact_name: 'Nichel Gaba', title: 'Founder & CEO', email: 'nichel@pdax.ph', status: 'lost', priority: 'P1', value: 150000, region: 'PH', notes: 'Philippines largest homegrown crypto exchange. BSP licensed.' },
+                { id: 'deal_007', company: 'ZA Bank', contact_name: 'Ronald Iu', title: 'CEO', email: 'ronald.iu@zabank.com', status: 'new', priority: 'P1', value: 180000, region: 'HK', notes: 'Hong Kongs first virtual bank. 800K+ customers.' },
+                { id: 'deal_008', company: 'PayMongo', contact_name: 'Jojo Malolos', title: 'CEO', email: 'jojo@paymongo.com', status: 'contacted', priority: 'P1', value: 120000, region: 'PH', notes: 'Payment gateway for PH businesses. YCombinator alum.' },
+            ];
+        }
+
+        // Save deals
+        function saveDeals() {
+            localStorage.setItem('crm_deals', JSON.stringify(dealsData));
+            // Also try to sync with API
+            fetch('/api/deals', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ deals: dealsData })
+            }).catch(() => {});
+        }
+
+        // Render the Kanban board
+        function renderBoard() {
+            // Clear all columns
+            columns.forEach(col => {
+                document.getElementById(`column-${col}`).innerHTML = '';
             });
-            localStorage.setItem('dealflow_status', JSON.stringify(statusMap));
+
+            // Filter deals
+            let filteredDeals = dealsData.filter(deal => {
+                if (currentFilter !== 'all' && deal.priority !== currentFilter) return false;
+                if (currentRegion && deal.region !== currentRegion) return false;
+                if (searchQuery) {
+                    const query = searchQuery.toLowerCase();
+                    return deal.company.toLowerCase().includes(query) ||
+                           deal.contact_name.toLowerCase().includes(query) ||
+                           (deal.email && deal.email.toLowerCase().includes(query));
+                }
+                return true;
+            });
+
+            // Render deals into columns
+            filteredDeals.forEach(deal => {
+                const card = createDealCard(deal);
+                const column = document.getElementById(`column-${deal.status}`);
+                if (column) {
+                    column.appendChild(card);
+                }
+            });
+
+            // Update column counts
+            columns.forEach(col => {
+                const count = dealsData.filter(d => d.status === col).length;
+                document.getElementById(`count-${col}`).textContent = count;
+            });
         }
 
-        // Render leads
-        function renderLeads(leads = leadsData) {
-            const grid = document.getElementById('leadsGrid');
-            document.getElementById('lead-count').textContent = leads.length;
-            
-            grid.innerHTML = leads.map(lead => {
-                const hasEmail = lead.email ? '' : 'missing';
-                const hasLinkedIn = lead.linkedin_personal ? '' : 'missing';
-                const hasPhone = lead.phone ? '' : 'missing';
-                const hasTwitter = lead.twitter ? '' : 'missing';
-                const hasTelegram = lead.telegram ? '' : 'missing';
-                
-                return `
-                <div class="lead-card ${lead.priority.toLowerCase()} ${lead.status}" data-id="${lead.id}" data-priority="${lead.priority}" data-status="${lead.status}">
-                    <div class="lead-header">
-                        <div>
-                            <div class="lead-company">${lead.company}</div>
-                            <div class="lead-contact">${lead.contact_name}</div>
-                            <div class="lead-title">${lead.title}</div>
-                        </div>
-                        <div>
-                            <span class="priority-badge ${lead.priority.toLowerCase()}">${lead.priority}</span>
-                            <span class="status-badge ${lead.status}">${lead.status.toUpperCase()}</span>
-                        </div>
-                    </div>
-                    
-                    <div class="contact-section">
-                        <div class="contact-grid">
-                            <div class="contact-item ${hasEmail}">
-                                <span class="label">EMAIL:</span>
-                                <span class="value">${lead.email || 'N/A'}</span>
-                            </div>
-                            <div class="contact-item ${hasLinkedIn}">
-                                <span class="label">LINKEDIN:</span>
-                                <span class="value">${lead.linkedin_personal ? <a href="${lead.linkedin_personal}" target="_blank">View Profile →</a> : 'N/A'}</span>
-                            </div>
-                            <div class="contact-item ${hasTwitter}">
-                                <span class="label">TWITTER:</span>
-                                <span class="value">${lead.twitter ? <a href="${lead.twitter}" target="_blank">@${lead.twitter.split('/').pop()}</a> : 'N/A'}</span>
-                            </div>
-                            <div class="contact-item ${hasPhone}">
-                                <span class="label">PHONE:</span>
-                                <span class="value">${lead.phone || 'N/A'}</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="lead-notes">${lead.notes}</div>
-                    
-                    <div class="lead-actions">
-                        <button class="action-btn copy" onclick="copyContactInfo('${lead.id}')">📋 Copy Info</button>
-                        <button class="action-btn contact" onclick="markAsContacted('${lead.id}')">✓ Mark Contacted</button>
+        // Create deal card element
+        function createDealCard(deal) {
+            const card = document.createElement('div');
+            card.className = `deal-card ${deal.priority.toLowerCase()}`;
+            card.draggable = true;
+            card.dataset.dealId = deal.id;
+
+            const valueDisplay = deal.value ? `$${(deal.value / 1000).toFixed(0)}K` : 'TBD';
+
+            card.innerHTML = `
+                <div class="deal-header">
+                    <div>
+                        <div class="deal-company">${deal.company}</div>
+                        <div class="deal-contact">${deal.contact_name}</div>
                     </div>
                 </div>
-                `;
-            }).join('');
-            
-            updateStats();
+                <div class="deal-meta">
+                    <span class="priority-badge ${deal.priority.toLowerCase()}">${deal.priority}</span>
+                    <span class="value-badge">${valueDisplay}</span>
+                    ${deal.region ? `<span class="region-badge">${deal.region}</span>` : ''}
+                </div>
+                <div class="deal-actions">
+                    <button class="deal-btn" onclick="editDeal('${deal.id}')">✏️ Edit</button>
+                    <button class="deal-btn" onclick="copyDealInfo('${deal.id}')">📋 Copy</button>
+                </div>
+            `;
+
+            // Drag events
+            card.addEventListener('dragstart', handleDragStart);
+            card.addEventListener('dragend', handleDragEnd);
+
+            return card;
+        }
+
+        // Drag and Drop handlers
+        function handleDragStart(e) {
+            draggedDeal = dealsData.find(d => d.id === this.dataset.dealId);
+            this.classList.add('dragging');
+            e.dataTransfer.effectAllowed = 'move';
+        }
+
+        function handleDragEnd(e) {
+            this.classList.remove('dragging');
+            draggedDeal = null;
+            document.querySelectorAll('.kanban-column').forEach(col => {
+                col.classList.remove('drag-over');
+            });
+        }
+
+        function setupDragAndDrop() {
+            document.querySelectorAll('.kanban-column').forEach(column => {
+                column.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    column.classList.add('drag-over');
+                });
+
+                column.addEventListener('dragleave', () => {
+                    column.classList.remove('drag-over');
+                });
+
+                column.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    column.classList.remove('drag-over');
+                    
+                    if (draggedDeal) {
+                        const newStatus = column.dataset.status;
+                        if (draggedDeal.status !== newStatus) {
+                            draggedDeal.status = newStatus;
+                            saveDeals();
+                            renderBoard();
+                            updateStats();
+                            showToast(`✅ Moved to ${getStatusLabel(newStatus)}`);
+                        }
+                    }
+                });
+            });
+        }
+
+        // Get status label
+        function getStatusLabel(status) {
+            const labels = {
+                new: 'New Leads',
+                contacted: 'Contacted',
+                meeting: 'Meeting Scheduled',
+                proposal: 'Proposal Sent',
+                won: 'Closed Won',
+                lost: 'Closed Lost'
+            };
+            return labels[status] || status;
         }
 
         // Update statistics
         function updateStats() {
-            document.getElementById('stat-total').textContent = leadsData.length;
-            document.getElementById('stat-p0').textContent = leadsData.filter(l => l.priority === 'P0').length;
-            document.getElementById('stat-p1').textContent = leadsData.filter(l => l.priority === 'P1').length;
-            document.getElementById('stat-new').textContent = leadsData.filter(l => l.status === 'new').length;
-            
-            // Export stats
-            document.getElementById('export-email-count').textContent = leadsData.filter(l => l.email).length;
-            document.getElementById('export-linkedin-count').textContent = leadsData.filter(l => l.linkedin_personal).length;
-            document.getElementById('export-phone-count').textContent = leadsData.filter(l => l.phone).length;
+            const total = dealsData.length;
+            const p0 = dealsData.filter(d => d.priority === 'P0').length;
+            const won = dealsData.filter(d => d.status === 'won').length;
+            const totalValue = dealsData.reduce((sum, d) => sum + (d.value || 0), 0);
+
+            document.getElementById('stat-total').textContent = total;
+            document.getElementById('stat-p0').textContent = p0;
+            document.getElementById('stat-won').textContent = won;
+            document.getElementById('stat-value').textContent = `$${(totalValue / 1000).toFixed(0)}K`;
         }
 
-        // Filter by priority
-        function filterLeads(priority) {
-            // Update button states
-            document.querySelectorAll('[data-filter="priority"]').forEach(btn => {
+        // Filter functions
+        function filterDeals(priority) {
+            currentFilter = priority;
+            document.querySelectorAll('.filter-btn').forEach(btn => {
                 btn.classList.remove('active');
-                if (btn.dataset.value === priority) btn.classList.add('active');
+                if (btn.textContent === priority || (priority === 'all' && btn.textContent === 'All')) {
+                    btn.classList.add('active');
+                }
             });
+            renderBoard();
+        }
+
+        function filterByRegion(region) {
+            currentRegion = currentRegion === region ? null : region;
+            renderBoard();
+        }
+
+        function searchDeals(query) {
+            searchQuery = query;
+            renderBoard();
+        }
+
+        // Modal functions
+        function openAddModal() {
+            document.getElementById('addModal').classList.add('active');
+        }
+
+        function closeAddModal() {
+            document.getElementById('addModal').classList.remove('active');
+            document.getElementById('addLeadForm').reset();
+        }
+
+        function addNewLead(e) {
+            e.preventDefault();
+            const formData = new FormData(e.target);
             
-            if (priority === 'all') {
-                renderLeads(leadsData);
-            } else {
-                renderLeads(leadsData.filter(l => l.priority === priority));
+            const newDeal = {
+                id: 'deal_' + Date.now(),
+                company: formData.get('company'),
+                contact_name: formData.get('contact_name'),
+                title: formData.get('title'),
+                email: formData.get('email'),
+                status: 'new',
+                priority: formData.get('priority'),
+                value: parseInt(formData.get('value')) || 0,
+                region: formData.get('region'),
+                notes: formData.get('notes')
+            };
+
+            dealsData.push(newDeal);
+            saveDeals();
+            renderBoard();
+            updateStats();
+            closeAddModal();
+            showToast('✅ New lead added!');
+        }
+
+        // Edit deal
+        let editingDealId = null;
+
+        function editDeal(dealId) {
+            const deal = dealsData.find(d => d.id === dealId);
+            if (!deal) return;
+
+            editingDealId = dealId;
+            const form = document.getElementById('editDealForm');
+            form.elements.dealId.value = deal.id;
+            form.elements.status.value = deal.status;
+            form.elements.priority.value = deal.priority;
+            form.elements.value.value = deal.value || '';
+            form.elements.notes.value = deal.notes || '';
+
+            document.getElementById('editModal').classList.add('active');
+        }
+
+        function closeEditModal() {
+            document.getElementById('editModal').classList.remove('active');
+            editingDealId = null;
+        }
+
+        function updateDeal(e) {
+            e.preventDefault();
+            if (!editingDealId) return;
+
+            const formData = new FormData(e.target);
+            const deal = dealsData.find(d => d.id === editingDealId);
+            
+            if (deal) {
+                deal.status = formData.get('status');
+                deal.priority = formData.get('priority');
+                deal.value = parseInt(formData.get('value')) || 0;
+                deal.notes = formData.get('notes');
+
+                saveDeals();
+                renderBoard();
+                updateStats();
+                closeEditModal();
+                showToast('✅ Deal updated!');
             }
         }
 
-        // Filter by status
-        function filterByStatus(status) {
-            // Update button states
-            document.querySelectorAll('[data-filter="status"]').forEach(btn => {
-                btn.classList.remove('active');
-                if (btn.dataset.value === status) btn.classList.add('active');
-            });
-            renderLeads(leadsData.filter(l => l.status === status));
-        }
+        // Copy deal info
+        function copyDealInfo(dealId) {
+            const deal = dealsData.find(d => d.id === dealId);
+            if (!deal) return;
 
-        // Filter by region
-        function filterByRegion(region) {
-            // Update button states
-            document.querySelectorAll('[data-filter="region"]').forEach(btn => {
-                btn.classList.remove('active');
-                if (btn.dataset.value === region.substring(0, 2).toUpperCase()) btn.classList.add('active');
-            });
-            renderLeads(leadsData.filter(l => {
-                const notes = l.notes.toLowerCase();
-                if (region === 'Philippines') return notes.includes('philippines') || notes.includes('ph');
-                if (region === 'Hong Kong') return notes.includes('hong kong') || notes.includes('hk');
-                if (region === 'Singapore') return notes.includes('singapore') || notes.includes('sea');
-                return false;
-            }));
-        }
+            const info = `${deal.company}
+Contact: ${deal.contact_name} (${deal.title})
+Email: ${deal.email || 'N/A'}
+Priority: ${deal.priority}
+Value: $${(deal.value || 0).toLocaleString()}
+Status: ${getStatusLabel(deal.status)}
+Notes: ${deal.notes || 'N/A'}`;
 
-        // Copy contact info
-        function copyContactInfo(id) {
-            const lead = leadsData.find(l => l.id === id);
-            const info = `
-Company: ${lead.company}
-Contact: ${lead.contact_name}
-Title: ${lead.title}
-Email: ${lead.email || 'N/A'}
-LinkedIn: ${lead.linkedin_personal || 'N/A'}
-Twitter: ${lead.twitter || 'N/A'}
-Phone: ${lead.phone || 'N/A'}
-Priority: ${lead.priority}
-Notes: ${lead.notes}
-            `.trim();
-            
             navigator.clipboard.writeText(info).then(() => {
-                showToast('📋 Contact info copied!');
+                showToast('📋 Deal info copied!');
             });
         }
 
-        // Mark as contacted
-        function markAsContacted(id) {
-            const lead = leadsData.find(l => l.id === id);
-            lead.status = 'contacted';
-            saveStatus();
-            renderLeads();
-            showToast('✓ Marked as contacted!');
-        }
-
-        // Show toast
+        // Toast notification
         function showToast(message) {
             const toast = document.getElementById('toast');
             toast.textContent = message;
             toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 2000);
+            setTimeout(() => toast.classList.remove('show'), 3000);
         }
 
-        // Export for ColdCall
-        function exportForColdCall() {
-            const exportData = leadsData.map(lead => ({
-                id: lead.id,
-                company: lead.company,
-                contact: lead.contact_name,
-                title: lead.title,
-                email: lead.email,
-                linkedin: lead.linkedin_personal,
-                twitter: lead.twitter,
-                phone: lead.phone,
-                priority: lead.priority,
-                status: lead.status,
-                notes: lead.notes
-            }));
-            
-            const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'coldcall-leads-export.json';
-            a.click();
-            URL.revokeObjectURL(url);
-            
-            showToast('📤 Exported for ColdCall!');
-        }
-
-        // Export CSV
-        function exportCSV() {
-            const headers = ['ID', 'Company', 'Contact', 'Title', 'Email', 'LinkedIn', 'Twitter', 'Phone', 'Priority', 'Status', 'Notes'];
-            const rows = leadsData.map(lead => [
-                lead.id,
-                lead.company,
-                lead.contact_name,
-                lead.title,
-                lead.email || '',
-                lead.linkedin_personal || '',
-                lead.twitter || '',
-                lead.phone || '',
-                lead.priority,
-                lead.status,
-                lead.notes.replace(/,/g, ';')
-            ]);
-            
-            const csv = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
-            const blob = new Blob([csv], { type: 'text/csv' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'dealflow-leads.csv';
-            a.click();
-            URL.revokeObjectURL(url);
-            
-            showToast('📊 CSV exported!');
-        }
-
-        // Reset all status
-        function resetAllStatus() {
-            if (confirm('Reset all leads to "new" status?')) {
-                leadsData.forEach(lead => lead.status = 'new');
-                saveStatus();
-                renderLeads();
-                showToast('🔄 All status reset!');
-            }
-        }
-
-        // Initialize
-        document.addEventListener('DOMContentLoaded', () => {
-            loadStatus();
-            renderLeads();
+        // Close modals on overlay click
+        document.querySelectorAll('.modal-overlay').forEach(overlay => {
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) {
+                    overlay.classList.remove('active');
+                }
+            });
         });
     </script>
 </body>

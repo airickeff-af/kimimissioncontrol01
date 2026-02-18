@@ -517,6 +517,47 @@ function handleRequest(req, res) {
       }
     };
     statusCode = 200;
+  } else if (pathname === '/api/deals') {
+    // Deals endpoint - returns lead/deal data
+    try {
+      const leadsPath = path.join(CONFIG.workspaceRoot, 'mission-control/data/scored-leads-v2.json');
+      if (fs.existsSync(leadsPath)) {
+        const leadsData = JSON.parse(fs.readFileSync(leadsPath, 'utf8'));
+        const deals = leadsData.scoredLeads.map((lead, idx) => ({
+          id: lead.leadId || `deal_${String(idx + 1).padStart(3, '0')}`,
+          company: lead.company,
+          contact: lead.contactName,
+          title: lead.title,
+          score: lead.totalScore,
+          priority: lead.priorityTier,
+          status: lead.priorityTier === 'P0' || lead.priorityTier === 'P1' ? 'hot' : 
+                  lead.priorityTier === 'P2' ? 'warm' : 'cold',
+          action: lead.actionRequired,
+          industry: lead.breakdown?.marketRelevance?.details?.industry?.type || 'unknown',
+          region: lead.breakdown?.marketRelevance?.details?.geography?.region || 'unknown',
+          lastActivity: lead.scoredAt || new Date().toISOString(),
+          value: lead.breakdown?.partnershipPotential?.details?.dealSizePotential?.size || 'unknown'
+        }));
+        response = {
+          success: true,
+          deals: deals,
+          summary: {
+            total: deals.length,
+            hot: deals.filter(d => d.status === 'hot').length,
+            warm: deals.filter(d => d.status === 'warm').length,
+            cold: deals.filter(d => d.status === 'cold').length
+          },
+          timestamp: new Date().toISOString()
+        };
+      } else {
+        response = { success: true, deals: [], summary: { total: 0, hot: 0, warm: 0, cold: 0 }, timestamp: new Date().toISOString() };
+      }
+      statusCode = 200;
+    } catch (error) {
+      console.error('Error reading deals:', error.message);
+      response = { error: 'Failed to load deals', message: error.message };
+      statusCode = 500;
+    }
   }
   
   res.writeHead(statusCode);

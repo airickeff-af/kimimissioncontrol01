@@ -5,31 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Living Pixel Office | Mission Control</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap');
         
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         :root {
-            --bg-primary: #0a0a0f;
-            --bg-secondary: #111118;
-            --bg-tertiary: #1a1a24;
-            --bg-card: #15151d;
-            --bg-elevated: #1e1e2a;
-            --accent-cyan: #00d4ff;
-            --accent-pink: #ff2a6d;
-            --accent-purple: #a855f7;
-            --accent-green: #22c55e;
-            --accent-yellow: #fbbf24;
-            --accent-orange: #f97316;
-            --text-primary: #fafafa;
-            --text-secondary: #a1a1aa;
-            --text-muted: #71717a;
-            --border: #27272a;
-            --border-hover: #3f3f46;
+            --bg-primary: #f5e6c8;
+            --bg-secondary: #e8d4a8;
+            --bg-tertiary: #d4c4a0;
+            --bg-card: #fff8e7;
+            --bg-elevated: #f0e0c0;
+            --accent-cyan: #8b7355;
+            --accent-pink: #a08060;
+            --accent-purple: #6b5a45;
+            --accent-green: #5a8b55;
+            --accent-yellow: #c4a060;
+            --accent-orange: #b08050;
+            --text-primary: #3d3225;
+            --text-secondary: #5c4a3a;
+            --text-muted: #7a6a5a;
+            --border: #8b7355;
+            --border-hover: #6b5a45;
         }
         
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'Press Start 2P', cursive;
             background: var(--bg-primary);
             color: var(--text-primary);
             min-height: 100vh;
@@ -60,9 +60,9 @@
         
         /* Header */
         .header {
-            background: rgba(17, 17, 24, 0.95);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border);
+            background: var(--bg-secondary);
+            border-bottom: 4px solid var(--border);
+            box-shadow: 0 4px 0 var(--border);
             padding: 0 2rem;
             height: 70px;
             display: flex;
@@ -82,25 +82,69 @@
         .logo {
             width: 42px;
             height: 42px;
-            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
-            border-radius: 12px;
+            background: var(--border);
+            border: 3px solid var(--text-primary);
+            box-shadow: 3px 3px 0 var(--text-primary);
+            border-radius: 4px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 1.5rem;
-            box-shadow: 0 0 30px rgba(0, 212, 255, 0.3);
-            animation: pulse 3s ease-in-out infinite;
-        }
-        
-        @keyframes pulse {
-            0%, 100% { box-shadow: 0 0 20px rgba(0, 212, 255, 0.3); }
-            50% { box-shadow: 0 0 40px rgba(0, 212, 255, 0.5), 0 0 60px rgba(168, 85, 247, 0.3); }
         }
         
         .brand-text h1 {
-            font-size: 1.25rem;
+            font-size: 0.75rem;
             font-weight: 700;
             letter-spacing: -0.02em;
+            line-height: 1.5;
+            font-family: 'Press Start 2P', cursive;
+        }
+        
+        .brand-text span {
+            font-size: 0.625rem;
+            color: var(--text-secondary);
+            font-family: 'VT323', monospace;
+        }
+        
+        /* Navigation - Standardized Pixel Theme */
+        .nav-tabs {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .nav-tab {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 10px;
+            padding: 8px 12px;
+            background: var(--bg-card);
+            border: 4px solid var(--border);
+            border-radius: 0;
+            cursor: pointer;
+            box-shadow: 4px 4px 0 var(--border);
+            transition: all 0.1s;
+            color: var(--text-primary);
+            line-height: 1.4;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .nav-tab:hover {
+            border-color: var(--accent-cyan);
+            transform: translateY(-2px);
+            box-shadow: 4px 6px 0 var(--border);
+        }
+        
+        .nav-tab:active {
+            transform: translateY(0);
+            box-shadow: 0 0 0 var(--border);
+        }
+        
+        .nav-tab.active {
+            background: var(--bg-tertiary);
+            border-color: var(--border);
         }
         
         .brand-text span {
@@ -611,8 +655,8 @@
         </nav>
         
         <div style="display: flex; align-items: center; gap: 1rem;">
-            <span style="font-size: 0.875rem; color: var(--text-muted);">🟢 20 Agents Active</span>
-            <button class="btn" onclick="if(window.parent!==window){window.parent.location.reload()}else{window.location.reload()}" style="font-size: 0.75rem; padding: 0.25rem 0.75rem;">🔄 Refresh</button>
+            <span style="font-size: 0.625rem; color: var(--text-secondary); font-family: 'Press Start 2P', cursive;">👑 1 Human + 21 AI (22 Total)</span>
+            <button class="btn" onclick="if(window.parent!==window){window.parent.location.reload()}else{window.location.reload()}" style="font-size: 0.625rem; padding: 0.5rem 1rem; font-family: 'Press Start 2P', cursive; background: var(--bg-card); border: 4px solid var(--border); box-shadow: 4px 4px 0 var(--border);">🔄 Refresh</button>
         </div>
     </header>
     
@@ -638,16 +682,16 @@
             
             <div class="stats-bar">
                 <div class="stat-item">
-                    <div class="stat-value">20</div>
-                    <div class="stat-label">Agents</div>
+                    <div class="stat-value">22</div>
+                    <div class="stat-label">Total</div>
                 </div>
                 <div class="stat-item">
-                    <div class="stat-value" id="active-count">14</div>
+                    <div class="stat-value" id="active-count">18</div>
                     <div class="stat-label">Active</div>
                 </div>
                 <div class="stat-item">
                     <div class="stat-value" id="meeting-count">0</div>
-                    <div class="stat-label">In Meeting</div>
+                    <div class="stat-label">Meeting</div>
                 </div>
                 <div class="stat-item">
                     <div class="stat-value" id="playing-count">0</div>
