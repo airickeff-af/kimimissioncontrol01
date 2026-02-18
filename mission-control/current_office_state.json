@@ -1,18 +1,18 @@
 {
-    "timestamp": "2026-02-18T06:00:20+08:00",
-    "hour": 06,
-    "state": "morning_briefing",
-    "zone": "conference",
-    "description": "Daily briefing - All agents gathered",
+    "timestamp": "2026-02-18T08:01:10+08:00",
+    "hour": 08,
+    "state": "default",
+    "zone": "individual",
+    "description": "Default positions",
     "positions": {
-        "air1ck3ff": "conference",
-        "glasses": "conference",
-        "quill": "conference",
-        "pixel": "conference",
-        "gary": "conference",
-        "larry": "conference",
-        "sentry": "conference",
-        "audit": "conference",
-        "cipher": "conference"
+        "air1ck3ff": "command_center",
+        "glasses": "content_desk",
+        "quill": "content_desk",
+        "pixel": "content_desk",
+        "gary": "marketing_desk",
+        "larry": "marketing_desk",
+        "sentry": "ops_center",
+        "audit": "qa_station",
+        "cipher": "ops_center"
     }
 }
