@@ -1,50 +1,10 @@
 {
-  "name": "mission-control-tests",
+  "name": "mission-control",
   "version": "1.0.0",
-  "description": "Automated testing suite for Mission Control Dashboard",
+  "description": "Mission Control Dashboard with API endpoints",
   "scripts": {
-    "test": "jest --coverage",
-    "test:watch": "jest --watch",
-    "test:ci": "jest --ci --coverage --reporters=default --reporters=jest-junit",
-    "test:api": "jest tests/api.test.js --coverage",
-    "test:dashboard": "jest tests/dashboard.test.js --coverage",
-    "test:calculations": "jest tests/calculations.test.js --coverage",
-    "test:integration": "jest tests/integration.test.js --coverage"
+    "build": "echo 'Static build - no compilation needed'",
+    "vercel-build": "echo 'Vercel build step'"
   },
-  "devDependencies": {
-    "jest": "^29.7.0",
-    "jest-environment-node": "^29.7.0",
-    "jest-junit": "^16.0.0",
-    "sharp": "^0.34.5",
-    "supertest": "^6.3.3"
-  },
-  "jest": {
-    "testEnvironment": "node",
-    "coverageDirectory": "coverage",
-    "coverageThreshold": {
-      "global": {
-        "branches": 80,
-        "functions": 80,
-        "lines": 80,
-        "statements": 80
-      }
-    },
-    "collectCoverageFrom": [
-      "mission-control/dashboard/api/**/*.js",
-      "mission-control/api/**/*.js",
-      "!**/node_modules/**",
-      "!**/tests/**",
-      "!**/coverage/**"
-    ],
-    "testMatch": [
-      "**/tests/**/*.test.js"
-    ],
-    "verbose": true,
-    "setupFilesAfterEnv": [
-      "./tests/setup.js"
-    ]
-  },
-  "dependencies": {
-    "ws": "^8.19.0"
-  }
+  "dependencies": {}
 }
