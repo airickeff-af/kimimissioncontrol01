@@ -8,34 +8,6 @@
   },
   "rewrites": [
     {
-      "source": "/api/logs/activity",
-      "destination": "/api/logs/activity.js"
-    },
-    {
-      "source": "/api/logs",
-      "destination": "/api/logs/index.js"
-    },
-    {
-      "source": "/api/agents",
-      "destination": "/api/agents.js"
-    },
-    {
-      "source": "/api/tasks",
-      "destination": "/api/tasks.js"
-    },
-    {
-      "source": "/api/tokens",
-      "destination": "/api/tokens.js"
-    },
-    {
-      "source": "/api/metrics",
-      "destination": "/api/metrics.js"
-    },
-    {
-      "source": "/api/health",
-      "destination": "/api/health.js"
-    },
-    {
       "source": "/logs-view",
       "destination": "/mission-control/dashboard/logs-view.html"
     },
@@ -72,7 +44,7 @@
       "destination": "/mission-control/dashboard/hq.html"
     },
     {
-      "source": "/(.*)",
+      "source": "/((?!api/).*)",
       "destination": "/mission-control/dashboard/index.html"
     }
   ]
