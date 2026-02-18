@@ -1,0 +1,56 @@
+{
+  "version": "1.0",
+  "lastUpdated": "2026-02-18T15:00:00Z",
+  "agents": {
+    "nexus": { "name": "Nexus", "role": "CEO/Orchestrator", "status": "active", "emoji": "◈", "tasksCompleted": 45, "tokensUsed": 8400000, "tokensToday": 125000, "lastActive": "2026-02-18T15:00:00Z", "successRate": 94 },
+    "audit-1": { "name": "Audit-1", "role": "QA", "status": "active", "emoji": "🔍", "tasksCompleted": 28, "tokensUsed": 770000, "tokensToday": 15000, "lastActive": "2026-02-18T14:55:00Z", "successRate": 96 },
+    "audit-2": { "name": "Audit-2", "role": "QA", "status": "active", "emoji": "🔎", "tasksCompleted": 24, "tokensUsed": 520000, "tokensToday": 12000, "lastActive": "2026-02-18T14:50:00Z", "successRate": 95 },
+    "code-1": { "name": "Code-1", "role": "Backend", "status": "busy", "emoji": "💻", "tasksCompleted": 29, "tokensUsed": 880000, "tokensToday": 45000, "lastActive": "2026-02-18T14:58:00Z", "successRate": 92 },
+    "code-2": { "name": "Code-2", "role": "Backend", "status": "busy", "emoji": "⚙️", "tasksCompleted": 12, "tokensUsed": 450000, "tokensToday": 32000, "lastActive": "2026-02-18T14:57:00Z", "successRate": 89 },
+    "code-3": { "name": "Code-3", "role": "Backend", "status": "busy", "emoji": "🔧", "tasksCompleted": 8, "tokensUsed": 320000, "tokensToday": 28000, "lastActive": "2026-02-18T14:56:00Z", "successRate": 87 },
+    "forge-1": { "name": "Forge-1", "role": "Frontend", "status": "active", "emoji": "⚒️", "tasksCompleted": 38, "tokensUsed": 1350000, "tokensToday": 52000, "lastActive": "2026-02-18T14:59:00Z", "successRate": 93 },
+    "forge-2": { "name": "Forge-2", "role": "Frontend", "status": "active", "emoji": "🔨", "tasksCompleted": 22, "tokensUsed": 500000, "tokensToday": 38000, "lastActive": "2026-02-18T14:58:00Z", "successRate": 91 },
+    "forge-3": { "name": "Forge-3", "role": "Frontend", "status": "active", "emoji": "🛠️", "tasksCompleted": 18, "tokensUsed": 720000, "tokensToday": 41000, "lastActive": "2026-02-18T14:57:00Z", "successRate": 90 },
+    "cipher": { "name": "Cipher", "role": "Security", "status": "idle", "emoji": "🔒", "tasksCompleted": 15, "tokensUsed": 280000, "tokensToday": 0, "lastActive": "2026-02-18T14:30:00Z", "successRate": 88 },
+    "dealflow": { "name": "DealFlow", "role": "Lead Gen", "status": "busy", "emoji": "🤝", "tasksCompleted": 52, "tokensUsed": 7510000, "tokensToday": 89000, "lastActive": "2026-02-18T14:59:00Z", "successRate": 95 },
+    "gary": { "name": "Gary", "role": "Marketing", "status": "idle", "emoji": "📢", "tasksCompleted": 19, "tokensUsed": 340000, "tokensToday": 0, "lastActive": "2026-02-18T14:20:00Z", "successRate": 86 },
+    "glasses": { "name": "Glasses", "role": "Researcher", "status": "active", "emoji": "🔭", "tasksCompleted": 31, "tokensUsed": 2000000, "tokensToday": 45000, "lastActive": "2026-02-18T14:45:00Z", "successRate": 94 },
+    "larry": { "name": "Larry", "role": "Social", "status": "idle", "emoji": "📱", "tasksCompleted": 24, "tokensUsed": 420000, "tokensToday": 0, "lastActive": "2026-02-18T14:15:00Z", "successRate": 85 },
+    "pie": { "name": "PIE", "role": "Intelligence", "status": "active", "emoji": "🧠", "tasksCompleted": 18, "tokensUsed": 890000, "tokensToday": 34000, "lastActive": "2026-02-18T14:58:00Z", "successRate": 93 },
+    "pixel": { "name": "Pixel", "role": "Designer", "status": "active", "emoji": "🎨", "tasksCompleted": 31, "tokensUsed": 2500000, "tokensToday": 28000, "lastActive": "2026-02-18T14:59:00Z", "successRate": 92 },
+    "quill": { "name": "Quill", "role": "Writer", "status": "idle", "emoji": "✍️", "tasksCompleted": 27, "tokensUsed": 380000, "tokensToday": 0, "lastActive": "2026-02-18T14:25:00Z", "successRate": 89 },
+    "scout": { "name": "Scout", "role": "Researcher", "status": "active", "emoji": "🎯", "tasksCompleted": 15, "tokensUsed": 80000, "tokensToday": 22000, "lastActive": "2026-02-18T14:55:00Z", "successRate": 87 },
+    "sentry": { "name": "Sentry", "role": "DevOps", "status": "active", "emoji": "🛡️", "tasksCompleted": 42, "tokensUsed": 560000, "tokensToday": 18000, "lastActive": "2026-02-18T14:59:00Z", "successRate": 96 },
+    "coldcall": { "name": "ColdCall", "role": "Outreach", "status": "idle", "emoji": "📞", "tasksCompleted": 8, "tokensUsed": 180000, "tokensToday": 0, "lastActive": "2026-02-18T14:10:00Z", "successRate": 84 }
+  },
+  "stats": {
+    "totalAgents": 20,
+    "activeAgents": 12,
+    "busyAgents": 5,
+    "idleAgents": 3,
+    "totalTokens": 24750000,
+    "totalTokensToday": 542000,
+    "totalCost": 5.23,
+    "totalTasksCompleted": 527,
+    "averageSuccessRate": 90.5
+  },
+  "logs": [
+    { "timestamp": "2026-02-18T15:00:00Z", "agent": "Nexus", "type": "system", "message": "Orchestrating Mission Control operations", "sessionId": "nexus-main" },
+    { "timestamp": "2026-02-18T14:58:00Z", "agent": "DealFlow", "type": "task_complete", "message": "Lead scoring completed - 26 leads processed", "sessionId": "dealflow-001" },
+    { "timestamp": "2026-02-18T14:56:00Z", "agent": "Scout", "type": "task_active", "message": "Monitoring market opportunities", "sessionId": "scout-001" },
+    { "timestamp": "2026-02-18T14:54:00Z", "agent": "Forge-1", "type": "task_complete", "message": "Dashboard UI components updated", "sessionId": "forge-001" },
+    { "timestamp": "2026-02-18T14:52:00Z", "agent": "Code-1", "type": "task_active", "message": "API endpoint maintenance", "sessionId": "code-001" }
+  ],
+  "tasks": [
+    { "id": "TASK-001", "title": "Fix Code API 404 Errors", "status": "in_progress", "priority": "P0", "assigned": ["Code-1", "Code-2", "Code-3"], "due": "2026-02-18", "progress": 75 },
+    { "id": "TASK-066", "title": "Fix API Endpoints", "status": "in_progress", "priority": "P0", "assigned": ["Code-1", "Code-2", "Code-3"], "due": "2026-02-18", "progress": 80 },
+    { "id": "TASK-067", "title": "Unified Theme All Pages", "status": "in_progress", "priority": "P1", "assigned": ["Forge-1", "Forge-2", "Forge-3"], "due": "2026-02-19", "progress": 45 },
+    { "id": "TASK-013", "title": "Larry API Credentials", "status": "blocked", "priority": "P1", "assigned": ["EricF"], "due": "2026-02-18", "progress": 0 },
+    { "id": "TASK-019", "title": "ColdCall Schedule Approval", "status": "blocked", "priority": "P1", "assigned": ["EricF"], "due": "2026-02-18", "progress": 0 }
+  ],
+  "deals": [
+    { "id": "lead_001", "company": "Coins.ph", "contact": "Wei Zhou", "title": "CEO & Founder", "email": "wei.zhou@coins.ph", "linkedin": "https://linkedin.com/company/coins-ph", "twitter": "@coinsph", "priority": "P0", "region": "Philippines", "status": "new", "score": 95, "industry": "Crypto Exchange" },
+    { "id": "lead_002", "company": "Coins.xyz", "contact": "Wei Zhou", "title": "CEO & Founder", "email": null, "linkedin": "https://linkedin.com/company/coins-xyz", "twitter": null, "priority": "P0", "region": "Global", "status": "new", "score": 92, "industry": "Crypto Exchange" },
+    { "id": "lead_003", "company": "PDAX", "contact": "Nichel Gaba", "title": "Founder & CEO", "email": "nichel@pdax.ph", "linkedin": "https://linkedin.com/in/nichel-gaba", "twitter": null, "priority": "P1", "region": "Philippines", "status": "new", "score": 88, "industry": "Crypto Exchange" }
+  ]
+}
