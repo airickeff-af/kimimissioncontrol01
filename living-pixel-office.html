@@ -523,7 +523,7 @@
         
         <div style="display: flex; align-items: center; gap: 1rem;">
             <span style="font-size: 0.875rem; color: var(--text-muted);">🟢 20 Agents Active</span>
-            <button class="btn" onclick="location.reload()" style="font-size: 0.75rem; padding: 0.25rem 0.75rem;">🔄 Refresh</button>
+            <button class="btn" onclick="if(window.parent!==window){window.parent.location.reload()}else{window.location.reload()}" style="font-size: 0.75rem; padding: 0.25rem 0.75rem;">🔄 Refresh</button>
         </div>
     </header>
     
@@ -563,10 +563,10 @@
             </div>
             
             <div class="tabs">
-                <button class="tab active" onclick="switchTab('activity')">📡 Activity</button>
-                <button class="tab" onclick="switchTab('agents')">🔭 Scout</button>
-                <button class="tab" onclick="switchTab('meeting')">🎤 Meeting</button>
-                <button class="tab" onclick="switchTab('minutes')">📝 Minutes</button>
+                <button class="tab active" onclick="switchTab('activity', this)">📡 Activity</button>
+                <button class="tab" onclick="switchTab('agents', this)">🔭 Scout</button>
+                <button class="tab" onclick="switchTab('meeting', this)">🎤 Meeting</button>
+                <button class="tab" onclick="switchTab('minutes', this)">📝 Minutes</button>
             </div>
             
             <div id="activity-tab" class="tab-content active">
@@ -1666,10 +1666,10 @@
         }
 
         // UI Functions
-        function switchTab(tabName) {
+        function switchTab(tabName, clickedTab) {
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
             document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-            event.target.classList.add('active');
+            clickedTab.classList.add('active');
             document.getElementById(tabName + '-tab').classList.add('active');
         }
 
@@ -1717,7 +1717,7 @@
         // Auto-refresh every 30 minutes for latest data
         setInterval(() => {
             console.log('Auto-refreshing office...');
-            location.reload();
+            if(window.parent!==window){window.parent.location.reload()}else{window.location.reload()}
         }, 1800000);
     </script>
 </body>

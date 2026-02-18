@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scout | Opportunities & Research</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta name="theme-color" content="#0a0a0f">
+    <title>Scout | Mission Control</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
-        
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
         :root {
             --bg-primary: #0a0a0f;
             --bg-secondary: #111118;
@@ -24,15 +24,25 @@
             --text-secondary: #a1a1aa;
             --text-muted: #71717a;
             --border: #27272a;
+            --border-hover: #3f3f46;
         }
         
-        body {
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        html {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             background: var(--bg-primary);
             color: var(--text-primary);
-            min-height: 100vh;
+            line-height: 1.5;
+            -webkit-text-size-adjust: 100%;
         }
         
+        body {
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        /* Animated Grid Background */
         body::before {
             content: '';
             position: fixed;
@@ -45,10 +55,11 @@
             z-index: 0;
         }
         
+        /* Header */
         .header {
             background: rgba(17, 17, 24, 0.95);
             border-bottom: 1px solid var(--border);
-            padding: 0 2rem;
+            padding: 0 1rem;
             height: 70px;
             display: flex;
             justify-content: space-between;
@@ -61,7 +72,7 @@
         .brand {
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 0.75rem;
         }
         
         .logo {
@@ -73,9 +84,21 @@
             align-items: center;
             justify-content: center;
             font-size: 1.5rem;
+            flex-shrink: 0;
         }
         
-        .nav-tabs {
+        .brand h1 {
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+        
+        .brand span {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+        
+        /* Desktop Navigation */
+        .nav-desktop {
             display: flex;
             gap: 0.5rem;
             background: rgba(255,255,255,0.05);
@@ -84,7 +107,7 @@
         }
         
         .nav-tab {
-            padding: 0.75rem 1.25rem;
+            padding: 0.75rem 1rem;
             border: none;
             background: transparent;
             color: var(--text-secondary);
@@ -97,505 +120,942 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            white-space: nowrap;
         }
         
         .nav-tab:hover, .nav-tab.active {
-            color: var(--text-primary);
             background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            color: var(--text-primary);
         }
         
-        .main-content {
-            padding: 2rem;
-            max-width: 1600px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 1fr 380px;
-            gap: 2rem;
-        }
-        
-        h2 {
-            color: var(--accent-cyan);
-            margin-bottom: 1.5rem;
-            font-size: 1.5rem;
-        }
-        
-        /* Filter Bar */
-        .filter-bar {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-            flex-wrap: wrap;
-        }
-        
-        .filter-btn {
-            padding: 0.5rem 1rem;
-            background: var(--bg-card);
+        /* Mobile Navigation Toggle */
+        .nav-toggle {
+            display: none;
+            width: 44px;
+            height: 44px;
+            background: var(--bg-elevated);
             border: 1px solid var(--border);
             border-radius: 8px;
-            color: var(--text-secondary);
-            font-size: 0.8rem;
+            color: var(--text-primary);
+            font-size: 1.25rem;
             cursor: pointer;
-            transition: all 0.2s;
+            align-items: center;
+            justify-content: center;
         }
         
-        .filter-btn:hover, .filter-btn.active {
-            border-color: var(--accent-cyan);
-            color: var(--accent-cyan);
-        }
-        
-        /* Opportunity Cards */
-        .opportunity-list {
-            display: flex;
+        /* Mobile Navigation Menu */
+        .nav-dropdown {
+            display: none;
+            position: fixed;
+            top: 70px;
+            left: 0;
+            right: 0;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem;
+            z-index: 99;
             flex-direction: column;
-            gap: 1rem;
+            gap: 0.5rem;
         }
         
-        .opportunity-card {
+        .nav-dropdown.active {
+            display: flex;
+        }
+        
+        .nav-dropdown .nav-tab {
+            padding: 1rem;
+            justify-content: flex-start;
+        }
+        
+        /* Mobile Bottom Navigation */
+        .nav-mobile {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border);
+            padding: 0.5rem;
+            z-index: 101;
+            justify-content: space-around;
+        }
+        
+        .nav-mobile .nav-tab {
+            flex: 1;
+            flex-direction: column;
+            padding: 0.5rem 0.25rem;
+            font-size: 0.65rem;
+            gap: 2px;
+        }
+        
+        /* Main Content */
+        .main-content {
+            padding: 1.5rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .page-header {
+            margin-bottom: 2rem;
+        }
+        
+        .page-header h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .page-header p {
+            color: var(--text-secondary);
+        }
+        
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
             background: var(--bg-card);
             border: 1px solid var(--border);
             border-radius: 12px;
             padding: 1.25rem;
+            transition: all 0.2s;
+        }
+        
+        .stat-card:hover {
+            border-color: var(--border-hover);
+            transform: translateY(-2px);
+        }
+        
+        .stat-card h3 {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-value {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--accent-cyan);
+        }
+        
+        .stat-change {
+            font-size: 0.875rem;
+            color: var(--accent-green);
+            margin-top: 0.25rem;
+        }
+        
+        /* Actions Bar */
+        .actions-bar {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1rem;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+        }
+        
+        .action-btn {
+            padding: 0.75rem 1.25rem;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            border: none;
+            border-radius: 8px;
+            color: #000;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            min-height: 44px;
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
+        }
+        
+        .action-btn.secondary {
+            background: var(--bg-elevated);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+        
+        /* Feature Cards */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .feature-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.2s;
+        }
+        
+        .feature-card:hover {
+            border-color: var(--accent-cyan);
+            transform: translateY(-2px);
+        }
+        
+        .feature-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+        
+        .feature-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+        
+        .feature-card h3 {
+            font-size: 1.125rem;
+            font-weight: 600;
+        }
+        
+        .feature-card p {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+        }
+        
+        .feature-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.375rem 0.75rem;
+            background: rgba(34, 197, 94, 0.1);
+            color: var(--accent-green);
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+        
+        .feature-status::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: var(--accent-green);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        /* Opportunity Cards */
+        .opportunity-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
             transition: all 0.2s;
             position: relative;
         }
         
         .opportunity-card:hover {
             border-color: var(--accent-cyan);
-            transform: translateX(4px);
+            transform: translateY(-2px);
         }
         
-        .opportunity-card.priority-high {
+        .opportunity-card.high-risk {
             border-left: 4px solid var(--accent-pink);
         }
         
-        .opportunity-card.priority-medium {
+        .opportunity-card.medium-risk {
             border-left: 4px solid var(--accent-yellow);
         }
         
-        .opportunity-card.priority-low {
+        .opportunity-card.low-risk {
             border-left: 4px solid var(--accent-green);
         }
         
-        .opp-header {
+        .opportunity-header {
             display: flex;
-            justify-content: space-between;
             align-items: flex-start;
-            margin-bottom: 0.75rem;
+            justify-content: space-between;
+            margin-bottom: 1rem;
         }
         
-        .opp-title {
-            font-size: 1.1rem;
+        .opportunity-title {
+            font-size: 1.125rem;
             font-weight: 600;
-            color: var(--text-primary);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
+            margin-bottom: 0.25rem;
         }
         
-        .opp-priority {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
+        .opportunity-type {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            background: rgba(0, 212, 255, 0.1);
+            color: var(--accent-cyan);
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 500;
         }
         
-        .priority-badge {
-            padding: 0.25rem 0.75rem;
+        .risk-badge {
+            padding: 0.25rem 0.5rem;
             border-radius: 4px;
             font-size: 0.7rem;
             font-weight: 600;
             text-transform: uppercase;
         }
         
-        .priority-p0 { background: rgba(255, 42, 109, 0.2); color: var(--accent-pink); }
-        .priority-p1 { background: rgba(251, 191, 36, 0.2); color: var(--accent-yellow); }
-        .priority-p2 { background: rgba(34, 197, 94, 0.2); color: var(--accent-green); }
-        
-        .bookmark-btn {
-            background: transparent;
-            border: none;
-            font-size: 1.25rem;
-            cursor: pointer;
-            opacity: 0.5;
-            transition: all 0.2s;
-            padding: 0.25rem;
-        }
-        
-        .bookmark-btn:hover, .bookmark-btn.bookmarked {
-            opacity: 1;
-            transform: scale(1.2);
-        }
-        
-        .bookmark-btn.bookmarked {
+        .risk-badge.high {
+            background: rgba(255, 42, 109, 0.15);
             color: var(--accent-pink);
         }
         
-        .opp-desc {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-            line-height: 1.5;
-            margin-bottom: 0.75rem;
+        .risk-badge.medium {
+            background: rgba(251, 191, 36, 0.15);
+            color: var(--accent-yellow);
         }
         
-        .opp-meta {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
+        .risk-badge.low {
+            background: rgba(34, 197, 94, 0.15);
+            color: var(--accent-green);
+        }
+        
+        .opportunity-metrics {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.75rem;
+            margin: 1rem 0;
+            padding: 0.75rem 0;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .metric {
+            text-align: center;
+        }
+        
+        .metric-value {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--accent-cyan);
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .metric-label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+        
+        .opportunity-section {
+            margin-top: 1rem;
+        }
+        
+        .opportunity-section h4 {
             font-size: 0.8rem;
             color: var(--text-muted);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
         
-        .opp-meta span {
+        .prereq-list, .skills-list {
             display: flex;
-            align-items: center;
-            gap: 0.25rem;
-        }
-        
-        .opp-tags {
-            display: flex;
-            gap: 0.5rem;
-            margin-top: 0.75rem;
             flex-wrap: wrap;
+            gap: 0.5rem;
         }
         
-        .tag {
+        .prereq-tag, .skill-tag {
             padding: 0.25rem 0.5rem;
             background: var(--bg-elevated);
+            border: 1px solid var(--border);
             border-radius: 4px;
-            font-size: 0.7rem;
+            font-size: 0.75rem;
             color: var(--text-secondary);
         }
         
-        /* Sidebar */
-        .sidebar {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
+        .roi-note {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-style: italic;
+            margin-top: 0.5rem;
         }
         
-        .sidebar-section {
+        /* Data Section */
+        .data-section {
             background: var(--bg-card);
             border: 1px solid var(--border);
             border-radius: 12px;
-            padding: 1.25rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
         }
         
-        .sidebar-title {
-            font-size: 1rem;
-            color: var(--accent-cyan);
+        .data-section h2 {
+            font-size: 1.25rem;
             margin-bottom: 1rem;
             display: flex;
             align-items: center;
             gap: 0.5rem;
-        }
-        
-        .bookmarked-item {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 0.75rem;
-            background: var(--bg-elevated);
-            border-radius: 8px;
-            margin-bottom: 0.5rem;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .bookmarked-item:hover {
-            border: 1px solid var(--accent-pink);
-        }
-        
-        .bookmarked-item .emoji {
-            font-size: 1.25rem;
-        }
-        
-        .bookmarked-item .info {
-            flex: 1;
-        }
-        
-        .bookmarked-item .name {
-            font-size: 0.85rem;
-            font-weight: 500;
-            color: var(--text-primary);
-        }
-        
-        .bookmarked-item .priority {
-            font-size: 0.7rem;
-            color: var(--accent-pink);
-        }
-        
-        .remove-bookmark {
-            background: transparent;
-            border: none;
-            color: var(--text-muted);
-            cursor: pointer;
-            font-size: 1rem;
-            padding: 0.25rem;
-        }
-        
-        .remove-bookmark:hover {
-            color: var(--accent-pink);
-        }
-        
-        .empty-state {
-            text-align: center;
-            padding: 2rem;
-            color: var(--text-muted);
-            font-size: 0.85rem;
-        }
-        
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 0.75rem;
-        }
-        
-        .stat-box {
-            background: var(--bg-elevated);
-            padding: 0.75rem;
-            border-radius: 8px;
-            text-align: center;
-        }
-        
-        .stat-box .value {
-            font-size: 1.25rem;
-            font-weight: 700;
             color: var(--accent-cyan);
         }
         
-        .stat-box .label {
-            font-size: 0.7rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
+        .data-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.875rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .data-row:last-child {
+            border-bottom: none;
+        }
+        
+        .data-label {
+            color: var(--text-secondary);
+        }
+        
+        .data-value {
+            font-weight: 600;
+            color: var(--accent-cyan);
+        }
+        
+        /* Tablet Styles */
+        @media (max-width: 1024px) {
+            .nav-desktop {
+                display: none;
+            }
+            
+            .nav-toggle {
+                display: flex;
+            }
+            
+            .nav-mobile {
+                display: flex;
+            }
+            
+            .main-content {
+                padding: 1rem;
+                padding-bottom: 5rem;
+            }
+        }
+        
+        /* Mobile Styles */
+        @media (max-width: 768px) {
+            .header {
+                height: 60px;
+                padding: 0 0.75rem;
+            }
+            
+            .logo {
+                width: 36px;
+                height: 36px;
+                font-size: 1.2rem;
+            }
+            
+            .brand h1 {
+                font-size: 1rem;
+            }
+            
+            .brand span {
+                display: none;
+            }
+            
+            .nav-dropdown {
+                top: 60px;
+            }
+            
+            .page-header h1 {
+                font-size: 1.5rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .stat-value {
+                font-size: 1.5rem;
+            }
+            
+            .actions-bar {
+                flex-direction: column;
+            }
+            
+            .action-btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Small Mobile */
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .feature-links {
+                flex-direction: column;
+            }
+            
+            .feature-link {
+                text-align: center;
+            }
         }
     </style>
 </head>
 <body>
     <header class="header">
         <div class="brand">
-            <div class="logo">🔭</div>
+            <div class="logo">🎯</div>
             <div>
-                <h1 style="font-size: 1.25rem;">Scout</h1>
-                <span style="font-size: 0.75rem; color: var(--text-muted);">Opportunities & Research</span>
+                <h1>Mission Control</h1>
+                <span>Scout Dashboard</span>
             </div>
         </div>
         
-        <nav class="nav-tabs">
-            <a href="index.html" class="nav-tab">📊 Overview</a>
-            <a href="agents.html" class="nav-tab">🤖 Agents</a>
-            <a href="living-pixel-office.html" class="nav-tab">🏢 Office</a>
-            <a href="data-viewer.html" class="nav-tab">📁 Data</a>
-            <a href="token-tracker.html" class="nav-tab">💰 Tokens</a>
+        <!-- Desktop Navigation -->
+        <nav class="nav-desktop">
+            <a href="index-v4.html" class="nav-tab">🏠 HQ</a>
             <a href="task-board.html" class="nav-tab">📋 Tasks</a>
+            <a href="agent-performance.html" class="nav-tab">👥 Agents</a>
+            <a href="token-tracker.html" class="nav-tab">💰 Tokens</a>
+            <a href="lead-scoring.html" class="nav-tab">🎯 Leads</a>
+            <a href="scout.html" class="nav-tab active">🔭 Scout</a>
+            <a href="competitors.html" class="nav-tab">🎯 Competitors</a>
         </nav>
         
-        <div style="display: flex; align-items: center; gap: 1rem;">
-            <span style="font-size: 0.875rem; color: var(--text-muted);">🔭 30 Opportunities Found</span>
-            <button class="filter-btn" onclick="location.reload()">🔄 Refresh</button>
-        </div>
+        <!-- Mobile Nav Toggle -->
+        <button class="nav-toggle" onclick="toggleNav()" aria-label="Toggle navigation">☰</button>
     </header>
+    
+    <!-- Mobile Dropdown Menu -->
+    <nav class="nav-dropdown" id="navDropdown">
+        <a href="index-v4.html" class="nav-tab">🏠 HQ</a>
+        <a href="task-board.html" class="nav-tab">📋 Tasks</a>
+        <a href="agent-performance.html" class="nav-tab">👥 Agents</a>
+        <a href="token-tracker.html" class="nav-tab">💰 Tokens</a>
+        <a href="scout.html" class="nav-tab active">🔭 Scout</a>
+        <a href="competitors.html" class="nav-tab">🎯 Competitors</a>
+    </nav>
 
-    <div class="main-content">
-        <div>
-            <h2>🔭 Opportunities (Ranked by Priority)</h2>
-            
-            <div class="filter-bar">
-                <button class="filter-btn active" onclick="filterOpps('all')">All (30)</button>
-                <button class="filter-btn" onclick="filterOpps('high')">🔴 High Priority (12)</button>
-                <button class="filter-btn" onclick="filterOpps('medium')">🟡 Medium (10)</button>
-                <button class="filter-btn" onclick="filterOpps('low')">🟢 Low (8)</button>
-                <button class="filter-btn" onclick="filterOpps('bookmarked')">🔖 Bookmarked</button>
+    <main class="main-content">
+        <div class="page-header">
+            <h1>🔭 Scout Intelligence Center</h1>
+            <p>Research, monitoring, and opportunity detection systems</p>
+        </div>
+
+        <!-- Stats Overview -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>Competitors Tracked</h3>
+                <div class="stat-value">15</div>
+                <div class="stat-change">+3 this week</div>
             </div>
-            
-            <div class="opportunity-list" id="opportunity-list">
-                <!-- Opportunities populated by JavaScript -->
+            <div class="stat-card">
+                <h3>Opportunities Found</h3>
+                <div class="stat-value">12</div>
+                <div class="stat-change">5 high priority</div>
+            </div>
+            <div class="stat-card">
+                <h3>Auto-Discovered Leads</h3>
+                <div class="stat-value">55</div>
+                <div class="stat-change">This week</div>
+            </div>
+            <div class="stat-card">
+                <h3>Sentiment Score</h3>
+                <div class="stat-value">Neutral</div>
+                <div class="stat-change">7-day trend</div>
             </div>
         </div>
-        
-        <div class="sidebar">
-            <div class="sidebar-section">
-                <div class="sidebar-title">🔖 Priority Bookmarks</div>
-                <div id="bookmarked-list">
-                    <div class="empty-state">Click ⭐ on opportunities to bookmark them here</div>
+
+        <!-- Quick Actions -->
+        <div class="actions-bar">
+            <a href="competitors.html" class="action-btn">🎯 View Competitors</a>
+            <a href="reports/opportunity-report-2026-02-17.json" class="action-btn secondary">📊 Latest Report</a>
+            <a href="agents/scout/opportunity-radar.js" class="action-btn secondary">⚙️ Configure</a>
+        </div>
+
+        <!-- Opportunity Cards -->
+        <h2 style="margin-bottom: 1rem;">💰 Active Opportunities</h2>
+        <div class="features-grid">
+            <!-- Opportunity 1: Affiliate Marketing -->
+            <div class="opportunity-card medium-risk">
+                <div class="opportunity-header">
+                    <div>
+                        <div class="opportunity-title">SaaS Affiliate Stack</div>
+                        <span class="opportunity-type">AFFILIATE MARKETING</span>
+                    </div>
+                    <span class="risk-badge medium">Medium Risk</span>
                 </div>
+                <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 1rem;">Promote Typefully, Beehiiv, and ConvertKit through content marketing.</p>
+                
+                <div class="opportunity-metrics">
+                    <div class="metric">
+                        <div class="metric-value">$200-500</div>
+                        <div class="metric-label">Monthly Revenue</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">5-10 hrs</div>
+                        <div class="metric-label">Per Week</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">3-6 mo</div>
+                        <div class="metric-label">To Profit</div>
+                    </div>
+                </div>
+                
+                <div class="opportunity-section">
+                    <h4>Prerequisites</h4>
+                    <div class="prereq-list">
+                        <span class="prereq-tag">1K+ Twitter followers</span>
+                        <span class="prereq-tag">Basic copywriting</span>
+                        <span class="prereq-tag">Consistent posting</span>
+                    </div>
+                </div>
+                
+                <div class="opportunity-section">
+                    <h4>Skills Needed</h4>
+                    <div class="skills-list">
+                        <span class="skill-tag">Content creation</span>
+                        <span class="skill-tag">Social media</span>
+                        <span class="skill-tag">Basic analytics</span>
+                    </div>
+                </div>
+                
+                <p class="roi-note">⚠️ Realistic ROI: 15-25% of optimistic estimates. Requires 3-6 months of consistent effort before meaningful revenue.</p>
             </div>
-            
-            <div class="sidebar-section">
-                <div class="sidebar-title">📊 Opportunity Stats</div>
-                <div class="stats-grid">
-                    <div class="stat-box">
-                        <div class="value">12</div>
-                        <div class="label">High Priority</div>
+
+            <!-- Opportunity 2: Micro-Influencer Sponsorships -->
+            <div class="opportunity-card high-risk">
+                <div class="opportunity-header">
+                    <div>
+                        <div class="opportunity-title">Micro-Influencer Deals</div>
+                        <span class="opportunity-type">SPONSORED CONTENT</span>
                     </div>
-                    <div class="stat-box">
-                        <div class="value">$50K</div>
-                        <div class="label">Est. Revenue</div>
+                    <span class="risk-badge high">High Risk</span>
+                </div>
+                <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 1rem;">Partner with brands for sponsored tweets and content (1K-10K followers).</p>
+                
+                <div class="opportunity-metrics">
+                    <div class="metric">
+                        <div class="metric-value">$100-300</div>
+                        <div class="metric-label">Monthly Revenue</div>
                     </div>
-                    <div class="stat-box">
-                        <div class="value">8</div>
-                        <div class="label">Quick Wins</div>
+                    <div class="metric">
+                        <div class="metric-value">8-15 hrs</div>
+                        <div class="metric-label">Per Week</div>
                     </div>
-                    <div class="stat-box">
-                        <div class="value">5</div>
-                        <div class="label">Researching</div>
+                    <div class="metric">
+                        <div class="metric-value">2-4 mo</div>
+                        <div class="metric-label">To First Deal</div>
                     </div>
                 </div>
+                
+                <div class="opportunity-section">
+                    <h4>Prerequisites</h4>
+                    <div class="prereq-list">
+                        <span class="prereq-tag">2%+ engagement rate</span>
+                        <span class="prereq-tag">Defined niche</span>
+                        <span class="prereq-tag">Professional profile</span>
+                    </div>
+                </div>
+                
+                <div class="opportunity-section">
+                    <h4>Skills Needed</h4>
+                    <div class="skills-list">
+                        <span class="skill-tag">Negotiation</span>
+                        <span class="skill-tag">Content strategy</span>
+                        <span class="skill-tag">Brand alignment</span>
+                    </div>
+                </div>
+                
+                <p class="roi-note">⚠️ Realistic ROI: 20-30% of optimistic estimates. Highly competitive; most creators earn $0 in first 3 months.</p>
             </div>
-            
-            <div class="sidebar-section">
-                <div class="sidebar-title">🏷️ Top Categories</div>
-                <div class="opp-tags">
-                    <span class="tag">🎥 Content (8)</span>
-                    <span class="tag">💰 DeFi (6)</span>
-                    <span class="tag">🤖 AI (5)</span>
-                    <span class="tag">📊 Data (4)</span>
-                    <span class="tag">🌐 Web3 (4)</span>
-                    <span class="tag">📱 SaaS (3)</span>
+
+            <!-- Opportunity 3: Newsletter Monetization -->
+            <div class="opportunity-card low-risk">
+                <div class="opportunity-header">
+                    <div>
+                        <div class="opportunity-title">Newsletter Monetization</div>
+                        <span class="opportunity-type">CONTENT</span>
+                    </div>
+                    <span class="risk-badge low">Low Risk</span>
                 </div>
+                <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 1rem;">Build and monetize an email newsletter through subscriptions and sponsorships.</p>
+                
+                <div class="opportunity-metrics">
+                    <div class="metric">
+                        <div class="metric-value">$500-2K</div>
+                        <div class="metric-label">Monthly Revenue</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">10-20 hrs</div>
+                        <div class="metric-label">Per Week</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">6-12 mo</div>
+                        <div class="metric-label">To Profit</div>
+                    </div>
+                </div>
+                
+                <div class="opportunity-section">
+                    <h4>Prerequisites</h4>
+                    <div class="prereq-list">
+                        <span class="prereq-tag">Subject expertise</span>
+                        <span class="prereq-tag">Writing skills</span>
+                        <span class="prereq-tag">Audience building</span>
+                    </div>
+                </div>
+                
+                <div class="opportunity-section">
+                    <h4>Skills Needed</h4>
+                    <div class="skills-list">
+                        <span class="skill-tag">Long-form writing</span>
+                        <span class="skill-tag">Email marketing</span>
+                        <span class="skill-tag">Community building</span>
+                    </div>
+                </div>
+                
+                <p class="roi-note">⚠️ Realistic ROI: 25-35% of optimistic estimates. Requires consistent publishing for 6+ months to build subscriber base.</p>
+            </div>
+
+            <!-- Opportunity 4: Crypto Airdrop Farming -->
+            <div class="opportunity-card high-risk">
+                <div class="opportunity-header">
+                    <div>
+                        <div class="opportunity-title">Strategic Airdrop Farming</div>
+                        <span class="opportunity-type">CRYPTO</span>
+                    </div>
+                    <span class="risk-badge high">High Risk</span>
+                </div>
+                <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 1rem;">Participate in testnets and early protocols for potential token rewards.</p>
+                
+                <div class="opportunity-metrics">
+                    <div class="metric">
+                        <div class="metric-value">$0-5K</div>
+                        <div class="metric-label">Per Airdrop</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">5-15 hrs</div>
+                        <div class="metric-label">Per Project</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">Unpredictable</div>
+                        <div class="metric-label">Timeline</div>
+                    </div>
+                </div>
+                
+                <div class="opportunity-section">
+                    <h4>Prerequisites</h4>
+                    <div class="prereq-list">
+                        <span class="prereq-tag">Crypto wallet setup</span>
+                        <span class="prereq-tag">Gas fee budget</span>
+                        <span class="prereq-tag">Technical aptitude</span>
+                    </div>
+                </div>
+                
+                <div class="opportunity-section">
+                    <h4>Skills Needed</h4>
+                    <div class="skills-list">
+                        <span class="skill-tag">DeFi protocols</span>
+                        <span class="skill-tag">Risk assessment</span>
+                        <span class="skill-tag">Network analysis</span>
+                    </div>
+                </div>
+                
+                <p class="roi-note">⚠️ HIGH RISK: 60-80% of airdrops yield $0. Gas fees and time investment often exceed returns. Many projects never launch tokens.</p>
+            </div>
+
+            <!-- Opportunity 5: AI Automation Services -->
+            <div class="opportunity-card medium-risk">
+                <div class="opportunity-header">
+                    <div>
+                        <div class="opportunity-title">AI Automation Services</div>
+                        <span class="opportunity-type">B2B SERVICES</span>
+                    </div>
+                    <span class="risk-badge medium">Medium Risk</span>
+                </div>
+                <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 1rem;">Build and sell AI-powered automation solutions for small businesses.</p>
+                
+                <div class="opportunity-metrics">
+                    <div class="metric">
+                        <div class="metric-value">$1K-5K</div>
+                        <div class="metric-label">Per Project</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">15-30 hrs</div>
+                        <div class="metric-label">Per Project</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">1-3 mo</div>
+                        <div class="metric-label">To First Client</div>
+                    </div>
+                </div>
+                
+                <div class="opportunity-section">
+                    <h4>Prerequisites</h4>
+                    <div class="prereq-list">
+                        <span class="prereq-tag">Programming skills</span>
+                        <span class="prereq-tag">AI tool expertise</span>
+                        <span class="prereq-tag">Portfolio projects</span>
+                    </div>
+                </div>
+                
+                <div class="opportunity-section">
+                    <h4>Skills Needed</h4>
+                    <div class="skills-list">
+                        <span class="skill-tag">API integration</span>
+                        <span class="skill-tag">Prompt engineering</span>
+                        <span class="skill-tag">Client management</span>
+                    </div>
+                </div>
+                
+                <p class="roi-note">⚠️ Realistic ROI: 40-50% of optimistic estimates. Requires technical skills and 1-3 months to land first paying client.</p>
+            </div>
+
+            <!-- Opportunity 6: Niche Info Products -->
+            <div class="opportunity-card low-risk">
+                <div class="opportunity-header">
+                    <div>
+                        <div class="opportunity-title">Niche Info Products</div>
+                        <span class="opportunity-type">DIGITAL PRODUCTS</span>
+                    </div>
+                    <span class="risk-badge low">Low Risk</span>
+                </div>
+                <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 1rem;">Create and sell ebooks, templates, or courses in a specialized niche.</p>
+                
+                <div class="opportunity-metrics">
+                    <div class="metric">
+                        <div class="metric-value">$300-1K</div>
+                        <div class="metric-label">Monthly Revenue</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">5-10 hrs</div>
+                        <div class="metric-label">Per Week</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">2-4 mo</div>
+                        <div class="metric-label">To First Sale</div>
+                    </div>
+                </div>
+                
+                <div class="opportunity-section">
+                    <h4>Prerequisites</h4>
+                    <div class="prereq-list">
+                        <span class="prereq-tag">Domain expertise</span>
+                        <span class="prereq-tag">Existing audience</span>
+                        <span class="prereq-tag">Product design</span>
+                    </div>
+                </div>
+                
+                <div class="opportunity-section">
+                    <h4>Skills Needed</h4>
+                    <div class="skills-list">
+                        <span class="skill-tag">Content creation</span>
+                        <span class="skill-tag">Marketing</span>
+                        <span class="skill-tag">Customer support</span>
+                    </div>
+                </div>
+                
+                <p class="roi-note">⚠️ Realistic ROI: 30-40% of optimistic estimates. Success heavily depends on existing audience and marketing ability.</p>
             </div>
         </div>
-    </div>
+
+        <!-- System Status -->
+        <div class="data-section">
+            <h2>⚙️ System Status</h2>
+            <div class="data-row">
+                <span class="data-label">Last Competitor Check</span>
+                <span class="data-value">2 hours ago</span>
+            </div>
+            <div class="data-row">
+                <span class="data-label">Last Opportunity Scan</span>
+                <span class="data-value">Today 10:00 AM</span>
+            </div>
+            <div class="data-row">
+                <span class="data-label">Next Auto-Discovery</span>
+                <span class="data-value">Monday 9:00 AM</span>
+            </div>
+            <div class="data-row">
+                <span class="data-label">Active Alerts</span>
+                <span class="data-value">3 P0, 5 P1</span>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Mobile Bottom Navigation -->
+    <nav class="nav-mobile">
+        <a href="index-v4.html" class="nav-tab">
+            <span class="icon">🏠</span>
+            <span>HQ</span>
+        </a>
+        <a href="task-board.html" class="nav-tab">
+            <span class="icon">📋</span>
+            <span>Tasks</span>
+        </a>
+        <a href="agent-performance.html" class="nav-tab">
+            <span class="icon">👥</span>
+            <span>Agents</span>
+        </a>
+        <a href="token-tracker.html" class="nav-tab">
+            <span class="icon">💰</span>
+            <span>Tokens</span>
+        </a>
+        <a href="scout.html" class="nav-tab active">
+            <span class="icon">🔭</span>
+            <span>Scout</span>
+        </a>
+    </nav>
 
     <script>
-        // Opportunities Data - Ranked by Priority
-        const opportunities = [
-            { id: 1, emoji: '🎥', title: 'X/Twitter Content Monetization', desc: 'Build 10K followers, enable ad revenue sharing. Post 3x daily with AI-assisted content. Revenue: $500-2000/mo.', priority: 'P0', effort: 'Low', impact: 'High', time: '3 months', roi: '$15K/year', tags: ['Content', 'Social', 'Passive'], category: 'high' },
-            { id: 2, emoji: '📧', title: 'Newsletter Sponsorships', desc: 'Launch weekly newsletter, grow to 5K subscribers. Sponsorships at $200-500/issue. Target: 4 sponsors/month.', priority: 'P0', effort: 'Medium', impact: 'High', time: '6 months', roi: '$24K/year', tags: ['Content', 'Email', 'Sponsors'], category: 'high' },
-            { id: 3, emoji: '🤖', title: 'AI Consulting Services', desc: 'Offer Mission Control setup for businesses. $1.5K-15K per project. Target: 2 clients/month.', priority: 'P0', effort: 'Low', impact: 'High', time: 'Immediate', roi: '$50K/year', tags: ['AI', 'Consulting', 'Services'], category: 'high' },
-            { id: 4, emoji: '🎬', title: 'YouTube Channel Growth', desc: 'Weekly AI/tech content. Monetize at 1K subs. CPM $3-8. Target: 50K views/month.', priority: 'P0', effort: 'High', impact: 'High', time: '6 months', roi: '$18K/year', tags: ['Video', 'Content', 'Long-term'], category: 'high' },
-            { id: 5, emoji: '🛍️', title: 'Digital Products Store', desc: 'Sell Notion templates, prompt packs, AI tools. $20-200 per product. Target: 100 sales/month.', priority: 'P1', effort: 'Medium', impact: 'High', time: '2 months', roi: '$30K/year', tags: ['Products', 'Passive', 'Scalable'], category: 'high' },
-            { id: 6, emoji: '🔗', title: 'Affiliate Marketing Program', desc: 'Promote AI tools, crypto exchanges. 10-50% commission. Target: $5K/month in referrals.', priority: 'P1', effort: 'Low', impact: 'Medium', time: '3 months', roi: '$20K/year', tags: ['Affiliate', 'Passive', 'Marketing'], category: 'high' },
-            { id: 7, emoji: '💱', title: 'Crypto Arbitrage Bot', desc: 'Automated arbitrage across exchanges. 0.5-2% per trade. Requires $10K capital.', priority: 'P1', effort: 'Medium', impact: 'High', time: '1 month', roi: '$40K/year', tags: ['Crypto', 'DeFi', 'Automation'], category: 'high' },
-            { id: 8, emoji: '📱', title: 'Micro-SaaS: Lead Scoring Tool', desc: 'Build simple lead scoring API. $29-99/month. Target: 100 paying users.', priority: 'P1', effort: 'High', impact: 'High', time: '3 months', roi: '$60K/year', tags: ['SaaS', 'Product', 'Recurring'], category: 'high' },
-            { id: 9, emoji: '🎓', title: 'Online Course Creation', desc: 'Create AI/automation course. $100-500 per student. Target: 200 students/year.', priority: 'P1', effort: 'High', impact: 'Medium', time: '2 months', roi: '$40K/year', tags: ['Education', 'Course', 'One-time'], category: 'medium' },
-            { id: 10, emoji: '📊', title: 'Data Analytics Service', desc: 'Offer analytics dashboards for SMBs. $500-2000/month per client.', priority: 'P1', effort: 'Medium', impact: 'Medium', time: '1 month', roi: '$36K/year', tags: ['Data', 'Services', 'Recurring'], category: 'medium' },
-            { id: 11, emoji: '🤝', title: 'Partnership: coins.ph', desc: 'Strategic partnership with Philippines crypto exchange. Revenue share model.', priority: 'P0', effort: 'Low', impact: 'High', time: '2 weeks', roi: 'TBD', tags: ['Partnership', 'Crypto', 'Strategic'], category: 'high' },
-            { id: 12, emoji: '🤝', title: 'Partnership: Coins.xyz', desc: 'Global crypto platform partnership. API integration + referral program.', priority: 'P0', effort: 'Low', impact: 'High', time: '2 weeks', roi: 'TBD', tags: ['Partnership', 'Crypto', 'Global'], category: 'high' },
-            { id: 13, emoji: '📝', title: 'Medium Partner Program', desc: 'Monetize Medium articles. Requires 100 followers. $50-500/article.', priority: 'P2', effort: 'Low', impact: 'Low', time: '1 month', roi: '$3K/year', tags: ['Writing', 'Content', 'Passive'], category: 'low' },
-            { id: 14, emoji: '🎙️', title: 'Podcast Sponsorships', desc: 'Start AI/tech podcast. $500-2000/episode at 10K downloads.', priority: 'P2', effort: 'High', impact: 'Medium', time: '6 months', roi: '$24K/year', tags: ['Audio', 'Content', 'Long-term'], category: 'medium' },
-            { id: 15, emoji: '📚', title: 'E-book Publishing', desc: 'Write AI/automation guide. $10-30 per sale. Amazon KDP distribution.', priority: 'P2', effort: 'Medium', impact: 'Low', time: '2 months', roi: '$5K/year', tags: ['Writing', 'Product', 'Passive'], category: 'low' },
-            { id: 16, emoji: '🎨', title: 'NFT Collection Launch', desc: 'Create utility NFTs for Mission Control. 1000 supply, 0.05 ETH mint.', priority: 'P2', effort: 'High', impact: 'Medium', time: '3 months', roi: '$50K', tags: ['NFT', 'Crypto', 'Community'], category: 'medium' },
-            { id: 17, emoji: '🏢', title: 'Co-working Space Partnership', desc: 'Offer Mission Control to co-working spaces. $500/month per location.', priority: 'P2', effort: 'Low', impact: 'Medium', time: '1 month', roi: '$12K/year', tags: ['B2B', 'Partnership', 'Local'], category: 'medium' },
-            { id: 18, emoji: '🎪', title: 'Speaking Engagements', desc: 'Speak at AI/crypto conferences. $1000-5000 per talk.', priority: 'P2', effort: 'Low', impact: 'Medium', time: 'Ongoing', roi: '$20K/year', tags: ['Speaking', 'Authority', 'Network'], category: 'medium' },
-            { id: 19, emoji: '💼', title: 'Freelance AI Development', desc: 'Custom AI agents for clients. $100-300/hour. 10 hours/week.', priority: 'P1', effort: 'Medium', impact: 'High', time: 'Immediate', roi: '$75K/year', tags: ['Services', 'AI', 'Active'], category: 'high' },
-            { id: 20, emoji: '📈', title: 'Stock Trading Algorithm', desc: 'Build algo trading bot. Requires $25K capital. 10-20% annual returns.', priority: 'P2', effort: 'High', impact: 'Medium', time: '3 months', roi: '$5K/year', tags: ['Trading', 'Finance', 'Automation'], category: 'low' },
-            { id: 21, emoji: '🌐', title: 'Web3 Community Building', desc: 'Build Discord/Telegram community. Monetize via premium access.', priority: 'P2', effort: 'Medium', impact: 'Low', time: '6 months', roi: '$10K/year', tags: ['Community', 'Web3', 'Long-term'], category: 'low' },
-            { id: 22, emoji: '📦', title: 'Dropshipping AI Tools', desc: 'Curate and sell AI tools. 20-40% margin. No inventory needed.', priority: 'P2', effort: 'Low', impact: 'Low', time: '1 month', roi: '$8K/year', tags: ['E-commerce', 'AI', 'Dropship'], category: 'low' },
-            { id: 23, emoji: '🎮', title: 'Gaming Content + NFTs', desc: 'Gaming streams with NFT rewards. Hybrid content + crypto model.', priority: 'P2', effort: 'High', impact: 'Low', time: '6 months', roi: '$15K/year', tags: ['Gaming', 'Content', 'NFT'], category: 'low' },
-            { id: 24, emoji: '🔒', title: 'Security Audit Services', desc: 'Smart contract audits for crypto projects. $5000-20000 per audit.', priority: 'P1', effort: 'High', impact: 'High', time: 'Immediate', roi: '$60K/year', tags: ['Security', 'Crypto', 'Services'], category: 'high' },
-            { id: 25, emoji: '📊', title: 'Analytics Newsletter', desc: 'Premium crypto/AI analytics. $20/month subscription. 500 subscribers.', priority: 'P1', effort: 'Medium', impact: 'Medium', time: '3 months', roi: '$120K/year', tags: ['Newsletter', 'Premium', 'Recurring'], category: 'medium' },
-            { id: 26, emoji: '🏆', title: 'Hackathon Prize Hunting', desc: 'Enter AI/Web3 hackathons. $1000-50000 prizes. 4-6 per year.', priority: 'P2', effort: 'Medium', impact: 'Medium', time: 'Ongoing', roi: '$30K/year', tags: ['Competition', 'Prizes', 'Network'], category: 'medium' },
-            { id: 27, emoji: '🤖', title: 'AI Agent Marketplace', desc: 'Build marketplace for custom agents. Take 10-20% commission.', priority: 'P1', effort: 'High', impact: 'High', time: '6 months', roi: '$100K/year', tags: ['Marketplace', 'AI', 'Platform'], category: 'high' },
-            { id: 28, emoji: '📱', title: 'Mobile App Development', desc: 'Build productivity/AI apps. $0.99-4.99 per download.', priority: 'P2', effort: 'High', impact: 'Medium', time: '4 months', roi: '$25K/year', tags: ['Mobile', 'App', 'Product'], category: 'medium' },
-            { id: 29, emoji: '🎨', title: 'Design Templates Marketplace', desc: 'Sell Figma/Canva templates. $10-50 per template.', priority: 'P2', effort: 'Medium', impact: 'Low', time: '2 months', roi: '$8K/year', tags: ['Design', 'Templates', 'Passive'], category: 'low' },
-            { id: 30, emoji: '🔧', title: 'API Integration Services', desc: 'Custom API integrations for businesses. $2000-10000 per project.', priority: 'P1', effort: 'Medium', impact: 'High', time: 'Immediate', roi: '$80K/year', tags: ['API', 'Services', 'B2B'], category: 'high' }
-        ];
-
-        // Bookmarked items storage
-        let bookmarkedIds = JSON.parse(localStorage.getItem('scoutBookmarks') || '[]');
-
-        function renderOpportunities(filter = 'all') {
-            const list = document.getElementById('opportunity-list');
-            let filtered = opportunities;
-            
-            if (filter === 'high') filtered = opportunities.filter(o => o.priority === 'P0');
-            else if (filter === 'medium') filtered = opportunities.filter(o => o.priority === 'P1');
-            else if (filter === 'low') filtered = opportunities.filter(o => o.priority === 'P2');
-            else if (filter === 'bookmarked') filtered = opportunities.filter(o => bookmarkedIds.includes(o.id));
-            
-            list.innerHTML = filtered.map(opp => {
-                const isBookmarked = bookmarkedIds.includes(opp.id);
-                const priorityClass = opp.priority === 'P0' ? 'priority-high' : opp.priority === 'P1' ? 'priority-medium' : 'priority-low';
-                
-                return `
-                    <div class="opportunity-card ${priorityClass}" id="opp-${opp.id}">
-                        <div class="opp-header">
-                            <div class="opp-title">
-                                ${opp.emoji} ${opp.title}
-                            </div>
-                            <div class="opp-priority">
-                                <span class="priority-badge priority-${opp.priority.toLowerCase()}">${opp.priority}</span>
-                                <button class="bookmark-btn ${isBookmarked ? 'bookmarked' : ''}" 
-                                        onclick="toggleBookmark(${opp.id})"
-                                        title="${isBookmarked ? 'Remove bookmark' : 'Bookmark for priority'}">
-                                    ${isBookmarked ? '🔖' : '⭐'}
-                                </button>
-                            </div>
-                        </div>
-                        
-                        <div class="opp-desc">${opp.desc}</div>
-                        
-                        <div class="opp-meta">
-                            <span>⏱️ ${opp.time}</span>
-                            <span>💪 ${opp.effort}</span>
-                            <span>📈 ${opp.impact}</span>
-                            <span>💰 ${opp.roi}</span>
-                        </div>
-                        
-                        <div class="opp-tags">
-                            ${opp.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
-                        </div>
-                    </div>
-                `;
-            }).join('');
+        // Mobile nav toggle
+        function toggleNav() {
+            const dropdown = document.getElementById('navDropdown');
+            dropdown.classList.toggle('active');
         }
-
-        function renderBookmarks() {
-            const list = document.getElementById('bookmarked-list');
-            const bookmarkedOpps = opportunities.filter(o => bookmarkedIds.includes(o.id));
-            
-            if (bookmarkedOpps.length === 0) {
-                list.innerHTML = '<div class="empty-state">Click ⭐ on opportunities to bookmark them here</div>';
-                return;
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            const dropdown = document.getElementById('navDropdown');
+            const toggle = document.querySelector('.nav-toggle');
+            if (!dropdown.contains(e.target) && !toggle.contains(e.target)) {
+                dropdown.classList.remove('active');
             }
-            
-            list.innerHTML = bookmarkedOpps.map(opp => `
-                <div class="bookmarked-item" onclick="scrollToOpp(${opp.id})">
-                    <span class="emoji">${opp.emoji}</span>
-                    <div class="info">
-                        <div class="name">${opp.title}</div>
-                        <div class="priority">${opp.priority} • ${opp.roi}</div>
-                    </div>
-                    <button class="remove-bookmark" onclick="event.stopPropagation(); toggleBookmark(${opp.id})">✕</button>
-                </div>
-            `).join('');
-        }
-
-        function toggleBookmark(id) {
-            if (bookmarkedIds.includes(id)) {
-                bookmarkedIds = bookmarkedIds.filter(bid => bid !== id);
-            } else {
-                bookmarkedIds.push(id);
-            }
-            localStorage.setItem('scoutBookmarks', JSON.stringify(bookmarkedIds));
-            renderOpportunities();
-            renderBookmarks();
-        }
-
-        function scrollToOpp(id) {
-            const element = document.getElementById(`opp-${id}`);
-            if (element) {
-                element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                element.style.border = '2px solid var(--accent-pink)';
-                setTimeout(() => {
-                    element.style.border = '';
-                }, 2000);
-            }
-        }
-
-        function filterOpps(type) {
-            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-            renderOpportunities(type);
-        }
-
-        // Initialize
-        renderOpportunities();
-        renderBookmarks();
+        });
         
         // Auto-refresh every 30 minutes
         setInterval(() => {
-            location.reload();
-        }, 1800000);
+            if(window.parent!==window){window.parent.location.reload()}else{window.location.reload()}
+        }, 30 * 60 * 1000);
+        
+        console.log('[Scout Dashboard] Loaded - Auto-refresh: 30 min');
     </script>
 </body>
 </html>

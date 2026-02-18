@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta name="theme-color" content="#0a0a0f">
     <title>Data Viewer | Mission Control</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
-        
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
         :root {
             --bg-primary: #0a0a0f;
             --bg-secondary: #111118;
@@ -23,22 +23,29 @@
             --text-secondary: #a1a1aa;
             --text-muted: #71717a;
             --border: #27272a;
+            --border-hover: #3f3f46;
         }
         
-        body {
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        html {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             background: var(--bg-primary);
             color: var(--text-primary);
-            min-height: 100vh;
+            line-height: 1.5;
+            -webkit-text-size-adjust: 100%;
         }
         
+        body {
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        /* Animated Grid Background */
         body::before {
             content: '';
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0; width: 100%; height: 100%;
             background-image: 
                 linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
@@ -56,13 +63,10 @@
         /* Password Overlay */
         #password-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(10, 10, 15, 0.98);
             z-index: 1000;
-            display: flex;
+            display: none;
             align-items: center;
             justify-content: center;
         }
@@ -71,13 +75,23 @@
             background: var(--bg-card);
             border: 1px solid var(--border);
             border-radius: 16px;
-            padding: 3rem;
+            padding: 2rem;
             text-align: center;
-            max-width: 400px;
+            max-width: 360px;
             width: 90%;
         }
         
-        .password-box h2 { color: var(--accent-cyan); margin-bottom: 0.5rem; }
+        .password-box h2 { 
+            color: var(--accent-cyan); 
+            margin-bottom: 0.5rem;
+            font-size: 1.5rem;
+        }
+        
+        .password-box p {
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+        }
         
         .password-box input {
             width: 100%;
@@ -89,7 +103,7 @@
             font-size: 1rem;
             text-align: center;
             letter-spacing: 0.5rem;
-            margin: 1rem 0;
+            margin-bottom: 1rem;
         }
         
         .password-box button {
@@ -98,17 +112,20 @@
             background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
             border: none;
             border-radius: 8px;
-            color: #000;
+            color: var(--bg-primary);
             font-weight: 600;
             cursor: pointer;
+            font-size: 1rem;
+            min-height: 48px;
         }
         
-        /* Header - Standardized */
+        /* Header */
         .header {
             background: rgba(17, 17, 24, 0.95);
             backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--border);
-            padding: 0 2rem;
+            padding: 0 1rem;
             height: 70px;
             display: flex;
             justify-content: space-between;
@@ -121,7 +138,7 @@
         .brand {
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 0.75rem;
         }
         
         .logo {
@@ -135,6 +152,7 @@
             font-size: 1.5rem;
             box-shadow: 0 0 30px rgba(0, 212, 255, 0.3);
             animation: pulse 3s ease-in-out infinite;
+            flex-shrink: 0;
         }
         
         @keyframes pulse {
@@ -154,7 +172,8 @@
             font-family: 'JetBrains Mono', monospace;
         }
         
-        .nav-tabs {
+        /* Desktop Navigation */
+        .nav-desktop {
             display: flex;
             gap: 0.5rem;
             background: rgba(255,255,255,0.05);
@@ -176,6 +195,7 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            white-space: nowrap;
         }
         
         .nav-tab:hover {
@@ -189,8 +209,82 @@
             box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
         }
         
+        /* Mobile Navigation Toggle */
+        .nav-toggle {
+            display: none;
+            width: 44px;
+            height: 44px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 1.25rem;
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Mobile Navigation Menu */
+        .nav-dropdown {
+            display: none;
+            position: fixed;
+            top: 70px;
+            left: 0;
+            right: 0;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem;
+            z-index: 99;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .nav-dropdown.active {
+            display: flex;
+        }
+        
+        .nav-dropdown .nav-tab {
+            padding: 1rem;
+            justify-content: flex-start;
+        }
+        
+        /* Mobile Bottom Navigation */
+        .nav-mobile {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border);
+            padding: 0.5rem;
+            z-index: 101;
+            justify-content: space-around;
+        }
+        
+        .nav-mobile .nav-tab {
+            flex: 1;
+            flex-direction: column;
+            padding: 0.5rem 0.25rem;
+            font-size: 0.65rem;
+            gap: 2px;
+        }
+        
+        .nav-mobile .nav-tab .icon {
+            font-size: 1.25rem;
+        }
+        
+        .nav-mobile .nav-tab span:not(.icon) {
+            display: none;
+        }
+        
+        .nav-mobile .nav-tab.active span:not(.icon) {
+            display: block;
+        }
+        
+        /* Main Content */
         .main-content {
-            padding: 2rem;
+            padding: 1.5rem;
             max-width: 1400px;
             margin: 0 auto;
             position: relative;
@@ -209,7 +303,7 @@
             border: 1px solid var(--border);
             border-radius: 12px;
             overflow: hidden;
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
         }
         
         .file-item {
@@ -229,32 +323,43 @@
             border-bottom: none;
         }
         
+        .file-item.active {
+            background: rgba(0, 212, 255, 0.1);
+        }
+        
         .file-icon {
             font-size: 1.5rem;
             margin-right: 1rem;
             width: 40px;
             text-align: center;
+            flex-shrink: 0;
         }
         
         .file-info {
             flex: 1;
+            min-width: 0;
         }
         
         .file-name {
             font-weight: 600;
             margin-bottom: 0.25rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         
         .file-desc {
             font-size: 0.875rem;
             color: var(--text-muted);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         
         .file-meta {
             display: flex;
             gap: 1rem;
-            font-size: 0.75rem;
-            color: var(--text-muted);
+            flex-shrink: 0;
         }
         
         .file-type {
@@ -262,6 +367,12 @@
             background: rgba(0, 212, 255, 0.1);
             border-radius: 4px;
             color: var(--accent-cyan);
+            font-size: 0.75rem;
+        }
+        
+        .file-size {
+            font-size: 0.75rem;
+            color: var(--text-muted);
         }
         
         /* Content Area */
@@ -283,11 +394,14 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
             background: rgba(0, 212, 255, 0.05);
         }
         
         .content-title {
             font-weight: 600;
+            font-size: 1.1rem;
         }
         
         .content-actions {
@@ -304,6 +418,7 @@
             cursor: pointer;
             font-size: 0.875rem;
             transition: all 0.2s;
+            min-height: 40px;
         }
         
         .btn:hover {
@@ -313,8 +428,9 @@
         
         .btn-primary {
             background: var(--accent-cyan);
-            color: #000;
+            color: var(--bg-primary);
             border-color: var(--accent-cyan);
+            font-weight: 500;
         }
         
         .content-body {
@@ -323,10 +439,17 @@
             overflow-y: auto;
         }
         
+        /* Table Styles */
+        .table-wrapper {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        
         .data-table {
             width: 100%;
             border-collapse: collapse;
             font-size: 0.875rem;
+            min-width: 500px;
         }
         
         .data-table th {
@@ -335,6 +458,7 @@
             border-bottom: 2px solid var(--border);
             color: var(--accent-cyan);
             font-weight: 600;
+            white-space: nowrap;
         }
         
         .data-table td {
@@ -342,6 +466,11 @@
             border-bottom: 1px solid var(--border);
         }
         
+        .data-table tr:hover td {
+            background: var(--bg-elevated);
+        }
+        
+        /* Text View */
         .text-view {
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.875rem;
@@ -350,6 +479,7 @@
             color: var(--text-primary);
         }
         
+        /* JSON View */
         .json-view {
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.875rem;
@@ -360,29 +490,172 @@
         .json-string { color: var(--accent-green); }
         .json-number { color: var(--accent-yellow); }
         
-        .loading, .error {
+        /* Loading */
+        .loading {
             text-align: center;
             padding: 3rem;
             color: var(--text-muted);
         }
         
-        .error { color: var(--accent-pink); }
+        /* Mobile Grid for Files */
+        .file-grid {
+            display: none;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .file-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .file-card:hover {
+            border-color: var(--accent-cyan);
+        }
+        
+        .file-card.active {
+            border-color: var(--accent-cyan);
+            background: rgba(0, 212, 255, 0.1);
+        }
+        
+        .file-card .file-icon {
+            font-size: 2rem;
+            margin: 0 0 0.5rem 0;
+            width: auto;
+        }
+        
+        .file-card .file-name {
+            font-size: 0.85rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        .file-card .file-type {
+            display: inline-block;
+            margin-top: 0.5rem;
+        }
+        
+        /* Tablet Styles */
+        @media (max-width: 1024px) {
+            .nav-desktop {
+                display: none;
+            }
+            
+            .nav-toggle {
+                display: flex;
+            }
+            
+            .nav-mobile {
+                display: flex;
+            }
+            
+            .main-content {
+                padding: 1rem;
+                padding-bottom: 5rem;
+            }
+        }
+        
+        /* Mobile Styles */
+        @media (max-width: 768px) {
+            .header {
+                height: 60px;
+                padding: 0 0.75rem;
+            }
+            
+            .logo {
+                width: 36px;
+                height: 36px;
+                font-size: 1.2rem;
+            }
+            
+            .brand-text h1 {
+                font-size: 1rem;
+            }
+            
+            .brand-text span {
+                display: none;
+            }
+            
+            .nav-dropdown {
+                top: 60px;
+            }
+            
+            h2 {
+                font-size: 1.25rem;
+            }
+            
+            /* Switch to grid view for files */
+            .file-list {
+                display: none;
+            }
+            
+            .file-grid {
+                display: grid;
+            }
+            
+            .content-header {
+                padding: 1rem;
+            }
+            
+            .content-title {
+                font-size: 1rem;
+            }
+            
+            .content-body {
+                padding: 1rem;
+                max-height: 50vh;
+            }
+            
+            .content-actions {
+                width: 100%;
+            }
+            
+            .content-actions .btn {
+                flex: 1;
+                text-align: center;
+            }
+        }
+        
+        /* Small Mobile */
+        @media (max-width: 480px) {
+            .file-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.75rem;
+            }
+            
+            .file-card {
+                padding: 0.875rem;
+            }
+            
+            .file-card .file-icon {
+                font-size: 1.5rem;
+            }
+            
+            .file-card .file-name {
+                font-size: 0.8rem;
+            }
+        }
     </style>
 </head>
 <body>
-    <!-- Password Overlay -->
+    <!-- Password Overlay (disabled) -->
     <div id="password-overlay">
         <div class="password-box">
-            <div style="font-size: 4rem;">🔒</div>
+            <div style="font-size: 3rem;">🔒</div>
             <h2>Data Viewer</h2>
-            <p style="color: var(--text-muted); margin-bottom: 1rem;">Enter password to access sensitive data</p>
+            <p>Enter password to access sensitive data</p>
             <input type="password" id="password-input" placeholder="0000">
             <button onclick="checkPassword()">Unlock</button>
             <p id="error-msg" style="color: var(--accent-pink); margin-top: 1rem; display: none;">Incorrect password</p>
         </div>
     </div>
 
-    <!-- Standardized Header -->
+    <!-- Header -->
     <header class="header">
         <div class="brand">
             <div class="logo">📁</div>
@@ -392,7 +665,8 @@
             </div>
         </div>
         
-        <nav class="nav-tabs">
+        <!-- Desktop Navigation -->
+        <nav class="nav-desktop">
             <a href="index.html" class="nav-tab"><span>📊</span> Overview</a>
             <a href="living-pixel-office.html" class="nav-tab"><span>🏢</span> Office</a>
             <a href="data-viewer.html" class="nav-tab active"><span>📁</span> Data</a>
@@ -401,17 +675,35 @@
             <a href="logs-view.html" class="nav-tab"><span>📝</span> Logs</a>
         </nav>
         
+        <!-- Mobile Nav Toggle -->
+        <button class="nav-toggle" onclick="toggleNav()" aria-label="Toggle navigation">☰</button>
+        
         <div style="display: flex; align-items: center; gap: 1rem;">
-            <span style="font-size: 0.875rem; color: var(--text-muted);">🟢 20 Agents Active</span>
-            <button class="btn" onclick="location.reload()" style="font-size: 0.75rem; padding: 0.25rem 0.75rem;">🔄 Refresh</button>
+            <span style="font-size: 0.875rem; color: var(--text-muted); display: none;">🟢 20 Agents</span>
+            <button class="btn" onclick="if(window.parent!==window){window.parent.location.reload()}else{window.location.reload()}" style="font-size: 0.75rem; padding: 0.25rem 0.75rem;">🔄</button>
         </div>
     </header>
+    
+    <!-- Mobile Dropdown Menu -->
+    <nav class="nav-dropdown" id="navDropdown">
+        <a href="index.html" class="nav-tab">📊 Overview</a>
+        <a href="living-pixel-office.html" class="nav-tab">🏢 Office</a>
+        <a href="data-viewer.html" class="nav-tab active">📁 Data</a>
+        <a href="token-tracker.html" class="nav-tab">💰 Tokens</a>
+        <a href="task-board.html" class="nav-tab">📋 Tasks</a>
+        <a href="logs-view.html" class="nav-tab">📝 Logs</a>
+    </nav>
 
     <div class="main-content">
         <h2>📂 Available Data Files</h2>
         
-        <!-- File List -->
+        <!-- Desktop File List -->
         <div class="file-list" id="file-list">
+            <!-- Files populated by JavaScript -->
+        </div>
+        
+        <!-- Mobile File Grid -->
+        <div class="file-grid" id="file-grid">
             <!-- Files populated by JavaScript -->
         </div>
 
@@ -429,23 +721,54 @@
             </div>
         </div>
     </div>
+    
+    <!-- Mobile Bottom Navigation -->
+    <nav class="nav-mobile">
+        <a href="index.html" class="nav-tab">
+            <span class="icon">📊</span>
+            <span>Overview</span>
+        </a>
+        <a href="living-pixel-office.html" class="nav-tab">
+            <span class="icon">🏢</span>
+            <span>Office</span>
+        </a>
+        <a href="data-viewer.html" class="nav-tab active">
+            <span class="icon">📁</span>
+            <span>Data</span>
+        </a>
+        <a href="token-tracker.html" class="nav-tab">
+            <span class="icon">💰</span>
+            <span>Tokens</span>
+        </a>
+        <a href="task-board.html" class="nav-tab">
+            <span class="icon">📋</span>
+            <span>Tasks</span>
+        </a>
+    </nav>
 
     <script>
         // Password protection - DISABLED for easy access
         function checkPassword() {
-            // Password removed - direct access granted
             document.getElementById('password-overlay').style.display = 'none';
-            document.getElementById('password-overlay').style.pointerEvents = 'none';
             localStorage.setItem('dataViewerAuth', 'true');
-            // loadFileList will be called after DOM loads
         }
 
-        // Auto-hide password overlay on load - will initialize after functions defined
-        document.getElementById('password-overlay').style.display = 'none';
-        document.getElementById('password-overlay').style.pointerEvents = 'none';
-        // loadFileList() moved to end of script
+        // Mobile nav toggle
+        function toggleNav() {
+            const dropdown = document.getElementById('navDropdown');
+            dropdown.classList.toggle('active');
+        }
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            const dropdown = document.getElementById('navDropdown');
+            const toggle = document.querySelector('.nav-toggle');
+            if (!dropdown.contains(e.target) && !toggle.contains(e.target)) {
+                dropdown.classList.remove('active');
+            }
+        });
 
-        // File data embedded directly
+        // File data
         const filesData = [
             {
                 id: 'leads',
@@ -457,9 +780,7 @@
                 data: [
                     { id: 'lead_001', company: 'Coins.ph', contact: 'Wei Zhou', priority: 'P0', status: 'new' },
                     { id: 'lead_002', company: 'Coins.xyz', contact: 'Sarah Chen', priority: 'P0', status: 'new' },
-                    { id: 'lead_003', company: 'PDAX', contact: 'Nichel Gaba', priority: 'P1', status: 'new' },
-                    { id: 'lead_004', company: 'BloomX', contact: 'Luis Buenaventura', priority: 'P1', status: 'new' },
-                    { id: 'lead_005', company: 'Rebit.ph', contact: 'Miguel Cuneta', priority: 'P1', status: 'new' }
+                    { id: 'lead_003', company: 'PDAX', contact: 'Nichel Gaba', priority: 'P1', status: 'new' }
                 ]
             },
             {
@@ -472,9 +793,7 @@
                 data: [
                     { id: 'nexus', name: 'Nexus', role: 'Orchestrator', dept: 'Executive', status: 'active' },
                     { id: 'glasses', name: 'Glasses', role: 'Researcher', dept: 'Intel', status: 'active' },
-                    { id: 'quill', name: 'Quill', role: 'Writer', dept: 'Content', status: 'active' },
-                    { id: 'pixel', name: 'Pixel', role: 'Designer', dept: 'Creative', status: 'active' },
-                    { id: 'forge', name: 'Forge', role: 'UI Lead', dept: 'Dev', status: 'active' }
+                    { id: 'quill', name: 'Quill', role: 'Writer', dept: 'Content', status: 'active' }
                 ]
             },
             {
@@ -492,24 +811,11 @@
 - Name: Eric Fung
 - Location: Hong Kong (GMT+8)
 - Role: Commander
-- Interests: Crypto, AI, Startups
 
 ### Mission Control:
 - Deployed: Feb 17, 2026
 - Agents: 20 total
 - Status: Fully operational
-
-### Key Systems:
-- Dashboard v2.0 ✅
-- Living Pixel Office ✅
-- Token Tracker ✅
-- Data Viewer ✅
-- Task Board ✅
-
-## ACTIVE PROJECTS
-1. coins.ph/coins.xyz partnerships
-2. On Hing Metal lead gen
-3. Mission Control improvements
 
 *Never forget mode: ACTIVE*`
             },
@@ -524,24 +830,18 @@
 **Total:** 19 tasks
 
 ## P0 - CRITICAL
-1. Fix Code API 404 - Code (Due: Feb 18)
-2. Complete 30 leads/day - DealFlow (26/30)
-3. Pixel Office Update - Pixel-2 (Due: Feb 18, 5AM)
-4. Fix Memory Bank Sync - Sentry (Due: Feb 18, 2AM)
+1. Fix Code API 404 - Code
+2. Complete 30 leads/day - DealFlow
+3. Pixel Office Update - Pixel-2
 
 ## P1 - HIGH
-5-10. Regional Leads (6 countries) - DealFlow
+5-10. Regional Leads (6 countries)
 
-## P2 - MEDIUM
-11. Install PyTorch - Sentry ✅ DONE
-12. Larry API Creds - EricF
-13. Vector Search - Nexus
-
-*Last updated: Feb 17, 11:30 PM*`
+*Last updated: Feb 17*`
             },
             {
                 id: 'token',
-                name: 'Token Usage Report',
+                name: 'Token Usage',
                 icon: '💰',
                 desc: 'Real usage data and costs',
                 type: 'Markdown',
@@ -553,101 +853,9 @@
 - Tokens: ~247,500
 - Cost: ~$0.52 USD
 - Per Day: ~$0.89
-- Per Month: ~$26.70
-
-## TOP AGENTS
-| Agent | Tokens | Cost |
-|-------|--------|------|
-| DealFlow | 115,300 | $0.23 |
-| Nexus | 75,300 | $0.15 |
-| Forge | 45,000 | $0.09 |
 
 ## VERDICT
 ✅ NO UPGRADE NEEDED`
-            },
-            {
-                id: 'heartbeats',
-                name: 'Heartbeats Schedule',
-                icon: '🕐',
-                desc: 'All 13 cron jobs and schedules',
-                type: 'Markdown',
-                size: '5 KB',
-                content: `# HEARTBEATS TABLE
-**Total:** 13 active cron jobs
-
-| # | Job | Frequency |
-|---|-----|-----------|
-| 1 | Memory Bank | Every 30 min |
-| 2 | Office Position | Every 1 hour |
-| 3 | Task Queue | Every 20 min |
-| 4 | Nexus Heartbeat | Every 30 min |
-| 5 | Agent Progress | Every 4 hours |
-| 6 | Improvement Cycle | Every 1.5 hrs |
-| 7 | Self-Improvement | Every 1.5 hrs |
-| 8 | Glasses Morning | Daily 6:45 AM |
-| 9 | Daily Briefing | Daily 8:00 AM |
-| 10 | Glasses Evening | Daily 6:45 PM |
-| 11 | Evening Briefing | Daily 4:00 PM |
-| 12 | Innovation Sprint | Every 2 hours |
-| 13 | Continuous Improve | Every 4 hours |
-
-## STATUS
-✅ 13 Healthy | ⚠️ 0 Warning | 🔴 0 Critical`
-            },
-            {
-                id: 'competitors',
-                name: 'Competitor Analysis',
-                icon: '🎯',
-                desc: '10 key competitors monitoring',
-                type: 'Markdown',
-                size: '10 KB',
-                content: `# COMPETITOR MONITORING
-
-## TIER 1: DIRECT CRYPTO
-- PDAX, Maya, BloomX, Moneybees, DA5/SurgePay
-
-## TIER 2: FINTECH/E-WALLET
-- GCash, GoTyme Bank, UnionBank
-
-## TIER 3: GLOBAL PLAYERS
-- Binance, Bybit
-
-## KEY INTELLIGENCE
-🔴 Maya planning $500M-$1B US IPO
-🟡 BSP VASP moratorium extended
-🟢 SEC blocked 10 foreign exchanges
-
-*Monitoring active since Feb 17*`
-            },
-            {
-                id: 'scored-leads',
-                name: 'Scored Leads',
-                icon: '⭐',
-                desc: 'AI-scored leads (0-100 scale)',
-                type: 'JSON',
-                size: '4 KB',
-                data: [
-                    { company: 'Coins.ph', score: 92, priority: 'P0', tier: 'Tier 1' },
-                    { company: 'BloomX', score: 92, priority: 'P0', tier: 'Tier 1' },
-                    { company: 'Rebit.ph', score: 92, priority: 'P0', tier: 'Tier 1' },
-                    { company: 'PDAX', score: 90, priority: 'P0', tier: 'Tier 1' },
-                    { company: 'Binance PH', score: 86, priority: 'P0', tier: 'Tier 1' }
-                ]
-            },
-            {
-                id: 'audit-reports',
-                name: 'Audit Reports',
-                icon: '🔍',
-                desc: 'System audit reports and findings',
-                type: 'JSON',
-                size: '6 KB',
-                data: [
-                    { id: 'AUDIT-001', task: 'Code API 404 Fix', status: 'PASSED', score: 88, notes: 'All endpoints functional' },
-                    { id: 'AUDIT-002', task: 'Pixel Office Update', status: 'PASSED', score: 92, notes: 'Walking computer heads implemented' },
-                    { id: 'AUDIT-003', task: 'Data Viewer Files', status: 'PASSED', score: 85, notes: 'File list displaying correctly' },
-                    { id: 'AUDIT-004', task: 'Task Board Headers', status: 'PASSED', score: 90, notes: 'Standardized across all pages' },
-                    { id: 'AUDIT-005', task: 'Refresh Buttons', status: 'IN_PROGRESS', score: null, notes: 'Fixing onclick handlers' }
-                ]
             }
         ];
 
@@ -655,6 +863,7 @@
         let currentContent = '';
 
         function loadFileList() {
+            // Desktop list
             const list = document.getElementById('file-list');
             list.innerHTML = filesData.map(file => `
                 <div class="file-item" onclick="loadFile('${file.id}')" id="file-${file.id}">
@@ -665,8 +874,18 @@
                     </div>
                     <div class="file-meta">
                         <span class="file-type">${file.type}</span>
-                        <span>${file.size}</span>
+                        <span class="file-size">${file.size}</span>
                     </div>
+                </div>
+            `).join('');
+            
+            // Mobile grid
+            const grid = document.getElementById('file-grid');
+            grid.innerHTML = filesData.map(file => `
+                <div class="file-card" onclick="loadFile('${file.id}')" id="file-card-${file.id}">
+                    <div class="file-icon">${file.icon}</div>
+                    <div class="file-name">${file.name}</div>
+                    <span class="file-type">${file.type}</span>
                 </div>
             `).join('');
         }
@@ -678,8 +897,11 @@
             currentFile = file;
 
             // Update active state
-            document.querySelectorAll('.file-item').forEach(item => item.style.background = '');
-            document.getElementById(`file-${fileId}`).style.background = 'rgba(0, 212, 255, 0.1)';
+            document.querySelectorAll('.file-item, .file-card').forEach(item => item.classList.remove('active'));
+            const desktopItem = document.getElementById(`file-${fileId}`);
+            const mobileCard = document.getElementById(`file-card-${fileId}`);
+            if (desktopItem) desktopItem.classList.add('active');
+            if (mobileCard) mobileCard.classList.add('active');
 
             // Show content area
             document.getElementById('content-area').classList.add('active');
@@ -692,12 +914,17 @@
                 currentContent = file.content;
                 document.getElementById('content-body').innerHTML = `<pre class="text-view">${escapeHtml(file.content)}</pre>`;
             }
+            
+            // Scroll to content on mobile
+            if (window.innerWidth <= 768) {
+                document.getElementById('content-area').scrollIntoView({ behavior: 'smooth' });
+            }
         }
 
         function renderJSON(data) {
             if (Array.isArray(data) && data.length > 0) {
                 const keys = Object.keys(data[0]);
-                let html = '<table class="data-table"><thead><tr>';
+                let html = '<div class="table-wrapper"><table class="data-table"><thead><tr>';
                 keys.forEach(key => {
                     html += `<th>${key.toUpperCase()}</th>`;
                 });
@@ -713,11 +940,10 @@
                     html += '</tr>';
                 });
                 
-                html += '</tbody></table>';
+                html += '</tbody></table></div>';
                 return html;
             } else {
-                const json = JSON.stringify(data, null, 2);
-                return `<pre class="json-view">${highlightJSON(json)}</pre>`;
+                return `<pre class="json-view">${highlightJSON(JSON.stringify(data, null, 2))}</pre>`;
             }
         }
 
@@ -753,23 +979,15 @@
             URL.revokeObjectURL(url);
         }
         
-        // Auto-refresh every 30 minutes
-        setInterval(() => {
-            console.log('Auto-refreshing data viewer...');
-            loadFileList();
-        }, 1800000);
-        
-        // Initialize on page load - NOW SAFE (after function definitions)
+        // Initialize - moved to end to ensure all functions are defined
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('Data viewer initializing...');
-            loadFileList();
+            // Ensure DOM is fully loaded before calling loadFileList
+            if (document.readyState === 'complete' || document.readyState === 'interactive') {
+                loadFileList();
+            } else {
+                window.addEventListener('load', loadFileList);
+            }
         });
-        
-        // Also try immediate load in case DOM is already ready
-        if (document.readyState === 'complete' || document.readyState === 'interactive') {
-            console.log('DOM already ready, loading immediately...');
-            loadFileList();
-        }
     </script>
 </body>
 </html>

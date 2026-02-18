@@ -145,6 +145,44 @@
             margin: 0 auto;
         }
         
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 10, 15, 0.9);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            transition: opacity 0.3s;
+        }
+        
+        .loading-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 3px solid var(--border);
+            border-top-color: var(--accent-cyan);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .loading-text {
+            margin-top: 1rem;
+            color: var(--text-secondary);
+        }
+        
         /* Stats Grid */
         .stats-grid {
             display: grid;
@@ -476,6 +514,16 @@
             margin-top: 0.5rem;
         }
         
+        .error-message {
+            background: rgba(255, 42, 109, 0.1);
+            border: 1px solid var(--accent-pink);
+            border-radius: 12px;
+            padding: 1rem;
+            margin: 1rem 0;
+            color: var(--accent-pink);
+            text-align: center;
+        }
+        
         @media (max-width: 1024px) {
             .stats-grid, .charts-grid, .cost-analysis {
                 grid-template-columns: repeat(2, 1fr);
@@ -493,6 +541,11 @@
     </style>
 </head>
 <body>
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+        <div class="loading-text">Loading live token data...</div>
+    </div>
+
     <header class="header">
         <div class="brand">
             <div class="logo">🎯</div>
@@ -524,38 +577,38 @@
         </nav>
         
         <div style="display: flex; align-items: center; gap: 1rem;">
-            <span style="font-size: 0.875rem; color: var(--text-muted);">🟢 20 Agents Active</span>
-            <button class="btn" onclick="location.reload()" style="font-size: 0.75rem; padding: 0.25rem 0.75rem;">🔄 Refresh</button>
+            <span id="agentCount" style="font-size: 0.875rem; color: var(--text-muted);">🟢 Loading...</span>
+            <button class="btn" onclick="if(window.parent!==window){window.parent.location.reload()}else{window.location.reload()}" style="font-size: 0.75rem; padding: 0.25rem 0.75rem; background: var(--accent-cyan); border: none; border-radius: 6px; color: #000; cursor: pointer;">🔄 Refresh</button>
         </div>
     </header>    
+    
     <main class="main-content">
+        <div id="errorContainer"></div>
+        
         <!-- Stats Overview -->
         <div class="stats-grid">
             <div class="stat-card">
                 <div class="stat-label">🤖 Active Agents</div>
-                <div class="stat-value" style="color: var(--accent-cyan);">20</div>
+                <div class="stat-value" id="statAgents" style="color: var(--accent-cyan);">-</div>
                 <div class="stat-subtitle">All systems operational</div>
             </div>
             
             <div class="stat-card">
                 <div class="stat-label">📝 Total Tokens</div>
-                <div class="stat-value" style="color: var(--accent-purple);">247.5K</div>
-                <div class="stat-subtitle">94% of 262K limit</div>
-                <div class="progress-bar">
-                    <div class="progress-fill" style="width: 94%; background: linear-gradient(90deg, var(--accent-yellow), var(--accent-orange));"></div>
-                </div>
+                <div class="stat-value" id="statTokens" style="color: var(--accent-purple);">-</div>
+                <div class="stat-subtitle" id="statTokensSubtitle">Loading...</div>
             </div>
             
             <div class="stat-card">
                 <div class="stat-label">💰 Total Cost</div>
-                <div class="stat-value" style="color: var(--accent-green);">$0.52</div>
-                <div class="stat-subtitle">Today's estimated cost</div>
+                <div class="stat-value" id="statCost" style="color: var(--accent-green);">-</div>
+                <div class="stat-subtitle">Total estimated cost</div>
             </div>
             
             <div class="stat-card">
-                <div class="stat-label">⏱️ Avg per Agent</div>
-                <div class="stat-value" style="color: var(--accent-pink);">12.4K</div>
-                <div class="stat-subtitle">~$0.026 per agent</div>
+                <div class="stat-label">📊 Sessions</div>
+                <div class="stat-value" id="statSessions" style="color: var(--accent-pink);">-</div>
+                <div class="stat-subtitle">Total sessions tracked</div>
             </div>
         </div>
         
@@ -598,36 +651,35 @@
             <div id="agentBars"></div>
         </div>
         
-        // Cost Analysis - UPDATED
-        const costAnalysis = document.querySelector('.cost-analysis');
-        costAnalysis.innerHTML = `
+        <!-- Cost Analysis -->
+        <div class="cost-analysis" id="costAnalysis">
             <div class="cost-card">
                 <div class="cost-icon">💵</div>
-                <div class="cost-value" style="color: var(--accent-green);">$0.89</div>
-                <div class="cost-label">Last 6 Hours</div>
-                <div class="cost-change positive">↑ Active period</div>
+                <div class="cost-value" id="costToday" style="color: var(--accent-green);">-</div>
+                <div class="cost-label">Total Cost</div>
+                <div class="cost-change positive">Live data</div>
             </div>
             
             <div class="cost-card">
-                <div class="cost-icon">📅</div>
-                <div class="cost-value" style="color: var(--accent-cyan);">$1.42</div>
-                <div class="cost-label">Today</div>
-                <div class="cost-change positive">↑ High activity</div>
+                <div class="cost-icon">📝</div>
+                <div class="cost-value" id="costTokens" style="color: var(--accent-cyan);">-</div>
+                <div class="cost-label">Total Tokens</div>
+                <div class="cost-change positive">All time</div>
             </div>
             
             <div class="cost-card">
                 <div class="cost-icon">📊</div>
-                <div class="cost-value" style="color: var(--accent-purple);">$8.52</div>
-                <div class="cost-label">This Week</div>
-                <div class="cost-change positive">↑ 23% vs last week</div>
+                <div class="cost-value" id="costAvg" style="color: var(--accent-purple);">-</div>
+                <div class="cost-label">Avg per Agent</div>
+                <div class="cost-change positive">Calculated</div>
             </div>
-        `;
+        </div>
         
         <!-- Session Timeline -->
         <div class="timeline-section">
             <div class="timeline-header">
                 <div class="comparison-title">📝 Recent Sessions</div>
-                <div style="font-size: 0.875rem; color: var(--text-muted);">Last 24 hours</div>
+                <div style="font-size: 0.875rem; color: var(--text-muted);">Last activity</div>
             </div>
             
             <div id="timelineItems"></div>
@@ -636,180 +688,328 @@
         <!-- Total Banner -->
         <div class="total-banner">
             <div class="total-label">💰 Total Mission Control Cost</div>
-            <div class="total-value">$1.42</div>
-            <div class="total-subtitle">713,400 tokens across 20 agents • ~$0.071 per agent • Last updated: Feb 18, 1:02 AM</div>
+            <div class="total-value" id="totalCost">-</div>
+            <div class="total-subtitle" id="totalSubtitle">Loading live data...</div>
         </div>
     </main>
     
     <script>
-        // Data timestamp
-        const lastUpdated = 'Feb 18, 2026 1:02 AM HKT';
-        // Agent data - UPDATED Feb 18, 1:02 AM HKT
-        const agents = [
-            { name: 'DealFlow', emoji: '🤝', role: 'BD Lead', tokens: 115300, cost: 0.23, color: '#f97316', tasks: 18 },
-            { name: 'Scout', emoji: '🔭', role: 'Researcher', tokens: 101700, cost: 0.20, color: '#00d4ff', tasks: 15 },
-            { name: 'Nexus', emoji: '🤖', role: 'Orchestrator', tokens: 75300, cost: 0.15, color: '#ff2a6d', tasks: 12 },
-            { name: 'Forge', emoji: '🔨', role: 'UI Lead', tokens: 45600, cost: 0.09, color: '#f97316', tasks: 11 },
-            { name: 'Code', emoji: '💻', role: 'Backend Lead', tokens: 37100, cost: 0.07, color: '#22c55e', tasks: 7 },
-            { name: 'Pixel', emoji: '🎨', role: 'Designer', tokens: 31200, cost: 0.06, color: '#a855f7', tasks: 9 },
-            { name: 'Audit', emoji: '🔍', role: 'QA', tokens: 33400, cost: 0.07, color: '#ff2a6d', tasks: 10 },
-            { name: 'Cipher', emoji: '🔒', role: 'Security', tokens: 28900, cost: 0.06, color: '#a855f7', tasks: 6 },
-            { name: 'Glasses', emoji: '🥽', role: 'Researcher', tokens: 42100, cost: 0.08, color: '#00d4ff', tasks: 8 },
-            { name: 'Sentry', emoji: '🛡️', role: 'DevOps', tokens: 26700, cost: 0.05, color: '#fbbf24', tasks: 8 },
-            { name: 'Quill', emoji: '✍️', role: 'Writer', tokens: 28500, cost: 0.06, color: '#fbbf24', tasks: 5 },
-            { name: 'Gary', emoji: '📈', role: 'Marketing', tokens: 22400, cost: 0.04, color: '#f97316', tasks: 6 },
-            { name: 'Larry', emoji: '📱', role: 'Social', tokens: 19800, cost: 0.04, color: '#00d4ff', tasks: 4 },
-            { name: 'ColdCall', emoji: '📞', role: 'Outreach', tokens: 15600, cost: 0.03, color: '#22c55e', tasks: 3 },
-            { name: 'Spark', emoji: '💡', role: 'Innovation', tokens: 14200, cost: 0.03, color: '#fbbf24', tasks: 3 },
-            { name: 'Forge-2', emoji: '🔧', role: 'UI Dev', tokens: 38900, cost: 0.08, color: '#f97316', tasks: 8 },
-            { name: 'Code-2', emoji: '⚡', role: 'Backend Dev', tokens: 41200, cost: 0.08, color: '#22c55e', tasks: 9 },
-            { name: 'Pixel-2', emoji: '🖌️', role: 'Visual Designer', tokens: 36500, cost: 0.07, color: '#a855f7', tasks: 10 },
-            { name: 'Forge-3', emoji: '🔨', role: 'UI Dev', tokens: 22400, cost: 0.04, color: '#f97316', tasks: 5 },
-            { name: 'Code-3', emoji: '💻', role: 'Backend Dev', tokens: 19800, cost: 0.04, color: '#22c55e', tasks: 4 }
-        ];
+        // API Configuration
+        const API_BASE = 'http://localhost:3001';
+        let usageChart = null;
+        let costChart = null;
         
-        // Usage trend chart
-        const usageCtx = document.getElementById('usageChart').getContext('2d');
-        new Chart(usageCtx, {
-            type: 'line',
-            data: {
-                labels: ['Feb 11', 'Feb 12', 'Feb 13', 'Feb 14', 'Feb 15', 'Feb 16', 'Feb 17'],
-                datasets: [{
-                    label: 'Daily Tokens',
-                    data: [45000, 52000, 48000, 61000, 55000, 58000, 247500],
-                    borderColor: '#00d4ff',
-                    backgroundColor: 'rgba(0, 212, 255, 0.1)',
-                    borderWidth: 2,
-                    fill: true,
-                    tension: 0.4
-                }, {
-                    label: 'Cost ($)',
-                    data: [0.09, 0.10, 0.096, 0.12, 0.11, 0.116, 0.52],
-                    borderColor: '#22c55e',
-                    backgroundColor: 'rgba(34, 197, 94, 0.1)',
-                    borderWidth: 2,
-                    fill: true,
-                    tension: 0.4,
-                    yAxisID: 'y1'
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                interaction: {
-                    intersect: false,
-                    mode: 'index'
-                },
-                plugins: {
-                    legend: {
-                        labels: { color: '#a1a1aa' }
-                    }
-                },
-                scales: {
-                    x: {
-                        grid: { color: 'rgba(255,255,255,0.05)' },
-                        ticks: { color: '#71717a' }
-                    },
-                    y: {
-                        grid: { color: 'rgba(255,255,255,0.05)' },
-                        ticks: { color: '#71717a' }
-                    },
-                    y1: {
-                        position: 'right',
-                        grid: { display: false },
-                        ticks: { color: '#22c55e' }
-                    }
+        // Format numbers
+        function formatNumber(num) {
+            if (num >= 1000000) return (num / 1000000).toFixed(2) + 'M';
+            if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
+            return num.toString();
+        }
+        
+        // Format currency
+        function formatCurrency(num) {
+            return '$' + num.toFixed(4);
+        }
+        
+        // Get agent emoji
+        function getAgentEmoji(name) {
+            const emojis = {
+                'Nexus': '🤖', 'Code': '💻', 'Scout': '🔭', 'Pixel': '🎨',
+                'Forge': '🔨', 'DealFlow': '🤝', 'Audit': '🔍', 'Cipher': '🔒',
+                'Glasses': '🥽', 'Sentry': '🛡️', 'Quill': '✍️', 'Gary': '📈',
+                'Larry': '📱', 'ColdCall': '📞', 'Spark': '💡'
+            };
+            return emojis[name] || '🤖';
+        }
+        
+        // Get agent color
+        function getAgentColor(name) {
+            const colors = {
+                'Nexus': '#ff2a6d', 'Code': '#22c55e', 'Scout': '#00d4ff',
+                'Pixel': '#a855f7', 'Forge': '#f97316', 'DealFlow': '#f97316',
+                'Audit': '#ff2a6d', 'Cipher': '#a855f7', 'Glasses': '#00d4ff',
+                'Sentry': '#fbbf24', 'Quill': '#fbbf24', 'Gary': '#f97316',
+                'Larry': '#00d4ff', 'ColdCall': '#22c55e', 'Spark': '#fbbf24'
+            };
+            return colors[name] || '#00d4ff';
+        }
+        
+        // Show error
+        function showError(message) {
+            const container = document.getElementById('errorContainer');
+            container.innerHTML = `
+                <div class="error-message">
+                    ⚠️ ${message}
+                    <br><small>Make sure the API server is running on port 3001</small>
+                </div>
+            `;
+        }
+        
+        // Load token data from API
+        async function loadTokenData(forceRefresh = false) {
+            const loadingOverlay = document.getElementById('loadingOverlay');
+            if (!forceRefresh) {
+                loadingOverlay.classList.remove('hidden');
+            }
+            
+            try {
+                const url = `${API_BASE}/api/tokens${forceRefresh ? '?refresh=true' : ''}`;
+                const response = await fetch(url);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
                 }
-            }
-        });
-        
-        // Cost breakdown pie chart
-        const costCtx = document.getElementById('costChart').getContext('2d');
-        const topAgents = agents.slice(0, 6);
-        new Chart(costCtx, {
-            type: 'doughnut',
-            data: {
-                labels: topAgents.map(a => a.name),
-                datasets: [{
-                    data: topAgents.map(a => a.cost),
-                    backgroundColor: topAgents.map(a => a.color),
-                    borderWidth: 0
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'right',
-                        labels: { 
-                            color: '#a1a1aa',
-                            boxWidth: 12,
-                            padding: 15
-                        }
+                
+                const data = await response.json();
+                updateDashboard(data);
+                
+                document.getElementById('errorContainer').innerHTML = '';
+            } catch (error) {
+                console.error('Failed to load token data:', error);
+                showError('Failed to load token data. Using cached data if available.');
+                
+                // Try to load from cache
+                try {
+                    const cached = localStorage.getItem('tokenData');
+                    if (cached) {
+                        updateDashboard(JSON.parse(cached));
                     }
-                },
-                cutout: '60%'
+                } catch (e) {
+                    console.error('No cached data available');
+                }
+            } finally {
+                loadingOverlay.classList.add('hidden');
             }
-        });
+        }
+        
+        // Update dashboard with data
+        function updateDashboard(data) {
+            // Cache the data
+            try {
+                localStorage.setItem('tokenData', JSON.stringify(data));
+            } catch (e) {}
+            
+            // Update stats
+            document.getElementById('statAgents').textContent = data.agents?.length || 0;
+            document.getElementById('statTokens').textContent = formatNumber(data.totalTokens || 0);
+            document.getElementById('statCost').textContent = formatCurrency(data.totalCost || 0);
+            document.getElementById('statSessions').textContent = data.meta?.sessionCount || 0;
+            document.getElementById('agentCount').textContent = `🟢 ${data.agents?.length || 0} Agents Active`;
+            
+            // Update cost analysis
+            document.getElementById('costToday').textContent = formatCurrency(data.totalCost || 0);
+            document.getElementById('costTokens').textContent = formatNumber(data.totalTokens || 0);
+            const avgTokens = data.agents?.length ? Math.round((data.totalTokens || 0) / data.agents.length) : 0;
+            document.getElementById('costAvg').textContent = formatNumber(avgTokens);
+            
+            // Update total banner
+            document.getElementById('totalCost').textContent = formatCurrency(data.totalCost || 0);
+            const lastUpdated = data.lastUpdated ? new Date(data.lastUpdated).toLocaleString() : 'Unknown';
+            document.getElementById('totalSubtitle').textContent = 
+                `${formatNumber(data.totalTokens || 0)} tokens across ${data.agents?.length || 0} agents • Last updated: ${lastUpdated}`;
+            
+            // Render agent bars
+            renderAgentBars(data.agents || []);
+            
+            // Render timeline
+            renderTimeline(data.recentSessions || []);
+            
+            // Render charts
+            renderCharts(data);
+        }
         
         // Render agent comparison bars
-        const maxTokens = Math.max(...agents.map(a => a.tokens));
-        const barsContainer = document.getElementById('agentBars');
-        
-        agents.slice(0, 10).forEach(agent => {
-            const percentage = (agent.tokens / maxTokens) * 100;
-            barsContainer.innerHTML += `
-                <div class="agent-bar">
-                    <div class="agent-info">
-                        <div class="agent-emoji" style="background: ${agent.color}20; border-radius: 8px; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;">${agent.emoji}</div>
-                        <div>
-                            <div class="agent-name" style="color: ${agent.color}">${agent.name}</div>
-                            <div class="agent-role">${agent.role}</div>
+        function renderAgentBars(agents) {
+            const container = document.getElementById('agentBars');
+            if (!agents.length) {
+                container.innerHTML = '<p style="text-align: center; color: var(--text-muted);">No agent data available</p>';
+                return;
+            }
+            
+            const maxTokens = Math.max(...agents.map(a => a.tokens || a.totalTokens || 0));
+            
+            container.innerHTML = agents.slice(0, 10).map(agent => {
+                const tokens = agent.tokens || agent.totalTokens || 0;
+                const percentage = maxTokens > 0 ? (tokens / maxTokens) * 100 : 0;
+                const color = getAgentColor(agent.name);
+                const emoji = getAgentEmoji(agent.name);
+                
+                return `
+                    <div class="agent-bar">
+                        <div class="agent-info">
+                            <div class="agent-emoji" style="background: ${color}20; border-radius: 8px; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;">${emoji}</div>
+                            <div>
+                                <div class="agent-name" style="color: ${color}">${agent.name}</div>
+                                <div class="agent-role">${agent.sessions || 0} sessions</div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="bar-container">
-                        <div class="bar-fill" style="width: ${percentage}%; background: linear-gradient(90deg, ${agent.color}80, ${agent.color}); color: #fff;">
-                            ${percentage > 20 ? (agent.tokens / 1000).toFixed(1) + 'K' : ''}
+                        <div class="bar-container">
+                            <div class="bar-fill" style="width: ${percentage}%; background: linear-gradient(90deg, ${color}80, ${color}); color: #fff;">
+                                ${percentage > 20 ? formatNumber(tokens) : ''}
+                            </div>
                         </div>
+                        <div class="bar-value">${formatNumber(tokens)}</div>
                     </div>
-                    <div class="bar-value">${(agent.tokens / 1000).toFixed(1)}K</div>
-                </div>
-            `;
-        });
+                `;
+            }).join('');
+        }
         
         // Render timeline
-        const sessions = [
-            { agent: 'DealFlow', emoji: '🤝', color: '#f97316', task: 'Lead Research - On Hing Metal', time: '21:18:00', duration: '4m 32s', tokens: '45.2K', cost: '$0.09' },
-            { agent: 'Nexus', emoji: '🤖', color: '#ff2a6d', task: 'System Improvements', time: '21:15:00', duration: '3m 15s', tokens: '28.5K', cost: '$0.06' },
-            { agent: 'Forge', emoji: '🔨', color: '#f97316', task: 'Dashboard Polish', time: '21:10:00', duration: '5m 45s', tokens: '22.1K', cost: '$0.04' },
-            { agent: 'Pixel', emoji: '🎨', color: '#a855f7', task: 'Office v6 Update', time: '21:05:00', duration: '6m 20s', tokens: '18.5K', cost: '$0.04' },
-            { agent: 'DealFlow', emoji: '🤝', color: '#f97316', task: 'Regional Lead Search', time: '20:45:00', duration: '12m 10s', tokens: '70.1K', cost: '$0.14' },
-            { agent: 'Code', emoji: '💻', color: '#22c55e', task: 'API Bug Fixes', time: '20:30:00', duration: '8m 45s', tokens: '15.2K', cost: '$0.03' }
-        ];
+        function renderTimeline(sessions) {
+            const container = document.getElementById('timelineItems');
+            if (!sessions.length) {
+                container.innerHTML = '<p style="text-align: center; color: var(--text-muted);">No recent sessions</p>';
+                return;
+            }
+            
+            container.innerHTML = sessions.slice(0, 6).map(session => {
+                const color = getAgentColor(session.agent);
+                const emoji = getAgentEmoji(session.agent);
+                const time = session.timestamp ? new Date(session.timestamp).toLocaleTimeString() : 'Unknown';
+                
+                return `
+                    <div class="timeline-item">
+                        <div class="timeline-agent" style="background: ${color}20; border: 2px solid ${color}40;">${emoji}</div>
+                        <div class="timeline-info">
+                            <div class="timeline-task">Session ${session.sessionId?.slice(0, 8) || 'Unknown'}</div>
+                            <div class="timeline-meta">${time} • ${session.agent} • ${session.messages || 0} messages</div>
+                        </div>
+                        <div class="timeline-stats">
+                            <div class="timeline-tokens">${formatNumber(session.tokens || 0)}</div>
+                            <div class="timeline-cost">${formatCurrency(session.cost || 0)}</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
         
-        const timelineContainer = document.getElementById('timelineItems');
-        sessions.forEach(session => {
-            timelineContainer.innerHTML += `
-                <div class="timeline-item">
-                    <div class="timeline-agent" style="background: ${session.color}20; border: 2px solid ${session.color}40;">${session.emoji}</div>
-                    <div class="timeline-info">
-                        <div class="timeline-task">${session.task}</div>
-                        <div class="timeline-meta">${session.time} • ${session.duration} • ${session.agent}</div>
-                    </div>
-                    <div class="timeline-stats">
-                        <div class="timeline-tokens">${session.tokens}</div>
-                        <div class="timeline-cost">${session.cost}</div>
-                    </div>
-                </div>
-            `;
+        // Render charts
+        function renderCharts(data) {
+            renderUsageChart(data.dailyUsage || []);
+            renderCostChart(data.agents || []);
+        }
+        
+        // Render usage trend chart
+        function renderUsageChart(dailyUsage) {
+            const ctx = document.getElementById('usageChart')?.getContext('2d');
+            if (!ctx) return;
+            
+            if (usageChart) {
+                usageChart.destroy();
+            }
+            
+            const labels = dailyUsage.map(d => {
+                const date = new Date(d.date);
+                return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+            });
+            
+            const tokens = dailyUsage.map(d => d.tokens);
+            const costs = dailyUsage.map(d => d.cost);
+            
+            usageChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels.length ? labels : ['No data'],
+                    datasets: [{
+                        label: 'Daily Tokens',
+                        data: tokens.length ? tokens : [0],
+                        borderColor: '#00d4ff',
+                        backgroundColor: 'rgba(0, 212, 255, 0.1)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.4
+                    }, {
+                        label: 'Cost ($)',
+                        data: costs.length ? costs : [0],
+                        borderColor: '#22c55e',
+                        backgroundColor: 'rgba(34, 197, 94, 0.1)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.4,
+                        yAxisID: 'y1'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        intersect: false,
+                        mode: 'index'
+                    },
+                    plugins: {
+                        legend: {
+                            labels: { color: '#a1a1aa' }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { color: 'rgba(255,255,255,0.05)' },
+                            ticks: { color: '#71717a' }
+                        },
+                        y: {
+                            grid: { color: 'rgba(255,255,255,0.05)' },
+                            ticks: { color: '#71717a' }
+                        },
+                        y1: {
+                            position: 'right',
+                            grid: { display: false },
+                            ticks: { color: '#22c55e' }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Render cost breakdown chart
+        function renderCostChart(agents) {
+            const ctx = document.getElementById('costChart')?.getContext('2d');
+            if (!ctx) return;
+            
+            if (costChart) {
+                costChart.destroy();
+            }
+            
+            const topAgents = agents.slice(0, 6);
+            const colors = topAgents.map(a => getAgentColor(a.name));
+            
+            costChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: topAgents.map(a => a.name),
+                    datasets: [{
+                        data: topAgents.map(a => a.cost || 0),
+                        backgroundColor: colors,
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: { 
+                                color: '#a1a1aa',
+                                boxWidth: 12,
+                                padding: 15
+                            }
+                        }
+                    },
+                    cutout: '60%'
+                }
+            });
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            loadTokenData();
+            
+            // Auto-refresh every 15 minutes
+            setInterval(() => {
+                console.log('Auto-refreshing token data...');
+                if(window.parent!==window){window.parent.location.reload()}else{window.location.reload()}
+            }, 15 * 60 * 1000);
         });
-        
-        // Auto-refresh every 30 minutes
-        setInterval(() => {
-            console.log('Auto-refreshing token tracker...');
-            location.reload();
-        }, 1800000);
     </script>
 </body>
 </html>
