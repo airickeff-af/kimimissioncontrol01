@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Mission Control Dashboard with API",
   "scripts": {
+    "build": "echo 'Static site - no build needed'",
     "dev": "vercel dev",
     "deploy": "vercel --prod"
   }
