@@ -1,54 +1,26 @@
 {
   "name": "audit-check",
-  "description": "Audit completed tasks and quality scores",
+  "description": "Audit completed tasks and quality validation",
   "schedule": "*/30 * * * *",
   "target": {
     "type": "telegram",
     "channel": "1508346957"
   },
-  "log": "/tmp/mission-control-cron.log",
-  "audit_sources": [
+  "base_url": "https://dashboard-ten-sand-20.vercel.app",
+  "sources": [
     {
       "type": "task_log",
-      "path": "/root/.openclaw/workspace/mission-control/tasks/completed",
-      "lookback_hours": 24
-    },
-    {
-      "type": "quality_scores",
-      "dashboard_url": "https://dashboard-ten-sand-20.vercel.app",
-      "metrics_endpoint": "/api/tokens"
+      "path": "/root/.openclaw/workspace/PENDING_TASKS.md"
     }
   ],
   "checks": [
     {
       "type": "task_completion",
-      "name": "completed_tasks_audit",
       "verify_deliverables": true
     },
     {
       "type": "quality_score",
-      "name": "quality_validation",
       "minimum_score": 85
-    },
-    {
-      "type": "anomaly_detection",
-      "name": "pattern_check",
-      "flags": [
-        "repeated_failures",
-        "score_degradation",
-        "missing_deliverables"
-      ]
     }
-  ],
-  "reporting": {
-    "on_success": "summary",
-    "on_failure": "detailed",
-    "include_recommendations": true
-  },
-  "error_handling": {
-    "retry_count": 1,
-    "retry_delay_seconds": 30,
-    "continue_on_error": true,
-    "log_errors": true
-  }
+  ]
 }

@@ -1,43 +1,35 @@
 {
   "name": "quality-gate",
-  "description": "Quality assurance testing for dashboard - tests all 9 pages and 2 working APIs",
+  "description": "Quality assurance - Test all 9 pages and 6 APIs on dashboard-ten-sand-20",
   "schedule": "*/30 * * * *",
   "target": {
-    "type": "telegram",
+    "type": "telegram", 
     "channel": "1508346957"
   },
-  "log": "/tmp/mission-control-cron.log",
   "base_url": "https://dashboard-ten-sand-20.vercel.app",
   "pages": [
-    { "path": "/", "name": "home", "expected_status": 200 },
-    { "path": "/task-board.html", "name": "task_board", "expected_status": 200 },
-    { "path": "/agents.html", "name": "agents", "expected_status": 200 },
-    { "path": "/office.html", "name": "office", "expected_status": 200 },
-    { "path": "/dealflow-view.html", "name": "dealflow", "expected_status": 200 },
-    { "path": "/token-tracker.html", "name": "token_tracker", "expected_status": 200 },
-    { "path": "/scout.html", "name": "scout", "expected_status": 200 },
-    { "path": "/pie-radar.html", "name": "pie_radar", "expected_status": 200 },
-    { "path": "/monitoring.html", "name": "monitoring", "expected_status": 200 }
+    { "path": "/", "name": "HQ Dashboard" },
+    { "path": "/task-board.html", "name": "Task Board" },
+    { "path": "/agents.html", "name": "Agents" },
+    { "path": "/office.html", "name": "Office" },
+    { "path": "/dealflow-view.html", "name": "DealFlow" },
+    { "path": "/token-tracker.html", "name": "Token Tracker" },
+    { "path": "/scout.html", "name": "Scout" },
+    { "path": "/data-viewer.html", "name": "Data Viewer" },
+    { "path": "/logs-view.html", "name": "Logs" }
   ],
   "apis": [
-    { "path": "/api/health", "name": "health_api", "expected_type": "json" },
-    { "path": "/api/tokens", "name": "tokens_api", "expected_type": "json" }
+    { "path": "/api/health", "name": "Health API" },
+    { "path": "/api/agents", "name": "Agents API" },
+    { "path": "/api/tasks", "name": "Tasks API" },
+    { "path": "/api/deals", "name": "Deals API" },
+    { "path": "/api/logs/activity", "name": "Logs API" },
+    { "path": "/api/tokens", "name": "Tokens API" }
   ],
   "scoring": {
     "pass_threshold": 95,
-    "page_weight": 10,
-    "api_weight": 5,
-    "max_score": 100
+    "page_weight": 8,
+    "api_weight": 3
   },
-  "reporting": {
-    "on_success": "score_only",
-    "on_failure": "detailed",
-    "alert_on_score_below": 95
-  },
-  "error_handling": {
-    "retry_count": 1,
-    "retry_delay_seconds": 15,
-    "continue_on_error": true,
-    "log_errors": true
-  }
+  "alert_on_score_below": 95
 }

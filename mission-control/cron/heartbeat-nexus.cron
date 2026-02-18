@@ -1,44 +1,34 @@
 {
   "name": "heartbeat-nexus",
-  "description": "Agent health and system resource monitoring",
+  "description": "Nexus heartbeat - Agent health, system resources, task queue",
   "schedule": "*/15 * * * *",
   "target": {
     "type": "telegram",
     "channel": "1508346957"
   },
-  "log": "/tmp/mission-control-cron.log",
-  "actions": [
+  "base_url": "https://dashboard-ten-sand-20.vercel.app",
+  "checks": [
     {
-      "type": "health_check",
-      "name": "agent_health",
-      "description": "Check agent health status"
+      "type": "agent_health",
+      "name": "agent_status_check"
     },
     {
       "type": "system_resources",
-      "name": "resource_check",
-      "description": "Check CPU, memory, disk usage",
+      "name": "resource_monitoring",
       "thresholds": {
-        "cpu_warning": 80,
-        "memory_warning": 85,
-        "disk_warning": 90
+        "token_limit": 200000,
+        "disk_warning_percent": 80
       }
     },
     {
-      "type": "dashboard_ping",
-      "name": "dashboard_health",
-      "url": "https://dashboard-ten-sand-20.vercel.app",
-      "expected_status": 200
+      "type": "task_queue",
+      "name": "pending_tasks_check",
+      "source": "/root/.openclaw/workspace/PENDING_TASKS.md"
     }
   ],
   "reporting": {
-    "on_success": "summary",
-    "on_failure": "detailed",
-    "alert_threshold": "any_failure"
-  },
-  "error_handling": {
-    "retry_count": 2,
-    "retry_delay_seconds": 30,
-    "continue_on_error": true,
-    "log_errors": true
+    "on_success": "HEARTBEAT_OK",
+    "on_failure": "detailed_alert",
+    "include_metrics": true
   }
 }
