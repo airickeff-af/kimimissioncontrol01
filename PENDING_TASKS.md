@@ -10,6 +10,85 @@
 ## 🆕 NEW TASKS FROM QUALITY GATE (P0 CRITICAL)
 #### Batch: 2026-02-18 3:45 PM
 
+### **TASK-071: P0 - Standardize All Tab Headers to Match HQ Design**
+- **Assigned:** Forge-1, Forge-2, Forge-3 (Frontend Team)
+- **Due:** Feb 19, 10:00 AM (12 hours)
+- **Status:** 🟡 NOT STARTED
+- **Priority:** P0 - UX CONSISTENCY
+- **Quality Gate:** 96/100 required
+
+**Problem:**
+All dashboard tabs have inconsistent headers and navigation. Only index.html has the proper HQ design with:
+- Logo + title + subtitle format
+- Navigation tabs in header
+- Consistent Kairosoft styling
+- Stats panel below header
+
+**Pages to Update (9 total):**
+1. ✅ index.html - REFERENCE (already correct)
+2. ❌ office.html - Needs header update
+3. ❌ pixel-office.html - Needs header update  
+4. ❌ agents.html - Needs header update
+5. ❌ projects.html (NEW) - Already using HQ style
+6. ❌ dealflow-view.html - Needs header update
+7. ❌ token-tracker.html - Needs header update
+8. ❌ task-board.html - Needs header update
+9. ❌ data-viewer.html - Needs header update
+
+**Required Header Format (Copy from index.html):**
+```html
+<header class="header">
+  <div class="brand">
+    <div class="logo">[emoji]</div>
+    <div class="brand-text">
+      <h1>[Page Title]</h1>
+      <span>[Subtitle/Stats]</span>
+    </div>
+  </div>
+  <nav class="nav-tabs">
+    <a href="index.html" class="nav-tab">🏠 HQ</a>
+    <a href="office.html" class="nav-tab">🏢 Office</a>
+    <a href="pixel-office.html" class="nav-tab">🎮 Pixel</a>
+    <a href="agents.html" class="nav-tab">👥 Agents</a>
+    <a href="projects.html" class="nav-tab">🚀 Projects</a>
+    <a href="dealflow-view.html" class="nav-tab">💼 Deals</a>
+    <a href="token-tracker.html" class="nav-tab">🪙 Tokens</a>
+    <a href="task-board.html" class="nav-tab">📋 Tasks</a>
+    <a href="data-viewer.html" class="nav-tab">📁 Data</a>
+  </nav>
+</header>
+```
+
+**Navigation Order (All Pages):**
+1. 🏠 HQ
+2. 🏢 Office
+3. 🎮 Pixel
+4. 👥 Agents
+5. 🚀 Projects (NEW)
+6. 💼 Deals
+7. 🪙 Tokens
+8. 📋 Tasks
+9. 📁 Data
+
+**Acceptance Criteria:**
+- [ ] All 9 pages have identical header structure
+- [ ] All 9 pages have identical navigation tabs
+- [ ] Active tab highlighted correctly on each page
+- [ ] Consistent styling (Kairosoft theme)
+- [ ] Mobile responsive
+- [ ] Quality score: 96/100
+
+**Files to Update:**
+- `/mission-control/dashboard/office.html`
+- `/mission-control/dashboard/pixel-office.html`
+- `/mission-control/dashboard/agents.html`
+- `/mission-control/dashboard/dealflow-view.html`
+- `/mission-control/dashboard/token-tracker.html`
+- `/mission-control/dashboard/task-board.html`
+- `/mission-control/dashboard/data-viewer.html`
+
+---
+
 ### **TASK-070: P0 - Fix Complete Deployment Failure (Quality Gate FAIL)**
 - **Assigned:** Code-1 (Backend/Deployment Lead) ✅ ASSIGNED TO SUBAGENT
 - **Due:** Feb 18, 5:00 PM (1 hour) - OVERDUE
@@ -2302,3 +2381,200 @@ Agents must submit progress reports at each checkpoint:
 ```
 
 **Full Documentation:** See `/mission-control/docs/DELEGATION_WORKFLOW.md`
+
+---
+
+## 🆕 NEW TASKS - OFFICE ENVIRONMENT & DATA VIEWER (Feb 18, 11:40 PM)
+
+### **P1 HIGH PRIORITY (10 tasks)**
+
+### **TASK-072: P1 - Data Viewer Real-Time Sync**
+- **Assigned:** Code-1 + Forge-1
+- **Due:** Feb 20, 5:00 PM
+- **Status:** ⏳ NOT STARTED
+- **Priority:** P1
+- **Description:** Make data viewer auto-sync with file changes in real-time
+- **Details:** WebSocket connection to watch file system changes, auto-refresh when leads/agents data updates
+- **Acceptance:** Data updates within 5 seconds of file change
+
+### **TASK-073: P1 - Agent Conversation System**
+- **Assigned:** Pixel + Nexus
+- **Due:** Feb 20, 5:00 PM
+- **Status:** ⏳ NOT STARTED
+- **Priority:** P1
+- **Description:** AI agents talk to each other in pixel office with speech bubbles
+- **Details:** Agents randomly start conversations, speech bubbles appear, contextual dialogue based on their roles
+- **Acceptance:** At least 3 conversation types per agent pair
+
+### **TASK-074: P1 - Audit-Agent Real-Time Review**
+- **Assigned:** Audit-1 + Audit-2 + Nexus
+- **Due:** Feb 21, 5:00 PM
+- **Status:** ⏳ NOT STARTED
+- **Priority:** P1
+- **Description:** Audit agents visibly review other agents' work in real-time
+- **Details:** Audit agents walk to agent desks, show review progress, display scores in real-time
+- **Acceptance:** Visual review process for all agent tasks
+
+### **TASK-075: P1 - Data Viewer Search & Filter**
+- **Assigned:** Forge-2 + Code-2
+- **Due:** Feb 21, 5:00 PM
+- **Status:** ⏳ NOT STARTED
+- **Priority:** P1
+- **Description:** Add search and filter capabilities to data viewer
+- **Details:** Search by name, company, filter by region/status/score, export filtered results
+- **Acceptance:** Search results in <100ms, filter combinations work
+
+### **TASK-076: P1 - Office Agent Work Animations**
+- **Assigned:** Pixel + Forge-3
+- **Due:** Feb 22, 5:00 PM
+- **Status:** ⏳ NOT STARTED
+- **Priority:** P1
+- **Description:** Agents show work animations (typing, researching, designing)
+- **Details:** Different animations per role, keyboard typing, screen glow, paper shuffling
+- **Acceptance:** 5+ unique work animations
+
+### **TASK-077: P1 - Data Viewer Comparison Tool**
+- **Assigned:** Code-3 + Forge-1
+- **Due:** Feb 22, 5:00 PM
+- **Status:** ⏳ NOT STARTED
+- **Priority:** P1
+- **Description:** Side-by-side comparison of different data sets
+- **Details:** Compare Singapore vs Hong Kong leads, before/after enrichment, diff view
+- **Acceptance:** Compare 2+ files simultaneously
+
+### **TASK-078: P1 - Office Coffee Break System**
+- **Assigned:** Pixel + Nexus
+- **Due:** Feb 23, 5:00 PM
+- **Status:** ⏳ NOT STARTED
+- **Priority:** P1
+- **Description:** Agents take coffee breaks, gather at lounge area
+- **Details:** Random break schedules, agents walk to coffee area, chat while on break
+- **Acceptance:** Break system with 3+ agents socializing
+
+### **TASK-079: P1 - Data Viewer Analytics Dashboard**
+- **Assigned:** Forge-2 + PIE
+- **Due:** Feb 23, 5:00 PM
+- **Status:** ⏳ NOT STARTED
+- **Priority:** P1
+- **Description:** Visual analytics for lead data (charts, graphs, trends)
+- **Details:** Pie charts by region, bar charts by score, trend lines over time
+- **Acceptance:** 5+ chart types, interactive hover
+
+### **TASK-080: P1 - Office Meeting Room Scheduler**
+- **Assigned:** Nexus + Pixel
+- **Due:** Feb 24, 5:00 PM
+- **Status:** ⏳ NOT STARTED
+- **Priority:** P1
+- **Description:** Visual meeting room booking system in pixel office
+- **Details:** Schedule meetings, agents gather at scheduled times, meeting duration tracking
+- **Acceptance:** Book meetings, visual calendar, agent attendance
+
+### **TASK-081: P1 - Data Viewer Collaboration Notes**
+- **Assigned:** Quill + Forge-3
+- **Due:** Feb 24, 5:00 PM
+- **Status:** ⏳ NOT STARTED
+- **Priority:** P1
+- **Description:** Add notes and comments to data entries
+- **Details:** Per-lead notes, @mentions, note history, collaborative editing
+- **Acceptance:** Notes persist, notifications for mentions
+
+---
+
+### **P2 MEDIUM PRIORITY (10 tasks)**
+
+### **TASK-082: P2 - Office Day/Night Cycle**
+- **Assigned:** Pixel + Forge-1
+- **Due:** Feb 25, 5:00 PM
+- **Status:** ⏳ NOT STARTED
+- **Priority:** P2
+- **Description:** Office lighting changes based on time of day
+- **Details:** Sunrise/sunset effects, window light changes, agents turn on desk lamps at night
+- **Acceptance:** Smooth transitions, 4 time periods
+
+### **TASK-083: P2 - Data Viewer Version History**
+- **Assigned:** Code-1 + Sentry
+- **Due:** Feb 25, 5:00 PM
+- **Status:** ⏳ NOT STARTED
+- **Priority:** P2
+- **Description:** Track and view historical versions of data files
+- **Details:** Git-like history, restore previous versions, diff between versions
+- **Acceptance:** 30-day history, one-click restore
+
+### **TASK-084: P2 - Office Agent Customization**
+- **Assigned:** Pixel + Forge-2
+- **Due:** Feb 26, 5:00 PM
+- **Status:** ⏳ NOT STARTED
+- **Priority:** P2
+- **Description:** Customize agent appearance (hats, accessories, desk items)
+- **Details:** Unlockable items, seasonal themes, achievement rewards
+- **Acceptance:** 10+ customization options per agent
+
+### **TASK-085: P2 - Data Viewer Import/Export Wizard**
+- **Assigned:** Code-2 + DealFlow
+- **Due:** Feb 26, 5:00 PM
+- **Status:** ⏳ NOT STARTED
+- **Priority:** P2
+- **Description:** Step-by-step wizard for importing/exporting data
+- **Details:** CSV/Excel import, field mapping, validation, export templates
+- **Acceptance:** Import 1000+ rows, error reporting
+
+### **TASK-086: P2 - Office Achievement System**
+- **Assigned:** Nexus + Pixel
+- **Due:** Feb 27, 5:00 PM
+- **Status:** ⏳ NOT STARTED
+- **Priority:** P2
+- **Description:** Unlock achievements for agents based on milestones
+- **Details:** Task completion streaks, token efficiency, quality scores, visual badges
+- **Acceptance:** 20+ achievements, notification system
+
+### **TASK-087: P2 - Data Viewer Smart Recommendations**
+- **Assigned:** PIE + Forge-3
+- **Due:** Feb 27, 5:00 PM
+- **Status:** ⏳ NOT STARTED
+- **Priority:** P2
+- **Description:** AI recommendations for lead prioritization
+- **Details:** Score predictions, similar leads suggestion, next-best-action
+- **Acceptance:** 80%+ recommendation accuracy
+
+### **TASK-088: P2 - Office Music & Ambiance**
+- **Assigned:** Pixel + Gary
+- **Due:** Feb 28, 5:00 PM
+- **Status:** ⏳ NOT STARTED
+- **Priority:** P2
+- **Description:** Background music and ambient sounds for office
+- **Details:** Lo-fi focus music, keyboard sounds, coffee shop ambiance, mute option
+- **Acceptance:** 3+ music tracks, volume control
+
+### **TASK-089: P2 - Data Viewer Bulk Operations**
+- **Assigned:** Code-3 + Forge-1
+- **Due:** Feb 28, 5:00 PM
+- **Status:** ⏳ NOT STARTED
+- **Priority:** P2
+- **Description:** Select and operate on multiple data entries at once
+- **Details:** Bulk edit, bulk delete, bulk export, bulk status update
+- **Acceptance:** 100+ items bulk operation
+
+### **TASK-090: P2 - Office Agent Rivalries & Friendships**
+- **Assigned:** Nexus + Pixel
+- **Due:** Mar 1, 5:00 PM
+- **Status:** ⏳ NOT STARTED
+- **Priority:** P2
+- **Description:** Agents develop relationships over time
+- **Details:** Friendship points, rivalries, preferred desk neighbors, team dynamics
+- **Acceptance:** Relationship system visible in UI
+
+### **TASK-091: P2 - Data Viewer Mobile Optimization**
+- **Assigned:** Forge-2 + Forge-3
+- **Due:** Mar 1, 5:00 PM
+- **Status:** ⏳ NOT STARTED
+- **Priority:** P2
+- **Description:** Fully responsive data viewer for mobile devices
+- **Details:** Touch gestures, swipe navigation, mobile-optimized charts, offline mode
+- **Acceptance:** Works on 320px+ screens, touch-friendly
+
+---
+
+**Total New Tasks:** 20 (10 P1 + 10 P2)
+**Focus Areas:** Data Viewer (10), Office Environment (10)
+**Created:** 2026-02-18 11:40 PM HKT
+**Added by:** Nexus

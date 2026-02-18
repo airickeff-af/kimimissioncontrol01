@@ -1,14 +1,18 @@
 {
   "version": 2,
   "name": "mission-control",
+  "cleanUrls": false,
+  "headers": [
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        { "key": "Access-Control-Allow-Origin", "value": "*" },
+        { "key": "Access-Control-Allow-Methods", "value": "GET, POST, PUT, DELETE, OPTIONS" },
+        { "key": "Access-Control-Allow-Headers", "value": "Content-Type, Authorization" }
+      ]
+    }
+  ],
   "rewrites": [
-    { "source": "/api/tasks", "destination": "/api/tasks.js" },
-    { "source": "/api/logs/activity", "destination": "/api/logs/activity.js" },
-    { "source": "/api/logs", "destination": "/api/logs/index.js" },
-    { "source": "/api/agents", "destination": "/api/agents.js" },
-    { "source": "/api/health", "destination": "/api/health.js" },
-    { "source": "/api/deals", "destination": "/api/deals.js" },
-    { "source": "/api/tokens", "destination": "/api/tokens.js" },
     { "source": "/css/(.*)", "destination": "/mission-control/dashboard/css/$1" },
     { "source": "/js/(.*)", "destination": "/mission-control/dashboard/js/$1" },
     { "source": "/assets/(.*)", "destination": "/assets/$1" },
