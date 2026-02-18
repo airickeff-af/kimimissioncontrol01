@@ -1,9 +1,9 @@
 {
-    "timestamp": "2026-02-18T14:00:54+08:00",
-    "hour": 14,
-    "state": "deep_work_afternoon",
-    "zone": "individual",
-    "description": "Afternoon deep work",
+    "timestamp": "2026-02-18T16:00:10+08:00",
+    "hour": 16,
+    "state": "review_qa",
+    "zone": "qa_station",
+    "description": "Review and QA session",
     "positions": {
         "air1ck3ff": "command_center",
         "glasses": "content_desk",

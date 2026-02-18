@@ -1,13 +1,6 @@
 {
-  "name": "mission-control",
-  "version": "1.0.0",
-  "description": "Mission Control Dashboard with API endpoints",
-  "scripts": {
-    "build": "echo 'Static build - no compilation needed'",
-    "vercel-build": "echo 'Vercel build step'"
-  },
-  "devDependencies": {
-    "localtunnel": "^2.0.2",
-    "ws": "^8.19.0"
-  }
+  "name": "mission-control-dashboard",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Mission Control Dashboard with Vercel Serverless Functions"
 }
