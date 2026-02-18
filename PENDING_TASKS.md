@@ -2948,5 +2948,178 @@ Agents must submit progress reports at each checkpoint:
 
 ---
 
-*Last Updated: 2026-02-19 2:59 AM CST*  
-*Maintained by: Nexus (Air1ck3ff)*
+## 🆕 NEW TASKS FROM 4-HOUR IMPROVEMENT CYCLE
+#### Batch: 2026-02-19 3:53 AM
+
+### **TASK-115: P1 - Quick Actions Command Palette**
+- **Assigned:** Forge-1
+- **Due:** Feb 22, 5:00 PM
+- **Status:** ⏳ NOT STARTED
+- **Priority:** P1
+- **Focus Area:** Dashboard UX Improvements
+
+**Description:**
+Add Cmd+K command palette for instant navigation and actions across Mission Control dashboard.
+
+**Why it helps EricF:**
+Power users navigate 10x faster without mouse. Reduces cognitive load by providing universal search across all dashboard functions. Common pattern in modern SaaS (Linear, Vercel, GitHub).
+
+**Features:**
+- Keyboard shortcut (Cmd/Ctrl+K) opens palette
+- Search across pages, agents, tasks, leads
+- Quick actions: "Create task", "Find lead", "View logs"
+- Recent items and favorites
+- Fuzzy search matching
+
+**Estimated Effort:** 6 hours (1-2 days)
+
+**Acceptance Criteria:**
+- [ ] Cmd/Ctrl+K opens command palette on all pages
+- [ ] Search returns results from pages, agents, tasks, leads
+- [ ] Quick actions execute correctly
+- [ ] Recent items display and are clickable
+- [ ] Fuzzy search works (e.g., "tok" finds "token tracker")
+
+---
+
+### **TASK-116: P1 - Agent Work Session Timer**
+- **Assigned:** Code-1
+- **Due:** Feb 23, 5:00 PM
+- **Status:** ⏳ NOT STARTED
+- **Priority:** P1
+- **Focus Area:** Agent Productivity Enhancements
+
+**Description:**
+Track actual time agents spend on tasks vs token estimates for efficiency analysis.
+
+**Why it helps EricF:**
+Currently only tokens are tracked, not real time. Creates blind spots for efficiency analysis. Understanding time-per-task helps optimize agent assignments and identify bottlenecks.
+
+**Features:**
+- Auto-start timer when agent accepts task
+- Pause/resume for breaks
+- Time vs token correlation analysis
+- Agent efficiency score (tokens per minute)
+- Historical trends per agent
+
+**Estimated Effort:** 8 hours (2 days)
+
+**Acceptance Criteria:**
+- [ ] Timer auto-starts when task assigned to agent
+- [ ] Timer pauses/resumes correctly
+- [ ] Efficiency score calculated (tokens/minute)
+- [ ] Historical trends viewable per agent
+- [ ] Data exports to dashboard
+
+---
+
+### **TASK-117: P2 - Token Burn Rate Visualization**
+- **Assigned:** Forge-1
+- **Due:** Feb 24, 5:00 PM
+- **Status:** ⏳ NOT STARTED
+- **Priority:** P2
+- **Focus Area:** Data Visualization Upgrades
+
+**Description:**
+Show token usage velocity with projections and budget alerts on Token Tracker page.
+
+**Why it helps EricF:**
+Current token tracker shows history but not trajectory. Burn rate visualization helps predict when limits will be hit, enabling proactive optimization before hitting caps.
+
+**Features:**
+- Daily/weekly burn rate calculation
+- Projected depletion date
+- Budget vs actual comparison
+- Alert thresholds (50%, 75%, 90%)
+- Per-agent burn rate breakdown
+
+**Estimated Effort:** 4 hours (1 day)
+
+**Acceptance Criteria:**
+- [ ] Burn rate calculated daily and weekly
+- [ ] Projected depletion date displayed
+- [ ] Budget comparison chart added
+- [ ] Alert thresholds trigger notifications
+- [ ] Per-agent burn rate visible
+
+---
+
+### **TASK-118: P2 - Auto-Generated Daily Standup Summary**
+- **Assigned:** Nexus
+- **Due:** Feb 21, 5:00 PM
+- **Status:** ⏳ NOT STARTED
+- **Priority:** P2
+- **Focus Area:** Automation Opportunities
+
+**Description:**
+Automatically compile yesterday's activity into standup format and deliver to EricF each morning.
+
+**Why it helps EricF:**
+Standups require manual review of logs, tasks, commits. Auto-generation saves 10-15 minutes daily and ensures nothing is missed. Provides consistent format for async updates.
+
+**Features:**
+- Auto-compile at 8:00 AM daily
+- Tasks completed yesterday
+- Tasks in progress
+- Blockers identified
+- Token usage summary
+- Send to Telegram/email
+
+**Estimated Effort:** 3 hours (1 day)
+
+**Acceptance Criteria:**
+- [ ] Daily standup auto-generated at 8:00 AM
+- [ ] Includes completed tasks from previous day
+- [ ] Lists tasks currently in progress
+- [ ] Identifies any blockers
+- [ ] Token usage summary included
+- [ ] Delivered via Telegram
+
+---
+
+### **TASK-119: P2 - GitHub Activity Feed Integration**
+- **Assigned:** Code-2
+- **Due:** Feb 26, 5:00 PM
+- **Status:** ⏳ NOT STARTED
+- **Priority:** P2
+- **Focus Area:** Integration Possibilities
+
+**Description:**
+Show commits, PRs, and issues in Mission Control dashboard for unified work visibility.
+
+**Why it helps EricF:**
+Code activity is invisible in Mission Control currently. Integration provides unified view of all work - not just tasks but actual code output. Correlates commits with tasks.
+
+**Features:**
+- Recent commits feed
+- Open PRs list with status
+- Issue tracking integration
+- Commit-to-task linking
+- Code review reminders
+- Deployment status from GitHub Actions
+
+**Estimated Effort:** 12 hours (2-3 days)
+
+**Acceptance Criteria:**
+- [ ] GitHub API integration configured
+- [ ] Recent commits display in dashboard
+- [ ] Open PRs list with merge status
+- [ ] Issues visible with labels
+- [ ] Commits link to related tasks
+- [ ] Deployment status shows GitHub Actions state
+
+---
+
+## 📊 UPDATED TASK DASHBOARD
+
+| Priority | Count | Completed | In Progress | Blocked |
+|----------|-------|-----------|-------------|---------|
+| 🔴 P0 - Critical | 9 | 6 | 3 | 0 |
+| 🟡 P1 - High | 39 | 6 | 2 | 31 |
+| 🟢 P2 - Medium | 52 | 4 | 0 | 48 |
+| ⚪ P3 - Low | 6 | 0 | 0 | 6 |
+| **TOTAL** | **106** | **16** | **5** | **85** |
+
+---
+*Last Updated: 2026-02-19 3:53 AM HKT*
+*Improvement Cycle: Nexus 4-Hour Improvements*

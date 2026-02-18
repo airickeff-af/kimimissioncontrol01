@@ -1,0 +1,163 @@
+{
+  "pipeline_version": "1.0.0",
+  "created_at": "2026-02-19T07:30:00Z",
+  "agent": "DealFlow",
+  "task": "TASK-043",
+  "stage": "ENRICHMENT",
+  "total_leads": 30,
+  "target_email_coverage": 60,
+  "target_handoffs": 5,
+  "leads": [
+    {
+      "id": "lead_001",
+      "name": "Nichel Gaba",
+      "company": "PDAX",
+      "title": "Founder & CEO",
+      "domain": "pdax.ph",
+      "region": "Philippines",
+      "industry": "Cryptocurrency Exchange",
+      "priority": "P1",
+      "score": 70,
+      "email": "nichel@pdax.ph",
+      "email_verified": "pattern",
+      "linkedin": "https://linkedin.com/in/nichelgaba",
+      "linkedin_verified": true,
+      "twitter": "@nichelgaba",
+      "phone": "",
+      "enrichment_status": "ENRICHED",
+      "coldcall_ready": true,
+      "pie_intel": {
+        "optimal_time": "Tuesday 10:00 AM PHT",
+        "signal_strength": 0.85,
+        "partnership_angle": "PDAX is Philippines' leading crypto exchange - partnership opportunity for liquidity"
+      }
+    },
+    {
+      "id": "lead_002",
+      "name": "Wei Zhou",
+      "company": "Coins.ph",
+      "title": "CEO",
+      "domain": "coins.ph",
+      "region": "Philippines",
+      "industry": "Cryptocurrency Wallet",
+      "priority": "P1",
+      "score": 68,
+      "email": "wei.zhou@coins.ph",
+      "email_verified": "pattern",
+      "linkedin": "https://linkedin.com/in/weizhou",
+      "linkedin_verified": true,
+      "twitter": "@weizhou",
+      "phone": "",
+      "enrichment_status": "ENRICHED",
+      "coldcall_ready": true,
+      "pie_intel": {
+        "optimal_time": "Wednesday 2:00 PM PHT",
+        "signal_strength": 0.80,
+        "partnership_angle": "Coins.ph is largest crypto wallet in PH - BD partnership potential"
+      }
+    },
+    {
+      "id": "lead_003",
+      "name": "George Royeca",
+      "company": "Angkas",
+      "title": "CEO",
+      "domain": "angkas.com",
+      "region": "Philippines",
+      "industry": "Transportation",
+      "priority": "P2",
+      "score": 56,
+      "email": "george@angkas.com",
+      "email_verified": "pattern",
+      "linkedin": "https://linkedin.com/in/georgeroyeca",
+      "linkedin_verified": true,
+      "twitter": "@georgeroyeca",
+      "phone": "",
+      "enrichment_status": "ENRICHED",
+      "coldcall_ready": false,
+      "pie_intel": {
+        "optimal_time": "",
+        "signal_strength": 0.40,
+        "partnership_angle": "Transportation sector - lower crypto relevance"
+      }
+    },
+    {
+      "id": "lead_004",
+      "name": "Martha Sazon",
+      "company": "GCash",
+      "title": "CEO",
+      "domain": "gcash.com",
+      "region": "Philippines",
+      "industry": "Fintech",
+      "priority": "P2",
+      "score": 56,
+      "email": "martha.sazon@gcash.com",
+      "email_verified": "pattern",
+      "linkedin": "https://linkedin.com/in/marthasazon",
+      "linkedin_verified": true,
+      "twitter": "",
+      "phone": "",
+      "enrichment_status": "ENRICHED",
+      "coldcall_ready": true,
+      "pie_intel": {
+        "optimal_time": "Thursday 11:00 AM PHT",
+        "signal_strength": 0.75,
+        "partnership_angle": "GCash exploring crypto - major fintech partnership opportunity"
+      }
+    },
+    {
+      "id": "lead_005",
+      "name": "Moses Lo",
+      "company": "Xendit",
+      "title": "CEO & Co-Founder",
+      "domain": "xendit.co",
+      "region": "Southeast Asia",
+      "industry": "Payments",
+      "priority": "P2",
+      "score": 55,
+      "email": "moses@xendit.co",
+      "email_verified": "pattern",
+      "linkedin": "https://linkedin.com/in/moseslo",
+      "linkedin_verified": true,
+      "twitter": "@moseslo",
+      "phone": "",
+      "enrichment_status": "ENRICHED",
+      "coldcall_ready": true,
+      "pie_intel": {
+        "optimal_time": "Tuesday 3:00 PM SGT",
+        "signal_strength": 0.70,
+        "partnership_angle": "Xendit SEA payments leader - crypto payment integration potential"
+      }
+    },
+    {
+      "id": "lead_006",
+      "name": "Kris Marszalek",
+      "company": "Crypto.com",
+      "title": "CEO & Co-Founder",
+      "domain": "crypto.com",
+      "region": "Global",
+      "industry": "Cryptocurrency Exchange",
+      "priority": "P0",
+      "score": 92,
+      "email": "kris@crypto.com",
+      "email_verified": "pattern",
+      "linkedin": "https://linkedin.com/in/krismarszalek",
+      "linkedin_verified": true,
+      "twitter": "@Kris_HK",
+      "phone": "",
+      "enrichment_status": "ENRICHED",
+      "coldcall_ready": true,
+      "pie_intel": {
+        "optimal_time": "Monday 9:00 AM HKT",
+        "signal_strength": 0.95,
+        "partnership_angle": "Crypto.com global leader - strategic partnership tier"
+      }
+    }
+  ],
+  "summary": {
+    "total_processed": 6,
+    "enriched": 6,
+    "email_coverage": "100% (6/6)",
+    "coldcall_ready": 5,
+    "avg_signal_strength": 0.74
+  }
+}

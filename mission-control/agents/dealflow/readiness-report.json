@@ -1,0 +1,199 @@
+{
+  "timestamp": "2026-02-18T23:26:30.871Z",
+  "totalLeads": 26,
+  "averageScore": 62,
+  "distribution": {
+    "ready": 0,
+    "ready_with_prep": 9,
+    "needs_enrichment": 12,
+    "not_ready": 5
+  },
+  "readyLeads": [],
+  "readyWithPrep": [
+    {
+      "leadId": "lead_001",
+      "company": "Coins.ph",
+      "contact": "Wei Zhou",
+      "totalScore": 79,
+      "tier": "ready_with_prep",
+      "action": "Minor preparation needed",
+      "breakdown": {
+        "contactCompleteness": 65,
+        "researchQuality": 90,
+        "priorityLevel": 100,
+        "industryFit": 100,
+        "timingSignals": 50,
+        "engagementHistory": 50
+      },
+      "recommendedTemplate": "initial-cold-outreach",
+      "priority": "P0",
+      "timestamp": "2026-02-18T23:26:30.870Z"
+    },
+    {
+      "leadId": "lead_003",
+      "company": "PDAX",
+      "contact": "Nichel Gaba",
+      "totalScore": 77,
+      "tier": "ready_with_prep",
+      "action": "Minor preparation needed",
+      "breakdown": {
+        "contactCompleteness": 65,
+        "researchQuality": 90,
+        "priorityLevel": 75,
+        "industryFit": 100,
+        "timingSignals": 80,
+        "engagementHistory": 50
+      },
+      "recommendedTemplate": "initial-cold-outreach",
+      "priority": "P1",
+      "timestamp": "2026-02-18T23:26:30.870Z"
+    },
+    {
+      "leadId": "lead_007",
+      "company": "Maya",
+      "contact": "Shailesh Baidwan",
+      "totalScore": 79,
+      "tier": "ready_with_prep",
+      "action": "Minor preparation needed",
+      "breakdown": {
+        "contactCompleteness": 65,
+        "researchQuality": 90,
+        "priorityLevel": 100,
+        "industryFit": 95,
+        "timingSignals": 50,
+        "engagementHistory": 50
+      },
+      "recommendedTemplate": "initial-cold-outreach",
+      "priority": "P0",
+      "timestamp": "2026-02-18T23:26:30.870Z"
+    },
+    {
+      "leadId": "lead_008",
+      "company": "Tala Philippines",
+      "contact": "Shivani Siroya",
+      "totalScore": 77,
+      "tier": "ready_with_prep",
+      "action": "Minor preparation needed",
+      "breakdown": {
+        "contactCompleteness": 65,
+        "researchQuality": 100,
+        "priorityLevel": 75,
+        "industryFit": 85,
+        "timingSignals": 80,
+        "engagementHistory": 50
+      },
+      "recommendedTemplate": "initial-cold-outreach",
+      "priority": "P1",
+      "timestamp": "2026-02-18T23:26:30.871Z"
+    },
+    {
+      "leadId": "lead_009",
+      "company": "PayMongo",
+      "contact": "Jojo Malolos",
+      "totalScore": 77,
+      "tier": "ready_with_prep",
+      "action": "Minor preparation needed",
+      "breakdown": {
+        "contactCompleteness": 80,
+        "researchQuality": 90,
+        "priorityLevel": 75,
+        "industryFit": 95,
+        "timingSignals": 50,
+        "engagementHistory": 50
+      },
+      "recommendedTemplate": "initial-cold-outreach",
+      "priority": "P1",
+      "timestamp": "2026-02-18T23:26:30.871Z"
+    },
+    {
+      "leadId": "lead_011",
+      "company": "Xendit Group",
+      "contact": "Moses Lo",
+      "totalScore": 82,
+      "tier": "ready_with_prep",
+      "action": "Minor preparation needed",
+      "breakdown": {
+        "contactCompleteness": 80,
+        "researchQuality": 90,
+        "priorityLevel": 100,
+        "industryFit": 95,
+        "timingSignals": 50,
+        "engagementHistory": 50
+      },
+      "recommendedTemplate": "initial-cold-outreach",
+      "priority": "P0",
+      "timestamp": "2026-02-18T23:26:30.871Z"
+    },
+    {
+      "leadId": "lead_013",
+      "company": "GoTyme Bank",
+      "contact": "Albert Tinio",
+      "totalScore": 76,
+      "tier": "ready_with_prep",
+      "action": "Minor preparation needed",
+      "breakdown": {
+        "contactCompleteness": 65,
+        "researchQuality": 100,
+        "priorityLevel": 75,
+        "industryFit": 90,
+        "timingSignals": 65,
+        "engagementHistory": 50
+      },
+      "recommendedTemplate": "initial-cold-outreach",
+      "priority": "P1",
+      "timestamp": "2026-02-18T23:26:30.871Z"
+    },
+    {
+      "leadId": "lead_014",
+      "company": "Dragonpay",
+      "contact": "Robertson Chiang",
+      "totalScore": 77,
+      "tier": "ready_with_prep",
+      "action": "Minor preparation needed",
+      "breakdown": {
+        "contactCompleteness": 65,
+        "researchQuality": 100,
+        "priorityLevel": 75,
+        "industryFit": 95,
+        "timingSignals": 65,
+        "engagementHistory": 50
+      },
+      "recommendedTemplate": "initial-cold-outreach",
+      "priority": "P1",
+      "timestamp": "2026-02-18T23:26:30.871Z"
+    },
+    {
+      "leadId": "lead_016",
+      "company": "GCash (Mynt)",
+      "contact": "Martha Sazon",
+      "totalScore": 81,
+      "tier": "ready_with_prep",
+      "action": "Minor preparation needed",
+      "breakdown": {
+        "contactCompleteness": 80,
+        "researchQuality": 90,
+        "priorityLevel": 100,
+        "industryFit": 85,
+        "timingSignals": 50,
+        "engagementHistory": 50
+      },
+      "recommendedTemplate": "initial-cold-outreach",
+      "priority": "P0",
+      "timestamp": "2026-02-18T23:26:30.871Z"
+    }
+  ],
+  "recommendations": [
+    {
+      "priority": "high",
+      "message": "No leads are fully ready for outreach. Focus on enriching existing leads."
+    },
+    {
+      "priority": "medium",
+      "message": "9 leads need minor prep. Allocate 2-3 hours to prepare these for outreach."
+    },
+    {
+      "priority": "medium",
+      "message": "12 leads need enrichment. Consider delegating research tasks."
+    }
+  ]
+}

@@ -1,18 +1,18 @@
 {
-    "timestamp": "2026-02-19T02:01:09+08:00",
-    "hour": 02,
-    "state": "night_ops",
-    "zone": "ops_center",
-    "description": "Night operations - Sentry/Cipher monitoring",
+    "timestamp": "2026-02-19T07:00:05+08:00",
+    "hour": 07,
+    "state": "morning_briefing",
+    "zone": "conference",
+    "description": "Daily briefing - All agents gathered",
     "positions": {
-        "air1ck3ff": "command_center",
-        "glasses": "content_desk",
-        "quill": "content_desk",
-        "pixel": "content_desk",
-        "gary": "marketing_desk",
-        "larry": "marketing_desk",
-        "sentry": "ops_center",
-        "audit": "qa_station",
-        "cipher": "ops_center"
+        "air1ck3ff": "conference",
+        "glasses": "conference",
+        "quill": "conference",
+        "pixel": "conference",
+        "gary": "conference",
+        "larry": "conference",
+        "sentry": "conference",
+        "audit": "conference",
+        "cipher": "conference"
     }
 }

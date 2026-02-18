@@ -1,0 +1,184 @@
+{
+  "generated_at": "2026-02-19T07:35:00Z",
+  "agent": "DealFlow",
+  "task": "TASK-043",
+  "total_ready": 5,
+  "email_coverage": "83% (5/6)",
+  "packages": [
+    {
+      "handoff_id": "HO-001",
+      "lead_id": "lead_001",
+      "contact_name": "Nichel Gaba",
+      "company": "PDAX",
+      "title": "Founder & CEO",
+      "email": "nichel@pdax.ph",
+      "email_verified": true,
+      "linkedin": "https://linkedin.com/in/nichelgaba",
+      "phone": "",
+      "priority": "P1",
+      "score": 70,
+      "outreach_strategy": {
+        "optimal_time": "Tuesday 10:00 AM PHT",
+        "channel": "Email",
+        "subject_line": "Partnership: Liquidity Solutions for PDAX",
+        "hook": "PDAX is Philippines' leading crypto exchange - partnership opportunity for enhanced liquidity and trading infrastructure",
+        "talking_points": [
+          "PDAX market position as top PH exchange",
+          "Liquidity enhancement opportunities",
+          "Regulatory compliance support",
+          "Technical integration capabilities"
+        ]
+      },
+      "pie_intel": {
+        "signal_type": "opportunity",
+        "signal_strength": 0.85,
+        "market_sentiment": "bullish",
+        "recent_news": "PDAX recently expanded trading pairs",
+        "competitor_mentions": ["Coins.ph", "BloomX"]
+      },
+      "status": "READY_FOR_COLDCALL",
+      "assigned_to": null,
+      "created_at": "2026-02-19T07:35:00Z"
+    },
+    {
+      "handoff_id": "HO-002",
+      "lead_id": "lead_002",
+      "contact_name": "Wei Zhou",
+      "company": "Coins.ph",
+      "title": "CEO",
+      "email": "wei.zhou@coins.ph",
+      "email_verified": true,
+      "linkedin": "https://linkedin.com/in/weizhou",
+      "phone": "",
+      "priority": "P1",
+      "score": 68,
+      "outreach_strategy": {
+        "optimal_time": "Wednesday 2:00 PM PHT",
+        "channel": "Email",
+        "subject_line": "Strategic Partnership: Coins.ph Growth Initiative",
+        "hook": "Coins.ph is the largest crypto wallet in the Philippines - exploring BD partnership opportunities for mutual growth",
+        "talking_points": [
+          "Coins.ph dominant market position",
+          "User acquisition synergies",
+          "Cross-promotional opportunities",
+          "Technical partnership potential"
+        ]
+      },
+      "pie_intel": {
+        "signal_type": "opportunity",
+        "signal_strength": 0.80,
+        "market_sentiment": "bullish",
+        "recent_news": "Coins.ph expanding remittance services",
+        "competitor_mentions": ["PDAX", "GCash"]
+      },
+      "status": "READY_FOR_COLDCALL",
+      "assigned_to": null,
+      "created_at": "2026-02-19T07:35:00Z"
+    },
+    {
+      "handoff_id": "HO-003",
+      "lead_id": "lead_004",
+      "contact_name": "Martha Sazon",
+      "company": "GCash",
+      "title": "CEO",
+      "email": "martha.sazon@gcash.com",
+      "email_verified": true,
+      "linkedin": "https://linkedin.com/in/marthasazon",
+      "phone": "",
+      "priority": "P2",
+      "score": 56,
+      "outreach_strategy": {
+        "optimal_time": "Thursday 11:00 AM PHT",
+        "channel": "Email",
+        "subject_line": "GCash Crypto Integration Partnership",
+        "hook": "GCash is exploring crypto services - partnership opportunity for compliant crypto integration",
+        "talking_points": [
+          "GCash 80M+ user base",
+          "Crypto integration readiness",
+          "Regulatory compliance framework",
+          "Mynt/GCash fintech leadership"
+        ]
+      },
+      "pie_intel": {
+        "signal_type": "opportunity",
+        "signal_strength": 0.75,
+        "market_sentiment": "neutral",
+        "recent_news": "GCash parent Mynt considering crypto features",
+        "competitor_mentions": ["Maya", "Coins.ph"]
+      },
+      "status": "READY_FOR_COLDCALL",
+      "assigned_to": null,
+      "created_at": "2026-02-19T07:35:00Z"
+    },
+    {
+      "handoff_id": "HO-004",
+      "lead_id": "lead_005",
+      "contact_name": "Moses Lo",
+      "company": "Xendit",
+      "title": "CEO & Co-Founder",
+      "email": "moses@xendit.co",
+      "email_verified": true,
+      "linkedin": "https://linkedin.com/in/moseslo",
+      "phone": "",
+      "priority": "P2",
+      "score": 55,
+      "outreach_strategy": {
+        "optimal_time": "Tuesday 3:00 PM SGT",
+        "channel": "Email",
+        "subject_line": "Xendit SEA Expansion: Crypto Payment Integration",
+        "hook": "Xendit is the leading payments infrastructure in SEA - crypto payment integration opportunity",
+        "talking_points": [
+          "Xendit SEA market leadership",
+          "Payment infrastructure scale",
+          "Crypto payment rails integration",
+          "Cross-border remittance synergies"
+        ]
+      },
+      "pie_intel": {
+        "signal_type": "opportunity",
+        "signal_strength": 0.70,
+        "market_sentiment": "bullish",
+        "recent_news": "Xendit raised Series C, expanding regionally",
+        "competitor_mentions": ["Stripe", "2C2P"]
+      },
+      "status": "READY_FOR_COLDCALL",
+      "assigned_to": null,
+      "created_at": "2026-02-19T07:35:00Z"
+    },
+    {
+      "handoff_id": "HO-005",
+      "lead_id": "lead_006",
+      "contact_name": "Kris Marszalek",
+      "company": "Crypto.com",
+      "title": "CEO & Co-Founder",
+      "email": "kris@crypto.com",
+      "email_verified": true,
+      "linkedin": "https://linkedin.com/in/krismarszalek",
+      "phone": "",
+      "priority": "P0",
+      "score": 92,
+      "outreach_strategy": {
+        "optimal_time": "Monday 9:00 AM HKT",
+        "channel": "Email",
+        "subject_line": "Strategic Partnership: Crypto.com Ecosystem Expansion",
+        "hook": "Crypto.com is a global leader - exploring strategic partnership for APAC expansion",
+        "talking_points": [
+          "Crypto.com global brand recognition",
+          "APAC market expansion strategy",
+          "Institutional partnership opportunities",
+          "Co-marketing and user acquisition"
+        ]
+      },
+      "pie_intel": {
+        "signal_type": "opportunity",
+        "signal_strength": 0.95,
+        "market_sentiment": "very bullish",
+        "recent_news": "Crypto.com expanding institutional services",
+        "competitor_mentions": ["Binance", "Coinbase"]
+      },
+      "status": "READY_FOR_COLDCALL",
+      "assigned_to": null,
+      "created_at": "2026-02-19T07:35:00Z"
+    }
+  ]
+}
