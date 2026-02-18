@@ -1,10 +1,6 @@
 {
   "version": 2,
   "name": "mission-control",
-  "framework": null,
-  "buildCommand": null,
-  "outputDirectory": "mission-control/dashboard",
-  "cleanUrls": true,
   "headers": [
     {
       "source": "/api/(.*)",
@@ -16,21 +12,10 @@
     }
   ],
   "rewrites": [
-    { "source": "/api/logs/activity", "destination": "/api/logs/activity.js" },
-    { "source": "/api/logs/chat", "destination": "/api/logs/chat.js" },
-    { "source": "/api/logs", "destination": "/api/logs/index.js" },
-    { "source": "/api/agents", "destination": "/api/agents.js" },
-    { "source": "/api/health", "destination": "/api/health.js" },
-    { "source": "/api/tasks", "destination": "/api/tasks.js" },
-    { "source": "/api/stats", "destination": "/api/stats.js" },
-    { "source": "/api/deployments", "destination": "/api/deployments.js" },
-    { "source": "/api/metrics", "destination": "/api/metrics.js" },
-    { "source": "/api/deals", "destination": "/api/deals.js" },
-    { "source": "/api/tokens", "destination": "/api/tokens.js" },
-    { "source": "/css/(.*)", "destination": "/mission-control/dashboard/css/$1" },
-    { "source": "/js/(.*)", "destination": "/mission-control/dashboard/js/$1" },
-    { "source": "/assets/(.*)", "destination": "/assets/$1" },
-    { "source": "/(.+\\.(html|css|js|png|jpg|jpeg|gif|svg|ico))", "destination": "/$1" },
+    { "source": "/api/logs/activity", "destination": "/api/logs-activity.js" },
+    { "source": "/api/logs/chat", "destination": "/api/logs-chat.js" },
+    { "source": "/api/logs", "destination": "/api/logs-index.js" },
+    { "source": "/(.+\\.(html|css|js|png|jpg|jpeg|gif|svg|ico))", "destination": "/mission-control/dashboard/$1" },
     { "source": "/(.*)", "destination": "/mission-control/dashboard/index.html" }
   ],
   "functions": {
