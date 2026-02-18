@@ -1,30 +1,92 @@
 {
   "version": 2,
-  "name": "mission-control-fresh",
-  "rewrites": [
+  "name": "mission-control",
+  "builds": [
     {
-      "source": "/api/logs/activity",
-      "destination": "/api/logs/activity.js"
+      "src": "api/**/*.js",
+      "use": "@vercel/node"
     },
     {
-      "source": "/api/logs",
-      "destination": "/api/logs/index.js"
+      "src": "mission-control/dashboard/**",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/logs/activity",
+      "dest": "/api/logs/activity.js"
     },
     {
-      "source": "/api/:path*",
-      "destination": "/api/:path*"
+      "src": "/api/logs",
+      "dest": "/api/logs/index.js"
     },
     {
-      "source": "/logs-view.html",
-      "destination": "/mission-control/dashboard/logs-view.html"
+      "src": "/api/agents",
+      "dest": "/api/agents.js"
     },
     {
-      "source": "/mission-control/dashboard/(.*)",
-      "destination": "/mission-control/dashboard/$1"
+      "src": "/api/tasks",
+      "dest": "/api/tasks.js"
     },
     {
-      "source": "/(.*)",
-      "destination": "/mission-control/dashboard/$1"
+      "src": "/api/tokens",
+      "dest": "/api/tokens.js"
+    },
+    {
+      "src": "/api/metrics",
+      "dest": "/api/metrics.js"
+    },
+    {
+      "src": "/api/health",
+      "dest": "/api/health.js"
+    },
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/$1"
+    },
+    {
+      "src": "/logs-view",
+      "dest": "/mission-control/dashboard/logs-view.html"
+    },
+    {
+      "src": "/agents",
+      "dest": "/mission-control/dashboard/agents.html"
+    },
+    {
+      "src": "/office",
+      "dest": "/mission-control/dashboard/animated-office.html"
+    },
+    {
+      "src": "/data-viewer",
+      "dest": "/mission-control/dashboard/data-viewer.html"
+    },
+    {
+      "src": "/task-board",
+      "dest": "/mission-control/dashboard/task-board.html"
+    },
+    {
+      "src": "/dealflow",
+      "dest": "/mission-control/dashboard/dealflow-view.html"
+    },
+    {
+      "src": "/scout",
+      "dest": "/mission-control/dashboard/scout.html"
+    },
+    {
+      "src": "/tokens",
+      "dest": "/mission-control/dashboard/token-tracker.html"
+    },
+    {
+      "src": "/hq",
+      "dest": "/mission-control/dashboard/hq.html"
+    },
+    {
+      "src": "/(.*)\\.html",
+      "dest": "/mission-control/dashboard/$1.html"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/mission-control/dashboard/index.html"
     }
   ]
 }
