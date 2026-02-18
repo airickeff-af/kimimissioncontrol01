@@ -57,6 +57,327 @@
 
 **Source:** EricF request (Feb 18, 12:22 PM)
 
+### **TASK-064: ColdCall Automated Outreach Sequences**
+- **Assigned:** ColdCall (Lead), DealFlow (Support)
+- **Due:** Feb 22, 5:00 PM
+- **Status:** ⏳ PLANNED
+- **Priority:** P1
+- **Description:** Create automated email sequences for ColdCall agent to execute outreach
+
+**Features:**
+- 5-touch email sequence templates (Lincoln Murphy style)
+- Personalized merge fields (name, company, pain points)
+- Auto-schedule optimal send times
+- Open/click tracking integration
+- Auto-advance to next stage on reply
+- A/B testing for subject lines
+- **ColdCall execution dashboard** - track outreach progress
+- **Response handling** - positive/negative/neutral classification
+- **Meeting booking integration** - Calendly/Zoom links
+
+**Note:** This is for ColdCall agent to EXECUTE, not just templates
+
+---
+
+### **TASK-066: Fix API Endpoints - All Dashboard Data**
+- **Assigned:** Code-1, Code-2, Code-3 (All Backend)
+- **Due:** Feb 18, 2:00 PM
+- **Status:** 🔴 IN PROGRESS
+- **Priority:** P0 - CRITICAL
+- **Description:** Fix ALL API endpoints to return real data for dashboard
+
+**Required APIs:**
+1. `/api/logs/activity` - Real agent activity from sessions
+2. `/api/agents` - All 22 agents with stats
+3. `/api/tasks` - Task queue data
+4. `/api/health` - System health metrics
+5. `/api/deals` - DealFlow leads data
+6. `/api/tokens` - Token usage per agent
+
+**Requirements:**
+- All endpoints return 200 with JSON
+- Real data from files/system
+- No mock/hardcoded data
+- CORS enabled
+- Error handling
+
+**Acceptance:** Quality gate passes 95/100
+
+---
+
+### **TASK-067: Unified Theme - All Pages Match Overview**
+- **Assigned:** Forge-1, Forge-2, Forge-3
+- **Due:** Feb 19, 12:00 PM
+- **Status:** 🟢 IN PROGRESS
+- **Priority:** P1
+- **Description:** Apply Overview page theme to ALL dashboard pages
+
+**Pages to Update:**
+- living-pixel-office.html
+- scout.html
+- dealflow-view.html
+- task-board.html
+- token-tracker.html
+- logs-view.html
+- data-viewer.html
+- agent-performance.html
+
+**Theme Requirements:**
+- Same color palette as Overview
+- Press Start 2P font
+- Pixel grid background
+- Card-based layouts
+- 3D button effects
+- Kairosoft aesthetic
+
+---
+
+### **TASK-068: Agent Work Cards - Token Usage Enhancement**
+- **Assigned:** Forge-2
+- **Due:** Feb 19, 10:00 AM
+- **Status:** 🟢 IN PROGRESS
+- **Priority:** P1
+- **Description:** Update agent cards with detailed token metrics
+
+**Per Agent Card:**
+- **Today's tokens** (last 24 hours)
+- **Total tokens** (all time)
+- **Tokens this week**
+- **Average per task**
+- **Cost in USD**
+- **Efficiency rating**
+- Visual progress bars
+- Trend indicators (↑↓)
+
+**Data Source:** ACTUAL_TOKEN_USAGE_REPORT.md + session logs
+
+---
+
+### **TASK-069: PIE Maximum Functionality Expansion**
+- **Assigned:** PIE, Code-1
+- **Due:** Feb 23, 12:00 PM
+- **Status:** ⏳ PLANNED
+- **Priority:** P1
+- **Description:** Maximize PIE functionality beyond basic features
+
+**Advanced Features:**
+- **Predictive lead scoring** - AI-powered partnership likelihood
+- **Market timing alerts** - Best time to approach targets
+- **Sentiment analysis** - Track competitor morale/PR
+- **Regulatory monitoring** - Track crypto regulations by country
+- **Talent tracking** - Monitor key personnel moves
+- **M&A prediction** - Predict acquisition targets
+- **Partnership network maps** - Visual relationship graphs
+- **Historical pattern matching** - "Similar to X successful deal"
+- **Risk assessment** - Multi-factor risk scoring
+- **ROI prediction** - Estimated partnership value
+
+**Integration:**
+- Crunchbase API
+- LinkedIn Sales Navigator
+- Twitter/X API for sentiment
+- Glassdoor for talent tracking
+- Regulatory databases
+
+---
+
+### **TASK-056: PIE Real-Time WebSocket Feed**
+- **Assigned:** PIE, Code-1
+- **Due:** Feb 19, 12:00 PM
+- **Status:** ⏳ PLANNED
+- **Priority:** P1
+- **Description:** Add live WebSocket feed to PIE Radar for real-time intelligence updates
+
+**Features:**
+- WebSocket connection for live funding alerts
+- Real-time competitor moves
+- Instant partnership opportunity notifications
+- Sound alerts for critical intel
+- Kairosoft-style notification popups
+
+---
+
+### **TASK-057: DealFlow Email Verification Integration**
+- **Assigned:** DealFlow, Code-2
+- **Due:** Feb 19, 5:00 PM
+- **Status:** ⏳ PLANNED
+- **Priority:** P1
+- **Description:** Integrate Hunter.io/Apollo API for real email verification
+
+**Features:**
+- Verify all 30 lead emails
+- Show verification status (verified/pattern/unknown)
+- Auto-enrich missing contacts
+- Confidence score per email
+- Export verified contact list for ColdCall
+
+---
+
+### **TASK-058: Office Environment - Agent Interactions**
+- **Assigned:** Pixel, Forge-1
+- **Due:** Feb 19, 6:00 PM
+- **Status:** ⏳ PLANNED
+- **Priority:** P2
+- **Description:** Add interactive agent behaviors in pixel office
+
+**Features:**
+- Agents gather at meeting table during standups
+- Coffee corner chats (random agent conversations)
+- High-five animations when tasks completed
+- Agents sleep at desks when idle (zzz animation)
+- Emergency alert mode (all agents rush to stations)
+
+---
+
+### **TASK-059: Mission Control Dark Mode Toggle**
+- **Assigned:** Forge-2, Forge-3
+- **Due:** Feb 20, 12:00 PM
+- **Status:** ⏳ PLANNED
+- **Priority:** P2
+- **Description:** Add dark/light mode toggle across all dashboard pages
+
+**Features:**
+- Toggle button in header
+- Persist preference in localStorage
+- Smooth transition animation
+- Kairosoft theme adapts (retro green terminal for dark, beige for light)
+- Auto-detect system preference
+
+---
+
+### **TASK-060: PIE Competitor War Room Dashboard**
+- **Assigned:** PIE, Forge-1
+- **Due:** Feb 20, 5:00 PM
+- **Status:** ⏳ PLANNED
+- **Priority:** P1
+- **Description:** Create war room view for tracking competitor moves
+
+**Features:**
+- Side-by-side competitor comparison
+- Recent moves timeline
+- Market share visualization
+- Threat level indicators
+- Strategy recommendation engine
+- Export competitor reports
+
+---
+
+### **TASK-061: DealFlow Pipeline Visualization**
+- **Assigned:** DealFlow, Pixel
+- **Due:** Feb 21, 12:00 PM
+- **Status:** ⏳ PLANNED
+- **Priority:** P2
+- **Description:** Visual pipeline showing leads from discovery to closed
+
+**Features:**
+- Kanban-style pipeline board
+- Drag-and-drop lead movement
+- Stage conversion rates
+- Time-in-stage metrics
+- Pipeline velocity tracking
+- Forecasting based on pipeline
+
+---
+
+### **TASK-062: Office Environment - Weather/Time Display**
+- **Assigned:** Pixel, Forge-3
+- **Due:** Feb 21, 5:00 PM
+- **Status:** ⏳ PLANNED
+- **Priority:** P3
+- **Description:** Add dynamic weather and time to office background
+
+**Features:**
+- Window showing outside weather (matches real location)
+- Day/night cycle based on actual time
+- Rain/snow animations when applicable
+- Clock showing current time
+- Seasonal decorations (fall leaves, snow, etc.)
+
+---
+
+### **TASK-063: PIE Alert System - Multi-Channel**
+- **Assigned:** PIE, Sentry
+- **Due:** Feb 22, 12:00 PM
+- **Status:** ⏳ PLANNED
+- **Priority:** P1
+- **Description:** Send PIE alerts to multiple channels
+
+**Features:**
+- Telegram bot alerts for critical intel
+- Email digest for daily briefings
+- Slack webhook integration
+- Dashboard notification center
+- Mobile push notifications
+- Alert severity levels (info/warning/critical)
+
+---
+
+### **TASK-064: DealFlow Automated Outreach Sequences**
+- **Assigned:** DealFlow, ColdCall
+- **Due:** Feb 22, 5:00 PM
+- **Status:** ⏳ PLANNED
+- **Priority:** P1
+- **Description:** Create automated email sequences for lead nurturing
+
+**Features:**
+- 5-touch email sequence templates
+- Personalized merge fields
+- Auto-schedule send times
+- Open/click tracking
+- Auto-advance to next stage on reply
+- A/B testing for subject lines
+
+---
+
+### **TASK-065: Office Environment - Agent Customization**
+- **Assigned:** Pixel, Forge-2
+- **Due:** Feb 23, 12:00 PM
+- **Status:** ⏳ PLANNED
+- **Priority:** P3
+- **Description:** Allow customization of agent appearances in office
+
+**Features:**
+- Change agent colors/outfits
+- Add accessories (hats, glasses)
+- Custom desk decorations per agent
+- Nameplate customization
+- Achievement badges displayed
+- Holiday-themed costumes
+
+---
+
+### **TASK-055: Create PIE Intelligence Dashboard Tab + Polish**
+- **Assigned:** Forge-1, PIE
+- **Due:** Feb 18, 5:00 PM
+- **Status:** ⏳ PLANNED
+- **Priority:** P2
+- **Description:** Create new "Radar" tab for PIE's predictive intelligence with Kairosoft polish
+
+**Features:**
+- Live opportunity radar (crypto/NFT/startup)
+- Funding round alerts
+- Competitor tracking (Binance, Coinbase, etc.)
+- Partnership opportunity detector
+- Hot sectors trending (AI, DePIN, RWA)
+- Daily intelligence briefing
+- **Kairosoft pixel theme** (match office/scout style)
+- **Animated radar sweep effect**
+- **Pixel art icons for each intel type**
+- **Retro terminal-style data display**
+
+**Data Source:** PIE modules (opportunity-radar.js, competitor-dashboard.js)
+
+**Navigation:** Add "Radar" to main nav between "Scout" and "DealFlow"
+
+**Polish Requirements:**
+- Press Start 2P font for headers
+- Pixel grid background
+- Animated alerts (flashing for urgent intel)
+- Color-coded threat/opportunity levels
+- Chibi-style agent avatars in corners
+
+---
+
 ### **TASK-054: Fix API Routing - Logs Endpoint 404 (P0 - CRITICAL)** ✅ COMPLETED
 - **Assigned:** Code-3 (Backend)
 - **Due:** Feb 18, 1:30 PM

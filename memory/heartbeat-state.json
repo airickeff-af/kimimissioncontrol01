@@ -6,10 +6,10 @@
     "memoryMaintenance": 1771362420
   },
   "checkRotation": {
-    "current": "D",
+    "current": "A",
     "sequence": ["A", "B", "C", "D"],
-    "lastRotation": 1771384629,
-    "counter": 48
+    "lastRotation": 1771390029,
+    "counter": 49
   },
   "alertSuppression": {
     "lastAlertSent": 1771341429,

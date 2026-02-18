@@ -8,8 +8,16 @@
   },
   "rewrites": [
     {
-      "source": "/api/(.*)",
-      "destination": "/api/$1"
+      "source": "/api/logs/activity",
+      "destination": "/api/logs/activity.js"
+    },
+    {
+      "source": "/api/logs",
+      "destination": "/api/logs/index.js"
+    },
+    {
+      "source": "/api/:path*",
+      "destination": "/api/:path*"
     },
     {
       "source": "/logs-view.html",
@@ -22,10 +30,6 @@
     {
       "source": "/(.*)",
       "destination": "/mission-control/dashboard/$1"
-    },
-    {
-      "source": "/",
-      "destination": "/mission-control/dashboard/index.html"
     }
   ]
 }
