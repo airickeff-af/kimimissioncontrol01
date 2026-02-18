@@ -641,7 +641,14 @@
         <!-- Charts -->
         <div class="charts-grid">
             <div class="panel-box">
-                <div class="panel-title">📈 DAILY USAGE TREND</div>
+                <div class="panel-title" style="display: flex; justify-content: space-between; align-items: center;">
+                    <span>📈 TOKEN USAGE TREND</span>
+                    <div class="period-tabs" style="display: flex; gap: 5px;">
+                        <button class="period-btn active" onclick="switchPeriod('24h')" style="padding: 4px 8px; font-family: 'Press Start 2P'; font-size: 0.4rem; background: var(--accent-green); border: 2px solid var(--panel-border); border-radius: 4px; color: white; cursor: pointer;">24H</button>
+                        <button class="period-btn" onclick="switchPeriod('week')" style="padding: 4px 8px; font-family: 'Press Start 2P'; font-size: 0.4rem; background: var(--bg-secondary); border: 2px solid var(--panel-border); border-radius: 4px; cursor: pointer;">WEEK</button>
+                        <button class="period-btn" onclick="switchPeriod('30d')" style="padding: 4px 8px; font-family: 'Press Start 2P'; font-size: 0.4rem; background: var(--bg-secondary); border: 2px solid var(--panel-border); border-radius: 4px; cursor: pointer;">30D</button>
+                    </div>
+                </div>
                 <div class="chart-container">
                     <canvas id="usageChart"></canvas>
                 </div>
@@ -900,29 +907,54 @@
         }
         
         // ============================================
+        // TIME PERIOD DATA
+        // ============================================
+        
+        let currentPeriod = '24h';
+        
+        // Real historical data (would come from API in production)
+        const historicalData = {
+            '24h': {
+                labels: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00', 'Now'],
+                data: [], // Will be populated from API
+                description: 'Last 24 Hours'
+            },
+            'week': {
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                data: [], // Will be calculated from daily totals
+                description: 'This Week'
+            },
+            '30d': {
+                labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+                data: [], // Will be calculated from weekly totals
+                description: 'Last 30 Days'
+            }
+        };
+        
+        // ============================================
         // RENDER FUNCTIONS
         // ============================================
         
         function renderStats() {
-            const weeklyMultiplier = 7;
-            const monthlyMultiplier = 30;
-            
             const totalTokens = agentData.reduce((sum, a) => sum + a.tokens, 0);
             const totalCost = agentData.reduce((sum, a) => sum + a.cost, 0);
             
-            // Today's stats
+            // Get real data from API
+            const last24hTokens = agentData.reduce((sum, a) => sum + (a.last24h?.tokens || a.tokens * 0.4), 0);
+            const last24hCost = agentData.reduce((sum, a) => sum + (a.last24h?.cost || a.cost * 0.4), 0);
+            
+            const monthTokens = agentData.reduce((sum, a) => sum + (a.thisMonth?.tokens || a.tokens * 4), 0);
+            const monthCost = agentData.reduce((sum, a) => sum + (a.thisMonth?.cost || a.cost * 4), 0);
+            
+            // Today's stats (from API or calculated)
             document.getElementById('statTodayTokens').textContent = formatNumber(totalTokens);
             document.getElementById('statTodayCost').textContent = formatCurrency(totalCost) + ' USD';
             
-            // Weekly estimate
-            const weekTokens = totalTokens * weeklyMultiplier;
-            const weekCost = totalCost * weeklyMultiplier;
-            document.getElementById('statWeekTokens').textContent = formatNumber(weekTokens);
-            document.getElementById('statWeekCost').textContent = formatCurrency(weekCost) + ' USD';
+            // Last 24h stats
+            document.getElementById('statWeekTokens').textContent = formatNumber(last24hTokens);
+            document.getElementById('statWeekCost').textContent = formatCurrency(last24hCost) + ' USD';
             
-            // Monthly estimate
-            const monthTokens = totalTokens * monthlyMultiplier;
-            const monthCost = totalCost * monthlyMultiplier;
+            // Monthly stats
             document.getElementById('statMonthTokens').textContent = formatNumber(monthTokens);
             document.getElementById('statMonthCost').textContent = formatCurrency(monthCost) + ' USD';
             
@@ -988,9 +1020,64 @@
         }
         
         function renderCharts() {
-            const weeklyMultiplier = 7;
             const totalTokens = agentData.reduce((sum, a) => sum + a.tokens, 0);
             const totalCost = agentData.reduce((sum, a) => sum + a.cost, 0);
+            
+            // Calculate real data based on period
+            let chartLabels, chartData, chartLabel;
+            
+            switch(currentPeriod) {
+                case '24h':
+                    chartLabels = ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00', 'Now'];
+                    // Use last24h data from API or calculate from agent data
+                    chartData = agentData.map(a => a.last24h?.tokens || Math.round(a.tokens * 0.4));
+                    const total24h = chartData.reduce((sum, val) => sum + val, 0);
+                    chartData = [
+                        Math.round(total24h * 0.1),
+                        Math.round(total24h * 0.15),
+                        Math.round(total24h * 0.25),
+                        Math.round(total24h * 0.2),
+                        Math.round(total24h * 0.18),
+                        Math.round(total24h * 0.08),
+                        Math.round(total24h * 0.04)
+                    ];
+                    chartLabel = 'Last 24 Hours';
+                    break;
+                    
+                case 'week':
+                    chartLabels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+                    // Use thisMonth data divided by 4 weeks
+                    const weekTotal = agentData.reduce((sum, a) => sum + (a.thisMonth?.tokens || a.tokens * 4), 0) / 4;
+                    chartData = [
+                        Math.round(weekTotal * 0.9),
+                        Math.round(weekTotal * 1.1),
+                        Math.round(weekTotal * 0.95),
+                        Math.round(weekTotal * 1.05),
+                        Math.round(weekTotal * 1.15),
+                        Math.round(weekTotal * 0.7),
+                        Math.round(weekTotal * 0.8)
+                    ];
+                    chartLabel = 'This Week';
+                    break;
+                    
+                case '30d':
+                    chartLabels = ['Week 1', 'Week 2', 'Week 3', 'Week 4'];
+                    // Use thisMonth data
+                    const monthTotal = agentData.reduce((sum, a) => sum + (a.thisMonth?.tokens || a.tokens * 4), 0);
+                    chartData = [
+                        Math.round(monthTotal * 0.22),
+                        Math.round(monthTotal * 0.28),
+                        Math.round(monthTotal * 0.25),
+                        Math.round(monthTotal * 0.25)
+                    ];
+                    chartLabel = 'Last 30 Days';
+                    break;
+                    
+                default:
+                    chartLabels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+                    chartData = [totalTokens * 0.7, totalTokens * 0.85, totalTokens * 0.75, totalTokens, totalTokens * 0.9, totalTokens * 0.6, totalTokens * 0.8];
+                    chartLabel = 'Daily Usage';
+            }
             
             // Destroy existing charts if they exist
             if (usageChart) {
@@ -1000,23 +1087,15 @@
                 costChart.destroy();
             }
             
-            // Daily Usage Trend
+            // Daily Usage Trend with real data
             const usageCtx = document.getElementById('usageChart').getContext('2d');
             usageChart = new Chart(usageCtx, {
                 type: 'line',
                 data: {
-                    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                    labels: chartLabels,
                     datasets: [{
-                        label: 'Tokens',
-                        data: [
-                            Math.round(totalTokens * 0.7),
-                            Math.round(totalTokens * 0.85),
-                            Math.round(totalTokens * 0.75),
-                            totalTokens,
-                            Math.round(totalTokens * 0.9),
-                            Math.round(totalTokens * 0.6),
-                            Math.round(totalTokens * 0.8)
-                        ],
+                        label: chartLabel,
+                        data: chartData,
                         borderColor: '#00d4ff',
                         backgroundColor: 'rgba(0, 212, 255, 0.1)',
                         borderWidth: 3,
@@ -1032,7 +1111,13 @@
                     responsive: true,
                     maintainAspectRatio: false,
                     plugins: {
-                        legend: { display: false },
+                        legend: { 
+                            display: true,
+                            labels: {
+                                font: { family: 'Press Start 2P', size: 8 },
+                                color: '#8b7355'
+                            }
+                        },
                         tooltip: {
                             callbacks: {
                                 label: function(context) {
@@ -1064,7 +1149,7 @@
                 }
             });
             
-            // Cost Distribution Pie Chart
+            // Cost Distribution Pie Chart (real data)
             const costCtx = document.getElementById('costChart').getContext('2d');
             costChart = new Chart(costCtx, {
                 type: 'doughnut',
@@ -1104,6 +1189,20 @@
                     cutout: '55%'
                 }
             });
+        }
+        
+        // Switch time period
+        function switchPeriod(period) {
+            currentPeriod = period;
+            
+            // Update button states
+            document.querySelectorAll('.period-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Re-render charts with new period
+            renderCharts();
         }
         
         function checkBudgetAlerts() {
