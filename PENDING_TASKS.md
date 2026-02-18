@@ -1,7 +1,7 @@
 # PENDING TASKS LOG - MISSION CONTROL
 **Status:** ACTIVE  
-**Last Updated:** 2026-02-18 8:48 PM HKT
-**Total Tasks:** 60  
+**Last Updated:** 2026-02-18 10:30 PM HKT
+**Total Tasks:** 90  
 **Completed Today:** 31
 **Delegation Workflow:** [v2.0 with Audit Checkpoints](/mission-control/docs/DELEGATION_WORKFLOW.md)
 
@@ -863,23 +863,83 @@ If not resolved by 5:00 PM, escalate to EricF immediately.
 - **Blockers:** None
 - **Next Step:** Start research
 
-### **TASK-009: Regional Leads - Singapore (30-50)**
-- **Assigned:** DealFlow
-- **Due:** Feb 24, 11:59 PM
-- **Status:** ⏳ NOT STARTED
+### **TASK-009: Regional Leads - Singapore (30-50) - PRIORITY #1**
+- **Assigned:** DealFlow + Glasses
+- **Due:** Feb 20, 11:59 PM (2 days - ACCELERATED)
+- **Status:** 🟢 IN PROGRESS - START NOW
+- **Priority:** P1 - TIER 1 (Highest)
 - **Description:** Find 30-50 leads in Singapore
-- **Focus:** DeFi, RWA
+- **Focus:** Family offices, VCs, crypto funds
+- **Why #1:** Major crypto hub, high AUM concentration
+- **Lead Criteria:** AUM >$50M, active in crypto/Web3
 - **Blockers:** None
-- **Next Step:** Start research
+- **Next Step:** Start research immediately
+- **Full spec:** `/mission-control/delegation/REGIONAL_LEADS_DELEGATION.md`
 
-### **TASK-010: Regional Leads - Thailand (30-50)**
-- **Assigned:** DealFlow
-- **Due:** Feb 24, 11:59 PM
-- **Status:** ⏳ NOT STARTED
-- **Description:** Find 30-50 leads in Thailand
-- **Focus:** Payments, DeFi
+### **TASK-008: Regional Leads - Hong Kong (30-50) - PRIORITY #2**
+- **Assigned:** Scout + DealFlow
+- **Due:** Feb 21, 11:59 PM (3 days)
+- **Status:** 🟢 IN PROGRESS - START NOW
+- **Priority:** P1 - TIER 1 (Highest)
+- **Description:** Find 30-50 leads in Hong Kong
+- **Focus:** Trading firms, institutional desks, exchanges
+- **Why #2:** Institutional hub, new licensing framework
+- **Lead Criteria:** Licensed/applying, trading vol >$10M/day
 - **Blockers:** None
-- **Next Step:** Start research
+- **Next Step:** Start research immediately
+- **Full spec:** `/mission-control/delegation/REGIONAL_LEADS_DELEGATION.md`
+
+### **TASK-005: Regional Leads - Australia (30-50) - PRIORITY #3**
+- **Assigned:** Scout + DealFlow
+- **Due:** Feb 22, 11:59 PM (4 days)
+- **Status:** ⏳ NOT STARTED
+- **Priority:** P1 - TIER 2 (High)
+- **Description:** Find 30-50 leads in Australia
+- **Focus:** DeFi protocols, RWA projects, exchanges
+- **Why #3:** Mature DeFi, RWA adoption, English market
+- **Lead Criteria:** DeFi TVL >$5M or RWA with traction
+- **Blockers:** None
+- **Next Step:** Start after Singapore/HK complete
+- **Full spec:** `/mission-control/delegation/REGIONAL_LEADS_DELEGATION.md`
+
+### **TASK-006: Regional Leads - Brazil (30-50) - PRIORITY #4**
+- **Assigned:** DealFlow
+- **Due:** Feb 23, 11:59 PM (5 days)
+- **Status:** ⏳ NOT STARTED
+- **Priority:** P1 - TIER 2 (High)
+- **Description:** Find 30-50 leads in Brazil
+- **Focus:** Fintechs, remittance companies, exchanges
+- **Why #4:** Largest LatAm crypto market, remittance volume
+- **Lead Criteria:** User base >10K, remittance >$1M/month
+- **Blockers:** None
+- **Next Step:** Start after Tier 1 complete
+- **Full spec:** `/mission-control/delegation/REGIONAL_LEADS_DELEGATION.md`
+
+### **TASK-007: Regional Leads - Nigeria (30-50) - PRIORITY #5**
+- **Assigned:** Scout + DealFlow
+- **Due:** Feb 24, 11:59 PM (6 days)
+- **Status:** ⏳ NOT STARTED
+- **Priority:** P1 - TIER 3 (Medium)
+- **Description:** Find 30-50 leads in Nigeria
+- **Focus:** Mobile money, P2P platforms, crypto adoption
+- **Why #5:** Highest Africa adoption, mobile money opportunity
+- **Lead Criteria:** Mobile money >50K users, P2P >$500K/month
+- **Blockers:** None
+- **Next Step:** Start after Tier 2 complete
+- **Full spec:** `/mission-control/delegation/REGIONAL_LEADS_DELEGATION.md`
+
+### **TASK-010: Regional Leads - Thailand (30-50) - PRIORITY #6**
+- **Assigned:** Glasses + DealFlow
+- **Due:** Feb 24, 11:59 PM (6 days)
+- **Status:** ⏳ NOT STARTED
+- **Priority:** P1 - TIER 3 (Medium)
+- **Description:** Find 30-50 leads in Thailand
+- **Focus:** Tourism payments, crypto adoption, fintech
+- **Why #6:** Tourism + crypto payments, regulatory sandbox
+- **Lead Criteria:** Tourism focus, payment processor, licensed
+- **Blockers:** None
+- **Next Step:** Start after Tier 2 complete
+- **Full spec:** `/mission-control/delegation/REGIONAL_LEADS_DELEGATION.md`
 
 ### **TASK-022: Agent Performance Dashboard**
 - **Assigned:** Forge
@@ -1710,15 +1770,468 @@ If not resolved by 5:00 PM, escalate to EricF immediately.
 
 ---
 
+## 💡 NEXUS IMPROVEMENT IDEAS - MISSION CONTROL ENHANCEMENTS
+#### Batch: 2026-02-18 10:30 PM
+
+---
+
+### **DASHBOARD UX IMPROVEMENTS**
+
+#### **TASK-088: Quick Actions Command Palette**
+- **Assigned:** Forge-1
+- **Due:** Feb 25, 5:00 PM
+- **Status:** ⏳ NOT STARTED
+- **Priority:** P2
+- **Description:** Add Cmd+K command palette for instant navigation and actions
+
+**Why it helps:**
+Power users can navigate 10x faster without mouse. Reduces cognitive load by providing universal search across all dashboard functions. Common pattern in modern SaaS (Linear, Vercel, GitHub).
+
+**Features:**
+- Keyboard shortcut (Cmd/Ctrl+K) opens palette
+- Search across pages, agents, tasks, leads
+- Quick actions: "Create task", "Find lead", "View logs"
+- Recent items and favorites
+- Fuzzy search matching
+
+**Estimated Effort:** Medium (1-2 days)
+
+---
+
+#### **TASK-089: Customizable Dashboard Widgets**
+- **Assigned:** Forge-2
+- **Due:** Feb 26, 5:00 PM
+- **Status:** ⏳ NOT STARTED
+- **Priority:** P2
+- **Description:** Let users add, remove, and rearrange dashboard widgets
+
+**Why it helps:**
+Different users care about different metrics. EricF might want token usage front-and-center while another user wants lead pipeline. Personalization increases engagement and reduces clutter.
+
+**Features:**
+- Drag-and-drop widget arrangement
+- Widget library: Token Chart, Lead Pipeline, Agent Status, Recent Tasks, Quick Stats
+- Save/restore layouts
+- Responsive grid system
+- Collapsible widgets
+
+**Estimated Effort:** Medium (2-3 days)
+
+---
+
+### **AGENT PRODUCTIVITY IMPROVEMENTS**
+
+#### **TASK-090: Agent Work Session Timer**
+- **Assigned:** Code-1
+- **Due:** Feb 24, 5:00 PM
+- **Status:** ⏳ NOT STARTED
+- **Priority:** P2
+- **Description:** Track actual time agents spend on tasks vs token estimates
+
+**Why it helps:**
+Currently we only track tokens, not real time. This creates blind spots for efficiency analysis. Understanding time-per-task helps optimize agent assignments and identify bottlenecks.
+
+**Features:**
+- Auto-start timer when agent accepts task
+- Pause/resume for breaks
+- Time vs token correlation analysis
+- Agent efficiency score (tokens per minute)
+- Historical trends per agent
+
+**Estimated Effort:** Low-Medium (1-2 days)
+
+---
+
+#### **TASK-091: Smart Task Batch Suggestions**
+- **Assigned:** Nexus
+- **Due:** Feb 27, 5:00 PM
+- **Status:** ⏳ NOT STARTED
+- **Priority:** P2
+- **Description:** AI-suggested task groupings for parallel execution
+
+**Why it helps:**
+Many tasks have dependencies or can be batched. Nexus currently delegates one-by-one. Smart batching could reduce coordination overhead by 30-40% and improve throughput.
+
+**Features:**
+- Analyze task dependencies automatically
+- Suggest parallel execution groups
+- Estimate batch completion time
+- One-click batch assignment
+- Conflict detection (agents double-booked)
+
+**Estimated Effort:** Medium (2-3 days)
+
+---
+
+#### **TASK-092: Agent Skill Matrix & Auto-Assignment**
+- **Assigned:** Nexus, Code-2
+- **Due:** Feb 28, 5:00 PM
+- **Status:** ⏳ NOT STARTED
+- **Priority:** P2
+- **Description:** Track agent skills and auto-assign tasks based on expertise
+
+**Why it helps:**
+Currently Nexus manually assigns based on general role. A skill matrix would enable optimal matching (e.g., Code-3 for API work, Forge-1 for UI polish). Reduces reassignment cycles.
+
+**Features:**
+- Skill tags per agent (React, APIs, Research, Writing, etc.)
+- Proficiency levels (1-5 stars)
+- Task-to-skill matching algorithm
+- Auto-assignment with confidence score
+- Manual override option
+
+**Estimated Effort:** Medium (2-3 days)
+
+---
+
+### **DATA VISUALIZATION IMPROVEMENTS**
+
+#### **TASK-093: Real-Time Activity Heatmap**
+- **Assigned:** Forge-3
+- **Due:** Feb 25, 5:00 PM
+- **Status:** ⏳ NOT STARTED
+- **Priority:** P2
+- **Description:** GitHub-style contribution heatmap showing system activity
+
+**Why it helps:**
+Visual patterns reveal insights numbers hide. See which days are most productive, identify quiet periods, spot trends over weeks. Motivating for team and useful for capacity planning.
+
+**Features:**
+- 52-week activity grid
+- Color intensity by activity level
+- Toggle: All Activity / By Agent / By Task Type
+- Hover for daily details
+- Export as image
+
+**Estimated Effort:** Low (1 day)
+
+---
+
+#### **TASK-094: Token Burn Rate Visualization**
+- **Assigned:** Forge-1
+- **Due:** Feb 26, 5:00 PM
+- **Status:** ⏳ NOT STARTED
+- **Priority:** P2
+- **Description:** Show token usage velocity with projections and budgets
+
+**Why it helps:**
+Currently token tracker shows history but not trajectory. Burn rate visualization helps predict when limits will be hit, enabling proactive optimization before hitting caps.
+
+**Features:**
+- Daily/weekly burn rate calculation
+- Projected depletion date
+- Budget vs actual comparison
+- Alert thresholds (50%, 75%, 90%)
+- Per-agent burn rate breakdown
+
+**Estimated Effort:** Low-Medium (1-2 days)
+
+---
+
+### **AUTOMATION IMPROVEMENTS**
+
+#### **TASK-095: Auto-Generated Daily Standup Summary**
+- **Assigned:** Nexus
+- **Due:** Feb 24, 5:00 PM
+- **Status:** ⏳ NOT STARTED
+- **Priority:** P2
+- **Description:** Automatically compile yesterday's activity into standup format
+
+**Why it helps:**
+Standups require manual review of logs, tasks, commits. Auto-generation saves 10-15 minutes daily and ensures nothing is missed. Provides consistent format for async updates.
+
+**Features:**
+- Auto-compile at 8:00 AM daily
+- Tasks completed yesterday
+- Tasks in progress
+- Blockers identified
+- Token usage summary
+- Send to Telegram/email
+
+**Estimated Effort:** Low (1 day)
+
+---
+
+#### **TASK-096: Smart Alert Routing**
+- **Assigned:** Sentry, Code-3
+- **Due:** Feb 27, 5:00 PM
+- **Status:** ⏳ NOT STARTED
+- **Priority:** P2
+- **Description:** Route alerts to right channel based on severity and type
+
+**Why it helps:**
+Currently all alerts go to same channel causing alert fatigue. Smart routing ensures critical issues get immediate attention while routine notifications are batched.
+
+**Features:**
+- Severity-based routing (P0=immediate, P1=digest, P2=weekly)
+- Type-based routing (API errors→Code, UI bugs→Forge)
+- Time-aware (no alerts 11PM-7AM unless P0)
+- Escalation rules (no ack in 30min → escalate)
+- Alert aggregation (5 similar errors = 1 grouped alert)
+
+**Estimated Effort:** Medium (2 days)
+
+---
+
+### **INTEGRATION IMPROVEMENTS**
+
+#### **TASK-097: GitHub Activity Feed Integration**
+- **Assigned:** Code-2
+- **Due:** Feb 28, 5:00 PM
+- **Status:** ⏳ NOT STARTED
+- **Priority:** P2
+- **Description:** Show commits, PRs, and issues in Mission Control dashboard
+
+**Why it helps:**
+Code activity is invisible in Mission Control currently. Integration provides unified view of all work - not just tasks but actual code output. Correlates commits with tasks.
+
+**Features:**
+- Recent commits feed
+- Open PRs list with status
+- Issue tracking integration
+- Commit-to-task linking
+- Code review reminders
+- Deployment status from GitHub Actions
+
+**Estimated Effort:** Medium (2 days)
+
+---
+
+## 💡 DEALFLOW IMPROVEMENTS - CRM, LEADS, OUTREACH
+
+---
+
+#### **TASK-098: Lead Engagement Scoring**
+- **Assigned:** DealFlow
+- **Due:** Feb 25, 5:00 PM
+- **Status:** ⏳ NOT STARTED
+- **Priority:** P2
+- **Description:** Score leads based on engagement signals (email opens, site visits, etc.)
+
+**Why it helps:**
+Current scoring is static (company size, funding). Engagement scoring adds dynamic behavioral data - who's actually interested vs just looks good on paper. Prioritizes outreach.
+
+**Features:**
+- Email open/click tracking
+- Website visit tracking (if possible)
+- LinkedIn engagement signals
+- Score decay over time (stale leads lose points)
+- Hot lead alerts (engagement spike)
+- Integration with ColdCall sequences
+
+**Estimated Effort:** Medium (2-3 days)
+
+---
+
+#### **TASK-099: Deal Stage Probability Forecasting**
+- **Assigned:** DealFlow, PIE
+- **Due:** Feb 26, 5:00 PM
+- **Status:** ⏳ NOT STARTED
+- **Priority:** P2
+- **Description:** AI-predicted win probability for each deal stage
+
+**Why it helps:**
+Pipeline forecasting is guesswork without data. ML model trained on historical deals can predict conversion rates per stage, enabling accurate revenue forecasting.
+
+**Features:**
+- Win probability per lead (0-100%)
+- Stage transition predictions
+- Revenue forecast based on weighted pipeline
+- Factors affecting probability (industry, region, contact quality)
+- Confidence intervals
+- Historical accuracy tracking
+
+**Estimated Effort:** High (3-4 days)
+
+---
+
+#### **TASK-100: Automated Follow-Up Sequences**
+- **Assigned:** DealFlow, ColdCall
+- **Due:** Feb 27, 5:00 PM
+- **Status:** ⏳ NOT STARTED
+- **Priority:** P2
+- **Description:** Multi-touch email sequences with auto-advance based on replies
+
+**Why it helps:**
+Manual follow-up is inconsistent and time-consuming. Automated sequences ensure no lead falls through cracks. Smart reply detection advances or pauses sequences appropriately.
+
+**Features:**
+- 5-touch sequence templates (Lincoln Murphy style)
+- A/B test subject lines
+- Reply detection (positive/negative/neutral)
+- Auto-pause on negative reply
+- Auto-advance on positive reply
+- Meeting booking link integration
+- Sequence performance analytics
+
+**Estimated Effort:** Medium (2-3 days)
+
+---
+
+#### **TASK-101: Lead Source Attribution Tracking**
+- **Assigned:** DealFlow
+- **Due:** Feb 24, 5:00 PM
+- **Status:** ⏳ NOT STARTED
+- **Priority:** P2
+- **Description:** Track which sources produce the highest quality leads
+
+**Why it helps:**
+Currently no visibility into lead source performance. Attribution tracking reveals which channels (LinkedIn, Crunchbase, referrals) produce deals, optimizing research time allocation.
+
+**Features:**
+- Source tags on all leads (LinkedIn, Crunchbase, Manual, etc.)
+- Conversion rate by source
+- Time-to-close by source
+- ROI per source (deals won / effort spent)
+- Source trend analysis
+- Recommend top sources
+
+**Estimated Effort:** Low (1 day)
+
+---
+
+#### **TASK-102: Competitive Deal Intelligence**
+- **Assigned:** DealFlow, Scout
+- **Due:** Feb 28, 5:00 PM
+- **Status:** ⏳ NOT STARTED
+- **Priority:** P2
+- **Description:** Track which competitors are also pursuing each lead
+
+**Why it helps:**
+Knowing competitors are talking to same prospects changes strategy. Early awareness enables differentiation and urgency. Prevents wasted effort on locked-in prospects.
+
+**Features:**
+- Competitor mention detection (news, LinkedIn, press releases)
+- "Competitor Active" alerts
+- Battlecard generation (our strengths vs competitor)
+- Win/loss analysis by competitor
+- Competitive positioning recommendations
+
+**Estimated Effort:** Medium (2-3 days)
+
+---
+
+## 💡 SCOUT IMPROVEMENTS - OPPORTUNITIES, INTEL
+
+---
+
+#### **TASK-103: Opportunity Alert System**
+- **Assigned:** Scout, PIE
+- **Due:** Feb 25, 5:00 PM
+- **Status:** ⏳ NOT STARTED
+- **Priority:** P2
+- **Description:** Real-time alerts for new opportunities matching criteria
+
+**Why it helps:**
+Scout currently requires manual checking. Alerts ensure time-sensitive opportunities (funding rounds, new launches) are caught immediately. Speed matters in BD.
+
+**Features:**
+- Custom alert criteria (funding amount, sector, region)
+- Multi-channel delivery (Telegram, email, dashboard)
+- Alert batching (digest mode vs instant)
+- Alert fatigue prevention (smart grouping)
+- One-click opportunity creation from alert
+
+**Estimated Effort:** Medium (2 days)
+
+---
+
+#### **TASK-104: Market Map Visualization**
+- **Assigned:** Scout, Forge-1
+- **Due:** Feb 26, 5:00 PM
+- **Status:** ⏳ NOT STARTED
+- **Priority:** P2
+- **Description:** Interactive market landscape map showing players and relationships
+
+**Why it helps:**
+Text lists don't show market structure. Visual map reveals white space, competitive clusters, partnership ecosystems. Strategic planning tool for market positioning.
+
+**Features:**
+- Bubble chart by sector/funding
+- Relationship lines (partnerships, investments)
+- Zoom and filter capabilities
+- Save custom views
+- Export for presentations
+- Auto-update as new intel arrives
+
+**Estimated Effort:** Medium-High (3 days)
+
+---
+
+#### **TASK-105: Intel Confidence Scoring**
+- **Assigned:** Scout
+- **Due:** Feb 24, 5:00 PM
+- **Status:** ⏳ NOT STARTED
+- **Priority:** P2
+- **Description:** Score intelligence by source reliability and corroboration
+
+**Why it helps:**
+Not all intel is equal. A rumor from Twitter vs confirmed press release should be weighted differently. Confidence scoring prevents acting on weak intelligence.
+
+**Features:**
+- Source reliability ratings (Tier 1: official, Tier 2: reputable media, Tier 3: social)
+- Corroboration check (multiple sources = higher confidence)
+- Confidence score per intel item (0-100%)
+- Filter by minimum confidence
+- Uncertain intel flagged for verification
+
+**Estimated Effort:** Low-Medium (1-2 days)
+
+---
+
+#### **TASK-106: Trending Topics Dashboard**
+- **Assigned:** Scout
+- **Due:** Feb 27, 5:00 PM
+- **Status:** ⏳ NOT STARTED
+- **Priority:** P2
+- **Description:** Track emerging trends and hot sectors in real-time
+
+**Why it helps:**
+Spotting trends early creates first-mover advantage. Dashboard surfaces what's gaining momentum (AI agents, DePIN, RWA) before mainstream awareness.
+
+**Features:**
+- Trending keywords across intel sources
+- Sector heat map (rising/falling interest)
+- Mention velocity tracking (mentions per day)
+- Trend prediction (early/peak/declining)
+- Weekly trend reports
+- Alert on trend threshold crossing
+
+**Estimated Effort:** Medium (2 days)
+
+---
+
+#### **TASK-107: Competitor Move Timeline**
+- **Assigned:** Scout
+- **Due:** Feb 28, 5:00 PM
+- **Status:** ⏳ NOT STARTED
+- **Priority:** P2
+- **Description:** Chronological timeline of all competitor activities
+
+**Why it helps:**
+Pattern recognition requires temporal view. Timeline reveals competitor rhythms (launch cadence, partnership timing), enabling predictive anticipation of their next moves.
+
+**Features:**
+- Filterable timeline by competitor/sector/type
+- Event categorization (product, partnership, funding, hire)
+- Pattern detection ("Binance announces every 6 weeks")
+- Prediction suggestions ("Likely announcement window")
+- Export timeline for strategy docs
+- Integration with PIE predictions
+
+**Estimated Effort:** Medium (2 days)
+
+---
+
 ## 📊 UPDATED TASK DASHBOARD
 
 | Priority | Count | Completed | In Progress | Blocked |
 |----------|-------|-----------|-------------|---------|
 | 🔴 P0 - Critical | 8 | 6 | 2 | 0 |
 | 🟡 P1 - High | 34 | 6 | 0 | 28 |
-| 🟢 P2 - Medium | 18 | 4 | 0 | 14 |
+| 🟢 P2 - Medium | 43 | 4 | 0 | 39 |
 | ⚪ P3 - Low | 5 | 0 | 0 | 5 |
-| **TOTAL** | **60** | **16** | **2** | **42** |
+| **TOTAL** | **90** | **16** | **2** | **72** |
 
 ---
 
