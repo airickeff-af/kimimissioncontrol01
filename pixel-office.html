@@ -213,6 +213,12 @@
             color: white;
         }
         
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
         #officeCanvas {
             width: 100%;
             height: 600px;
@@ -224,6 +230,24 @@
         
         #officeCanvas:active {
             cursor: grabbing;
+        }
+        
+        .canvas-overlay {
+            position: absolute;
+            top: 60px;
+            left: 20px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.5rem;
+            pointer-events: none;
+            z-index: 10;
+        }
+        
+        .fps-counter {
+            color: var(--accent-green);
         }
         
         /* Info Panel */
@@ -272,6 +296,11 @@
             border-color: var(--accent-cyan);
         }
         
+        .agent-mini.selected {
+            border-color: var(--accent-green);
+            background: rgba(81, 207, 102, 0.2);
+        }
+        
         .agent-mini-emoji {
             font-size: 1.5rem;
         }
@@ -315,11 +344,6 @@
         
         .hierarchy-table tr:hover {
             background: rgba(0, 212, 255, 0.1);
-        }
-        
-        .hierarchy-table tr.hierarchy-row:hover {
-            background: rgba(0, 212, 255, 0.2);
-            box-shadow: inset 0 0 0 2px var(--accent-cyan);
         }
         
         .hierarchy-table tr.commander {
@@ -415,19 +439,6 @@
             box-shadow: 0 0 0 var(--text-dark);
         }
         
-        /* Team grouping in table */
-        .team-header {
-            background: var(--panel-border) !important;
-            color: var(--text-light);
-            font-weight: bold;
-        }
-        
-        .team-header td {
-            font-family: 'Press Start 2P', cursive;
-            font-size: 0.55rem;
-            padding: 8px 10px;
-        }
-        
         /* Activity Log */
         .activity-list {
             max-height: 200px;
@@ -446,6 +457,70 @@
         .activity-time {
             font-size: 0.75rem;
             color: var(--text-secondary);
+        }
+        
+        /* Selected Agent Panel */
+        .selected-agent-panel {
+            position: fixed;
+            right: 20px;
+            top: 100px;
+            width: 280px;
+            background: var(--bg-card);
+            border: 4px solid var(--panel-border);
+            box-shadow: 4px 4px 0 var(--panel-shadow);
+            border-radius: 8px;
+            padding: 15px;
+            z-index: 50;
+            display: none;
+        }
+        
+        .selected-agent-panel.active {
+            display: block;
+        }
+        
+        .selected-agent-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--panel-border);
+        }
+        
+        .selected-agent-emoji {
+            font-size: 2rem;
+        }
+        
+        .selected-agent-info h3 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.6rem;
+            margin-bottom: 4px;
+        }
+        
+        .selected-agent-info span {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+        
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--panel-border);
+        }
+        
+        .stat-row:last-child {
+            border-bottom: none;
+        }
+        
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+        
+        .stat-value {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.5rem;
         }
         
         /* Modal */
@@ -512,6 +587,34 @@
             margin-bottom: 10px;
         }
         
+        /* Loading state */
+        .loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 20;
+            border-radius: 4px;
+        }
+        
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid var(--panel-border);
+            border-top-color: var(--accent-green);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
         /* Responsive */
         @media (max-width: 768px) {
             .header { padding: 10px; }
@@ -519,6 +622,14 @@
             .office-header { flex-direction: column; align-items: flex-start; }
             #officeCanvas { height: 400px; }
             .info-panel { grid-template-columns: 1fr; }
+            .selected-agent-panel {
+                position: fixed;
+                right: 10px;
+                left: 10px;
+                top: auto;
+                bottom: 10px;
+                width: auto;
+            }
         }
     </style>
 </head>
@@ -529,7 +640,7 @@
             <div class="logo">🎮</div>
             <div class="brand-text">
                 <h1>Pixel Office</h1>
-                <span>22 Agents • Isometric View</span>
+                <span id="agentCount">22 Agents • Isometric View</span>
             </div>
         </div>
         
@@ -548,17 +659,21 @@
     <!-- Main Container -->
     <div class="container">
         <!-- Office Canvas -->
-        <div class="office-container">
+        <div class="office-container" style="position: relative;">
             <div class="office-header">
-                <span class="office-title">🏢 ISOMETRIC OFFICE - 22 AGENTS</span>
+                <span class="office-title">🏢 ISOMETRIC OFFICE - <span id="liveAgentCount">22</span> AGENTS</span>
                 <div class="action-btns">
                     <button class="btn btn-primary" onclick="startStandup()">📢 STANDUP</button>
                     <button class="btn btn-secondary" onclick="toggleView()">👁️ FOLLOW</button>
                     <button class="btn" onclick="resetView()">🔄 RESET</button>
-                    <button class="btn" onclick="refreshData()" id="refreshBtn">🔄 REFRESH</button>
+                    <button class="btn" onclick="togglePause()" id="pauseBtn">⏸️ PAUSE</button>
                 </div>
             </div>
             <canvas id="officeCanvas"></canvas>
+            <div class="canvas-overlay">
+                <div class="fps-counter">FPS: <span id="fpsCounter">60</span></div>
+                <div>Selected: <span id="selectedAgentName">None</span></div>
+            </div>
         </div>
         
         <!-- Hierarchy Table Panel -->
@@ -566,8 +681,7 @@
             <div class="office-header">
                 <span class="office-title">👑 AGENT HIERARCHY</span>
                 <div class="action-btns">
-                    <button class="btn" onclick="expandAllHierarchy()">📂 Expand</button>
-                    <button class="btn" onclick="collapseAllHierarchy()">📁 Collapse</button>
+                    <button class="btn" onclick="refreshData()">🔄 REFRESH</button>
                 </div>
             </div>
             <div class="hierarchy-table-container">
@@ -577,7 +691,7 @@
                             <th>Level</th>
                             <th>Agent</th>
                             <th>Role</th>
-                            <th>Current Task</th>
+                            <th>Team</th>
                             <th>Status</th>
                             <th>Action</th>
                         </tr>
@@ -593,7 +707,7 @@
         <div class="info-panel">
             <!-- Agent Mini Grid -->
             <div class="panel">
-                <div class="panel-title">👥 AGENT ROSTER (22)</div>
+                <div class="panel-title">👥 AGENT ROSTER (<span id="rosterCount">22</span>)</div>
                 <div class="agent-grid" id="agentGrid"></div>
             </div>
             
@@ -603,6 +717,38 @@
                 <div class="activity-list" id="activityLog"></div>
             </div>
         </div>
+    </div>
+    
+    <!-- Selected Agent Panel -->
+    <div class="selected-agent-panel" id="selectedAgentPanel">
+        <div class="selected-agent-header">
+            <span class="selected-agent-emoji" id="panelEmoji">🤖</span>
+            <div class="selected-agent-info">
+                <h3 id="panelName">Agent Name</h3>
+                <span id="panelRole">Role</span>
+            </div>
+        </div>
+        <div class="stat-row">
+            <span class="stat-label">Status</span>
+            <span class="stat-value" id="panelStatus">Active</span>
+        </div>
+        <div class="stat-row">
+            <span class="stat-label">Tasks</span>
+            <span class="stat-value" id="panelTasks">0</span>
+        </div>
+        <div class="stat-row">
+            <span class="stat-label">Tokens</span>
+            <span class="stat-value" id="panelTokens">0</span>
+        </div>
+        <div class="stat-row">
+            <span class="stat-label">Success Rate</span>
+            <span class="stat-value" id="panelSuccess">0%</span>
+        </div>
+        <div class="stat-row">
+            <span class="stat-label">Last Active</span>
+            <span class="stat-value" id="panelLastActive">-</span>
+        </div>
+        <button class="btn btn-secondary" style="width: 100%; margin-top: 10px;" onclick="closeSelectedPanel()">Close</button>
     </div>
     
     <!-- Standup Modal -->
@@ -621,49 +767,32 @@
 
     <script>
         // ============================================
-        // REAL AGENT DATA FROM API
+        // PIXEL OFFICE - TASK-092 IMPLEMENTATION
+        // Features: 60fps animations, real API, canvas selection
         // ============================================
         
         // ============================================
-        // AGENT DATA WITH HIERARCHY
+        // CONFIGURATION
         // ============================================
+        const CONFIG = {
+            FPS: 60,
+            SPRITE_SIZE: 32,
+            WALK_SPEED: 0.8,
+            ANIMATION_SPEED: 0.15,
+            API_BASE: '', // Relative to current domain
+            REFRESH_INTERVAL: 30000, // 30 seconds
+        };
         
-        const AGENTS_DATA = [
-            // Commander
-            { id: 'ericf', name: 'EricF', role: 'Commander', emoji: '👑', color: '#ffd700', status: 'active', tasks: 0, tokens: 0, desk: 'commander', level: 'commander', team: 'Executive', reportsTo: null, currentTask: 'Overseeing operations' },
-            // AI Lead
-            { id: 'nexus', name: 'Nexus', role: 'AI Lead', emoji: '🤖', color: '#00d4ff', status: 'active', tasks: 45, tokens: 8400000, desk: 'nexus', level: 'ai-lead', team: 'Executive', reportsTo: 'EricF', currentTask: 'Orchestrating agents' },
-            // Dev Team
-            { id: 'codemaster', name: 'CodeMaster', role: 'Dev Lead', emoji: '💻', color: '#22c55e', status: 'busy', tasks: 35, tokens: 1200000, desk: 'dev', level: 'team-lead', team: 'Dev Team', reportsTo: 'Nexus', currentTask: 'Code review' },
-            { id: 'code-1', name: 'Code-1', role: 'Backend Engineer', emoji: '⚡', color: '#22c55e', status: 'busy', tasks: 29, tokens: 880000, desk: 'dev', level: 'specialist', team: 'Dev Team', reportsTo: 'CodeMaster', currentTask: 'API development' },
-            { id: 'code-2', name: 'Code-2', role: 'Backend Engineer', emoji: '🔧', color: '#22c55e', status: 'busy', tasks: 12, tokens: 450000, desk: 'dev', level: 'specialist', team: 'Dev Team', reportsTo: 'CodeMaster', currentTask: 'Bug fixes' },
-            { id: 'code-3', name: 'Code-3', role: 'Backend Engineer', emoji: '🔌', color: '#22c55e', status: 'busy', tasks: 8, tokens: 320000, desk: 'dev', level: 'specialist', team: 'Dev Team', reportsTo: 'CodeMaster', currentTask: 'Integration' },
-            // Design Team
-            { id: 'forge', name: 'Forge', role: 'Design Lead', emoji: '🔨', color: '#f97316', status: 'active', tasks: 38, tokens: 1350000, desk: 'design', level: 'team-lead', team: 'Design Team', reportsTo: 'Nexus', currentTask: 'UI design' },
-            { id: 'forge-2', name: 'Forge-2', role: 'UI Engineer', emoji: '🎨', color: '#f97316', status: 'active', tasks: 22, tokens: 500000, desk: 'design', level: 'specialist', team: 'Design Team', reportsTo: 'Forge', currentTask: 'Component library' },
-            { id: 'forge-3', name: 'Forge-3', role: 'UI Engineer', emoji: '✨', color: '#f97316', status: 'active', tasks: 18, tokens: 720000, desk: 'design', level: 'specialist', team: 'Design Team', reportsTo: 'Forge', currentTask: 'Animations' },
-            { id: 'pixel', name: 'Pixel', role: 'Pixel Artist', emoji: '🎨', color: '#a855f7', status: 'active', tasks: 31, tokens: 2500000, desk: 'design', level: 'specialist', team: 'Design Team', reportsTo: 'Forge', currentTask: 'Pixel art assets' },
-            // Research Team
-            { id: 'glasses', name: 'Glasses', role: 'Research Lead', emoji: '🔍', color: '#3b82f6', status: 'active', tasks: 31, tokens: 2000000, desk: 'research', level: 'team-lead', team: 'Research Team', reportsTo: 'Nexus', currentTask: 'Market research' },
-            { id: 'scout', name: 'Scout', role: 'Intel Specialist', emoji: '🔭', color: '#00d4ff', status: 'active', tasks: 15, tokens: 80000, desk: 'intel', level: 'specialist', team: 'Research Team', reportsTo: 'Glasses', currentTask: 'Lead scouting' },
-            // Operations
-            { id: 'sentry', name: 'Sentry', role: 'Ops Lead', emoji: '🛡️', color: '#ef4444', status: 'active', tasks: 42, tokens: 560000, desk: 'ops', level: 'team-lead', team: 'Operations', reportsTo: 'Nexus', currentTask: 'Infrastructure' },
-            { id: 'cipher', name: 'Cipher', role: 'Security', emoji: '🔐', color: '#6366f1', status: 'idle', tasks: 15, tokens: 280000, desk: 'security', level: 'specialist', team: 'Operations', reportsTo: 'Sentry', currentTask: 'Security audit' },
-            // Content
-            { id: 'quill', name: 'Quill', role: 'Content Lead', emoji: '✍️', color: '#ec4899', status: 'idle', tasks: 27, tokens: 380000, desk: 'content', level: 'team-lead', team: 'Content', reportsTo: 'Nexus', currentTask: 'Content strategy' },
-            { id: 'larry', name: 'Larry', role: 'Writer', emoji: '📝', color: '#06b6d4', status: 'idle', tasks: 24, tokens: 420000, desk: 'content', level: 'specialist', team: 'Content', reportsTo: 'Quill', currentTask: 'Blog posts' },
-            // Marketing
-            { id: 'gary', name: 'Gary', role: 'Marketing Lead', emoji: '📢', color: '#f59e0b', status: 'idle', tasks: 19, tokens: 340000, desk: 'marketing', level: 'team-lead', team: 'Marketing', reportsTo: 'Nexus', currentTask: 'Campaign planning' },
-            { id: 'coldcall', name: 'ColdCall', role: 'Outreach', emoji: '📞', color: '#f97316', status: 'idle', tasks: 8, tokens: 12000, desk: 'sales', level: 'specialist', team: 'Marketing', reportsTo: 'Gary', currentTask: 'Cold outreach' },
-            // Audit
-            { id: 'audit-1', name: 'Audit-1', role: 'Audit Lead', emoji: '🔍', color: '#8b5cf6', status: 'active', tasks: 28, tokens: 770000, desk: 'qa', level: 'team-lead', team: 'Audit', reportsTo: 'Nexus', currentTask: 'Quality review' },
-            { id: 'audit-2', name: 'Audit-2', role: 'Auditor', emoji: '📋', color: '#8b5cf6', status: 'active', tasks: 20, tokens: 450000, desk: 'qa', level: 'specialist', team: 'Audit', reportsTo: 'Audit-1', currentTask: 'Code audit' }
-        ];
+        // ============================================
+        // AGENT DATA - Will be populated from API
+        // ============================================
+        let AGENTS_DATA = [];
+        let TASKS_DATA = [];
+        let ACTIVITY_LOGS = [];
         
         // ============================================
         // CANVAS SETUP
         // ============================================
-        
         const canvas = document.getElementById('officeCanvas');
         const ctx = canvas.getContext('2d');
         
@@ -673,6 +802,17 @@
         let isDragging = false;
         let dragStartX, dragStartY;
         let followAgent = null;
+        let selectedAgent = null;
+        let isPaused = false;
+        
+        // Animation state
+        let lastTime = 0;
+        let frameCount = 0;
+        let fps = 60;
+        let lastFpsTime = 0;
+        
+        // Speech bubbles
+        let speechBubbles = [];
         
         function resizeCanvas() {
             const container = canvas.parentElement;
@@ -683,16 +823,352 @@
         window.addEventListener('resize', resizeCanvas);
         
         // ============================================
-        // ISOMETRIC DRAWING FUNCTIONS
+        // PIXEL SPRITE GENERATOR (Minecraft-style)
         // ============================================
         
-        function toIso(x, y, z) {
-            const isoX = (x - y) * 0.866 + canvas.width / 2 + offsetX;
-            const isoY = (x + y) * 0.5 - z * 0.866 + canvas.height / 2 + offsetY;
+        const SPRITE_CACHE = new Map();
+        
+        function generatePixelSprite(agent, frame = 0, direction = 'down', state = 'idle') {
+            const cacheKey = `${agent.id}_${frame}_${direction}_${state}`;
+            if (SPRITE_CACHE.has(cacheKey)) {
+                return SPRITE_CACHE.get(cacheKey);
+            }
+            
+            const size = CONFIG.SPRITE_SIZE;
+            const spriteCanvas = document.createElement('canvas');
+            spriteCanvas.width = size;
+            spriteCanvas.height = size;
+            const sCtx = spriteCanvas.getContext('2d');
+            
+            // Disable smoothing for pixel art look
+            sCtx.imageSmoothingEnabled = false;
+            
+            // Base color
+            const baseColor = agent.color || '#888888';
+            const darkColor = shadeColor(baseColor, -30);
+            const lightColor = shadeColor(baseColor, 30);
+            
+            // Animation offsets
+            const walkOffset = state === 'walking' ? Math.sin(frame * 0.5) * 2 : 0;
+            const bounceOffset = state === 'idle' ? Math.sin(frame * 0.2) * 1 : 0;
+            
+            // Draw pixel body (16x16 scaled to 32x32)
+            const pixelSize = 2;
+            const startX = 8;
+            const startY = 8 + bounceOffset;
+            
+            // Body shadow
+            sCtx.fillStyle = 'rgba(0,0,0,0.3)';
+            sCtx.fillRect(startX + 2, startY + 14, 12, 4);
+            
+            // Body (computer/character shape)
+            sCtx.fillStyle = baseColor;
+            // Main body block
+            sCtx.fillRect(startX, startY + 4, 16, 12);
+            // Head/screen area
+            sCtx.fillRect(startX + 2, startY, 12, 6);
+            
+            // Screen glow
+            sCtx.fillStyle = lightColor;
+            sCtx.fillRect(startX + 3, startY + 1, 10, 4);
+            
+            // Eyes/face on screen
+            sCtx.fillStyle = '#000';
+            if (direction === 'right') {
+                sCtx.fillRect(startX + 8, startY + 2, 3, 2);
+            } else if (direction === 'left') {
+                sCtx.fillRect(startX + 5, startY + 2, 3, 2);
+            } else {
+                sCtx.fillRect(startX + 5, startY + 2, 2, 2);
+                sCtx.fillRect(startX + 9, startY + 2, 2, 2);
+            }
+            
+            // Legs (animated when walking)
+            sCtx.fillStyle = darkColor;
+            if (state === 'walking') {
+                const legOffset = Math.abs(Math.sin(frame * 0.5)) * 3;
+                sCtx.fillRect(startX + 2, startY + 14 + legOffset, 4, 4);
+                sCtx.fillRect(startX + 10, startY + 14 - legOffset, 4, 4);
+            } else {
+                sCtx.fillRect(startX + 2, startY + 14, 4, 4);
+                sCtx.fillRect(startX + 10, startY + 14, 4, 4);
+            }
+            
+            // Status indicator dot
+            const statusColors = {
+                active: '#51cf66',
+                busy: '#fcc419',
+                idle: '#ff6b6b'
+            };
+            sCtx.fillStyle = statusColors[agent.status] || '#888';
+            sCtx.fillRect(startX + 12, startY - 2, 4, 4);
+            
+            // Activity bar above agent (if has tasks)
+            if (agent.tasksCompleted > 0) {
+                const barWidth = 16;
+                const barHeight = 2;
+                const progress = Math.min(agent.tasksCompleted / 50, 1);
+                
+                sCtx.fillStyle = 'rgba(0,0,0,0.5)';
+                sCtx.fillRect(startX, startY - 6, barWidth, barHeight);
+                sCtx.fillStyle = progress > 0.7 ? '#51cf66' : progress > 0.4 ? '#fcc419' : '#ff6b6b';
+                sCtx.fillRect(startX, startY - 6, barWidth * progress, barHeight);
+            }
+            
+            SPRITE_CACHE.set(cacheKey, spriteCanvas);
+            return spriteCanvas;
+        }
+        
+        function shadeColor(color, percent) {
+            const num = parseInt(color.replace('#', ''), 16);
+            const amt = Math.round(2.55 * percent);
+            const R = Math.max(0, Math.min(255, (num >> 16) + amt));
+            const G = Math.max(0, Math.min(255, ((num >> 8) & 0x00FF) + amt));
+            const B = Math.max(0, Math.min(255, (num & 0x0000FF) + amt));
+            return '#' + (0x1000000 + R * 0x10000 + G * 0x100 + B).toString(16).slice(1);
+        }
+        
+        // ============================================
+        // AGENT CLASS WITH ANIMATION
+        // ============================================
+        
+        class Agent {
+            constructor(data) {
+                this.id = data.id;
+                this.name = data.name;
+                this.role = data.role;
+                this.emoji = data.emoji;
+                this.color = data.color || '#888888';
+                this.status = data.status || 'idle';
+                this.tasksCompleted = data.tasksCompleted || 0;
+                this.tokensUsed = data.tokensUsed || 0;
+                this.successRate = data.successRate || 0;
+                this.lastActive = data.lastActive;
+                this.team = data.team || 'General';
+                this.level = data.level || 'specialist';
+                
+                // Position
+                this.x = data.x || 0;
+                this.y = data.y || 0;
+                this.z = 0;
+                
+                // Animation state
+                this.targetX = this.x;
+                this.targetY = this.y;
+                this.direction = 'down';
+                this.state = 'idle';
+                this.animationFrame = 0;
+                this.walkCycle = 0;
+                
+                // Desk position (home base)
+                this.deskX = this.x;
+                this.deskY = this.y;
+                
+                // Speech bubble
+                this.speechBubble = null;
+                this.speechTimer = 0;
+            }
+            
+            update(deltaTime) {
+                // Update animation frame
+                this.animationFrame += CONFIG.ANIMATION_SPEED;
+                
+                // Handle movement
+                if (this.state === 'walking') {
+                    const dx = this.targetX - this.x;
+                    const dy = this.targetY - this.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (distance < 0.5) {
+                        this.x = this.targetX;
+                        this.y = this.targetY;
+                        this.state = 'idle';
+                    } else {
+                        const speed = CONFIG.WALK_SPEED * deltaTime * 0.06;
+                        this.x += (dx / distance) * speed;
+                        this.y += (dy / distance) * speed;
+                        
+                        // Update direction
+                        if (Math.abs(dx) > Math.abs(dy)) {
+                            this.direction = dx > 0 ? 'right' : 'left';
+                        } else {
+                            this.direction = dy > 0 ? 'down' : 'up';
+                        }
+                    }
+                }
+                
+                // Update speech bubble timer
+                if (this.speechTimer > 0) {
+                    this.speechTimer -= deltaTime;
+                    if (this.speechTimer <= 0) {
+                        this.speechBubble = null;
+                    }
+                }
+            }
+            
+            moveTo(x, y) {
+                this.targetX = x;
+                this.targetY = y;
+                this.state = 'walking';
+            }
+            
+            returnToDesk() {
+                this.moveTo(this.deskX, this.deskY);
+            }
+            
+            say(message, duration = 3000) {
+                this.speechBubble = message;
+                this.speechTimer = duration;
+            }
+            
+            draw(ctx, isoX, isoY) {
+                const sprite = generatePixelSprite(this, this.animationFrame, this.direction, this.state);
+                
+                // Draw sprite
+                const size = CONFIG.SPRITE_SIZE;
+                ctx.drawImage(sprite, isoX - size/2, isoY - size);
+                
+                // Draw name label
+                ctx.font = '10px "Press Start 2P"';
+                ctx.fillStyle = '#2c1810';
+                ctx.textAlign = 'center';
+                ctx.fillText(this.name, isoX, isoY + 15);
+                
+                // Draw selection highlight
+                if (selectedAgent === this.id) {
+                    ctx.strokeStyle = '#00d4ff';
+                    ctx.lineWidth = 2;
+                    ctx.strokeRect(isoX - size/2 - 2, isoY - size - 2, size + 4, size + 4);
+                }
+                
+                // Draw speech bubble
+                if (this.speechBubble) {
+                    drawSpeechBubble(ctx, isoX, isoY - size - 10, this.speechBubble);
+                }
+            }
+        }
+        
+        // ============================================
+        // ISOMETRIC UTILITIES
+        // ============================================
+        
+        function toIso(x, y, z = 0) {
+            const isoX = (x - y) * 0.866 * scale + canvas.width / 2 + offsetX;
+            const isoY = (x + y) * 0.5 * scale - z * 0.866 * scale + canvas.height / 2 + offsetY;
             return { x: isoX, y: isoY };
         }
         
-        function drawIsoRect(x, y, z, w, d, h, color, shadow = true) {
+        function fromIso(isoX, isoY) {
+            const centerX = canvas.width / 2 + offsetX;
+            const centerY = canvas.height / 2 + offsetY;
+            const x = ((isoX - centerX) / 0.866 + (isoY - centerY)) / (2 * scale);
+            const y = ((isoY - centerY) - (isoX - centerX) / 0.866) / (2 * scale);
+            return { x, y };
+        }
+        
+        function drawSpeechBubble(ctx, x, y, text) {
+            ctx.font = '8px "Press Start 2P"';
+            const metrics = ctx.measureText(text);
+            const padding = 8;
+            const width = metrics.width + padding * 2;
+            const height = 20;
+            
+            // Bubble background
+            ctx.fillStyle = 'white';
+            ctx.strokeStyle = '#2c1810';
+            ctx.lineWidth = 2;
+            
+            ctx.beginPath();
+            ctx.roundRect(x - width/2, y - height, width, height, 4);
+            ctx.fill();
+            ctx.stroke();
+            
+            // Triangle pointer
+            ctx.beginPath();
+            ctx.moveTo(x - 5, y);
+            ctx.lineTo(x + 5, y);
+            ctx.lineTo(x, y + 5);
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+            
+            // Text
+            ctx.fillStyle = '#2c1810';
+            ctx.textAlign = 'center';
+            ctx.fillText(text, x, y - height/2 + 3);
+        }
+        
+        // ============================================
+        // OFFICE LAYOUT
+        // ============================================
+        
+        const agents = new Map();
+        
+        const OFFICE_LAYOUT = {
+            // Commander
+            ericf: { x: -8, y: -6, team: 'Executive', level: 'commander' },
+            // AI Lead
+            nexus: { x: 4, y: -6, team: 'Executive', level: 'ai-lead' },
+            // Dev team
+            codemaster: { x: -7, y: 2, team: 'Engineering', level: 'team-lead' },
+            'code-1': { x: -4, y: 2, team: 'Engineering', level: 'specialist' },
+            'code-2': { x: -7, y: 4.5, team: 'Engineering', level: 'specialist' },
+            'code-3': { x: -4, y: 4.5, team: 'Engineering', level: 'specialist' },
+            // Design team
+            forge: { x: 3, y: -3, team: 'Design', level: 'team-lead' },
+            pixel: { x: 6, y: -3, team: 'Design', level: 'team-lead' },
+            'forge-2': { x: 3, y: -0.5, team: 'Design', level: 'specialist' },
+            'forge-3': { x: 6, y: -0.5, team: 'Design', level: 'specialist' },
+            // Research
+            glasses: { x: -3, y: -2, team: 'Research', level: 'team-lead' },
+            // Content
+            quill: { x: -2, y: 3, team: 'Content', level: 'specialist' },
+            // Marketing
+            gary: { x: 2, y: 3, team: 'Marketing', level: 'specialist' },
+            larry: { x: 4, y: 4, team: 'Marketing', level: 'specialist' },
+            buzz: { x: 6, y: 4, team: 'Marketing', level: 'specialist' },
+            // Operations
+            sentry: { x: -4, y: -1, team: 'Operations', level: 'team-lead' },
+            cipher: { x: -3, y: 2, team: 'Security', level: 'specialist' },
+            // QA
+            audit: { x: 3, y: -2, team: 'Quality', level: 'team-lead' },
+            // Sales
+            dealflow: { x: 4, y: -3, team: 'Sales', level: 'team-lead' },
+            coldcall: { x: 7, y: -2, team: 'Sales', level: 'specialist' },
+            // Intel
+            scout: { x: 2, y: -4, team: 'Intelligence', level: 'team-lead' },
+            pie: { x: 5, y: -5, team: 'Intelligence', level: 'specialist' }
+        };
+        
+        // ============================================
+        // DRAWING FUNCTIONS
+        // ============================================
+        
+        function drawFloor() {
+            for (let x = -12; x <= 12; x += 2) {
+                for (let y = -12; y <= 12; y += 2) {
+                    const p1 = toIso(x, y, 0);
+                    const p2 = toIso(x + 2, y, 0);
+                    const p3 = toIso(x + 2, y + 2, 0);
+                    const p4 = toIso(x, y + 2, 0);
+                    
+                    ctx.fillStyle = ((x + y) / 2) % 2 === 0 ? '#d4c4a8' : '#c4b498';
+                    ctx.beginPath();
+                    ctx.moveTo(p1.x, p1.y);
+                    ctx.lineTo(p2.x, p2.y);
+                    ctx.lineTo(p3.x, p3.y);
+                    ctx.lineTo(p4.x, p4.y);
+                    ctx.closePath();
+                    ctx.fill();
+                    
+                    ctx.strokeStyle = 'rgba(139, 115, 85, 0.2)';
+                    ctx.lineWidth = 1;
+                    ctx.stroke();
+                }
+            }
+        }
+        
+        function drawIsoRect(x, y, z, w, d, h, color) {
             const p1 = toIso(x, y, z);
             const p2 = toIso(x + w, y, z);
             const p3 = toIso(x + w, y + d, z);
@@ -738,110 +1214,42 @@
             ctx.stroke();
         }
         
-        function shadeColor(color, percent) {
-            const num = parseInt(color.replace('#', ''), 16);
-            const amt = Math.round(2.55 * percent);
-            const R = Math.max(0, Math.min(255, (num >> 16) + amt));
-            const G = Math.max(0, Math.min(255, ((num >> 8) & 0x00FF) + amt));
-            const B = Math.max(0, Math.min(255, (num & 0x0000FF) + amt));
-            return '#' + (0x1000000 + R * 0x10000 + G * 0x100 + B).toString(16).slice(1);
-        }
-        
-        // ============================================
-        // OFFICE OBJECTS
-        // ============================================
-        
-        function drawFloor() {
-            // Main floor
-            for (let x = -10; x <= 10; x += 2) {
-                for (let y = -10; y <= 10; y += 2) {
-                    const p1 = toIso(x, y, 0);
-                    const p2 = toIso(x + 2, y, 0);
-                    const p3 = toIso(x + 2, y + 2, 0);
-                    const p4 = toIso(x, y + 2, 0);
-                    
-                    ctx.fillStyle = ((x + y) / 2) % 2 === 0 ? '#d4c4a8' : '#c4b498';
-                    ctx.beginPath();
-                    ctx.moveTo(p1.x, p1.y);
-                    ctx.lineTo(p2.x, p2.y);
-                    ctx.lineTo(p3.x, p3.y);
-                    ctx.lineTo(p4.x, p4.y);
-                    ctx.closePath();
-                    ctx.fill();
-                }
-            }
-        }
-        
         function drawCommanderDesk(x, y) {
-            // EricF's large commander desk
-            drawIsoRect(x, y, 0, 4, 3, 1.5, '#8b6914'); // Desk base
-            drawIsoRect(x + 0.2, y + 0.2, 1.5, 3.6, 2.6, 0.2, '#ffd700'); // Desktop
+            drawIsoRect(x, y, 0, 4, 3, 1.5, '#8b6914');
+            drawIsoRect(x + 0.2, y + 0.2, 1.5, 3.6, 2.6, 0.2, '#ffd700');
+            drawIsoRect(x + 1, y + 0.5, 1.7, 0.8, 0.3, 0.6, '#2d3436');
+            drawIsoRect(x + 1.1, y + 0.6, 2.3, 0.6, 0.1, 0.4, '#00d4ff');
             
-            // Computer
-            drawIsoRect(x + 1, y + 0.5, 1.7, 0.8, 0.3, 0.6, '#2d3436'); // Monitor
-            drawIsoRect(x + 1.1, y + 0.6, 2.3, 0.6, 0.1, 0.4, '#00d4ff'); // Screen
-            
-            // Crown symbol
             const pos = toIso(x + 2, y + 1.5, 2.5);
-            ctx.font = 'bold 24px Arial';
+            ctx.font = 'bold 20px Arial';
             ctx.textAlign = 'center';
             ctx.fillText('👑', pos.x, pos.y);
         }
         
         function drawNexusDesk(x, y) {
-            // Nexus's large AI desk
-            drawIsoRect(x, y, 0, 4, 3, 1.5, '#4a5568'); // Desk base
-            drawIsoRect(x + 0.2, y + 0.2, 1.5, 3.6, 2.6, 0.2, '#00d4ff'); // Desktop glow
+            drawIsoRect(x, y, 0, 4, 3, 1.5, '#4a5568');
+            drawIsoRect(x + 0.2, y + 0.2, 1.5, 3.6, 2.6, 0.2, '#00d4ff');
+            drawIsoRect(x + 0.5, y + 0.3, 1.7, 1, 0.2, 0.8, '#2d3436');
+            drawIsoRect(x + 1.8, y + 0.3, 1.7, 1, 0.2, 0.8, '#2d3436');
+            drawIsoRect(x + 0.5, y + 1.5, 1.7, 1, 0.2, 0.8, '#2d3436');
             
-            // Multiple monitors
-            drawIsoRect(x + 0.5, y + 0.3, 1.7, 1, 0.2, 0.8, '#2d3436'); // Monitor 1
-            drawIsoRect(x + 1.8, y + 0.3, 1.7, 1, 0.2, 0.8, '#2d3436'); // Monitor 2
-            drawIsoRect(x + 0.5, y + 1.5, 1.7, 1, 0.2, 0.8, '#2d3436'); // Monitor 3
-            
-            // Robot symbol
             const pos = toIso(x + 2, y + 1.5, 2.5);
-            ctx.font = 'bold 24px Arial';
+            ctx.font = 'bold 20px Arial';
             ctx.textAlign = 'center';
             ctx.fillText('🤖', pos.x, pos.y);
         }
         
-        function drawAgentDesk(x, y, agent, isSmall = false) {
-            const w = isSmall ? 2 : 2.5;
-            const d = isSmall ? 1.5 : 2;
-            
-            // Desk
-            drawIsoRect(x, y, 0, w, d, 1, '#8b7355');
-            drawIsoRect(x + 0.1, y + 0.1, 1, w - 0.2, d - 0.2, 0.15, agent.color);
-            
-            // Computer
+        function drawAgentDesk(x, y, color) {
+            drawIsoRect(x, y, 0, 2.5, 2, 1, '#8b7355');
+            drawIsoRect(x + 0.1, y + 0.1, 1, 2.3, 1.8, 0.15, color);
             drawIsoRect(x + 0.3, y + 0.3, 1.15, 0.6, 0.15, 0.4, '#2d3436');
-            drawIsoRect(x + 0.35, y + 0.35, 1.55, 0.5, 0.05, 0.3, '#74b9ff'); // Screen glow
-            
-            // Agent emoji
-            const pos = toIso(x + w/2, y + d/2, 1.8);
-            ctx.font = isSmall ? '16px Arial' : '20px Arial';
-            ctx.textAlign = 'center';
-            ctx.fillText(agent.emoji, pos.x, pos.y);
-            
-            // Status indicator
-            const statusColors = {
-                active: '#51cf66',
-                busy: '#fcc419',
-                idle: '#ff6b6b'
-            };
-            const statusPos = toIso(x + w - 0.3, y + 0.3, 1.8);
-            ctx.fillStyle = statusColors[agent.status] || '#888';
-            ctx.beginPath();
-            ctx.arc(statusPos.x, statusPos.y, 4, 0, Math.PI * 2);
-            ctx.fill();
+            drawIsoRect(x + 0.35, y + 0.35, 1.55, 0.5, 0.05, 0.3, '#74b9ff');
         }
         
         function drawMeetingTable(x, y) {
-            // Large meeting table in center
-            drawIsoRect(x, y, 0, 5, 3, 0.8, '#5c4a3a'); // Table base
-            drawIsoRect(x + 0.2, y + 0.2, 0.8, 4.6, 2.6, 0.1, '#8b7355'); // Table top
+            drawIsoRect(x, y, 0, 5, 3, 0.8, '#5c4a3a');
+            drawIsoRect(x + 0.2, y + 0.2, 0.8, 4.6, 2.6, 0.1, '#8b7355');
             
-            // Chairs around table
             const chairPositions = [
                 [x - 1, y + 1], [x + 5, y + 1],
                 [x + 1, y - 1], [x + 3, y - 1],
@@ -852,44 +1260,26 @@
                 drawIsoRect(pos[0], pos[1], 0, 0.8, 0.8, 0.6, '#6b5a45');
             });
             
-            // Meeting label
             const centerPos = toIso(x + 2.5, y + 1.5, 1);
-            ctx.font = 'bold 12px "Press Start 2P"';
+            ctx.font = 'bold 10px "Press Start 2P"';
             ctx.fillStyle = '#fff';
             ctx.textAlign = 'center';
             ctx.fillText('📢 MEETING', centerPos.x, centerPos.y);
         }
         
         function drawPingPongTable(x, y) {
-            // Ping pong table
-            drawIsoRect(x, y, 0, 4, 2.5, 0.8, '#2d3436'); // Base
-            drawIsoRect(x + 0.1, y + 0.1, 0.8, 3.8, 2.3, 0.1, '#00b894'); // Green table
-            
-            // Net
+            drawIsoRect(x, y, 0, 4, 2.5, 0.8, '#2d3436');
+            drawIsoRect(x + 0.1, y + 0.1, 0.8, 3.8, 2.3, 0.1, '#00b894');
             drawIsoRect(x + 1.9, y, 0.9, 0.2, 2.5, 0.4, '#fff');
             
-            // Paddles and ball
-            const paddle1 = toIso(x + 0.5, y + 0.5, 1);
-            const paddle2 = toIso(x + 3.2, y + 1.8, 1);
-            const ball = toIso(x + 2, y + 1.2, 1.3);
-            
-            ctx.font = '16px Arial';
-            ctx.fillText('🏓', paddle1.x, paddle1.y);
-            ctx.fillText('🏓', paddle2.x, paddle2.y);
-            ctx.fillText('⚪', ball.x, ball.y);
-            
-            // Label
             const labelPos = toIso(x + 2, y - 0.5, 0.5);
-            ctx.font = '10px "Press Start 2P"';
+            ctx.font = '8px "Press Start 2P"';
             ctx.fillStyle = '#fff';
             ctx.fillText('PING PONG', labelPos.x, labelPos.y);
         }
         
         function drawPlant(x, y, size = 1) {
-            // Pot
             drawIsoRect(x, y, 0, 0.8 * size, 0.8 * size, 0.6 * size, '#8b4513');
-            
-            // Plant
             const plantPos = toIso(x + 0.4, y + 0.4, 0.6 * size);
             ctx.font = `${20 * size}px Arial`;
             ctx.textAlign = 'center';
@@ -897,19 +1287,17 @@
         }
         
         // ============================================
-        // MAIN DRAW FUNCTION
+        // MAIN DRAW LOOP
         // ============================================
         
         function drawOffice() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
-            // Background
+            // Clear canvas
             ctx.fillStyle = '#2d3436';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             
             drawFloor();
             
-            // Plants in corners
+            // Plants
             drawPlant(-9, -9, 1.2);
             drawPlant(8, -9, 1);
             drawPlant(-9, 8, 1);
@@ -917,57 +1305,409 @@
             drawPlant(-5, -9, 0.8);
             drawPlant(4, 8, 0.8);
             
-            // Commander desk (EricF) - Top left
+            // Commander desk
             drawCommanderDesk(-8, -6);
             
-            // Nexus desk - Top right
+            // Nexus desk
             drawNexusDesk(4, -6);
             
-            // Meeting table - Center
+            // Meeting table
             drawMeetingTable(-2.5, -1.5);
             
-            // Ping pong table - Bottom right
+            // Ping pong table
             drawPingPongTable(3, 4);
             
-            // Agent desks - organized by team
-            const devAgents = AGENTS_DATA.filter(a => a.desk === 'dev');
-            const designAgents = AGENTS_DATA.filter(a => a.desk === 'design');
-            const otherAgents = AGENTS_DATA.filter(a => 
-                !['commander', 'nexus', 'dev', 'design'].includes(a.desk)
-            );
+            // Agent desks by team
+            const teamColors = {
+                'Engineering': '#22c55e',
+                'Design': '#f97316',
+                'Research': '#3b82f6',
+                'Content': '#ec4899',
+                'Marketing': '#f59e0b',
+                'Operations': '#22c55e',
+                'Quality': '#8b5cf6',
+                'Sales': '#10b981',
+                'Intelligence': '#00d4ff',
+                'Security': '#6366f1'
+            };
             
-            // Dev team desks - left side
-            devAgents.forEach((agent, i) => {
-                const row = Math.floor(i / 2);
-                const col = i % 2;
-                drawAgentDesk(-7 + col * 3, 2 + row * 2.5, agent);
+            // Draw team desks
+            Object.entries(OFFICE_LAYOUT).forEach(([id, layout]) => {
+                if (id !== 'ericf' && id !== 'nexus') {
+                    const color = teamColors[layout.team] || '#8b7355';
+                    drawAgentDesk(layout.x, layout.y, color);
+                }
             });
             
-            // Design team desks - right side
-            designAgents.forEach((agent, i) => {
-                const row = Math.floor(i / 2);
-                const col = i % 2;
-                drawAgentDesk(3 + col * 3, -3 + row * 2.5, agent);
+            // Draw agents (sorted by Y for proper depth)
+            const sortedAgents = Array.from(agents.values()).sort((a, b) => a.y - b.y);
+            sortedAgents.forEach(agent => {
+                const pos = toIso(agent.x, agent.y, 0);
+                agent.draw(ctx, pos.x, pos.y);
+            });
+        }
+        
+        // ============================================
+        // ANIMATION LOOP (60fps)
+        // ============================================
+        
+        function animate(currentTime) {
+            const deltaTime = currentTime - lastTime;
+            lastTime = currentTime;
+            
+            // Calculate FPS
+            frameCount++;
+            if (currentTime - lastFpsTime >= 1000) {
+                fps = frameCount;
+                frameCount = 0;
+                lastFpsTime = currentTime;
+                document.getElementById('fpsCounter').textContent = fps;
+            }
+            
+            if (!isPaused) {
+                // Update agents
+                agents.forEach(agent => agent.update(deltaTime));
+                
+                // Handle follow camera
+                if (followAgent && agents.has(followAgent)) {
+                    const agent = agents.get(followAgent);
+                    const targetPos = toIso(agent.x, agent.y, 0);
+                    const centerX = canvas.width / 2;
+                    const centerY = canvas.height / 2;
+                    offsetX += (centerX - targetPos.x) * 0.05;
+                    offsetY += (centerY - targetPos.y) * 0.05;
+                }
+            }
+            
+            drawOffice();
+            requestAnimationFrame(animate);
+        }
+        
+        // ============================================
+        // API INTEGRATION
+        // ============================================
+        
+        async function fetchAgents() {
+            try {
+                const response = await fetch('/api/agents');
+                const data = await response.json();
+                
+                if (data.success && data.agents) {
+                    AGENTS_DATA = data.agents.map(agent => ({
+                        ...agent,
+                        color: getAgentColor(agent.id),
+                        emoji: getAgentEmoji(agent.id),
+                        team: getAgentTeam(agent.id),
+                        level: getAgentLevel(agent.id),
+                        ...OFFICE_LAYOUT[agent.id]
+                    }));
+                    
+                    // Update or create agent instances
+                    AGENTS_DATA.forEach(data => {
+                        if (agents.has(data.id)) {
+                            const agent = agents.get(data.id);
+                            agent.status = data.status;
+                            agent.tasksCompleted = data.tasksCompleted;
+                            agent.tokensUsed = data.tokensUsed;
+                            agent.successRate = data.successRate;
+                            agent.lastActive = data.lastActive;
+                        } else {
+                            agents.set(data.id, new Agent(data));
+                        }
+                    });
+                    
+                    updateUI();
+                    addActivity('🔄', 'System', `loaded ${AGENTS_DATA.length} agents from API`, 'system');
+                }
+            } catch (error) {
+                console.error('Failed to fetch agents:', error);
+                addActivity('❌', 'System', 'failed to load agents from API', 'error');
+                
+                // Use fallback data
+                initializeFallbackAgents();
+            }
+        }
+        
+        async function fetchTasks() {
+            try {
+                const response = await fetch('/api/tasks?limit=100');
+                const data = await response.json();
+                
+                if (data.success && data.tasks) {
+                    TASKS_DATA = data.tasks;
+                    addActivity('📋', 'System', `loaded ${TASKS_DATA.length} tasks`, 'system');
+                }
+            } catch (error) {
+                console.error('Failed to fetch tasks:', error);
+            }
+        }
+        
+        async function fetchActivityLogs() {
+            try {
+                const response = await fetch('/api/logs/activity?limit=20');
+                const data = await response.json();
+                
+                if (data.success && data.logs) {
+                    ACTIVITY_LOGS = data.logs;
+                    
+                    // Add recent logs to activity panel
+                    data.logs.slice(0, 5).forEach(log => {
+                        const emoji = getActivityEmoji(log.type);
+                        addActivity(emoji, log.agent, log.message, log.type);
+                    });
+                }
+            } catch (error) {
+                console.error('Failed to fetch activity logs:', error);
+            }
+        }
+        
+        function getAgentColor(id) {
+            const colors = {
+                ericf: '#ffd700', nexus: '#00d4ff', codemaster: '#22c55e',
+                'code-1': '#22c55e', 'code-2': '#22c55e', 'code-3': '#22c55e',
+                forge: '#f97316', 'forge-2': '#f97316', 'forge-3': '#f97316',
+                pixel: '#a855f7', glasses: '#3b82f6', quill: '#ec4899',
+                gary: '#f59e0b', larry: '#06b6d4', buzz: '#fbbf24',
+                sentry: '#22c55e', audit: '#8b5cf6', cipher: '#6366f1',
+                dealflow: '#10b981', coldcall: '#f97316', scout: '#00d4ff',
+                pie: '#8b5cf6'
+            };
+            return colors[id] || '#888888';
+        }
+        
+        function getAgentEmoji(id) {
+            const emojis = {
+                ericf: '👑', nexus: '🤖', codemaster: '💻',
+                'code-1': '⚡', 'code-2': '🔧', 'code-3': '🔌',
+                forge: '🔨', 'forge-2': '🎨', 'forge-3': '✨',
+                pixel: '🎨', glasses: '🔍', quill: '✍️',
+                gary: '📢', larry: '📱', buzz: '🐝',
+                sentry: '🛡️', audit: '🔍', cipher: '🔐',
+                dealflow: '🤝', coldcall: '📞', scout: '🔭',
+                pie: '🧠'
+            };
+            return emojis[id] || '🤖';
+        }
+        
+        function getAgentTeam(id) {
+            return OFFICE_LAYOUT[id]?.team || 'General';
+        }
+        
+        function getAgentLevel(id) {
+            return OFFICE_LAYOUT[id]?.level || 'specialist';
+        }
+        
+        function getActivityEmoji(type) {
+            const emojis = {
+                task_start: '🚀', task_complete: '✅', research: '🔍',
+                write: '✍️', design: '🎨', code: '💻', deploy: '🚀',
+                audit: '🔍', security_scan: '🔒', system: '⚙️'
+            };
+            return emojis[type] || '📋';
+        }
+        
+        function initializeFallbackAgents() {
+            const fallbackData = [
+                { id: 'ericf', name: 'EricF', role: 'Commander', status: 'active', tasksCompleted: 0, tokensUsed: 0, successRate: 100 },
+                { id: 'nexus', name: 'Nexus', role: 'Orchestrator', status: 'active', tasksCompleted: 45, tokensUsed: 8400000, successRate: 94 },
+                { id: 'codemaster', name: 'CodeMaster', role: 'Backend Lead', status: 'busy', tasksCompleted: 35, tokensUsed: 1200000, successRate: 93 },
+                { id: 'forge', name: 'Forge', role: 'UI Lead', status: 'active', tasksCompleted: 38, tokensUsed: 1350000, successRate: 93 },
+                { id: 'pixel', name: 'Pixel', role: 'Design Lead', status: 'active', tasksCompleted: 31, tokensUsed: 2500000, successRate: 92 },
+                { id: 'glasses', name: 'Glasses', role: 'Research Lead', status: 'active', tasksCompleted: 31, tokensUsed: 2000000, successRate: 94 },
+                { id: 'quill', name: 'Quill', role: 'Writer', status: 'idle', tasksCompleted: 27, tokensUsed: 380000, successRate: 89 },
+                { id: 'gary', name: 'Gary', role: 'Marketing', status: 'idle', tasksCompleted: 19, tokensUsed: 340000, successRate: 86 },
+                { id: 'sentry', name: 'Sentry', role: 'DevOps Lead', status: 'active', tasksCompleted: 42, tokensUsed: 560000, successRate: 96 },
+                { id: 'audit', name: 'Audit', role: 'QA Lead', status: 'active', tasksCompleted: 28, tokensUsed: 770000, successRate: 96 },
+                { id: 'dealflow', name: 'DealFlow', role: 'Sales Lead', status: 'busy', tasksCompleted: 52, tokensUsed: 7510000, successRate: 95 },
+                { id: 'scout', name: 'Scout', role: 'Intel Lead', status: 'active', tasksCompleted: 15, tokensUsed: 80000, successRate: 87 }
+            ];
+            
+            fallbackData.forEach(data => {
+                const fullData = {
+                    ...data,
+                    color: getAgentColor(data.id),
+                    emoji: getAgentEmoji(data.id),
+                    team: getAgentTeam(data.id),
+                    level: getAgentLevel(data.id),
+                    ...OFFICE_LAYOUT[data.id]
+                };
+                agents.set(data.id, new Agent(fullData));
             });
             
-            // Other agents - scattered
-            otherAgents.forEach((agent, i) => {
-                const angle = (i / otherAgents.length) * Math.PI * 2;
-                const radius = 6;
-                const x = Math.cos(angle) * radius;
-                const y = Math.sin(angle) * radius;
-                drawAgentDesk(x, y, agent, true);
+            updateUI();
+        }
+        
+        // ============================================
+        // UI UPDATES
+        // ============================================
+        
+        function updateUI() {
+            document.getElementById('agentCount').textContent = `${agents.size} Agents • Isometric View`;
+            document.getElementById('liveAgentCount').textContent = agents.size;
+            document.getElementById('rosterCount').textContent = agents.size;
+            
+            renderAgentGrid();
+            renderHierarchyTable();
+        }
+        
+        function renderAgentGrid() {
+            const grid = document.getElementById('agentGrid');
+            grid.innerHTML = '';
+            
+            agents.forEach(agent => {
+                const div = document.createElement('div');
+                div.className = 'agent-mini' + (selectedAgent === agent.id ? ' selected' : '');
+                div.innerHTML = `
+                    <div class="agent-mini-emoji">${agent.emoji}</div>
+                    <div class="agent-mini-name">${agent.name}</div>
+                `;
+                div.onclick = () => selectAgent(agent.id);
+                grid.appendChild(div);
             });
+        }
+        
+        function renderHierarchyTable() {
+            const tbody = document.getElementById('hierarchyBody');
+            if (!tbody) return;
+            
+            const levelOrder = { 'commander': 0, 'ai-lead': 1, 'team-lead': 2, 'specialist': 3 };
+            const sortedAgents = Array.from(agents.values()).sort((a, b) => levelOrder[a.level] - levelOrder[b.level]);
+            
+            const levels = [
+                { key: 'commander', label: 'Commander', class: 'level-commander' },
+                { key: 'ai-lead', label: 'AI Lead', class: 'level-ai-lead' },
+                { key: 'team-lead', label: 'Team Lead', class: 'level-team-lead' },
+                { key: 'specialist', label: 'Specialist', class: 'level-specialist' }
+            ];
+            
+            let html = '';
+            levels.forEach(level => {
+                const levelAgents = sortedAgents.filter(a => a.level === level.key);
+                levelAgents.forEach(agent => {
+                    const statusClass = agent.status === 'active' ? 'status-active' : 
+                                      agent.status === 'busy' ? 'status-busy' : 'status-idle';
+                    
+                    html += `
+                        <tr class="${agent.level}">
+                            <td><span class="level-badge ${level.class}">${level.label}</span></td>
+                            <td>
+                                <div class="hierarchy-agent">
+                                    <span class="hierarchy-emoji">${agent.emoji}</span>
+                                    <span class="hierarchy-name">${agent.name}</span>
+                                </div>
+                            </td>
+                            <td>${agent.role}</td>
+                            <td>${agent.team}</td>
+                            <td><span class="status-dot-table ${statusClass}"></span> ${agent.status}</td>
+                            <td>
+                                <button class="btn-locate" onclick="locateAgent('${agent.id}')">
+                                    🎯 Locate
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                });
+            });
+            
+            tbody.innerHTML = html;
         }
         
         // ============================================
         // INTERACTION
         // ============================================
         
+        function selectAgent(agentId) {
+            selectedAgent = agentId;
+            const agent = agents.get(agentId);
+            
+            if (agent) {
+                document.getElementById('selectedAgentName').textContent = agent.name;
+                document.getElementById('panelEmoji').textContent = agent.emoji;
+                document.getElementById('panelName').textContent = agent.name;
+                document.getElementById('panelRole').textContent = agent.role;
+                document.getElementById('panelStatus').textContent = agent.status;
+                document.getElementById('panelTasks').textContent = agent.tasksCompleted;
+                document.getElementById('panelTokens').textContent = formatNumber(agent.tokensUsed);
+                document.getElementById('panelSuccess').textContent = agent.successRate + '%';
+                document.getElementById('panelLastActive').textContent = formatTime(agent.lastActive);
+                document.getElementById('selectedAgentPanel').classList.add('active');
+                
+                renderAgentGrid();
+                
+                // Agent says hello
+                agent.say('Hello!');
+            }
+        }
+        
+        function closeSelectedPanel() {
+            document.getElementById('selectedAgentPanel').classList.remove('active');
+            selectedAgent = null;
+            document.getElementById('selectedAgentName').textContent = 'None';
+            renderAgentGrid();
+        }
+        
+        function locateAgent(agentId) {
+            const agent = agents.get(agentId);
+            if (!agent) return;
+            
+            selectAgent(agentId);
+            
+            // Animate camera to agent
+            const targetIso = toIso(agent.x, agent.y, 0);
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const targetOffsetX = centerX - targetIso.x + offsetX;
+            const targetOffsetY = centerY - targetIso.y + offsetY;
+            
+            animateCamera(targetOffsetX, targetOffsetY);
+            addActivity('🎯', 'System', `centered camera on ${agent.name}`, 'system');
+        }
+        
+        function animateCamera(targetX, targetY) {
+            const startX = offsetX;
+            const startY = offsetY;
+            const duration = 500;
+            const startTime = performance.now();
+            
+            function animate(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const ease = 1 - Math.pow(1 - progress, 3);
+                
+                offsetX = startX + (targetX - startX) * ease;
+                offsetY = startY + (targetY - startY) * ease;
+                
+                if (progress < 1) {
+                    requestAnimationFrame(animate);
+                }
+            }
+            
+            requestAnimationFrame(animate);
+        }
+        
+        // Canvas interactions
         canvas.addEventListener('mousedown', (e) => {
-            isDragging = true;
-            dragStartX = e.clientX - offsetX;
-            dragStartY = e.clientY - offsetY;
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            // Check if clicked on an agent
+            let clickedAgent = null;
+            agents.forEach(agent => {
+                const pos = toIso(agent.x, agent.y, 0);
+                const dist = Math.sqrt((x - pos.x) ** 2 + (y - pos.y) ** 2);
+                if (dist < 20) {
+                    clickedAgent = agent.id;
+                }
+            });
+            
+            if (clickedAgent) {
+                selectAgent(clickedAgent);
+            } else {
+                isDragging = true;
+                dragStartX = e.clientX - offsetX;
+                dragStartY = e.clientY - offsetY;
+            }
         });
         
         canvas.addEventListener('mousemove', (e) => {
@@ -988,423 +1728,7 @@
         });
         
         // ============================================
-        // STANDUP FUNCTION WITH REAL DATA
-        // ============================================
-        
-        async function fetchRealActivityData() {
-            try {
-                const response = await fetch('/api/logs/activity?limit=20');
-                const data = await response.json();
-                return data.logs || [];
-            } catch (error) {
-                console.log('Using sample data');
-                return generateSampleActivity();
-            }
-        }
-        
-        function generateSampleActivity() {
-            // Real activities based on actual agent tasks
-            return [
-                { agent: 'Nexus', action: 'delegated Singapore leads to Scout', time: '23:00', type: 'orchestration' },
-                { agent: 'Scout', action: 'completed Hong Kong leads (42 found)', time: '22:45', type: 'research' },
-                { agent: 'DealFlow', action: 'enriched 26 contacts with emails', time: '22:30', type: 'enrichment' },
-                { agent: 'Code-1', action: 'fixed API routing for logs', time: '22:15', type: 'development' },
-                { agent: 'Forge-1', action: 'deployed Kairosoft theme', time: '21:50', type: 'design' },
-                { agent: 'Audit', action: 'completed quality check (85/100)', time: '21:30', type: 'audit' },
-                { agent: 'Sentry', action: 'monitored deployment health', time: '21:00', type: 'monitoring' },
-                { agent: 'Glasses', action: 'delivered evening briefing', time: '20:45', type: 'research' }
-            ];
-        }
-        
-        function generateInsights(activities) {
-            const insights = [];
-            
-            // Analyze activity patterns
-            const agentActivity = {};
-            activities.forEach(a => {
-                agentActivity[a.agent] = (agentActivity[a.agent] || 0) + 1;
-            });
-            
-            const mostActive = Object.entries(agentActivity)
-                .sort((a, b) => b[1] - a[1])[0];
-            
-            if (mostActive) {
-                insights.push({
-                    type: 'productivity',
-                    title: '🏆 Most Active Agent',
-                    text: `${mostActive[0]} completed ${mostActive[1]} activities in the last 24 hours`,
-                    action: 'Add to PENDING_TASKS.md: Reward system for top performers'
-                });
-            }
-            
-            // Check for blockers
-            const idleAgents = AGENTS_DATA.filter(a => a.status === 'idle');
-            if (idleAgents.length > 3) {
-                insights.push({
-                    type: 'blocker',
-                    title: '⚠️ Idle Agents Detected',
-                    text: `${idleAgents.length} agents are idle: ${idleAgents.map(a => a.name).join(', ')}`,
-                    action: 'Assign new tasks from PENDING_TASKS.md to idle agents'
-                });
-            }
-            
-            // Check token usage
-            const highTokenAgents = AGENTS_DATA.filter(a => a.tokens > 1000000);
-            if (highTokenAgents.length > 0) {
-                insights.push({
-                    type: 'efficiency',
-                    title: '💰 High Token Usage',
-                    text: `${highTokenAgents.length} agents used >1M tokens. Consider optimization.`,
-                    action: 'Review high-usage agent workflows for efficiency improvements'
-                });
-            }
-            
-            // Check overdue tasks
-            const overdueTasks = [
-                { id: 'TASK-070', name: 'Fix Deployment', hours: 6.5 },
-                { id: 'TASK-066', name: 'API Endpoints', hours: 4 }
-            ];
-            
-            insights.push({
-                type: 'urgent',
-                title: '🔴 Overdue Tasks',
-                text: `${overdueTasks.length} P0 tasks are overdue`,
-                action: 'Escalate TASK-070 and TASK-066 to Code-2 and Code-3 immediately'
-            });
-            
-            return insights;
-        }
-        
-        async function startStandup() {
-            const modal = document.getElementById('standupModal');
-            const content = document.getElementById('standupContent');
-            
-            // Fetch real data
-            const activities = await fetchRealActivityData();
-            const insights = generateInsights(activities);
-            
-            // Build standup content
-            let html = `
-                <div style="margin-bottom: 20px;">
-                    <h3 style="font-family: 'Press Start 2P'; font-size: 0.7rem; margin-bottom: 10px;">
-                        📊 LAST 24 HOURS ACTIVITY
-                    </h3>
-                    <div style="background: var(--bg-secondary); padding: 10px; border-radius: 8px;">
-                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 15px;">
-                            <div style="text-align: center;">
-                                <div style="font-size: 1.5rem; color: var(--accent-green);">${activities.length}</div>
-                                <div style="font-size: 0.7rem;">Activities</div>
-                            </div>
-                            <div style="text-align: center;">
-                                <div style="font-size: 1.5rem; color: var(--accent-blue);">${new Set(activities.map(a => a.agent)).size}</div>
-                                <div style="font-size: 0.7rem;">Active Agents</div>
-                            </div>
-                            <div style="text-align: center;">
-                                <div style="font-size: 1.5rem; color: var(--accent-purple);">${AGENTS_DATA.filter(a => a.status === 'busy').length}</div>
-                                <div style="font-size: 0.7rem;">Busy Now</div>
-                            </div>
-                        </div>
-                        <div style="max-height: 150px; overflow-y: auto;">
-                            ${activities.map(a => `
-                                <div style="padding: 5px; border-bottom: 1px solid var(--panel-border); font-size: 0.85rem;">
-                                    <strong>${a.agent}</strong>: ${a.action}
-                                    <span style="color: var(--text-secondary); float: right;">${a.time}</span>
-                                </div>
-                            `).join('')}
-                        </div>
-                    </div>
-                </div>
-                
-                <div style="margin-bottom: 20px;">
-                    <h3 style="font-family: 'Press Start 2P'; font-size: 0.7rem; margin-bottom: 10px;">
-                        💡 AI-GENERATED INSIGHTS
-                    </h3>
-                    ${insights.map(insight => `
-                        <div class="insight-box" style="border-color: ${insight.type === 'urgent' ? 'var(--accent-pink)' : insight.type === 'blocker' ? 'var(--accent-yellow)' : 'var(--accent-green)'};">
-                            <div class="insight-title" style="color: ${insight.type === 'urgent' ? 'var(--accent-pink)' : insight.type === 'blocker' ? 'var(--accent-yellow)' : 'var(--accent-green)'};">
-                                ${insight.title}
-                            </div>
-                            <p style="margin: 10px 0; font-size: 0.9rem;">${insight.text}</p>
-                            <div style="background: var(--bg-primary); padding: 10px; border-radius: 4px; margin-top: 10px;">
-                                <strong>📝 Suggested Action:</strong> ${insight.action}
-                                <br><br>
-                                <button class="btn btn-primary" onclick="addToPendingTasks('${insight.action.replace(/'/g, "\\'")}')">
-                                    ➕ ADD TO PENDING TASKS
-                                </button>
-                            </div>
-                        </div>
-                    `).join('')}
-                </div>
-            `;
-            
-            content.innerHTML = html;
-            modal.classList.add('active');
-            
-            // Animate agents gathering at meeting table
-            animateStandup();
-        }
-        
-        function animateStandup() {
-            // Visual effect - could add agent movement to meeting table
-            addActivity('📢', 'Nexus', 'started daily standup with real data insights', 'system');
-        }
-        
-        function addToPendingTasks(action) {
-            // In a real implementation, this would write to PENDING_TASKS.md
-            alert(`✅ Added to PENDING_TASKS.md:\n\n${action}\n\n(This would be saved to the actual file in production)`);
-            addActivity('✅', 'System', `added improvement task: ${action.substring(0, 50)}...`, 'system');
-        }
-        
-        function closeStandupModal() {
-            document.getElementById('standupModal').classList.remove('active');
-        }
-        
-        // ============================================
-        // HIERARCHY TABLE FUNCTIONS
-        // ============================================
-        
-        // Exact hierarchy structure as specified
-        const HIERARCHY_STRUCTURE = {
-            commander: { id: 'ericf', name: 'EricF', role: 'Commander', emoji: '👑', team: 'Executive' },
-            aiLead: { id: 'nexus', name: 'Nexus', role: 'AI Lead', emoji: '🤖', team: 'Executive' },
-            teams: [
-                {
-                    name: 'Dev Team',
-                    lead: { id: 'codemaster', name: 'CodeMaster', role: 'Dev Lead', emoji: '💻' },
-                    members: [
-                        { id: 'code-1', name: 'Code-1', role: 'Backend Engineer', emoji: '⚡' },
-                        { id: 'code-2', name: 'Code-2', role: 'Backend Engineer', emoji: '🔧' },
-                        { id: 'code-3', name: 'Code-3', role: 'Backend Engineer', emoji: '🔌' }
-                    ]
-                },
-                {
-                    name: 'Design Team',
-                    lead: { id: 'forge', name: 'Forge', role: 'Design Lead', emoji: '🔨' },
-                    members: [
-                        { id: 'forge-2', name: 'Forge-2', role: 'UI Engineer', emoji: '🎨' },
-                        { id: 'forge-3', name: 'Forge-3', role: 'UI Engineer', emoji: '✨' },
-                        { id: 'pixel', name: 'Pixel', role: 'Pixel Artist', emoji: '🎨' }
-                    ]
-                },
-                {
-                    name: 'Research Team',
-                    lead: { id: 'glasses', name: 'Glasses', role: 'Research Lead', emoji: '🔍' },
-                    members: [
-                        { id: 'scout', name: 'Scout', role: 'Intel Specialist', emoji: '🔭' }
-                    ]
-                },
-                {
-                    name: 'Operations',
-                    lead: { id: 'sentry', name: 'Sentry', role: 'Ops Lead', emoji: '🛡️' },
-                    members: [
-                        { id: 'cipher', name: 'Cipher', role: 'Security', emoji: '🔐' }
-                    ]
-                },
-                {
-                    name: 'Content',
-                    lead: { id: 'quill', name: 'Quill', role: 'Content Lead', emoji: '✍️' },
-                    members: [
-                        { id: 'larry', name: 'Larry', role: 'Writer', emoji: '📝' }
-                    ]
-                },
-                {
-                    name: 'Marketing',
-                    lead: { id: 'gary', name: 'Gary', role: 'Marketing Lead', emoji: '📢' },
-                    members: [
-                        { id: 'coldcall', name: 'ColdCall', role: 'Outreach', emoji: '📞' }
-                    ]
-                },
-                {
-                    name: 'Audit',
-                    lead: { id: 'audit-1', name: 'Audit-1', role: 'Audit Lead', emoji: '🔍' },
-                    members: [
-                        { id: 'audit-2', name: 'Audit-2', role: 'Auditor', emoji: '📋' }
-                    ]
-                }
-            ]
-        };
-        
-        function getAgentData(agentId) {
-            return AGENTS_DATA.find(a => a.id === agentId) || { 
-                status: 'active', 
-                tasks: 0, 
-                currentTask: 'Available' 
-            };
-        }
-        
-        function renderHierarchyTable() {
-            const tbody = document.getElementById('hierarchyBody');
-            if (!tbody) return;
-            
-            let html = '';
-            
-            // Commander
-            const commander = HIERARCHY_STRUCTURE.commander;
-            const commanderData = getAgentData(commander.id);
-            html += renderHierarchyRow(commander, 'commander', 'Commander', commanderData);
-            
-            // AI Lead
-            const aiLead = HIERARCHY_STRUCTURE.aiLead;
-            const aiLeadData = getAgentData(aiLead.id);
-            html += renderHierarchyRow(aiLead, 'ai-lead', 'AI Lead', aiLeadData, 1);
-            
-            // Teams
-            HIERARCHY_STRUCTURE.teams.forEach(team => {
-                // Team header
-                html += `
-                    <tr class="team-header">
-                        <td colspan="6">📁 ${team.name}</td>
-                    </tr>
-                `;
-                
-                // Team lead
-                const leadData = getAgentData(team.lead.id);
-                html += renderHierarchyRow(team.lead, 'team-lead', 'Team Lead', leadData, 2);
-                
-                // Team members
-                team.members.forEach(member => {
-                    const memberData = getAgentData(member.id);
-                    html += renderHierarchyRow(member, 'specialist', 'Specialist', memberData, 3);
-                });
-            });
-            
-            tbody.innerHTML = html;
-        }
-        
-        function renderHierarchyRow(agent, level, levelLabel, data, indent = 0) {
-            const statusClass = data.status === 'active' ? 'status-active' : 
-                              data.status === 'busy' ? 'status-busy' : 'status-idle';
-            const levelClass = `level-${level}`;
-            const indentStyle = indent > 0 ? `padding-left: ${indent * 20}px` : '';
-            const currentTask = data.currentTask || (data.tasks > 0 ? `${data.tasks} tasks` : 'Available');
-            
-            return `
-                <tr class="${level} hierarchy-row" data-agent-id="${agent.id}" onclick="locateAgent('${agent.id}')" style="cursor: pointer;">
-                    <td><span class="level-badge ${levelClass}">${levelLabel}</span></td>
-                    <td style="${indentStyle}">
-                        <div class="hierarchy-agent">
-                            <span class="hierarchy-emoji">${agent.emoji}</span>
-                            <span class="hierarchy-name">${agent.name}</span>
-                        </div>
-                    </td>
-                    <td>${agent.role}</td>
-                    <td>${currentTask}</td>
-                    <td><span class="status-dot-table ${statusClass}"></span> ${data.status}</td>
-                    <td>
-                        <button class="btn-locate" onclick="event.stopPropagation(); locateAgent('${agent.id}')">
-                            🎯 Locate
-                        </button>
-                    </td>
-                </tr>
-            `;
-        }
-        
-        function locateAgent(agentId) {
-            const agent = AGENTS_DATA.find(a => a.id === agentId);
-            if (!agent) return;
-            
-            // Calculate position based on desk
-            let targetX = 0, targetY = 0;
-            
-            switch(agent.desk) {
-                case 'commander':
-                    targetX = -6; targetY = -4;
-                    break;
-                case 'nexus':
-                    targetX = 6; targetY = -4;
-                    break;
-                case 'dev':
-                    targetX = -5; targetY = 5;
-                    break;
-                case 'design':
-                    targetX = 5; targetY = 0;
-                    break;
-                case 'research':
-                    targetX = -3; targetY = -2;
-                    break;
-                case 'content':
-                    targetX = -2; targetY = 3;
-                    break;
-                case 'marketing':
-                    targetX = 2; targetY = 3;
-                    break;
-                case 'social':
-                    targetX = 4; targetY = 4;
-                    break;
-                case 'ops':
-                    targetX = -4; targetY = -1;
-                    break;
-                case 'qa':
-                    targetX = 3; targetY = -2;
-                    break;
-                case 'security':
-                    targetX = -3; targetY = 2;
-                    break;
-                case 'sales':
-                    targetX = 4; targetY = -3;
-                    break;
-                case 'intel':
-                    targetX = 2; targetY = -4;
-                    break;
-                default:
-                    targetX = 0; targetY = 0;
-            }
-            
-            // Animate camera to agent position
-            const targetIso = toIso(targetX, targetY, 0);
-            const centerX = canvas.width / 2;
-            const centerY = canvas.height / 2;
-            
-            // Calculate offset needed to center on agent
-            const targetOffsetX = centerX - targetIso.x + offsetX;
-            const targetOffsetY = centerY - targetIso.y + offsetY;
-            
-            // Animate the offset change
-            animateCamera(targetOffsetX, targetOffsetY);
-            
-            // Add activity
-            addActivity('🎯', 'System', `centered camera on ${agent.name}`, 'system');
-            
-            // Highlight the agent in the office
-            followAgent = agent.id;
-            setTimeout(() => { followAgent = null; }, 3000);
-        }
-        
-        function animateCamera(targetX, targetY) {
-            const startX = offsetX;
-            const startY = offsetY;
-            const duration = 500;
-            const startTime = performance.now();
-            
-            function animate(currentTime) {
-                const elapsed = currentTime - startTime;
-                const progress = Math.min(elapsed / duration, 1);
-                
-                // Ease out cubic
-                const ease = 1 - Math.pow(1 - progress, 3);
-                
-                offsetX = startX + (targetX - startX) * ease;
-                offsetY = startY + (targetY - startY) * ease;
-                
-                if (progress < 1) {
-                    requestAnimationFrame(animate);
-                }
-            }
-            
-            requestAnimationFrame(animate);
-        }
-        
-        function expandAllHierarchy() {
-            // Could expand team groups if we add collapsible sections
-            addActivity('📂', 'System', 'expanded hierarchy view', 'system');
-        }
-        
-        function collapseAllHierarchy() {
-            addActivity('📁', 'System', 'collapsed hierarchy view', 'system');
-        }
-
-        // ============================================
-        // UI FUNCTIONS
+        // CONTROLS
         // ============================================
         
         function toggleView() {
@@ -1420,6 +1744,140 @@
             addActivity('🔄', 'System', 'camera reset', 'system');
         }
         
+        function togglePause() {
+            isPaused = !isPaused;
+            document.getElementById('pauseBtn').textContent = isPaused ? '▶️ RESUME' : '⏸️ PAUSE';
+            addActivity(isPaused ? '⏸️' : '▶️', 'System', isPaused ? 'animations paused' : 'animations resumed', 'system');
+        }
+        
+        function refreshData() {
+            fetchAgents();
+            fetchTasks();
+            fetchActivityLogs();
+        }
+        
+        // ============================================
+        // STANDUP FUNCTION
+        // ============================================
+        
+        async function startStandup() {
+            const modal = document.getElementById('standupModal');
+            const content = document.getElementById('standupContent');
+            
+            // Fetch real data
+            await fetchActivityLogs();
+            
+            const activeCount = Array.from(agents.values()).filter(a => a.status === 'active').length;
+            const busyCount = Array.from(agents.values()).filter(a => a.status === 'busy').length;
+            const idleCount = Array.from(agents.values()).filter(a => a.status === 'idle').length;
+            
+            const insights = generateInsights();
+            
+            let html = `
+                <div style="margin-bottom: 20px;">
+                    <h3 style="font-family: 'Press Start 2P'; font-size: 0.7rem; margin-bottom: 10px;">
+                        📊 AGENT STATUS OVERVIEW
+                    </h3>
+                    <div style="background: var(--bg-secondary); padding: 10px; border-radius: 8px;">
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 15px;">
+                            <div style="text-align: center;">
+                                <div style="font-size: 1.5rem; color: var(--accent-green);">${activeCount}</div>
+                                <div style="font-size: 0.7rem;">Active</div>
+                            </div>
+                            <div style="text-align: center;">
+                                <div style="font-size: 1.5rem; color: var(--accent-yellow);">${busyCount}</div>
+                                <div style="font-size: 0.7rem;">Busy</div>
+                            </div>
+                            <div style="text-align: center;">
+                                <div style="font-size: 1.5rem; color: var(--accent-pink);">${idleCount}</div>
+                                <div style="font-size: 0.7rem;">Idle</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="margin-bottom: 20px;">
+                    <h3 style="font-family: 'Press Start 2P'; font-size: 0.7rem; margin-bottom: 10px;">
+                        💡 AI-GENERATED INSIGHTS
+                    </h3>
+                    ${insights.map(insight => `
+                        <div class="insight-box" style="border-color: ${insight.type === 'urgent' ? 'var(--accent-pink)' : insight.type === 'blocker' ? 'var(--accent-yellow)' : 'var(--accent-green)'};">
+                            <div class="insight-title" style="color: ${insight.type === 'urgent' ? 'var(--accent-pink)' : insight.type === 'blocker' ? 'var(--accent-yellow)' : 'var(--accent-green)'};">
+                                ${insight.title}
+                            </div>
+                            <p style="margin: 10px 0; font-size: 0.9rem;">${insight.text}</p>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+            
+            content.innerHTML = html;
+            modal.classList.add('active');
+            
+            // Animate agents gathering at meeting table
+            animateStandup();
+        }
+        
+        function generateInsights() {
+            const insights = [];
+            const idleAgents = Array.from(agents.values()).filter(a => a.status === 'idle');
+            const highTokenAgents = Array.from(agents.values()).filter(a => a.tokensUsed > 1000000);
+            
+            if (idleAgents.length > 3) {
+                insights.push({
+                    type: 'blocker',
+                    title: '⚠️ Idle Agents Detected',
+                    text: `${idleAgents.length} agents are idle: ${idleAgents.map(a => a.name).join(', ')}`
+                });
+            }
+            
+            if (highTokenAgents.length > 0) {
+                insights.push({
+                    type: 'efficiency',
+                    title: '💰 High Token Usage',
+                    text: `${highTokenAgents.length} agents used >1M tokens. Consider optimization.`
+                });
+            }
+            
+            insights.push({
+                type: 'info',
+                title: '✅ System Status',
+                text: `All systems operational. ${agents.size} agents connected.`
+            });
+            
+            return insights;
+        }
+        
+        function animateStandup() {
+            // Move agents to meeting table
+            const meetingX = -2.5;
+            const meetingY = -1.5;
+            
+            agents.forEach((agent, index) => {
+                setTimeout(() => {
+                    const angle = (index / agents.size) * Math.PI * 2;
+                    const radius = 3;
+                    agent.moveTo(meetingX + Math.cos(angle) * radius, meetingY + Math.sin(angle) * radius);
+                    agent.say('Heading to standup!');
+                }, index * 100);
+            });
+            
+            // Return to desks after 10 seconds
+            setTimeout(() => {
+                agents.forEach(agent => agent.returnToDesk());
+            }, 10000);
+            
+            addActivity('📢', 'Nexus', 'started daily standup', 'system');
+        }
+        
+        function closeStandupModal() {
+            document.getElementById('standupModal').classList.remove('active');
+        }
+        
+        // ============================================
+        // ACTIVITY LOG
+        // ============================================
+        
         function addActivity(emoji, agent, action, type = 'agent') {
             const log = document.getElementById('activityLog');
             const time = new Date().toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit' });
@@ -1432,45 +1890,26 @@
             while (log.children.length > 20) log.removeChild(log.lastChild);
         }
         
-        function renderAgentGrid() {
-            const grid = document.getElementById('agentGrid');
-            if (!grid) return;
-            grid.innerHTML = '';
-            
-            // Sort agents by hierarchy level
-            const levelOrder = { 'commander': 0, 'ai-lead': 1, 'team-lead': 2, 'specialist': 3 };
-            const sortedAgents = [...AGENTS_DATA].sort((a, b) => levelOrder[a.level] - levelOrder[b.level]);
-            
-            sortedAgents.forEach(agent => {
-                const div = document.createElement('div');
-                div.className = 'agent-mini';
-                div.innerHTML = `
-                    <div class="agent-mini-emoji">${agent.emoji}</div>
-                    <div class="agent-mini-name">${agent.name}</div>
-                `;
-                div.onclick = () => {
-                    addActivity(agent.emoji, agent.name, `clicked in roster`, 'agent');
-                    locateAgent(agent.id);
-                };
-                grid.appendChild(div);
-            });
+        // ============================================
+        // UTILITIES
+        // ============================================
+        
+        function formatNumber(num) {
+            if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+            if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
+            return num.toString();
         }
         
-        // ============================================
-        // ANIMATION LOOP
-        // ============================================
-        
-        function animate() {
-            if (followAgent) {
-                // Center on followed agent
-                const agent = AGENTS_DATA.find(a => a.id === followAgent);
-                if (agent) {
-                    // Smooth follow
-                }
-            }
+        function formatTime(isoString) {
+            if (!isoString) return '-';
+            const date = new Date(isoString);
+            const now = new Date();
+            const diff = Math.floor((now - date) / 60000);
             
-            drawOffice();
-            requestAnimationFrame(animate);
+            if (diff < 1) return 'Just now';
+            if (diff < 60) return `${diff}m ago`;
+            if (diff < 1440) return `${Math.floor(diff / 60)}h ago`;
+            return `${Math.floor(diff / 1440)}d ago`;
         }
         
         // ============================================
@@ -1478,80 +1917,23 @@
         // ============================================
         
         window.onload = function() {
-            renderAgentGrid();
-            renderHierarchyTable();
-            animate();
+            // Initialize with fallback data first
+            initializeFallbackAgents();
+            
+            // Then try to fetch real data
+            fetchAgents();
+            fetchTasks();
+            fetchActivityLogs();
+            
+            // Start animation loop
+            requestAnimationFrame(animate);
             
             // Initial activities
             setTimeout(() => addActivity('🤖', 'Nexus', 'initialized isometric office', 'system'), 500);
             setTimeout(() => addActivity('👑', 'EricF', 'watching from commander desk', 'agent'), 1000);
-            setTimeout(() => addActivity('💻', 'CodeMaster', 'fixing deployment issues', 'agent'), 1500);
-        };
-        
-        // Auto-refresh every 30 seconds for real-time updates
-        setInterval(async () => {
-            console.log('[Auto-Refresh] Syncing agent data...');
-            try {
-                const response = await fetch('/api/agents');
-                if (response.ok) {
-                    const data = await response.json();
-                    if (data.agents && Array.isArray(data.agents)) {
-                        // Update AGENTS_DATA with new data
-                        data.agents.forEach(agent => {
-                            const existing = AGENTS_DATA.find(a => a.id === agent.id);
-                            if (existing) {
-                                existing.status = agent.status || existing.status;
-                                existing.tasks = agent.tasks || existing.tasks;
-                                existing.tokens = agent.tokens || existing.tokens;
-                                existing.currentTask = agent.currentTask || agent.task || existing.currentTask;
-                            }
-                        });
-                        // Re-render the hierarchy table
-                        renderHierarchyTable();
-                        addActivity('🔄', 'System', 'synced agent data from API', 'system');
-                    }
-                }
-            } catch (error) {
-                console.log('[Auto-Refresh] API sync failed:', error);
-            }
-        }, 30000);
-        
-        // Manual refresh function
-        window.refreshData = function() {
-            const btn = document.getElementById('refreshBtn');
-            if (btn) {
-                btn.textContent = '⏳';
-                btn.disabled = true;
-            }
             
-            console.log('[Manual Refresh] Reloading data...');
-            
-            // Reload agent data from API
-            fetch('/api/agents')
-                .then(response => response.json())
-                .then(data => {
-                    if (data.agents) {
-                        data.agents.forEach(agent => {
-                            const existing = AGENTS_DATA.find(a => a.id === agent.id);
-                            if (existing) {
-                                existing.status = agent.status || existing.status;
-                                existing.tasks = agent.tasks || existing.tasks;
-                                existing.tokens = agent.tokens || existing.tokens;
-                            }
-                        });
-                        renderHierarchyTable();
-                    }
-                    addActivity('🔄', 'System', 'manually refreshed data', 'system');
-                })
-                .catch(() => {
-                    addActivity('⚠️', 'System', 'refresh failed - API unavailable', 'system');
-                })
-                .finally(() => {
-                    if (btn) {
-                        btn.textContent = '🔄';
-                        btn.disabled = false;
-                    }
-                });
+            // Auto-refresh every 30 seconds
+            setInterval(refreshData, CONFIG.REFRESH_INTERVAL);
         };
     </script>
 </body>
