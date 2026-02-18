@@ -2,223 +2,384 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Task Board | Mission Control</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="theme-color" content="#2d1b4e">
+    <title>📋 Task Board | Mission Control</title>
+    
+    <!-- Kairosoft Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+    
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
-        
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
         :root {
-            --bg-primary: #0a0a0f;
-            --bg-secondary: #111118;
-            --bg-card: #15151d;
-            --bg-elevated: #1e1e2a;
+            /* Kairosoft Color Palette */
+            --bg-primary: #2d1b4e;
+            --bg-secondary: #3d2652;
+            --panel-bg: #f4e4c1;
+            --panel-border: #8b7355;
+            --panel-shadow: #5c4a3a;
+            --text-dark: #2c1810;
+            --text-light: #f4e4c1;
             --accent-cyan: #00d4ff;
-            --accent-pink: #ff2a6d;
-            --accent-purple: #a855f7;
-            --accent-green: #22c55e;
-            --accent-yellow: #fbbf24;
-            --text-primary: #fafafa;
-            --text-secondary: #a1a1aa;
-            --text-muted: #71717a;
-            --border: #27272a;
+            --accent-pink: #ff6b6b;
+            --accent-green: #51cf66;
+            --accent-blue: #339af0;
+            --accent-yellow: #fcc419;
+            --accent-purple: #da77f2;
+            --accent-orange: #ff8787;
+        }
+        
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box;
+            image-rendering: pixelated;
         }
         
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'VT323', monospace;
             background: var(--bg-primary);
-            color: var(--text-primary);
+            color: var(--text-light);
             min-height: 100vh;
+            line-height: 1.4;
         }
         
+        /* Pixel Grid Background */
         body::before {
             content: '';
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background-image: 
-                linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
-            background-size: 60px 60px;
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.15) 2px, rgba(0,0,0,0.15) 4px),
+                repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0,0,0,0.15) 2px, rgba(0,0,0,0.15) 4px);
             pointer-events: none;
             z-index: 0;
-            animation: gridMove 20s linear infinite;
         }
         
-        @keyframes gridMove {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(60px, 60px); }
-        }
-        
-        .header {
-            background: rgba(17, 17, 24, 0.95);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border);
-            padding: 0 2rem;
-            height: 70px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-        
-        .logo {
-            width: 42px;
-            height: 42px;
-            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            box-shadow: 0 0 30px rgba(0, 212, 255, 0.3);
-            animation: pulse 3s ease-in-out infinite;
-        }
-        
-        @keyframes pulse {
-            0%, 100% { box-shadow: 0 0 20px rgba(0, 212, 255, 0.3); }
-            50% { box-shadow: 0 0 40px rgba(0, 212, 255, 0.5), 0 0 60px rgba(168, 85, 247, 0.3); }
-        }
-        
-        .brand-text h1 {
-            font-size: 1.25rem;
-            font-weight: 700;
-            letter-spacing: -0.02em;
-        }
-        
-        .brand-text span {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            font-family: 'JetBrains Mono', monospace;
-        }
-        
-        .nav-tabs {
-            display: flex;
-            gap: 0.5rem;
-            background: rgba(255,255,255,0.05);
-            padding: 0.5rem;
-            border-radius: 12px;
-        }
-        
-        .nav-tab {
-            padding: 0.75rem 1.25rem;
-            border: none;
-            background: transparent;
-            color: var(--text-secondary);
-            font-size: 0.875rem;
-            font-weight: 500;
-            cursor: pointer;
-            border-radius: 8px;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            text-decoration: none;
-        }
-        
-        .nav-tab:hover, .nav-tab.active {
-            color: var(--text-primary);
-            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
-            box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
-        }
-        
-        .main-content {
-            padding: 2rem;
-            max-width: 1400px;
-            margin: 0 auto;
+        .game-container {
             position: relative;
             z-index: 1;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 15px;
+            min-height: 100vh;
+            padding-bottom: 100px;
         }
         
-        .update-banner {
-            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(168, 85, 247, 0.1));
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 1rem 1.5rem;
-            margin-bottom: 2rem;
+        /* Header */
+        .game-header {
+            background: linear-gradient(180deg, #5c3d7a 0%, #3d2652 100%);
+            border: 4px solid #2d1b4e;
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 0 #1a0f2e, inset 0 2px 0 rgba(255,255,255,0.1);
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
         }
         
-        .btn {
-            padding: 0.5rem 1rem;
-            background: var(--bg-elevated);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            color: var(--text-secondary);
+        .game-title {
+            font-family: 'Press Start 2P', cursive;
+            font-size: clamp(0.6rem, 2vw, 0.85rem);
+            color: var(--accent-yellow);
+            text-shadow: 3px 3px 0 #2d1b4e;
+            letter-spacing: 2px;
+            line-height: 1.6;
+        }
+        
+        .game-subtitle {
+            font-size: 1rem;
+            color: var(--text-light);
+            opacity: 0.8;
+            margin-top: 5px;
+        }
+        
+        /* Navigation */
+        .nav-panel {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .nav-btn {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.5rem;
+            padding: 10px 14px;
+            background: linear-gradient(180deg, #74c0fc 0%, #339af0 100%);
+            border: 3px solid #2d1b4e;
+            border-radius: 6px;
             cursor: pointer;
-            transition: all 0.2s;
-            font-size: 0.875rem;
+            box-shadow: 0 4px 0 #2d1b4e;
+            transition: all 0.1s;
+            color: var(--text-dark);
+            line-height: 1.4;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
         }
         
-        .btn:hover {
-            border-color: var(--accent-cyan);
-            color: var(--accent-cyan);
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 0 #2d1b4e;
         }
         
+        .nav-btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 0 0 #2d1b4e;
+        }
+        
+        .nav-btn.active {
+            background: linear-gradient(180deg, #69db7c 0%, #51cf66 100%);
+        }
+        
+        /* Panel Box */
+        .panel-box {
+            background: var(--panel-bg);
+            border: 4px solid var(--panel-border);
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 4px 0 var(--panel-shadow), inset 0 2px 0 rgba(255,255,255,0.5);
+            margin-bottom: 15px;
+        }
+        
+        .panel-title {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.65rem;
+            color: var(--panel-border);
+            margin-bottom: 12px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid var(--panel-border);
+            line-height: 1.6;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        /* Stats Bar */
         .stats-bar {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 1.5rem;
-            margin-bottom: 2rem;
+            gap: 15px;
+            margin-bottom: 15px;
         }
         
-        .stat-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 1.5rem;
+        .stat-box {
+            background: var(--panel-bg);
+            border: 3px solid var(--panel-border);
+            border-radius: 4px;
+            padding: 12px;
             text-align: center;
+            box-shadow: 0 3px 0 var(--panel-shadow);
         }
         
         .stat-value {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 1.2rem;
+            color: var(--text-dark);
+            margin-bottom: 5px;
         }
         
         .stat-label {
-            font-size: 0.875rem;
-            color: var(--text-muted);
+            color: #8b7355;
+            font-size: 0.8rem;
         }
         
+        /* Priority Summary */
+        .priority-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .priority-box {
+            border: 3px solid;
+            border-radius: 6px;
+            padding: 12px;
+            text-align: center;
+            box-shadow: 0 3px 0 var(--panel-shadow);
+        }
+        
+        .priority-box.p0 { background: rgba(255, 107, 107, 0.2); border-color: #ff6b6b; }
+        .priority-box.p1 { background: rgba(252, 196, 25, 0.2); border-color: #fcc419; }
+        .priority-box.p2 { background: rgba(0, 212, 255, 0.2); border-color: #00d4ff; }
+        .priority-box.p3 { background: rgba(134, 142, 153, 0.2); border-color: #adb5bd; }
+        
+        .priority-box .count {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 1rem;
+            margin-bottom: 5px;
+        }
+        
+        .priority-box.p0 .count { color: #ff6b6b; }
+        .priority-box.p1 .count { color: #e67700; }
+        .priority-box.p2 .count { color: #0066cc; }
+        .priority-box.p3 .count { color: #495057; }
+        
+        .priority-box .label {
+            font-size: 0.7rem;
+            color: var(--text-dark);
+        }
+        
+        /* Tabs */
         .tabs {
             display: flex;
-            gap: 0.5rem;
-            margin-bottom: 2rem;
-            border-bottom: 2px solid var(--border);
+            gap: 8px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
         }
         
-        .tab {
-            padding: 1rem 1.5rem;
-            background: transparent;
-            border: none;
-            color: var(--text-muted);
-            font-size: 0.875rem;
-            font-weight: 500;
+        .tab-btn {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.5rem;
+            padding: 10px 14px;
+            background: rgba(255,255,255,0.3);
+            border: 3px solid var(--panel-border);
+            border-radius: 6px;
             cursor: pointer;
-            border-bottom: 2px solid transparent;
+            box-shadow: 0 3px 0 var(--panel-shadow);
+            transition: all 0.1s;
+            color: var(--text-dark);
+        }
+        
+        .tab-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 0 var(--panel-shadow);
+        }
+        
+        .tab-btn.active {
+            background: linear-gradient(180deg, #fcc419 0%, #f59f00 100%);
+            border-color: #e67700;
+        }
+        
+        /* Task Cards */
+        .task-card {
+            background: linear-gradient(180deg, #fff 0%, #f0e6d3 100%);
+            border: 3px solid var(--panel-border);
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 12px;
             transition: all 0.2s;
+            position: relative;
+            overflow: hidden;
         }
         
-        .tab:hover {
-            color: var(--text-primary);
+        .task-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 4px;
+            background: var(--priority-color, var(--accent-blue));
         }
         
-        .tab.active {
-            color: var(--accent-cyan);
-            border-bottom-color: var(--accent-cyan);
+        .task-card.p0::before { background: var(--accent-pink); }
+        .task-card.p1::before { background: var(--accent-yellow); }
+        .task-card.p2::before { background: var(--accent-cyan); }
+        .task-card.p3::before { background: #adb5bd; }
+        
+        .task-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 0 var(--panel-shadow);
         }
         
+        .task-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+        
+        .task-title {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.6rem;
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+        
+        .task-id {
+            font-size: 0.8rem;
+            color: #8b7355;
+            margin-top: 4px;
+        }
+        
+        .task-desc {
+            color: #5c4a3a;
+            font-size: 1rem;
+            margin-bottom: 10px;
+            line-height: 1.3;
+        }
+        
+        .task-meta {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            font-size: 0.9rem;
+            color: var(--text-dark);
+        }
+        
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        /* Badges */
+        .priority-badge {
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.55rem;
+            font-family: 'Press Start 2P', cursive;
+            border: 2px solid;
+            white-space: nowrap;
+        }
+        
+        .priority-badge.p0 { background: rgba(255, 107, 107, 0.2); color: #c92a2a; border-color: #ff6b6b; }
+        .priority-badge.p1 { background: rgba(252, 196, 25, 0.2); color: #e67700; border-color: #fcc419; }
+        .priority-badge.p2 { background: rgba(0, 212, 255, 0.2); color: #0066cc; border-color: #00d4ff; }
+        
+        .status-badge {
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.55rem;
+            font-family: 'Press Start 2P', cursive;
+            border: 2px solid;
+            white-space: nowrap;
+        }
+        
+        .status-badge.complete { background: rgba(81, 207, 102, 0.2); color: #2b8a3e; border-color: #51cf66; }
+        .status-badge.progress { background: rgba(252, 196, 25, 0.2); color: #e67700; border-color: #fcc419; }
+        .status-badge.blocked { background: rgba(255, 107, 107, 0.2); color: #c92a2a; border-color: #ff6b6b; }
+        .status-badge.pending { background: rgba(134, 142, 153, 0.2); color: #495057; border-color: #adb5bd; }
+        
+        .completed-date {
+            font-size: 0.8rem;
+            color: #51cf66;
+            margin-top: 8px;
+            font-weight: bold;
+        }
+        
+        /* Progress Bar */
+        .progress-bar {
+            width: 100%;
+            height: 16px;
+            background: #ddd;
+            border: 2px solid var(--text-dark);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-top: 10px;
+            position: relative;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(180deg, #69db7c 0%, #51cf66 100%);
+            transition: width 0.5s ease;
+        }
+        
+        /* Tab Content */
         .tab-content {
             display: none;
         }
@@ -227,757 +388,463 @@
             display: block;
         }
         
-        .task-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-bottom: 1rem;
-            transition: all 0.2s;
+        /* Refresh Button */
+        .refresh-btn {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.5rem;
+            padding: 8px 12px;
+            background: linear-gradient(180deg, #fcc419 0%, #f59f00 100%);
+            border: 3px solid #2d1b4e;
+            border-radius: 6px;
+            cursor: pointer;
+            box-shadow: 0 3px 0 #2d1b4e;
+            color: var(--text-dark);
         }
         
-        .task-card:hover {
-            border-color: var(--accent-cyan);
+        .refresh-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 0 #2d1b4e;
         }
         
-        .task-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 1rem;
+        /* Mobile Nav */
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #3d2652;
+            border-top: 4px solid #2d1b4e;
+            padding: 10px;
+            z-index: 101;
+            justify-content: space-around;
         }
         
-        .task-title {
-            font-size: 1.1rem;
-            font-weight: 600;
+        .mobile-nav-btn {
+            padding: 10px 14px;
+            background: var(--panel-bg);
+            border: 3px solid var(--panel-border);
+            border-radius: 6px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.5rem;
+            color: var(--text-dark);
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+            line-height: 1.4;
+            box-shadow: 0 3px 0 var(--panel-shadow);
         }
         
-        .task-id {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            font-family: 'JetBrains Mono', monospace;
-        }
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: var(--panel-bg); border-radius: 5px; }
+        ::-webkit-scrollbar-thumb { background: var(--panel-border); border-radius: 5px; border: 2px solid var(--panel-bg); }
         
-        .task-meta {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 1rem;
-            flex-wrap: wrap;
-        }
-        
-        .meta-item {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-        }
-        
-        .priority-badge {
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-        
-        .priority-p0 { background: rgba(255, 42, 109, 0.2); color: var(--accent-pink); }
-        .priority-p1 { background: rgba(251, 191, 36, 0.2); color: var(--accent-yellow); }
-        .priority-p2 { background: rgba(0, 212, 255, 0.2); color: var(--accent-cyan); }
-        
-        .status-badge {
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 600;
-        }
-        
-        .status-complete { background: rgba(34, 197, 94, 0.2); color: var(--accent-green); }
-        .status-review { background: rgba(168, 85, 247, 0.2); color: var(--accent-purple); }
-        .status-blocked { background: rgba(255, 42, 109, 0.2); color: var(--accent-pink); }
-        
-        .completed-date {
-            font-size: 0.75rem;
-            color: var(--accent-green);
-            margin-top: 0.5rem;
+        /* Responsive */
+        @media (max-width: 768px) {
+            .game-container { padding: 10px; padding-bottom: 90px; }
+            .stats-bar { grid-template-columns: repeat(2, 1fr); }
+            .priority-grid { grid-template-columns: repeat(2, 1fr); }
+            .nav-panel { display: none; }
+            .mobile-nav { display: flex; }
+            .task-header { flex-direction: column; gap: 10px; }
         }
     </style>
 </head>
 <body>
-    <header class="header">
-        <div class="brand">
-            <div class="logo">📋</div>
-            <div class="brand-text">
-                <h1>Task Board</h1>
-                <span>Mission Control HQ</span>
+    <div class="game-container">
+        <!-- Header -->
+        <header class="game-header">
+            <div>
+                <div class="game-title">📋 TASK BOARD</div>
+                <div class="game-subtitle">Mission Control HQ</div>
             </div>
-        </div>
-        
-        <nav class="nav-tabs">
-            <a href="index.html" class="nav-tab"><span>📊</span> Overview</a>
-            <a href="living-pixel-office.html" class="nav-tab"><span>🏢</span> Office</a>
-            <a href="scout.html" class="nav-tab"><span>🔭</span> Scout</a>
-            <a href="dealflow-view.html" class="nav-tab"><span>💼</span> DealFlow</a>
-            <a href="data-viewer.html" class="nav-tab"><span>📁</span> Data</a>
-            <a href="token-tracker.html" class="nav-tab"><span>💰</span> Tokens</a>
-            <a href="task-board.html" class="nav-tab active"><span>📋</span> Tasks</a>
-            <a href="logs-view.html" class="nav-tab"><span>📝</span> Logs</a>
-        </nav>
-        
-        <div style="display: flex; align-items: center; gap: 1rem;">
-            <span style="font-size: 0.875rem; color: var(--text-muted);">🟢 20 Agents Active</span>
-            <button class="btn" onclick="window.location.reload()" style="font-size: 0.75rem; padding: 0.25rem 0.75rem;">🔄 Refresh</button>
-        </div>
-    </header>
+            
+            <nav class="nav-panel">
+                <a href="index.html" class="nav-btn">📊 HQ</a>
+                <a href="living-pixel-office.html" class="nav-btn">🏢 OFFICE</a>
+                <a href="scout.html" class="nav-btn">🔭 SCOUT</a>
+                <a href="dealflow-view.html" class="nav-btn">💼 DEALS</a>
+                <a href="task-board.html" class="nav-btn active">📋 TASKS</a>
+            </nav>
+            
+            <button class="refresh-btn" onclick="window.location.reload()">🔄 REFRESH</button>
+        </header>
 
-    <div class="main-content">
-        <!-- Last Updated Banner -->
-        <div class="update-banner">
-            <span>🕐 Last Updated: Feb 18, 2:30 AM HKT</span>
-            <button class="btn" onclick="if(window.parent!==window){window.parent.location.reload()}else{window.location.reload()}">🔄 Refresh</button>
-        </div>
-
-        <!-- Stats Bar -->
-        <div class="stats-bar">
-            <div class="stat-card">
-                <div class="stat-value" style="color: var(--accent-yellow);">16</div>
-                <div class="stat-label">Pending</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value" style="color: var(--accent-pink);">27</div>
-                <div class="stat-label">Blocked</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value" style="color: var(--accent-cyan);">4</div>
-                <div class="stat-label">In Progress</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value" style="color: var(--accent-green);">24</div>
-                <div class="stat-label">Completed Today</div>
+        <!-- Stats Panel -->
+        <div class="panel-box">
+            <div class="panel-title">📊 TASK STATS</div>
+            <div class="stats-bar">
+                <div class="stat-box">
+                    <div class="stat-value" style="color: #fcc419;">16</div>
+                    <div class="stat-label">PENDING</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" style="color: #ff6b6b;">27</div>
+                    <div class="stat-label">BLOCKED</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" style="color: #00d4ff;">4</div>
+                    <div class="stat-label">IN PROGRESS</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" style="color: #51cf66;">24</div>
+                    <div class="stat-label">COMPLETED</div>
+                </div>
             </div>
         </div>
 
         <!-- Priority Summary -->
-        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 2rem;">
-            <div style="background: rgba(255, 42, 109, 0.1); border: 1px solid var(--accent-pink); border-radius: 8px; padding: 1rem; text-align: center;">
-                <div style="font-size: 1.5rem; font-weight: 700; color: var(--accent-pink);">11</div>
-                <div style="font-size: 0.75rem; color: var(--text-muted);">🔴 P0 Critical</div>
+        <div class="priority-grid">
+            <div class="priority-box p0">
+                <div class="count">11</div>
+                <div class="label">🔴 P0 CRITICAL</div>
             </div>
-            <div style="background: rgba(251, 191, 36, 0.1); border: 1px solid var(--accent-yellow); border-radius: 8px; padding: 1rem; text-align: center;">
-                <div style="font-size: 1.5rem; font-weight: 700; color: var(--accent-yellow);">14</div>
-                <div style="font-size: 0.75rem; color: var(--text-muted);">🟡 P1 High</div>
+            <div class="priority-box p1">
+                <div class="count">14</div>
+                <div class="label">🟡 P1 HIGH</div>
             </div>
-            <div style="background: rgba(0, 212, 255, 0.1); border: 1px solid var(--accent-cyan); border-radius: 8px; padding: 1rem; text-align: center;">
-                <div style="font-size: 1.5rem; font-weight: 700; color: var(--accent-cyan);">10</div>
-                <div style="font-size: 0.75rem; color: var(--text-muted);">🟢 P2 Medium</div>
+            <div class="priority-box p2">
+                <div class="count">10</div>
+                <div class="label">🟢 P2 MEDIUM</div>
             </div>
-            <div style="background: rgba(161, 161, 170, 0.1); border: 1px solid var(--text-muted); border-radius: 8px; padding: 1rem; text-align: center;">
-                <div style="font-size: 1.5rem; font-weight: 700; color: var(--text-muted);">5</div>
-                <div style="font-size: 0.75rem; color: var(--text-muted);">⚪ P3 Low</div>
+            <div class="priority-box p3">
+                <div class="count">5</div>
+                <div class="label">⚪ P3 LOW</div>
             </div>
         </div>
 
         <!-- Tabs -->
         <div class="tabs">
-            <button class="tab active" onclick="switchTab('p0')">🔴 P0 Critical (11)</button>
-            <button class="tab" onclick="switchTab('p1')">🟡 P1 High (14)</button>
-            <button class="tab" onclick="switchTab('p2')">🟢 P2 Medium (10)</button>
-            <button class="tab" onclick="switchTab('p3')">⚪ P3 Low (5)</button>
-            <button class="tab" onclick="switchTab('completed')">✅ Completed (18)</button>
+            <button class="tab-btn active" onclick="switchTab('p0')">🔴 P0 (11)</button>
+            <button class="tab-btn" onclick="switchTab('p1')">🟡 P1 (14)</button>
+            <button class="tab-btn" onclick="switchTab('p2')">🟢 P2 (10)</button>
+            <button class="tab-btn" onclick="switchTab('completed')">✅ DONE (24)</button>
         </div>
 
-        <!-- PENDING TASKS -->
-        <div id="pending" class="tab-content active">
-            <div class="task-card">
+        <!-- P0 Tasks -->
+        <div id="p0" class="tab-content active">
+            <div class="task-card p0">
                 <div class="task-header">
                     <div>
-                        <div class="task-title">Fix Code API 404 Errors</div>
-                        <div class="task-id">TASK-001</div>
+                        <div class="task-title">🔴 Fix Code API 404 Errors</div>
+                        <div class="task-id">TASK-001 | Due: Feb 18</div>
                     </div>
-                    <span class="priority-badge priority-p0">P0 - Critical</span>
+                    <span class="status-badge progress">IN PROGRESS</span>
                 </div>
+                <div class="task-desc">API endpoints returning 404 errors. Needs debugging and fixing before deployment.</div>
                 <div class="task-meta">
                     <div class="meta-item">👤 Code</div>
-                    <div class="meta-item">📅 Due: Feb 18, 12:00 PM</div>
-                    <div class="meta-item">🕐 Est: 4 hours</div>
-                </div>
-                <div style="color: var(--text-secondary); font-size: 0.875rem;">
-                    API endpoints returning 404 errors. Needs debugging and fixing before deployment.
-                </div>
-            </div>
-
-            <div class="task-card">
-                <div class="task-header">
-                    <div>
-                        <div class="task-title">Complete 30 Leads/Day Quota</div>
-                        <div class="task-id">TASK-002</div>
-                    </div>
-                    <span class="priority-badge priority-p0">P0 - Critical</span>
-                </div>
-                <div class="task-meta">
-                    <div class="meta-item">👤 DealFlow</div>
-                    <div class="meta-item">📅 Due: Daily</div>
-                    <div class="meta-item">📊 Progress: 26/30 (87%)</div>
-                </div>
-                <div style="color: var(--text-secondary); font-size: 0.875rem;">
-                    Find 4 more high-quality leads to reach daily quota. Focus on DeFi and RWA.
-                </div>
-            </div>
-
-            <div class="task-card">
-                <div class="task-header">
-                    <div>
-                        <div class="task-title">Fix Data Viewer Click Functionality</div>
-                        <div class="task-id">TASK-048</div>
-                    </div>
-                    <span class="priority-badge priority-p1">P1 - High</span>
-                </div>
-                <div class="task-meta">
-                    <div class="meta-item">👤 Forge+Code</div>
-                    <div class="meta-item">📅 Due: Feb 18, 2:00 AM</div>
-                    <div class="meta-item">🕐 Est: 2 hours</div>
-                </div>
-                <div style="color: var(--text-secondary); font-size: 0.875rem;">
-                    Files listed but not clickable. Fix onclick handlers and content display.
-                </div>
-            </div>
-        </div>
-
-        <!-- IN PROGRESS -->
-        <div id="progress" class="tab-content">
-            <div class="task-card">
-                <div class="task-header">
-                    <div>
-                        <div class="task-title">Content Monetization Execution</div>
-                        <div class="task-id">TASK-040</div>
-                    </div>
-                    <span class="priority-badge priority-p1">P1 - High</span>
-                </div>
-                <div class="task-meta">
-                    <div class="meta-item">👤 Scout</div>
-                    <div class="meta-item">📅 Due: Feb 19, 5:00 PM</div>
-                    <div class="meta-item">📊 Status: Research phase</div>
-                </div>
-                <div style="color: var(--text-secondary); font-size: 0.875rem;">
-                    Deep research on X monetization, newsletters, YouTube, consulting. 30 opportunities identified.
-                </div>
-            </div>
-
-            <div class="task-card">
-                <div class="task-header">
-                    <div>
-                        <div class="task-title">Regional Lead Generation</div>
-                        <div class="task-id">TASK-041</div>
-                    </div>
-                    <span class="priority-badge priority-p1">P1 - High</span>
-                </div>
-                <div class="task-meta">
-                    <div class="meta-item">👤 DealFlow</div>
-                    <div class="meta-item">📅 Due: Feb 19, 5:00 PM</div>
-                    <div class="meta-item">🌍 6 countries: PH, SG, HK, JP, UK, US</div>
-                </div>
-                <div style="color: var(--text-secondary); font-size: 0.875rem;">
-                    Find 5 leads per region. Focus on crypto exchanges, DeFi protocols, fintech.
-                </div>
-            </div>
-        </div>
-
-        <!-- IN REVIEW -->
-        <div id="review" class="tab-content">
-            <div class="task-card">
-                <div class="task-header">
-                    <div>
-                        <div class="task-title">Office Page Standup Functionality</div>
-                        <div class="task-id">TASK-049</div>
-                    </div>
-                    <span class="status-badge status-review">IN REVIEW</span>
-                </div>
-                <div class="task-meta">
-                    <div class="meta-item">👤 Audit</div>
-                    <div class="meta-item">📅 Reviewed: Feb 18, 12:50 AM</div>
-                    <div class="meta-item">📊 Score: 88/100</div>
-                </div>
-                <div style="color: var(--text-secondary); font-size: 0.875rem;">
-                    Audit verified 8 features working. Minor JavaScript issues flagged. Awaiting final approval.
-                </div>
-            </div>
-        </div>
-
-        <!-- BLOCKED/WAITING -->
-        <div id="blocked" class="tab-content">
-            <div class="task-card">
-                <div class="task-header">
-                    <div>
-                        <div class="task-title">🚫 Cold Call Schedule Approval</div>
-                        <div class="task-id">TASK-019</div>
-                    </div>
-                    <span class="status-badge status-blocked">WAITING</span>
-                </div>
-                <div class="task-meta">
-                    <div class="meta-item">👤 EricF</div>
-                    <div class="meta-item">📅 Due: Feb 18, 12:00 PM</div>
-                    <div class="meta-item">⏳ Waiting since Feb 17</div>
-                </div>
-                <div style="color: var(--text-secondary); font-size: 0.875rem;">
-                    Approve cold call outreach plan. 26 leads ready. ColdCall agent waiting.
-                </div>
-            </div>
-
-            <div class="task-card">
-                <div class="task-header">
-                    <div>
-                        <div class="task-title">🚫 Larry API Credentials</div>
-                        <div class="task-id">TASK-013</div>
-                    </div>
-                    <span class="status-badge status-blocked">WAITING</span>
-                </div>
-                <div class="task-meta">
-                    <div class="meta-item">👤 EricF</div>
-                    <div class="meta-item">📅 Due: Feb 28, 11:59 PM</div>
-                    <div class="meta-item">🔑 Twitter/X + LinkedIn keys</div>
-                </div>
-                <div style="color: var(--text-secondary); font-size: 0.875rem;">
-                    Twitter/X and LinkedIn API keys needed. Larry can't auto-post without these.
-                </div>
-            </div>
-
-            <div class="task-card">
-                <div class="task-header">
-                    <div>
-                        <div class="task-title">🚫 Vector Search Setup</div>
-                        <div class="task-id">TASK-014</div>
-                    </div>
-                    <span class="status-badge status-blocked">BLOCKED</span>
-                </div>
-                <div class="task-meta">
-                    <div class="meta-item">👤 Nexus</div>
-                    <div class="meta-item">📅 Due: Feb 28, 11:59 PM</div>
-                    <div class="meta-item">🔑 Needs API key</div>
-                </div>
-                <div style="color: var(--text-secondary); font-size: 0.875rem;">
-                    Enable memory vector search. Needs API key for embedding service.
-                </div>
-            </div>
-
-            <div class="task-card">
-                <div class="task-header">
-                    <div>
-                        <div class="task-title">🚫 Fix Office Page Standup</div>
-                        <div class="task-id">TASK-030</div>
-                    </div>
-                    <span class="status-badge status-blocked">NOT STARTED</span>
-                </div>
-                <div class="task-meta">
-                    <div class="meta-item">👤 Forge</div>
-                    <div class="meta-item">📅 Due: Feb 18, 2:00 AM</div>
-                    <div class="meta-item">🔴 P0 - Critical</div>
-                </div>
-                <div style="color: var(--text-secondary); font-size: 0.875rem;">
-                    Fix Meeting tab updates, Minutes tab, Add Tasks button. JavaScript broken.
-                </div>
-            </div>
-
-            <div class="task-card">
-                <div class="task-header">
-                    <div>
-                        <div class="task-title">🚫 Fix Data Viewer Clicks</div>
-                        <div class="task-id">TASK-031</div>
-                    </div>
-                    <span class="status-badge status-blocked">NOT STARTED</span>
-                </div>
-                <div class="task-meta">
-                    <div class="meta-item">👤 Forge+Code</div>
-                    <div class="meta-item">📅 Due: Feb 18, 2:00 AM</div>
-                    <div class="meta-item">🔴 P0 - Critical</div>
-                </div>
-                <div style="color: var(--text-secondary); font-size: 0.875rem;">
-                    Files listed but not clickable. `loadFileList()` called before function defined.
-                </div>
-            </div>
-
-            <div class="task-card">
-                <div class="task-header">
-                    <div>
-                        <div class="task-title">🚫 Fix Refresh Buttons (5 Pages)</div>
-                        <div class="task-id">TASK-032</div>
-                    </div>
-                    <span class="status-badge status-blocked">NOT STARTED</span>
-                </div>
-                <div class="task-meta">
-                    <div class="meta-item">👤 Forge</div>
-                    <div class="meta-item">📅 Due: Feb 18, 1:30 AM</div>
-                    <div class="meta-item">🟡 P1 - High</div>
-                </div>
-                <div style="color: var(--text-secondary); font-size: 0.875rem;">
-                    Change `location.reload()` to `window.location.reload()` on 5 pages.
-                </div>
-            </div>
-            <div class="task-card">
-                <div class="task-header">
-                    <div>
-                        <div class="task-title">🚫 Create Telegram Channels for Agents</div>
-                        <div class="task-id">TASK-036</div>
-                    </div>
-                    <span class="status-badge status-blocked">NOT STARTED</span>
-                </div>
-                <div class="task-meta">
-                    <div class="meta-item">👤 Nexus</div>
-                    <div class="meta-item">📅 Due: Feb 18, 3:00 AM</div>
-                    <div class="meta-item">🟡 P1 - High</div>
-                </div>
-                <div style="color: var(--text-secondary); font-size: 0.875rem;">
-                    Create 20 Telegram channels (one per agent) for individual status updates. EricF requested 12+ hours ago.
-                </div>
-            </div>
-        </div>
-
-        <!-- COMPLETED -->
-        <div id="completed" class="tab-content">
-            <div class="task-card">
-                <div class="task-header">
-                    <div>
-                        <div class="task-title">✅ Content Monetization Execution Plan</div>
-                        <div class="task-id">TASK-040</div>
-                    </div>
-                    <span class="status-badge status-complete">COMPLETED</span>
-                </div>
-                <div class="task-meta">
-                    <div class="meta-item">👤 Scout</div>
-                    <div class="meta-item">📄 800+ lines, 30-day plan</div>
-                    <div class="meta-item">🎯 Score: 93/100</div>
-                </div>
-                <div class="completed-date">✓ Completed: Feb 18, 12:41 AM</div>
-            </div>
-
-            <div class="task-card">
-                <div class="task-header">
-                    <div>
-                        <div class="task-title">✅ Scout Deep Research Report</div>
-                        <div class="task-id">TASK-039</div>
-                    </div>
-                    <span class="status-badge status-complete">COMPLETED</span>
-                </div>
-                <div class="task-meta">
-                    <div class="meta-item">👤 Scout</div>
-                    <div class="meta-item">📄 30 opportunities, 10 areas</div>
-                    <div class="meta-item">🎯 Score: 94/100</div>
-                </div>
-                <div class="completed-date">✓ Completed: Feb 18, 12:38 AM</div>
-            </div>
-
-            <div class="task-card">
-                <div class="task-header">
-                    <div>
-                        <div class="task-title">✅ Data Viewer Bug Fix</div>
-                        <div class="task-id">TASK-047</div>
-                    </div>
-                    <span class="status-badge status-complete">COMPLETED</span>
-                </div>
-                <div class="task-meta">
-                    <div class="meta-item">👤 Nexus</div>
-                    <div class="meta-item">🔧 JavaScript fix deployed</div>
-                    <div class="meta-item">🎯 Score: 95/100</div>
-                </div>
-                <div class="completed-date">✓ Completed: Feb 18, 12:43 AM</div>
-            </div>
-
-            <div class="task-card">
-                <div class="task-header">
-                    <div>
-                        <div class="task-title">✅ Merge Agents into Overview</div>
-                        <div class="task-id">UI-007</div>
-                    </div>
-                    <span class="status-badge status-complete">COMPLETED</span>
-                </div>
-                <div class="task-meta">
-                    <div class="meta-item">👤 Nexus</div>
-                    <div class="meta-item">🎨 Unified dashboard</div>
-                </div>
-                <div class="completed-date">✓ Completed: Feb 18, 12:54 AM</div>
-            </div>
-
-            <div class="task-card">
-                <div class="task-header">
-                    <div>
-                        <div class="task-title">✅ Create Scout Opportunities Page</div>
-                        <div class="task-id">UI-008</div>
-                    </div>
-                    <span class="status-badge status-complete">COMPLETED</span>
-                </div>
-                <div class="task-meta">
-                    <div class="meta-item">👤 Nexus</div>
-                    <div class="meta-item">🔭 30 opportunities + bookmarks</div>
-                </div>
-                <div class="completed-date">✓ Completed: Feb 18, 12:51 AM</div>
-            </div>
-
-            <div class="task-card">
-                <div class="task-header">
-                    <div>
-                        <div class="task-title">✅ Agent Performance Dashboard</div>
-                        <div class="task-id">TASK-022</div>
-                    </div>
-                    <span class="status-badge status-complete">COMPLETED</span>
-                </div>
-                <div class="task-meta">
-                    <div class="meta-item">👤 Forge</div>
-                    <div class="meta-item">📊 Real-time metrics + charts</div>
-                    <div class="meta-item">🎯 Score: 92/100</div>
-                </div>
-                <div class="completed-date">✓ Completed: Feb 17, 11:47 PM</div>
-            </div>
-
-            <div class="task-card">
-                <div class="task-header">
-                    <div>
-                        <div class="task-title">✅ Lead Scoring Algorithm</div>
-                        <div class="task-id">TASK-023</div>
-                    </div>
-                    <span class="status-badge status-complete">COMPLETED</span>
-                </div>
-                <div class="task-meta">
-                    <div class="meta-item">👤 Code</div>
-                    <div class="meta-item">🔢 0-100 scale API</div>
-                    <div class="meta-item">🎯 Score: 91/100</div>
-                </div>
-                <div class="completed-date">✓ Completed: Feb 17, 11:52 PM</div>
-            </div>
-
-            <div class="task-card">
-                <div class="task-header">
-                    <div>
-                        <div class="task-title">✅ Competitor Monitoring System</div>
-                        <div class="task-id">TASK-027</div>
-                    </div>
-                    <span class="status-badge status-complete">COMPLETED</span>
-                </div>
-                <div class="task-meta">
-                    <div class="meta-item">👤 Scout</div>
-                    <div class="meta-item">🔍 10 competitors tracked</div>
-                    <div class="meta-item">🎯 Score: 93/100</div>
-                </div>
-                <div class="completed-date">✓ Completed: Feb 17, 11:47 PM</div>
-            </div>
-
-            <div class="task-card">
-                <div class="task-header">
-                    <div>
-                        <div class="task-title">✅ Weekly Report Generator</div>
-                        <div class="task-id">TASK-026</div>
-                    </div>
-                    <span class="status-badge status-complete">COMPLETED</span>
-                </div>
-                <div class="task-meta">
-                    <div class="meta-item">👤 Glasses</div>
-                    <div class="meta-item">📄 12-section template</div>
-                    <div class="meta-item">🎯 Score: 91/100</div>
-                </div>
-                <div class="completed-date">✓ Completed: Feb 17, 11:45 PM</div>
-            </div>
-
-            <div class="task-card">
-                <div class="task-header">
-                    <div>
-                        <div class="task-title">✅ Install PyTorch for Pixel</div>
-                        <div class="task-id">TASK-012</div>
-                    </div>
-                    <span class="status-badge status-complete">COMPLETED</span>
-                </div>
-                <div class="task-meta">
-                    <div class="meta-item">👤 Sentry</div>
-                    <div class="meta-item">🐍 PyTorch 2.10.0</div>
-                </div>
-                <div class="completed-date">✓ Completed: Feb 17, 11:50 PM</div>
-            </div>
-
-            <div class="task-card">
-                <div class="task-header">
-                    <div>
-                        <div class="task-title">✅ Standardize All Headers</div>
-                        <div class="task-id">UI-001</div>
-                    </div>
-                    <span class="status-badge status-complete">COMPLETED</span>
-                </div>
-                <div class="task-meta">
-            
-            <!-- P0 CRITICAL -->
-            <div class="task-card priority-p0">
-                <div class="task-header">
-                    <div>
-                        <div class="task-title">🔴 Fix Office Page Standup</div>
-                        <div class="task-id">TASK-030 | P0 | Due: Feb 18</div>
-                    </div>
-                    <span class="status-badge status-progress">IN PROGRESS</span>
-                </div>
-                <div class="task-desc">Fix Meeting tab updates, Minutes tab, Add Tasks button. JavaScript element references broken.</div>
-                <div class="task-meta">
-                    <div class="meta-item">👤 Forge</div>
-                    <div class="meta-item">🔧 JavaScript fix</div>
+                    <div class="meta-item">⏱️ 4 hours</div>
                     <div class="meta-item">⚡ Critical</div>
                 </div>
                 <div class="progress-bar">
-                    <div class="progress-fill" style="width: 45%"></div>
+                    <div class="progress-fill" style="width: 60%"></div>
                 </div>
             </div>
 
-            <div class="task-card priority-p0">
+            <div class="task-card p0">
                 <div class="task-header">
                     <div>
-                        <div class="task-title">🔴 Fix Data Viewer Clicks</div>
-                        <div class="task-id">TASK-031 | P0 | Due: Feb 18</div>
+                        <div class="task-title">🔴 Complete 30 Leads/Day Quota</div>
+                        <div class="task-id">TASK-002 | Due: Daily</div>
                     </div>
-                    <span class="status-badge status-progress">IN PROGRESS</span>
+                    <span class="status-badge complete">COMPLETE</span>
                 </div>
-                <div class="task-desc">Files listed but not clickable. Fix onclick handlers - loadFileList() called before function defined.</div>
+                <div class="task-desc">Daily quota met! 30 high-quality leads found. Focus on DeFi and RWA.</div>
                 <div class="task-meta">
-                    <div class="meta-item">👤 Forge+Code</div>
-                    <div class="meta-item">🔧 JS initialization</div>
-                    <div class="meta-item">⚡ Critical</div>
+                    <div class="meta-item">👤 DealFlow</div>
+                    <div class="meta-item">📊 30/30 (100%)</div>
+                    <div class="meta-item">✅ Done</div>
                 </div>
-                <div class="progress-bar">
-                    <div class="progress-fill" style="width: 40%"></div>
-                </div>
+                <div class="completed-date">✓ Completed: Feb 18, 5:35 AM</div>
             </div>
 
-            <div class="task-card priority-p0">
+            <div class="task-card p0">
                 <div class="task-header">
                     <div>
-                        <div class="task-title">🔴 Fix Refresh Buttons (5 Pages)</div>
-                        <div class="task-id">TASK-032 | P0 | Due: Feb 18</div>
+                        <div class="task-title">🔴 Scout Realistic Data</div>
+                        <div class="task-id">TASK-033 | Due: Feb 18</div>
                     </div>
-                    <span class="status-badge status-progress">IN PROGRESS</span>
+                    <span class="status-badge complete">COMPLETE</span>
                 </div>
-                <div class="task-desc">Change location.reload() to work in iframe context. Pages: office, scout, data-viewer, token-tracker, logs.</div>
+                <div class="task-desc">Fixed overly optimistic ROI estimates. Added hours/week and prerequisites.</div>
+                <div class="task-meta">
+                    <div class="meta-item">👤 Scout</div>
+                    <div class="meta-item">📊 15 opportunities</div>
+                    <div class="meta-item">🎯 94/100</div>
+                </div>
+                <div class="completed-date">✓ Completed: Feb 18, 10:59 AM</div>
+            </div>
+
+            <div class="task-card p0">
+                <div class="task-header">
+                    <div>
+                        <div class="task-title">🔴 Fix DealFlow Page</div>
+                        <div class="task-id">Forge-1 | Due: Feb 18, 2:00 PM</div>
+                    </div>
+                    <span class="status-badge complete">COMPLETE</span>
+                </div>
+                <div class="task-desc">Added 4 missing leads (30 total), fixed filters, added region filters (PH/HK/SG).</div>
                 <div class="task-meta">
                     <div class="meta-item">👤 Forge</div>
-                    <div class="meta-item">🔧 iframe fix</div>
-                    <div class="meta-item">⚡ Critical</div>
+                    <div class="meta-item">📊 30 leads</div>
+                    <div class="meta-item">✅ Done</div>
+                </div>
+                <div class="completed-date">✓ Completed: Feb 18, 1:59 PM</div>
+            </div>
+
+            <div class="task-card p0">
+                <div class="task-header">
+                    <div>
+                        <div class="task-title">🔴 Fix Overview Page</div>
+                        <div class="task-id">Forge-2 | Due: Feb 18, 2:00 PM</div>
+                    </div>
+                    <span class="status-badge complete">COMPLETE</span>
+                </div>
+                <div class="task-desc">Dynamic activity feed with real agent data, refresh/export/clear functions.</div>
+                <div class="task-meta">
+                    <div class="meta-item">👤 Forge</div>
+                    <div class="meta-item">🔄 Dynamic</div>
+                    <div class="meta-item">✅ Done</div>
+                </div>
+                <div class="completed-date">✓ Completed: Feb 18, 1:59 PM</div>
+            </div>
+        </div>
+
+        <!-- P1 Tasks -->
+        <div id="p1" class="tab-content">
+            <div class="task-card p1">
+                <div class="task-header">
+                    <div>
+                        <div class="task-title">🟡 Theme All Pages (Kairosoft)</div>
+                        <div class="task-id">TASK-067 | Due: Today</div>
+                    </div>
+                    <span class="status-badge progress">IN PROGRESS</span>
+                </div>
+                <div class="task-desc">Apply Kairosoft theme to task-board and living-pixel-office. Press Start 2P fonts, pixel aesthetic.</div>
+                <div class="task-meta">
+                    <div class="meta-item">👤 Forge</div>
+                    <div class="meta-item">🎨 Theme</div>
+                    <div class="meta-item">🎯 95/100</div>
                 </div>
                 <div class="progress-bar">
                     <div class="progress-fill" style="width: 50%"></div>
                 </div>
             </div>
 
-            <div class="task-card priority-p0">
+            <div class="task-card p1">
                 <div class="task-header">
                     <div>
-                        <div class="task-title">🔴 Scout Realistic Data</div>
-                        <div class="task-id">TASK-033 | P0 | Due: Feb 18</div>
+                        <div class="task-title">🟡 Agent Cards Enhancement</div>
+                        <div class="task-id">TASK-068 | Due: Feb 19, 10:00 AM</div>
                     </div>
-                    <span class="status-badge status-progress">IN PROGRESS</span>
+                    <span class="status-badge pending">PENDING</span>
                 </div>
-                <div class="task-desc">Fix overly optimistic ROI estimates (40-60% too high). Add hours/week and prerequisites fields.</div>
+                <div class="task-desc">Update agent cards with detailed token metrics: daily, weekly, total, cost in USD, efficiency rating.</div>
                 <div class="task-meta">
-                    <div class="meta-item">👤 Scout</div>
-                    <div class="meta-item">📊 Data revision</div>
-                    <div class="meta-item">⚡ Critical</div>
-                </div>
-                <div class="progress-bar">
-                    <div class="progress-fill" style="width: 35%"></div>
+                    <div class="meta-item">👤 Forge-2</div>
+                    <div class="meta-item">📊 Token metrics</div>
+                    <div class="meta-item">⏳ Waiting</div>
                 </div>
             </div>
 
-            <!-- P1 HIGH -->
-            <div class="task-card priority-p1">
+            <div class="task-card p1">
                 <div class="task-header">
                     <div>
-                        <div class="task-title">✅ Agent Performance Dashboard</div>
-                        <div class="task-id">TASK-022 | P1 | Due: Feb 20</div>
+                        <div class="task-title">🟡 PIE Radar Tab</div>
+                        <div class="task-id">TASK-055 | Due: Feb 18, 5:00 PM</div>
                     </div>
-                    <span class="status-badge status-complete">COMPLETED</span>
+                    <span class="status-badge pending">PENDING</span>
                 </div>
-                <div class="task-desc">Real-time agent metrics and performance tracking dashboard with Chart.js visualizations.</div>
+                <div class="task-desc">Create Radar tab for PIE intelligence. Live opportunity radar, funding alerts, competitor tracking.</div>
+                <div class="task-meta">
+                    <div class="meta-item">👤 Forge-1 + PIE</div>
+                    <div class="meta-item">🔭 Intelligence</div>
+                    <div class="meta-item">⏳ Waiting</div>
+                </div>
+            </div>
+
+            <div class="task-card p1">
+                <div class="task-header">
+                    <div>
+                        <div class="task-title">🟡 Agent Performance Dashboard</div>
+                        <div class="task-id">TASK-022 | Due: Feb 20</div>
+                    </div>
+                    <span class="status-badge complete">COMPLETE</span>
+                </div>
+                <div class="task-desc">Real-time agent metrics and performance tracking with Chart.js visualizations.</div>
                 <div class="task-meta">
                     <div class="meta-item">👤 Forge</div>
                     <div class="meta-item">📊 Dashboard</div>
+                    <div class="meta-item">🎯 96/100</div>
+                </div>
+                <div class="completed-date">✓ Completed: Feb 18, 5:30 AM</div>
+            </div>
+
+            <div class="task-card p1">
+                <div class="task-header">
+                    <div>
+                        <div class="task-title">🟡 Lead Scoring Algorithm v2.0</div>
+                        <div class="task-id">TASK-023 | Due: Feb 20</div>
+                    </div>
+                    <span class="status-badge complete">COMPLETE</span>
+                </div>
+                <div class="task-desc">AI-powered lead quality scoring (0-100) with 4 weighted criteria.</div>
+                <div class="task-meta">
+                    <div class="meta-item">👤 Nexus</div>
+                    <div class="meta-item">🤖 Algorithm</div>
+                    <div class="meta-item">🎯 94/100</div>
+                </div>
+                <div class="completed-date">✓ Completed: Feb 18, 5:30 AM</div>
+            </div>
+        </div>
+
+        <!-- P2 Tasks -->
+        <div id="p2" class="tab-content">
+            <div class="task-card p2">
+                <div class="task-header">
+                    <div>
+                        <div class="task-title">🟢 Content Repurposing System</div>
+                        <div class="task-id">TASK-024 | Due: Feb 21</div>
+                    </div>
+                    <span class="status-badge pending">PENDING</span>
+                </div>
+                <div class="task-desc">Auto-convert content across formats: blog→twitter→linkedin.</div>
+                <div class="task-meta">
+                    <div class="meta-item">👤 Quill</div>
+                    <div class="meta-item">📝 Content</div>
+                    <div class="meta-item">⏳ Planned</div>
+                </div>
+            </div>
+
+            <div class="task-card p2">
+                <div class="task-header">
+                    <div>
+                        <div class="task-title">🟢 Mobile App Mockups</div>
+                        <div class="task-id">TASK-025 | Due: Feb 21</div>
+                    </div>
+                    <span class="status-badge pending">PENDING</span>
+                </div>
+                <div class="task-desc">PWA mobile interface designs for Mission Control.</div>
+                <div class="task-meta">
+                    <div class="meta-item">👤 Pixel</div>
+                    <div class="meta-item">📱 Mobile</div>
+                    <div class="meta-item">⏳ Planned</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Completed Tasks -->
+        <div id="completed" class="tab-content">
+            <div class="task-card p1">
+                <div class="task-header">
+                    <div>
+                        <div class="task-title">✅ Agent Performance Dashboard</div>
+                        <div class="task-id">TASK-022</div>
+                    </div>
+                    <span class="status-badge complete">COMPLETE</span>
+                </div>
+                <div class="task-desc">Real-time agent metrics and performance tracking dashboard.</div>
+                <div class="task-meta">
+                    <div class="meta-item">👤 Forge</div>
                     <div class="meta-item">🎯 Score: 96/100</div>
                 </div>
                 <div class="completed-date">✓ Completed: Feb 18, 5:30 AM</div>
             </div>
 
-            <div class="task-card priority-p1">
+            <div class="task-card p1">
                 <div class="task-header">
                     <div>
                         <div class="task-title">✅ Lead Scoring Algorithm v2.0</div>
-                        <div class="task-id">TASK-023 | P1 | Due: Feb 20</div>
+                        <div class="task-id">TASK-023</div>
                     </div>
-                    <span class="status-badge status-complete">COMPLETED</span>
+                    <span class="status-badge complete">COMPLETE</span>
                 </div>
-                <div class="task-desc">AI-powered lead quality scoring system (0-100 scale) with 4 weighted criteria.</div>
+                <div class="task-desc">AI-powered lead quality scoring system (0-100 scale).</div>
                 <div class="task-meta">
                     <div class="meta-item">👤 Nexus</div>
-                    <div class="meta-item">🤖 Algorithm</div>
                     <div class="meta-item">🎯 Score: 94/100</div>
                 </div>
                 <div class="completed-date">✓ Completed: Feb 18, 5:30 AM</div>
             </div>
 
-            <div class="task-card priority-p1">
+            <div class="task-card p1">
                 <div class="task-header">
                     <div>
                         <div class="task-title">✅ Lead Contact Research (30 leads)</div>
-                        <div class="task-id">TASK-035 | P1 | Due: Feb 18</div>
+                        <div class="task-id">TASK-035</div>
                     </div>
-                    <span class="status-badge status-complete">COMPLETED</span>
+                    <span class="status-badge complete">COMPLETE</span>
                 </div>
-                <div class="task-desc">All 30 leads enriched with emails, LinkedIn, titles. 22 P0 + 8 P1 classified. Avg score: 89/100.</div>
+                <div class="task-desc">All 30 leads enriched with emails, LinkedIn, titles. 22 P0 + 8 P1.</div>
                 <div class="task-meta">
                     <div class="meta-item">👤 DealFlow</div>
-                    <div class="meta-item">🔍 Research</div>
                     <div class="meta-item">🎯 Score: 92/100</div>
                 </div>
                 <div class="completed-date">✓ Completed: Feb 18, 5:35 AM</div>
             </div>
 
-            <div class="task-card priority-p1">
+            <div class="task-card p0">
                 <div class="task-header">
                     <div>
-                        <div class="task-title">⏳ Deploy PIE</div>
-                        <div class="task-id">TASK-037 | P1 | Due: Feb 25</div>
+                        <div class="task-title">✅ P0 UI Fixes Bundle</div>
+                        <div class="task-id">TASK-030/031/032</div>
                     </div>
-                    <span class="status-badge status-pending">NOT STARTED</span>
+                    <span class="status-badge complete">COMPLETE</span>
                 </div>
-                <div class="task-desc">Predictive Intelligence Engine - Opportunity Radar, Friction Predictor, Context-Aware Pre-fetching.</div>
+                <div class="task-desc">Fixed Office Page, Data Viewer, Refresh Buttons across 5 pages.</div>
                 <div class="task-meta">
-                    <div class="meta-item">👤 Nexus + Glasses</div>
-                    <div class="meta-item">🚀 Innovation</div>
-                    <div class="meta-item">📅 8 weeks</div>
+                    <div class="meta-item">👤 Forge</div>
+                    <div class="meta-item">🎯 Score: 95/100</div>
                 </div>
+                <div class="completed-date">✓ Completed: Feb 18, 10:59 AM</div>
             </div>
 
-            <div class="task-card priority-p1">
+            <div class="task-card p0">
                 <div class="task-header">
                     <div>
-                        <div class="task-title">⏳ Deploy Voice Interface</div>
-                        <div class="task-id">TASK-038 | P1 | Due: Feb 28</div>
+                        <div class="task-title">✅ DealFlow + PIE Integration</div>
+                        <div class="task-id">TASK-043</div>
                     </div>
-                    <span class="status-badge status-pending">NOT STARTED</span>
+                    <span class="status-badge complete">COMPLETE</span>
                 </div>
-                <div class="task-desc">Voice-First Mission Control - Voice briefings, task delegation, status updates, agent summoning.</div>
+                <div class="task-desc">5 integration modules created. Contact enrichment, lead readiness, handoff API.</div>
                 <div class="task-meta">
-                    <div class="meta-item">👤 Nexus + Forge</div>
-                    <div class="meta-item">🎙️ Voice AI</div>
-                    <div class="meta-item">📅 8 weeks</div>
+                    <div class="meta-item">👤 DealFlow</div>
+                    <div class="meta-item">🎯 Score: 93/100</div>
                 </div>
+                <div class="completed-date">✓ Completed: Feb 18, 9:21 AM</div>
             </div>
-
-            <div class="task-card priority-p1">
-                <div class="task-header">
-                    <div>
-                        <div class="task-title">⏳ Deploy Swarm Orchestrator</div>
-                        <div class="task-id">TASK-039 | P1 | Due: Mar 15</div>
-                    </div>
-                    <span class="status-badge status-pending">NOT STARTED</span>
-                </div>
-                <div class="task-desc">Agent Swarm Orchestrator - Dynamic teams, parallel execution, inter-agent communication.</div>
-                <div class="task-meta">
-                    <div class="meta-item">👤 Nexus + All Agents</div>
-                    <div class="meta-item">🤖 Multi-agent</div>
-                    <div class="meta-item">📅 8 weeks</div>
-                </div>
-            </div>
-
         </div>
     </div>
+
+    <!-- Mobile Navigation -->
+    <nav class="mobile-nav">
+        <a href="index.html" class="mobile-nav-btn">📊<br>HQ</a>
+        <a href="scout.html" class="mobile-nav-btn">🔭<br>SCOUT</a>
+        <a href="dealflow-view.html" class="mobile-nav-btn">💼<br>DEALS</a>
+        <a href="task-board.html" class="mobile-nav-btn" style="background: #69db7c;">📋<br>TASKS</a>
+    </nav>
+
+    <script>
+        function switchTab(tabId) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Remove active from buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected tab
+            document.getElementById(tabId).classList.add('active');
+            
+            // Add active to clicked button
+            event.target.classList.add('active');
+        }
+    </script>
 </body>
 </html>
