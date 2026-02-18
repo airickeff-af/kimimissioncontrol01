@@ -2,38 +2,43 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-    <meta name="theme-color" content="#0a0a0f">
-    <title>Scout | Mission Control</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="theme-color" content="#2d1b4e">
+    <title>🔭 Scout | Mission Control</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --bg-primary: #0a0a0f;
-            --bg-secondary: #111118;
-            --bg-card: #15151d;
-            --bg-elevated: #1e1e2a;
+            --bg-primary: #2d1b4e;
+            --bg-secondary: #3d2652;
+            --panel-bg: #f4e4c1;
+            --panel-border: #8b7355;
+            --panel-shadow: #5c4a3a;
+            --text-dark: #2c1810;
+            --text-light: #f4e4c1;
             --accent-cyan: #00d4ff;
-            --accent-pink: #ff2a6d;
-            --accent-purple: #a855f7;
-            --accent-green: #22c55e;
-            --accent-yellow: #fbbf24;
-            --accent-orange: #f97316;
-            --text-primary: #fafafa;
-            --text-secondary: #a1a1aa;
-            --text-muted: #71717a;
-            --border: #27272a;
-            --border-hover: #3f3f46;
+            --accent-pink: #ff6b6b;
+            --accent-green: #51cf66;
+            --accent-blue: #339af0;
+            --accent-yellow: #fcc419;
+            --accent-purple: #da77f2;
+            --accent-orange: #ff8787;
         }
         
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            image-rendering: pixelated;
+            -webkit-tap-highlight-color: transparent;
+        }
         
         html {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'VT323', monospace;
             background: var(--bg-primary);
-            color: var(--text-primary);
-            line-height: 1.5;
+            color: var(--text-light);
+            line-height: 1.4;
             -webkit-text-size-adjust: 100%;
         }
         
@@ -42,415 +47,275 @@
             overflow-x: hidden;
         }
         
-        /* Animated Grid Background */
+        /* Pixel Grid Background */
         body::before {
             content: '';
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background-image: 
-                linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
-            background-size: 60px 60px;
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.15) 2px, rgba(0,0,0,0.15) 4px),
+                repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0,0,0,0.15) 2px, rgba(0,0,0,0.15) 4px);
             pointer-events: none;
             z-index: 0;
         }
         
+        /* Game Container */
+        .game-container {
+            position: relative;
+            z-index: 1;
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 15px;
+            min-height: 100vh;
+            padding-bottom: 100px;
+        }
+        
         /* Header */
-        .header {
-            background: rgba(17, 17, 24, 0.95);
-            border-bottom: 1px solid var(--border);
-            padding: 0 1rem;
-            height: 70px;
+        .game-header {
+            background: linear-gradient(180deg, #5c3d7a 0%, #3d2652 100%);
+            border: 4px solid #2d1b4e;
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 0 #1a0f2e, inset 0 2px 0 rgba(255,255,255,0.1);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            flex-wrap: wrap;
+            gap: 15px;
         }
         
-        .brand {
+        .game-title {
+            font-family: 'Press Start 2P', cursive;
+            font-size: clamp(0.6rem, 2vw, 0.85rem);
+            color: var(--accent-yellow);
+            text-shadow: 3px 3px 0 #2d1b4e;
+            letter-spacing: 2px;
+            line-height: 1.6;
+        }
+        
+        .game-stats {
             display: flex;
-            align-items: center;
-            gap: 0.75rem;
+            gap: 10px;
+            flex-wrap: wrap;
         }
         
-        .logo {
-            width: 42px;
-            height: 42px;
-            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            flex-shrink: 0;
+        .stat-box {
+            background: var(--panel-bg);
+            border: 3px solid var(--panel-border);
+            border-radius: 4px;
+            padding: 8px 12px;
+            min-width: 70px;
+            text-align: center;
+            box-shadow: 0 3px 0 var(--panel-shadow);
         }
         
-        .brand h1 {
-            font-size: 1.25rem;
-            font-weight: 700;
+        .stat-label {
+            color: #8b7355;
+            font-size: 0.7rem;
         }
         
-        .brand span {
+        .stat-value {
+            color: var(--text-dark);
+            font-family: 'Press Start 2P', cursive;
             font-size: 0.75rem;
-            color: var(--text-muted);
         }
         
-        /* Desktop Navigation */
+        /* Navigation */
+        .nav-panel {
+            background: var(--panel-bg);
+            border: 4px solid var(--panel-border);
+            border-radius: 8px;
+            padding: 12px;
+            box-shadow: 0 4px 0 var(--panel-shadow), inset 0 2px 0 rgba(255,255,255,0.5);
+            margin-bottom: 15px;
+        }
+        
         .nav-desktop {
             display: flex;
-            gap: 0.5rem;
-            background: rgba(255,255,255,0.05);
-            padding: 0.5rem;
-            border-radius: 12px;
+            gap: 8px;
+            flex-wrap: wrap;
         }
         
-        .nav-tab {
-            padding: 0.75rem 1rem;
-            border: none;
-            background: transparent;
-            color: var(--text-secondary);
-            font-size: 0.875rem;
-            font-weight: 500;
+        .nav-btn {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.5rem;
+            padding: 10px 14px;
+            background: linear-gradient(180deg, #74c0fc 0%, #339af0 100%);
+            border: 3px solid #2d1b4e;
+            border-radius: 6px;
             cursor: pointer;
-            border-radius: 8px;
-            transition: all 0.2s;
+            box-shadow: 0 4px 0 #2d1b4e;
+            transition: all 0.1s;
+            color: var(--text-dark);
+            line-height: 1.4;
             text-decoration: none;
-            display: flex;
+            display: inline-flex;
             align-items: center;
-            gap: 0.5rem;
-            white-space: nowrap;
+            gap: 6px;
         }
         
-        .nav-tab:hover, .nav-tab.active {
-            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
-            color: var(--text-primary);
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 0 #2d1b4e;
         }
         
-        /* Mobile Navigation Toggle */
-        .nav-toggle {
-            display: none;
-            width: 44px;
-            height: 44px;
-            background: var(--bg-elevated);
-            border: 1px solid var(--border);
+        .nav-btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 0 0 #2d1b4e;
+        }
+        
+        .nav-btn.active {
+            background: linear-gradient(180deg, #69db7c 0%, #51cf66 100%);
+        }
+        
+        /* Panel Box */
+        .panel-box {
+            background: var(--panel-bg);
+            border: 4px solid var(--panel-border);
             border-radius: 8px;
-            color: var(--text-primary);
-            font-size: 1.25rem;
-            cursor: pointer;
-            align-items: center;
-            justify-content: center;
+            padding: 15px;
+            box-shadow: 0 4px 0 var(--panel-shadow), inset 0 2px 0 rgba(255,255,255,0.5);
+            margin-bottom: 15px;
         }
         
-        /* Mobile Navigation Menu */
-        .nav-dropdown {
-            display: none;
-            position: fixed;
-            top: 70px;
-            left: 0;
-            right: 0;
-            background: var(--bg-secondary);
-            border-bottom: 1px solid var(--border);
-            padding: 1rem;
-            z-index: 99;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-        
-        .nav-dropdown.active {
-            display: flex;
-        }
-        
-        .nav-dropdown .nav-tab {
-            padding: 1rem;
-            justify-content: flex-start;
-        }
-        
-        /* Mobile Bottom Navigation */
-        .nav-mobile {
-            display: none;
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: var(--bg-secondary);
-            border-top: 1px solid var(--border);
-            padding: 0.5rem;
-            z-index: 101;
-            justify-content: space-around;
-        }
-        
-        .nav-mobile .nav-tab {
-            flex: 1;
-            flex-direction: column;
-            padding: 0.5rem 0.25rem;
+        .panel-title {
+            font-family: 'Press Start 2P', cursive;
             font-size: 0.65rem;
-            gap: 2px;
-        }
-        
-        /* Main Content */
-        .main-content {
-            padding: 1.5rem;
-            max-width: 1400px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 1;
-        }
-        
-        .page-header {
-            margin-bottom: 2rem;
-        }
-        
-        .page-header h1 {
-            font-size: 1.75rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-        
-        .page-header p {
-            color: var(--text-secondary);
+            color: var(--panel-border);
+            margin-bottom: 12px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid var(--panel-border);
+            line-height: 1.6;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
         
         /* Stats Grid */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin-bottom: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+            margin-bottom: 15px;
         }
         
         .stat-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 1.25rem;
+            background: linear-gradient(180deg, #fff 0%, #f0e6d3 100%);
+            border: 3px solid var(--panel-border);
+            border-radius: 6px;
+            padding: 15px;
+            text-align: center;
             transition: all 0.2s;
         }
         
         .stat-card:hover {
-            border-color: var(--border-hover);
-            transform: translateY(-2px);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 0 var(--panel-shadow);
         }
         
         .stat-card h3 {
-            font-size: 0.875rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-bottom: 0.5rem;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.5rem;
+            color: #8b7355;
+            margin-bottom: 8px;
         }
         
-        .stat-value {
-            font-size: 1.75rem;
-            font-weight: 700;
-            color: var(--accent-cyan);
+        .stat-card .value {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 1rem;
+            color: var(--text-dark);
+            margin-bottom: 5px;
         }
         
-        .stat-change {
-            font-size: 0.875rem;
+        .stat-card .change {
+            font-size: 0.85rem;
             color: var(--accent-green);
-            margin-top: 0.25rem;
-        }
-        
-        /* Actions Bar */
-        .actions-bar {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 1rem;
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-            margin-bottom: 2rem;
-        }
-        
-        .action-btn {
-            padding: 0.75rem 1.25rem;
-            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
-            border: none;
-            border-radius: 8px;
-            color: #000;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            min-height: 44px;
-        }
-        
-        .action-btn:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
-        }
-        
-        .action-btn.secondary {
-            background: var(--bg-elevated);
-            color: var(--text-primary);
-            border: 1px solid var(--border);
-        }
-        
-        /* Feature Cards */
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-        
-        .feature-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 1.5rem;
-            transition: all 0.2s;
-        }
-        
-        .feature-card:hover {
-            border-color: var(--accent-cyan);
-            transform: translateY(-2px);
-        }
-        
-        .feature-header {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            margin-bottom: 1rem;
-        }
-        
-        .feature-icon {
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.25rem;
-            flex-shrink: 0;
-        }
-        
-        .feature-card h3 {
-            font-size: 1.125rem;
-            font-weight: 600;
-        }
-        
-        .feature-card p {
-            color: var(--text-secondary);
-            font-size: 0.875rem;
-            margin-bottom: 1rem;
-        }
-        
-        .feature-status {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.375rem 0.75rem;
-            background: rgba(34, 197, 94, 0.1);
-            color: var(--accent-green);
-            border-radius: 6px;
-            font-size: 0.75rem;
-            font-weight: 500;
-            text-transform: uppercase;
-        }
-        
-        .feature-status::before {
-            content: '';
-            width: 6px;
-            height: 6px;
-            background: var(--accent-green);
-            border-radius: 50%;
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
         }
         
         /* Opportunity Cards */
-        .opportunity-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 1.5rem;
+        .opp-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 15px;
+        }
+        
+        .opp-card {
+            background: linear-gradient(180deg, #fff 0%, #f0e6d3 100%);
+            border: 3px solid var(--panel-border);
+            border-radius: 6px;
+            padding: 15px;
             transition: all 0.2s;
             position: relative;
+            overflow: hidden;
         }
         
-        .opportunity-card:hover {
-            border-color: var(--accent-cyan);
-            transform: translateY(-2px);
+        .opp-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 4px;
+            background: var(--card-color, var(--accent-cyan));
         }
         
-        .opportunity-card.high-risk {
-            border-left: 4px solid var(--accent-pink);
+        .opp-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 0 var(--panel-shadow);
         }
         
-        .opportunity-card.medium-risk {
-            border-left: 4px solid var(--accent-yellow);
-        }
+        .opp-card.high-risk::before { background: var(--accent-pink); }
+        .opp-card.medium-risk::before { background: var(--accent-yellow); }
+        .opp-card.low-risk::before { background: var(--accent-green); }
         
-        .opportunity-card.low-risk {
-            border-left: 4px solid var(--accent-green);
-        }
-        
-        .opportunity-header {
+        .opp-header {
             display: flex;
-            align-items: flex-start;
             justify-content: space-between;
-            margin-bottom: 1rem;
+            align-items: flex-start;
+            margin-bottom: 10px;
         }
         
-        .opportunity-title {
-            font-size: 1.125rem;
-            font-weight: 600;
-            margin-bottom: 0.25rem;
+        .opp-title {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.55rem;
+            color: var(--text-dark);
+            margin-bottom: 5px;
         }
         
-        .opportunity-type {
+        .opp-type {
             display: inline-block;
-            padding: 0.25rem 0.5rem;
-            background: rgba(0, 212, 255, 0.1);
-            color: var(--accent-cyan);
+            padding: 3px 8px;
+            background: rgba(0, 212, 255, 0.2);
+            color: var(--accent-blue);
             border-radius: 4px;
-            font-size: 0.75rem;
-            font-weight: 500;
+            font-size: 0.7rem;
         }
         
         .risk-badge {
-            padding: 0.25rem 0.5rem;
+            padding: 4px 8px;
             border-radius: 4px;
-            font-size: 0.7rem;
-            font-weight: 600;
-            text-transform: uppercase;
+            font-size: 0.6rem;
+            font-family: 'Press Start 2P', cursive;
         }
         
-        .risk-badge.high {
-            background: rgba(255, 42, 109, 0.15);
-            color: var(--accent-pink);
+        .risk-badge.high { background: rgba(255, 107, 107, 0.2); color: #c92a2a; }
+        .risk-badge.medium { background: rgba(252, 196, 25, 0.2); color: #e67700; }
+        .risk-badge.low { background: rgba(81, 207, 102, 0.2); color: #2b8a3e; }
+        
+        .opp-desc {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 12px;
+            line-height: 1.4;
         }
         
-        .risk-badge.medium {
-            background: rgba(251, 191, 36, 0.15);
-            color: var(--accent-yellow);
-        }
-        
-        .risk-badge.low {
-            background: rgba(34, 197, 94, 0.15);
-            color: var(--accent-green);
-        }
-        
-        .opportunity-metrics {
+        .opp-metrics {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 0.75rem;
-            margin: 1rem 0;
-            padding: 0.75rem 0;
-            border-top: 1px solid var(--border);
-            border-bottom: 1px solid var(--border);
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin: 12px 0;
+            padding: 12px 0;
+            border-top: 2px dashed var(--panel-border);
+            border-bottom: 2px dashed var(--panel-border);
         }
         
         .metric {
@@ -458,604 +323,587 @@
         }
         
         .metric-value {
-            font-size: 1rem;
-            font-weight: 700;
-            color: var(--accent-cyan);
-            font-family: 'JetBrains Mono', monospace;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.5rem;
+            color: var(--accent-blue);
         }
         
         .metric-label {
             font-size: 0.7rem;
-            color: var(--text-muted);
-            margin-top: 0.25rem;
+            color: #8b7355;
+            margin-top: 4px;
         }
         
-        .opportunity-section {
-            margin-top: 1rem;
+        .opp-section {
+            margin-top: 12px;
         }
         
-        .opportunity-section h4 {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            margin-bottom: 0.5rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
+        .opp-section h4 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.5rem;
+            color: #8b7355;
+            margin-bottom: 8px;
         }
         
-        .prereq-list, .skills-list {
+        .tag-list {
             display: flex;
             flex-wrap: wrap;
-            gap: 0.5rem;
+            gap: 6px;
         }
         
-        .prereq-tag, .skill-tag {
-            padding: 0.25rem 0.5rem;
-            background: var(--bg-elevated);
-            border: 1px solid var(--border);
+        .tag {
+            padding: 4px 8px;
+            background: rgba(139, 115, 85, 0.15);
+            border: 1px solid var(--panel-border);
             border-radius: 4px;
             font-size: 0.75rem;
-            color: var(--text-secondary);
+            color: var(--text-dark);
+        }
+        
+        .success-bar {
+            width: 100%;
+            height: 14px;
+            background: #ddd;
+            border: 2px solid var(--text-dark);
+            border-radius: 7px;
+            overflow: hidden;
+            margin-top: 8px;
+            position: relative;
+        }
+        
+        .success-fill {
+            height: 100%;
+            transition: width 0.5s ease;
+        }
+        
+        .success-fill.high { background: linear-gradient(90deg, #51cf66, #2b8a3e); }
+        .success-fill.medium { background: linear-gradient(90deg, #fcc419, #f59f00); }
+        .success-fill.low { background: linear-gradient(90deg, #ff8787, #fa5252); }
+        
+        .success-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.45rem;
+            color: var(--text-dark);
+            text-shadow: 1px 1px 0 rgba(255,255,255,0.7);
         }
         
         .roi-note {
             font-size: 0.75rem;
-            color: var(--text-muted);
+            color: #8b7355;
             font-style: italic;
-            margin-top: 0.5rem;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(139, 115, 85, 0.3);
         }
         
-        /* Data Section */
-        .data-section {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
+        /* Disclaimer */
+        .disclaimer {
+            background: linear-gradient(180deg, rgba(252, 196, 25, 0.2) 0%, rgba(245, 159, 0, 0.1) 100%);
+            border: 3px solid var(--accent-yellow);
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 15px;
         }
         
-        .data-section h2 {
-            font-size: 1.25rem;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: var(--accent-cyan);
+        .disclaimer h4 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.55rem;
+            color: #e67700;
+            margin-bottom: 8px;
         }
         
-        .data-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.875rem 0;
-            border-bottom: 1px solid var(--border);
+        .disclaimer p {
+            color: var(--text-dark);
+            font-size: 0.85rem;
+            line-height: 1.5;
         }
         
-        .data-row:last-child {
-            border-bottom: none;
+        /* Mobile Navigation */
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #3d2652;
+            border-top: 4px solid #2d1b4e;
+            padding: 10px;
+            z-index: 101;
+            justify-content: space-around;
         }
         
-        .data-label {
-            color: var(--text-secondary);
+        .mobile-nav-btn {
+            padding: 10px 14px;
+            background: var(--panel-bg);
+            border: 3px solid var(--panel-border);
+            border-radius: 6px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.5rem;
+            color: var(--text-dark);
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+            line-height: 1.4;
+            box-shadow: 0 3px 0 var(--panel-shadow);
         }
         
-        .data-value {
-            font-weight: 600;
-            color: var(--accent-cyan);
-        }
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: var(--panel-bg); border-radius: 5px; }
+        ::-webkit-scrollbar-thumb { background: var(--panel-border); border-radius: 5px; border: 2px solid var(--panel-bg); }
+        ::-webkit-scrollbar-thumb:hover { background: #6b5a45; }
         
-        /* Tablet Styles */
-        @media (max-width: 1024px) {
-            .nav-desktop {
-                display: none;
-            }
-            
-            .nav-toggle {
-                display: flex;
-            }
-            
-            .nav-mobile {
-                display: flex;
-            }
-            
-            .main-content {
-                padding: 1rem;
-                padding-bottom: 5rem;
-            }
-        }
-        
-        /* Mobile Styles */
+        /* Responsive */
         @media (max-width: 768px) {
-            .header {
-                height: 60px;
-                padding: 0 0.75rem;
-            }
-            
-            .logo {
-                width: 36px;
-                height: 36px;
-                font-size: 1.2rem;
-            }
-            
-            .brand h1 {
-                font-size: 1rem;
-            }
-            
-            .brand span {
-                display: none;
-            }
-            
-            .nav-dropdown {
-                top: 60px;
-            }
-            
-            .page-header h1 {
-                font-size: 1.5rem;
-            }
-            
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .stat-value {
-                font-size: 1.5rem;
-            }
-            
-            .actions-bar {
-                flex-direction: column;
-            }
-            
-            .action-btn {
-                width: 100%;
-                justify-content: center;
-            }
-            
-            .features-grid {
-                grid-template-columns: 1fr;
-            }
+            .game-container { padding: 10px; padding-bottom: 90px; }
+            .game-title { font-size: 0.5rem; }
+            .nav-desktop { display: none; }
+            .mobile-nav { display: flex; }
+            .opp-metrics { grid-template-columns: repeat(2, 1fr); }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
         }
         
-        /* Small Mobile */
         @media (max-width: 480px) {
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .feature-links {
-                flex-direction: column;
-            }
-            
-            .feature-link {
-                text-align: center;
-            }
+            .opp-grid { grid-template-columns: 1fr; }
+            .stats-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
-    <header class="header">
-        <div class="brand">
-            <div class="logo">🎯</div>
-            <div>
-                <h1>Mission Control</h1>
-                <span>Scout Dashboard</span>
+    <div class="game-container">
+        <!-- Header -->
+        <header class="game-header">
+            <div class="game-title">🔭 SCOUT INTELLIGENCE</div>
+            <div class="game-stats">
+                <div class="stat-box">
+                    <div class="stat-label">TRACKED</div>
+                    <div class="stat-value" style="color: #339af0;">15</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">OPPS</div>
+                    <div class="stat-value" style="color: #51cf66;">12</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">LEADS</div>
+                    <div class="stat-value" style="color: #fcc419;">55</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <div class="nav-panel">
+            <div class="nav-desktop">
+                <a href="index.html" class="nav-btn">📊 HQ</a>
+                <a href="living-pixel-office.html" class="nav-btn">🏢 OFFICE</a>
+                <a href="scout.html" class="nav-btn active">🔭 SCOUT</a>
+                <a href="dealflow-view.html" class="nav-btn">💼 DEALS</a>
+                <a href="task-board.html" class="nav-btn">📋 TASKS</a>
+                <a href="token-tracker.html" class="nav-btn">💰 TOKENS</a>
+                <a href="logs-view.html" class="nav-btn">📝 LOGS</a>
             </div>
         </div>
-        
-        <!-- Desktop Navigation -->
-        <nav class="nav-desktop">
-            <a href="index-v4.html" class="nav-tab">🏠 HQ</a>
-            <a href="task-board.html" class="nav-tab">📋 Tasks</a>
-            <a href="agent-performance.html" class="nav-tab">👥 Agents</a>
-            <a href="token-tracker.html" class="nav-tab">💰 Tokens</a>
-            <a href="lead-scoring.html" class="nav-tab">🎯 Leads</a>
-            <a href="scout.html" class="nav-tab active">🔭 Scout</a>
-            <a href="competitors.html" class="nav-tab">🎯 Competitors</a>
-        </nav>
-        
-        <!-- Mobile Nav Toggle -->
-        <button class="nav-toggle" onclick="toggleNav()" aria-label="Toggle navigation">☰</button>
-    </header>
-    
-    <!-- Mobile Dropdown Menu -->
-    <nav class="nav-dropdown" id="navDropdown">
-        <a href="index-v4.html" class="nav-tab">🏠 HQ</a>
-        <a href="task-board.html" class="nav-tab">📋 Tasks</a>
-        <a href="agent-performance.html" class="nav-tab">👥 Agents</a>
-        <a href="token-tracker.html" class="nav-tab">💰 Tokens</a>
-        <a href="scout.html" class="nav-tab active">🔭 Scout</a>
-        <a href="competitors.html" class="nav-tab">🎯 Competitors</a>
-    </nav>
 
-    <main class="main-content">
-        <div class="page-header">
-            <h1>🔭 Scout Intelligence Center</h1>
-            <p>Research, monitoring, and opportunity detection systems</p>
+        <!-- Disclaimer -->
+        <div class="disclaimer">
+            <h4>⚠️ REALITY CHECK DISCLAIMER</h4>
+            <p>ROI estimates assume consistent execution and favorable market conditions. <strong>Actual results are typically 40-60% lower in Year 1.</strong> Time to revenue estimates have been increased by 50-100% to reflect real-world execution challenges.</p>
         </div>
 
         <!-- Stats Overview -->
         <div class="stats-grid">
             <div class="stat-card">
-                <h3>Competitors Tracked</h3>
-                <div class="stat-value">15</div>
-                <div class="stat-change">+3 this week</div>
+                <h3>COMPETITORS</h3>
+                <div class="value" style="color: #339af0;">15</div>
+                <div class="change">+3 this week</div>
             </div>
             <div class="stat-card">
-                <h3>Opportunities Found</h3>
-                <div class="stat-value">12</div>
-                <div class="stat-change">5 high priority</div>
+                <h3>OPPORTUNITIES</h3>
+                <div class="value" style="color: #51cf66;">12</div>
+                <div class="change">5 high priority</div>
             </div>
             <div class="stat-card">
-                <h3>Auto-Discovered Leads</h3>
-                <div class="stat-value">55</div>
-                <div class="stat-change">This week</div>
+                <h3>AUTO-LEADS</h3>
+                <div class="value" style="color: #fcc419;">55</div>
+                <div class="change">This week</div>
             </div>
             <div class="stat-card">
-                <h3>Sentiment Score</h3>
-                <div class="stat-value">Neutral</div>
-                <div class="stat-change">7-day trend</div>
+                <h3>SENTIMENT</h3>
+                <div class="value" style="color: #da77f2;">NEUTRAL</div>
+                <div class="change">7-day trend</div>
             </div>
         </div>
 
         <!-- Quick Actions -->
-        <div class="actions-bar">
-            <a href="competitors.html" class="action-btn">🎯 View Competitors</a>
-            <a href="reports/opportunity-report-2026-02-17.json" class="action-btn secondary">📊 Latest Report</a>
-            <a href="agents/scout/opportunity-radar.js" class="action-btn secondary">⚙️ Configure</a>
-        </div>
-
-        <!-- Opportunity Cards -->
-        <h2 style="margin-bottom: 1rem;">💰 Active Opportunities</h2>
-        <div class="features-grid">
-            <!-- Opportunity 1: Affiliate Marketing -->
-            <div class="opportunity-card medium-risk">
-                <div class="opportunity-header">
-                    <div>
-                        <div class="opportunity-title">SaaS Affiliate Stack</div>
-                        <span class="opportunity-type">AFFILIATE MARKETING</span>
-                    </div>
-                    <span class="risk-badge medium">Medium Risk</span>
-                </div>
-                <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 1rem;">Promote Typefully, Beehiiv, and ConvertKit through content marketing.</p>
-                
-                <div class="opportunity-metrics">
-                    <div class="metric">
-                        <div class="metric-value">$200-500</div>
-                        <div class="metric-label">Monthly Revenue</div>
-                    </div>
-                    <div class="metric">
-                        <div class="metric-value">5-10 hrs</div>
-                        <div class="metric-label">Per Week</div>
-                    </div>
-                    <div class="metric">
-                        <div class="metric-value">3-6 mo</div>
-                        <div class="metric-label">To Profit</div>
-                    </div>
-                </div>
-                
-                <div class="opportunity-section">
-                    <h4>Prerequisites</h4>
-                    <div class="prereq-list">
-                        <span class="prereq-tag">1K+ Twitter followers</span>
-                        <span class="prereq-tag">Basic copywriting</span>
-                        <span class="prereq-tag">Consistent posting</span>
-                    </div>
-                </div>
-                
-                <div class="opportunity-section">
-                    <h4>Skills Needed</h4>
-                    <div class="skills-list">
-                        <span class="skill-tag">Content creation</span>
-                        <span class="skill-tag">Social media</span>
-                        <span class="skill-tag">Basic analytics</span>
-                    </div>
-                </div>
-                
-                <p class="roi-note">⚠️ Realistic ROI: 15-25% of optimistic estimates. Requires 3-6 months of consistent effort before meaningful revenue.</p>
-            </div>
-
-            <!-- Opportunity 2: Micro-Influencer Sponsorships -->
-            <div class="opportunity-card high-risk">
-                <div class="opportunity-header">
-                    <div>
-                        <div class="opportunity-title">Micro-Influencer Deals</div>
-                        <span class="opportunity-type">SPONSORED CONTENT</span>
-                    </div>
-                    <span class="risk-badge high">High Risk</span>
-                </div>
-                <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 1rem;">Partner with brands for sponsored tweets and content (1K-10K followers).</p>
-                
-                <div class="opportunity-metrics">
-                    <div class="metric">
-                        <div class="metric-value">$100-300</div>
-                        <div class="metric-label">Monthly Revenue</div>
-                    </div>
-                    <div class="metric">
-                        <div class="metric-value">8-15 hrs</div>
-                        <div class="metric-label">Per Week</div>
-                    </div>
-                    <div class="metric">
-                        <div class="metric-value">2-4 mo</div>
-                        <div class="metric-label">To First Deal</div>
-                    </div>
-                </div>
-                
-                <div class="opportunity-section">
-                    <h4>Prerequisites</h4>
-                    <div class="prereq-list">
-                        <span class="prereq-tag">2%+ engagement rate</span>
-                        <span class="prereq-tag">Defined niche</span>
-                        <span class="prereq-tag">Professional profile</span>
-                    </div>
-                </div>
-                
-                <div class="opportunity-section">
-                    <h4>Skills Needed</h4>
-                    <div class="skills-list">
-                        <span class="skill-tag">Negotiation</span>
-                        <span class="skill-tag">Content strategy</span>
-                        <span class="skill-tag">Brand alignment</span>
-                    </div>
-                </div>
-                
-                <p class="roi-note">⚠️ Realistic ROI: 20-30% of optimistic estimates. Highly competitive; most creators earn $0 in first 3 months.</p>
-            </div>
-
-            <!-- Opportunity 3: Newsletter Monetization -->
-            <div class="opportunity-card low-risk">
-                <div class="opportunity-header">
-                    <div>
-                        <div class="opportunity-title">Newsletter Monetization</div>
-                        <span class="opportunity-type">CONTENT</span>
-                    </div>
-                    <span class="risk-badge low">Low Risk</span>
-                </div>
-                <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 1rem;">Build and monetize an email newsletter through subscriptions and sponsorships.</p>
-                
-                <div class="opportunity-metrics">
-                    <div class="metric">
-                        <div class="metric-value">$500-2K</div>
-                        <div class="metric-label">Monthly Revenue</div>
-                    </div>
-                    <div class="metric">
-                        <div class="metric-value">10-20 hrs</div>
-                        <div class="metric-label">Per Week</div>
-                    </div>
-                    <div class="metric">
-                        <div class="metric-value">6-12 mo</div>
-                        <div class="metric-label">To Profit</div>
-                    </div>
-                </div>
-                
-                <div class="opportunity-section">
-                    <h4>Prerequisites</h4>
-                    <div class="prereq-list">
-                        <span class="prereq-tag">Subject expertise</span>
-                        <span class="prereq-tag">Writing skills</span>
-                        <span class="prereq-tag">Audience building</span>
-                    </div>
-                </div>
-                
-                <div class="opportunity-section">
-                    <h4>Skills Needed</h4>
-                    <div class="skills-list">
-                        <span class="skill-tag">Long-form writing</span>
-                        <span class="skill-tag">Email marketing</span>
-                        <span class="skill-tag">Community building</span>
-                    </div>
-                </div>
-                
-                <p class="roi-note">⚠️ Realistic ROI: 25-35% of optimistic estimates. Requires consistent publishing for 6+ months to build subscriber base.</p>
-            </div>
-
-            <!-- Opportunity 4: Crypto Airdrop Farming -->
-            <div class="opportunity-card high-risk">
-                <div class="opportunity-header">
-                    <div>
-                        <div class="opportunity-title">Strategic Airdrop Farming</div>
-                        <span class="opportunity-type">CRYPTO</span>
-                    </div>
-                    <span class="risk-badge high">High Risk</span>
-                </div>
-                <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 1rem;">Participate in testnets and early protocols for potential token rewards.</p>
-                
-                <div class="opportunity-metrics">
-                    <div class="metric">
-                        <div class="metric-value">$0-5K</div>
-                        <div class="metric-label">Per Airdrop</div>
-                    </div>
-                    <div class="metric">
-                        <div class="metric-value">5-15 hrs</div>
-                        <div class="metric-label">Per Project</div>
-                    </div>
-                    <div class="metric">
-                        <div class="metric-value">Unpredictable</div>
-                        <div class="metric-label">Timeline</div>
-                    </div>
-                </div>
-                
-                <div class="opportunity-section">
-                    <h4>Prerequisites</h4>
-                    <div class="prereq-list">
-                        <span class="prereq-tag">Crypto wallet setup</span>
-                        <span class="prereq-tag">Gas fee budget</span>
-                        <span class="prereq-tag">Technical aptitude</span>
-                    </div>
-                </div>
-                
-                <div class="opportunity-section">
-                    <h4>Skills Needed</h4>
-                    <div class="skills-list">
-                        <span class="skill-tag">DeFi protocols</span>
-                        <span class="skill-tag">Risk assessment</span>
-                        <span class="skill-tag">Network analysis</span>
-                    </div>
-                </div>
-                
-                <p class="roi-note">⚠️ HIGH RISK: 60-80% of airdrops yield $0. Gas fees and time investment often exceed returns. Many projects never launch tokens.</p>
-            </div>
-
-            <!-- Opportunity 5: AI Automation Services -->
-            <div class="opportunity-card medium-risk">
-                <div class="opportunity-header">
-                    <div>
-                        <div class="opportunity-title">AI Automation Services</div>
-                        <span class="opportunity-type">B2B SERVICES</span>
-                    </div>
-                    <span class="risk-badge medium">Medium Risk</span>
-                </div>
-                <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 1rem;">Build and sell AI-powered automation solutions for small businesses.</p>
-                
-                <div class="opportunity-metrics">
-                    <div class="metric">
-                        <div class="metric-value">$1K-5K</div>
-                        <div class="metric-label">Per Project</div>
-                    </div>
-                    <div class="metric">
-                        <div class="metric-value">15-30 hrs</div>
-                        <div class="metric-label">Per Project</div>
-                    </div>
-                    <div class="metric">
-                        <div class="metric-value">1-3 mo</div>
-                        <div class="metric-label">To First Client</div>
-                    </div>
-                </div>
-                
-                <div class="opportunity-section">
-                    <h4>Prerequisites</h4>
-                    <div class="prereq-list">
-                        <span class="prereq-tag">Programming skills</span>
-                        <span class="prereq-tag">AI tool expertise</span>
-                        <span class="prereq-tag">Portfolio projects</span>
-                    </div>
-                </div>
-                
-                <div class="opportunity-section">
-                    <h4>Skills Needed</h4>
-                    <div class="skills-list">
-                        <span class="skill-tag">API integration</span>
-                        <span class="skill-tag">Prompt engineering</span>
-                        <span class="skill-tag">Client management</span>
-                    </div>
-                </div>
-                
-                <p class="roi-note">⚠️ Realistic ROI: 40-50% of optimistic estimates. Requires technical skills and 1-3 months to land first paying client.</p>
-            </div>
-
-            <!-- Opportunity 6: Niche Info Products -->
-            <div class="opportunity-card low-risk">
-                <div class="opportunity-header">
-                    <div>
-                        <div class="opportunity-title">Niche Info Products</div>
-                        <span class="opportunity-type">DIGITAL PRODUCTS</span>
-                    </div>
-                    <span class="risk-badge low">Low Risk</span>
-                </div>
-                <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 1rem;">Create and sell ebooks, templates, or courses in a specialized niche.</p>
-                
-                <div class="opportunity-metrics">
-                    <div class="metric">
-                        <div class="metric-value">$300-1K</div>
-                        <div class="metric-label">Monthly Revenue</div>
-                    </div>
-                    <div class="metric">
-                        <div class="metric-value">5-10 hrs</div>
-                        <div class="metric-label">Per Week</div>
-                    </div>
-                    <div class="metric">
-                        <div class="metric-value">2-4 mo</div>
-                        <div class="metric-label">To First Sale</div>
-                    </div>
-                </div>
-                
-                <div class="opportunity-section">
-                    <h4>Prerequisites</h4>
-                    <div class="prereq-list">
-                        <span class="prereq-tag">Domain expertise</span>
-                        <span class="prereq-tag">Existing audience</span>
-                        <span class="prereq-tag">Product design</span>
-                    </div>
-                </div>
-                
-                <div class="opportunity-section">
-                    <h4>Skills Needed</h4>
-                    <div class="skills-list">
-                        <span class="skill-tag">Content creation</span>
-                        <span class="skill-tag">Marketing</span>
-                        <span class="skill-tag">Customer support</span>
-                    </div>
-                </div>
-                
-                <p class="roi-note">⚠️ Realistic ROI: 30-40% of optimistic estimates. Success heavily depends on existing audience and marketing ability.</p>
+        <div class="panel-box">
+            <div class="panel-title">⚡ QUICK ACTIONS</div>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                <a href="competitors.html" class="nav-btn">🎯 COMPETITORS</a>
+                <a href="reports/opportunity-report-2026-02-17.json" class="nav-btn secondary">📊 REPORT</a>
+                <a href="agents/scout/opportunity-radar.js" class="nav-btn secondary">⚙️ CONFIG</a>
             </div>
         </div>
 
-        <!-- System Status -->
-        <div class="data-section">
-            <h2>⚙️ System Status</h2>
-            <div class="data-row">
-                <span class="data-label">Last Competitor Check</span>
-                <span class="data-value">2 hours ago</span>
-            </div>
-            <div class="data-row">
-                <span class="data-label">Last Opportunity Scan</span>
-                <span class="data-value">Today 10:00 AM</span>
-            </div>
-            <div class="data-row">
-                <span class="data-label">Next Auto-Discovery</span>
-                <span class="data-value">Monday 9:00 AM</span>
-            </div>
-            <div class="data-row">
-                <span class="data-label">Active Alerts</span>
-                <span class="data-value">3 P0, 5 P1</span>
+        <!-- Opportunities -->
+        <div class="panel-box">
+            <div class="panel-title">💰 ACTIVE OPPORTUNITIES</div>
+            <div class="opp-grid">
+                <!-- X/Twitter -->
+                <div class="opp-card medium-risk">
+                    <div class="opp-header">
+                        <div>
+                            <div class="opp-title">X/Twitter Monetization</div>
+                            <span class="opp-type">SOCIAL</span>
+                        </div>
+                        <span class="risk-badge medium">MEDIUM</span>
+                    </div>
+                    <p class="opp-desc">Build audience and monetize through X Ad Revenue Sharing, subscriptions, and premium content.</p>
+                    <div class="opp-metrics">
+                        <div class="metric">
+                            <div class="metric-value">$100-500</div>
+                            <div class="metric-label">Monthly</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">10-15h</div>
+                            <div class="metric-label">Hours/Wk</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">6-12mo</div>
+                            <div class="metric-label">To Revenue</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">$0-100</div>
+                            <div class="metric-label">Startup</div>
+                        </div>
+                    </div>
+                    <div class="opp-section">
+                        <h4>PREREQUISITES</h4>
+                        <div class="tag-list">
+                            <span class="tag">X Premium ($8/mo)</span>
+                            <span class="tag">5M+ impressions/mo</span>
+                            <span class="tag">500+ followers</span>
+                        </div>
+                    </div>
+                    <div class="success-bar">
+                        <div class="success-fill medium" style="width: 15%;"></div>
+                        <div class="success-text">15% reach $500+/mo</div>
+                    </div>
+                    <p class="roi-note">⚠️ Reality: 10K followers ≠ revenue. Need 50K+ for upper range.</p>
+                </div>
+
+                <!-- Newsletter -->
+                <div class="opp-card medium-risk">
+                    <div class="opp-header">
+                        <div>
+                            <div class="opp-title">Newsletter Sponsorships</div>
+                            <span class="opp-type">CONTENT</span>
+                        </div>
+                        <span class="risk-badge medium">MEDIUM</span>
+                    </div>
+                    <p class="opp-desc">Build email newsletter and monetize through sponsorships. Focus on niche expertise.</p>
+                    <div class="opp-metrics">
+                        <div class="metric">
+                            <div class="metric-value">$200-600</div>
+                            <div class="metric-label">Monthly</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">8-12h</div>
+                            <div class="metric-label">Hours/Wk</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">12-18mo</div>
+                            <div class="metric-label">To Revenue</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">$50-200</div>
+                            <div class="metric-label">Startup</div>
+                        </div>
+                    </div>
+                    <div class="opp-section">
+                        <h4>PREREQUISITES</h4>
+                        <div class="tag-list">
+                            <span class="tag">5K+ subscribers</span>
+                            <span class="tag">25%+ open rate</span>
+                            <span class="tag">Weekly publishing</span>
+                        </div>
+                    </div>
+                    <div class="success-bar">
+                        <div class="success-fill medium" style="width: 20%;"></div>
+                        <div class="success-text">20% get 1+ sponsors/mo</div>
+                    </div>
+                    <p class="roi-note">⚠️ Reality: 1-2 sponsors at $100-250/issue (5K subs).</p>
+                </div>
+
+                <!-- SaaS Affiliate -->
+                <div class="opp-card medium-risk">
+                    <div class="opp-header">
+                        <div>
+                            <div class="opp-title">SaaS Affiliate Stack</div>
+                            <span class="opp-type">AFFILIATE</span>
+                        </div>
+                        <span class="risk-badge medium">MEDIUM</span>
+                    </div>
+                    <p class="opp-desc">Promote Typefully, Beehiiv, ConvertKit through content marketing and tutorials.</p>
+                    <div class="opp-metrics">
+                        <div class="metric">
+                            <div class="metric-value">$150-400</div>
+                            <div class="metric-label">Monthly</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">8-15h</div>
+                            <div class="metric-label">Hours/Wk</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">6-12mo</div>
+                            <div class="metric-label">To Profit</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">$0-50</div>
+                            <div class="metric-label">Startup</div>
+                        </div>
+                    </div>
+                    <div class="opp-section">
+                        <h4>PREREQUISITES</h4>
+                        <div class="tag-list">
+                            <span class="tag">1K+ followers</span>
+                            <span class="tag">Active blog</span>
+                            <span class="tag">Product reviews</span>
+                        </div>
+                    </div>
+                    <div class="success-bar">
+                        <div class="success-fill medium" style="width: 25%;"></div>
+                        <div class="success-text">25% earn $200+/mo</div>
+                    </div>
+                    <p class="roi-note">⚠️ Reality: 15-25% of estimates. 3-6 months for conversions.</p>
+                </div>
+
+                <!-- YouTube -->
+                <div class="opp-card medium-risk">
+                    <div class="opp-header">
+                        <div>
+                            <div class="opp-title">YouTube Channel</div>
+                            <span class="opp-type">VIDEO</span>
+                        </div>
+                        <span class="risk-badge medium">MEDIUM</span>
+                    </div>
+                    <p class="opp-desc">Create weekly AI/tech content and monetize through AdSense, sponsorships, affiliates.</p>
+                    <div class="opp-metrics">
+                        <div class="metric">
+                            <div class="metric-value">$200-800</div>
+                            <div class="metric-label">Monthly</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">20-40h</div>
+                            <div class="metric-label">Hours/Wk</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">12-24mo</div>
+                            <div class="metric-label">To Revenue</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">$500-2K</div>
+                            <div class="metric-label">Startup</div>
+                        </div>
+                    </div>
+                    <div class="opp-section">
+                        <h4>PREREQUISITES</h4>
+                        <div class="tag-list">
+                            <span class="tag">1K subs + 4K hours</span>
+                            <span class="tag">Recording gear</span>
+                            <span class="tag">Editing skills</span>
+                        </div>
+                    </div>
+                    <div class="success-bar">
+                        <div class="success-fill low" style="width: 5%;"></div>
+                        <div class="success-text">5% reach monetization</div>
+                    </div>
+                    <p class="roi-note">⚠️ Reality: 15-20% of estimates. Most earn <$100/mo Year 1.</p>
+                </div>
+
+                <!-- Digital Products -->
+                <div class="opp-card low-risk">
+                    <div class="opp-header">
+                        <div>
+                            <div class="opp-title">Digital Products</div>
+                            <span class="opp-type">PRODUCT</span>
+                        </div>
+                        <span class="risk-badge low">LOW</span>
+                    </div>
+                    <p class="opp-desc">Create and sell ebooks, templates, Notion dashboards, or courses.</p>
+                    <div class="opp-metrics">
+                        <div class="metric">
+                            <div class="metric-value">$300-1K</div>
+                            <div class="metric-label">Monthly</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">10-20h</div>
+                            <div class="metric-label">Hours/Wk</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">3-6mo</div>
+                            <div class="metric-label">To First Sale</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">$100-500</div>
+                            <div class="metric-label">Startup</div>
+                        </div>
+                    </div>
+                    <div class="opp-section">
+                        <h4>PREREQUISITES</h4>
+                        <div class="tag-list">
+                            <span class="tag">Proven expertise</span>
+                            <span class="tag">1K+ audience</span>
+                            <span class="tag">Product design</span>
+                        </div>
+                    </div>
+                    <div class="success-bar">
+                        <div class="success-fill medium" style="width: 30%;"></div>
+                        <div class="success-text">30% make 10+ sales</div>
+                    </div>
+                    <p class="roi-note">⚠️ Reality: 30-40% of estimates. Depends on audience size.</p>
+                </div>
+
+                <!-- AI Automation -->
+                <div class="opp-card medium-risk">
+                    <div class="opp-header">
+                        <div>
+                            <div class="opp-title">AI Automation Services</div>
+                            <span class="opp-type">B2B SERVICE</span>
+                        </div>
+                        <span class="risk-badge medium">MEDIUM</span>
+                    </div>
+                    <p class="opp-desc">Build and sell AI-powered automation solutions for small businesses.</p>
+                    <div class="opp-metrics">
+                        <div class="metric">
+                            <div class="metric-value">$1K-3K</div>
+                            <div class="metric-label">Per Project</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">15-30h</div>
+                            <div class="metric-label">Hours/Proj</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">2-4mo</div>
+                            <div class="metric-label">To First Client</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">$0-200</div>
+                            <div class="metric-label">Startup</div>
+                        </div>
+                    </div>
+                    <div class="opp-section">
+                        <h4>PREREQUISITES</h4>
+                        <div class="tag-list">
+                            <span class="tag">Python/JS skills</span>
+                            <span class="tag">AI tool expertise</span>
+                            <span class="tag">3+ portfolio projects</span>
+                        </div>
+                    </div>
+                    <div class="success-bar">
+                        <div class="success-fill medium" style="width: 35%;"></div>
+                        <div class="success-text">35% land first client</div>
+                    </div>
+                    <p class="roi-note">⚠️ Reality: 40-50% of estimates. 2-4 months to first client.</p>
+                </div>
+
+                <!-- Crypto Arbitrage - HIGH RISK -->
+                <div class="opp-card high-risk">
+                    <div class="opp-header">
+                        <div>
+                            <div class="opp-title">🚨 Crypto Arbitrage Bot</div>
+                            <span class="opp-type">CRYPTO</span>
+                        </div>
+                        <span class="risk-badge high">HIGH RISK</span>
+                    </div>
+                    <p class="opp-desc"><strong>NOT RECOMMENDED.</strong> Exploit price differences across exchanges. Requires sophisticated infrastructure.</p>
+                    <div class="opp-metrics">
+                        <div class="metric">
+                            <div class="metric-value">-$5K/+10K</div>
+                            <div class="metric-label">Monthly</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">20-40h</div>
+                            <div class="metric-label">Hours/Wk</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">3-6mo</div>
+                            <div class="metric-label">To Launch</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">$10K-50K</div>
+                            <div class="metric-label">Capital</div>
+                        </div>
+                    </div>
+                    <div class="opp-section">
+                        <h4>MAJOR RISKS</h4>
+                        <div class="tag-list">
+                            <span class="tag" style="background: rgba(255, 107, 107, 0.3); color: #c92a2a;">Exchange hacks</span>
+                            <span class="tag" style="background: rgba(255, 107, 107, 0.3); color: #c92a2a;">Funds locked</span>
+                            <span class="tag" style="background: rgba(255, 107, 107, 0.3); color: #c92a2a;">Flash crashes</span>
+                        </div>
+                    </div>
+                    <div class="success-bar">
+                        <div class="success-fill low" style="width: 5%;"></div>
+                        <div class="success-text">5% profitable long-term</div>
+                    </div>
+                    <p class="roi-note">🚨 <strong>WARNING:</strong> Arbitrage windows close in seconds. Most retail traders lose money.</p>
+                </div>
+
+                <!-- Micro-SaaS -->
+                <div class="opp-card medium-risk">
+                    <div class="opp-header">
+                        <div>
+                            <div class="opp-title">Micro-SaaS</div>
+                            <span class="opp-type">SOFTWARE</span>
+                        </div>
+                        <span class="risk-badge medium">MEDIUM</span>
+                    </div>
+                    <p class="opp-desc">Build a small software tool solving a specific problem for a niche audience.</p>
+                    <div class="opp-metrics">
+                        <div class="metric">
+                            <div class="metric-value">$500-2K</div>
+                            <div class="metric-label">Monthly</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">15-30h</div>
+                            <div class="metric-label">Hours/Wk</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">6-12mo</div>
+                            <div class="metric-label">To Launch</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">$200-1K</div>
+                            <div class="metric-label">Startup</div>
+                        </div>
+                    </div>
+                    <div class="opp-section">
+                        <h4>PREREQUISITES</h4>
+                        <div class="tag-list">
+                            <span class="tag">Full-stack skills</span>
+                            <span class="tag">Niche problem identified</span>
+                            <span class="tag">Marketing channel</span>
+                        </div>
+                    </div>
+                    <div class="success-bar">
+                        <div class="success-fill low" style="width: 10%;"></div>
+                        <div class="success-text">10% reach $1K MRR</div>
+                    </div>
+                    <p class="roi-note">⚠️ Reality: 30-40% of estimates. Most never reach $1K MRR.</p>
+                </div>
             </div>
         </div>
-    </main>
-    
-    <!-- Mobile Bottom Navigation -->
-    <nav class="nav-mobile">
-        <a href="index-v4.html" class="nav-tab">
-            <span class="icon">🏠</span>
-            <span>HQ</span>
-        </a>
-        <a href="task-board.html" class="nav-tab">
-            <span class="icon">📋</span>
-            <span>Tasks</span>
-        </a>
-        <a href="agent-performance.html" class="nav-tab">
-            <span class="icon">👥</span>
-            <span>Agents</span>
-        </a>
-        <a href="token-tracker.html" class="nav-tab">
-            <span class="icon">💰</span>
-            <span>Tokens</span>
-        </a>
-        <a href="scout.html" class="nav-tab active">
-            <span class="icon">🔭</span>
-            <span>Scout</span>
-        </a>
+    </div>
+
+    <!-- Mobile Navigation -->
+    <nav class="mobile-nav">
+        <a href="index.html" class="mobile-nav-btn">📊<br>HQ</a>
+        <a href="living-pixel-office.html" class="mobile-nav-btn">🏢<br>OFFICE</a>
+        <a href="scout.html" class="mobile-nav-btn" style="background: #69db7c;">🔭<br>SCOUT</a>
+        <a href="task-board.html" class="mobile-nav-btn">📋<br>TASKS</a>
     </nav>
-
-    <script>
-        // Mobile nav toggle
-        function toggleNav() {
-            const dropdown = document.getElementById('navDropdown');
-            dropdown.classList.toggle('active');
-        }
-        
-        // Close dropdown when clicking outside
-        document.addEventListener('click', (e) => {
-            const dropdown = document.getElementById('navDropdown');
-            const toggle = document.querySelector('.nav-toggle');
-            if (!dropdown.contains(e.target) && !toggle.contains(e.target)) {
-                dropdown.classList.remove('active');
-            }
-        });
-        
-        // Auto-refresh every 30 minutes
-        setInterval(() => {
-            if(window.parent!==window){window.parent.location.reload()}else{window.location.reload()}
-        }, 30 * 60 * 1000);
-        
-        console.log('[Scout Dashboard] Loaded - Auto-refresh: 30 min');
-    </script>
 </body>
 </html>

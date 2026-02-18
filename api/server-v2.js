@@ -357,6 +357,155 @@ function getLeads() {
 }
 
 /**
+ * Get activity logs from session transcripts and agent activities
+ * Returns structured log entries for the logs-view.html frontend
+ */
+function getActivityLogs(limit = 100) {
+  const logs = [];
+  
+  // Scan for session transcript files
+  const memoryDir = path.join(CONFIG.workspaceRoot, 'memory');
+  if (fs.existsSync(memoryDir)) {
+    try {
+      const files = fs.readdirSync(memoryDir)
+        .filter(f => f.endsWith('.json') || f.endsWith('.md'))
+        .sort()
+        .reverse()
+        .slice(0, 50); // Limit files to scan
+      
+      for (const file of files) {
+        const filePath = path.join(memoryDir, file);
+        try {
+          const stat = fs.statSync(filePath);
+          const content = fs.readFileSync(filePath, 'utf-8');
+          
+          // Try to parse as JSON (session transcript)
+          if (file.endsWith('.json')) {
+            try {
+              const session = JSON.parse(content);
+              if (session.messages && Array.isArray(session.messages)) {
+                for (const msg of session.messages) {
+                  if (msg.role === 'user') {
+                    logs.push({
+                      timestamp: msg.timestamp || stat.mtime.toISOString(),
+                      agent: session.agent || 'ericf',
+                      type: 'user_message',
+                      message: typeof msg.content === 'string' ? msg.content : JSON.stringify(msg.content).substring(0, 200),
+                      sessionId: session.sessionId || file.replace('.json', '')
+                    });
+                  } else if (msg.role === 'assistant') {
+                    logs.push({
+                      timestamp: msg.timestamp || stat.mtime.toISOString(),
+                      agent: session.agent || 'nexus',
+                      type: 'agent_response',
+                      message: typeof msg.content === 'string' ? msg.content.substring(0, 200) : 'Response...',
+                      sessionId: session.sessionId || file.replace('.json', '')
+                    });
+                  }
+                }
+              }
+            } catch (e) {
+              // Not valid JSON, skip
+            }
+          } else if (file.endsWith('.md')) {
+            // Parse markdown memory files
+            const lines = content.split('\n').slice(0, 20);
+            const firstLine = lines[0] || '';
+            logs.push({
+              timestamp: stat.mtime.toISOString(),
+              agent: 'system',
+              type: 'system',
+              message: firstLine.substring(0, 200),
+              sessionId: file.replace('.md', '')
+            });
+          }
+        } catch (e) {
+          // Skip problematic files
+        }
+      }
+    } catch (e) {
+      console.error('Error reading memory directory:', e.message);
+    }
+  }
+  
+  // Also check agent activity from fileWatcher
+  try {
+    const recentActivity = fileWatcher.getRecentActivity ? fileWatcher.getRecentActivity(50) : [];
+    for (const activity of recentActivity) {
+      if (activity.agent) {
+        logs.push({
+          timestamp: activity.timestamp || new Date().toISOString(),
+          agent: activity.agent,
+          type: activity.type || 'task_complete',
+          message: activity.message || `Activity: ${activity.type}`,
+          sessionId: activity.sessionId || '-'
+        });
+      }
+    }
+  } catch (e) {
+    // fileWatcher might not have getRecentActivity
+  }
+  
+  // Parse log files from logs directory
+  if (fs.existsSync(CONFIG.logsDir)) {
+    try {
+      const logFiles = fs.readdirSync(CONFIG.logsDir)
+        .filter(f => f.endsWith('.log'))
+        .sort()
+        .reverse();
+      
+      for (const logFile of logFiles.slice(0, 5)) {
+        const filePath = path.join(CONFIG.logsDir, logFile);
+        const content = fs.readFileSync(filePath, 'utf-8');
+        const lines = content.split('\n').filter(l => l.trim());
+        
+        for (const line of lines.slice(-30)) { // Last 30 lines from each file
+          // Parse format: [2026-02-17T22:40:48.062Z] LEVEL: message
+          const match = line.match(/^\[(.+?)\]\s*(\w+):\s*(.+)/);
+          if (match) {
+            const level = match[2].toUpperCase();
+            const typeMap = {
+              'INFO': 'system',
+              'SUCCESS': 'task_complete',
+              'ERROR': 'error',
+              'WARN': 'system',
+              'WATCH': 'system',
+              'ENRICH': 'tool_call'
+            };
+            
+            // Try to determine agent from message content
+            let agent = 'system';
+            const agentMatch = line.match(/\b(Nexus|Code|Scout|Pixel|Forge|DealFlow|Audit|Cipher|Glasses|Sentry|Quill|Gary|Larry|ColdCall|Spark|Enrichment)\b/i);
+            if (agentMatch) {
+              agent = agentMatch[1].toLowerCase();
+            } else if (logFile.includes('enrichment')) {
+              agent = 'scout';
+            } else if (logFile.includes('office')) {
+              agent = 'pixel';
+            }
+            
+            logs.push({
+              timestamp: match[1],
+              agent: agent,
+              type: typeMap[level] || 'system',
+              message: match[3].substring(0, 200),
+              sessionId: logFile.replace('.log', '')
+            });
+          }
+        }
+      }
+    } catch (e) {
+      console.error('Error reading log files:', e.message);
+    }
+  }
+  
+  // Sort by timestamp descending
+  logs.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+  
+  return logs.slice(0, limit);
+}
+
+/**
  * Get opportunities data - LIVE from opportunities.json
  */
 function getOpportunities() {
@@ -533,6 +682,23 @@ async function handleRequest(req, res) {
     // Opportunities API
     else if (pathname === '/api/opportunities' && method === 'GET') {
       response = getOpportunities();
+      statusCode = 200;
+    }
+    
+    // Logs API - for logs-view.html
+    else if (pathname === '/api/logs/activity' && method === 'GET') {
+      const limit = query.limit ? parseInt(query.limit) : 100;
+      const logs = getActivityLogs(limit);
+      response = { 
+        success: true,
+        logs: logs,
+        meta: {
+          total: logs.length,
+          returned: logs.length,
+          limit: limit,
+          timestamp: new Date().toISOString()
+        }
+      };
       statusCode = 200;
     }
     

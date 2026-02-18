@@ -1,0 +1,454 @@
+/**
+ * Kairosoft Game Theme System
+ * Mission Control Dashboard Theme
+ * 
+ * Colors:
+ * - Background: #2d1b4e (Deep Purple)
+ * - Panel: #f4e4c1 (Beige/Cream)
+ * - Panel Border: #8b7355 (Brown)
+ * - Panel Shadow: #5c4a3a (Dark Brown)
+ * - Text Dark: #2c1810 (Dark Brown)
+ * - Text Light: #f4e4c1 (Cream)
+ * 
+ * Fonts:
+ * - Headers: 'Press Start 2P', cursive
+ * - Body: 'VT323', monospace
+ */
+
+/* Import Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap');
+
+/* CSS Variables */
+:root {
+    /* Kairosoft Color Palette */
+    --k-bg-primary: #2d1b4e;
+    --k-bg-secondary: #3d2652;
+    --k-panel-bg: #f4e4c1;
+    --k-panel-border: #8b7355;
+    --k-panel-shadow: #5c4a3a;
+    --k-text-dark: #2c1810;
+    --k-text-light: #f4e4c1;
+    
+    /* Accent Colors */
+    --k-accent-cyan: #00d4ff;
+    --k-accent-pink: #ff6b6b;
+    --k-accent-green: #51cf66;
+    --k-accent-blue: #339af0;
+    --k-accent-yellow: #fcc419;
+    --k-accent-purple: #da77f2;
+    --k-accent-orange: #ff8787;
+    
+    /* Agent Role Colors */
+    --k-nexus: #ff6b6b;
+    --k-audit: #ffc078;
+    --k-qa: #ffa94d;
+    --k-code: #38d9a9;
+    --k-forge: #ff8787;
+    --k-cipher: #adb5bd;
+    --k-dealflow: #e599f7;
+    --k-gary: #69db7c;
+    --k-glasses: #4dabf7;
+    --k-larry: #ffd43b;
+    --k-pie: #cc5de8;
+    --k-pixel: #da77f2;
+    --k-quill: #ffa94d;
+    --k-scout: #ffa8a8;
+    --k-sentry: #74c0fc;
+}
+
+/* Reset & Base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    image-rendering: pixelated;
+    -webkit-tap-highlight-color: transparent;
+}
+
+html {
+    font-family: 'VT323', monospace;
+    background: var(--k-bg-primary);
+    color: var(--k-text-light);
+    line-height: 1.4;
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* Pixel Grid Background */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-image: 
+        repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.15) 2px, rgba(0,0,0,0.15) 4px),
+        repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0,0,0,0.15) 2px, rgba(0,0,0,0.15) 4px);
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Game Container */
+.k-container {
+    position: relative;
+    z-index: 1;
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 15px;
+    min-height: 100vh;
+    padding-bottom: 100px;
+}
+
+/* Header */
+.k-header {
+    background: linear-gradient(180deg, #5c3d7a 0%, #3d2652 100%);
+    border: 4px solid #2d1b4e;
+    border-radius: 8px;
+    padding: 15px 20px;
+    margin-bottom: 15px;
+    box-shadow: 
+        0 4px 0 #1a0f2e,
+        inset 0 2px 0 rgba(255,255,255,0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.k-title {
+    font-family: 'Press Start 2P', cursive;
+    font-size: clamp(0.7rem, 2vw, 1rem);
+    color: var(--k-accent-yellow);
+    text-shadow: 3px 3px 0 #2d1b4e;
+    letter-spacing: 2px;
+    line-height: 1.8;
+}
+
+.k-stats {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.k-stat-box {
+    background: var(--k-panel-bg);
+    border: 3px solid var(--k-panel-border);
+    border-radius: 4px;
+    padding: 8px 12px;
+    min-width: 80px;
+    text-align: center;
+    box-shadow: 0 3px 0 var(--k-panel-shadow);
+}
+
+.k-stat-label {
+    color: #8b7355;
+    font-size: 0.75rem;
+    font-family: 'VT323', monospace;
+}
+
+.k-stat-value {
+    color: var(--k-text-dark);
+    font-weight: bold;
+    font-size: 1.3rem;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.9rem;
+}
+
+/* Panel Box */
+.k-panel {
+    background: var(--k-panel-bg);
+    border: 4px solid var(--k-panel-border);
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 
+        0 4px 0 var(--k-panel-shadow),
+        inset 0 2px 0 rgba(255,255,255,0.5);
+    margin-bottom: 15px;
+}
+
+.k-panel-title {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.65rem;
+    color: var(--k-panel-border);
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    border-bottom: 3px solid var(--k-panel-border);
+    line-height: 1.6;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Buttons */
+.k-btn {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.5rem;
+    padding: 10px 14px;
+    background: linear-gradient(180deg, #74c0fc 0%, #339af0 100%);
+    border: 3px solid #2d1b4e;
+    border-radius: 6px;
+    cursor: pointer;
+    box-shadow: 0 4px 0 #2d1b4e;
+    transition: all 0.1s;
+    color: var(--k-text-dark);
+    line-height: 1.4;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.k-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0 #2d1b4e;
+}
+
+.k-btn:active {
+    transform: translateY(4px);
+    box-shadow: 0 0 0 #2d1b4e;
+}
+
+.k-btn.active {
+    background: linear-gradient(180deg, #69db7c 0%, #51cf66 100%);
+}
+
+.k-btn.secondary {
+    background: linear-gradient(180deg, #fcc419 0%, #f59f00 100%);
+}
+
+.k-btn.danger {
+    background: linear-gradient(180deg, #ff8787 0%, #fa5252 100%);
+}
+
+/* Navigation */
+.k-nav {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+/* Cards */
+.k-card {
+    background: linear-gradient(180deg, #fff 0%, #f0e6d3 100%);
+    border: 3px solid var(--k-panel-border);
+    border-radius: 6px;
+    padding: 12px;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+}
+
+.k-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: var(--card-color, var(--k-accent-cyan));
+}
+
+.k-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 0 var(--k-panel-shadow);
+}
+
+/* Status Badges */
+.k-status {
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-family: 'Press Start 2P', cursive;
+    white-space: nowrap;
+    border: 2px solid;
+}
+
+.k-status.active {
+    background: rgba(81, 207, 102, 0.2);
+    color: #2b8a3e;
+    border-color: #51cf66;
+}
+
+.k-status.busy {
+    background: rgba(252, 196, 25, 0.2);
+    color: #e67700;
+    border-color: #fcc419;
+}
+
+.k-status.idle {
+    background: rgba(134, 142, 153, 0.2);
+    color: #495057;
+    border-color: #adb5bd;
+}
+
+.k-status.offline {
+    background: rgba(255, 107, 107, 0.2);
+    color: #c92a2a;
+    border-color: #ff6b6b;
+}
+
+/* Tables */
+.k-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.k-table th {
+    background: var(--k-panel-border);
+    color: var(--k-panel-bg);
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.55rem;
+    padding: 12px;
+    text-align: left;
+}
+
+.k-table td {
+    padding: 10px 12px;
+    border-bottom: 2px dashed var(--k-panel-border);
+    color: var(--k-text-dark);
+}
+
+.k-table tr:hover td {
+    background: rgba(139, 115, 85, 0.1);
+}
+
+/* Progress Bars */
+.k-progress {
+    width: 100%;
+    height: 20px;
+    background: #ddd;
+    border: 2px solid var(--k-text-dark);
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+}
+
+.k-progress-fill {
+    height: 100%;
+    transition: width 0.5s ease;
+}
+
+.k-progress-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.5rem;
+    color: var(--k-text-dark);
+    text-shadow: 1px 1px 0 rgba(255,255,255,0.7);
+}
+
+/* Form Elements */
+.k-input {
+    font-family: 'VT323', monospace;
+    font-size: 1rem;
+    padding: 10px 14px;
+    background: #fff;
+    border: 3px solid var(--k-panel-border);
+    border-radius: 6px;
+    color: var(--k-text-dark);
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.k-input:focus {
+    outline: none;
+    border-color: var(--k-accent-blue);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--k-panel-bg);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--k-panel-border);
+    border-radius: 5px;
+    border: 2px solid var(--k-panel-bg);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #6b5a45;
+}
+
+/* Mobile Navigation */
+.k-mobile-nav {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #3d2652;
+    border-top: 4px solid #2d1b4e;
+    padding: 10px;
+    z-index: 101;
+    justify-content: space-around;
+}
+
+.k-mobile-nav-btn {
+    padding: 10px 14px;
+    background: var(--k-panel-bg);
+    border: 3px solid var(--k-panel-border);
+    border-radius: 6px;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.5rem;
+    color: var(--k-text-dark);
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    line-height: 1.4;
+    box-shadow: 0 3px 0 var(--k-panel-shadow);
+}
+
+/* Grid Layouts */
+.k-grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
+.k-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+.k-grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
+
+/* Responsive */
+@media (max-width: 1200px) {
+    .k-grid-4 { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 768px) {
+    .k-container {
+        padding: 10px;
+        padding-bottom: 90px;
+    }
+    
+    .k-title {
+        font-size: 0.55rem;
+        letter-spacing: 1px;
+    }
+    
+    .k-stat-box {
+        padding: 6px 8px;
+        min-width: 60px;
+    }
+    
+    .k-grid-2, .k-grid-3, .k-grid-4 {
+        grid-template-columns: 1fr;
+    }
+    
+    .k-mobile-nav {
+        display: flex;
+    }
+}
+
+@media (max-width: 480px) {
+    .k-title {
+        font-size: 0.45rem;
+    }
+    
+    .k-mobile-nav-btn {
+        padding: 8px 10px;
+        font-size: 0.45rem;
+    }
+}
