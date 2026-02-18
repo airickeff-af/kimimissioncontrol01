@@ -94,14 +94,15 @@ fi
 # Check 4: JavaScript syntax validation
 echo "   Validating JavaScript syntax..."
 JS_ERRORS=0
-for file in mission-control/agents/*/*.js modules/*.js api/*.js 2>/dev/null; do
+# Use find to handle nested directories
+while IFS= read -r file; do
     if [ -f "$file" ]; then
         if ! node --check "$file" 2>/dev/null; then
             echo -e "${RED}   ❌ Syntax error in $file${NC}"
             JS_ERRORS=$((JS_ERRORS + 1))
         fi
     fi
-done
+done < <(find mission-control/agents -name "*.js" 2>/dev/null; find modules -name "*.js" 2>/dev/null; find api -name "*.js" 2>/dev/null)
 if [ "$JS_ERRORS" -eq 0 ]; then
     echo -e "${GREEN}   ✅ JavaScript syntax valid${NC}"
 else
