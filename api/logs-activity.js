@@ -1,6 +1,6 @@
 // Vercel Serverless Function: /api/logs-activity.js
-// Alternative flat structure for /api/logs/activity endpoint
-// This file should be accessed via /api/logs-activity or /api/logs/activity (with rewrite)
+// FLAT STRUCTURE approach - placed directly in /api folder
+// Endpoint: /api/logs-activity
 
 module.exports = (req, res) => {
   // Set CORS headers
@@ -20,7 +20,7 @@ module.exports = (req, res) => {
   // Generate activity logs
   const now = Date.now();
   const logs = [
-    { timestamp: new Date(now).toISOString(), agent: 'Nexus', type: 'system', message: 'API endpoint /api/logs-activity is working!', sessionId: 'api-test' },
+    { timestamp: new Date(now).toISOString(), agent: 'Nexus', type: 'system', message: 'API endpoint /api/logs-activity is working (flat structure)!', sessionId: 'api-test' },
     { timestamp: new Date(now - 60000).toISOString(), agent: 'Code-1', type: 'task_complete', message: 'Fixed logs API endpoint', sessionId: 'logs-fix' },
     { timestamp: new Date(now - 120000).toISOString(), agent: 'Pixel', type: 'task_complete', message: 'Updated office with 22 agents', sessionId: 'office-v2' },
     { timestamp: new Date(now - 180000).toISOString(), agent: 'Audit-1', type: 'audit', message: 'Verified logs fix - all tests passed', sessionId: 'audit-logs' },
@@ -37,6 +37,8 @@ module.exports = (req, res) => {
     success: true,
     logs: logs.slice(0, limit),
     total: logs.length,
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
+    endpoint: '/api/logs-activity',
+    approach: 'flat-structure'
   });
 };

@@ -281,6 +281,148 @@
             margin-top: 4px;
         }
         
+        /* Hierarchy Table Styles */
+        .hierarchy-table-container {
+            max-height: 400px;
+            overflow-y: auto;
+            background: var(--bg-secondary);
+            border: 3px solid var(--panel-border);
+            border-radius: 4px;
+        }
+        
+        .hierarchy-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+        
+        .hierarchy-table th {
+            background: var(--panel-border);
+            color: var(--text-light);
+            padding: 12px 10px;
+            text-align: left;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.5rem;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        
+        .hierarchy-table td {
+            padding: 10px;
+            border-bottom: 1px solid var(--panel-border);
+        }
+        
+        .hierarchy-table tr:hover {
+            background: rgba(0, 212, 255, 0.1);
+        }
+        
+        .hierarchy-table tr.commander {
+            background: linear-gradient(90deg, rgba(255, 215, 0, 0.2), transparent);
+        }
+        
+        .hierarchy-table tr.ai-lead {
+            background: linear-gradient(90deg, rgba(0, 212, 255, 0.15), transparent);
+        }
+        
+        .hierarchy-table tr.team-lead {
+            background: linear-gradient(90deg, rgba(81, 207, 102, 0.1), transparent);
+        }
+        
+        .hierarchy-agent {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .hierarchy-emoji {
+            font-size: 1.25rem;
+        }
+        
+        .hierarchy-name {
+            font-weight: 600;
+        }
+        
+        .level-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.45rem;
+            border: 2px solid;
+        }
+        
+        .level-commander {
+            background: rgba(255, 215, 0, 0.2);
+            color: #b8860b;
+            border-color: #ffd700;
+        }
+        
+        .level-ai-lead {
+            background: rgba(0, 212, 255, 0.2);
+            color: #0066cc;
+            border-color: #00d4ff;
+        }
+        
+        .level-team-lead {
+            background: rgba(81, 207, 102, 0.2);
+            color: #2b8a3e;
+            border-color: #51cf66;
+        }
+        
+        .level-specialist {
+            background: rgba(139, 115, 85, 0.2);
+            color: var(--panel-border);
+            border-color: var(--panel-border);
+        }
+        
+        .status-dot-table {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        
+        .status-active { background: var(--accent-green); }
+        .status-busy { background: var(--accent-yellow); }
+        .status-idle { background: var(--accent-pink); }
+        
+        .btn-locate {
+            padding: 6px 10px;
+            background: var(--accent-cyan);
+            border: 2px solid var(--text-dark);
+            border-radius: 4px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.45rem;
+            color: white;
+            cursor: pointer;
+            box-shadow: 2px 2px 0 var(--text-dark);
+            transition: all 0.1s;
+        }
+        
+        .btn-locate:hover {
+            transform: translateY(-2px);
+            box-shadow: 2px 4px 0 var(--text-dark);
+        }
+        
+        .btn-locate:active {
+            transform: translateY(0);
+            box-shadow: 0 0 0 var(--text-dark);
+        }
+        
+        /* Team grouping in table */
+        .team-header {
+            background: var(--panel-border) !important;
+            color: var(--text-light);
+            font-weight: bold;
+        }
+        
+        .team-header td {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.55rem;
+            padding: 8px 10px;
+        }
+        
         /* Activity Log */
         .activity-list {
             max-height: 200px;
@@ -391,7 +533,6 @@
             <a href="office.html" class="nav-tab">🏢 Office</a>
             <a href="pixel-office.html" class="nav-tab active">🎮 Pixel</a>
             <a href="agents.html" class="nav-tab">👥 Agents</a>
-            <a href="projects.html" class="nav-tab">🚀 Projects</a>
             <a href="dealflow-view.html" class="nav-tab">💼 Deals</a>
             <a href="token-tracker.html" class="nav-tab">🪙 Tokens</a>
             <a href="task-board.html" class="nav-tab">📋 Tasks</a>
@@ -414,6 +555,34 @@
             <canvas id="officeCanvas"></canvas>
         </div>
         
+        <!-- Hierarchy Table Panel -->
+        <div class="office-container">
+            <div class="office-header">
+                <span class="office-title">👑 AGENT HIERARCHY</span>
+                <div class="action-btns">
+                    <button class="btn" onclick="expandAllHierarchy()">📂 Expand</button>
+                    <button class="btn" onclick="collapseAllHierarchy()">📁 Collapse</button>
+                </div>
+            </div>
+            <div class="hierarchy-table-container">
+                <table class="hierarchy-table" id="hierarchyTable">
+                    <thead>
+                        <tr>
+                            <th>Level</th>
+                            <th>Agent</th>
+                            <th>Role</th>
+                            <th>Team</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="hierarchyBody">
+                        <!-- Populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
         <!-- Info Panels -->
         <div class="info-panel">
             <!-- Agent Mini Grid -->
@@ -449,29 +618,37 @@
         // REAL AGENT DATA FROM API
         // ============================================
         
+        // ============================================
+        // AGENT DATA WITH HIERARCHY
+        // ============================================
+        
         const AGENTS_DATA = [
-            { id: 'ericf', name: 'EricF', role: 'Commander', emoji: '👑', color: '#ffd700', status: 'active', tasks: 0, tokens: 0, desk: 'commander' },
-            { id: 'nexus', name: 'Nexus', role: 'Orchestrator', emoji: '🤖', color: '#00d4ff', status: 'active', tasks: 45, tokens: 8400000, desk: 'nexus' },
-            { id: 'codemaster', name: 'CodeMaster', role: 'Backend Lead', emoji: '💻', color: '#22c55e', status: 'busy', tasks: 35, tokens: 1200000, desk: 'dev' },
-            { id: 'code-1', name: 'Code-1', role: 'Backend', emoji: '⚡', color: '#22c55e', status: 'busy', tasks: 29, tokens: 880000, desk: 'dev' },
-            { id: 'code-2', name: 'Code-2', role: 'Backend', emoji: '🔧', color: '#22c55e', status: 'busy', tasks: 12, tokens: 450000, desk: 'dev' },
-            { id: 'code-3', name: 'Code-3', role: 'Backend', emoji: '🔌', color: '#22c55e', status: 'busy', tasks: 8, tokens: 320000, desk: 'dev' },
-            { id: 'forge', name: 'Forge', role: 'UI Lead', emoji: '🔨', color: '#f97316', status: 'active', tasks: 38, tokens: 1350000, desk: 'design' },
-            { id: 'forge-2', name: 'Forge-2', role: 'UI', emoji: '🎨', color: '#f97316', status: 'active', tasks: 22, tokens: 500000, desk: 'design' },
-            { id: 'forge-3', name: 'Forge-3', role: 'UI', emoji: '✨', color: '#f97316', status: 'active', tasks: 18, tokens: 720000, desk: 'design' },
-            { id: 'pixel', name: 'Pixel', role: 'Designer', emoji: '🎨', color: '#a855f7', status: 'active', tasks: 31, tokens: 2500000, desk: 'design' },
-            { id: 'glasses', name: 'Glasses', role: 'Researcher', emoji: '🔍', color: '#3b82f6', status: 'active', tasks: 31, tokens: 2000000, desk: 'research' },
-            { id: 'quill', name: 'Quill', role: 'Writer', emoji: '✍️', color: '#ec4899', status: 'idle', tasks: 27, tokens: 380000, desk: 'content' },
-            { id: 'gary', name: 'Gary', role: 'Marketing', emoji: '📢', color: '#f59e0b', status: 'idle', tasks: 19, tokens: 340000, desk: 'marketing' },
-            { id: 'larry', name: 'Larry', role: 'Social', emoji: '📱', color: '#06b6d4', status: 'idle', tasks: 24, tokens: 420000, desk: 'social' },
-            { id: 'buzz', name: 'Buzz', role: 'Social', emoji: '🐝', color: '#fbbf24', status: 'active', tasks: 20, tokens: 350000, desk: 'social' },
-            { id: 'sentry', name: 'Sentry', role: 'DevOps', emoji: '🛡️', color: '#ef4444', status: 'active', tasks: 42, tokens: 560000, desk: 'ops' },
-            { id: 'audit', name: 'Audit', role: 'QA', emoji: '🔍', color: '#8b5cf6', status: 'active', tasks: 28, tokens: 770000, desk: 'qa' },
-            { id: 'cipher', name: 'Cipher', role: 'Security', emoji: '🔐', color: '#6366f1', status: 'idle', tasks: 15, tokens: 280000, desk: 'security' },
-            { id: 'dealflow', name: 'DealFlow', role: 'Lead Gen', emoji: '🤝', color: '#10b981', status: 'busy', tasks: 52, tokens: 7510000, desk: 'sales' },
-            { id: 'coldcall', name: 'ColdCall', role: 'Outreach', emoji: '📞', color: '#f97316', status: 'idle', tasks: 8, tokens: 180000, desk: 'sales' },
-            { id: 'scout', name: 'Scout', role: 'Intel', emoji: '🔭', color: '#00d4ff', status: 'active', tasks: 15, tokens: 80000, desk: 'intel' },
-            { id: 'pie', name: 'PIE', role: 'Intelligence', emoji: '🧠', color: '#8b5cf6', status: 'active', tasks: 18, tokens: 890000, desk: 'intel' }
+            // Commander
+            { id: 'ericf', name: 'EricF', role: 'Commander', emoji: '👑', color: '#ffd700', status: 'active', tasks: 0, tokens: 0, desk: 'commander', level: 'commander', team: 'Executive', reportsTo: null },
+            // AI Lead
+            { id: 'nexus', name: 'Nexus', role: 'Orchestrator', emoji: '🤖', color: '#00d4ff', status: 'active', tasks: 45, tokens: 8400000, desk: 'nexus', level: 'ai-lead', team: 'Executive', reportsTo: 'EricF' },
+            // Team Leads
+            { id: 'codemaster', name: 'CodeMaster', role: 'Backend Lead', emoji: '💻', color: '#22c55e', status: 'busy', tasks: 35, tokens: 1200000, desk: 'dev', level: 'team-lead', team: 'Engineering', reportsTo: 'Nexus' },
+            { id: 'forge', name: 'Forge', role: 'UI Lead', emoji: '🔨', color: '#f97316', status: 'active', tasks: 38, tokens: 1350000, desk: 'design', level: 'team-lead', team: 'Design', reportsTo: 'Nexus' },
+            { id: 'pixel', name: 'Pixel', role: 'Design Lead', emoji: '🎨', color: '#a855f7', status: 'active', tasks: 31, tokens: 2500000, desk: 'design', level: 'team-lead', team: 'Design', reportsTo: 'Nexus' },
+            { id: 'glasses', name: 'Glasses', role: 'Research Lead', emoji: '🔍', color: '#3b82f6', status: 'active', tasks: 31, tokens: 2000000, desk: 'research', level: 'team-lead', team: 'Research', reportsTo: 'Nexus' },
+            { id: 'sentry', name: 'Sentry', role: 'DevOps Lead', emoji: '🛡️', color: '#ef4444', status: 'active', tasks: 42, tokens: 560000, desk: 'ops', level: 'team-lead', team: 'Operations', reportsTo: 'Nexus' },
+            { id: 'audit', name: 'Audit', role: 'QA Lead', emoji: '🔍', color: '#8b5cf6', status: 'active', tasks: 28, tokens: 770000, desk: 'qa', level: 'team-lead', team: 'Quality', reportsTo: 'Nexus' },
+            { id: 'dealflow', name: 'DealFlow', role: 'Sales Lead', emoji: '🤝', color: '#10b981', status: 'busy', tasks: 52, tokens: 7510000, desk: 'sales', level: 'team-lead', team: 'Sales', reportsTo: 'Nexus' },
+            { id: 'scout', name: 'Scout', role: 'Intel Lead', emoji: '🔭', color: '#00d4ff', status: 'active', tasks: 15, tokens: 80000, desk: 'intel', level: 'team-lead', team: 'Intelligence', reportsTo: 'Nexus' },
+            // Specialists
+            { id: 'code-1', name: 'Code-1', role: 'Backend Engineer', emoji: '⚡', color: '#22c55e', status: 'busy', tasks: 29, tokens: 880000, desk: 'dev', level: 'specialist', team: 'Engineering', reportsTo: 'CodeMaster' },
+            { id: 'code-2', name: 'Code-2', role: 'Backend Engineer', emoji: '🔧', color: '#22c55e', status: 'busy', tasks: 12, tokens: 450000, desk: 'dev', level: 'specialist', team: 'Engineering', reportsTo: 'CodeMaster' },
+            { id: 'code-3', name: 'Code-3', role: 'Backend Engineer', emoji: '🔌', color: '#22c55e', status: 'busy', tasks: 8, tokens: 320000, desk: 'dev', level: 'specialist', team: 'Engineering', reportsTo: 'CodeMaster' },
+            { id: 'forge-2', name: 'Forge-2', role: 'UI Engineer', emoji: '🎨', color: '#f97316', status: 'active', tasks: 22, tokens: 500000, desk: 'design', level: 'specialist', team: 'Design', reportsTo: 'Forge' },
+            { id: 'forge-3', name: 'Forge-3', role: 'UI Engineer', emoji: '✨', color: '#f97316', status: 'active', tasks: 18, tokens: 720000, desk: 'design', level: 'specialist', team: 'Design', reportsTo: 'Forge' },
+            { id: 'quill', name: 'Quill', role: 'Writer', emoji: '✍️', color: '#ec4899', status: 'idle', tasks: 27, tokens: 380000, desk: 'content', level: 'specialist', team: 'Content', reportsTo: 'Nexus' },
+            { id: 'gary', name: 'Gary', role: 'Marketing', emoji: '📢', color: '#f59e0b', status: 'idle', tasks: 19, tokens: 340000, desk: 'marketing', level: 'specialist', team: 'Marketing', reportsTo: 'Nexus' },
+            { id: 'larry', name: 'Larry', role: 'Social Media', emoji: '📱', color: '#06b6d4', status: 'idle', tasks: 24, tokens: 420000, desk: 'social', level: 'specialist', team: 'Marketing', reportsTo: 'Gary' },
+            { id: 'buzz', name: 'Buzz', role: 'Social Media', emoji: '🐝', color: '#fbbf24', status: 'active', tasks: 20, tokens: 350000, desk: 'social', level: 'specialist', team: 'Marketing', reportsTo: 'Gary' },
+            { id: 'cipher', name: 'Cipher', role: 'Security', emoji: '🔐', color: '#6366f1', status: 'idle', tasks: 15, tokens: 280000, desk: 'security', level: 'specialist', team: 'Security', reportsTo: 'Sentry' },
+            { id: 'coldcall', name: 'ColdCall', role: 'Outreach', emoji: '📞', color: '#f97316', status: 'idle', tasks: 8, tokens: 12000, desk: 'sales', level: 'specialist', team: 'Sales', reportsTo: 'DealFlow' },
+            { id: 'pie', name: 'PIE', role: 'Intelligence', emoji: '🧠', color: '#8b5cf6', status: 'active', tasks: 18, tokens: 890000, desk: 'intel', level: 'specialist', team: 'Intelligence', reportsTo: 'Scout' }
         ];
         
         // ============================================
@@ -974,6 +1151,165 @@
         }
         
         // ============================================
+        // HIERARCHY TABLE FUNCTIONS
+        // ============================================
+        
+        function renderHierarchyTable() {
+            const tbody = document.getElementById('hierarchyBody');
+            if (!tbody) return;
+            
+            let html = '';
+            
+            // Sort agents by level order
+            const levelOrder = { 'commander': 0, 'ai-lead': 1, 'team-lead': 2, 'specialist': 3 };
+            const sortedAgents = [...AGENTS_DATA].sort((a, b) => levelOrder[a.level] - levelOrder[b.level]);
+            
+            // Group by level for display
+            const levels = [
+                { key: 'commander', label: 'Commander', class: 'level-commander' },
+                { key: 'ai-lead', label: 'AI Lead', class: 'level-ai-lead' },
+                { key: 'team-lead', label: 'Team Lead', class: 'level-team-lead' },
+                { key: 'specialist', label: 'Specialist', class: 'level-specialist' }
+            ];
+            
+            levels.forEach(level => {
+                const agents = sortedAgents.filter(a => a.level === level.key);
+                if (agents.length > 0) {
+                    agents.forEach(agent => {
+                        const statusClass = agent.status === 'active' ? 'status-active' : 
+                                          agent.status === 'busy' ? 'status-busy' : 'status-idle';
+                        
+                        html += `
+                            <tr class="${agent.level}">
+                                <td><span class="level-badge ${level.class}">${level.label}</span></td>
+                                <td>
+                                    <div class="hierarchy-agent">
+                                        <span class="hierarchy-emoji">${agent.emoji}</span>
+                                        <span class="hierarchy-name">${agent.name}</span>
+                                    </div>
+                                </td>
+                                <td>${agent.role}</td>
+                                <td>${agent.team}</td>
+                                <td><span class="status-dot-table ${statusClass}"></span> ${agent.status}</td>
+                                <td>
+                                    <button class="btn-locate" onclick="locateAgent('${agent.id}')">
+                                        🎯 Locate
+                                    </button>
+                                </td>
+                            </tr>
+                        `;
+                    });
+                }
+            });
+            
+            tbody.innerHTML = html;
+        }
+        
+        function locateAgent(agentId) {
+            const agent = AGENTS_DATA.find(a => a.id === agentId);
+            if (!agent) return;
+            
+            // Calculate position based on desk
+            let targetX = 0, targetY = 0;
+            
+            switch(agent.desk) {
+                case 'commander':
+                    targetX = -6; targetY = -4;
+                    break;
+                case 'nexus':
+                    targetX = 6; targetY = -4;
+                    break;
+                case 'dev':
+                    targetX = -5; targetY = 5;
+                    break;
+                case 'design':
+                    targetX = 5; targetY = 0;
+                    break;
+                case 'research':
+                    targetX = -3; targetY = -2;
+                    break;
+                case 'content':
+                    targetX = -2; targetY = 3;
+                    break;
+                case 'marketing':
+                    targetX = 2; targetY = 3;
+                    break;
+                case 'social':
+                    targetX = 4; targetY = 4;
+                    break;
+                case 'ops':
+                    targetX = -4; targetY = -1;
+                    break;
+                case 'qa':
+                    targetX = 3; targetY = -2;
+                    break;
+                case 'security':
+                    targetX = -3; targetY = 2;
+                    break;
+                case 'sales':
+                    targetX = 4; targetY = -3;
+                    break;
+                case 'intel':
+                    targetX = 2; targetY = -4;
+                    break;
+                default:
+                    targetX = 0; targetY = 0;
+            }
+            
+            // Animate camera to agent position
+            const targetIso = toIso(targetX, targetY, 0);
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            
+            // Calculate offset needed to center on agent
+            const targetOffsetX = centerX - targetIso.x + offsetX;
+            const targetOffsetY = centerY - targetIso.y + offsetY;
+            
+            // Animate the offset change
+            animateCamera(targetOffsetX, targetOffsetY);
+            
+            // Add activity
+            addActivity('🎯', 'System', `centered camera on ${agent.name}`, 'system');
+            
+            // Highlight the agent in the office
+            followAgent = agent.id;
+            setTimeout(() => { followAgent = null; }, 3000);
+        }
+        
+        function animateCamera(targetX, targetY) {
+            const startX = offsetX;
+            const startY = offsetY;
+            const duration = 500;
+            const startTime = performance.now();
+            
+            function animate(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                
+                // Ease out cubic
+                const ease = 1 - Math.pow(1 - progress, 3);
+                
+                offsetX = startX + (targetX - startX) * ease;
+                offsetY = startY + (targetY - startY) * ease;
+                
+                if (progress < 1) {
+                    requestAnimationFrame(animate);
+                }
+            }
+            
+            requestAnimationFrame(animate);
+        }
+        
+        function expandAllHierarchy() {
+            // Could expand team groups if we add collapsible sections
+            addActivity('📂', 'System', 'expanded hierarchy view', 'system');
+        }
+        
+        function collapseAllHierarchy() {
+            addActivity('📁', 'System', 'collapsed hierarchy view', 'system');
+        }
+
+        // ============================================
         // UI FUNCTIONS
         // ============================================
         
@@ -1011,7 +1347,10 @@
                     <div class="agent-mini-emoji">${agent.emoji}</div>
                     <div class="agent-mini-name">${agent.name}</div>
                 `;
-                div.onclick = () => addActivity(agent.emoji, agent.name, `clicked in roster`, 'agent');
+                div.onclick = () => {
+                    addActivity(agent.emoji, agent.name, `clicked in roster`, 'agent');
+                    locateAgent(agent.id);
+                };
                 grid.appendChild(div);
             });
         }
@@ -1039,6 +1378,7 @@
         
         window.onload = function() {
             renderAgentGrid();
+            renderHierarchyTable();
             animate();
             
             // Initial activities
@@ -1046,6 +1386,33 @@
             setTimeout(() => addActivity('👑', 'EricF', 'watching from commander desk', 'agent'), 1000);
             setTimeout(() => addActivity('💻', 'CodeMaster', 'fixing deployment issues', 'agent'), 1500);
         };
+        
+        // Auto-refresh every 30 minutes
+        setInterval(() => {
+            console.log('[Auto-Refresh] Reloading data...');
+            // Reload agent data from API if available
+            fetch('/api/agents')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.agents) {
+                        // Update AGENTS_DATA with new data
+                        data.agents.forEach(agent => {
+                            const existing = AGENTS_DATA.find(a => a.id === agent.id);
+                            if (existing) {
+                                existing.status = agent.status || existing.status;
+                                existing.tasks = agent.tasks || existing.tasks;
+                                existing.tokens = agent.tokens || existing.tokens;
+                            }
+                        });
+                        renderHierarchyTable();
+                        addActivity('🔄', 'System', 'auto-refreshed agent data', 'system');
+                    }
+                })
+                .catch(() => {
+                    // Silently fail if API not available
+                    console.log('[Auto-Refresh] API not available, using cached data');
+                });
+        }, 30 * 60 * 1000);
     </script>
 </body>
 </html>

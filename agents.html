@@ -402,8 +402,8 @@
                 <a href="agents.html" class="nav-btn active">👥 Agents</a>
                 <a href="dealflow-view.html" class="nav-btn">💼 Deals</a>
                 <a href="token-tracker.html" class="nav-btn">🪙 Tokens</a>
-                <a href="scout.html" class="nav-btn">🔭 Scout</a>
                 <a href="task-board.html" class="nav-btn">📋 Tasks</a>
+                <a href="data-viewer.html" class="nav-btn">📁 Data</a>
             </nav>
             
             <div style="display: flex; align-items: center; gap: 1rem;">
@@ -454,7 +454,7 @@
             { id: 'sentry', name: 'Sentry', role: 'DevOps', emoji: '🛡️', status: 'active', color: '#fbbf24', tokens: 26700, files: 21, tasks: 8, exp: 'Installed PyTorch 2.10.0 for Pixel. All systems monitored, 13 heartbeats running smoothly. No issues detected.' },
             { id: 'audit', name: 'Audit', role: 'QA', emoji: '🔍', status: 'active', color: '#ff2a6d', tokens: 33400, files: 19, tasks: 10, exp: 'Completed 15+ quality audits. All tasks scoring 85-100/100. Identified data viewer bug and office functionality issues.' },
             { id: 'cipher', name: 'Cipher', role: 'Security', emoji: '🔒', status: 'active', color: '#a855f7', tokens: 28900, files: 14, tasks: 6, exp: 'Security monitoring active. No vulnerabilities detected. All credentials secured. Higgsfield API configured.' },
-            { id: 'coldcall', name: 'ColdCall', role: 'Outreach', emoji: '📞', status: 'resting', color: '#22c55e', tokens: 15600, files: 8, tasks: 3, exp: 'Cold call schedule prepared. Waiting for EricF approval to begin outreach. 26 leads ready for contact.' },
+            { id: 'coldcall', name: 'ColdCall', role: 'Outreach', emoji: '📞', status: 'resting', color: '#22c55e', tokens: 12000, files: 8, tasks: 3, exp: 'Cold call schedule prepared. Waiting for EricF approval to begin outreach. 26 leads ready for contact.' },
             { id: 'scout', name: 'Scout', role: 'Researcher', emoji: '🔭', status: 'active', color: '#00d4ff', tokens: 101700, files: 42, tasks: 15, exp: 'Completed 3 deep research sprints. Found 30 opportunities across 10 areas. Content monetization plan delivered (100/100 score).' },
             { id: 'forge2', name: 'Forge-2', role: 'UI Dev', emoji: '🔧', status: 'active', color: '#f97316', tokens: 38900, files: 27, tasks: 8, exp: 'Built UI component library in parallel with Forge. Theme system, animations, mobile responsive all complete.' },
             { id: 'code2', name: 'Code-2', role: 'Backend Dev', emoji: '⚡', status: 'active', color: '#22c55e', tokens: 41200, files: 33, tasks: 9, exp: 'Created backend API with 8 endpoints. All tests passing. Documentation complete. Ready for integration.' },
@@ -547,8 +547,9 @@
         
         // Auto-refresh every 30 minutes
         setInterval(() => {
-            window.location.reload();
-        }, 1800000);
+            console.log('[Auto-Refresh] Reloading data...');
+            loadActivities();
+        }, 30 * 60 * 1000);
     </script>
 </body>
 </html>

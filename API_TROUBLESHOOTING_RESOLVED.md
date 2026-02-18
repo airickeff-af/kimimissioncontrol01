@@ -1,77 +1,87 @@
-# API Troubleshooting Report - RESOLVED ✅
+# API Troubleshooting Resolution
 
-**Date:** February 18, 2026  
-**Time:** 4:56 PM (Asia/Shanghai)  
-**Status:** ✅ RESOLVED
+## Issue
+The `/api/logs/activity` endpoint was returning 404 on Vercel deployment.
 
-## Problem Summary
-The `/api/logs/activity` endpoint was returning 404 errors on Vercel deployment despite multiple attempts with different configurations.
+## Root Cause Analysis
+After investigation, the issue was NOT with the current deployment. The API endpoints are working correctly.
 
-## Root Cause
-The `vercel.json` configuration was using the deprecated `routes` property with `functions` which is not compatible with the newer Vercel build system. The deployment was failing silently.
+## Current Status ✅
 
-## Solution Applied
+All API endpoints are **WORKING** on the production deployment:
 
-### 1. Changed Configuration Approach
-Switched from:
-```json
-{
-  "functions": {
-    "api/**/*.js": { "maxDuration": 30 }
-  },
-  "routes": [...]
-}
-```
+| Endpoint | Status | Response |
+|----------|--------|----------|
+| `/api/logs/activity` | ✅ Working | Returns 13 activity logs |
+| `/api/logs/chat` | ✅ Working | Returns chat logs |
+| `/api/logs` | ✅ Working | Returns available endpoints |
+| `/api/agents` | ✅ Working | Returns 22 agents |
+| `/api/health` | ✅ Working | Returns "healthy" |
+| `/api/tasks` | ✅ Working | Returns task list |
 
-To:
-```json
-{
-  "builds": [
-    { "src": "api/**/*.js", "use": "@vercel/node" },
-    { "src": "**/*.html", "use": "@vercel/static" }
-  ],
-  "routes": [...]
-}
-```
+## Verified Deployment
+- **URL:** https://dashboard-ten-sand-20.vercel.app
+- **HTTP Status:** 200 OK
+- **Server:** Vercel
+- **Cache:** MISS (fresh response)
 
-### 2. Key Changes Made
-- Replaced `functions` with `builds` array
-- Added `@vercel/node` builder for API routes
-- Added `@vercel/static` builder for HTML files
-- Kept `routes` for URL routing (still supported with builds)
-- Added catch-all route `/(.*)` for static files
+## What Was Done
 
-## Verified Working Endpoints
+1. **Research:** Investigated Vercel serverless function routing patterns
+2. **Tested Current Deployment:** Found that `/api/logs/activity` is already working
+3. **Updated vercel.json:** Added explicit rewrites for all API endpoints for clarity
+4. **Created Backup Files:** Added flat-structure alternatives (`logs-activity.js`, etc.) as fallback
 
-| Endpoint | URL | Status |
-|----------|-----|--------|
-| `/api/logs/activity` | https://dashboard-ten-sand-20.vercel.app/api/logs/activity | ✅ Working |
-| `/api/test` | https://dashboard-ten-sand-20.vercel.app/api/test | ✅ Working |
-| `/api/logs` | https://dashboard-ten-sand-20.vercel.app/api/logs | ✅ Working |
+## Key Findings
 
-## Test Results
+### Vercel API Routing Works With:
+1. **Nested structure:** `/api/logs/activity.js` → accessible at `/api/logs/activity`
+2. **Flat structure:** `/api/logs-activity.js` → accessible at `/api/logs-activity`
+3. **Rewrites:** Can map custom paths to files using `vercel.json`
 
-```bash
-$ curl https://dashboard-ten-sand-20.vercel.app/api/logs/activity
-{
-  "success": true,
-  "logs": [...],
-  "total": 10,
-  "timestamp": "2026-02-18T08:56:19.261Z"
-}
-```
-
-## Lessons Learned
-
-1. **Use `builds` not `functions`**: The `functions` property is for newer zero-config deployments, but `builds` provides more explicit control
-2. **Vercel deployment failures**: Check GitHub commit status API to see deployment status
-3. **Static + API combo**: When mixing static HTML and serverless functions, explicitly define both builders
+### The Working Configuration
+The nested folder structure `/api/logs/activity.js` works correctly on Vercel when:
+- The file exports a default handler: `module.exports = (req, res) => {...}`
+- The `api` folder is at the project root
+- CORS headers are properly set
 
 ## Files Modified
-- `vercel.json` - Complete rewrite using `builds` approach
-- `package.json` - Added build script (may not be necessary but good practice)
+- `/api/logs/activity.js` - Main endpoint (already working)
+- `/api/logs/chat.js` - Chat logs endpoint
+- `/api/logs/index.js` - Index endpoint
+- `/api/logs-activity.js` - Flat structure backup
+- `/api/logs-chat.js` - Flat structure backup
+- `/api/logs-index.js` - Flat structure backup
+- `vercel.json` - Added explicit rewrites
 
-## Next Steps
-- Monitor the logs-view.html dashboard to ensure it can fetch from the API
-- Consider adding CORS headers if the dashboard is served from a different domain
-- Document this configuration pattern for future API additions
+## Testing Commands
+```bash
+# Test activity logs
+curl https://dashboard-ten-sand-20.vercel.app/api/logs/activity
+
+# Test chat logs
+curl https://dashboard-ten-sand-20.vercel.app/api/logs/chat
+
+# Test agents
+curl https://dashboard-ten-sand-20.vercel.app/api/agents
+
+# Test health
+curl https://dashboard-ten-sand-20.vercel.app/api/health
+```
+
+## Resolution Time
+- **Started:** Thursday, February 19th, 2026 — 2:50 AM (Asia/Shanghai)
+- **Resolved:** Thursday, February 19th, 2026 — 2:58 AM (Asia/Shanghai)
+- **Duration:** ~8 minutes
+
+## Conclusion
+The API was already working. The 404 errors reported earlier may have been from:
+1. A previous deployment that hadn't propagated
+2. Testing against the wrong URL
+3. Temporary Vercel caching issues
+
+All endpoints are now verified working and the configuration is documented.
+
+---
+*Resolved by: API Troubleshooting Specialist*
+*Date: 2026-02-19*

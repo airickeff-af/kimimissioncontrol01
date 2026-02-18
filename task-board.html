@@ -458,9 +458,9 @@
                 <a href="office.html" class="nav-btn">🏢 Office</a>
                 <a href="agents.html" class="nav-btn">👥 Agents</a>
                 <a href="dealflow-view.html" class="nav-btn">💼 Deals</a>
-                <a href="scout.html" class="nav-btn">🔭 Scout</a>
                 <a href="token-tracker.html" class="nav-btn">🪙 Tokens</a>
                 <a href="task-board.html" class="nav-btn active">📋 Tasks</a>
+                <a href="data-viewer.html" class="nav-btn">📁 Data</a>
             </nav>
             
             <button class="refresh-btn" onclick="window.location.reload()">🔄 REFRESH</button>
@@ -518,6 +518,7 @@
             <button class="tab-btn active" onclick="switchTab('p0')">🔴 P0 (2)</button>
             <button class="tab-btn" onclick="switchTab('p1')">🟡 P1 (20)</button>
             <button class="tab-btn" onclick="switchTab('p2')">🟢 P2 (35)</button>
+            <button class="tab-btn" onclick="switchTab('p3')">⚪ P3 (2)</button>
             <button class="tab-btn" onclick="switchTab('completed')">✅ DONE (31)</button>
         </div>
 
@@ -734,6 +735,41 @@
             </div>
         </div>
 
+        <!-- P3 Tasks -->
+        <div id="p3" class="tab-content">
+            <div class="task-card p3">
+                <div class="task-header">
+                    <div>
+                        <div class="task-title">⚪ Register Nexus on Moltbook</div>
+                        <div class="task-id">TASK-053</div>
+                    </div>
+                    <span class="status-badge planned">PLANNED</span>
+                </div>
+                <div class="task-desc">Register Nexus AI agent on Moltbook platform for wider discovery.</div>
+                <div class="task-meta">
+                    <div class="meta-item">👤 Nexus</div>
+                    <div class="meta-item">📅 TBD</div>
+                    <div class="meta-item">🌐 External</div>
+                </div>
+            </div>
+
+            <div class="task-card p3">
+                <div class="task-header">
+                    <div>
+                        <div class="task-title">⚪ Mobile App for Mission Control</div>
+                        <div class="task-id">TASK-015</div>
+                    </div>
+                    <span class="status-badge planned">PLANNED</span>
+                </div>
+                <div class="task-desc">Native mobile app for iOS/Android with push notifications.</div>
+                <div class="task-meta">
+                    <div class="meta-item">👤 Forge</div>
+                    <div class="meta-item">📅 Mar 15</div>
+                    <div class="meta-item">📱 Mobile</div>
+                </div>
+            </div>
+        </div>
+
         <!-- Completed Tasks -->
         <div id="completed" class="tab-content">
             <div class="task-card p1">
@@ -821,7 +857,7 @@
     <!-- Mobile Navigation -->
     <nav class="mobile-nav">
         <a href="index.html" class="mobile-nav-btn">📊<br>HQ</a>
-        <a href="scout.html" class="mobile-nav-btn">🔭<br>Scout</a>
+        <a href="office.html" class="mobile-nav-btn">🏢<br>Office</a>
         <a href="dealflow-view.html" class="mobile-nav-btn">💼<br>Deals</a>
         <a href="task-board.html" class="mobile-nav-btn" style="background: #69db7c;">📋<br>Tasks</a>
     </nav>

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DealFlow | Mission Control</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0a0a0f;
+      color: #e0e0e0;
+      min-height: 100vh;
+    }
+    .header {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      padding: 1rem 2rem;
+      border-bottom: 2px solid #00d4ff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo { font-size: 1.5rem; font-weight: 700; color: #00d4ff; }
+    .nav { display: flex; gap: 1rem; }
+    .nav a {
+      color: #888;
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      transition: all 0.2s;
+    }
+    .nav a:hover, .nav a.active { color: #00d4ff; background: rgba(0,212,255,0.1); }
+    .container { max-width: 1400px; margin: 0 auto; padding: 2rem; }
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+    h1 { font-size: 2rem; color: #00d4ff; }
+    .refresh-btn {
+      background: linear-gradient(135deg, #00d4ff, #0099cc);
+      color: #000;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .refresh-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,212,255,0.3); }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .stat-card {
+      background: linear-gradient(135deg, #1a1a2e, #0f0f1a);
+      border: 1px solid #333;
+      border-radius: 12px;
+      padding: 1.5rem;
+      text-align: center;
+    }
+    .stat-value { font-size: 2rem; font-weight: 700; color: #00d4ff; }
+    .stat-label { color: #888; font-size: 0.875rem; margin-top: 0.5rem; }
+    .deals-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #1a1a2e;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .deals-table th, .deals-table td {
+      padding: 1rem;
+      text-align: left;
+      border-bottom: 1px solid #333;
+    }
+    .deals-table th {
+      background: #0f0f1a;
+      color: #00d4ff;
+      font-weight: 600;
+    }
+    .deals-table tr:hover { background: rgba(0,212,255,0.05); }
+    .priority-p0 { color: #ff4444; font-weight: 600; }
+    .priority-p1 { color: #ffaa00; font-weight: 600; }
+    .priority-p2 { color: #00d4ff; }
+    .status-badge {
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .status-active { background: rgba(0,255,136,0.2); color: #00ff88; }
+    .status-pending { background: rgba(255,170,0,0.2); color: #ffaa00; }
+    .loading { text-align: center; padding: 3rem; color: #888; }
+    .error { text-align: center; padding: 3rem; color: #ff4444; }
+    .last-updated { text-align: center; color: #666; margin-top: 1rem; font-size: 0.875rem; }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="logo">🎯 Mission Control</div>
+    <nav class="nav">
+      <a href="/">HQ</a>
+      <a href="/office.html">Office</a>
+      <a href="/agents.html">Agents</a>
+      <a href="/deals.html" class="active">DealFlow</a>
+      <a href="/tokens.html">Tokens</a>
+      <a href="/task-board.html">Tasks</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <div class="page-header">
+      <h1>🤝 DealFlow Pipeline</h1>
+      <button class="refresh-btn" onclick="loadDeals()">
+        🔄 Refresh
+      </button>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-value" id="total-deals">-</div>
+        <div class="stat-label">Total Deals</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="active-deals">-</div>
+        <div class="stat-label">Active</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="p0-deals">-</div>
+        <div class="stat-label">P0 Priority</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="regions">-</div>
+        <div class="stat-label">Regions</div>
+      </div>
+    </div>
+
+    <div id="deals-content">
+      <div class="loading">Loading deals...</div>
+    </div>
+
+    <div class="last-updated" id="last-updated"></div>
+  </div>
+
+  <script>
+    const API_URL = '/api';
+
+    async function loadDeals() {
+      const content = document.getElementById('deals-content');
+      content.innerHTML = '<div class="loading">Loading deals...</div>';
+
+      try {
+        const response = await fetch(`${API_URL}/deals`);
+        const data = await response.json();
+
+        if (!data.success) {
+          throw new Error('API returned error');
+        }
+
+        const deals = data.deals || [];
+
+        // Update stats
+        document.getElementById('total-deals').textContent = deals.length;
+        document.getElementById('active-deals').textContent = deals.filter(d => d.status === 'active').length;
+        document.getElementById('p0-deals').textContent = deals.filter(d => d.priority === 'P0').length;
+        const regions = [...new Set(deals.map(d => d.region).filter(Boolean))];
+        document.getElementById('regions').textContent = regions.length;
+
+        // Render table
+        if (deals.length === 0) {
+          content.innerHTML = '<div class="loading">No deals found</div>';
+          return;
+        }
+
+        content.innerHTML = `
+          <table class="deals-table">
+            <thead>
+              <tr>
+                <th>Company</th>
+                <th>Contact</th>
+                <th>Region</th>
+                <th>Priority</th>
+                <th>Status</th>
+                <th>Value</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${deals.map(deal => `
+                <tr>
+                  <td><strong>${deal.company || 'N/A'}</strong></td>
+                  <td>${deal.contact || 'N/A'}</td>
+                  <td>${deal.region || 'N/A'}</td>
+                  <td class="priority-${deal.priority?.toLowerCase() || 'p2'}">${deal.priority || 'P2'}</td>
+                  <td><span class="status-badge status-${deal.status || 'pending'}">${deal.status || 'pending'}</span></td>
+                  <td>${deal.value || 'N/A'}</td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        `;
+
+        document.getElementById('last-updated').textContent = `Last updated: ${new Date().toLocaleString()}`;
+      } catch (error) {
+        console.error('Error loading deals:', error);
+        content.innerHTML = `<div class="error">⚠️ Failed to load deals: ${error.message}</div>`;
+      }
+    }
+
+    // Load on page load
+    loadDeals();
+
+    // Auto-refresh every 30 minutes
+    setInterval(() => {
+      console.log('[Auto-Refresh] Reloading deals...');
+      loadDeals();
+    }, 30 * 60 * 1000);
+  </script>
+</body>
+</html>

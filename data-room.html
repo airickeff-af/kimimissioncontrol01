@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Data Room | Mission Control</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0a0a0f;
+      color: #e0e0e0;
+      min-height: 100vh;
+    }
+    .header {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      padding: 1rem 2rem;
+      border-bottom: 2px solid #00d4ff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo { font-size: 1.5rem; font-weight: 700; color: #00d4ff; }
+    .nav { display: flex; gap: 1rem; }
+    .nav a {
+      color: #888;
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      transition: all 0.2s;
+    }
+    .nav a:hover, .nav a.active { color: #00d4ff; background: rgba(0,212,255,0.1); }
+    .container { max-width: 1400px; margin: 0 auto; padding: 2rem; }
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+    h1 { font-size: 2rem; color: #00d4ff; }
+    .refresh-btn {
+      background: linear-gradient(135deg, #00d4ff, #0099cc);
+      color: #000;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .data-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+    .data-card {
+      background: linear-gradient(135deg, #1a1a2e, #0f0f1a);
+      border: 1px solid #333;
+      border-radius: 12px;
+      padding: 1.5rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .data-card:hover {
+      border-color: #00d4ff;
+      transform: translateY(-2px);
+    }
+    .data-card h3 {
+      color: #00d4ff;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .data-card p {
+      color: #888;
+      font-size: 0.875rem;
+    }
+    .data-card .count {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #fff;
+      margin-top: 1rem;
+    }
+    .file-list {
+      background: #1a1a2e;
+      border-radius: 12px;
+      padding: 1rem;
+      margin-top: 2rem;
+    }
+    .file-list h2 {
+      color: #00d4ff;
+      margin-bottom: 1rem;
+    }
+    .file-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem;
+      border-bottom: 1px solid #333;
+    }
+    .file-item:last-child { border-bottom: none; }
+    .file-name { color: #fff; }
+    .file-date { color: #666; font-size: 0.875rem; }
+    .view-btn {
+      background: rgba(0,212,255,0.2);
+      color: #00d4ff;
+      border: 1px solid #00d4ff;
+      padding: 0.25rem 0.75rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.875rem;
+    }
+    .view-btn:hover { background: rgba(0,212,255,0.3); }
+    .loading { text-align: center; padding: 3rem; color: #888; }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="logo">🎯 Mission Control</div>
+    <nav class="nav">
+      <a href="/">HQ</a>
+      <a href="/office.html">Office</a>
+      <a href="/agents.html">Agents</a>
+      <a href="/data-room.html" class="active">Data Room</a>
+      <a href="/tokens.html">Tokens</a>
+      <a href="/task-board.html">Tasks</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <div class="page-header">
+      <h1>📊 Data Room</h1>
+      <button class="refresh-btn" onclick="loadData()">🔄 Refresh</button>
+    </div>
+
+    <div class="data-grid">
+      <div class="data-card" onclick="showBriefings()">
+        <h3>🌤️ Morning Briefings</h3>
+        <p>Daily weather, crypto, AI news, Mission Control status</p>
+        <div class="count" id="briefing-count">-</div>
+      </div>
+
+      <div class="data-card" onclick="showInfluencers('crypto')">
+        <h3>₿ Crypto Influencers</h3>
+        <p>Researched crypto Twitter/X personalities and analysts</p>
+        <div class="count" id="crypto-count">-</div>
+      </div>
+
+      <div class="data-card" onclick="showInfluencers('ai')">
+        <h3>🤖 AI Influencers</h3>
+        <p>Researched AI researchers, founders, and experts</p>
+        <div class="count" id="ai-count">-</div>
+      </div>
+
+      <div class="data-card" onclick="showLeads()">
+        <h3>🎯 Regional Leads</h3>
+        <p>Singapore, Hong Kong, and other regional contacts</p>
+        <div class="count" id="lead-count">-</div>
+      </div>
+    </div>
+
+    <div class="file-list" id="file-list">
+      <h2>📁 Latest Files</h2>
+      <div class="loading">Loading files...</div>
+    </div>
+  </div>
+
+  <script>
+    // Simulated data - will be replaced with real API calls
+    const dataRoom = {
+      briefings: [],
+      influencers: { crypto: [], ai: [] },
+      leads: []
+    };
+
+    async function loadData() {
+      // In production, these would be real API calls
+      // For now, showing the structure
+      document.getElementById('briefing-count').textContent = '0';
+      document.getElementById('crypto-count').textContent = '0';
+      document.getElementById('ai-count').textContent = '0';
+      document.getElementById('lead-count').textContent = '84';
+
+      document.getElementById('file-list').innerHTML = `
+        <h2>📁 Data Room Structure</h2>
+        <div class="file-item">
+          <span class="file-name">📂 briefings/</span>
+          <span class="file-date">Daily morning briefings</span>
+        </div>
+        <div class="file-item">
+          <span class="file-name">📂 influencers/crypto/</span>
+          <span class="file-date">Crypto Twitter research</span>
+        </div>
+        <div class="file-item">
+          <span class="file-name">📂 influencers/ai/</span>
+          <span class="file-date">AI expert research</span>
+        </div>
+        <div class="file-item">
+          <span class="file-name">📂 leads/</span>
+          <span class="file-date">84 regional contacts</span>
+        </div>
+      `;
+    }
+
+    function showBriefings() {
+      alert('Briefings view - will show daily morning briefings');
+    }
+
+    function showInfluencers(type) {
+      alert(`${type.toUpperCase()} Influencers view - will show researched profiles`);
+    }
+
+    function showLeads() {
+      window.location.href = '/data-viewer.html';
+    }
+
+    // Load on page load
+    loadData();
+
+    // Auto-refresh every 30 minutes
+    setInterval(() => {
+      console.log('[Auto-Refresh] Reloading data room...');
+      loadData();
+    }, 30 * 60 * 1000);
+  </script>
+</body>
+</html>

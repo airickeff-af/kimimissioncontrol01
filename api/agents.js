@@ -1,10 +1,35 @@
 // /api/agents.js - Returns all 22 agents with full data
+const { validateQuery, VALIDATION_RULES } = require('./lib/validation');
+
 module.exports = (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Content-Type', 'application/json');
   
+  // Define validation rules for this endpoint
+  const rules = {
+    status: VALIDATION_RULES.status,
+    limit: VALIDATION_RULES.limit,
+    page: VALIDATION_RULES.page,
+    search: VALIDATION_RULES.search
+  };
+
+  // Validate and sanitize query parameters
+  const result = validateQuery(req.query || {}, rules);
+  
+  if (!result.valid) {
+    return res.status(400).json({
+      success: false,
+      error: 'Invalid query parameters',
+      details: result.errors,
+      timestamp: new Date().toISOString()
+    });
+  }
+
+  // Use sanitized values
+  const { status, limit = 100, page = 1, search } = result.sanitized;
+  
   try {
-    const agents = [
+    let agents = [
       { id: 'ericf', name: 'EricF', role: 'Commander', status: 'active', emoji: '👑', tasksCompleted: 0, tokensUsed: 0, lastActive: '2026-02-18T15:00:00Z', successRate: 100 },
       { id: 'nexus', name: 'Nexus', role: 'Orchestrator', status: 'active', emoji: '🤖', tasksCompleted: 45, tokensUsed: 8400000, lastActive: '2026-02-18T15:00:00Z', successRate: 94 },
       { id: 'codemaster', name: 'CodeMaster', role: 'Backend Lead', status: 'busy', emoji: '💻', tasksCompleted: 35, tokensUsed: 1200000, lastActive: '2026-02-18T14:58:00Z', successRate: 93 },
@@ -29,13 +54,35 @@ module.exports = (req, res) => {
       { id: 'pie', name: 'PIE', role: 'Predictive Intelligence', status: 'active', emoji: '🧠', tasksCompleted: 18, tokensUsed: 890000, lastActive: '2026-02-18T14:58:00Z', successRate: 93 }
     ];
     
+    // Apply status filter
+    if (status) {
+      agents = agents.filter(a => a.status === status);
+    }
+    
+    // Apply search filter
+    if (search) {
+      const searchLower = search.toLowerCase();
+      agents = agents.filter(a => 
+        a.name.toLowerCase().includes(searchLower) ||
+        a.role.toLowerCase().includes(searchLower) ||
+        a.id.toLowerCase().includes(searchLower)
+      );
+    }
+    
+    // Apply pagination
+    const start = (page - 1) * limit;
+    const paginated = agents.slice(start, start + limit);
+    
     res.status(200).json({
       success: true,
-      agents: agents,
+      agents: paginated,
       total: agents.length,
+      page: page,
+      pages: Math.ceil(agents.length / limit),
       active: agents.filter(a => a.status === 'active').length,
       busy: agents.filter(a => a.status === 'busy').length,
       idle: agents.filter(a => a.status === 'idle').length,
+      filters: { status, search },
       timestamp: new Date().toISOString()
     });
   } catch (error) {

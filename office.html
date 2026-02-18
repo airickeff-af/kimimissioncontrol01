@@ -662,11 +662,12 @@
         <nav class="nav-tabs">
             <a href="index.html" class="nav-tab">🏠 HQ</a>
             <a href="office.html" class="nav-tab active">🏢 Office</a>
+            <a href="pixel-office.html" class="nav-tab">🎮 Pixel</a>
             <a href="agents.html" class="nav-tab">👥 Agents</a>
             <a href="dealflow-view.html" class="nav-tab">💼 Deals</a>
             <a href="token-tracker.html" class="nav-tab">🪙 Tokens</a>
-            <a href="scout.html" class="nav-tab">🔭 Scout</a>
             <a href="task-board.html" class="nav-tab">📋 Tasks</a>
+            <a href="data-viewer.html" class="nav-tab">📁 Data</a>
         </nav>
         
         <div class="header-actions">
@@ -1083,13 +1084,14 @@
             renderActivityFeed();
             renderAllAgents();
             updateLastUpdated();
+            
+            // Auto-refresh every 30 minutes
+            setInterval(() => {
+                console.log('[Auto-Refresh] Reloading data...');
+                refreshActivity();
+                refreshTasks();
+            }, 30 * 60 * 1000);
         });
-        
-        // Auto-refresh every 30 minutes (30 * 60 * 1000 ms)
-        setInterval(() => {
-            refreshActivity();
-            console.log('[Command Center] Auto-refreshed at', new Date().toISOString());
-        }, 30 * 60 * 1000);
         
         // Tab switching (placeholder for future implementation)
         function showTab(tab) {

@@ -2,6 +2,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { validateQuery, VALIDATION_RULES } = require('./lib/validation');
 
 function parsePendingTasks(content) {
   const tasks = [];
@@ -100,9 +101,32 @@ module.exports = (req, res) => {
     return res.status(200).end();
   }
   
+  // Define validation rules for this endpoint
+  const rules = {
+    status: VALIDATION_RULES.status,
+    priority: VALIDATION_RULES.priority,
+    agent: VALIDATION_RULES.agent,
+    limit: VALIDATION_RULES.limit,
+    page: VALIDATION_RULES.page,
+    search: VALIDATION_RULES.search
+  };
+
+  // Validate and sanitize query parameters
+  const result = validateQuery(req.query || {}, rules);
+  
+  if (!result.valid) {
+    return res.status(400).json({
+      success: false,
+      error: 'Invalid query parameters',
+      details: result.errors,
+      timestamp: new Date().toISOString()
+    });
+  }
+
+  // Use sanitized values
+  const { status, priority, agent, limit = 50, page = 1, search } = result.sanitized;
+  
   try {
-    const { status, priority, agent, limit = 50, page = 1 } = req.query;
-    
     // Read from PENDING_TASKS.md
     const pendingTasksPath = path.join(process.cwd(), '..', '..', 'PENDING_TASKS.md');
     let tasks = [];
@@ -129,9 +153,20 @@ module.exports = (req, res) => {
     
     let filtered = tasks;
     
+    // Apply filters
     if (status) filtered = filtered.filter(t => t.status === status);
     if (priority) filtered = filtered.filter(t => t.priority === priority);
     if (agent) filtered = filtered.filter(t => t.assigned && t.assigned.toLowerCase().includes(agent.toLowerCase()));
+    
+    // Apply search
+    if (search) {
+      const searchLower = search.toLowerCase();
+      filtered = filtered.filter(t => 
+        (t.title && t.title.toLowerCase().includes(searchLower)) ||
+        (t.description && t.description.toLowerCase().includes(searchLower)) ||
+        (t.id && t.id.toLowerCase().includes(searchLower))
+      );
+    }
     
     // Calculate summary
     const summary = {
@@ -145,18 +180,19 @@ module.exports = (req, res) => {
       pending: tasks.filter(t => t.status === 'pending' || t.status === 'planned').length
     };
     
+    // Apply pagination
     const start = (page - 1) * limit;
-    const paginated = filtered.slice(start, start + parseInt(limit));
+    const paginated = filtered.slice(start, start + limit);
     
     res.status(200).json({
       success: true,
       tasks: paginated,
       total: filtered.length,
-      page: parseInt(page),
+      page: page,
       pages: Math.ceil(filtered.length / limit),
       summary,
       source,
-      filters: { status, priority, agent },
+      filters: { status, priority, agent, search },
       timestamp: new Date().toISOString()
     });
   } catch (error) {

@@ -21,14 +21,14 @@
     "quill": { "name": "Quill", "role": "Writer", "status": "idle", "emoji": "✍️", "tasksCompleted": 27, "tokensUsed": 380000, "tokensToday": 0, "lastActive": "2026-02-18T14:25:00Z", "successRate": 89 },
     "scout": { "name": "Scout", "role": "Researcher", "status": "active", "emoji": "🎯", "tasksCompleted": 15, "tokensUsed": 80000, "tokensToday": 22000, "lastActive": "2026-02-18T14:55:00Z", "successRate": 87 },
     "sentry": { "name": "Sentry", "role": "DevOps", "status": "active", "emoji": "🛡️", "tasksCompleted": 42, "tokensUsed": 560000, "tokensToday": 18000, "lastActive": "2026-02-18T14:59:00Z", "successRate": 96 },
-    "coldcall": { "name": "ColdCall", "role": "Outreach", "status": "idle", "emoji": "📞", "tasksCompleted": 8, "tokensUsed": 180000, "tokensToday": 0, "lastActive": "2026-02-18T14:10:00Z", "successRate": 84 }
+    "coldcall": { "name": "ColdCall", "role": "Outreach", "status": "idle", "emoji": "📞", "tasksCompleted": 8, "tokensUsed": 12000, "tokensToday": 0, "lastActive": "2026-02-18T14:10:00Z", "successRate": 84 }
   },
   "stats": {
     "totalAgents": 20,
     "activeAgents": 12,
     "busyAgents": 5,
     "idleAgents": 3,
-    "totalTokens": 24750000,
+    "totalTokens": 24582000,
     "totalTokensToday": 542000,
     "totalCost": 5.23,
     "totalTasksCompleted": 527,

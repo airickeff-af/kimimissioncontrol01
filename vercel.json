@@ -1,6 +1,8 @@
 {
   "version": 2,
   "name": "mission-control-dashboard",
+  "buildCommand": null,
+  "outputDirectory": ".",
   "headers": [
     {
       "source": "/api/(.*)",
@@ -12,10 +14,20 @@
     }
   ],
   "rewrites": [
-    { "source": "/api/logs/activity", "destination": "/api/logs/activity.js" },
+    { "source": "/api/logs/activity", "destination": "/api/logs-activity.js" },
+    { "source": "/api/logs-activity", "destination": "/api/logs-activity.js" },
     { "source": "/api/logs/chat", "destination": "/api/logs/chat.js" },
     { "source": "/api/logs", "destination": "/api/logs/index.js" },
-    { "source": "/api/(.*)", "destination": "/api/$1" },
-    { "source": "/(.*)", "destination": "/$1" }
-  ]
+    { "source": "/api/agents", "destination": "/api/agents.js" },
+    { "source": "/api/health", "destination": "/api/health.js" },
+    { "source": "/api/tasks", "destination": "/api/tasks.js" },
+    { "source": "/api/stats", "destination": "/api/stats.js" },
+    { "source": "/api/deployments", "destination": "/api/deployments.js" },
+    { "source": "/api/metrics", "destination": "/api/metrics.js" }
+  ],
+  "functions": {
+    "api/*.js": {
+      "maxDuration": 10
+    }
+  }
 }
