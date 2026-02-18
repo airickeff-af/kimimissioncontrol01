@@ -1,31 +1,61 @@
 #!/bin/bash
-# Test script for API routing fix
-# Run this after deployment to verify /api/logs/activity works
+# API Routing Test Script for Vercel
+# Tests all possible endpoint variations
 
-echo "Testing API endpoints..."
+echo "=========================================="
+echo "Vercel API Routing Test Suite"
+echo "=========================================="
+
+# Replace with your actual Vercel domain
+DOMAIN="${1:-your-vercel-domain.vercel.app}"
+
+echo ""
+echo "Testing Domain: $DOMAIN"
 echo ""
 
-BASE_URL="https://kimimissioncontrol01.vercel.app"
-
-# Test 1: Health endpoint
-echo "1. Testing /api/health..."
-curl -s "$BASE_URL/api/health" | head -1
+# Test 1: Nested route /api/logs/activity
+echo "Test 1: /api/logs/activity (nested route)"
+curl -s -o /dev/null -w "%{http_code}" "https://$DOMAIN/api/logs/activity"
 echo ""
 
-# Test 2: Logs activity endpoint (the fix)
-echo "2. Testing /api/logs/activity..."
-curl -s "$BASE_URL/api/logs/activity?limit=3" | head -1
+# Test 2: Flat route /api/logs-activity
+echo "Test 2: /api/logs-activity (flat route)"
+curl -s -o /dev/null -w "%{http_code}" "https://$DOMAIN/api/logs-activity"
 echo ""
 
-# Test 3: Logs index endpoint
-echo "3. Testing /api/logs..."
-curl -s "$BASE_URL/api/logs?limit=3" | head -1
+# Test 3: Folder index /api/logs
+echo "Test 3: /api/logs (folder index)"
+curl -s -o /dev/null -w "%{http_code}" "https://$DOMAIN/api/logs"
 echo ""
 
-# Test 4: Logs view page
-echo "4. Testing /logs-view.html..."
-curl -s -o /dev/null -w "%{http_code}" "$BASE_URL/logs-view.html"
-echo " (should be 200)"
+# Test 4: Other API endpoints
+echo "Test 4: /api/health"
+curl -s -o /dev/null -w "%{http_code}" "https://$DOMAIN/api/health"
 echo ""
 
-echo "All tests complete!"
+echo "Test 5: /api/agents"
+curl -s -o /dev/null -w "%{http_code}" "https://$DOMAIN/api/agents"
+echo ""
+
+echo "Test 6: /api/tasks"
+curl -s -o /dev/null -w "%{http_code}" "https://$DOMAIN/api/tasks"
+echo ""
+
+echo "Test 7: /api/metrics"
+curl -s -o /dev/null -w "%{http_code}" "https://$DOMAIN/api/metrics"
+echo ""
+
+echo "Test 8: /api/tokens"
+curl -s -o /dev/null -w "%{http_code}" "https://$DOMAIN/api/tokens"
+echo ""
+
+echo ""
+echo "=========================================="
+echo "Full Response Test for /api/logs/activity"
+echo "=========================================="
+curl -s "https://$DOMAIN/api/logs/activity" | head -50
+
+echo ""
+echo "=========================================="
+echo "Done!"
+echo "=========================================="
