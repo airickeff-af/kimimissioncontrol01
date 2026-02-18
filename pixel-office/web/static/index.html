@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pixel Office - Isometric Agent Visualization</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #282c34;
+            color: #fff;
+            overflow: hidden;
+        }
+        
+        #container {
+            display: flex;
+            height: 100vh;
+        }
+        
+        #canvas-container {
+            flex: 1;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        #game-canvas {
+            background: #282c34;
+            cursor: grab;
+        }
+        
+        #game-canvas:active {
+            cursor: grabbing;
+        }
+        
+        #sidebar {
+            width: 300px;
+            background: #1e2227;
+            padding: 20px;
+            overflow-y: auto;
+            border-left: 1px solid #3e4451;
+        }
+        
+        h1 {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+            color: #61afef;
+        }
+        
+        h2 {
+            font-size: 1.1em;
+            margin: 20px 0 10px;
+            color: #98c379;
+        }
+        
+        .controls {
+            background: #282c34;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .control-group {
+            margin-bottom: 10px;
+        }
+        
+        button {
+            background: #61afef;
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+        
+        button:hover {
+            background: #528bcc;
+        }
+        
+        button.active {
+            background: #98c379;
+        }
+        
+        .agent-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .agent-card {
+            background: #282c34;
+            padding: 10px;
+            margin-bottom: 8px;
+            border-radius: 6px;
+            border-left: 3px solid #61afef;
+        }
+        
+        .agent-card.auditor {
+            border-left-color: #ffd700;
+        }
+        
+        .agent-name {
+            font-weight: bold;
+            color: #fff;
+        }
+        
+        .agent-role {
+            font-size: 0.85em;
+            color: #abb2bf;
+        }
+        
+        .agent-status {
+            font-size: 0.8em;
+            color: #98c379;
+            margin-top: 4px;
+        }
+        
+        .progress-bar {
+            height: 4px;
+            background: #3e4451;
+            border-radius: 2px;
+            margin-top: 6px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: #98c379;
+            transition: width 0.3s;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .stat-box {
+            background: #282c34;
+            padding: 10px;
+            border-radius: 6px;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #61afef;
+        }
+        
+        .stat-label {
+            font-size: 0.8em;
+            color: #abb2bf;
+        }
+        
+        #connection-status {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 0.85em;
+        }
+        
+        .connected {
+            background: #98c379;
+            color: #282c34;
+        }
+        
+        .disconnected {
+            background: #e06c75;
+            color: #fff;
+        }
+        
+        .speech-bubble {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.95);
+            color: #333;
+            padding: 8px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            pointer-events: none;
+            max-width: 150px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+        
+        .speech-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-top: 8px solid rgba(255, 255, 255, 0.95);
+        }
+        
+        .help-text {
+            font-size: 0.8em;
+            color: #5c6370;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #3e4451;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div id="canvas-container">
+            <canvas id="game-canvas" width="800" height="600"></canvas>
+        </div>
+        
+        <div id="sidebar">
+            <h1>🏢 Pixel Office</h1>
+            
+            <div class="controls">
+                <div class="control-group">
+                    <button id="btn-standup">🗣️ Toggle Standup</button>
+                </div>
+                <div class="control-group">
+                    <button id="btn-zoom-in">🔍+</button>
+                    <button id="btn-zoom-out">🔍-</button>
+                    <button id="btn-reset">⟲ Reset</button>
+                </div>
+            </div>
+            
+            <div class="stats">
+                <div class="stat-box">
+                    <div class="stat-value" id="stat-agents">0</div>
+                    <div class="stat-label">Agents</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="stat-tasks">0</div>
+                    <div class="stat-label">Tasks</div>
+                </div>
+            </div>
+            
+            <h2>Agents</h2>
+            <div class="agent-list" id="agent-list">
+                <!-- Agents populated dynamically -->
+            </div>
+            
+            <div class="help-text">
+                <strong>Controls:</strong><br>
+                • Drag to pan<br>
+                • Scroll to zoom<br>
+                • Click agent to select<br>
+                • Space for standup
+            </div>
+        </div>
+    </div>
+    
+    <div id="connection-status" class="disconnected">Disconnected</div>
+
+    <script>
+        // Canvas setup
+        const canvas = document.getElementById('game-canvas');
+        const ctx = canvas.getContext('2d');
+        
+        // State
+        let gameState = null;
+        let camera = { x: 0, y: 0, zoom: 1 };
+        let isDragging = false;
+        let lastMouse = { x: 0, y: 0 };
+        let selectedAgent = null;
+        
+        // WebSocket
+        let ws = null;
+        const wsUrl = `ws://${window.location.host}/ws`;
+        
+        // Isometric math
+        const TILE_W = 64;
+        const TILE_H = 32;
+        
+        function cartToIso(x, y) {
+            return {
+                x: (x - y) * (TILE_W / 2),
+                y: (x + y) * (TILE_H / 2)
+            };
+        }
+        
+        function worldToScreen(wx, wy) {
+            return {
+                x: (wx - camera.x) * camera.zoom + canvas.width / 2,
+                y: (wy - camera.y) * camera.zoom + canvas.height / 2
+            };
+        }
+        
+        function screenToWorld(sx, sy) {
+            return {
+                x: (sx - canvas.width / 2) / camera.zoom + camera.x,
+                y: (sy - canvas.height / 2) / camera.zoom + camera.y
+            };
+        }
+        
+        // Drawing functions
+        function drawDiamond(x, y, w, h, color) {
+            ctx.fillStyle = color;
+            ctx.beginPath();
+            ctx.moveTo(x, y - h/2);
+            ctx.lineTo(x + w/2, y);
+            ctx.lineTo(x, y + h/2);
+            ctx.lineTo(x - w/2, y);
+            ctx.closePath();
+            ctx.fill();
+        }
+        
+        function drawAgent(agent) {
+            const pos = cartToIso(agent.x, agent.y);
+            const screen = worldToScreen(pos.x, pos.y);
+            
+            const size = 32 * camera.zoom;
+            const x = screen.x;
+            const y = screen.y - size/2;
+            
+            // Shadow
+            ctx.fillStyle = 'rgba(0,0,0,0.3)';
+            ctx.beginPath();
+            ctx.ellipse(x, screen.y, size/2, size/6, 0, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Body color based on role/activity
+            let color = '#61afef';
+            if (agent.role === 'auditor') color = '#ffd700';
+            else if (agent.activity === 'working') color = '#98c379';
+            else if (agent.activity === 'auditing') color = '#e5c07b';
+            
+            // Body
+            ctx.fillStyle = color;
+            ctx.fillRect(x - size/4, y, size/2, size * 0.75);
+            
+            // Head
+            ctx.fillStyle = '#f5d0a9';
+            ctx.fillRect(x - size/4, y - size/4, size/2, size/4);
+            
+            // Eyes
+            ctx.fillStyle = '#333';
+            if (agent.direction === 'right' || agent.direction === 'down') {
+                ctx.fillRect(x + size/8, y - size/6, size/10, size/10);
+            }
+            if (agent.direction === 'left' || agent.direction === 'down') {
+                ctx.fillRect(x - size/4, y - size/6, size/10, size/10);
+            }
+            
+            // Selection highlight
+            if (selectedAgent === agent.id) {
+                ctx.strokeStyle = '#fff';
+                ctx.lineWidth = 2;
+                ctx.strokeRect(x - size/3, y - size/4, size/1.5, size);
+            }
+            
+            // Status bar
+            const barW = 50 * camera.zoom;
+            const barH = 14 * camera.zoom;
+            ctx.fillStyle = 'rgba(30,30,30,0.9)';
+            ctx.fillRect(x - barW/2, screen.y + 5, barW, barH);
+            
+            // Status text
+            ctx.fillStyle = '#fff';
+            ctx.font = `${10 * camera.zoom}px sans-serif`;
+            ctx.textAlign = 'center';
+            ctx.fillText(agent.status_text.substring(0, 12), x, screen.y + 14 * camera.zoom);
+            
+            // Progress bar
+            if (agent.progress > 0) {
+                const progW = (barW - 4) * agent.progress;
+                ctx.fillStyle = '#98c379';
+                ctx.fillRect(x - barW/2 + 2, screen.y + barH - 4, progW, 4);
+            }
+            
+            // Speech bubble
+            if (agent.speech) {
+                ctx.fillStyle = 'rgba(255,255,255,0.95)';
+                ctx.beginPath();
+                ctx.roundRect(x - 40, y - 50, 80, 25, 5);
+                ctx.fill();
+                
+                ctx.fillStyle = '#333';
+                ctx.font = '11px sans-serif';
+                ctx.textAlign = 'center';
+                ctx.fillText(agent.speech.substring(0, 15), x, y - 33);
+            }
+        }
+        
+        function drawTile(x, y, variant) {
+            const pos = cartToIso(x, y);
+            const screen = worldToScreen(pos.x, pos.y);
+            
+            const w = TILE_W * camera.zoom;
+            const h = TILE_H * camera.zoom;
+            
+            const color = variant % 2 === 0 ? '#c8beaa' : '#b2aa96';
+            drawDiamond(screen.x, screen.y, w, h, color);
+            
+            // Border
+            ctx.strokeStyle = '#a89e8a';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(screen.x, screen.y - h/2);
+            ctx.lineTo(screen.x + w/2, screen.y);
+            ctx.lineTo(screen.x, screen.y + h/2);
+            ctx.lineTo(screen.x - w/2, screen.y);
+            ctx.closePath();
+            ctx.stroke();
+        }
+        
+        function drawFurniture(f) {
+            const pos = cartToIso(f.x, f.y);
+            const screen = worldToScreen(pos.x, pos.y);
+            
+            const colors = {
+                desk: '#a08050',
+                chair: '#806040',
+                computer: '#6090c0',
+                plant: '#50a050',
+                nexus: '#64f5c8'
+            };
+            
+            const size = 24 * camera.zoom;
+            ctx.fillStyle = colors[f.type] || '#888';
+            
+            if (f.type === 'nexus') {
+                // Pulsing nexus
+                const pulse = Math.sin(Date.now() / 500) * 5;
+                ctx.fillStyle = colors.nexus;
+                ctx.beginPath();
+                ctx.arc(screen.x, screen.y - size/2, size/2 + pulse, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // Glow
+                ctx.fillStyle = 'rgba(100,245,200,0.3)';
+                ctx.beginPath();
+                ctx.arc(screen.x, screen.y - size/2, size + pulse, 0, Math.PI * 2);
+                ctx.fill();
+            } else {
+                ctx.fillRect(screen.x - size/2, screen.y - size/2, size, size);
+            }
+        }
+        
+        function render() {
+            // Clear
+            ctx.fillStyle = '#282c34';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            if (!gameState) return;
+            
+            // Draw tiles
+            for (let y = 0; y < 20; y++) {
+                for (let x = 0; x < 20; x++) {
+                    drawTile(x, y, x + y);
+                }
+            }
+            
+            // Draw furniture
+            if (gameState.furniture) {
+                gameState.furniture.forEach(drawFurniture);
+            }
+            
+            // Draw Nexus
+            if (gameState.nexus) {
+                drawFurniture({ type: 'nexus', x: gameState.nexus.x, y: gameState.nexus.y });
+            }
+            
+            // Draw agents (sorted by depth)
+            if (gameState.agents) {
+                const sorted = [...gameState.agents].sort((a, b) => (a.y + a.x) - (b.y + b.x));
+                sorted.forEach(drawAgent);
+            }
+            
+            // Standup indicator
+            if (gameState.standup_active) {
+                ctx.fillStyle = 'rgba(152,195,121,0.2)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                ctx.fillStyle = '#98c379';
+                ctx.font = 'bold 24px sans-serif';
+                ctx.textAlign = 'center';
+                ctx.fillText('🗣️ STANDUP MEETING IN PROGRESS', canvas.width/2, 50);
+            }
+        }
+        
+        function updateUI() {
+            if (!gameState) return;
+            
+            // Stats
+            document.getElementById('stat-agents').textContent = gameState.agents?.length || 0;
+            document.getElementById('stat-tasks').textContent = gameState.nexus?.tasks || 0;
+            
+            // Agent list
+            const list = document.getElementById('agent-list');
+            list.innerHTML = '';
+            
+            gameState.agents?.forEach(agent => {
+                const card = document.createElement('div');
+                card.className = 'agent-card' + (agent.role === 'auditor' ? ' auditor' : '');
+                card.innerHTML = `
+                    <div class="agent-name">${agent.name}</div>
+                    <div class="agent-role">${agent.role}</div>
+                    <div class="agent-status">${agent.status_text}</div>
+                    ${agent.progress > 0 ? `
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${agent.progress * 100}%"></div>
+                        </div>
+                    ` : ''}
+                `;
+                card.onclick = () => { selectedAgent = agent.id; };
+                list.appendChild(card);
+            });
+        }
+        
+        // WebSocket handling
+        function connect() {
+            ws = new WebSocket(wsUrl);
+            
+            ws.onopen = () => {
+                document.getElementById('connection-status').textContent = 'Connected';
+                document.getElementById('connection-status').className = 'connected';
+                ws.send(JSON.stringify({ action: 'get_state' }));
+            };
+            
+            ws.onmessage = (event) => {
+                const msg = JSON.parse(event.data);
+                if (msg.type === 'state' || msg.type === 'update') {
+                    gameState = msg.state || msg.data;
+                    if (msg.state?.camera) {
+                        camera = msg.state.camera;
+                    }
+                    updateUI();
+                }
+            };
+            
+            ws.onclose = () => {
+                document.getElementById('connection-status').textContent = 'Disconnected';
+                document.getElementById('connection-status').className = 'disconnected';
+                setTimeout(connect, 3000);
+            };
+            
+            ws.onerror = (err) => {
+                console.error('WebSocket error:', err);
+            };
+        }
+        
+        // Controls
+        document.getElementById('btn-standup').onclick = () => {
+            ws?.send(JSON.stringify({ action: 'toggle_standup' }));
+        };
+        
+        document.getElementById('btn-zoom-in').onclick = () => {
+            camera.zoom = Math.min(3, camera.zoom * 1.2);
+            ws?.send(JSON.stringify({ action: 'zoom', factor: 1.2 }));
+        };
+        
+        document.getElementById('btn-zoom-out').onclick = () => {
+            camera.zoom = Math.max(0.5, camera.zoom / 1.2);
+            ws?.send(JSON.stringify({ action: 'zoom', factor: 0.8 }));
+        };
+        
+        document.getElementById('btn-reset').onclick = () => {
+            camera = { x: 0, y: 0, zoom: 1 };
+            const pos = cartToIso(10, 10);
+            camera.x = pos.x;
+            camera.y = pos.y;
+        };
+        
+        // Mouse handling
+        canvas.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            lastMouse = { x: e.clientX, y: e.clientY };
+        });
+        
+        canvas.addEventListener('mousemove', (e) => {
+            if (isDragging) {
+                const dx = e.clientX - lastMouse.x;
+                const dy = e.clientY - lastMouse.y;
+                camera.x -= dx / camera.zoom;
+                camera.y -= dy / camera.zoom;
+                lastMouse = { x: e.clientX, y: e.clientY };
+            }
+        });
+        
+        canvas.addEventListener('mouseup', () => {
+            isDragging = false;
+        });
+        
+        canvas.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            const factor = e.deltaY > 0 ? 0.9 : 1.1;
+            camera.zoom = Math.max(0.5, Math.min(3, camera.zoom * factor));
+            ws?.send(JSON.stringify({ action: 'zoom', factor }));
+        });
+        
+        canvas.addEventListener('click', (e) => {
+            if (!isDragging) {
+                const rect = canvas.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                ws?.send(JSON.stringify({ action: 'click', x, y }));
+            }
+        });
+        
+        // Keyboard
+        document.addEventListener('keydown', (e) => {
+            if (e.code === 'Space') {
+                e.preventDefault();
+                ws?.send(JSON.stringify({ action: 'toggle_standup' }));
+            }
+        });
+        
+        // Animation loop
+        function animate() {
+            render();
+            requestAnimationFrame(animate);
+        }
+        
+        // Initialize
+        connect();
+        animate();
+        
+        // Handle resize
+        window.addEventListener('resize', () => {
+            const container = document.getElementById('canvas-container');
+            canvas.width = container.clientWidth;
+            canvas.height = container.clientHeight;
+        });
+        window.dispatchEvent(new Event('resize'));
+    </script>
+</body>
+</html>
