@@ -16,10 +16,10 @@
         }
         
         :root {
-            --bg-primary: #1a1a2e;
-            --bg-secondary: #16213e;
-            --bg-card: #0f3460;
-            --accent-primary: #e94560;
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --bg-card: #1a1a2e;
+            --accent-primary: #00d4ff;
             --accent-cyan: #00d4ff;
             --accent-green: #22c55e;
             --accent-yellow: #fbbf24;
@@ -27,7 +27,7 @@
             --accent-purple: #a855f7;
             --accent-pink: #ff2a6d;
             --text-primary: #eaeaea;
-            --text-secondary: #a0a0a0;
+            --text-secondary: #888;
             --border: #2d2d44;
         }
         
@@ -40,7 +40,6 @@
             touch-action: none;
         }
         
-        /* Animated background grid */
         body::before {
             content: '';
             position: fixed;
@@ -49,25 +48,19 @@
             width: 100%;
             height: 100%;
             background-image: 
-                linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
-            background-size: 40px 40px;
+                linear-gradient(rgba(0, 212, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 212, 255, 0.02) 1px, transparent 1px);
+            background-size: 32px 32px;
             pointer-events: none;
             z-index: 0;
-            animation: gridMove 15s linear infinite;
-        }
-        
-        @keyframes gridMove {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(40px, 40px); }
         }
         
         /* Header */
         .header {
             background: var(--bg-secondary);
-            border-bottom: 3px solid var(--accent-primary);
+            border-bottom: 2px solid var(--accent-primary);
             padding: 0 1rem;
-            height: 60px;
+            height: 50px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -81,65 +74,69 @@
         .brand {
             display: flex;
             align-items: center;
-            gap: 0.75rem;
+            gap: 0.5rem;
         }
         
         .logo {
-            width: 36px;
-            height: 36px;
+            width: 32px;
+            height: 32px;
             background: var(--accent-primary);
             border: 2px solid var(--text-primary);
-            box-shadow: 2px 2px 0 var(--text-primary);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.2rem;
+            font-size: 1rem;
         }
         
         .brand-text h1 {
             font-family: 'Press Start 2P', cursive;
-            font-size: 0.65rem;
-            line-height: 1.4;
+            font-size: 0.55rem;
+            line-height: 1.3;
         }
         
-        .brand-text span {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-        }
-        
-        .header-stats {
-            display: flex;
-            gap: 1.5rem;
-            font-size: 0.9rem;
-        }
-        
-        .header-stat {
+        .connection-status {
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            font-size: 0.8rem;
+            padding: 0.25rem 0.75rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 4px;
         }
         
-        .header-stat-value {
-            color: var(--accent-cyan);
-            font-weight: bold;
+        .connection-status.connected { border-color: var(--accent-green); color: var(--accent-green); }
+        .connection-status.connecting { border-color: var(--accent-yellow); color: var(--accent-yellow); }
+        .connection-status.error { border-color: var(--accent-pink); color: var(--accent-pink); }
+        
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: currentColor;
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
         }
         
         /* Main Container */
         .main-container {
             position: fixed;
-            top: 60px;
+            top: 50px;
             left: 0;
             right: 0;
             bottom: 0;
             display: flex;
         }
         
-        /* Canvas Container */
         .canvas-container {
             flex: 1;
             position: relative;
             overflow: hidden;
-            background: linear-gradient(180deg, #0d1b2a 0%, #1b263b 100%);
+            background: linear-gradient(180deg, #0a0a0f 0%, #12121a 100%);
         }
         
         #officeCanvas {
@@ -150,51 +147,42 @@
             cursor: grab;
         }
         
-        #officeCanvas:active {
-            cursor: grabbing;
-        }
+        #officeCanvas:active { cursor: grabbing; }
         
-        /* Controls Overlay */
+        /* Controls */
         .controls-overlay {
             position: absolute;
-            bottom: 20px;
-            left: 20px;
+            bottom: 15px;
+            left: 15px;
             display: flex;
-            gap: 10px;
+            gap: 8px;
             z-index: 100;
         }
         
         .control-btn {
-            width: 44px;
-            height: 44px;
+            width: 40px;
+            height: 40px;
             background: var(--bg-card);
             border: 2px solid var(--accent-cyan);
             color: var(--text-primary);
-            font-size: 1.2rem;
+            font-size: 1rem;
             cursor: pointer;
             transition: all 0.15s;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 3px 3px 0 rgba(0, 212, 255, 0.3);
         }
         
         .control-btn:hover {
             background: var(--accent-cyan);
             color: var(--bg-primary);
-            transform: translateY(-2px);
-        }
-        
-        .control-btn:active {
-            transform: translateY(0);
-            box-shadow: 1px 1px 0 rgba(0, 212, 255, 0.3);
         }
         
         /* Side Panel */
         .side-panel {
-            width: 320px;
+            width: 300px;
             background: var(--bg-secondary);
-            border-left: 3px solid var(--border);
+            border-left: 2px solid var(--border);
             display: flex;
             flex-direction: column;
             z-index: 50;
@@ -202,41 +190,40 @@
         }
         
         .panel-section {
-            padding: 1rem;
-            border-bottom: 2px solid var(--border);
+            padding: 0.75rem;
+            border-bottom: 1px solid var(--border);
         }
         
         .panel-title {
             font-family: 'Press Start 2P', cursive;
-            font-size: 0.6rem;
+            font-size: 0.5rem;
             color: var(--accent-cyan);
-            margin-bottom: 0.75rem;
+            margin-bottom: 0.5rem;
             display: flex;
             align-items: center;
             gap: 0.5rem;
         }
         
-        /* Agent List */
         .agent-list {
-            max-height: 200px;
+            max-height: 180px;
             overflow-y: auto;
         }
         
         .agent-list-item {
             display: flex;
             align-items: center;
-            gap: 0.75rem;
-            padding: 0.5rem;
+            gap: 0.5rem;
+            padding: 0.4rem;
             background: var(--bg-card);
-            border: 2px solid var(--border);
-            margin-bottom: 0.5rem;
+            border: 1px solid var(--border);
+            margin-bottom: 0.4rem;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.15s;
+            font-size: 0.9rem;
         }
         
         .agent-list-item:hover {
             border-color: var(--accent-cyan);
-            transform: translateX(4px);
         }
         
         .agent-list-item.active {
@@ -245,55 +232,40 @@
         }
         
         .agent-list-avatar {
-            width: 32px;
-            height: 32px;
-            border-radius: 4px;
+            width: 28px;
+            height: 28px;
+            border-radius: 3px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1rem;
-            border: 2px solid var(--border);
+            font-size: 0.9rem;
+            border: 1px solid var(--border);
         }
         
-        .agent-list-info {
-            flex: 1;
-        }
-        
-        .agent-list-name {
-            font-weight: bold;
-            font-size: 1rem;
-        }
-        
-        .agent-list-role {
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-        }
+        .agent-list-info { flex: 1; }
+        .agent-list-name { font-weight: bold; }
+        .agent-list-role { font-size: 0.75rem; color: var(--text-secondary); }
         
         .agent-list-status {
-            width: 10px;
-            height: 10px;
+            width: 8px;
+            height: 8px;
             border-radius: 50%;
             background: var(--accent-green);
         }
         
-        .agent-list-status.busy { background: var(--accent-yellow); }
-        .agent-list-status.meeting { background: var(--accent-purple); }
-        .agent-list-status.away { background: var(--text-secondary); }
-        
-        /* Activity Feed */
         .activity-feed {
-            max-height: 250px;
+            max-height: 200px;
             overflow-y: auto;
         }
         
         .activity-item {
             display: flex;
-            gap: 0.5rem;
-            padding: 0.5rem;
+            gap: 0.4rem;
+            padding: 0.4rem;
             background: var(--bg-card);
-            border-left: 3px solid var(--accent-cyan);
-            margin-bottom: 0.5rem;
-            font-size: 0.9rem;
+            border-left: 2px solid var(--accent-cyan);
+            margin-bottom: 0.4rem;
+            font-size: 0.85rem;
             animation: slideIn 0.3s ease-out;
         }
         
@@ -302,365 +274,166 @@
             to { opacity: 1; transform: translateX(0); }
         }
         
-        .activity-item.working { border-left-color: var(--accent-cyan); }
-        .activity-item.meeting { border-left-color: var(--accent-purple); }
-        .activity-item.completed { border-left-color: var(--accent-green); }
+        .activity-agent { color: var(--accent-cyan); font-weight: bold; }
+        .activity-time { font-size: 0.7rem; color: var(--text-secondary); margin-left: auto; }
         
-        .activity-icon {
-            font-size: 1rem;
-        }
-        
-        .activity-text {
-            flex: 1;
-            line-height: 1.3;
-        }
-        
-        .activity-agent {
-            color: var(--accent-cyan);
-            font-weight: bold;
-        }
-        
-        .activity-time {
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-        }
-        
-        /* Standup Panel */
-        .standup-panel {
-            background: var(--bg-card);
-            border: 2px solid var(--accent-yellow);
-            padding: 1rem;
-            margin-top: 0.5rem;
-        }
-        
-        .standup-table {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 0.5rem;
-            margin-top: 0.5rem;
-        }
-        
-        .standup-seat {
-            aspect-ratio: 1;
-            background: var(--bg-secondary);
-            border: 2px solid var(--border);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .standup-seat:hover {
-            border-color: var(--accent-yellow);
-            transform: scale(1.1);
-        }
-        
-        .standup-seat.occupied {
-            background: rgba(251, 191, 36, 0.2);
-            border-color: var(--accent-yellow);
-        }
-        
-        /* Quick Actions */
         .quick-actions {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 0.5rem;
+            gap: 0.4rem;
         }
         
         .action-btn {
-            padding: 0.75rem;
+            padding: 0.5rem;
             background: var(--bg-card);
-            border: 2px solid var(--accent-primary);
+            border: 1px solid var(--accent-primary);
             color: var(--text-primary);
             font-family: 'VT323', monospace;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
         }
         
-        .action-btn:hover {
-            background: var(--accent-primary);
-            transform: translateY(-2px);
-        }
+        .action-btn:hover { background: var(--accent-primary); }
         
-        /* Sound Toggle */
-        .sound-toggle {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            width: 44px;
-            height: 44px;
-            background: var(--bg-card);
-            border: 2px solid var(--accent-purple);
-            color: var(--text-primary);
-            font-size: 1.2rem;
-            cursor: pointer;
-            z-index: 100;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .sound-toggle.muted {
-            opacity: 0.5;
-            border-color: var(--text-secondary);
-        }
-        
-        /* Mobile Toggle */
-        .mobile-toggle {
-            display: none;
-            position: absolute;
-            top: 80px;
-            right: 20px;
-            width: 44px;
-            height: 44px;
-            background: var(--bg-card);
-            border: 2px solid var(--accent-cyan);
-            color: var(--text-primary);
-            font-size: 1.2rem;
-            cursor: pointer;
-            z-index: 100;
-        }
-        
-        /* Tooltip */
         .tooltip {
             position: absolute;
             background: var(--bg-card);
             border: 2px solid var(--accent-cyan);
-            padding: 0.75rem;
+            padding: 0.5rem;
             pointer-events: none;
             z-index: 200;
-            font-size: 0.85rem;
-            max-width: 200px;
-            box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.3);
+            font-size: 0.8rem;
+            max-width: 180px;
             display: none;
         }
         
         .tooltip-title {
             font-family: 'Press Start 2P', cursive;
-            font-size: 0.55rem;
+            font-size: 0.5rem;
             color: var(--accent-cyan);
-            margin-bottom: 0.25rem;
-        }
-        
-        .tooltip-task {
-            color: var(--accent-yellow);
-            margin-top: 0.25rem;
         }
         
         /* Loading Screen */
         .loading-screen {
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            top: 0; left: 0; right: 0; bottom: 0;
             background: var(--bg-primary);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             z-index: 9999;
-            transition: opacity 0.5s;
+            transition: opacity 0.3s;
         }
         
-        .loading-screen.hidden {
-            opacity: 0;
-            pointer-events: none;
-        }
-        
-        .loading-text {
-            font-family: 'Press Start 2P', cursive;
-            font-size: 1rem;
-            color: var(--accent-cyan);
-            margin-top: 1rem;
-            animation: pulse 1s infinite;
-        }
-        
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
+        .loading-screen.hidden { opacity: 0; pointer-events: none; }
         
         .loading-bar {
             width: 200px;
-            height: 8px;
+            height: 6px;
             background: var(--bg-secondary);
-            border: 2px solid var(--border);
+            border: 1px solid var(--border);
             margin-top: 1rem;
-            overflow: hidden;
         }
         
         .loading-progress {
             height: 100%;
             background: var(--accent-cyan);
             width: 0%;
-            transition: width 0.3s;
+            transition: width 0.2s;
         }
         
-        /* Responsive */
+        /* Mobile */
+        .mobile-toggle {
+            display: none;
+            position: absolute;
+            top: 70px;
+            right: 15px;
+            width: 40px;
+            height: 40px;
+            background: var(--bg-card);
+            border: 2px solid var(--accent-cyan);
+            color: var(--text-primary);
+            z-index: 100;
+        }
+        
         @media (max-width: 900px) {
             .side-panel {
                 position: fixed;
                 right: 0;
-                top: 60px;
+                top: 50px;
                 bottom: 0;
                 transform: translateX(100%);
-                width: 280px;
+                width: 260px;
             }
-            
-            .side-panel.open {
-                transform: translateX(0);
-            }
-            
-            .mobile-toggle {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
-            
-            .header-stats {
-                display: none;
-            }
-        }
-        
-        @media (max-width: 600px) {
-            .brand-text span {
-                display: none;
-            }
-            
-            .controls-overlay {
-                bottom: 10px;
-                left: 10px;
-            }
-            
-            .control-btn {
-                width: 40px;
-                height: 40px;
-            }
+            .side-panel.open { transform: translateX(0); }
+            .mobile-toggle { display: flex; align-items: center; justify-content: center; }
         }
     </style>
 </head>
 <body>
     <!-- Loading Screen -->
     <div class="loading-screen" id="loadingScreen">
-        <div style="font-size: 4rem;">🏢</div>
-        <div class="loading-text">LOADING PIXEL OFFICE...</div>
+        <div style="font-size: 3rem;">🏢</div>
+        <div style="font-family: 'Press Start 2P'; font-size: 0.7rem; margin-top: 0.5rem;">LOADING PIXEL OFFICE...</div>
         <div class="loading-bar">
             <div class="loading-progress" id="loadingProgress"></div>
         </div>
+        <div id="loadingStatus" style="margin-top: 0.5rem; font-size: 0.8rem; color: var(--text-secondary);">Initializing...</div>
     </div>
 
-    <!-- Header -->
     <header class="header">
         <div class="brand">
             <div class="logo">🏢</div>
             <div class="brand-text">
                 <h1>PIXEL OFFICE</h1>
-                <span>Living Pixel Command Center</span>
             </div>
         </div>
         
-        <div class="header-stats">
-            <div class="header-stat">
-                <span>👥</span>
-                <span class="header-stat-value" id="statAgents">22</span>
-                <span>Agents</span>
-            </div>
-            <div class="header-stat">
-                <span>✓</span>
-                <span class="header-stat-value" id="statTasks">47</span>
-                <span>Tasks</span>
-            </div>
-            <div class="header-stat">
-                <span>⚡</span>
-                <span class="header-stat-value" id="statOnline">21</span>
-                <span>Online</span>
-            </div>
+        <div class="connection-status" id="connectionStatus">
+            <span class="status-dot"></span>
+            <span id="connectionText">Connecting...</span>
         </div>
         
-        <div style="display: flex; gap: 0.5rem;">
-            <button class="control-btn" onclick="location.href='index.html'" title="Back to HQ">🏠</button>
-        </div>
+        <button class="control-btn" onclick="location.href='mission-control/dashboard/office.html'" title="Back to Dashboard">🏠</button>
     </header>
 
-    <!-- Main Container -->
     <div class="main-container">
-        <!-- Canvas Container -->
         <div class="canvas-container" id="canvasContainer">
             <canvas id="officeCanvas"></canvas>
             
-            <!-- Controls -->
             <div class="controls-overlay">
                 <button class="control-btn" onclick="zoomIn()" title="Zoom In">+</button>
                 <button class="control-btn" onclick="zoomOut()" title="Zoom Out">−</button>
                 <button class="control-btn" onclick="resetView()" title="Reset View">⌂</button>
-                <button class="control-btn" onclick="toggleStandup()" title="Toggle Standup">📢</button>
+                <button class="control-btn" onclick="toggleStandup()" title="Standup">📢</button>
             </div>
             
-            <!-- Sound Toggle -->
-            <button class="sound-toggle" id="soundToggle" onclick="toggleSound()" title="Toggle Sound">🔊</button>
-            
-            <!-- Mobile Panel Toggle -->
             <button class="mobile-toggle" id="mobileToggle" onclick="togglePanel()">☰</button>
             
-            <!-- Tooltip -->
             <div class="tooltip" id="tooltip">
                 <div class="tooltip-title" id="tooltipTitle"></div>
                 <div id="tooltipRole"></div>
-                <div class="tooltip-task" id="tooltipTask"></div>
+                <div style="color: var(--accent-yellow); margin-top: 0.25rem;" id="tooltipTask"></div>
             </div>
         </div>
         
-        <!-- Side Panel -->
         <aside class="side-panel" id="sidePanel">
-            <!-- Agent List -->
             <div class="panel-section">
-                <div class="panel-title">
-                    <span>👥</span>
-                    ACTIVE AGENTS
-                </div>
+                <div class="panel-title">👥 AGENTS (<span id="agentCount">0</span>)</div>
                 <div class="agent-list" id="agentList"></div>
             </div>
             
-            <!-- Standup Visualization -->
-            <div class="panel-section">
-                <div class="panel-title">
-                    <span>📢</span>
-                    DAILY STANDUP
-                </div>
-                <div class="standup-panel">
-                    <div style="font-size: 0.85rem; color: var(--text-secondary);">
-                        Meeting starts in <span style="color: var(--accent-yellow);">15 min</span>
-                    </div>
-                    <div class="standup-table" id="standupTable"></div>
-                </div>
-            </div>
-            
-            <!-- Activity Feed -->
             <div class="panel-section" style="flex: 1; overflow: hidden;">
-                <div class="panel-title">
-                    <span>📡</span>
-                    LIVE ACTIVITY
-                </div>
+                <div class="panel-title">📡 LIVE ACTIVITY</div>
                 <div class="activity-feed" id="activityFeed"></div>
             </div>
             
-            <!-- Quick Actions -->
             <div class="panel-section">
-                <div class="panel-title">
-                    <span>⚡</span>
-                    ACTIONS
-                </div>
+                <div class="panel-title">⚡ ACTIONS</div>
                 <div class="quick-actions">
                     <button class="action-btn" onclick="callStandup()">📢 Standup</button>
-                    <button class="action-btn" onclick="syncTasks()">🔄 Sync</button>
+                    <button class="action-btn" onclick="syncWithAPI()">🔄 Sync</button>
                     <button class="action-btn" onclick="findAgent()">🔍 Find</button>
                     <button class="action-btn" onclick="toggleParticles()">✨ FX</button>
                 </div>
@@ -670,15 +443,28 @@
 
     <script>
         // ============================================
-        // PIXEL OFFICE ENGINE
+        // PIXEL OFFICE v2.0 - REAL API INTEGRATION
         // ============================================
         
         const canvas = document.getElementById('officeCanvas');
         const ctx = canvas.getContext('2d');
         const container = document.getElementById('canvasContainer');
         
-        // Disable anti-aliasing for pixel art look
         ctx.imageSmoothingEnabled = false;
+        
+        // API Configuration
+        const API_CONFIG = {
+            baseUrl: '', // Same origin
+            endpoints: {
+                agents: '/api/agents',
+                tasks: '/api/tasks',
+                leads: '/api/leads',
+                system: '/api/system/status',
+                events: '/api/system/events'
+            },
+            refreshInterval: 30000,
+            retryInterval: 5000
+        };
         
         // Game State
         const state = {
@@ -692,103 +478,177 @@
             particlesEnabled: true,
             standupMode: false,
             lastTime: 0,
-            fps: 60,
-            frameCount: 0,
             hoveredAgent: null,
-            selectedAgent: null
+            selectedAgent: null,
+            apiConnected: false,
+            lastApiFetch: 0
         };
         
         // Isometric constants
-        const TILE_WIDTH = 64;
-        const TILE_HEIGHT = 32;
-        const ISO_SCALE = 1;
-        
-        // Office layout (20x20 grid)
+        const TILE_WIDTH = 48;
+        const TILE_HEIGHT = 24;
         const GRID_SIZE = 20;
+        
+        // Office data
         const office = {
             tiles: [],
             furniture: [],
             agents: [],
             particles: [],
-            speechBubbles: [],
             standupSeats: []
         };
         
-        // 22 Agents data
-        const agentsData = [
-            { id: 'ericf', name: 'EricF', role: 'Commander', type: 'human', color: '#ffd700', sprite: '👑', x: 10, y: 10, task: 'Overseeing operations' },
-            { id: 'nexus', name: 'Nexus', role: 'Orchestrator', type: 'ai', color: '#00d4ff', sprite: '🤖', x: 8, y: 8, task: 'Coordinating agents' },
-            { id: 'codemaster', name: 'CodeMaster', role: 'Backend Lead', type: 'ai', color: '#22c55e', sprite: '💻', x: 6, y: 6, task: 'API architecture' },
-            { id: 'code1', name: 'Code-1', role: 'Backend Dev', type: 'ai', color: '#22c55e', sprite: '⚡', x: 5, y: 7, task: 'Database optimization' },
-            { id: 'code2', name: 'Code-2', role: 'Backend Dev', type: 'ai', color: '#22c55e', sprite: '🔧', x: 7, y: 5, task: 'Fixing API errors' },
-            { id: 'code3', name: 'Code-3', role: 'Backend Dev', type: 'ai', color: '#22c55e', sprite: '🔌', x: 6, y: 8, task: 'Testing endpoints' },
-            { id: 'forge', name: 'Forge', role: 'UI/Frontend Lead', type: 'ai', color: '#f97316', sprite: '🔨', x: 12, y: 6, task: 'Design system' },
-            { id: 'forge2', name: 'Forge-2', role: 'UI Developer', type: 'ai', color: '#f97316', sprite: '🎨', x: 13, y: 5, task: 'Component library' },
-            { id: 'forge3', name: 'Forge-3', role: 'UI Developer', type: 'ai', color: '#f97316', sprite: '✨', x: 11, y: 7, task: 'Theme integration' },
-            { id: 'pixel', name: 'Pixel', role: 'Designer', type: 'ai', color: '#a855f7', sprite: '🎨', x: 14, y: 6, task: 'Creating assets' },
-            { id: 'glasses', name: 'Glasses', role: 'Researcher', type: 'ai', color: '#3b82f6', sprite: '🔍', x: 4, y: 10, task: 'Market analysis' },
-            { id: 'quill', name: 'Quill', role: 'Writer', type: 'ai', color: '#ec4899', sprite: '📝', x: 3, y: 12, task: 'Documentation' },
-            { id: 'gary', name: 'Gary', role: 'Marketing', type: 'ai', color: '#f59e0b', sprite: '📢', x: 16, y: 8, task: 'Campaign planning' },
-            { id: 'larry', name: 'Larry', role: 'Social Media', type: 'ai', color: '#06b6d4', sprite: '📱', x: 17, y: 9, task: 'Content scheduling' },
-            { id: 'sentry', name: 'Sentry', role: 'DevOps', type: 'ai', color: '#ef4444', sprite: '🛡️', x: 9, y: 12, task: 'Server monitoring' },
-            { id: 'audit', name: 'Audit', role: 'QA Lead', type: 'ai', color: '#8b5cf6', sprite: '🔍', x: 8, y: 14, task: 'Quality assurance' },
-            { id: 'cipher', name: 'Cipher', role: 'Security', type: 'ai', color: '#6366f1', sprite: '🔐', x: 10, y: 14, task: 'Security audit' },
-            { id: 'dealflow', name: 'DealFlow', role: 'Lead Gen', type: 'ai', color: '#10b981', sprite: '🤝', x: 15, y: 12, task: 'Lead research' },
-            { id: 'coldcall', name: 'ColdCall', role: 'Outreach', type: 'ai', color: '#f97316', sprite: '📞', x: 16, y: 13, task: 'Cold calling' },
-            { id: 'scout', name: 'Scout', role: 'Intel', type: 'ai', color: '#3b82f6', sprite: '🔭', x: 5, y: 14, task: 'Competitor intel' },
-            { id: 'pie', name: 'PIE', role: 'Predictive AI', type: 'ai', color: '#8b5cf6', sprite: '🧠', x: 10, y: 4, task: 'Data analysis' }
+        // Default agents data (fallback)
+        const defaultAgents = [
+            { id: 'ericf', name: 'EricF', role: 'Commander', type: 'human', color: '#ffd700', sprite: '👑', x: 10, y: 10, task: 'Overseeing operations', status: 'active' },
+            { id: 'nexus', name: 'Nexus', role: 'Orchestrator', type: 'ai', color: '#00d4ff', sprite: '🤖', x: 8, y: 8, task: 'Coordinating agents', status: 'active' },
+            { id: 'codemaster', name: 'CodeMaster', role: 'Backend Lead', type: 'ai', color: '#22c55e', sprite: '💻', x: 6, y: 6, task: 'API architecture', status: 'active' },
+            { id: 'code1', name: 'Code-1', role: 'Backend Dev', type: 'ai', color: '#22c55e', sprite: '⚡', x: 5, y: 7, task: 'Database optimization', status: 'active' },
+            { id: 'code2', name: 'Code-2', role: 'Backend Dev', type: 'ai', color: '#22c55e', sprite: '🔧', x: 7, y: 5, task: 'Fixing API errors', status: 'active' },
+            { id: 'code3', name: 'Code-3', role: 'Backend Dev', type: 'ai', color: '#22c55e', sprite: '🔌', x: 6, y: 8, task: 'Testing endpoints', status: 'active' },
+            { id: 'forge', name: 'Forge', role: 'UI/Frontend Lead', type: 'ai', color: '#f97316', sprite: '🔨', x: 12, y: 6, task: 'Design system', status: 'active' },
+            { id: 'forge2', name: 'Forge-2', role: 'UI Developer', type: 'ai', color: '#f97316', sprite: '🎨', x: 13, y: 5, task: 'Component library', status: 'active' },
+            { id: 'forge3', name: 'Forge-3', role: 'UI Developer', type: 'ai', color: '#f97316', sprite: '✨', x: 11, y: 7, task: 'Theme integration', status: 'active' },
+            { id: 'pixel', name: 'Pixel', role: 'Designer', type: 'ai', color: '#a855f7', sprite: '🎨', x: 14, y: 6, task: 'Creating assets', status: 'active' },
+            { id: 'glasses', name: 'Glasses', role: 'Researcher', type: 'ai', color: '#3b82f6', sprite: '🔍', x: 4, y: 10, task: 'Market analysis', status: 'active' },
+            { id: 'quill', name: 'Quill', role: 'Writer', type: 'ai', color: '#ec4899', sprite: '📝', x: 3, y: 12, task: 'Documentation', status: 'active' },
+            { id: 'gary', name: 'Gary', role: 'Marketing', type: 'ai', color: '#f59e0b', sprite: '📢', x: 16, y: 8, task: 'Campaign planning', status: 'active' },
+            { id: 'larry', name: 'Larry', role: 'Social Media', type: 'ai', color: '#06b6d4', sprite: '📱', x: 17, y: 9, task: 'Content scheduling', status: 'active' },
+            { id: 'sentry', name: 'Sentry', role: 'DevOps', type: 'ai', color: '#ef4444', sprite: '🛡️', x: 9, y: 12, task: 'Server monitoring', status: 'active' },
+            { id: 'audit', name: 'Audit', role: 'QA Lead', type: 'ai', color: '#8b5cf6', sprite: '🔍', x: 8, y: 14, task: 'Quality assurance', status: 'active' },
+            { id: 'cipher', name: 'Cipher', role: 'Security', type: 'ai', color: '#6366f1', sprite: '🔐', x: 10, y: 14, task: 'Security audit', status: 'active' },
+            { id: 'dealflow', name: 'DealFlow', role: 'Lead Gen', type: 'ai', color: '#10b981', sprite: '🤝', x: 15, y: 12, task: 'Lead research', status: 'active' },
+            { id: 'coldcall', name: 'ColdCall', role: 'Outreach', type: 'ai', color: '#f97316', sprite: '📞', x: 16, y: 13, task: 'Cold calling', status: 'active' },
+            { id: 'scout', name: 'Scout', role: 'Intel', type: 'ai', color: '#3b82f6', sprite: '🔭', x: 5, y: 14, task: 'Competitor intel', status: 'active' },
+            { id: 'pie', name: 'PIE', role: 'Predictive AI', type: 'ai', color: '#8b5cf6', sprite: '🧠', x: 10, y: 4, task: 'Data analysis', status: 'active' }
         ];
         
-        // Initialize office
+        // ============================================
+        // API INTEGRATION (CodeMaster)
+        // ============================================
+        
+        async function fetchFromAPI(endpoint) {
+            try {
+                const response = await fetch(`${API_CONFIG.baseUrl}${endpoint}`);
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                return await response.json();
+            } catch (error) {
+                console.warn(`API fetch failed for ${endpoint}:`, error.message);
+                return null;
+            }
+        }
+        
+        async function syncWithAPI() {
+            updateLoadingStatus('Syncing with API...');
+            
+            const [agents, tasks, system] = await Promise.all([
+                fetchFromAPI(API_CONFIG.endpoints.agents),
+                fetchFromAPI(API_CONFIG.endpoints.tasks),
+                fetchFromAPI(API_CONFIG.endpoints.system)
+            ]);
+            
+            if (agents) {
+                updateAgentsFromAPI(agents);
+                state.apiConnected = true;
+                updateConnectionStatus('connected', 'Live');
+                addActivity('system', 'API', 'Synced agent data');
+            } else {
+                state.apiConnected = false;
+                updateConnectionStatus('error', 'Offline Mode');
+                addActivity('system', 'API', 'Using cached data');
+            }
+            
+            if (tasks) {
+                updateTasksFromAPI(tasks);
+            }
+            
+            state.lastApiFetch = Date.now();
+            updateLoadingStatus('Ready!');
+        }
+        
+        function updateAgentsFromAPI(apiData) {
+            if (!apiData || !Array.isArray(apiData)) return;
+            
+            apiData.forEach(apiAgent => {
+                const agent = office.agents.find(a => a.id === apiAgent.id || a.name === apiAgent.name);
+                if (agent) {
+                    // Update from API
+                    if (apiAgent.status) agent.status = apiAgent.status;
+                    if (apiAgent.currentTask) agent.task = apiAgent.currentTask;
+                    if (apiAgent.activity) agent.activity = apiAgent.activity;
+                    
+                    // Update position if provided
+                    if (apiAgent.position) {
+                        agent.targetX = apiAgent.position.x * TILE_WIDTH;
+                        agent.targetY = apiAgent.position.y * TILE_HEIGHT;
+                        agent.isMoving = true;
+                    }
+                }
+            });
+            
+            renderAgentList();
+        }
+        
+        function updateTasksFromAPI(tasks) {
+            if (!tasks) return;
+            
+            // Distribute tasks to agents
+            const activeTasks = tasks.filter(t => t.status === 'in_progress' || t.status === 'pending');
+            
+            office.agents.forEach((agent, i) => {
+                if (activeTasks[i]) {
+                    agent.task = activeTasks[i].title || activeTasks[i].description;
+                }
+            });
+        }
+        
+        function updateConnectionStatus(status, text) {
+            const statusEl = document.getElementById('connectionStatus');
+            const textEl = document.getElementById('connectionText');
+            
+            statusEl.className = `connection-status ${status}`;
+            textEl.textContent = text;
+        }
+        
+        // ============================================
+        // INITIALIZATION
+        // ============================================
+        
         function initOffice() {
             // Generate floor tiles
             for (let y = 0; y < GRID_SIZE; y++) {
                 for (let x = 0; x < GRID_SIZE; x++) {
                     office.tiles.push({
                         x, y,
-                        type: (x + y) % 2 === 0 ? 'floor1' : 'floor2',
-                        walkable: true
+                        type: (x + y) % 2 === 0 ? 'floor1' : 'floor2'
                     });
                 }
             }
             
-            // Add furniture (desks, chairs, etc)
-            const desks = [
-                { x: 5, y: 5, type: 'desk', team: 'backend' },
-                { x: 6, y: 5, type: 'desk', team: 'backend' },
-                { x: 5, y: 6, type: 'desk', team: 'backend' },
-                { x: 6, y: 6, type: 'desk', team: 'backend' },
-                { x: 12, y: 5, type: 'desk', team: 'frontend' },
-                { x: 13, y: 5, type: 'desk', team: 'frontend' },
-                { x: 12, y: 6, type: 'desk', team: 'frontend' },
-                { x: 13, y: 6, type: 'desk', team: 'frontend' },
-                { x: 8, y: 10, type: 'server', team: 'devops' },
-                { x: 15, y: 10, type: 'desk', team: 'sales' },
-                { x: 16, y: 10, type: 'desk', team: 'sales' },
-                { x: 3, y: 10, type: 'desk', team: 'research' },
-                { x: 3, y: 11, type: 'desk', team: 'research' },
-                { x: 10, y: 2, type: 'conference', team: 'meeting' }
+            // Furniture
+            office.furniture = [
+                { x: 5, y: 5, type: 'desk' }, { x: 6, y: 5, type: 'desk' },
+                { x: 5, y: 6, type: 'desk' }, { x: 6, y: 6, type: 'desk' },
+                { x: 12, y: 5, type: 'desk' }, { x: 13, y: 5, type: 'desk' },
+                { x: 12, y: 6, type: 'desk' }, { x: 13, y: 6, type: 'desk' },
+                { x: 8, y: 10, type: 'server' },
+                { x: 10, y: 2, type: 'conference' }
             ];
-            office.furniture = desks;
             
-            // Initialize agents with animation state
-            office.agents = agentsData.map((data, index) => ({
+            // Initialize agents
+            office.agents = defaultAgents.map(data => ({
                 ...data,
                 pixelX: data.x * TILE_WIDTH,
                 pixelY: data.y * TILE_HEIGHT,
                 targetX: data.x * TILE_WIDTH,
                 targetY: data.y * TILE_HEIGHT,
                 direction: Math.floor(Math.random() * 4),
-                frame: 0,
-                animTimer: 0,
                 isMoving: false,
                 walkCycle: 0,
                 activity: 'working',
                 activityTimer: Math.random() * 100,
                 speechBubble: null,
-                speechTimer: 0,
-                depth: 0,
-                colorVar: Math.random() * 20 - 10
+                speechTimer: 0
             }));
             
             // Standup seats
@@ -804,298 +664,214 @@
         // ============================================
         
         function toIso(x, y) {
-            const isoX = (x - y) * (TILE_WIDTH / 2);
-            const isoY = (x + y) * (TILE_HEIGHT / 2);
-            return { x: isoX, y: isoY };
+            return {
+                x: (x - y) * (TILE_WIDTH / 2),
+                y: (x + y) * (TILE_HEIGHT / 2)
+            };
         }
         
         function fromIso(isoX, isoY) {
-            const x = (isoX / (TILE_WIDTH / 2) + isoY / (TILE_HEIGHT / 2)) / 2;
-            const y = (isoY / (TILE_HEIGHT / 2) - isoX / (TILE_WIDTH / 2)) / 2;
-            return { x, y };
+            return {
+                x: (isoX / (TILE_WIDTH / 2) + isoY / (TILE_HEIGHT / 2)) / 2,
+                y: (isoY / (TILE_HEIGHT / 2) - isoX / (TILE_WIDTH / 2)) / 2
+            };
         }
         
         // ============================================
-        // SPRITE RENDERING
+        // SPRITE RENDERING (Pixel)
         // ============================================
-        
-        function drawPixelRect(x, y, w, h, color) {
-            ctx.fillStyle = color;
-            ctx.fillRect(Math.floor(x), Math.floor(y), Math.floor(w), Math.floor(h));
-        }
-        
-        function drawPixelCircle(x, y, r, color) {
-            ctx.fillStyle = color;
-            ctx.beginPath();
-            ctx.arc(Math.floor(x), Math.floor(y), r, 0, Math.PI * 2);
-            ctx.fill();
-        }
         
         function drawAgentSprite(agent, screenX, screenY, scale) {
-            const baseSize = 24 * scale;
-            const bounce = agent.isMoving ? Math.sin(agent.walkCycle * 0.5) * 3 * scale : 0;
+            const size = 20 * scale;
+            const bounce = agent.isMoving ? Math.sin(agent.walkCycle * 0.5) * 2 * scale : 0;
             const x = screenX;
-            const y = screenY - baseSize - bounce;
+            const y = screenY - size - bounce;
             
             // Shadow
             ctx.fillStyle = 'rgba(0,0,0,0.3)';
             ctx.beginPath();
-            ctx.ellipse(x, screenY, baseSize * 0.6, baseSize * 0.2, 0, 0, Math.PI * 2);
+            ctx.ellipse(x, screenY, size * 0.6, size * 0.2, 0, 0, Math.PI * 2);
             ctx.fill();
             
-            // Body color based on team
+            // Body
             const bodyColor = agent.color;
-            const darkColor = adjustBrightness(bodyColor, -40);
-            const lightColor = adjustBrightness(bodyColor, 20);
+            const darkColor = adjustColor(bodyColor, -30);
             
-            // Direction-based sprite (0: down, 1: left, 2: right, 3: up)
+            // Walking animation
+            const walkOffset = agent.isMoving ? Math.sin(agent.walkCycle) * 3 * scale : 0;
             const dir = agent.direction;
-            const isSideView = dir === 1 || dir === 2;
-            
-            // Walking animation offset
-            const walkOffset = agent.isMoving ? Math.sin(agent.walkCycle) * 4 * scale : 0;
             
             // Body
-            drawPixelRect(x - baseSize/2, y, baseSize, baseSize * 0.9, bodyColor);
-            
-            // Body highlight
-            drawPixelRect(x - baseSize/2 + 2, y + 2, baseSize - 4, baseSize * 0.3, lightColor);
+            ctx.fillStyle = bodyColor;
+            ctx.fillRect(x - size/2, y, size, size * 0.9);
             
             // Head
-            const headSize = baseSize * 0.7;
-            const headY = y - headSize + 4;
-            drawPixelRect(x - headSize/2, headY, headSize, headSize, '#ffdbac');
+            const headSize = size * 0.7;
+            const headY = y - headSize + 3;
+            ctx.fillStyle = '#ffdbac';
+            ctx.fillRect(x - headSize/2, headY, headSize, headSize);
             
-            // Face based on direction
+            // Face
             ctx.fillStyle = '#333';
             if (dir === 0) { // Down
-                drawPixelRect(x - 4, headY + 10, 3, 3, '#333');
-                drawPixelRect(x + 1, headY + 10, 3, 3, '#333');
-                drawPixelRect(x - 2, headY + 16, 4, 2, '#c92a2a');
-            } else if (dir === 3) { // Up
-                // Hair on top
-                drawPixelRect(x - headSize/2 - 2, headY - 2, headSize + 4, 6, darkColor);
-            } else { // Side
-                const eyeX = dir === 1 ? x - 6 : x + 3;
-                drawPixelRect(eyeX, headY + 10, 3, 3, '#333');
-                drawPixelRect(x - 2, headY + 16, 4, 2, '#c92a2a');
+                ctx.fillRect(x - 3, headY + 8, 2, 2);
+                ctx.fillRect(x + 1, headY + 8, 2, 2);
+            } else if (dir !== 3) { // Side
+                const eyeX = dir === 1 ? x - 4 : x + 2;
+                ctx.fillRect(eyeX, headY + 8, 2, 2);
             }
             
             // Hair/Hat
-            drawPixelRect(x - headSize/2 - 2, headY - 2, headSize + 4, 6, darkColor);
+            ctx.fillStyle = darkColor;
+            ctx.fillRect(x - headSize/2 - 1, headY - 2, headSize + 2, 4);
             
-            // Arms with walking animation
-            const armOffset = agent.isMoving ? Math.sin(agent.walkCycle + Math.PI) * 6 * scale : 0;
-            if (isSideView) {
-                const armX = dir === 1 ? x - baseSize/2 - 6 : x + baseSize/2;
-                drawPixelRect(armX, y + 4 + armOffset, 6, baseSize * 0.6, bodyColor);
-                drawPixelRect(armX, y + 4 - armOffset, 6, baseSize * 0.6, darkColor);
+            // Arms
+            if (dir === 1 || dir === 2) {
+                const armX = dir === 1 ? x - size/2 - 4 : x + size/2;
+                ctx.fillStyle = bodyColor;
+                ctx.fillRect(armX, y + 3, 4, size * 0.5);
             } else {
-                drawPixelRect(x - baseSize/2 - 4, y + 4 + walkOffset, 4, baseSize * 0.5, bodyColor);
-                drawPixelRect(x + baseSize/2, y + 4 - walkOffset, 4, baseSize * 0.5, bodyColor);
+                ctx.fillRect(x - size/2 - 3, y + 3 + walkOffset, 3, size * 0.4);
+                ctx.fillRect(x + size/2, y + 3 - walkOffset, 3, size * 0.4);
             }
             
-            // Legs with walking animation
+            // Legs
             if (agent.isMoving) {
-                const legOffset = Math.sin(agent.walkCycle) * 4 * scale;
-                drawPixelRect(x - baseSize/3, y + baseSize * 0.8, baseSize/3 - 2, baseSize * 0.4 + legOffset, '#333');
-                drawPixelRect(x + 2, y + baseSize * 0.8, baseSize/3 - 2, baseSize * 0.4 - legOffset, '#333');
+                const legOffset = Math.sin(agent.walkCycle) * 3 * scale;
+                ctx.fillStyle = '#333';
+                ctx.fillRect(x - size/3, y + size * 0.7, size/3 - 1, size * 0.3 + legOffset);
+                ctx.fillRect(x + 1, y + size * 0.7, size/3 - 1, size * 0.3 - legOffset);
             } else {
-                drawPixelRect(x - baseSize/3, y + baseSize * 0.8, baseSize/3 - 2, baseSize * 0.4, '#333');
-                drawPixelRect(x + 2, y + baseSize * 0.8, baseSize/3 - 2, baseSize * 0.4, '#333');
+                ctx.fillStyle = '#333';
+                ctx.fillRect(x - size/3, y + size * 0.7, size/3 - 1, size * 0.3);
+                ctx.fillRect(x + 1, y + size * 0.7, size/3 - 1, size * 0.3);
             }
             
-            // Human crown indicator
+            // Human crown
             if (agent.type === 'human') {
-                drawPixelRect(x - 8, headY - 8, 16, 6, '#ffd700');
-                drawPixelRect(x - 6, headY - 12, 4, 6, '#ffd700');
-                drawPixelRect(x + 2, headY - 12, 4, 6, '#ffd700');
+                ctx.fillStyle = '#ffd700';
+                ctx.fillRect(x - 6, headY - 6, 12, 4);
+                ctx.fillRect(x - 4, headY - 10, 3, 4);
+                ctx.fillRect(x + 1, headY - 10, 3, 4);
                 
-                // Glow effect
+                // Glow
                 ctx.shadowColor = '#ffd700';
-                ctx.shadowBlur = 10;
+                ctx.shadowBlur = 8;
                 ctx.strokeStyle = '#ffd700';
-                ctx.lineWidth = 1;
-                ctx.strokeRect(x - baseSize/2 - 2, y - 2, baseSize + 4, baseSize + headSize);
+                ctx.strokeRect(x - size/2 - 1, y - 1, size + 2, size + headSize);
                 ctx.shadowBlur = 0;
             }
         }
         
-        function drawFurniture(furniture, screenX, screenY, scale) {
+        function drawFurniture(fur, x, y, scale) {
             const size = TILE_WIDTH * scale;
             
-            switch(furniture.type) {
+            switch(fur.type) {
                 case 'desk':
-                    // Desk top
-                    drawPixelRect(screenX - size/2, screenY - size/4, size, size/2, '#8b7355');
-                    drawPixelRect(screenX - size/2 + 4, screenY - size/4 + 4, size - 8, size/2 - 8, '#a08060');
-                    // Monitor
-                    drawPixelRect(screenX - 12, screenY - size/3 - 16, 24, 16, '#333');
-                    drawPixelRect(screenX - 10, screenY - size/3 - 14, 20, 12, '#00d4ff');
-                    // Chair
-                    drawPixelRect(screenX - 8, screenY + 4, 16, 12, '#c92a2a');
+                    ctx.fillStyle = '#8b7355';
+                    ctx.fillRect(x - size/2, y - size/4, size, size/2);
+                    ctx.fillStyle = '#00d4ff';
+                    ctx.fillRect(x - 8, y - size/3 - 12, 16, 10);
                     break;
-                    
                 case 'server':
-                    // Server rack
-                    drawPixelRect(screenX - size/3, screenY - size/2, size/1.5, size, '#2d3748');
-                    // Blinking lights
-                    const blink = Math.sin(Date.now() / 200) > 0;
-                    drawPixelRect(screenX - size/3 + 4, screenY - size/2 + 4, 6, 6, blink ? '#22c55e' : '#166534');
-                    drawPixelRect(screenX - size/3 + 4, screenY - size/2 + 14, 6, 6, !blink ? '#ef4444' : '#991b1b');
-                    drawPixelRect(screenX - size/3 + 4, screenY - size/2 + 24, 6, 6, '#3b82f6');
+                    ctx.fillStyle = '#2d3748';
+                    ctx.fillRect(x - size/3, y - size/2, size/1.5, size);
+                    const blink = Math.sin(Date.now() / 150) > 0;
+                    ctx.fillStyle = blink ? '#22c55e' : '#166534';
+                    ctx.fillRect(x - size/3 + 3, y - size/2 + 3, 4, 4);
                     break;
-                    
                 case 'conference':
-                    // Conference table
-                    drawPixelRect(screenX - size, screenY - size/3, size * 2, size/1.5, '#654321');
-                    drawPixelRect(screenX - size + 8, screenY - size/3 + 8, size * 2 - 16, size/1.5 - 16, '#7a5230');
+                    ctx.fillStyle = '#654321';
+                    ctx.fillRect(x - size, y - size/3, size * 2, size/1.5);
                     break;
             }
         }
         
-        function drawTile(tile, screenX, screenY, scale) {
+        function drawTile(tile, x, y, scale) {
             const w = TILE_WIDTH * scale;
             const h = TILE_HEIGHT * scale;
             
-            // Isometric diamond shape
-            ctx.fillStyle = tile.type === 'floor1' ? '#2d3748' : '#374151';
-            
+            ctx.fillStyle = tile.type === 'floor1' ? '#1a1a2e' : '#252540';
             ctx.beginPath();
-            ctx.moveTo(screenX, screenY - h/2);
-            ctx.lineTo(screenX + w/2, screenY);
-            ctx.lineTo(screenX, screenY + h/2);
-            ctx.lineTo(screenX - w/2, screenY);
+            ctx.moveTo(x, y - h/2);
+            ctx.lineTo(x + w/2, y);
+            ctx.lineTo(x, y + h/2);
+            ctx.lineTo(x - w/2, y);
             ctx.closePath();
             ctx.fill();
             
-            // Tile border
-            ctx.strokeStyle = '#1a202c';
+            ctx.strokeStyle = '#0f0f1a';
             ctx.lineWidth = 1;
             ctx.stroke();
-            
-            // Highlight on hover
-            if (state.hoveredAgent) {
-                const agent = state.hoveredAgent;
-                const agentTileX = Math.floor(agent.pixelX / TILE_WIDTH);
-                const agentTileY = Math.floor(agent.pixelY / TILE_HEIGHT);
-                if (tile.x === agentTileX && tile.y === agentTileY) {
-                    ctx.fillStyle = 'rgba(0, 212, 255, 0.3)';
-                    ctx.fill();
-                }
-            }
         }
         
-        function drawActivityBar(agent, screenX, screenY, scale) {
-            const barWidth = 40 * scale;
-            const barHeight = 4 * scale;
-            const x = screenX - barWidth / 2;
-            const y = screenY - 55 * scale;
+        function drawActivityBar(agent, x, y, scale) {
+            const w = 36 * scale;
+            const h = 3 * scale;
+            const bx = x - w/2;
+            const by = y - 45 * scale;
             
             // Background
-            ctx.fillStyle = 'rgba(0,0,0,0.6)';
-            drawPixelRect(x - 2, y - 2, barWidth + 4, barHeight + 16, 'rgba(0,0,0,0.6)');
+            ctx.fillStyle = 'rgba(0,0,0,0.7)';
+            ctx.fillRect(bx - 1, by - 12, w + 2, 18);
             
-            // Activity text
+            // Name
             ctx.fillStyle = '#fff';
-            ctx.font = `${Math.floor(8 * scale)}px 'Press Start 2P'`;
+            ctx.font = `${Math.floor(7 * scale)}px 'Press Start 2P'`;
             ctx.textAlign = 'center';
-            const activity = agent.activity || 'working';
-            const activityEmoji = { working: '💻', meeting: '📞', break: '☕', completed: '✅', research: '🔍' }[activity] || '💻';
-            ctx.fillText(activityEmoji + ' ' + agent.name, screenX, y + 8);
+            const emoji = { working: '💻', meeting: '📞', break: '☕', completed: '✅' }[agent.activity] || '💻';
+            ctx.fillText(emoji + ' ' + agent.name, x, by - 2);
             
             // Progress bar
-            const progress = (agent.activityTimer % 100) / 100;
             ctx.fillStyle = '#333';
-            drawPixelRect(x, y + 12, barWidth, barHeight, '#333');
+            ctx.fillRect(bx, by + 2, w, h);
             
-            const colors = { working: '#00d4ff', meeting: '#a855f7', break: '#fbbf24', completed: '#22c55e', research: '#ff2a6d' };
-            ctx.fillStyle = colors[activity] || '#00d4ff';
-            drawPixelRect(x, y + 12, barWidth * progress, barHeight, colors[activity] || '#00d4ff');
+            const colors = { working: '#00d4ff', meeting: '#a855f7', break: '#fbbf24', completed: '#22c55e' };
+            ctx.fillStyle = colors[agent.activity] || '#00d4ff';
+            ctx.fillRect(bx, by + 2, w * ((agent.activityTimer % 100) / 100), h);
         }
         
-        function drawSpeechBubble(agent, screenX, screenY, scale) {
+        function drawSpeechBubble(agent, x, y, scale) {
             if (!agent.speechBubble) return;
             
-            const padding = 8 * scale;
-            const lineHeight = 12 * scale;
-            const maxWidth = 120 * scale;
-            
             ctx.font = `${Math.floor(8 * scale)}px 'VT323'`;
-            const lines = wrapText(agent.speechBubble, maxWidth);
-            const textWidth = Math.min(maxWidth, Math.max(...lines.map(l => ctx.measureText(l).width)));
-            const bubbleWidth = textWidth + padding * 2;
-            const bubbleHeight = lines.length * lineHeight + padding;
+            const text = agent.speechBubble;
+            const width = ctx.measureText(text).width + 10;
+            const height = 16 * scale;
+            const bx = x - width/2;
+            const by = y - 55 * scale - height;
             
-            const x = screenX - bubbleWidth / 2;
-            const y = screenY - 70 * scale - bubbleHeight;
-            
-            // Bubble background
             ctx.fillStyle = 'rgba(255,255,255,0.95)';
-            drawPixelRect(x, y, bubbleWidth, bubbleHeight, 'rgba(255,255,255,0.95)');
-            
-            // Border
+            ctx.fillRect(bx, by, width, height);
             ctx.strokeStyle = '#333';
-            ctx.lineWidth = 2;
-            ctx.strokeRect(x, y, bubbleWidth, bubbleHeight);
+            ctx.lineWidth = 1;
+            ctx.strokeRect(bx, by, width, height);
             
-            // Pointer
-            ctx.beginPath();
-            ctx.moveTo(screenX - 6, y + bubbleHeight);
-            ctx.lineTo(screenX, y + bubbleHeight + 6);
-            ctx.lineTo(screenX + 6, y + bubbleHeight);
-            ctx.closePath();
-            ctx.fill();
-            ctx.stroke();
-            
-            // Text
             ctx.fillStyle = '#333';
             ctx.textAlign = 'left';
-            lines.forEach((line, i) => {
-                ctx.fillText(line, x + padding, y + padding + (i + 0.8) * lineHeight);
-            });
-        }
-        
-        function wrapText(text, maxWidth) {
-            const words = text.split(' ');
-            const lines = [];
-            let currentLine = words[0];
-            
-            for (let i = 1; i < words.length; i++) {
-                const width = ctx.measureText(currentLine + ' ' + words[i]).width;
-                if (width < maxWidth) {
-                    currentLine += ' ' + words[i];
-                } else {
-                    lines.push(currentLine);
-                    currentLine = words[i];
-                }
-            }
-            lines.push(currentLine);
-            return lines;
+            ctx.fillText(text, bx + 5, by + 11 * scale);
         }
         
         // ============================================
-        // PARTICLE SYSTEM
+        // PARTICLES
         // ============================================
         
         function createParticle(x, y, type) {
             const colors = {
-                work: ['#00d4ff', '#22c55e', '#3b82f6'],
-                meeting: ['#a855f7', '#ec4899', '#8b5cf6'],
-                completed: ['#22c55e', '#fbbf24', '#10b981'],
-                thought: ['#fff', '#fbbf24', '#ffd700']
+                work: ['#00d4ff', '#22c55e'],
+                meeting: ['#a855f7', '#ec4899'],
+                completed: ['#22c55e', '#fbbf24']
             };
-            
             const colorSet = colors[type] || colors.work;
             
             return {
                 x, y,
-                vx: (Math.random() - 0.5) * 2,
-                vy: -Math.random() * 2 - 1,
+                vx: (Math.random() - 0.5) * 1.5,
+                vy: -Math.random() * 1.5 - 0.5,
                 life: 1,
-                decay: 0.02 + Math.random() * 0.02,
+                decay: 0.02,
                 color: colorSet[Math.floor(Math.random() * colorSet.length)],
-                size: 2 + Math.random() * 3
+                size: 2
             };
         }
         
@@ -1118,80 +894,58 @@
         }
         
         // ============================================
-        // DEPTH SORTING
-        // ============================================
-        
-        function sortByDepth(objects) {
-            return objects.sort((a, b) => {
-                const isoA = toIso(a.x || a.pixelX / TILE_WIDTH, a.y || a.pixelY / TILE_HEIGHT);
-                const isoB = toIso(b.x || b.pixelX / TILE_WIDTH, b.y || b.pixelY / TILE_HEIGHT);
-                return (isoA.y + (a.y || 0)) - (isoB.y + (b.y || 0));
-            });
-        }
-        
-        // ============================================
-        // MAIN RENDER LOOP
+        // RENDER LOOP
         // ============================================
         
         function render() {
-            // Clear canvas
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             
-            const centerX = canvas.width / 2 + state.panX;
-            const centerY = canvas.height / 2 + state.panY;
+            const cx = canvas.width / 2 + state.panX;
+            const cy = canvas.height / 2 + state.panY;
             const scale = state.zoom;
             
-            // Collect all renderable objects for depth sorting
             const renderList = [];
             
-            // Add tiles
+            // Collect tiles
             office.tiles.forEach(tile => {
                 const iso = toIso(tile.x, tile.y);
                 renderList.push({
                     type: 'tile',
                     obj: tile,
-                    x: tile.x,
                     y: tile.y,
-                    screenX: centerX + iso.x * scale,
-                    screenY: centerY + iso.y * scale
+                    screenX: cx + iso.x * scale,
+                    screenY: cy + iso.y * scale
                 });
             });
             
-            // Add furniture
-            office.furniture.forEach(furniture => {
-                const iso = toIso(furniture.x, furniture.y);
+            // Collect furniture
+            office.furniture.forEach(fur => {
+                const iso = toIso(fur.x, fur.y);
                 renderList.push({
                     type: 'furniture',
-                    obj: furniture,
-                    x: furniture.x,
-                    y: furniture.y,
-                    screenX: centerX + iso.x * scale,
-                    screenY: centerY + iso.y * scale
+                    obj: fur,
+                    y: fur.y,
+                    screenX: cx + iso.x * scale,
+                    screenY: cy + iso.y * scale
                 });
             });
             
-            // Add agents
+            // Collect agents
             office.agents.forEach(agent => {
                 const iso = toIso(agent.pixelX / TILE_WIDTH, agent.pixelY / TILE_HEIGHT);
                 renderList.push({
                     type: 'agent',
                     obj: agent,
-                    x: agent.pixelX / TILE_WIDTH,
                     y: agent.pixelY / TILE_HEIGHT,
-                    screenX: centerX + iso.x * scale,
-                    screenY: centerY + iso.y * scale
+                    screenX: cx + iso.x * scale,
+                    screenY: cy + iso.y * scale
                 });
             });
             
-            // Sort by depth (painter's algorithm)
-            renderList.sort((a, b) => {
-                // Tiles first, then by Y position
-                if (a.type === 'tile' && b.type !== 'tile') return -1;
-                if (a.type !== 'tile' && b.type === 'tile') return 1;
-                return (a.y + (a.type === 'agent' ? 0.5 : 0)) - (b.y + (b.type === 'agent' ? 0.5 : 0));
-            });
+            // Sort by depth
+            renderList.sort((a, b) => a.y - b.y);
             
-            // Render everything
+            // Render
             renderList.forEach(item => {
                 switch(item.type) {
                     case 'tile':
@@ -1205,32 +959,24 @@
                         drawActivityBar(item.obj, item.screenX, item.screenY, scale);
                         drawSpeechBubble(item.obj, item.screenX, item.screenY, scale);
                         
-                        // Emit particles for active agents
-                        if (state.particlesEnabled && Math.random() < 0.02) {
-                            const iso = toIso(item.obj.pixelX / TILE_WIDTH, item.obj.pixelY / TILE_HEIGHT);
+                        if (state.particlesEnabled && Math.random() < 0.015) {
                             office.particles.push(createParticle(
-                                centerX + iso.x * scale,
-                                centerY + iso.y * scale - 30 * scale,
-                                item.obj.activity
+                                item.screenX, item.screenY - 25 * scale, item.obj.activity
                             ));
                         }
                         break;
                 }
             });
             
-            // Draw particles on top
-            if (state.particlesEnabled) {
-                drawParticles();
-            }
+            if (state.particlesEnabled) drawParticles();
             
-            // Draw standup area highlight
+            // Standup highlight
             if (state.standupMode) {
-                office.standupSeats.forEach((seat, i) => {
+                office.standupSeats.forEach(seat => {
                     const iso = toIso(seat.x, seat.y);
-                    const x = centerX + iso.x * scale;
-                    const y = centerY + iso.y * scale;
-                    
-                    ctx.fillStyle = 'rgba(251, 191, 36, 0.3)';
+                    const x = cx + iso.x * scale;
+                    const y = cy + iso.y * scale;
+                    ctx.fillStyle = 'rgba(251, 191, 36, 0.2)';
                     ctx.beginPath();
                     ctx.moveTo(x, y - TILE_HEIGHT * scale / 2);
                     ctx.lineTo(x + TILE_WIDTH * scale / 2, y);
@@ -1248,47 +994,40 @@
         
         function updateAgents(deltaTime) {
             office.agents.forEach(agent => {
-                // Update animation
-                agent.animTimer += deltaTime;
                 agent.walkCycle += deltaTime * 0.01;
                 
                 // Random movement
-                if (!agent.isMoving && Math.random() < 0.005) {
-                    const targetX = agent.pixelX + (Math.random() - 0.5) * TILE_WIDTH * 3;
-                    const targetY = agent.pixelY + (Math.random() - 0.5) * TILE_HEIGHT * 3;
+                if (!agent.isMoving && Math.random() < 0.003) {
+                    const tx = agent.pixelX + (Math.random() - 0.5) * TILE_WIDTH * 2;
+                    const ty = agent.pixelY + (Math.random() - 0.5) * TILE_HEIGHT * 2;
                     
-                    // Keep within bounds
-                    if (targetX > 0 && targetX < GRID_SIZE * TILE_WIDTH &&
-                        targetY > 0 && targetY < GRID_SIZE * TILE_HEIGHT) {
-                        agent.targetX = targetX;
-                        agent.targetY = targetY;
+                    if (tx > 0 && tx < GRID_SIZE * TILE_WIDTH &&
+                        ty > 0 && ty < GRID_SIZE * TILE_HEIGHT) {
+                        agent.targetX = tx;
+                        agent.targetY = ty;
                         agent.isMoving = true;
                         
-                        // Determine direction
-                        const dx = targetX - agent.pixelX;
-                        const dy = targetY - agent.pixelY;
-                        if (Math.abs(dx) > Math.abs(dy)) {
-                            agent.direction = dx > 0 ? 2 : 1;
-                        } else {
-                            agent.direction = dy > 0 ? 0 : 3;
-                        }
+                        const dx = tx - agent.pixelX;
+                        const dy = ty - agent.pixelY;
+                        agent.direction = Math.abs(dx) > Math.abs(dy) 
+                            ? (dx > 0 ? 2 : 1) 
+                            : (dy > 0 ? 0 : 3);
                     }
                 }
                 
-                // Move towards target
+                // Move
                 if (agent.isMoving) {
                     const dx = agent.targetX - agent.pixelX;
                     const dy = agent.targetY - agent.pixelY;
                     const dist = Math.sqrt(dx * dx + dy * dy);
                     
-                    if (dist < 2) {
+                    if (dist < 1) {
                         agent.isMoving = false;
                         agent.pixelX = agent.targetX;
                         agent.pixelY = agent.targetY;
                     } else {
-                        const speed = 0.8;
-                        agent.pixelX += (dx / dist) * speed;
-                        agent.pixelY += (dy / dist) * speed;
+                        agent.pixelX += (dx / dist) * 0.6;
+                        agent.pixelY += (dy / dist) * 0.6;
                     }
                 }
                 
@@ -1296,36 +1035,20 @@
                 agent.activityTimer += deltaTime * 0.01;
                 if (agent.activityTimer > 100) {
                     agent.activityTimer = 0;
-                    const activities = ['working', 'meeting', 'break', 'completed', 'research'];
-                    agent.activity = activities[Math.floor(Math.random() * activities.length)];
+                    const acts = ['working', 'meeting', 'break', 'completed'];
+                    agent.activity = acts[Math.floor(Math.random() * acts.length)];
                 }
                 
-                // Random speech bubbles
-                if (!agent.speechBubble && Math.random() < 0.001) {
-                    const messages = [
-                        'Working on it!',
-                        'Almost done...',
-                        'Need coffee ☕',
-                        'Bug fixed!',
-                        'Deploying now',
-                        'Great idea!',
-                        'Let me check...',
-                        'On it! ⚡'
-                    ];
-                    agent.speechBubble = messages[Math.floor(Math.random() * messages.length)];
-                    agent.speechTimer = 3000;
-                    
-                    if (state.soundEnabled) {
-                        playSound('pop');
-                    }
+                // Speech bubble
+                if (!agent.speechBubble && Math.random() < 0.0008) {
+                    const msgs = ['Working!', 'Almost done!', 'On it!', 'Bug fixed!'];
+                    agent.speechBubble = msgs[Math.floor(Math.random() * msgs.length)];
+                    agent.speechTimer = 2500;
                 }
                 
-                // Clear speech bubble
                 if (agent.speechBubble) {
                     agent.speechTimer -= deltaTime;
-                    if (agent.speechTimer <= 0) {
-                        agent.speechBubble = null;
-                    }
+                    if (agent.speechTimer <= 0) agent.speechBubble = null;
                 }
             });
         }
@@ -1334,84 +1057,62 @@
             const deltaTime = currentTime - state.lastTime;
             state.lastTime = currentTime;
             
-            // Update
             updateAgents(deltaTime);
             updateParticles();
-            
-            // Render
             render();
-            
-            // FPS counter
-            state.frameCount++;
             
             requestAnimationFrame(gameLoop);
         }
         
         // ============================================
-        // INPUT HANDLING
+        // INPUT (Forge)
         // ============================================
         
         function getMousePos(evt) {
             const rect = canvas.getBoundingClientRect();
-            return {
-                x: evt.clientX - rect.left,
-                y: evt.clientY - rect.top
-            };
+            return { x: evt.clientX - rect.left, y: evt.clientY - rect.top };
         }
         
-        function screenToWorld(screenX, screenY) {
-            const centerX = canvas.width / 2 + state.panX;
-            const centerY = canvas.height / 2 + state.panY;
-            const scale = state.zoom;
-            
-            const isoX = (screenX - centerX) / scale;
-            const isoY = (screenY - centerY) / scale;
-            
-            return fromIso(isoX, isoY);
+        function screenToWorld(sx, sy) {
+            const cx = canvas.width / 2 + state.panX;
+            const cy = canvas.height / 2 + state.panY;
+            return fromIso((sx - cx) / state.zoom, (sy - cy) / state.zoom);
         }
         
-        canvas.addEventListener('mousedown', (e) => {
+        canvas.addEventListener('mousedown', e => {
             state.isDragging = true;
             state.lastMouseX = e.clientX;
             state.lastMouseY = e.clientY;
             
-            // Check for agent click
             const pos = getMousePos(e);
             const world = screenToWorld(pos.x, pos.y);
             
             office.agents.forEach(agent => {
-                const agentX = agent.pixelX / TILE_WIDTH;
-                const agentY = agent.pixelY / TILE_HEIGHT;
-                const dist = Math.sqrt(Math.pow(world.x - agentX, 2) + Math.pow(world.y - agentY, 2));
-                
-                if (dist < 0.8) {
+                const ax = agent.pixelX / TILE_WIDTH;
+                const ay = agent.pixelY / TILE_HEIGHT;
+                if (Math.hypot(world.x - ax, world.y - ay) < 0.7) {
                     selectAgent(agent);
                 }
             });
         });
         
-        canvas.addEventListener('mousemove', (e) => {
+        canvas.addEventListener('mousemove', e => {
             const pos = getMousePos(e);
             
             if (state.isDragging) {
-                const dx = e.clientX - state.lastMouseX;
-                const dy = e.clientY - state.lastMouseY;
-                state.panX += dx;
-                state.panY += dy;
+                state.panX += e.clientX - state.lastMouseX;
+                state.panY += e.clientY - state.lastMouseY;
                 state.lastMouseX = e.clientX;
                 state.lastMouseY = e.clientY;
             }
             
-            // Hover detection
             const world = screenToWorld(pos.x, pos.y);
             let hovered = null;
             
             office.agents.forEach(agent => {
-                const agentX = agent.pixelX / TILE_WIDTH;
-                const agentY = agent.pixelY / TILE_HEIGHT;
-                const dist = Math.sqrt(Math.pow(world.x - agentX, 2) + Math.pow(world.y - agentY, 2));
-                
-                if (dist < 0.8) {
+                const ax = agent.pixelX / TILE_WIDTH;
+                const ay = agent.pixelY / TILE_HEIGHT;
+                if (Math.hypot(world.x - ax, world.y - ay) < 0.7) {
                     hovered = agent;
                 }
             });
@@ -1420,98 +1121,67 @@
             updateTooltip(hovered, e.clientX, e.clientY);
         });
         
-        canvas.addEventListener('mouseup', () => {
-            state.isDragging = false;
-        });
-        
+        canvas.addEventListener('mouseup', () => state.isDragging = false);
         canvas.addEventListener('mouseleave', () => {
             state.isDragging = false;
             state.hoveredAgent = null;
             document.getElementById('tooltip').style.display = 'none';
         });
         
-        // Touch support
-        canvas.addEventListener('touchstart', (e) => {
-            e.preventDefault();
-            const touch = e.touches[0];
-            state.isDragging = true;
-            state.lastMouseX = touch.clientX;
-            state.lastMouseY = touch.clientY;
-        });
-        
-        canvas.addEventListener('touchmove', (e) => {
-            e.preventDefault();
-            if (state.isDragging) {
-                const touch = e.touches[0];
-                const dx = touch.clientX - state.lastMouseX;
-                const dy = touch.clientY - state.lastMouseY;
-                state.panX += dx;
-                state.panY += dy;
-                state.lastMouseX = touch.clientX;
-                state.lastMouseY = touch.clientY;
-            }
-        });
-        
-        canvas.addEventListener('touchend', () => {
-            state.isDragging = false;
-        });
-        
-        // Zoom with wheel
-        canvas.addEventListener('wheel', (e) => {
+        canvas.addEventListener('wheel', e => {
             e.preventDefault();
             const delta = e.deltaY > 0 ? 0.9 : 1.1;
             state.zoom = Math.max(0.5, Math.min(3, state.zoom * delta));
         });
         
+        // Touch support
+        canvas.addEventListener('touchstart', e => {
+            e.preventDefault();
+            const t = e.touches[0];
+            state.isDragging = true;
+            state.lastMouseX = t.clientX;
+            state.lastMouseY = t.clientY;
+        });
+        
+        canvas.addEventListener('touchmove', e => {
+            e.preventDefault();
+            if (state.isDragging) {
+                const t = e.touches[0];
+                state.panX += t.clientX - state.lastMouseX;
+                state.panY += t.clientY - state.lastMouseY;
+                state.lastMouseX = t.clientX;
+                state.lastMouseY = t.clientY;
+            }
+        });
+        
+        canvas.addEventListener('touchend', () => state.isDragging = false);
+        
         // ============================================
         // UI FUNCTIONS
         // ============================================
         
-        function zoomIn() {
-            state.zoom = Math.min(3, state.zoom * 1.2);
-        }
-        
-        function zoomOut() {
-            state.zoom = Math.max(0.5, state.zoom / 1.2);
-        }
-        
-        function resetView() {
-            state.zoom = 1;
-            state.panX = 0;
-            state.panY = 0;
-        }
+        function zoomIn() { state.zoom = Math.min(3, state.zoom * 1.2); }
+        function zoomOut() { state.zoom = Math.max(0.5, state.zoom / 1.2); }
+        function resetView() { state.zoom = 1; state.panX = 0; state.panY = 0; }
         
         function toggleStandup() {
             state.standupMode = !state.standupMode;
             
-            if (state.standupMode) {
-                // Move agents to standup area
-                office.agents.forEach((agent, i) => {
-                    if (i < office.standupSeats.length) {
-                        const seat = office.standupSeats[i];
-                        agent.targetX = seat.x * TILE_WIDTH;
-                        agent.targetY = seat.y * TILE_HEIGHT;
-                        agent.isMoving = true;
-                        agent.activity = 'meeting';
-                    }
-                });
-            } else {
-                // Return to original positions
-                office.agents.forEach((agent, i) => {
-                    const data = agentsData[i];
+            office.agents.forEach((agent, i) => {
+                if (state.standupMode && i < office.standupSeats.length) {
+                    const seat = office.standupSeats[i];
+                    agent.targetX = seat.x * TILE_WIDTH;
+                    agent.targetY = seat.y * TILE_HEIGHT;
+                    agent.isMoving = true;
+                    agent.activity = 'meeting';
+                } else if (!state.standupMode) {
+                    const data = defaultAgents[i];
                     agent.targetX = data.x * TILE_WIDTH;
                     agent.targetY = data.y * TILE_HEIGHT;
                     agent.isMoving = true;
                     agent.activity = 'working';
-                });
-            }
-        }
-        
-        function toggleSound() {
-            state.soundEnabled = !state.soundEnabled;
-            const btn = document.getElementById('soundToggle');
-            btn.textContent = state.soundEnabled ? '🔊' : '🔇';
-            btn.classList.toggle('muted', !state.soundEnabled);
+                }
+            });
         }
         
         function togglePanel() {
@@ -1524,43 +1194,27 @@
         
         function selectAgent(agent) {
             state.selectedAgent = agent;
-            
-            // Update UI
-            document.querySelectorAll('.agent-list-item').forEach(el => {
-                el.classList.remove('active');
-                if (el.dataset.id === agent.id) {
-                    el.classList.add('active');
-                }
-            });
-            
-            // Add speech bubble
             agent.speechBubble = 'Yes, Commander?';
             agent.speechTimer = 2000;
             
-            if (state.soundEnabled) {
-                playSound('select');
-            }
+            document.querySelectorAll('.agent-list-item').forEach(el => {
+                el.classList.toggle('active', el.dataset.id === agent.id);
+            });
         }
         
         function updateTooltip(agent, x, y) {
-            const tooltip = document.getElementById('tooltip');
-            
+            const tt = document.getElementById('tooltip');
             if (agent) {
                 document.getElementById('tooltipTitle').textContent = agent.name;
                 document.getElementById('tooltipRole').textContent = agent.role;
                 document.getElementById('tooltipTask').textContent = agent.task;
-                
-                tooltip.style.display = 'block';
-                tooltip.style.left = (x + 15) + 'px';
-                tooltip.style.top = (y + 15) + 'px';
+                tt.style.display = 'block';
+                tt.style.left = (x + 10) + 'px';
+                tt.style.top = (y + 10) + 'px';
             } else {
-                tooltip.style.display = 'none';
+                tt.style.display = 'none';
             }
         }
-        
-        // ============================================
-        // SIDE PANEL UI
-        // ============================================
         
         function renderAgentList() {
             const list = document.getElementById('agentList');
@@ -1571,165 +1225,61 @@
                 item.className = 'agent-list-item';
                 item.dataset.id = agent.id;
                 item.innerHTML = `
-                    <div class="agent-list-avatar" style="background: ${agent.color}20; border-color: ${agent.color};">
-                        ${agent.sprite}
-                    </div>
+                    <div class="agent-list-avatar" style="background: ${agent.color}20; border-color: ${agent.color};">${agent.sprite}</div>
                     <div class="agent-list-info">
                         <div class="agent-list-name">${agent.name}</div>
                         <div class="agent-list-role">${agent.role}</div>
                     </div>
                     <div class="agent-list-status ${agent.activity}"></div>
                 `;
-                
-                item.addEventListener('click', () => {
+                item.onclick = () => {
                     selectAgent(agent);
-                    // Center camera on agent
                     const iso = toIso(agent.pixelX / TILE_WIDTH, agent.pixelY / TILE_HEIGHT);
                     state.panX = -iso.x * state.zoom;
                     state.panY = -iso.y * state.zoom;
-                });
-                
+                };
                 list.appendChild(item);
             });
-        }
-        
-        function renderStandupTable() {
-            const table = document.getElementById('standupTable');
-            table.innerHTML = '';
             
-            office.standupSeats.forEach((seat, i) => {
-                const seatEl = document.createElement('div');
-                seatEl.className = 'standup-seat';
-                
-                if (i < office.agents.length) {
-                    const agent = office.agents[i];
-                    seatEl.classList.add('occupied');
-                    seatEl.textContent = agent.sprite;
-                    seatEl.title = agent.name;
-                }
-                
-                table.appendChild(seatEl);
-            });
+            document.getElementById('agentCount').textContent = office.agents.length;
         }
         
-        function addActivity(type, agent, message) {
+        function addActivity(type, agent, msg) {
             const feed = document.getElementById('activityFeed');
             const item = document.createElement('div');
-            item.className = `activity-item ${type}`;
+            item.className = 'activity-item';
             
-            const icons = {
-                working: '💻',
-                meeting: '📞',
-                completed: '✅',
-                research: '🔍',
-                system: '⚡'
-            };
-            
-            const time = new Date().toLocaleTimeString('en-US', { 
-                hour: '2-digit', 
-                minute: '2-digit',
-                hour12: false 
-            });
+            const icons = { working: '💻', meeting: '📞', completed: '✅', system: '⚡' };
+            const time = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false });
             
             item.innerHTML = `
-                <div class="activity-icon">${icons[type] || '💻'}</div>
-                <div class="activity-text">
-                    <span class="activity-agent">${agent}</span> ${message}
-                </div>
-                <div class="activity-time">${time}</div>
+                <span>${icons[type] || '💻'}</span>
+                <div style="flex: 1;"><span class="activity-agent">${agent}</span> ${msg}</div>
+                <span class="activity-time">${time}</span>
             `;
             
             feed.insertBefore(item, feed.firstChild);
-            
-            // Keep only 20 items
-            while (feed.children.length > 20) {
-                feed.removeChild(feed.lastChild);
-            }
+            while (feed.children.length > 15) feed.removeChild(feed.lastChild);
         }
         
         function callStandup() {
             toggleStandup();
-            addActivity('meeting', 'System', 'Daily standup started');
-            
-            // Show notification
-            if (state.soundEnabled) {
-                playSound('notification');
-            }
-        }
-        
-        function syncTasks() {
-            addActivity('system', 'Nexus', 'Syncing tasks from API...');
-            
-            // Simulate API call
-            setTimeout(() => {
-                addActivity('completed', 'System', 'Tasks synced successfully');
-                document.getElementById('statTasks').textContent = Math.floor(Math.random() * 20 + 40);
-            }, 1000);
+            addActivity('meeting', 'System', 'Daily standup ' + (state.standupMode ? 'started' : 'ended'));
         }
         
         function findAgent() {
-            const randomAgent = office.agents[Math.floor(Math.random() * office.agents.length)];
-            selectAgent(randomAgent);
-            
-            const iso = toIso(randomAgent.pixelX / TILE_WIDTH, randomAgent.pixelY / TILE_HEIGHT);
+            const agent = office.agents[Math.floor(Math.random() * office.agents.length)];
+            selectAgent(agent);
+            const iso = toIso(agent.pixelX / TILE_WIDTH, agent.pixelY / TILE_HEIGHT);
             state.panX = -iso.x * state.zoom;
             state.panY = -iso.y * state.zoom;
-            
-            randomAgent.speechBubble = 'Here I am!';
-            randomAgent.speechTimer = 2000;
-        }
-        
-        // ============================================
-        // SOUND SYSTEM (Web Audio API)
-        // ============================================
-        
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        
-        function playSound(type) {
-            if (!state.soundEnabled) return;
-            
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            
-            switch(type) {
-                case 'pop':
-                    osc.frequency.setValueAtTime(800, audioCtx.currentTime);
-                    osc.frequency.exponentialRampToValueAtTime(400, audioCtx.currentTime + 0.1);
-                    gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
-                    osc.start(audioCtx.currentTime);
-                    osc.stop(audioCtx.currentTime + 0.1);
-                    break;
-                    
-                case 'select':
-                    osc.frequency.setValueAtTime(600, audioCtx.currentTime);
-                    osc.frequency.exponentialRampToValueAtTime(900, audioCtx.currentTime + 0.1);
-                    gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
-                    osc.start(audioCtx.currentTime);
-                    osc.stop(audioCtx.currentTime + 0.1);
-                    break;
-                    
-                case 'notification':
-                    osc.frequency.setValueAtTime(440, audioCtx.currentTime);
-                    osc.frequency.setValueAtTime(554, audioCtx.currentTime + 0.1);
-                    osc.frequency.setValueAtTime(659, audioCtx.currentTime + 0.2);
-                    gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-                    gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.4);
-                    osc.start(audioCtx.currentTime);
-                    osc.stop(audioCtx.currentTime + 0.4);
-                    break;
-            }
         }
         
         // ============================================
         // UTILITIES
         // ============================================
         
-        function adjustBrightness(color, amount) {
+        function adjustColor(color, amount) {
             const num = parseInt(color.replace('#', ''), 16);
             const r = Math.min(255, Math.max(0, (num >> 16) + amount));
             const g = Math.min(255, Math.max(0, ((num >> 8) & 0x00FF) + amount));
@@ -1742,101 +1292,74 @@
             canvas.height = container.clientHeight;
         }
         
+        function updateLoadingStatus(text) {
+            document.getElementById('loadingStatus').textContent = text;
+        }
+        
         // ============================================
-        // INITIALIZATION
+        // INIT
         // ============================================
         
-        function init() {
-            // Loading progress
+        async function init() {
+            // Loading animation
             const progress = document.getElementById('loadingProgress');
-            let loadPercent = 0;
-            
-            const loadInterval = setInterval(() => {
-                loadPercent += 10;
-                progress.style.width = loadPercent + '%';
-                
-                if (loadPercent >= 100) {
-                    clearInterval(loadInterval);
+            let pct = 0;
+            const interval = setInterval(() => {
+                pct += 20;
+                progress.style.width = pct + '%';
+                if (pct >= 100) {
+                    clearInterval(interval);
                     setTimeout(() => {
                         document.getElementById('loadingScreen').classList.add('hidden');
-                    }, 300);
+                    }, 200);
                 }
-            }, 50);
+            }, 40);
             
-            // Initialize
             initOffice();
             resizeCanvas();
             renderAgentList();
-            renderStandupTable();
             
-            // Add initial activities
-            addActivity('system', 'Nexus', 'Pixel Office initialized');
-            addActivity('working', 'CodeMaster', 'started API optimization');
-            addActivity('working', 'Forge', 'working on UI components');
+            // Try to connect to API
+            updateLoadingStatus('Connecting to API...');
+            await syncWithAPI();
             
-            // Start game loop
+            // Start loop
             requestAnimationFrame(gameLoop);
             
-            // Periodic activity updates
-            setInterval(() => {
-                const activities = [
-                    { type: 'working', agent: 'Code-1', msg: 'debugging API endpoints' },
-                    { type: 'completed', agent: 'Forge-2', msg: 'completed theme update' },
-                    { type: 'research', agent: 'Glasses', msg: 'analyzing market data' },
-                    { type: 'working', agent: 'DealFlow', msg: 'generated 5 new leads' },
-                    { type: 'meeting', agent: 'Nexus', msg: 'coordinating team sync' }
-                ];
-                
-                const activity = activities[Math.floor(Math.random() * activities.length)];
-                addActivity(activity.type, activity.agent, activity.msg);
-            }, 8000);
+            // Initial activities
+            addActivity('system', 'Nexus', 'Pixel Office v2.0 initialized');
+            addActivity('working', 'CodeMaster', 'API connection established');
             
-            // Window resize
+            // Periodic updates
+            setInterval(() => {
+                const acts = [
+                    { type: 'working', agent: 'Code-1', msg: 'debugging API' },
+                    { type: 'completed', agent: 'Forge', msg: 'completed UI update' },
+                    { type: 'working', agent: 'DealFlow', msg: 'generated leads' }
+                ];
+                const a = acts[Math.floor(Math.random() * acts.length)];
+                addActivity(a.type, a.agent, a.msg);
+            }, 10000);
+            
+            // Auto-sync every 30s
+            setInterval(() => {
+                if (Date.now() - state.lastApiFetch > API_CONFIG.refreshInterval) {
+                    syncWithAPI();
+                }
+            }, 5000);
+            
             window.addEventListener('resize', resizeCanvas);
             
-            // Keyboard shortcuts
-            document.addEventListener('keydown', (e) => {
-                switch(e.key) {
-                    case '+':
-                    case '=':
-                        zoomIn();
-                        break;
-                    case '-':
-                        zoomOut();
-                        break;
-                    case '0':
-                        resetView();
-                        break;
-                    case 's':
-                        if (e.ctrlKey) {
-                            e.preventDefault();
-                            toggleSound();
-                        }
-                        break;
-                    case 'm':
-                        toggleStandup();
-                        break;
-                }
+            // Keyboard
+            document.addEventListener('keydown', e => {
+                if (e.key === '+' || e.key === '=') zoomIn();
+                if (e.key === '-') zoomOut();
+                if (e.key === '0') resetView();
+                if (e.key === 'm' || e.key === 'M') toggleStandup();
             });
         }
         
-        // Start
         window.addEventListener('DOMContentLoaded', init);
-        
-        // API Integration (placeholder for real-time updates)
-        async function fetchAgentStatus() {
-            try {
-                // This would connect to your actual API
-                // const response = await fetch('/api/agents/status');
-                // const data = await response.json();
-                // Update agent states based on API response
-            } catch (error) {
-                console.log('API fetch failed, using local data');
-            }
-        }
-        
-        // Fetch status every 30 seconds
-        setInterval(fetchAgentStatus, 30000);
     </script>
 </body>
 </html>

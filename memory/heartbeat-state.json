@@ -1,15 +1,15 @@
 {
   "lastChecks": {
-    "agentHealth": 1771410782,
-    "taskQueue": 1771410782,
+    "agentHealth": 1771431482,
+    "taskQueue": 1771431482,
     "systemResources": 1771420682,
     "memoryMaintenance": 1771362420
   },
   "checkRotation": {
-    "current": "D",
+    "current": "B",
     "sequence": ["A", "B", "C", "D"],
-    "lastRotation": 1771420682,
-    "counter": 52
+    "lastRotation": 1771431482,
+    "counter": 53
   },
   "alertSuppression": {
     "lastAlertSent": 1771341429,
@@ -43,9 +43,9 @@
     }
   },
   "tokenUsage": {
-    "mainSession": 164000,
+    "mainSession": 47849,
     "threshold": 200000,
-    "lastChecked": 1771410782,
+    "lastChecked": 1771431482,
     "alertsSent": 0,
     "trend": "stable",
     "growthRate": 0
@@ -53,19 +53,19 @@
   "systemResources": {
     "diskSpace": {
       "total": "40G",
-      "used": "10G",
+      "used": "11G",
       "available": "28G",
-      "usePercent": 27
+      "usePercent": 28
     },
-    "lastChecked": 1771404480
+    "lastChecked": 1771431482
   },
   "metrics": {
-    "heartbeatsCompleted": 33,
+    "heartbeatsCompleted": 34,
     "alertsTriggered": 1,
     "tasksProcessed": 10,
     "selfImprovements": 3,
     "frictionPointsIdentified": 4,
-    "blockedTasks": 27,
-    "overdueP0Tasks": 1
+    "blockedTasks": 42,
+    "overdueP0Tasks": 0
   }
 }
