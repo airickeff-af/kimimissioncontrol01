@@ -1,45 +1,23 @@
 {
   "version": 2,
-  "rewrites": [
+  "builds": [
     {
-      "source": "/api/logs/activity",
-      "destination": "/api/logs/activity.js"
+      "src": "*.html",
+      "use": "@vercel/static"
     },
     {
-      "source": "/api/logs",
-      "destination": "/api/logs/index.js"
+      "src": "api/**/*.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/$1.js"
     },
     {
-      "source": "/api/health",
-      "destination": "/api/health.js"
-    },
-    {
-      "source": "/api/agents",
-      "destination": "/api/agents.js"
-    },
-    {
-      "source": "/api/tasks",
-      "destination": "/api/tasks.js"
-    },
-    {
-      "source": "/api/deals",
-      "destination": "/api/deals.js"
-    },
-    {
-      "source": "/api/tokens",
-      "destination": "/api/tokens.js"
-    },
-    {
-      "source": "/api/test",
-      "destination": "/api/test-simple.js"
-    },
-    {
-      "source": "/api/(.*)",
-      "destination": "/api/$1.js"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/$1"
+      "src": "/(.*)",
+      "dest": "/$1"
     }
   ],
   "headers": [
