@@ -1,0 +1,101 @@
+{
+  "version": 2,
+  "name": "mission-control",
+  "buildCommand": null,
+  "outputDirectory": "mission-control/dashboard",
+  "installCommand": null,
+  "framework": null,
+  "rewrites": [
+    {
+      "source": "/api/health",
+      "destination": "/api/health.js"
+    },
+    {
+      "source": "/api/agents",
+      "destination": "/api/agents.js"
+    },
+    {
+      "source": "/api/tasks",
+      "destination": "/api/tasks.js"
+    },
+    {
+      "source": "/api/tokens",
+      "destination": "/api/tokens.js"
+    },
+    {
+      "source": "/api/metrics",
+      "destination": "/api/metrics.js"
+    },
+    {
+      "source": "/api/logs/activity",
+      "destination": "/api/logs/activity.js"
+    },
+    {
+      "source": "/api/logs",
+      "destination": "/api/logs/index.js"
+    },
+    {
+      "source": "/api/test",
+      "destination": "/api/test.js"
+    },
+    {
+      "source": "/logs-view",
+      "destination": "/mission-control/dashboard/logs-view.html"
+    },
+    {
+      "source": "/agents",
+      "destination": "/mission-control/dashboard/agents.html"
+    },
+    {
+      "source": "/office",
+      "destination": "/mission-control/dashboard/animated-office.html"
+    },
+    {
+      "source": "/data-viewer",
+      "destination": "/mission-control/dashboard/data-viewer.html"
+    },
+    {
+      "source": "/task-board",
+      "destination": "/mission-control/dashboard/task-board.html"
+    },
+    {
+      "source": "/dealflow",
+      "destination": "/mission-control/dashboard/dealflow-view.html"
+    },
+    {
+      "source": "/scout",
+      "destination": "/mission-control/dashboard/scout.html"
+    },
+    {
+      "source": "/tokens",
+      "destination": "/mission-control/dashboard/token-tracker.html"
+    },
+    {
+      "source": "/hq",
+      "destination": "/mission-control/dashboard/hq.html"
+    },
+    {
+      "source": "/((?!api/).*)",
+      "destination": "/mission-control/dashboard/index.html"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        },
+        {
+          "key": "Access-Control-Allow-Methods",
+          "value": "GET, POST, OPTIONS"
+        },
+        {
+          "key": "Access-Control-Allow-Headers",
+          "value": "Content-Type"
+        }
+      ]
+    }
+  ]
+}
