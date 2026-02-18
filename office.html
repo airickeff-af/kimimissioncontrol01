@@ -4,35 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Office | Living Pixel Command Center</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
         
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * { margin: 0; padding: 0; box-sizing: border-box; image-rendering: pixelated; }
         
         :root {
-            --bg-primary: #0a0a0f;
-            --bg-secondary: #111118;
-            --bg-tertiary: #1a1a24;
-            --bg-card: #15151d;
-            --bg-elevated: #1e1e2a;
-            
+            --bg-primary: #f5e6c8;
+            --bg-secondary: #e8d4a8;
+            --bg-card: #fff8e7;
+            --accent-primary: #8b7355;
+            --text-primary: #3d3225;
+            --text-secondary: #6b5a45;
+            --border: #c4b090;
             --accent-cyan: #00d4ff;
             --accent-pink: #ff2a6d;
-            --accent-purple: #a855f7;
             --accent-green: #22c55e;
             --accent-yellow: #fbbf24;
             --accent-orange: #f97316;
-            
-            --text-primary: #fafafa;
-            --text-secondary: #a1a1aa;
-            --text-muted: #71717a;
-            
-            --border: #27272a;
-            --border-hover: #3f3f46;
         }
         
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'VT323', monospace;
             background: var(--bg-primary);
             color: var(--text-primary);
             min-height: 100vh;
@@ -63,9 +56,9 @@
         
         /* Header */
         .header {
-            background: rgba(17, 17, 24, 0.95);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border);
+            background: var(--bg-secondary);
+            border-bottom: 4px solid var(--accent-primary);
+            box-shadow: 0 4px 0 var(--accent-primary);
             padding: 0 2rem;
             height: 70px;
             display: flex;
@@ -85,67 +78,68 @@
         .logo {
             width: 42px;
             height: 42px;
-            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
-            border-radius: 12px;
+            background: var(--accent-primary);
+            border: 3px solid var(--text-primary);
+            box-shadow: 3px 3px 0 var(--text-primary);
+            border-radius: 4px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 1.5rem;
-            box-shadow: 0 0 30px rgba(0, 212, 255, 0.3);
-            animation: pulse 3s ease-in-out infinite;
-        }
-        
-        @keyframes pulse {
-            0%, 100% { box-shadow: 0 0 20px rgba(0, 212, 255, 0.3); }
-            50% { box-shadow: 0 0 40px rgba(0, 212, 255, 0.5), 0 0 60px rgba(168, 85, 247, 0.3); }
         }
         
         .brand-text h1 {
-            font-size: 1.25rem;
+            font-size: 1rem;
             font-weight: 700;
             letter-spacing: -0.02em;
+            line-height: 1.5;
         }
         
         .brand-text span {
             font-size: 0.75rem;
-            color: var(--text-muted);
-            font-family: 'JetBrains Mono', monospace;
+            color: var(--text-secondary);
+            font-family: 'VT323', monospace;
         }
         
-        /* Navigation */
+        /* Navigation - Standardized Pixel Theme */
         .nav-tabs {
             display: flex;
-            gap: 0.5rem;
-            background: rgba(255,255,255,0.05);
-            padding: 0.5rem;
-            border-radius: 12px;
+            gap: 8px;
+            flex-wrap: wrap;
         }
         
         .nav-tab {
-            padding: 0.75rem 1.25rem;
-            border: none;
-            background: transparent;
-            color: var(--text-secondary);
-            font-size: 0.875rem;
-            font-weight: 500;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 12px;
+            padding: 8px 16px;
+            background: #f5e6c8;
+            border: 4px solid #8b7355;
+            border-radius: 0;
             cursor: pointer;
-            border-radius: 8px;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
+            box-shadow: 4px 4px 0 #8b7355;
+            transition: all 0.1s;
+            color: var(--text-dark);
+            line-height: 1.4;
             text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
         }
         
         .nav-tab:hover {
-            color: var(--text-primary);
-            background: rgba(255,255,255,0.05);
+            border-color: #00d4ff;
+            transform: translateY(-2px);
+            box-shadow: 4px 6px 0 #8b7355;
+        }
+        
+        .nav-tab:active {
+            transform: translateY(0);
+            box-shadow: 0 0 0 #8b7355;
         }
         
         .nav-tab.active {
-            color: var(--text-primary);
-            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
-            box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
+            background: #e8d4a8;
+            border-color: #8b7355;
         }
         
         /* Main Content */
@@ -167,20 +161,21 @@
         
         .stat-card {
             background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
+            border: 4px solid var(--accent-primary);
+            box-shadow: 4px 4px 0 var(--accent-primary);
             padding: 1.5rem;
             transition: all 0.3s;
         }
         
         .stat-card:hover {
-            border-color: var(--border-hover);
+            border-color: var(--text-primary);
+            box-shadow: 6px 6px 0 var(--accent-primary);
             transform: translateY(-2px);
         }
         
         .stat-label {
             font-size: 0.875rem;
-            color: var(--text-muted);
+            color: var(--text-secondary);
             margin-bottom: 0.5rem;
             display: flex;
             align-items: center;
@@ -211,8 +206,8 @@
         /* Panel */
         .panel {
             background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
+            border: 4px solid var(--accent-primary);
+            box-shadow: 4px 4px 0 var(--accent-primary);
             overflow: hidden;
         }
         
@@ -241,9 +236,9 @@
         .btn-icon {
             width: 32px;
             height: 32px;
-            border: none;
-            background: rgba(255,255,255,0.05);
-            border-radius: 8px;
+            border: 2px solid var(--accent-primary);
+            background: var(--bg-secondary);
+            border-radius: 4px;
             color: var(--text-secondary);
             cursor: pointer;
             transition: all 0.2s;
@@ -313,7 +308,9 @@
             display: flex;
             gap: 1rem;
             padding: 1rem;
-            background: var(--bg-elevated);
+            background: var(--bg-secondary);
+            border: 3px solid var(--accent-primary);
+            box-shadow: 3px 3px 0 var(--accent-primary);
             border-radius: 12px;
             border-left: 3px solid var(--accent-cyan);
             transition: all 0.2s;
@@ -346,8 +343,9 @@
         .activity-icon {
             width: 40px;
             height: 40px;
-            border-radius: 10px;
-            background: rgba(0, 212, 255, 0.1);
+            border-radius: 4px;
+            background: var(--bg-primary);
+            border: 2px solid var(--accent-primary);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -397,23 +395,27 @@
         /* Agent Grid */
         .agent-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
             gap: 1rem;
+            background: #f5e6c8; /* beige */
+            padding: 1rem;
+            border: 4px solid #8b7355;
         }
-        
+
         .agent-card {
-            background: var(--bg-elevated);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 1.25rem;
+            background: #fff8e7;
+            border: 4px solid #8b7355;
+            box-shadow: 4px 4px 0 #8b7355;
+            padding: 1rem;
+            font-family: 'Press Start 2P', cursive;
             transition: all 0.3s;
             cursor: pointer;
         }
         
         .agent-card:hover {
-            border-color: var(--accent-cyan);
+            border-color: var(--text-primary);
+            box-shadow: 6px 6px 0 var(--accent-primary);
             transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.1);
         }
         
         .agent-header {
@@ -426,12 +428,25 @@
         .agent-avatar {
             width: 48px;
             height: 48px;
-            border-radius: 12px;
+            border-radius: 4px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 1.5rem;
             position: relative;
+            border: 3px solid var(--accent-primary);
+            box-shadow: 2px 2px 0 var(--accent-primary);
+        }
+        
+        .agent-avatar.human {
+            border: 4px solid #ffd700;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.5), 2px 2px 0 #b8860b;
+            animation: humanGlow 2s ease-in-out infinite;
+        }
+        
+        @keyframes humanGlow {
+            0%, 100% { box-shadow: 0 0 10px rgba(255, 215, 0, 0.5), 2px 2px 0 #b8860b; }
+            50% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.8), 2px 2px 0 #b8860b; }
         }
         
         .agent-avatar::after {
@@ -444,6 +459,23 @@
             border-radius: 50%;
             background: var(--accent-green);
             border: 2px solid var(--bg-elevated);
+        }
+        
+        .agent-avatar.human::before {
+            content: '👑';
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            font-size: 0.9rem;
+            background: #ffd700;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #b8860b;
+            z-index: 10;
         }
         
         .agent-avatar.busy::after { background: var(--accent-yellow); }
@@ -474,6 +506,15 @@
             color: var(--accent-green);
         }
         
+        .agent-status-badge.human {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(184, 134, 11, 0.2));
+            color: #b8860b;
+            border: 1px solid #ffd700;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
         .agent-status-badge.busy {
             background: rgba(251, 191, 36, 0.1);
             color: var(--accent-yellow);
@@ -493,7 +534,8 @@
             align-items: center;
             gap: 0.5rem;
             padding: 0.5rem;
-            background: rgba(255,255,255,0.03);
+            background: var(--bg-primary);
+            border: 2px solid var(--border);
             border-radius: 6px;
             margin-bottom: 0.5rem;
             font-size: 0.875rem;
@@ -519,8 +561,9 @@
         
         .action-btn {
             padding: 1rem;
-            background: var(--bg-elevated);
-            border: 1px solid var(--border);
+            background: var(--bg-secondary);
+            border: 4px solid var(--accent-primary);
+            box-shadow: 4px 4px 0 var(--accent-primary);
             border-radius: 12px;
             color: var(--text-primary);
             font-size: 0.875rem;
@@ -543,9 +586,10 @@
             margin-top: 3rem;
             padding: 2rem;
             text-align: center;
-            color: var(--text-muted);
-            font-size: 0.875rem;
-            border-top: 1px solid var(--border);
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            border-top: 4px solid var(--accent-primary);
+            background: var(--bg-secondary);
         }
         
         .last-updated {
@@ -567,11 +611,11 @@
                 max-width: 500px;
             }
             .nav-tab {
-                padding: 0.5rem 0.75rem;
-                font-size: 0.8rem;
+                padding: 8px 10px;
+                font-size: 0.45rem;
             }
         }
-        
+
         @media (max-width: 768px) {
             .header {
                 padding: 0 1rem;
@@ -593,6 +637,15 @@
             .main-content {
                 padding: 1rem;
             }
+            .agent-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+        }
+
+        @media (max-width: 480px) {
+            .agent-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -607,32 +660,18 @@
         </div>
         
         <nav class="nav-tabs">
-            <a href="index-v4.html" class="nav-tab">
-                <span>📊</span> Overview
-            </a>
-            <a href="office.html" class="nav-tab active">
-                <span>🏢</span> Office
-            </a>
-            <a href="scout.html" class="nav-tab">
-                <span>🔭</span> Scout
-            </a>
-            <a href="agent-data.html" class="nav-tab">
-                <span>📈</span> Data
-            </a>
-            <a href="token-tracker-optimized.html" class="nav-tab">
-                <span>🪙</span> Tokens
-            </a>
-            <a href="task-board.html" class="nav-tab">
-                <span>✓</span> Tasks
-            </a>
-            <a href="monitoring.html" class="nav-tab">
-                <span>📋</span> Logs
-            </a>
+            <a href="index.html" class="nav-tab">🏠 HQ</a>
+            <a href="office.html" class="nav-tab active">🏢 Office</a>
+            <a href="agents.html" class="nav-tab">👥 Agents</a>
+            <a href="dealflow-view.html" class="nav-tab">💼 Deals</a>
+            <a href="token-tracker.html" class="nav-tab">🪙 Tokens</a>
+            <a href="scout.html" class="nav-tab">🔭 Scout</a>
+            <a href="task-board.html" class="nav-tab">📋 Tasks</a>
         </nav>
         
         <div class="header-actions">
             <div style="display: flex; align-items: center; gap: 1rem;">
-                <span style="font-size: 0.875rem; color: var(--text-muted);">🟢 14 Agents Active</span>
+                <span style="font-size: 0.875rem; color: var(--text-muted);">🟢 22 Agents Active (1 Human + 21 AI)</span>
                 <button class="btn-icon" onclick="window.location.reload()" title="Refresh">🔄</button>
                 <button class="btn-icon">⚙️</button>
             </div>
@@ -644,8 +683,8 @@
         <div class="stats-bar">
             <div class="stat-card">
                 <div class="stat-label">👥 Total Agents</div>
-                <div class="stat-value" style="color: var(--accent-cyan);">14</div>
-                <div class="stat-change positive">+2 new this week</div>
+                <div class="stat-value" style="color: var(--accent-cyan);">22</div>
+                <div class="stat-change positive">1 Human + 21 AI</div>
             </div>
             
             <div class="stat-card">
@@ -774,11 +813,64 @@
                     </div>
                     
                     <div class="quick-actions">
-                        <button class="action-btn">📞 Call Meeting</button>
+                        <button class="action-btn" onclick="runStandup()">📢 Standup</button>
                         <button class="action-btn">✓ New Task</button>
                         <button class="action-btn">🤝 Add Lead</button>
-                        <button class="action-btn">📊 Reports</button>
+                        <button class="action-btn" onclick="refreshTasks()">📋 Sync Tasks</button>
                     </div>
+                    
+                    <!-- Task Summary Panel -->
+                    <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 2px solid var(--border);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                            <div class="panel-title" style="margin: 0; border: none; padding: 0;">
+                                <span>📋</span>
+                                Tasks from PENDING_TASKS.md
+                            </div>
+                            <button class="btn-icon" onclick="refreshTasks()" title="Refresh Tasks">🔄</button>
+                        </div>
+                        <div id="taskSummary" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; margin-bottom: 1rem;">
+                            <div class="stat-card" style="padding: 1rem;">
+                                <div class="stat-label">Total Tasks</div>
+                                <div class="stat-value" id="mcTotalTasks" style="color: var(--accent-cyan);">-</div>
+                            </div>
+                            <div class="stat-card" style="padding: 1rem; border-color: var(--accent-pink);">
+                                <div class="stat-label">P0 Critical</div>
+                                <div class="stat-value" id="mcP0Tasks" style="color: var(--accent-pink);">-</div>
+                            </div>
+                            <div class="stat-card" style="padding: 1rem; border-color: var(--accent-yellow);">
+                                <div class="stat-label">In Progress</div>
+                                <div class="stat-value" id="mcInProgressTasks" style="color: var(--accent-yellow);">-</div>
+                            </div>
+                            <div class="stat-card" style="padding: 1rem; border-color: var(--accent-green);">
+                                <div class="stat-label">Completed</div>
+                                <div class="stat-value" id="mcCompletedTasks" style="color: var(--accent-green);">-</div>
+                            </div>
+                        </div>
+                        
+                        <div id="mcTaskList" style="max-height: 300px; overflow-y: auto;">
+                            <p style="color: var(--text-secondary); text-align: center; padding: 1rem; font-size: 0.875rem;">Click "Sync Tasks" to load from PENDING_TASKS.md</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Full Agent Grid - All 22 Agents -->
+        <div class="panel" style="margin-top: 2rem;">
+            <div class="panel-header">
+                <div class="panel-title">
+                    <span>👑</span>
+                    1 Human + 21 AI Agents (22 Total)
+                </div>
+                <div class="panel-actions">
+                    <button class="btn-icon">🔍</button>
+                    <button class="btn-icon">⚡</button>
+                </div>
+            </div>
+            
+            <div class="panel-content">
+                <div class="agent-grid" id="allAgentsGrid">
+                    <!-- All agents will be populated by JavaScript -->
                 </div>
             </div>
         </div>
@@ -801,7 +893,31 @@
             { type: 'research', icon: '🔍', label: 'Research' }
         ];
         
-        const agents = ['Nexus', 'DealFlow', 'Code', 'Forge', 'Pixel', 'Scout', 'Audit', 'DataSync'];
+        // 22 Agents: 1 Human Commander + 21 AI Agents
+        const agents = [
+            { name: "EricF", role: "Commander", type: "human", sprite: "👑", color: "#ffd700", label: "COMMANDER" },
+            { name: "Nexus", role: "Orchestrator", type: "ai", sprite: "🤖", color: "#00d4ff", label: "AI AGENT" },
+            { name: "DealFlow", role: "Lead Generation", type: "ai", sprite: "🤝", color: "#f97316", label: "AI AGENT" },
+            { name: "Code", role: "Backend Developer", type: "ai", sprite: "💻", color: "#22c55e", label: "AI AGENT" },
+            { name: "Forge", role: "UI/Frontend", type: "ai", sprite: "🔨", color: "#f97316", label: "AI AGENT" },
+            { name: "Pixel", role: "Designer", type: "ai", sprite: "🎨", color: "#a855f7", label: "AI AGENT" },
+            { name: "Scout", role: "Researcher", type: "ai", sprite: "🔭", color: "#3b82f6", label: "AI AGENT" },
+            { name: "Audit", role: "Security", type: "ai", sprite: "🔒", color: "#ef4444", label: "AI AGENT" },
+            { name: "DataSync", role: "Data Engineer", type: "ai", sprite: "📊", color: "#10b981", label: "AI AGENT" },
+            { name: "Neural", role: "ML Engineer", type: "ai", sprite: "🧠", color: "#8b5cf6", label: "AI AGENT" },
+            { name: "Cipher", role: "Cryptography", type: "ai", sprite: "🔐", color: "#6366f1", label: "AI AGENT" },
+            { name: "Vector", role: "DevOps", type: "ai", sprite: "⚡", color: "#f59e0b", label: "AI AGENT" },
+            { name: "Spark", role: "Creative AI", type: "ai", sprite: "✨", color: "#ec4899", label: "AI AGENT" },
+            { name: "Pulse", role: "Monitoring", type: "ai", sprite: "📡", color: "#06b6d4", label: "AI AGENT" },
+            { name: "Quark", role: "Quantum Dev", type: "ai", sprite: "⚛️", color: "#84cc16", label: "AI AGENT" },
+            { name: "Flux", role: "Integration", type: "ai", sprite: "🔄", color: "#14b8a6", label: "AI AGENT" },
+            { name: "Prism", role: "Analytics", type: "ai", sprite: "🔮", color: "#d946ef", label: "AI AGENT" },
+            { name: "Core", role: "Systems", type: "ai", sprite: "⚙️", color: "#64748b", label: "AI AGENT" },
+            { name: "Nova", role: "Innovation", type: "ai", sprite: "🌟", color: "#fbbf24", label: "AI AGENT" },
+            { name: "Orbit", role: "Cloud Ops", type: "ai", sprite: "☁️", color: "#60a5fa", label: "AI AGENT" },
+            { name: "Synth", role: "Content AI", type: "ai", sprite: "📝", color: "#a78bfa", label: "AI AGENT" },
+            { name: "Blaze", role: "Performance", type: "ai", sprite: "🔥", color: "#f97316", label: "AI AGENT" }
+        ];
         
         const activityTemplates = {
             working: [
@@ -865,7 +981,7 @@
         // Generate random activity
         function generateActivity(index) {
             const typeInfo = activityTypes[Math.floor(Math.random() * activityTypes.length)];
-            const agent = agents[Math.floor(Math.random() * agents.length)];
+            const agentObj = agents[Math.floor(Math.random() * agents.length)];
             const templates = activityTemplates[typeInfo.type];
             const action = templates[Math.floor(Math.random() * templates.length)];
             const minutesAgo = index * 3 + Math.floor(Math.random() * 3);
@@ -874,7 +990,8 @@
                 type: typeInfo.type,
                 icon: typeInfo.icon,
                 typeLabel: typeInfo.label,
-                agent: agent,
+                agent: agentObj.name,
+                agentType: agentObj.type,
                 action: action,
                 timestamp: getRelativeTime(minutesAgo)
             };
@@ -931,9 +1048,41 @@
             document.getElementById('lastUpdated').textContent = `Last updated: ${formatted}`;
         }
         
+        // Render all 22 agents in the full grid
+        function renderAllAgents() {
+            const grid = document.getElementById('allAgentsGrid');
+            if (!grid) return;
+            
+            grid.innerHTML = '';
+            
+            agents.forEach(agent => {
+                const isHuman = agent.type === 'human';
+                const avatarClass = isHuman ? 'agent-avatar human' : 'agent-avatar';
+                const badgeClass = isHuman ? 'agent-status-badge human' : 'agent-status-badge';
+                
+                const card = document.createElement('div');
+                card.className = 'agent-card';
+                card.innerHTML = `
+                    <div class="agent-header">
+                        <div class="${avatarClass}" style="background: linear-gradient(135deg, ${agent.color}, ${agent.color}88);">${agent.sprite}</div>
+                        <div class="agent-meta">
+                            <div class="agent-name">${agent.name}</div>
+                            <div class="agent-role">${agent.role}</div>
+                        </div>
+                        <span class="${badgeClass}">${agent.label}</span>
+                    </div>
+                    <div class="agent-tasks">
+                        <div class="task-item">Active and ready</div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+        
         // Initialize
         document.addEventListener('DOMContentLoaded', () => {
             renderActivityFeed();
+            renderAllAgents();
             updateLastUpdated();
         });
         
@@ -948,6 +1097,151 @@
             document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
             event.target.closest('.nav-tab').classList.add('active');
             console.log('Switching to tab:', tab);
+        }
+        
+        // Run Standup - Sync with PENDING_TASKS.md
+        async function runStandup() {
+            const btn = document.querySelector('button[onclick="runStandup()"]');
+            btn.textContent = '📢 Running...';
+            btn.disabled = true;
+            
+            try {
+                // Fetch tasks from API
+                const response = await fetch('/api/tasks');
+                const data = await response.json();
+                
+                if (data.success && data.tasks) {
+                    // Update task counts
+                    const p0Tasks = data.tasks.filter(t => t.priority === 'P0');
+                    const inProgress = data.tasks.filter(t => t.status === 'in_progress');
+                    const completed = data.tasks.filter(t => t.status === 'completed');
+                    
+                    document.getElementById('mcTotalTasks').textContent = data.tasks.length;
+                    document.getElementById('mcP0Tasks').textContent = p0Tasks.length;
+                    document.getElementById('mcInProgressTasks').textContent = inProgress.length;
+                    document.getElementById('mcCompletedTasks').textContent = completed.length;
+                    
+                    // Render task list
+                    renderTaskList(data.tasks.slice(0, 10));
+                    
+                    // Add standup activity
+                    addActivity('📢', 'Nexus', 'ran daily standup sync', 'system');
+                    
+                    alert(`✅ Standup Complete!\n\nTotal: ${data.tasks.length} tasks\nP0 Critical: ${p0Tasks.length}\nIn Progress: ${inProgress.length}\nCompleted: ${completed.length}`);
+                }
+            } catch (error) {
+                console.error('Standup failed:', error);
+                alert('❌ Standup failed. Using local data.');
+                
+                // Fallback to local data
+                document.getElementById('mcTotalTasks').textContent = '60';
+                document.getElementById('mcP0Tasks').textContent = '8';
+                document.getElementById('mcInProgressTasks').textContent = '2';
+                document.getElementById('mcCompletedTasks').textContent = '16';
+            }
+            
+            btn.textContent = '📢 Standup';
+            btn.disabled = false;
+        }
+        
+        // Refresh Tasks - Sync with PENDING_TASKS.md
+        async function refreshTasks() {
+            const btn = document.querySelector('button[onclick="refreshTasks()"]');
+            const originalText = btn.textContent;
+            btn.textContent = '🔄 Syncing...';
+            btn.disabled = true;
+            
+            try {
+                // Try to fetch from API first
+                const response = await fetch('/api/tasks');
+                const data = await response.json();
+                
+                if (data.success && data.tasks) {
+                    updateTaskDisplay(data.tasks);
+                    addActivity('📋', 'System', 'synced tasks from PENDING_TASKS.md', 'system');
+                } else {
+                    throw new Error('Invalid API response');
+                }
+            } catch (error) {
+                console.error('Task sync failed:', error);
+                // Use fallback data
+                const fallbackTasks = [
+                    { id: 'TASK-070', title: 'Fix Complete Deployment Failure', priority: 'P0', status: 'in_progress', progress: 75 },
+                    { id: 'TASK-001', title: 'Fix Code API 404 Errors', priority: 'P0', status: 'in_progress', progress: 60 },
+                    { id: 'TASK-066', title: 'Fix API Endpoints - All Dashboard Data', priority: 'P0', status: 'in_progress', progress: 50 },
+                    { id: 'TASK-067', title: 'Unified Theme All Pages', priority: 'P1', status: 'in_progress', progress: 85 },
+                    { id: 'TASK-068', title: 'Agent Work Cards Enhancement', priority: 'P1', status: 'pending', progress: 35 }
+                ];
+                updateTaskDisplay(fallbackTasks);
+            }
+            
+            btn.textContent = originalText;
+            btn.disabled = false;
+        }
+        
+        // Update task display
+        function updateTaskDisplay(tasks) {
+            const p0Tasks = tasks.filter(t => t.priority === 'P0' || t.priority === 'p0');
+            const inProgress = tasks.filter(t => t.status === 'in_progress');
+            const completed = tasks.filter(t => t.status === 'completed');
+            
+            document.getElementById('mcTotalTasks').textContent = tasks.length;
+            document.getElementById('mcP0Tasks').textContent = p0Tasks.length;
+            document.getElementById('mcInProgressTasks').textContent = inProgress.length;
+            document.getElementById('mcCompletedTasks').textContent = completed.length;
+            
+            renderTaskList(tasks.slice(0, 10));
+        }
+        
+        // Render task list
+        function renderTaskList(tasks) {
+            const list = document.getElementById('mcTaskList');
+            if (!tasks || tasks.length === 0) {
+                list.innerHTML = '<p style="color: var(--text-secondary); text-align: center; padding: 1rem;">No tasks found</p>';
+                return;
+            }
+            
+            list.innerHTML = tasks.map(task => {
+                const priorityColor = task.priority === 'P0' ? 'var(--accent-pink)' : 
+                                     task.priority === 'P1' ? 'var(--accent-yellow)' : 'var(--accent-cyan)';
+                const statusEmoji = task.status === 'completed' ? '✅' : 
+                                   task.status === 'in_progress' ? '🔄' : '⏳';
+                return `
+                    <div style="padding: 0.75rem; background: var(--bg-card); border: 2px solid var(--border); margin-bottom: 0.5rem; border-radius: 4px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-weight: 600; color: ${priorityColor};">${task.id}</span>
+                            <span style="font-size: 0.75rem; color: var(--text-secondary);">${statusEmoji} ${task.status}</span>
+                        </div>
+                        <div style="font-size: 0.875rem; margin-top: 0.25rem; color: var(--text-primary);">${task.title}</div>
+                        <div style="font-size: 0.75rem; margin-top: 0.25rem; color: var(--text-muted);">${task.assignee || 'Unassigned'}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        // Add activity to feed
+        function addActivity(icon, agent, action, type) {
+            const feed = document.getElementById('activityFeed');
+            const item = document.createElement('div');
+            item.className = `activity-item ${type}`;
+            item.innerHTML = `
+                <div class="activity-icon">${icon}</div>
+                <div class="activity-content">
+                    <div class="activity-text">
+                        <span class="activity-agent">${agent}</span> ${action}
+                    </div>
+                    <div class="activity-meta">
+                        <span class="activity-type-badge">SYSTEM</span>
+                        <span>${new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false })}</span>
+                    </div>
+                </div>
+            `;
+            feed.insertBefore(item, feed.firstChild);
+            
+            // Keep only 10 items
+            while (feed.children.length > 10) {
+                feed.removeChild(feed.lastChild);
+            }
         }
     </script>
 </body>
