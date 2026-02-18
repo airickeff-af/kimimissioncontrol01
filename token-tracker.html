@@ -714,6 +714,50 @@
         // UTILITY FUNCTIONS
         // ============================================
         
+        function getAgentEmoji(name) {
+            const emojis = {
+                'DealFlow': '🤝',
+                'Nexus': '🤖',
+                'Forge': '🔨',
+                'Code': '💻',
+                'Pixel': '🎨',
+                'Audit': '🔍',
+                'ColdCall': '📞',
+                'Scout': '🔭',
+                'Glasses': '👓',
+                'Quill': '📝',
+                'Gary': '📢',
+                'Larry': '📱',
+                'Sentry': '🛡️',
+                'Cipher': '🔐',
+                'PIE': '🧠',
+                'unknown': '⚡'
+            };
+            return emojis[name] || '⚡';
+        }
+        
+        function getAgentColor(name) {
+            const colors = {
+                'DealFlow': '#e599f7',
+                'Nexus': '#ff6b6b',
+                'Forge': '#f97316',
+                'Code': '#22c55e',
+                'Pixel': '#da77f2',
+                'Audit': '#fcc419',
+                'ColdCall': '#4dabf7',
+                'Scout': '#00d4ff',
+                'Glasses': '#3b82f6',
+                'Quill': '#ec4899',
+                'Gary': '#f59e0b',
+                'Larry': '#06b6d4',
+                'Sentry': '#ef4444',
+                'Cipher': '#6366f1',
+                'PIE': '#8b5cf6',
+                'unknown': '#8b7355'
+            };
+            return colors[name] || '#8b7355';
+        }
+        
         function formatNumber(num) {
             if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
             if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
@@ -794,7 +838,15 @@
                 const data = await response.json();
                 
                 if (data.success && data.agents) {
-                    agentData = data.agents;
+                    // Transform API data to expected format
+                    agentData = data.agents.map(agent => ({
+                        name: agent.name,
+                        tokens: (agent.tokensIn || 0) + (agent.tokensOut || 0),
+                        cost: parseFloat(agent.cost || 0),
+                        emoji: getAgentEmoji(agent.name),
+                        color: getAgentColor(agent.name),
+                        tasksCompleted: Math.floor(((agent.tokensIn || 0) + (agent.tokensOut || 0)) / 5000)
+                    }));
                     renderStats();
                     renderAgentTable();
                     renderCharts();
