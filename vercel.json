@@ -1,11 +1,12 @@
 {
   "version": 2,
   "name": "mission-control",
-  "functions": {
-    "api/**/*.js": {
-      "maxDuration": 10
+  "builds": [
+    {
+      "src": "api/**/*.js",
+      "use": "@vercel/node"
     }
-  },
+  ],
   "rewrites": [
     {
       "source": "/logs-view",
