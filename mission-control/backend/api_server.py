@@ -84,6 +84,9 @@ class MCBackendAPI:
         
         # WebSocket status
         self.app.router.add_get('/api/websocket/status', self.get_websocket_status)
+        
+        # Logs
+        self.app.router.add_get('/api/logs/activity', self.get_logs_activity)
     
     # === Health ===
     
@@ -650,6 +653,247 @@ class MCBackendAPI:
             })
         except Exception as e:
             return web.json_response({"error": str(e)}, status=500)
+    
+    # === Logs ===
+    
+    async def get_logs_activity(self, request):
+        """Get agent activity logs from session transcripts"""
+        try:
+            limit = int(request.query.get('limit', 100))
+            offset = int(request.query.get('offset', 0))
+            session_filter = request.query.get('session_id')
+            
+            sessions_path = "/root/.openclaw/agents/main/sessions"
+            logs = []
+            
+            if not os.path.exists(sessions_path):
+                return web.json_response({
+                    "logs": [],
+                    "total": 0,
+                    "limit": limit,
+                    "offset": offset
+                })
+            
+            # Get all JSONL files, sorted by modification time (newest first)
+            jsonl_files = []
+            for filename in os.listdir(sessions_path):
+                if filename.endswith('.jsonl') and not filename.endswith('.lock'):
+                    filepath = os.path.join(sessions_path, filename)
+                    try:
+                        stat = os.stat(filepath)
+                        jsonl_files.append((filepath, stat.st_mtime, filename))
+                    except:
+                        pass
+            
+            # Sort by modification time (newest first)
+            jsonl_files.sort(key=lambda x: x[1], reverse=True)
+            
+            # Parse session files and extract activity
+            for filepath, mtime, filename in jsonl_files:
+                if session_filter and not filename.startswith(session_filter):
+                    continue
+                    
+                try:
+                    with open(filepath, 'r', encoding='utf-8') as f:
+                        session_id = filename.replace('.jsonl', '')
+                        session_logs = self._parse_session_file(f, session_id, filepath)
+                        logs.extend(session_logs)
+                except Exception as e:
+                    logger.error(f"Error parsing session file {filepath}: {e}")
+                    continue
+            
+            # Sort all logs by timestamp (newest first)
+            logs.sort(key=lambda x: x.get('timestamp', ''), reverse=True)
+            
+            # Apply pagination
+            total = len(logs)
+            paginated_logs = logs[offset:offset + limit]
+            
+            return web.json_response({
+                "logs": paginated_logs,
+                "total": total,
+                "limit": limit,
+                "offset": offset,
+                "timestamp": datetime.now().isoformat()
+            })
+            
+        except Exception as e:
+            logger.error(f"Error getting logs activity: {e}")
+            return web.json_response({
+                "error": str(e),
+                "logs": [],
+                "total": 0
+            }, status=500)
+    
+    def _parse_session_file(self, file_obj, session_id, filepath):
+        """Parse a session JSONL file and extract activity logs"""
+        logs = []
+        agent_name = None
+        
+        try:
+            # Try to extract agent name from first message or filename patterns
+            agent_name = self._extract_agent_name_from_session(filepath)
+        except:
+            pass
+        
+        for line in file_obj:
+            line = line.strip()
+            if not line:
+                continue
+                
+            try:
+                event = json.loads(line)
+                event_type = event.get('type')
+                
+                # Extract timestamp
+                timestamp = event.get('timestamp', '')
+                if timestamp:
+                    # Convert to local time format
+                    try:
+                        dt = datetime.fromisoformat(timestamp.replace('Z', '+00:00'))
+                        timestamp = dt.strftime('%Y-%m-%dT%H:%M:%S')
+                    except:
+                        pass
+                
+                # Handle user messages
+                if event_type == 'message':
+                    msg = event.get('message', {})
+                    role = msg.get('role', '')
+                    content = msg.get('content', [])
+                    
+                    # Extract text content
+                    text_content = ''
+                    if isinstance(content, list):
+                        for item in content:
+                            if isinstance(item, dict) and item.get('type') == 'text':
+                                text_content += item.get('text', '')
+                    elif isinstance(content, str):
+                        text_content = content
+                    
+                    # Skip empty or system messages
+                    if not text_content or len(text_content) < 5:
+                        continue
+                    
+                    # Detect agent name from message content
+                    detected_agent = self._detect_agent_from_content(text_content) or agent_name
+                    
+                    if role == 'user':
+                        # User message (EricF)
+                        logs.append({
+                            "timestamp": timestamp,
+                            "agent": "EricF",
+                            "type": "user_message",
+                            "message": text_content[:500],  # Limit message length
+                            "sessionId": session_id[:8]
+                        })
+                    elif role == 'assistant':
+                        # Agent response
+                        # Try to detect which agent this is
+                        agent = detected_agent or "Agent"
+                        
+                        # Determine message type based on content
+                        msg_type = "agent_response"
+                        if any(kw in text_content.lower() for kw in ['completed', 'done', 'finished', 'success']):
+                            msg_type = "task_complete"
+                        elif any(kw in text_content.lower() for kw in ['error', 'failed', 'exception']):
+                            msg_type = "error"
+                        elif any(kw in text_content.lower() for kw in ['deploy', 'deployed', 'live']):
+                            msg_type = "deployment"
+                        
+                        logs.append({
+                            "timestamp": timestamp,
+                            "agent": agent,
+                            "type": msg_type,
+                            "message": text_content[:500],
+                            "sessionId": session_id[:8]
+                        })
+                
+                # Handle custom events (like cron triggers)
+                elif event_type == 'custom':
+                    custom_type = event.get('customType', '')
+                    data = event.get('data', {})
+                    
+                    if custom_type == 'cron-trigger':
+                        agent = data.get('agent', agent_name) or 'System'
+                        logs.append({
+                            "timestamp": timestamp,
+                            "agent": agent,
+                            "type": "system",
+                            "message": f"Cron job triggered: {data.get('job_name', 'unknown')}",
+                            "sessionId": session_id[:8]
+                        })
+                
+                # Handle tool calls (for detecting activity)
+                elif event_type == 'toolCall':
+                    tool_name = event.get('toolName', '')
+                    if tool_name:
+                        agent = agent_name or "Agent"
+                        logs.append({
+                            "timestamp": timestamp,
+                            "agent": agent,
+                            "type": "tool_call",
+                            "message": f"Using tool: {tool_name}",
+                            "sessionId": session_id[:8]
+                        })
+                        
+            except json.JSONDecodeError:
+                continue
+            except Exception as e:
+                logger.debug(f"Error parsing event: {e}")
+                continue
+        
+        return logs
+    
+    def _extract_agent_name_from_session(self, filepath):
+        """Try to extract agent name from session file content or path"""
+        # Common agent names in the system
+        agent_names = ['Nexus', 'Code', 'DealFlow', 'Forge', 'Pixel', 'Audit', 
+                       'Scout', 'ColdCall', 'Sentry', 'Cipher', 'Glasses', 
+                       'Quill', 'Larry', 'Gary', 'Pie']
+        
+        # Check filename for agent hints
+        filename = os.path.basename(filepath).lower()
+        
+        # Read first few lines to detect agent
+        try:
+            with open(filepath, 'r', encoding='utf-8') as f:
+                content = f.read(5000).lower()
+                for agent in agent_names:
+                    if agent.lower() in content:
+                        return agent
+        except:
+            pass
+        
+        return "Agent"
+    
+    def _detect_agent_from_content(self, content):
+        """Detect which agent based on message content"""
+        content_lower = content.lower()
+        
+        # Agent signatures
+        agent_signatures = {
+            'Nexus': ['nexus', 'orchestrator', 'mission control', 'improvement cycle'],
+            'Code': ['code', 'backend', 'api', 'endpoint', 'server'],
+            'DealFlow': ['dealflow', 'lead', 'contact', 'enrichment'],
+            'Forge': ['forge', 'ui', 'frontend', 'dashboard', 'visual'],
+            'Pixel': ['pixel', 'design', 'image', 'visual', 'mockup'],
+            'Audit': ['audit', 'quality', 'review', 'standard'],
+            'Scout': ['scout', 'research', 'opportunity', 'competitor'],
+            'ColdCall': ['coldcall', 'outreach', 'email', 'sales'],
+            'Sentry': ['sentry', 'devops', 'deploy', 'infrastructure'],
+            'Cipher': ['cipher', 'security', 'encrypt'],
+            'Glasses': ['glasses', 'research', 'analysis'],
+            'Quill': ['quill', 'content', 'write', 'blog'],
+            'Larry': ['larry', 'social', 'twitter', 'linkedin'],
+            'Gary': ['gary', 'marketing', 'growth'],
+            'Pie': ['pie', 'analytics', 'data', 'report']
+        }
+        
+        for agent, signatures in agent_signatures.items():
+            if any(sig in content_lower for sig in signatures):
+                return agent
+        
+        return None
     
     # === WebSocket ===
     

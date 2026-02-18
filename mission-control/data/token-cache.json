@@ -2,91 +2,91 @@
   "agents": [
     {
       "name": "optimizing",
-      "tokensIn": 758687,
-      "tokensOut": 69414,
-      "cacheRead": 18876160,
+      "tokensIn": 2921614,
+      "tokensOut": 142253,
+      "cacheRead": 82030336,
       "cacheWrite": 0,
-      "totalTokens": 19704261,
-      "cost": 0.5755,
+      "totalTokens": 85094203,
+      "cost": 2.3998,
       "sessions": 1,
-      "messages": 182
+      "messages": 627
     },
     {
       "name": "Audit",
-      "tokensIn": 2455823,
-      "tokensOut": 152789,
-      "cacheRead": 8793600,
+      "tokensIn": 3921044,
+      "tokensOut": 246157,
+      "cacheRead": 13946624,
       "cacheWrite": 0,
-      "totalTokens": 11402212,
-      "cost": 0.5265,
-      "sessions": 74,
-      "messages": 384
+      "totalTokens": 18113825,
+      "cost": 0.8392,
+      "sessions": 120,
+      "messages": 595
     },
     {
       "name": "Nexus",
-      "tokensIn": 1236516,
-      "tokensOut": 133346,
-      "cacheRead": 7039232,
+      "tokensIn": 1354651,
+      "tokensOut": 101884,
+      "cacheRead": 8052224,
       "cacheWrite": 0,
-      "totalTokens": 8409094,
-      "cost": 0.353,
-      "sessions": 83,
-      "messages": 386
+      "totalTokens": 9508759,
+      "cost": 0.3775,
+      "sessions": 92,
+      "messages": 402
     },
     {
       "name": "Unknown",
-      "tokensIn": 457401,
-      "tokensOut": 46561,
-      "cacheRead": 4034816,
+      "tokensIn": 698891,
+      "tokensOut": 64502,
+      "cacheRead": 8687872,
       "cacheWrite": 0,
-      "totalTokens": 4538778,
-      "cost": 0.1652,
-      "sessions": 77,
-      "messages": 209
-    },
-    {
-      "name": "Code",
-      "tokensIn": 311755,
-      "tokensOut": 43828,
-      "cacheRead": 4141824,
-      "cacheWrite": 0,
-      "totalTokens": 4497407,
-      "cost": 0.1523,
-      "sessions": 17,
-      "messages": 141
-    },
-    {
-      "name": "Scout",
-      "tokensIn": 332724,
-      "tokensOut": 106177,
-      "cacheRead": 3567616,
-      "cacheWrite": 0,
-      "totalTokens": 4006517,
-      "cost": 0.1649,
-      "sessions": 7,
-      "messages": 126
-    },
-    {
-      "name": "DealFlow",
-      "tokensIn": 56405,
-      "tokensOut": 13601,
-      "cacheRead": 1433344,
-      "cacheWrite": 0,
-      "totalTokens": 1503350,
-      "cost": 0.0469,
-      "sessions": 1,
-      "messages": 39
+      "totalTokens": 9451265,
+      "cost": 0.3129,
+      "sessions": 83,
+      "messages": 394
     },
     {
       "name": "Forge",
-      "tokensIn": 62609,
-      "tokensOut": 24170,
-      "cacheRead": 780544,
+      "tokensIn": 374241,
+      "tokensOut": 32638,
+      "cacheRead": 4144384,
       "cacheWrite": 0,
-      "totalTokens": 867323,
-      "cost": 0.0354,
-      "sessions": 2,
-      "messages": 38
+      "totalTokens": 4551263,
+      "cost": 0.1541,
+      "sessions": 4,
+      "messages": 67
+    },
+    {
+      "name": "Code",
+      "tokensIn": 314843,
+      "tokensOut": 28226,
+      "cacheRead": 2466304,
+      "cacheWrite": 0,
+      "totalTokens": 2809373,
+      "cost": 0.1044,
+      "sessions": 18,
+      "messages": 100
+    },
+    {
+      "name": "Audit-2",
+      "tokensIn": 59076,
+      "tokensOut": 10398,
+      "cacheRead": 553472,
+      "cacheWrite": 0,
+      "totalTokens": 622946,
+      "cost": 0.0239,
+      "sessions": 1,
+      "messages": 17
+    },
+    {
+      "name": "Pixel",
+      "tokensIn": 34016,
+      "tokensOut": 13072,
+      "cacheRead": 502528,
+      "cacheWrite": 0,
+      "totalTokens": 549616,
+      "cost": 0.0212,
+      "sessions": 1,
+      "messages": 20
     },
     {
       "name": "Glasses",
@@ -98,28 +98,17 @@
       "cost": 0.0054,
       "sessions": 6,
       "messages": 11
-    },
-    {
-      "name": "Quill",
-      "tokensIn": 14370,
-      "tokensOut": 11663,
-      "cacheRead": 64000,
-      "cacheWrite": 0,
-      "totalTokens": 90033,
-      "cost": 0.0077,
-      "sessions": 1,
-      "messages": 6
     }
   ],
   "total": {
-    "tokensIn": 5697371,
-    "tokensOut": 603055,
-    "cacheRead": 48877824,
+    "tokensIn": 9689457,
+    "tokensOut": 640636,
+    "cacheRead": 120530432,
     "cacheWrite": 0,
-    "totalTokens": 55178250,
-    "cost": 2.0329,
-    "sessions": 269,
-    "messages": 1522
+    "totalTokens": 130860525,
+    "cost": 4.2385,
+    "sessions": 326,
+    "messages": 2233
   },
   "dailyUsage": [
     {
@@ -130,93 +119,99 @@
     },
     {
       "date": "2026-02-17",
-      "tokens": 54865373,
-      "cost": 2.0212964000000007,
-      "sessions": 263
+      "tokens": 111188503,
+      "cost": 3.5112784000000015,
+      "sessions": 259
+    },
+    {
+      "date": "2026-02-18",
+      "tokens": 19359145,
+      "cost": 0.7155742000000003,
+      "sessions": 61
     }
   ],
   "recentSessions": [
     {
-      "sessionId": "75aaa820-a3ed-4880-a16f-36a68f71a11c",
+      "sessionId": "5a402761-3e6b-42fe-8e4f-38ad2433fba3",
       "agent": "Unknown",
-      "timestamp": "2026-02-17T22:59:12.266Z",
-      "tokens": 493709,
-      "cost": 0.0167063,
-      "messages": 12
+      "timestamp": "2026-02-18T04:09:44.499Z",
+      "tokens": 1687978,
+      "cost": 0.0479653,
+      "messages": 51
     },
     {
-      "sessionId": "65cc645a-ea14-4f7c-9946-99827a12a320",
+      "sessionId": "20e9d756-8dc3-425c-8ced-80d4af430dbe",
+      "agent": "Unknown",
+      "timestamp": "2026-02-18T04:09:44.366Z",
+      "tokens": 1619190,
+      "cost": 0.0518847,
+      "messages": 25
+    },
+    {
+      "sessionId": "3926638d-6a58-43cc-ae77-17af1278f24f",
+      "agent": "Pixel",
+      "timestamp": "2026-02-18T04:08:25.484Z",
+      "tokens": 549616,
+      "cost": 0.0211936,
+      "messages": 20
+    },
+    {
+      "sessionId": "10d94f21-ae6a-4d55-b4f9-621d97ce7cab",
+      "agent": "Forge",
+      "timestamp": "2026-02-18T04:03:49.167Z",
+      "tokens": 1247957,
+      "cost": 0.05302219999999999,
+      "messages": 24
+    },
+    {
+      "sessionId": "285a26ec-92d8-4032-9802-30d53504d070",
       "agent": "Audit",
-      "timestamp": "2026-02-17T22:55:30.646Z",
-      "tokens": 168296,
-      "cost": 0.008027600000000001,
+      "timestamp": "2026-02-18T04:00:37.106Z",
+      "tokens": 117619,
+      "cost": 0.0045574000000000005,
       "messages": 5
     },
     {
-      "sessionId": "19756cc6-9594-49d8-aadf-0e5f92f33a44",
-      "agent": "Audit",
-      "timestamp": "2026-02-17T22:50:30.767Z",
-      "tokens": 237817,
-      "cost": 0.0122395,
-      "messages": 5
+      "sessionId": "1e218f24-1335-4a60-9115-954ddff0937d",
+      "agent": "Audit-2",
+      "timestamp": "2026-02-18T03:59:58.857Z",
+      "tokens": 622946,
+      "cost": 0.023903599999999997,
+      "messages": 17
     },
     {
-      "sessionId": "ee5306ae-f7f0-4df4-97b9-55a00949b7bc",
-      "agent": "Nexus",
-      "timestamp": "2026-02-17T22:47:09.115Z",
-      "tokens": 35874,
-      "cost": 0.0014805,
+      "sessionId": "342e84cd-1ee1-4760-939a-9a3894f47c1d",
+      "agent": "Forge",
+      "timestamp": "2026-02-18T03:58:48.781Z",
+      "tokens": 6703,
+      "cost": 0.00039490000000000006,
+      "messages": 1
+    },
+    {
+      "sessionId": "3359839a-f36e-43dd-a1df-e3da1f062427",
+      "agent": "Forge",
+      "timestamp": "2026-02-18T03:58:48.292Z",
+      "tokens": 6701,
+      "cost": 0.00039410000000000004,
+      "messages": 1
+    },
+    {
+      "sessionId": "ee9c0a33-d81e-4aaf-afbd-89948ceabe07",
+      "agent": "Code",
+      "timestamp": "2026-02-18T03:58:47.986Z",
+      "tokens": 22437,
+      "cost": 0.0015456000000000003,
       "messages": 2
     },
     {
-      "sessionId": "695a114d-fc95-446a-a8c6-256f6ef3c02f",
-      "agent": "Glasses",
-      "timestamp": "2026-02-17T22:45:00.248Z",
-      "tokens": 72197,
-      "cost": 0.0028298,
-      "messages": 4
-    },
-    {
-      "sessionId": "abd243ba-f268-4558-97a3-670f0c74299c",
-      "agent": "Scout",
-      "timestamp": "2026-02-17T22:43:02.632Z",
-      "tokens": 212282,
-      "cost": 0.0099479,
-      "messages": 13
-    },
-    {
-      "sessionId": "86b77a82-2a6c-4c57-a9ff-f04675dd8db2",
-      "agent": "Scout",
-      "timestamp": "2026-02-17T22:42:49.226Z",
-      "tokens": 405813,
-      "cost": 0.018670500000000007,
-      "messages": 16
-    },
-    {
-      "sessionId": "f583da1f-4a6b-4282-ac79-4a06455b041a",
-      "agent": "Audit",
-      "timestamp": "2026-02-17T22:40:24.782Z",
-      "tokens": 115867,
-      "cost": 0.004836399999999999,
-      "messages": 5
-    },
-    {
-      "sessionId": "0b330bcf-85e6-4ed3-a0b5-cfb0c45da28c",
-      "agent": "Scout",
-      "timestamp": "2026-02-17T22:39:15.786Z",
-      "tokens": 623644,
-      "cost": 0.0321814,
-      "messages": 13
-    },
-    {
-      "sessionId": "613a748a-41e1-4a15-bc41-8e348c906cae",
-      "agent": "Scout",
-      "timestamp": "2026-02-17T22:39:15.258Z",
-      "tokens": 528393,
-      "cost": 0.0219915,
-      "messages": 18
+      "sessionId": "c8dbf096-b56b-49c3-b27c-b84dfe1103e3",
+      "agent": "Code",
+      "timestamp": "2026-02-18T03:58:47.647Z",
+      "tokens": 22511,
+      "cost": 0.0015734000000000002,
+      "messages": 2
     }
   ],
-  "lastUpdated": "2026-02-17T23:05:18.423Z",
-  "sessionCount": 269
+  "lastUpdated": "2026-02-18T04:12:30.864Z",
+  "sessionCount": 326
 }

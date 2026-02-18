@@ -5,9 +5,21 @@
     {
       "src": "mission-control/dashboard/**/*.html",
       "use": "@vercel/static"
+    },
+    {
+      "src": "api/**/*.js",
+      "use": "@vercel/node"
     }
   ],
   "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/$1"
+    },
+    {
+      "src": "/logs-view.html",
+      "dest": "/mission-control/dashboard/logs-view.html"
+    },
     {
       "src": "/(.*)",
       "dest": "/mission-control/dashboard/$1"
