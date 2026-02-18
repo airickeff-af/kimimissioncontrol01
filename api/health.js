@@ -1,7 +1,7 @@
 // Vercel Serverless API: Health Check
 // Returns system health status
 
-module.exports = async (req, res) => {
+export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET');
   
@@ -17,4 +17,4 @@ module.exports = async (req, res) => {
     },
     timestamp: new Date().toISOString()
   });
-};
+}
