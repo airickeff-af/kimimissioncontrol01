@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Overview | Mission Control</title>
+    <link rel="stylesheet" href="/css/dashboard.css">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0f172a;
+            color: #e2e8f0;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #3b82f6;
+            border-bottom: 2px solid #3b82f6;
+            padding-bottom: 10px;
+        }
+        .card {
+            background: #1e293b;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .stat-box {
+            background: #334155;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #3b82f6;
+        }
+        .stat-label {
+            color: #94a3b8;
+            margin-top: 5px;
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: bold;
+        }
+        .status-healthy { background: #10b981; color: white; }
+        .status-warning { background: #f59e0b; color: white; }
+        .status-error { background: #ef4444; color: white; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📊 Mission Control Overview</h1>
+        
+        <div class="card">
+            <h2>System Status</h2>
+            <span class="status-badge status-healthy">🟢 All Systems Operational</span>
+            <p style="margin-top: 15px;">Last updated: <span id="lastUpdated"></span></p>
+        </div>
+
+        <div class="stat-grid">
+            <div class="stat-box">
+                <div class="stat-value" id="agentCount">23</div>
+                <div class="stat-label">Active Agents</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-value" id="sessionCount">269</div>
+                <div class="stat-label">Total Sessions</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-value" id="messageCount">1.5K</div>
+                <div class="stat-label">Messages</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-value" id="uptimePercent">99%</div>
+                <div class="stat-label">Uptime</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Quick Links</h2>
+            <ul>
+                <li><a href="/" style="color: #3b82f6;">🏠 Dashboard Home</a></li>
+                <li><a href="/api/stats" style="color: #3b82f6;">📈 API Stats</a></li>
+                <li><a href="/api/deployments" style="color: #3b82f6;">🚀 Deployments</a></li>
+                <li><a href="/api/health" style="color: #3b82f6;">💓 Health Check</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('lastUpdated').textContent = new Date().toLocaleString();
+        
+        // Fetch real stats
+        fetch('/api/stats')
+            .then(r => r.json())
+            .then(data => {
+                if (data.agents) document.getElementById('agentCount').textContent = data.agents;
+                if (data.sessions) document.getElementById('sessionCount').textContent = data.sessions;
+                if (data.messages) document.getElementById('messageCount').textContent = data.messages;
+            })
+            .catch(() => console.log('Stats API not available'));
+    </script>
+</body>
+</html>
