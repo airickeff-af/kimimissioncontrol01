@@ -1,0 +1,184 @@
+# TASK-P0-007: Create Missing data-viewer.html Page
+
+**Priority:** P0  
+**Deadline:** 7:00 AM, February 20, 2026  
+**Assignee:** Forge-1, Code-1  
+**Status:** 🔴 NOT STARTED
+
+---
+
+## Problem
+The data-viewer.html page **does not exist** but is linked in the navigation of task-board.html. Users clicking "Data" get a 404 error.
+
+## Solution
+
+### Create New File: `/root/.openclaw/workspace/data-viewer.html`
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Viewer | Mission Control</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0a0f;
+            color: #e0e0e0;
+            min-height: 100vh;
+        }
+        .header {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            padding: 1rem 2rem;
+            border-bottom: 2px solid #00d4ff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo { font-size: 1.5rem; font-weight: 700; color: #00d4ff; }
+        .nav { display: flex; gap: 1rem; }
+        .nav a {
+            color: #888;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+        .nav a:hover, .nav a.active { color: #00d4ff; background: rgba(0,212,255,0.1); }
+        .container { max-width: 1400px; margin: 0 auto; padding: 2rem; }
+        .data-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1rem; }
+        .data-card {
+            background: #1a1a2e;
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .data-card:hover { border-color: #00d4ff; transform: translateY(-2px); }
+        .data-card h3 { color: #00d4ff; margin-bottom: 0.5rem; }
+        .data-card p { color: #888; font-size: 0.875rem; }
+        .data-card .meta { color: #666; font-size: 0.75rem; margin-top: 1rem; }
+        .loading { text-align: center; padding: 3rem; color: #888; }
+        .error { text-align: center; padding: 3rem; color: #ff4444; }
+        .file-content {
+            background: #0f0f18;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+            max-height: 500px;
+            overflow: auto;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">🎯 Mission Control</div>
+        <nav class="nav">
+            <a href="/index.html">HQ</a>
+            <a href="/office.html">Office</a>
+            <a href="/agents.html">Agents</a>
+            <a href="/deals.html">DealFlow</a>
+            <a href="/tokens.html">Tokens</a>
+            <a href="/task-board.html">Tasks</a>
+            <a href="/logs-view.html">Logs</a>
+            <a href="/data-viewer.html" class="active">Data</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <h1>📁 Data Viewer</h1>
+        <p style="color: #888; margin-bottom: 2rem;">Browse and view data files</p>
+        
+        <div id="data-content">
+            <div class="loading">Loading data files...</div>
+        </div>
+        
+        <div id="file-viewer" style="display: none;">
+            <button onclick="showFileList()" style="margin-bottom: 1rem; background: #1a1a2e; border: 1px solid #333; color: #00d4ff; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer;">← Back to Files</button>
+            <h2 id="file-name"></h2>
+            <div id="file-content" class="file-content"></div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = '/api';
+
+        // List of data files to display
+        const dataFiles = [
+            { name: 'agents.json', description: 'Agent roster and statistics', endpoint: '/agents' },
+            { name: 'tasks.json', description: 'Task list and assignments', endpoint: '/tasks' },
+            { name: 'deals.json', description: 'DealFlow pipeline data', endpoint: '/deals' },
+            { name: 'tokens.json', description: 'Token usage statistics', endpoint: '/tokens' },
+            { name: 'logs.json', description: 'Activity logs', endpoint: '/logs/activity' },
+            { name: 'stats.json', description: 'System statistics', endpoint: '/stats' }
+        ];
+
+        function showFileList() {
+            document.getElementById('data-content').style.display = 'block';
+            document.getElementById('file-viewer').style.display = 'none';
+        }
+
+        function renderFileList() {
+            const content = document.getElementById('data-content');
+            content.innerHTML = `
+                <div class="data-grid">
+                    ${dataFiles.map(file => `
+                        <div class="data-card" onclick="viewFile('${file.name}', '${file.endpoint}')">
+                            <h3>📄 ${file.name}</h3>
+                            <p>${file.description}</p>
+                            <div class="meta">Click to view</div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        async function viewFile(name, endpoint) {
+            document.getElementById('data-content').style.display = 'none';
+            document.getElementById('file-viewer').style.display = 'block';
+            document.getElementById('file-name').textContent = name;
+            document.getElementById('file-content').textContent = 'Loading...';
+
+            try {
+                const response = await fetch(`${API_URL}${endpoint}`);
+                const data = await response.json();
+                document.getElementById('file-content').textContent = JSON.stringify(data, null, 2);
+            } catch (error) {
+                document.getElementById('file-content').textContent = `Error loading file: ${error.message}`;
+            }
+        }
+
+        // Load on page load
+        renderFileList();
+    </script>
+</body>
+</html>
+```
+
+## Files to Create
+- `/root/.openclaw/workspace/data-viewer.html`
+
+## Acceptance Criteria
+- [ ] Page exists at `/data-viewer.html`
+- [ ] Shows list of available data files
+- [ ] Clicking a file fetches from appropriate API endpoint
+- [ ] Displays formatted JSON content
+- [ ] Has "Back to Files" button
+- [ ] Has consistent navigation with other pages
+- [ ] Has loading state
+- [ ] Has error handling
+
+## Testing
+1. Click "Data" in navigation - page loads
+2. Verify file list displays
+3. Click a file - verify API fetch and display
+4. Click back - verify returns to file list
+5. Test error handling with API down

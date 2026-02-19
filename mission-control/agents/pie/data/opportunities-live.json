@@ -1,0 +1,652 @@
+[
+  {
+    "id": "partnership-binance-philippines",
+    "type": "partnership_announcement",
+    "title": "Binance partners with Philippine payment provider for PHP on-ramp",
+    "companies": [
+      "Binance",
+      "Local Payment Provider"
+    ],
+    "description": "Major exchange expanding PHP liquidity",
+    "url": "https://example.com/news",
+    "publishedAt": "2026-02-19T19:39:50.796Z",
+    "source": "news_feed",
+    "relevance": 60,
+    "signals": [
+      "philippines",
+      "payment_integration",
+      "competitor_move"
+    ],
+    "action": "Analyze partnership model for coins.ph application",
+    "urgency": "high",
+    "timestamp": "2026-02-19T19:39:50.796Z",
+    "score": 100
+  },
+  {
+    "id": "partnership-okx-sea",
+    "type": "partnership_announcement",
+    "title": "OKX expands Southeast Asia operations with local exchange partnership",
+    "companies": [
+      "OKX",
+      "SEA Exchange"
+    ],
+    "description": "Competitor expanding in SEA market",
+    "url": "https://example.com/news",
+    "publishedAt": "2026-02-17T19:39:50.796Z",
+    "source": "news_feed",
+    "relevance": 73,
+    "signals": [
+      "sea_focus",
+      "expansion",
+      "competitor_move"
+    ],
+    "action": "Analyze partnership model for coins.ph application",
+    "urgency": "medium",
+    "timestamp": "2026-02-19T19:39:50.796Z",
+    "score": 100
+  },
+  {
+    "id": "market-volume-bitcoin-1771529990796",
+    "type": "market_signal",
+    "subtype": "volume_spike",
+    "title": "Bitcoin Volume Surge",
+    "coin": "BTC",
+    "company": "Bitcoin",
+    "volume": 35479676597,
+    "price_change_24h": 0.98626,
+    "market_cap": 1335195752483,
+    "description": "Bitcoin showing unusual trading volume ($35.48B)",
+    "signals": [
+      "high_liquidity",
+      "market_interest",
+      "potential_partnership_opportunity"
+    ],
+    "relevance": 95,
+    "action": "Monitor for partnership announcements or exchange listings",
+    "urgency": "high",
+    "timestamp": "2026-02-19T19:39:50.796Z",
+    "source": "coingecko_live",
+    "score": 100
+  },
+  {
+    "id": "market-volume-ethereum-1771529990796",
+    "type": "market_signal",
+    "subtype": "volume_spike",
+    "title": "Ethereum Volume Surge",
+    "coin": "ETH",
+    "company": "Ethereum",
+    "volume": 21220847057,
+    "price_change_24h": 0.21847,
+    "market_cap": 233265317962,
+    "description": "Ethereum showing unusual trading volume ($21.22B)",
+    "signals": [
+      "high_liquidity",
+      "market_interest",
+      "potential_partnership_opportunity"
+    ],
+    "relevance": 91.220847057,
+    "action": "Monitor for partnership announcements or exchange listings",
+    "urgency": "high",
+    "timestamp": "2026-02-19T19:39:50.796Z",
+    "source": "coingecko_live",
+    "score": 100
+  },
+  {
+    "id": "market-volume-tether-1771529990796",
+    "type": "market_signal",
+    "subtype": "volume_spike",
+    "title": "Tether Volume Surge",
+    "coin": "USDT",
+    "company": "Tether",
+    "volume": 58691668857,
+    "price_change_24h": 0.00326,
+    "market_cap": 183675531277,
+    "description": "Tether showing unusual trading volume ($58.69B)",
+    "signals": [
+      "high_liquidity",
+      "market_interest",
+      "potential_partnership_opportunity"
+    ],
+    "relevance": 95,
+    "action": "Monitor for partnership announcements or exchange listings",
+    "urgency": "high",
+    "timestamp": "2026-02-19T19:39:50.796Z",
+    "source": "coingecko_live",
+    "score": 100
+  },
+  {
+    "id": "sea-funding-coins-ph",
+    "type": "funding_round",
+    "subtype": "sea_focused",
+    "title": "Coins.ph raised $30M (Philippines)",
+    "company": "Coins.ph",
+    "amount": "$30M",
+    "series": "Strategic",
+    "location": "Philippines",
+    "date": "2026-02-19T19:39:50.797Z",
+    "leadInvestors": [
+      "Tencent",
+      "Global Ventures"
+    ],
+    "description": "Philippines-based crypto exchange expanding remittance services",
+    "sectors": [
+      "crypto",
+      "payments",
+      "remittance"
+    ],
+    "relevance": 95,
+    "signals": [
+      "sea_focus",
+      "fresh_capital",
+      "growth_stage",
+      "high_priority_market"
+    ],
+    "action": "Immediate outreach - SEA expansion opportunity",
+    "urgency": "high",
+    "timestamp": "2026-02-19T19:39:50.797Z",
+    "source": "sea_intelligence",
+    "score": 100
+  },
+  {
+    "id": "sea-funding-xfers",
+    "type": "funding_round",
+    "subtype": "sea_focused",
+    "title": "Xfers raised $50M (Singapore)",
+    "company": "Xfers",
+    "amount": "$50M",
+    "series": "Series B",
+    "location": "Singapore",
+    "date": "2026-02-18T19:39:50.797Z",
+    "leadInvestors": [
+      "Stripe",
+      "DBS Bank"
+    ],
+    "description": "Singapore payment infrastructure for Southeast Asia",
+    "sectors": [
+      "payments",
+      "fintech",
+      "sea"
+    ],
+    "relevance": 90,
+    "signals": [
+      "sea_focus",
+      "fresh_capital",
+      "growth_stage",
+      "high_priority_market"
+    ],
+    "action": "Immediate outreach - SEA expansion opportunity",
+    "urgency": "high",
+    "timestamp": "2026-02-19T19:39:50.797Z",
+    "source": "sea_intelligence",
+    "score": 100
+  },
+  {
+    "id": "sea-funding-maya-ph",
+    "type": "funding_round",
+    "subtype": "sea_focused",
+    "title": "Maya raised $75M (Philippines)",
+    "company": "Maya",
+    "amount": "$75M",
+    "series": "Series C",
+    "location": "Philippines",
+    "date": "2026-02-17T19:39:50.797Z",
+    "leadInvestors": [
+      "KKR",
+      "Tiger Global"
+    ],
+    "description": "Philippines super app with crypto integration",
+    "sectors": [
+      "super_app",
+      "crypto",
+      "payments"
+    ],
+    "relevance": 92,
+    "signals": [
+      "sea_focus",
+      "fresh_capital",
+      "growth_stage",
+      "high_priority_market"
+    ],
+    "action": "Immediate outreach - SEA expansion opportunity",
+    "urgency": "high",
+    "timestamp": "2026-02-19T19:39:50.797Z",
+    "source": "sea_intelligence",
+    "score": 100
+  },
+  {
+    "id": "sea-funding-pintu",
+    "type": "funding_round",
+    "subtype": "sea_focused",
+    "title": "Pintu raised $35M (Indonesia)",
+    "company": "Pintu",
+    "amount": "$35M",
+    "series": "Series A",
+    "location": "Indonesia",
+    "date": "2026-02-16T19:39:50.797Z",
+    "leadInvestors": [
+      "Lightspeed",
+      "Pantera"
+    ],
+    "description": "Indonesia crypto exchange focused on education",
+    "sectors": [
+      "crypto",
+      "education",
+      "indonesia"
+    ],
+    "relevance": 88,
+    "signals": [
+      "sea_focus",
+      "fresh_capital",
+      "growth_stage",
+      "high_priority_market"
+    ],
+    "action": "Immediate outreach - SEA expansion opportunity",
+    "urgency": "high",
+    "timestamp": "2026-02-19T19:39:50.797Z",
+    "source": "sea_intelligence",
+    "score": 100
+  },
+  {
+    "id": "comp-binance-1771529990796",
+    "competitor": "binance",
+    "type": "competitor_move",
+    "title": "Binance launches Philippines P2P trading with 0 fees",
+    "description": "Aggressive market entry strategy",
+    "threat": "high",
+    "publishedAt": "2026-02-19T19:39:50.796Z",
+    "relevance": 85,
+    "signals": [
+      "competitor_activity",
+      "market_intelligence"
+    ],
+    "action": "Monitor and prepare competitive response",
+    "urgency": "high",
+    "timestamp": "2026-02-19T19:39:50.796Z",
+    "source": "competitor_intel",
+    "score": 95
+  },
+  {
+    "id": "comp-okx-1771529990796",
+    "competitor": "okx",
+    "type": "competitor_move",
+    "title": "OKX partners with major Philippine bank for crypto services",
+    "description": "Banking partnership in target market",
+    "threat": "high",
+    "publishedAt": "2026-02-16T19:39:50.796Z",
+    "relevance": 85,
+    "signals": [
+      "competitor_activity",
+      "market_intelligence"
+    ],
+    "action": "Monitor and prepare competitive response",
+    "urgency": "high",
+    "timestamp": "2026-02-19T19:39:50.796Z",
+    "source": "competitor_intel",
+    "score": 95
+  },
+  {
+    "id": "funding-immutable-x",
+    "type": "funding_round",
+    "title": "Immutable raised $200M",
+    "company": "Immutable",
+    "amount": "$200M",
+    "series": "Series C",
+    "date": "2026-02-15",
+    "leadInvestors": [
+      "Temasek",
+      "Animoca Brands"
+    ],
+    "description": "Gaming-focused blockchain platform",
+    "sectors": [
+      "gaming",
+      "nft",
+      "blockchain"
+    ],
+    "relevance": 70,
+    "signals": [
+      "fresh_capital",
+      "growth_stage",
+      "investor_backing"
+    ],
+    "action": "Reach out to explore partnership",
+    "urgency": "high",
+    "timestamp": "2026-02-19T19:39:50.796Z",
+    "source": "crunchbase",
+    "score": 90
+  },
+  {
+    "id": "funding-layerzero",
+    "type": "funding_round",
+    "title": "LayerZero raised $120M",
+    "company": "LayerZero",
+    "amount": "$120M",
+    "series": "Series B",
+    "date": "2026-02-12",
+    "leadInvestors": [
+      "a16z",
+      "Sequoia"
+    ],
+    "description": "Cross-chain messaging protocol",
+    "sectors": [
+      "infrastructure",
+      "cross_chain",
+      "web3"
+    ],
+    "relevance": 70,
+    "signals": [
+      "fresh_capital",
+      "growth_stage",
+      "investor_backing"
+    ],
+    "action": "Reach out to explore partnership",
+    "urgency": "high",
+    "timestamp": "2026-02-19T19:39:50.796Z",
+    "source": "crunchbase",
+    "score": 90
+  },
+  {
+    "id": "funding-aptos",
+    "type": "funding_round",
+    "title": "Aptos Labs raised $150M",
+    "company": "Aptos Labs",
+    "amount": "$150M",
+    "series": "Series A",
+    "date": "2026-02-05",
+    "leadInvestors": [
+      "FTX Ventures",
+      "Jump Crypto"
+    ],
+    "description": "Layer 1 blockchain by former Meta team",
+    "sectors": [
+      "layer1",
+      "blockchain",
+      "infrastructure"
+    ],
+    "relevance": 70,
+    "signals": [
+      "fresh_capital",
+      "growth_stage",
+      "investor_backing"
+    ],
+    "action": "Reach out to explore partnership",
+    "urgency": "high",
+    "timestamp": "2026-02-19T19:39:50.796Z",
+    "source": "crunchbase",
+    "score": 90
+  },
+  {
+    "id": "market-volume-usd-coin-1771529990796",
+    "type": "market_signal",
+    "subtype": "volume_spike",
+    "title": "USDC Volume Surge",
+    "coin": "USDC",
+    "company": "USDC",
+    "volume": 9171244162,
+    "price_change_24h": 0.01405,
+    "market_cap": 73810192544,
+    "description": "USDC showing unusual trading volume ($9.17B)",
+    "signals": [
+      "high_liquidity",
+      "market_interest",
+      "potential_partnership_opportunity"
+    ],
+    "relevance": 79.171244162,
+    "action": "Monitor for partnership announcements or exchange listings",
+    "urgency": "high",
+    "timestamp": "2026-02-19T19:39:50.796Z",
+    "source": "coingecko_live",
+    "score": 89.171244162
+  },
+  {
+    "id": "funding-ton-foundation",
+    "type": "funding_round",
+    "title": "TON Foundation raised $50M",
+    "company": "TON Foundation",
+    "amount": "$50M",
+    "series": "Grant",
+    "date": "2026-02-10",
+    "leadInvestors": [
+      "Various"
+    ],
+    "description": "Telegram-integrated blockchain",
+    "sectors": [
+      "messaging",
+      "crypto",
+      "payments"
+    ],
+    "relevance": 60,
+    "signals": [
+      "fresh_capital",
+      "growth_stage",
+      "investor_backing"
+    ],
+    "action": "Reach out to explore partnership",
+    "urgency": "high",
+    "timestamp": "2026-02-19T19:39:50.796Z",
+    "source": "crunchbase",
+    "score": 80
+  },
+  {
+    "id": "funding-starkware",
+    "type": "funding_round",
+    "title": "StarkWare raised $100M",
+    "company": "StarkWare",
+    "amount": "$100M",
+    "series": "Series D",
+    "date": "2026-02-08",
+    "leadInvestors": [
+      "Greenoaks",
+      "Coatue"
+    ],
+    "description": "Ethereum L2 scaling solution",
+    "sectors": [
+      "infrastructure",
+      "scaling",
+      "ethereum"
+    ],
+    "relevance": 65,
+    "signals": [
+      "fresh_capital",
+      "growth_stage",
+      "investor_backing"
+    ],
+    "action": "Reach out to explore partnership",
+    "urgency": "medium",
+    "timestamp": "2026-02-19T19:39:50.796Z",
+    "source": "crunchbase",
+    "score": 75
+  },
+  {
+    "id": "market-volume-solana-1771529990796",
+    "type": "market_signal",
+    "subtype": "volume_spike",
+    "title": "Solana Volume Surge",
+    "coin": "SOL",
+    "company": "Solana",
+    "volume": 3069209711,
+    "price_change_24h": 0.79852,
+    "market_cap": 46299010721,
+    "description": "Solana showing unusual trading volume ($3.07B)",
+    "signals": [
+      "high_liquidity",
+      "market_interest",
+      "potential_partnership_opportunity"
+    ],
+    "relevance": 73.069209711,
+    "action": "Monitor for partnership announcements or exchange listings",
+    "urgency": "medium",
+    "timestamp": "2026-02-19T19:39:50.796Z",
+    "source": "coingecko_live",
+    "score": 73.069209711
+  },
+  {
+    "id": "market-volume-ripple-1771529990796",
+    "type": "market_signal",
+    "subtype": "volume_spike",
+    "title": "XRP Volume Surge",
+    "coin": "XRP",
+    "company": "XRP",
+    "volume": 2503022096,
+    "price_change_24h": -1.67638,
+    "market_cap": 85780445783,
+    "description": "XRP showing unusual trading volume ($2.50B)",
+    "signals": [
+      "high_liquidity",
+      "market_interest",
+      "potential_partnership_opportunity"
+    ],
+    "relevance": 72.503022096,
+    "action": "Monitor for partnership announcements or exchange listings",
+    "urgency": "medium",
+    "timestamp": "2026-02-19T19:39:50.796Z",
+    "source": "coingecko_live",
+    "score": 72.503022096
+  },
+  {
+    "id": "market-volume-usd1-wlfi-1771529990797",
+    "type": "market_signal",
+    "subtype": "volume_spike",
+    "title": "USD1 Volume Surge",
+    "coin": "USD1",
+    "company": "USD1",
+    "volume": 1851028564,
+    "price_change_24h": -0.041,
+    "market_cap": 5107198530,
+    "description": "USD1 showing unusual trading volume ($1.85B)",
+    "signals": [
+      "high_liquidity",
+      "market_interest",
+      "potential_partnership_opportunity"
+    ],
+    "relevance": 71.851028564,
+    "action": "Monitor for partnership announcements or exchange listings",
+    "urgency": "medium",
+    "timestamp": "2026-02-19T19:39:50.797Z",
+    "source": "coingecko_live",
+    "score": 71.851028564
+  },
+  {
+    "id": "comp-coinbase-1771529990796",
+    "competitor": "coinbase",
+    "type": "competitor_move",
+    "title": "Coinbase expands institutional custody to Singapore",
+    "description": "Institutional focus in SEA",
+    "threat": "medium",
+    "publishedAt": "2026-02-18T19:39:50.796Z",
+    "relevance": 70,
+    "signals": [
+      "competitor_activity",
+      "market_intelligence"
+    ],
+    "action": "Monitor and prepare competitive response",
+    "urgency": "medium",
+    "timestamp": "2026-02-19T19:39:50.796Z",
+    "source": "competitor_intel",
+    "score": 70
+  },
+  {
+    "id": "comp-kraken-1771529990796",
+    "competitor": "kraken",
+    "type": "competitor_move",
+    "title": "Kraken acquires local exchange for Thailand entry",
+    "description": "Acquisition-based expansion",
+    "threat": "medium",
+    "publishedAt": "2026-02-17T19:39:50.796Z",
+    "relevance": 70,
+    "signals": [
+      "competitor_activity",
+      "market_intelligence"
+    ],
+    "action": "Monitor and prepare competitive response",
+    "urgency": "medium",
+    "timestamp": "2026-02-19T19:39:50.796Z",
+    "source": "competitor_intel",
+    "score": 70
+  },
+  {
+    "id": "launch-metamask-pay",
+    "type": "product_launch",
+    "title": "MetaMask launches integrated fiat on-ramp in Philippines",
+    "company": "MetaMask",
+    "product": "Fiat On-Ramp",
+    "description": "Wallet provider expanding PHP support",
+    "url": "https://example.com/news",
+    "publishedAt": "2026-02-19T19:39:50.796Z",
+    "relevance": 60,
+    "signals": [
+      "new_product",
+      "market_expansion",
+      "integration_opportunity"
+    ],
+    "action": "Evaluate integration opportunity with coins.ph",
+    "urgency": "medium",
+    "timestamp": "2026-02-19T19:39:50.796Z",
+    "source": "product_feed",
+    "score": 68
+  },
+  {
+    "id": "launch-telegram-wallet",
+    "type": "product_launch",
+    "title": "Telegram Wallet adds crypto-to-fiat withdrawals",
+    "company": "Telegram",
+    "product": "Wallet Enhancement",
+    "description": "TON ecosystem expanding utility",
+    "url": "https://example.com/news",
+    "publishedAt": "2026-02-18T19:39:50.796Z",
+    "relevance": 60,
+    "signals": [
+      "new_product",
+      "market_expansion",
+      "integration_opportunity"
+    ],
+    "action": "Evaluate integration opportunity with coins.ph",
+    "urgency": "medium",
+    "timestamp": "2026-02-19T19:39:50.796Z",
+    "source": "product_feed",
+    "score": 68
+  },
+  {
+    "id": "launch-gala-payment",
+    "type": "product_launch",
+    "title": "Gala Games introduces token payment system for in-game purchases",
+    "company": "Gala Games",
+    "product": "Payment System",
+    "description": "Gaming token utility expansion",
+    "url": "https://example.com/news",
+    "publishedAt": "2026-02-17T19:39:50.796Z",
+    "relevance": 55,
+    "signals": [
+      "new_product",
+      "market_expansion",
+      "integration_opportunity"
+    ],
+    "action": "Evaluate integration opportunity with coins.ph",
+    "urgency": "medium",
+    "timestamp": "2026-02-19T19:39:50.796Z",
+    "source": "product_feed",
+    "score": 63
+  },
+  {
+    "id": "partnership-coinbase-gaming",
+    "type": "partnership_announcement",
+    "title": "Coinbase partners with major gaming studio for NFT marketplace",
+    "companies": [
+      "Coinbase",
+      "Gaming Studio"
+    ],
+    "description": "Gaming-NFT integration partnership",
+    "url": "https://example.com/news",
+    "publishedAt": "2026-02-18T19:39:50.796Z",
+    "source": "news_feed",
+    "relevance": 60,
+    "signals": [
+      "gaming",
+      "nft",
+      "competitor_partnership"
+    ],
+    "action": "Analyze partnership model for coins.ph application",
+    "urgency": "medium",
+    "timestamp": "2026-02-19T19:39:50.796Z",
+    "score": 60
+  }
+]

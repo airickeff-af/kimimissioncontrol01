@@ -1,13 +1,13 @@
 # PENDING TASKS LOG - MISSION CONTROL
 **Status:** ACTIVE  
-**Last Updated:** 2026-02-19 11:15 PM HKT
-**Total Tasks:** 113  
+**Last Updated:** 2026-02-20 3:42 AM HKT
+**Total Tasks:** 115  
 **Completed:** 16
 **In Progress:** 5
 **P0 Critical:** 9
 **P1 High:** 39
-**P2 Medium:** 59 (59 archived to [Future Ideas](/mission-control/docs/FUTURE_IDEAS_BACKLOG.md))
-**P3 Low:** 6
+**P2 Medium:** 62 (59 archived to [Future Ideas](/mission-control/docs/FUTURE_IDEAS_BACKLOG.md))
+**P3 Low:** 5
 **Delegation Workflow:** [v2.0 with Audit Checkpoints](/mission-control/docs/DELEGATION_WORKFLOW.md)
 
 ---
@@ -2630,9 +2630,9 @@ Pattern recognition requires temporal view. Timeline reveals competitor rhythms 
 |----------|-------|-----------|-------------|---------|
 | 🔴 P0 - Critical | 9 | 6 | 3 | 0 |
 | 🟡 P1 - High | 39 | 6 | 2 | 31 |
-| 🟢 P2 - Medium | 59 | 4 | 0 | 55 |
-| ⚪ P3 - Low | 6 | 0 | 0 | 6 |
-| **TOTAL** | **113** | **16** | **5** | **92** |
+| 🟢 P2 - Medium | 62 | 4 | 0 | 58 |
+| ⚪ P3 - Low | 5 | 0 | 0 | 5 |
+| **TOTAL** | **115** | **16** | **5** | **94** |
 
 ---
 
@@ -2829,18 +2829,15 @@ Agents must submit progress reports at each checkpoint:
 
 ---
 
-### **TASK-114: P3 - Context Management Protocol**
+### **TASK-114: P3 - Context Management Protocol** ➤ ARCHIVED
 - **Assigned:** Nexus
-- **Due:** Feb 23, 5:00 PM
-- **Status:** ⏳ NOT STARTED
-- **Priority:** P3
+- **Due:** Feb 23, 2026
+- **Status:** ➤ ARCHIVED to Future Ideas
+- **Priority:** P3 → ARCHIVED
+- **Archived Date:** 2026-02-20
+- **Reason:** Low priority, superseded by P2 Context Management System v2
 - **Description:** Manage main session context near capacity
-- **Trigger:** 90% token usage (235k/262k)
-- **Actions:**
-  - Compress old conversation turns
-  - Archive completed task discussions
-  - Maintain active task context
-  - Preserve critical decisions
+- **Archive Location:** `/mission-control/docs/FUTURE_IDEAS_BACKLOG.md`
 
 ---
 
@@ -3029,15 +3026,86 @@ Code activity is invisible in Mission Control currently. Integration provides un
 
 ---
 
+## 🆕 NEW P2 TASKS - CREATED 2026-02-20
+
+### **P2-NEW-001: Session Context Optimization**
+- **Assigned:** Nexus
+- **Due:** Feb 25, 2026
+- **Status:** ⏳ NOT STARTED
+- **Priority:** P2
+- **Description:** Better scope than P3 version - optimize session context management with intelligent compression and archival
+
+**Features:**
+- Smart context compression (preserve critical decisions, archive old discussions)
+- Automatic session archival when threshold reached
+- Context-aware pre-fetching for active tasks
+- Session restoration from archives
+- Token usage optimization per session
+
+**Acceptance Criteria:**
+- [ ] Context compression algorithm implemented
+- [ ] Automatic archival at 85% token threshold
+- [ ] Session restoration working
+- [ ] Token savings >20% per session
+- [ ] No loss of critical task context
+
+---
+
+### **P2-NEW-002: Token Usage Predictor**
+- **Assigned:** Code-1
+- **Due:** Feb 26, 2026
+- **Status:** ⏳ NOT STARTED
+- **Priority:** P2
+- **Description:** Predict when context will hit limit based on current usage patterns
+
+**Features:**
+- Real-time token burn rate analysis
+- Predictive depletion warnings (30min, 1hr, 2hr ahead)
+- Task-based token estimation
+- Alert system for approaching limits
+- Historical pattern learning
+
+**Acceptance Criteria:**
+- [ ] Token prediction algorithm with >80% accuracy
+- [ ] Real-time burn rate dashboard
+- [ ] Predictive alerts (30min/1hr/2hr)
+- [ ] Per-task token estimation
+- [ ] Integration with Token Tracker
+
+---
+
+### **P2-NEW-003: Auto-Compression System**
+- **Assigned:** Sentry
+- **Due:** Feb 27, 2026
+- **Status:** ⏳ NOT STARTED
+- **Priority:** P2
+- **Description:** Auto-compress old sessions to free up context space
+
+**Features:**
+- Automatic compression of sessions older than 24 hours
+- Smart content extraction (keep decisions, archive chatter)
+- Compressed session storage with retrieval capability
+- Background compression during idle time
+- Compression ratio tracking
+
+**Acceptance Criteria:**
+- [ ] Auto-compression triggered at 80% threshold
+- [ ] Sessions >24hrs auto-compressed
+- [ ] Smart content extraction working
+- [ ] Compressed sessions retrievable
+- [ ] >50% space savings on compressed sessions
+
+---
+
 ## 📊 UPDATED TASK DASHBOARD
 
 | Priority | Count | Completed | In Progress | Blocked |
 |----------|-------|-----------|-------------|---------|
 | 🔴 P0 - Critical | 9 | 6 | 3 | 0 |
 | 🟡 P1 - High | 39 | 6 | 2 | 31 |
-| 🟢 P2 - Medium | 59 | 4 | 0 | 55 |
-| ⚪ P3 - Low | 6 | 0 | 0 | 6 |
-| **TOTAL** | **113** | **16** | **5** | **92** |
+| 🟢 P2 - Medium | 62 | 4 | 0 | 58 |
+| ⚪ P3 - Low | 5 | 0 | 0 | 5 |
+| **TOTAL** | **115** | **16** | **5** | **94** |
 
 ---
 
@@ -3075,5 +3143,5 @@ Code activity is invisible in Mission Control currently. Integration provides un
 **See full archive:** `/mission-control/backlog/FUTURE_IDEAS.md`
 
 ---
-*Last Updated: 2026-02-19 3:53 AM HKT*
+*Last Updated: 2026-02-20 3:42 AM HKT*
 *Improvement Cycle: Nexus 4-Hour Improvements*

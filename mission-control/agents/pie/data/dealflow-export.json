@@ -1,0 +1,167 @@
+{
+  "timestamp": "2026-02-19T19:44:23.258Z",
+  "leads": [
+    {
+      "leadId": "lead-hashkey",
+      "pieScore": 76,
+      "pieConfidence": 0.6,
+      "pieLikelihood": "high",
+      "marketSentiment": "neutral",
+      "recommendedAction": "contact_immediately",
+      "outreachTiming": {
+        "nextOptimal": "2026-02-24T02:00:00.000Z",
+        "daysUntil": 4,
+        "bestDays": [
+          "tuesday",
+          "wednesday",
+          "thursday"
+        ],
+        "bestTimes": [
+          "10:00",
+          "14:00",
+          "15:00"
+        ],
+        "timezone": "Asia/Manila",
+        "urgency": "low"
+      },
+      "frictionCount": 2,
+      "relatedOpportunities": 1,
+      "enrichedAt": "2026-02-19T19:44:23.255Z"
+    },
+    {
+      "leadId": "lead-immutable",
+      "pieScore": 76,
+      "pieConfidence": 0.7,
+      "pieLikelihood": "high",
+      "marketSentiment": "neutral",
+      "recommendedAction": "contact_immediately",
+      "outreachTiming": {
+        "nextOptimal": "2026-02-24T02:00:00.000Z",
+        "daysUntil": 4,
+        "bestDays": [
+          "tuesday",
+          "wednesday",
+          "thursday"
+        ],
+        "bestTimes": [
+          "10:00",
+          "14:00",
+          "15:00"
+        ],
+        "timezone": "Asia/Manila",
+        "urgency": "low"
+      },
+      "frictionCount": 2,
+      "relatedOpportunities": 0,
+      "enrichedAt": "2026-02-19T19:44:23.256Z"
+    },
+    {
+      "leadId": "lead-animoca",
+      "pieScore": 94,
+      "pieConfidence": 0.7,
+      "pieLikelihood": "very_high",
+      "marketSentiment": "neutral",
+      "recommendedAction": "contact_immediately",
+      "outreachTiming": {
+        "nextOptimal": "2026-02-24T02:00:00.000Z",
+        "daysUntil": 4,
+        "bestDays": [
+          "tuesday",
+          "wednesday",
+          "thursday"
+        ],
+        "bestTimes": [
+          "10:00",
+          "14:00",
+          "15:00"
+        ],
+        "timezone": "Asia/Manila",
+        "urgency": "low"
+      },
+      "frictionCount": 2,
+      "relatedOpportunities": 3,
+      "enrichedAt": "2026-02-19T19:44:23.256Z"
+    },
+    {
+      "leadId": "lead-ton",
+      "pieScore": 68,
+      "pieConfidence": 0.6,
+      "pieLikelihood": "high",
+      "marketSentiment": "very_positive",
+      "recommendedAction": "contact_with_personalization",
+      "outreachTiming": {
+        "nextOptimal": "2026-02-24T02:00:00.000Z",
+        "daysUntil": 4,
+        "bestDays": [
+          "tuesday",
+          "wednesday",
+          "thursday"
+        ],
+        "bestTimes": [
+          "10:00",
+          "14:00",
+          "15:00"
+        ],
+        "timezone": "Asia/Manila",
+        "urgency": "low"
+      },
+      "frictionCount": 2,
+      "relatedOpportunities": 2,
+      "enrichedAt": "2026-02-19T19:44:23.256Z"
+    },
+    {
+      "leadId": "lead-gala",
+      "pieScore": 70,
+      "pieConfidence": 0.7,
+      "pieLikelihood": "high",
+      "marketSentiment": "neutral",
+      "recommendedAction": "contact_with_personalization",
+      "outreachTiming": {
+        "nextOptimal": "2026-02-24T02:00:00.000Z",
+        "daysUntil": 4,
+        "bestDays": [
+          "tuesday",
+          "wednesday",
+          "thursday"
+        ],
+        "bestTimes": [
+          "10:00",
+          "14:00",
+          "15:00"
+        ],
+        "timezone": "Asia/Manila",
+        "urgency": "low"
+      },
+      "frictionCount": 2,
+      "relatedOpportunities": 1,
+      "enrichedAt": "2026-02-19T19:44:23.256Z"
+    },
+    {
+      "leadId": "lead-alchemy",
+      "pieScore": 77,
+      "pieConfidence": 0.6,
+      "pieLikelihood": "high",
+      "marketSentiment": "neutral",
+      "recommendedAction": "contact_immediately",
+      "outreachTiming": {
+        "nextOptimal": "2026-02-24T02:00:00.000Z",
+        "daysUntil": 4,
+        "bestDays": [
+          "tuesday",
+          "wednesday",
+          "thursday"
+        ],
+        "bestTimes": [
+          "10:00",
+          "14:00",
+          "15:00"
+        ],
+        "timezone": "Asia/Manila",
+        "urgency": "low"
+      },
+      "frictionCount": 2,
+      "relatedOpportunities": 0,
+      "enrichedAt": "2026-02-19T19:44:23.257Z"
+    }
+  ]
+}

@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PIE Radar - Predictive Intelligence Engine</title>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --pixel-bg: #2d1b4e;
+            --pixel-panel: #3d2b5e;
+            --pixel-border: #5d4b7e;
+            --pixel-accent: #ff6b6b;
+            --pixel-success: #51cf66;
+            --pixel-warning: #ffd43b;
+            --pixel-info: #339af0;
+            --pixel-text: #f8f9fa;
+            --pixel-text-dim: #adb5bd;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            image-rendering: pixelated;
+        }
+        
+        body {
+            font-family: 'VT323', monospace;
+            background: var(--pixel-bg);
+            color: var(--pixel-text);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        /* Kairosoft-style Header */
+        .header {
+            background: linear-gradient(180deg, #4a3b6e 0%, var(--pixel-panel) 100%);
+            border-bottom: 4px solid var(--pixel-border);
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.3);
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo {
+            width: 48px;
+            height: 48px;
+            background: var(--pixel-accent);
+            border: 3px solid #fff;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 10px;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.3);
+        }
+        
+        .title-section h1 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 14px;
+            color: var(--pixel-warning);
+            text-shadow: 2px 2px 0 rgba(0,0,0,0.5);
+            margin-bottom: 5px;
+        }
+        
+        .title-section .subtitle {
+            font-size: 18px;
+            color: var(--pixel-text-dim);
+        }
+        
+        .status-bar {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        
+        .status-item {
+            background: rgba(0,0,0,0.3);
+            padding: 8px 15px;
+            border-radius: 4px;
+            border: 2px solid var(--pixel-border);
+        }
+        
+        .status-label {
+            font-size: 14px;
+            color: var(--pixel-text-dim);
+        }
+        
+        .status-value {
+            font-size: 20px;
+            font-weight: bold;
+            color: var(--pixel-success);
+        }
+        
+        .status-value.warning {
+            color: var(--pixel-warning);
+        }
+        
+        .status-value.alert {
+            color: var(--pixel-accent);
+        }
+        
+        /* Main Grid Layout */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: auto auto;
+            gap: 20px;
+            padding: 20px;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+        
+        /* Kairosoft Panel Style */
+        .panel {
+            background: var(--pixel-panel);
+            border: 3px solid var(--pixel-border);
+            border-radius: 8px;
+            box-shadow: 0 6px 0 rgba(0,0,0,0.3), inset 0 2px 0 rgba(255,255,255,0.1);
+            overflow: hidden;
+        }
+        
+        .panel-header {
+            background: linear-gradient(180deg, #5d4b7e 0%, #4a3b6e 100%);
+            padding: 12px 15px;
+            border-bottom: 3px solid var(--pixel-border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .panel-title {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 10px;
+            color: var(--pixel-warning);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .panel-icon {
+            width: 24px;
+            height: 24px;
+            background: var(--pixel-accent);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+        
+        .panel-badge {
+            background: var(--pixel-accent);
+            color: #fff;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            box-shadow: 0 2px 0 rgba(0,0,0,0.3);
+        }
+        
+        .panel-content {
+            padding: 15px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        /* Opportunity Cards */
+        .opportunity-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .opportunity-card {
+            background: rgba(0,0,0,0.2);
+            border: 2px solid var(--pixel-border);
+            border-radius: 6px;
+            padding: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .opportunity-card:hover {
+            background: rgba(255,255,255,0.05);
+            border-color: var(--pixel-info);
+            transform: translateX(5px);
+        }
+        
+        .opportunity-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: var(--pixel-info);
+        }
+        
+        .opportunity-card.high::before {
+            background: var(--pixel-accent);
+        }
+        
+        .opportunity-card.medium::before {
+            background: var(--pixel-warning);
+        }
+        
+        .opportunity-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 8px;
+        }
+        
+        .opportunity-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--pixel-text);
+            flex: 1;
+        }
+        
+        .opportunity-score {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 10px;
+            padding: 5px 10px;
+            border-radius: 4px;
+            background: var(--pixel-success);
+            color: #000;
+        }
+        
+        .opportunity-score.high {
+            background: var(--pixel-accent);
+            color: #fff;
+        }
+        
+        .opportunity-score.medium {
+            background: var(--pixel-warning);
+            color: #000;
+        }
+        
+        .opportunity-meta {
+            display: flex;
+            gap: 15px;
+            font-size: 14px;
+            color: var(--pixel-text-dim);
+            margin-bottom: 8px;
+        }
+        
+        .opportunity-type {
+            background: rgba(255,255,255,0.1);
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+        
+        .opportunity-desc {
+            font-size: 15px;
+            color: var(--pixel-text-dim);
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+        
+        .opportunity-action {
+            font-size: 14px;
+            color: var(--pixel-info);
+            font-style: italic;
+        }
+        
+        .opportunity-signals {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+            margin-top: 8px;
+        }
+        
+        .signal-tag {
+            font-size: 12px;
+            padding: 2px 8px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            color: var(--pixel-text-dim);
+        }
+        
+        /* Friction Alerts */
+        .alert-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .alert-card {
+            background: rgba(0,0,0,0.2);
+            border: 2px solid var(--pixel-border);
+            border-radius: 6px;
+            padding: 12px;
+            position: relative;
+        }
+        
+        .alert-card.high {
+            border-color: var(--pixel-accent);
+            background: rgba(255,107,107,0.1);
+        }
+        
+        .alert-card.medium {
+            border-color: var(--pixel-warning);
+            background: rgba(255,212,59,0.1);
+        }
+        
+        .alert-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        
+        .alert-lead {
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--pixel-text);
+        }
+        
+        .alert-severity {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 8px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+        
+        .alert-severity.high {
+            background: var(--pixel-accent);
+            color: #fff;
+        }
+        
+        .alert-severity.medium {
+            background: var(--pixel-warning);
+            color: #000;
+        }
+        
+        .alert-severity.low {
+            background: var(--pixel-info);
+            color: #fff;
+        }
+        
+        .alert-description {
+            font-size: 15px;
+            color: var(--pixel-text-dim);
+            margin-bottom: 8px;
+        }
+        
+        .alert-action {
+            font-size: 14px;
+            color: var(--pixel-success);
+            background: rgba(81,207,102,0.1);
+            padding: 8px;
+            border-radius: 4px;
+            border-left: 3px solid var(--pixel-success);
+        }
+        
+        /* Lead Scores Panel */
+        .lead-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .lead-item {
+            background: rgba(0,0,0,0.2);
+            border: 2px solid var(--pixel-border);
+            border-radius: 6px;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .lead-avatar {
+            width: 40px;
+            height: 40px;
+            background: var(--pixel-border);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 12px;
+        }
+        
+        .lead-info {
+            flex: 1;
+        }
+        
+        .lead-name {
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--pixel-text);
+        }
+        
+        .lead-meta {
+            font-size: 14px;
+            color: var(--pixel-text-dim);
+        }
+        
+        .lead-score-bar {
+            width: 100px;
+            height: 20px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .lead-score-fill {
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+        
+        .lead-score-fill.high {
+            background: linear-gradient(90deg, var(--pixel-success), #69db7c);
+        }
+        
+        .lead-score-fill.medium {
+            background: linear-gradient(90deg, var(--pixel-warning), #ffe066);
+        }
+        
+        .lead-score-fill.low {
+            background: linear-gradient(90deg, var(--pixel-accent), #ff8787);
+        }
+        
+        .lead-score-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Press Start 2P', cursive;
+            font-size: 8px;
+            color: #fff;
+            text-shadow: 1px 1px 0 rgba(0,0,0,0.5);
+        }
+        
+        /* Competitor Intel Panel */
+        .competitor-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+        
+        .competitor-card {
+            background: rgba(0,0,0,0.2);
+            border: 2px solid var(--pixel-border);
+            border-radius: 6px;
+            padding: 10px;
+            text-align: center;
+        }
+        
+        .competitor-logo {
+            width: 48px;
+            height: 48px;
+            background: var(--pixel-border);
+            border-radius: 8px;
+            margin: 0 auto 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 10px;
+        }
+        
+        .competitor-name {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .competitor-threat {
+            font-size: 12px;
+            padding: 3px 8px;
+            border-radius: 10px;
+            display: inline-block;
+        }
+        
+        .competitor-threat.high {
+            background: var(--pixel-accent);
+            color: #fff;
+        }
+        
+        .competitor-threat.medium {
+            background: var(--pixel-warning);
+            color: #000;
+        }
+        
+        /* Connection Status */
+        .connection-status {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--pixel-panel);
+            border: 3px solid var(--pixel-border);
+            border-radius: 8px;
+            padding: 10px 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.3);
+        }
+        
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--pixel-success);
+            animation: pulse 2s infinite;
+        }
+        
+        .status-dot.disconnected {
+            background: var(--pixel-accent);
+            animation: none;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.2);
+            border-radius: 5px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--pixel-border);
+            border-radius: 5px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--pixel-accent);
+        }
+        
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Live Indicator */
+        .live-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 12px;
+            color: var(--pixel-success);
+        }
+        
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--pixel-success);
+            border-radius: 50%;
+            animation: blink 1s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-left">
+            <div class="logo">PIE</div>
+            <div class="title-section">
+                <h1>PIE RADAR</h1>
+                <div class="subtitle">Predictive Intelligence Engine <span class="live-indicator"><span class="live-dot"></span>LIVE</span></div>
+            </div>
+        </div>
+        <div class="status-bar">
+            <div class="status-item">
+                <div class="status-label">Opportunities</div>
+                <div class="status-value" id="opp-count">0</div>
+            </div>
+            <div class="status-item">
+                <div class="status-label">Friction Alerts</div>
+                <div class="status-value warning" id="alert-count">0</div>
+            </div>
+            <div class="status-item">
+                <div class="status-label">Leads Scored</div>
+                <div class="status-value" id="lead-count">0</div>
+            </div>
+            <div class="status-item">
+                <div class="status-label">Last Update</div>
+                <div class="status-value" id="last-update" style="font-size: 14px;">--:--</div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Main Grid -->
+    <div class="main-grid">
+        <!-- Opportunities Panel -->
+        <div class="panel">
+            <div class="panel-header">
+                <div class="panel-title">
+                    <span class="panel-icon">📡</span>
+                    Live Opportunities
+                </div>
+                <span class="panel-badge" id="opp-badge">0</span>
+            </div>
+            <div class="panel-content">
+                <div class="opportunity-list" id="opportunity-list">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- Friction Alerts Panel -->
+        <div class="panel">
+            <div class="panel-header">
+                <div class="panel-title">
+                    <span class="panel-icon">⚠️</span>
+                    Friction Alerts
+                </div>
+                <span class="panel-badge" id="alert-badge" style="background: var(--pixel-warning); color: #000;">0</span>
+            </div>
+            <div class="panel-content">
+                <div class="alert-list" id="alert-list">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- Lead Scores Panel -->
+        <div class="panel">
+            <div class="panel-header">
+                <div class="panel-title">
+                    <span class="panel-icon">🎯</span>
+                    Lead Intelligence
+                </div>
+                <span class="panel-badge" id="lead-badge">0</span>
+            </div>
+            <div class="panel-content">
+                <div class="lead-list" id="lead-list">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- Competitor Intel Panel -->
+        <div class="panel">
+            <div class="panel-header">
+                <div class="panel-title">
+                    <span class="panel-icon">👁️</span>
+                    Competitor Intel
+                </div>
+                <span class="panel-badge" id="comp-badge">0</span>
+            </div>
+            <div class="panel-content">
+                <div class="competitor-grid" id="competitor-grid">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Connection Status -->
+    <div class="connection-status">
+        <div class="status-dot" id="conn-dot"></div>
+        <span id="conn-text">WebSocket Connected</span>
+    </div>
+    
+    <script>
+        // PIE Radar Dashboard - Live Data Controller
+        class PIERadarDashboard {
+            constructor() {
+                this.opportunities = [];
+                this.alerts = [];
+                this.leads = [];
+                this.competitors = [];
+                this.ws = null;
+                this.reconnectInterval = 5000;
+                
+                this.init();
+            }
+            
+            async init() {
+                // Load initial data
+                await this.loadData();
+                
+                // Connect WebSocket
+                this.connectWebSocket();
+                
+                // Update UI
+                this.updateUI();
+                
+                // Set up periodic refresh
+                setInterval(() => this.loadData(), 30000);
+            }
+            
+            async loadData() {
+                try {
+                    // Fetch opportunities
+                    const oppResponse = await fetch('/mission-control/agents/pie/data/opportunities-live.json');
+                    if (oppResponse.ok) {
+                        this.opportunities = await oppResponse.json();
+                    }
+                    
+                    // Fetch friction analysis
+                    const frictionResponse = await fetch('/mission-control/agents/pie/data/friction-analysis.json');
+                    if (frictionResponse.ok) {
+                        const frictionData = await frictionResponse.json();
+                        this.alerts = frictionData.frictionAlerts || [];
+                        this.leads = frictionData.leadScores || [];
+                    }
+                    
+                    // Fetch state
+                    const stateResponse = await fetch('/mission-control/agents/pie/data/state.json');
+                    if (stateResponse.ok) {
+                        const state = await stateResponse.json();
+                        this.competitors = state.activeOpportunities?.filter(o => o.type === 'competitor_move') || [];
+                    }
+                    
+                    this.updateUI();
+                } catch (err) {
+                    console.error('Error loading data:', err);
+                    // Use mock data if fetch fails
+                    this.loadMockData();
+                }
+            }
+            
+            loadMockData() {
+                // Mock opportunities
+                this.opportunities = [
+                    {
+                        id: '1',
+                        title: 'Binance partners with Philippine payment provider',
+                        type: 'partnership_announcement',
+                        score: 100,
+                        urgency: 'high',
+                        description: 'Major exchange expanding PHP liquidity - immediate competitive threat',
+                        action: 'Counter with coins.ph superior on-ramp capabilities',
+                        signals: ['philippines', 'competitor_move', 'high_priority']
+                    },
+                    {
+                        id: '2',
+                        title: 'Immutable raised $200M Series C',
+                        type: 'funding_round',
+                        score: 90,
+                        urgency: 'high',
+                        description: 'Gaming-focused blockchain platform with fresh capital',
+                        action: 'Reach out to explore coins.xyz gaming integration',
+                        signals: ['fresh_capital', 'gaming_focus', 'investor_backing']
+                    },
+                    {
+                        id: '3',
+                        title: 'TON Foundation Grant Program Active',
+                        type: 'funding_round',
+                        score: 88,
+                        urgency: 'medium',
+                        description: 'Telegram-integrated blockchain with ecosystem fund',
+                        action: 'Apply for grant + propose Philippines mini-app partnership',
+                        signals: ['ecosystem_fund', 'telegram', 'viral_potential']
+                    },
+                    {
+                        id: '4',
+                        title: 'Bitcoin Volume Surge Detected',
+                        type: 'market_signal',
+                        score: 85,
+                        urgency: 'medium',
+                        description: 'Unusual trading volume indicating market interest',
+                        action: 'Monitor for institutional partnership announcements',
+                        signals: ['volume_spike', 'market_interest']
+                    },
+                    {
+                        id: '5',
+                        title: 'MetaMask launches PHP on-ramp',
+                        type: 'product_launch',
+                        score: 82,
+                        urgency: 'high',
+                        description: 'Wallet provider expanding Philippines support',
+                        action: 'Differentiate with superior UX and local support',
+                        signals: ['philippines', 'wallet', 'competitor_move']
+                    }
+                ];
+                
+                // Mock alerts
+                this.alerts = [
+                    {
+                        lead: 'Animoca Brands',
+                        severity: 'medium',
+                        description: 'No prior outreach recorded',
+                        action: 'Start with warm introduction via portfolio company'
+                    },
+                    {
+                        lead: 'Immutable X',
+                        severity: 'medium',
+                        description: 'No prior outreach recorded',
+                        action: 'LinkedIn connect + gaming angle'
+                    },
+                    {
+                        lead: 'Gala Games',
+                        severity: 'high',
+                        description: 'Previous email not opened',
+                        action: 'Try different subject line or channel'
+                    },
+                    {
+                        lead: 'TON Foundation',
+                        severity: 'low',
+                        description: 'No recent news to reference',
+                        action: 'Research latest Telegram mini-app trends'
+                    },
+                    {
+                        lead: 'HashKey Exchange',
+                        severity: 'medium',
+                        description: 'No prior outreach recorded',
+                        action: 'Warm intro via SEA crypto network'
+                    }
+                ];
+                
+                // Mock leads
+                this.leads = [
+                    { lead: 'Animoca Brands', score: 94, likelihood: 'very_high' },
+                    { lead: 'Alchemy Pay', score: 77, likelihood: 'high' },
+                    { lead: 'HashKey Exchange', score: 76, likelihood: 'high' },
+                    { lead: 'Immutable X', score: 76, likelihood: 'high' },
+                    { lead: 'Gala Games', score: 70, likelihood: 'high' },
+                    { lead: 'TON Foundation', score: 68, likelihood: 'high' }
+                ];
+                
+                // Mock competitors
+                this.competitors = [
+                    { competitor: 'binance', threat: 'high' },
+                    { competitor: 'coinbase', threat: 'medium' },
+                    { competitor: 'kraken', threat: 'medium' },
+                    { competitor: 'okx', threat: 'high' }
+                ];
+            }
+            
+            connectWebSocket() {
+                // For now, simulate WebSocket with polling
+                // In production: ws://localhost:3003
+                console.log('WebSocket connection simulated');
+            }
+            
+            updateUI() {
+                this.updateOpportunities();
+                this.updateAlerts();
+                this.updateLeads();
+                this.updateCompetitors();
+                this.updateHeader();
+            }
+            
+            updateOpportunities() {
+                const container = document.getElementById('opportunity-list');
+                const badge = document.getElementById('opp-badge');
+                
+                badge.textContent = this.opportunities.length;
+                
+                container.innerHTML = this.opportunities.slice(0, 10).map(opp => `
+                    <div class="opportunity-card ${opp.urgency}">
+                        <div class="opportunity-header">
+                            <div class="opportunity-title">${opp.title}</div>
+                            <div class="opportunity-score ${opp.score >= 80 ? 'high' : opp.score >= 60 ? 'medium' : ''}">${opp.score}</div>
+                        </div>
+                        <div class="opportunity-meta">
+                            <span class="opportunity-type">${opp.type?.replace('_', ' ')}</span>
+                            <span>${opp.company || opp.coin || ''}</span>
+                        </div>
+                        <div class="opportunity-desc">${opp.description}</div>
+                        <div class="opportunity-action">→ ${opp.action}</div>
+                        <div class="opportunity-signals">
+                            ${(opp.signals || []).map(s => `<span class="signal-tag">${s.replace('_', ' ')}</span>`).join('')}
+                        </div>
+                    </div>
+                `).join('');
+            }
+            
+            updateAlerts() {
+                const container = document.getElementById('alert-list');
+                const badge = document.getElementById('alert-badge');
+                
+                badge.textContent = this.alerts.length;
+                
+                container.innerHTML = this.alerts.slice(0, 8).map(alert => `
+                    <div class="alert-card ${alert.severity}">
+                        <div class="alert-header">
+                            <div class="alert-lead">${alert.lead}</div>
+                            <div class="alert-severity ${alert.severity}">${alert.severity}</div>
+                        </div>
+                        <div class="alert-description">${alert.description}</div>
+                        <div class="alert-action">💡 ${alert.action}</div>
+                    </div>
+                `).join('');
+            }
+            
+            updateLeads() {
+                const container = document.getElementById('lead-list');
+                const badge = document.getElementById('lead-badge');
+                
+                badge.textContent = this.leads.length;
+                
+                container.innerHTML = this.leads.map(lead => `
+                    <div class="lead-item">
+                        <div class="lead-avatar">${lead.lead?.charAt(0) || '?'}</div>
+                        <div class="lead-info">
+                            <div class="lead-name">${lead.lead}</div>
+                            <div class="lead-meta">${lead.likelihood?.replace('_', ' ') || 'unknown'}</div>
+                        </div>
+                        <div class="lead-score-bar">
+                            <div class="lead-score-fill ${lead.score >= 80 ? 'high' : lead.score >= 60 ? 'medium' : 'low'}" style="width: ${lead.score}%"></div>
+                            <div class="lead-score-text">${lead.score}</div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            
+            updateCompetitors() {
+                const container = document.getElementById('competitor-grid');
+                const badge = document.getElementById('comp-badge');
+                
+                const compList = this.competitors.length > 0 ? this.competitors : [
+                    { competitor: 'binance', threat: 'high' },
+                    { competitor: 'coinbase', threat: 'medium' },
+                    { competitor: 'kraken', threat: 'medium' },
+                    { competitor: 'okx', threat: 'high' }
+                ];
+                
+                badge.textContent = compList.length;
+                
+                container.innerHTML = compList.map(comp => `
+                    <div class="competitor-card">
+                        <div class="competitor-logo">${comp.competitor?.charAt(0).toUpperCase() || '?'}</div>
+                        <div class="competitor-name">${comp.competitor?.toUpperCase() || 'Unknown'}</div>
+                        <div class="competitor-threat ${comp.threat}">${comp.threat} threat</div>
+                    </div>
+                `).join('');
+            }
+            
+            updateHeader() {
+                document.getElementById('opp-count').textContent = this.opportunities.length;
+                document.getElementById('alert-count').textContent = this.alerts.length;
+                document.getElementById('lead-count').textContent = this.leads.length;
+                
+                const now = new Date();
+                document.getElementById('last-update').textContent = 
+                    `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+            }
+        }
+        
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', () => {
+            window.dashboard = new PIERadarDashboard();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,647 @@
+{
+  "timestamp": "2026-02-19T19:44:23.257Z",
+  "leads": [
+    {
+      "leadId": "lead-hashkey",
+      "enrichedAt": "2026-02-19T19:44:23.255Z",
+      "scores": {
+        "overall": 76,
+        "confidence": 0.6,
+        "likelihood": "high",
+        "factors": [
+          "strong_company_profile"
+        ]
+      },
+      "optimalTiming": {
+        "bestDays": [
+          "tuesday",
+          "wednesday",
+          "thursday"
+        ],
+        "bestTimes": [
+          "10:00",
+          "14:00",
+          "15:00"
+        ],
+        "timezone": "Asia/Manila",
+        "nextOptimal": "2026-02-24T02:00:00.000Z",
+        "avoid": [
+          "monday_morning",
+          "friday_afternoon",
+          "weekend"
+        ]
+      },
+      "frictionAlerts": [
+        {
+          "lead": "HashKey Exchange",
+          "leadId": "lead-hashkey",
+          "type": "no_prior_contact",
+          "severity": "medium",
+          "description": "No prior outreach recorded",
+          "action": "Start with warm introduction or LinkedIn connect"
+        },
+        {
+          "lead": "HashKey Exchange",
+          "leadId": "lead-hashkey",
+          "type": "cold_outreach",
+          "severity": "low",
+          "description": "No recent news or funding to reference",
+          "action": "Research for recent company updates or industry trends"
+        }
+      ],
+      "relatedOpportunities": [
+        {
+          "id": "partnership-coinbase-gaming",
+          "type": "partnership_announcement",
+          "title": "Coinbase partners with major gaming studio for NFT marketplace",
+          "companies": [
+            "Coinbase",
+            "Gaming Studio"
+          ],
+          "description": "Gaming-NFT integration partnership",
+          "url": "https://example.com/news",
+          "publishedAt": "2026-02-18T19:39:50.796Z",
+          "source": "news_feed",
+          "relevance": 60,
+          "signals": [
+            "gaming",
+            "nft",
+            "competitor_partnership"
+          ],
+          "action": "Analyze partnership model for coins.ph application",
+          "urgency": "medium",
+          "timestamp": "2026-02-19T19:39:50.796Z",
+          "score": 60
+        }
+      ],
+      "marketSentiment": "neutral",
+      "recommendedAction": "contact_immediately",
+      "outreachTiming": {
+        "nextOptimal": "2026-02-24T02:00:00.000Z",
+        "daysUntil": 4,
+        "bestDays": [
+          "tuesday",
+          "wednesday",
+          "thursday"
+        ],
+        "bestTimes": [
+          "10:00",
+          "14:00",
+          "15:00"
+        ],
+        "timezone": "Asia/Manila",
+        "urgency": "low"
+      },
+      "industryTrends": [
+        "Increasing regulatory clarity in SEA",
+        "Institutional adoption accelerating",
+        "Payment integration becoming standard"
+      ],
+      "competitorMentions": []
+    },
+    {
+      "leadId": "lead-immutable",
+      "enrichedAt": "2026-02-19T19:44:23.256Z",
+      "scores": {
+        "overall": 76,
+        "confidence": 0.7,
+        "likelihood": "high",
+        "factors": [
+          "strong_company_profile"
+        ]
+      },
+      "optimalTiming": {
+        "bestDays": [
+          "tuesday",
+          "wednesday",
+          "thursday"
+        ],
+        "bestTimes": [
+          "10:00",
+          "14:00",
+          "15:00"
+        ],
+        "timezone": "Asia/Manila",
+        "nextOptimal": "2026-02-24T02:00:00.000Z",
+        "avoid": [
+          "monday_morning",
+          "friday_afternoon",
+          "weekend"
+        ]
+      },
+      "frictionAlerts": [
+        {
+          "lead": "Immutable X",
+          "leadId": "lead-immutable",
+          "type": "no_prior_contact",
+          "severity": "medium",
+          "description": "No prior outreach recorded",
+          "action": "Start with warm introduction or LinkedIn connect"
+        },
+        {
+          "lead": "Immutable X",
+          "leadId": "lead-immutable",
+          "type": "cold_outreach",
+          "severity": "low",
+          "description": "No recent news or funding to reference",
+          "action": "Research for recent company updates or industry trends"
+        }
+      ],
+      "relatedOpportunities": [],
+      "marketSentiment": "neutral",
+      "recommendedAction": "contact_immediately",
+      "outreachTiming": {
+        "nextOptimal": "2026-02-24T02:00:00.000Z",
+        "daysUntil": 4,
+        "bestDays": [
+          "tuesday",
+          "wednesday",
+          "thursday"
+        ],
+        "bestTimes": [
+          "10:00",
+          "14:00",
+          "15:00"
+        ],
+        "timezone": "Asia/Manila",
+        "urgency": "low"
+      },
+      "industryTrends": [
+        "Mobile gaming dominance in Philippines",
+        "Play-to-earn models evolving",
+        "Major studios entering Web3"
+      ],
+      "competitorMentions": []
+    },
+    {
+      "leadId": "lead-animoca",
+      "enrichedAt": "2026-02-19T19:44:23.256Z",
+      "scores": {
+        "overall": 94,
+        "confidence": 0.7,
+        "likelihood": "very_high",
+        "factors": [
+          "strong_company_profile",
+          "high_engagement",
+          "historically_responsive"
+        ]
+      },
+      "optimalTiming": {
+        "bestDays": [
+          "tuesday",
+          "wednesday",
+          "thursday"
+        ],
+        "bestTimes": [
+          "10:00",
+          "14:00",
+          "15:00"
+        ],
+        "timezone": "Asia/Manila",
+        "nextOptimal": "2026-02-24T02:00:00.000Z",
+        "avoid": [
+          "monday_morning",
+          "friday_afternoon",
+          "weekend"
+        ]
+      },
+      "frictionAlerts": [
+        {
+          "lead": "Animoca Brands",
+          "leadId": "lead-animoca",
+          "type": "no_prior_contact",
+          "severity": "medium",
+          "description": "No prior outreach recorded",
+          "action": "Start with warm introduction or LinkedIn connect"
+        },
+        {
+          "lead": "Animoca Brands",
+          "leadId": "lead-animoca",
+          "type": "cold_outreach",
+          "severity": "low",
+          "description": "No recent news or funding to reference",
+          "action": "Research for recent company updates or industry trends"
+        }
+      ],
+      "relatedOpportunities": [
+        {
+          "id": "partnership-okx-sea",
+          "type": "partnership_announcement",
+          "title": "OKX expands Southeast Asia operations with local exchange partnership",
+          "companies": [
+            "OKX",
+            "SEA Exchange"
+          ],
+          "description": "Competitor expanding in SEA market",
+          "url": "https://example.com/news",
+          "publishedAt": "2026-02-17T19:39:50.796Z",
+          "source": "news_feed",
+          "relevance": 73,
+          "signals": [
+            "sea_focus",
+            "expansion",
+            "competitor_move"
+          ],
+          "action": "Analyze partnership model for coins.ph application",
+          "urgency": "medium",
+          "timestamp": "2026-02-19T19:39:50.796Z",
+          "score": 100
+        },
+        {
+          "id": "sea-funding-coins-ph",
+          "type": "funding_round",
+          "subtype": "sea_focused",
+          "title": "Coins.ph raised $30M (Philippines)",
+          "company": "Coins.ph",
+          "amount": "$30M",
+          "series": "Strategic",
+          "location": "Philippines",
+          "date": "2026-02-19T19:39:50.797Z",
+          "leadInvestors": [
+            "Tencent",
+            "Global Ventures"
+          ],
+          "description": "Philippines-based crypto exchange expanding remittance services",
+          "sectors": [
+            "crypto",
+            "payments",
+            "remittance"
+          ],
+          "relevance": 95,
+          "signals": [
+            "sea_focus",
+            "fresh_capital",
+            "growth_stage",
+            "high_priority_market"
+          ],
+          "action": "Immediate outreach - SEA expansion opportunity",
+          "urgency": "high",
+          "timestamp": "2026-02-19T19:39:50.797Z",
+          "source": "sea_intelligence",
+          "score": 100
+        },
+        {
+          "id": "sea-funding-xfers",
+          "type": "funding_round",
+          "subtype": "sea_focused",
+          "title": "Xfers raised $50M (Singapore)",
+          "company": "Xfers",
+          "amount": "$50M",
+          "series": "Series B",
+          "location": "Singapore",
+          "date": "2026-02-18T19:39:50.797Z",
+          "leadInvestors": [
+            "Stripe",
+            "DBS Bank"
+          ],
+          "description": "Singapore payment infrastructure for Southeast Asia",
+          "sectors": [
+            "payments",
+            "fintech",
+            "sea"
+          ],
+          "relevance": 90,
+          "signals": [
+            "sea_focus",
+            "fresh_capital",
+            "growth_stage",
+            "high_priority_market"
+          ],
+          "action": "Immediate outreach - SEA expansion opportunity",
+          "urgency": "high",
+          "timestamp": "2026-02-19T19:39:50.797Z",
+          "source": "sea_intelligence",
+          "score": 100
+        }
+      ],
+      "marketSentiment": "neutral",
+      "recommendedAction": "contact_immediately",
+      "outreachTiming": {
+        "nextOptimal": "2026-02-24T02:00:00.000Z",
+        "daysUntil": 4,
+        "bestDays": [
+          "tuesday",
+          "wednesday",
+          "thursday"
+        ],
+        "bestTimes": [
+          "10:00",
+          "14:00",
+          "15:00"
+        ],
+        "timezone": "Asia/Manila",
+        "urgency": "low"
+      },
+      "industryTrends": [
+        "Portfolio diversification trend",
+        "Focus on sustainable tokenomics",
+        "Asia-Pacific market growth"
+      ],
+      "competitorMentions": []
+    },
+    {
+      "leadId": "lead-ton",
+      "enrichedAt": "2026-02-19T19:44:23.256Z",
+      "scores": {
+        "overall": 68,
+        "confidence": 0.6,
+        "likelihood": "high",
+        "factors": [
+          "strong_company_profile"
+        ]
+      },
+      "optimalTiming": {
+        "bestDays": [
+          "tuesday",
+          "wednesday",
+          "thursday"
+        ],
+        "bestTimes": [
+          "10:00",
+          "14:00",
+          "15:00"
+        ],
+        "timezone": "Asia/Manila",
+        "nextOptimal": "2026-02-24T02:00:00.000Z",
+        "avoid": [
+          "monday_morning",
+          "friday_afternoon",
+          "weekend"
+        ]
+      },
+      "frictionAlerts": [
+        {
+          "lead": "TON Foundation",
+          "leadId": "lead-ton",
+          "type": "no_prior_contact",
+          "severity": "medium",
+          "description": "No prior outreach recorded",
+          "action": "Start with warm introduction or LinkedIn connect"
+        },
+        {
+          "lead": "TON Foundation",
+          "leadId": "lead-ton",
+          "type": "cold_outreach",
+          "severity": "low",
+          "description": "No recent news or funding to reference",
+          "action": "Research for recent company updates or industry trends"
+        }
+      ],
+      "relatedOpportunities": [
+        {
+          "id": "funding-aptos",
+          "type": "funding_round",
+          "title": "Aptos Labs raised $150M",
+          "company": "Aptos Labs",
+          "amount": "$150M",
+          "series": "Series A",
+          "date": "2026-02-05",
+          "leadInvestors": [
+            "FTX Ventures",
+            "Jump Crypto"
+          ],
+          "description": "Layer 1 blockchain by former Meta team",
+          "sectors": [
+            "layer1",
+            "blockchain",
+            "infrastructure"
+          ],
+          "relevance": 70,
+          "signals": [
+            "fresh_capital",
+            "growth_stage",
+            "investor_backing"
+          ],
+          "action": "Reach out to explore partnership",
+          "urgency": "high",
+          "timestamp": "2026-02-19T19:39:50.796Z",
+          "source": "crunchbase",
+          "score": 90
+        },
+        {
+          "id": "funding-ton-foundation",
+          "type": "funding_round",
+          "title": "TON Foundation raised $50M",
+          "company": "TON Foundation",
+          "amount": "$50M",
+          "series": "Grant",
+          "date": "2026-02-10",
+          "leadInvestors": [
+            "Various"
+          ],
+          "description": "Telegram-integrated blockchain",
+          "sectors": [
+            "messaging",
+            "crypto",
+            "payments"
+          ],
+          "relevance": 60,
+          "signals": [
+            "fresh_capital",
+            "growth_stage",
+            "investor_backing"
+          ],
+          "action": "Reach out to explore partnership",
+          "urgency": "high",
+          "timestamp": "2026-02-19T19:39:50.796Z",
+          "source": "crunchbase",
+          "score": 80
+        }
+      ],
+      "marketSentiment": "very_positive",
+      "recommendedAction": "contact_with_personalization",
+      "outreachTiming": {
+        "nextOptimal": "2026-02-24T02:00:00.000Z",
+        "daysUntil": 4,
+        "bestDays": [
+          "tuesday",
+          "wednesday",
+          "thursday"
+        ],
+        "bestTimes": [
+          "10:00",
+          "14:00",
+          "15:00"
+        ],
+        "timezone": "Asia/Manila",
+        "urgency": "low"
+      },
+      "industryTrends": [
+        "Telegram ecosystem expansion",
+        "Mobile-first adoption",
+        "Mini-app economy growth"
+      ],
+      "competitorMentions": []
+    },
+    {
+      "leadId": "lead-gala",
+      "enrichedAt": "2026-02-19T19:44:23.256Z",
+      "scores": {
+        "overall": 70,
+        "confidence": 0.7,
+        "likelihood": "high",
+        "factors": [
+          "strong_company_profile"
+        ]
+      },
+      "optimalTiming": {
+        "bestDays": [
+          "tuesday",
+          "wednesday",
+          "thursday"
+        ],
+        "bestTimes": [
+          "10:00",
+          "14:00",
+          "15:00"
+        ],
+        "timezone": "Asia/Manila",
+        "nextOptimal": "2026-02-24T02:00:00.000Z",
+        "avoid": [
+          "monday_morning",
+          "friday_afternoon",
+          "weekend"
+        ]
+      },
+      "frictionAlerts": [
+        {
+          "lead": "Gala Games",
+          "leadId": "lead-gala",
+          "type": "no_prior_contact",
+          "severity": "medium",
+          "description": "No prior outreach recorded",
+          "action": "Start with warm introduction or LinkedIn connect"
+        },
+        {
+          "lead": "Gala Games",
+          "leadId": "lead-gala",
+          "type": "cold_outreach",
+          "severity": "low",
+          "description": "No recent news or funding to reference",
+          "action": "Research for recent company updates or industry trends"
+        }
+      ],
+      "relatedOpportunities": [
+        {
+          "id": "launch-gala-payment",
+          "type": "product_launch",
+          "title": "Gala Games introduces token payment system for in-game purchases",
+          "company": "Gala Games",
+          "product": "Payment System",
+          "description": "Gaming token utility expansion",
+          "url": "https://example.com/news",
+          "publishedAt": "2026-02-17T19:39:50.796Z",
+          "relevance": 55,
+          "signals": [
+            "new_product",
+            "market_expansion",
+            "integration_opportunity"
+          ],
+          "action": "Evaluate integration opportunity with coins.ph",
+          "urgency": "medium",
+          "timestamp": "2026-02-19T19:39:50.796Z",
+          "source": "product_feed",
+          "score": 63
+        }
+      ],
+      "marketSentiment": "neutral",
+      "recommendedAction": "contact_with_personalization",
+      "outreachTiming": {
+        "nextOptimal": "2026-02-24T02:00:00.000Z",
+        "daysUntil": 4,
+        "bestDays": [
+          "tuesday",
+          "wednesday",
+          "thursday"
+        ],
+        "bestTimes": [
+          "10:00",
+          "14:00",
+          "15:00"
+        ],
+        "timezone": "Asia/Manila",
+        "urgency": "low"
+      },
+      "industryTrends": [
+        "GalaChain migration ongoing",
+        "Node operator programs popular",
+        "Cross-chain interoperability focus"
+      ],
+      "competitorMentions": []
+    },
+    {
+      "leadId": "lead-alchemy",
+      "enrichedAt": "2026-02-19T19:44:23.257Z",
+      "scores": {
+        "overall": 77,
+        "confidence": 0.6,
+        "likelihood": "high",
+        "factors": [
+          "strong_company_profile"
+        ]
+      },
+      "optimalTiming": {
+        "bestDays": [
+          "tuesday",
+          "wednesday",
+          "thursday"
+        ],
+        "bestTimes": [
+          "10:00",
+          "14:00",
+          "15:00"
+        ],
+        "timezone": "Asia/Manila",
+        "nextOptimal": "2026-02-24T02:00:00.000Z",
+        "avoid": [
+          "monday_morning",
+          "friday_afternoon",
+          "weekend"
+        ]
+      },
+      "frictionAlerts": [
+        {
+          "lead": "Alchemy Pay",
+          "leadId": "lead-alchemy",
+          "type": "no_prior_contact",
+          "severity": "medium",
+          "description": "No prior outreach recorded",
+          "action": "Start with warm introduction or LinkedIn connect"
+        },
+        {
+          "lead": "Alchemy Pay",
+          "leadId": "lead-alchemy",
+          "type": "cold_outreach",
+          "severity": "low",
+          "description": "No recent news or funding to reference",
+          "action": "Research for recent company updates or industry trends"
+        }
+      ],
+      "relatedOpportunities": [],
+      "marketSentiment": "neutral",
+      "recommendedAction": "contact_immediately",
+      "outreachTiming": {
+        "nextOptimal": "2026-02-24T02:00:00.000Z",
+        "daysUntil": 4,
+        "bestDays": [
+          "tuesday",
+          "wednesday",
+          "thursday"
+        ],
+        "bestTimes": [
+          "10:00",
+          "14:00",
+          "15:00"
+        ],
+        "timezone": "Asia/Manila",
+        "urgency": "low"
+      },
+      "industryTrends": [
+        "PHP on-ramp demand increasing",
+        "Banking partnerships critical",
+        "Remittance use cases growing"
+      ],
+      "competitorMentions": []
+    }
+  ]
+}

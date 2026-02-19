@@ -120,6 +120,19 @@ These tasks have been archived from the active P2 queue. They represent good ide
 
 ---
 
+## 🗃️ P3 ARCHIVED TASKS
+
+### **TASK-114: Context Management Protocol**
+- **Original Priority:** P3
+- **Original Due:** Feb 23, 2026
+- **Assigned:** Nexus
+- **Archived:** 2026-02-20
+- **Reason:** Low priority, superseded by P2 Context Management System v2
+- **Description:** Manage main session context near capacity (compress old turns, archive discussions)
+- **Reactivation Trigger:** Manual context management becomes burdensome
+
+---
+
 ## 📈 REACTIVATION CRITERIA
 
 Tasks may be reactivated from this backlog when:

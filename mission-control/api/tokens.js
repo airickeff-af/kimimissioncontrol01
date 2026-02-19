@@ -24,8 +24,17 @@ const CONFIG = {
   }
 };
 
-// Agent name mappings from session labels
+// Complete list of all 22 agents with proper mappings
+const ALL_AGENTS = [
+  'Nexus', 'Code', 'Scout', 'Pixel', 'Forge', 'DealFlow', 'Audit',
+  'Quill', 'Gary', 'Larry', 'Sentry', 'Cipher', 'Glasses', 'Buzz', 'PIE',
+  'Code-1', 'Code-2', 'Code-3',
+  'Forge-1', 'Forge-2', 'Forge-3'
+];
+
+// Agent name mappings from session labels and content patterns
 const AGENT_MAPPINGS = {
+  // Core agents
   'nexus': 'Nexus',
   'code': 'Code',
   'scout': 'Scout',
@@ -33,20 +42,28 @@ const AGENT_MAPPINGS = {
   'forge': 'Forge',
   'dealflow': 'DealFlow',
   'audit': 'Audit',
-  'cipher': 'Cipher',
-  'glasses': 'Glasses',
-  'sentry': 'Sentry',
+  
+  // Additional agents (the missing 14)
   'quill': 'Quill',
   'gary': 'Gary',
   'larry': 'Larry',
+  'sentry': 'Sentry',
+  'cipher': 'Cipher',
+  'glasses': 'Glasses',
+  'buzz': 'Buzz',
+  'pie': 'PIE',
   'coldcall': 'ColdCall',
   'spark': 'Spark',
   'deal': 'DealFlow',
+  
+  // Sub-agent variants
   'pixel-2': 'Pixel',
-  'code-2': 'Code',
-  'forge-2': 'Forge',
-  'forge-3': 'Forge',
-  'code-3': 'Code'
+  'code-1': 'Code-1',
+  'code-2': 'Code-2',
+  'code-3': 'Code-3',
+  'forge-1': 'Forge-1',
+  'forge-2': 'Forge-2',
+  'forge-3': 'Forge-3'
 };
 
 /**
@@ -62,21 +79,45 @@ function extractAgentName(sessionData) {
       const youAreMatch = content.match(/You are\s+([A-Za-z0-9-]+)/i);
       if (youAreMatch) {
         const name = youAreMatch[1].toLowerCase();
-        return AGENT_MAPPINGS[name] || youAreMatch[1];
+        const mapped = AGENT_MAPPINGS[name];
+        if (mapped) return mapped;
+        // Capitalize first letter if not in mappings
+        return youAreMatch[1].charAt(0).toUpperCase() + youAreMatch[1].slice(1);
       }
       
-      // Look for agent name in brackets at start
-      const bracketMatch = content.match(/^\[.*?\]\s*You are\s+([A-Za-z0-9-]+)/i);
+      // Look for agent name in brackets at start [Agent Name]
+      const bracketMatch = content.match(/^\[([A-Za-z0-9-]+)\]/i);
       if (bracketMatch) {
         const name = bracketMatch[1].toLowerCase();
-        return AGENT_MAPPINGS[name] || bracketMatch[1];
+        const mapped = AGENT_MAPPINGS[name];
+        if (mapped) return mapped;
+        return bracketMatch[1];
       }
       
-      // Check for agent names in the content
+      // Look for "Agent: Name" pattern
+      const agentColonMatch = content.match(/Agent:\s*([A-Za-z0-9-]+)/i);
+      if (agentColonMatch) {
+        const name = agentColonMatch[1].toLowerCase();
+        const mapped = AGENT_MAPPINGS[name];
+        if (mapped) return mapped;
+        return agentColonMatch[1];
+      }
+      
+      // Check for agent names in the content with "you are" phrase
       for (const [key, value] of Object.entries(AGENT_MAPPINGS)) {
         if (content.toLowerCase().includes(`you are ${key}`) ||
             content.toLowerCase().includes(`agent: ${key}`) ||
             content.toLowerCase().includes(`${key} agent`)) {
+          return value;
+        }
+      }
+    }
+    
+    // Check session label if present
+    if (entry.type === 'session' && entry.label) {
+      const label = entry.label.toLowerCase();
+      for (const [key, value] of Object.entries(AGENT_MAPPINGS)) {
+        if (label.includes(key)) {
           return value;
         }
       }
@@ -126,7 +167,7 @@ function parseSessionFile(filePath) {
             stats.tokensOut += usage.output || 0;
             stats.cacheRead += usage.cacheRead || 0;
             stats.cacheWrite += usage.cacheWrite || 0;
-            stats.totalTokens += usage.totalTokens || 0;
+            stats.totalTokens += usage.totalTokens || (usage.input + usage.output) || 0;
             
             // Use provided cost or calculate
             if (usage.cost && usage.cost.total) {
@@ -164,6 +205,7 @@ function parseSessionFile(filePath) {
 function getSessionFiles() {
   try {
     if (!fs.existsSync(CONFIG.sessionsDir)) {
+      console.error(`Sessions directory not found: ${CONFIG.sessionsDir}`);
       return [];
     }
     
@@ -182,33 +224,65 @@ function getSessionFiles() {
 function aggregateByAgent(sessionStats) {
   const agentMap = new Map();
   
-  for (const stats of sessionStats) {
-    if (!agentMap.has(stats.agentName)) {
-      agentMap.set(stats.agentName, {
-        name: stats.agentName,
-        tokensIn: 0,
-        tokensOut: 0,
-        cacheRead: 0,
-        cacheWrite: 0,
-        totalTokens: 0,
-        cost: 0,
-        sessions: 0,
-        messages: 0
-      });
-    }
-    
-    const agent = agentMap.get(stats.agentName);
-    agent.tokensIn += stats.tokensIn;
-    agent.tokensOut += stats.tokensOut;
-    agent.cacheRead += stats.cacheRead;
-    agent.cacheWrite += stats.cacheWrite;
-    agent.totalTokens += stats.totalTokens;
-    agent.cost += stats.cost;
-    agent.sessions++;
-    agent.messages += stats.messageCount;
+  // Initialize all 22 agents with zero values
+  for (const agentName of ALL_AGENTS) {
+    agentMap.set(agentName, {
+      name: agentName,
+      tokensIn: 0,
+      tokensOut: 0,
+      cacheRead: 0,
+      cacheWrite: 0,
+      totalTokens: 0,
+      cost: 0,
+      sessions: 0,
+      messages: 0
+    });
   }
   
-  return Array.from(agentMap.values()).sort((a, b) => b.totalTokens - a.totalTokens);
+  // Add Unknown category for unmapped sessions
+  agentMap.set('Unknown', {
+    name: 'Unknown',
+    tokensIn: 0,
+    tokensOut: 0,
+    cacheRead: 0,
+    cacheWrite: 0,
+    totalTokens: 0,
+    cost: 0,
+    sessions: 0,
+    messages: 0
+  });
+  
+  for (const stats of sessionStats) {
+    let agentName = stats.agentName;
+    
+    // Map to known agent if possible
+    if (!agentMap.has(agentName)) {
+      // Try to find a match in mappings
+      const lowerName = agentName.toLowerCase();
+      if (AGENT_MAPPINGS[lowerName]) {
+        agentName = AGENT_MAPPINGS[lowerName];
+      } else {
+        agentName = 'Unknown';
+      }
+    }
+    
+    const agent = agentMap.get(agentName);
+    if (agent) {
+      agent.tokensIn += stats.tokensIn;
+      agent.tokensOut += stats.tokensOut;
+      agent.cacheRead += stats.cacheRead;
+      agent.cacheWrite += stats.cacheWrite;
+      agent.totalTokens += stats.totalTokens;
+      agent.cost += stats.cost;
+      agent.sessions++;
+      agent.messages += stats.messageCount;
+    }
+  }
+  
+  // Filter out agents with zero tokens, but keep all 22 if they have data
+  return Array.from(agentMap.values())
+    .filter(a => a.totalTokens > 0 || ALL_AGENTS.includes(a.name))
+    .sort((a, b) => b.totalTokens - a.totalTokens);
 }
 
 /**
@@ -310,7 +384,8 @@ function collectTokenData() {
       totalTokens: a.totalTokens,
       cost: Math.round(a.cost * 10000) / 10000,
       sessions: a.sessions,
-      messages: a.messages
+      messages: a.messages,
+      percentage: total.totalTokens > 0 ? Math.round((a.totalTokens / total.totalTokens) * 1000) / 10 : 0
     })),
     total: {
       tokensIn: total.tokensIn,
@@ -325,7 +400,8 @@ function collectTokenData() {
     dailyUsage,
     recentSessions,
     lastUpdated: new Date().toISOString(),
-    sessionCount: sessionStats.length
+    sessionCount: sessionStats.length,
+    allAgents: ALL_AGENTS
   };
 }
 
@@ -397,22 +473,40 @@ function handleTokensRequest(req, res) {
   
   const data = getTokenData(forceRefresh);
   
+  // Calculate summary for response
+  const activeAgents = data.agents.filter(a => a.totalTokens > 0);
+  const dailyAvg = data.dailyUsage.length > 0 
+    ? Math.round(data.dailyUsage.reduce((sum, d) => sum + d.tokens, 0) / data.dailyUsage.length)
+    : 0;
+  
   // Format response according to spec
   const response = {
+    success: true,
+    timestamp: new Date().toISOString(),
+    source: 'live',
+    summary: {
+      totalTokens: data.total.totalTokens,
+      totalCost: data.total.cost,
+      totalSessions: data.sessionCount,
+      activeAgents: activeAgents.length,
+      totalAgents: data.allAgents.length,
+      dailyAverage: dailyAvg
+    },
     agents: data.agents.map(a => ({
       name: a.name,
+      tokens: a.totalTokens,
       tokensIn: a.tokensIn,
       tokensOut: a.tokensOut,
-      cost: a.cost
+      cost: a.cost,
+      sessions: a.sessions,
+      percentage: a.percentage
     })),
-    total: {
-      tokensIn: data.total.tokensIn,
-      cost: data.total.cost
-    },
+    timeline: data.dailyUsage,
     meta: {
       lastUpdated: data.lastUpdated,
       sessionCount: data.sessionCount,
-      agentCount: data.agents.length
+      agentCount: data.agents.length,
+      allAgents: data.allAgents
     }
   };
   

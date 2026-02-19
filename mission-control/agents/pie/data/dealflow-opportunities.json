@@ -1,0 +1,466 @@
+{
+  "timestamp": "2026-02-19T19:44:23.261Z",
+  "opportunities": [
+    {
+      "id": "partnership-binance-philippines",
+      "title": "Binance partners with Philippine payment provider for PHP on-ramp",
+      "type": "partnership_announcement",
+      "score": 100,
+      "urgency": "high",
+      "description": "Major exchange expanding PHP liquidity",
+      "action": "Analyze partnership model for coins.ph application",
+      "signals": [
+        "philippines",
+        "payment_integration",
+        "competitor_move"
+      ],
+      "source": "pie_opportunity_radar",
+      "createdAt": "2026-02-19T19:39:50.796Z",
+      "status": "new"
+    },
+    {
+      "id": "partnership-okx-sea",
+      "title": "OKX expands Southeast Asia operations with local exchange partnership",
+      "type": "partnership_announcement",
+      "score": 100,
+      "urgency": "medium",
+      "description": "Competitor expanding in SEA market",
+      "action": "Analyze partnership model for coins.ph application",
+      "signals": [
+        "sea_focus",
+        "expansion",
+        "competitor_move"
+      ],
+      "source": "pie_opportunity_radar",
+      "createdAt": "2026-02-19T19:39:50.796Z",
+      "status": "new"
+    },
+    {
+      "id": "market-volume-bitcoin-1771529990796",
+      "title": "Bitcoin Volume Surge",
+      "type": "market_signal",
+      "company": "Bitcoin",
+      "score": 100,
+      "urgency": "high",
+      "description": "Bitcoin showing unusual trading volume ($35.48B)",
+      "action": "Monitor for partnership announcements or exchange listings",
+      "signals": [
+        "high_liquidity",
+        "market_interest",
+        "potential_partnership_opportunity"
+      ],
+      "source": "pie_opportunity_radar",
+      "createdAt": "2026-02-19T19:39:50.796Z",
+      "status": "new"
+    },
+    {
+      "id": "market-volume-ethereum-1771529990796",
+      "title": "Ethereum Volume Surge",
+      "type": "market_signal",
+      "company": "Ethereum",
+      "score": 100,
+      "urgency": "high",
+      "description": "Ethereum showing unusual trading volume ($21.22B)",
+      "action": "Monitor for partnership announcements or exchange listings",
+      "signals": [
+        "high_liquidity",
+        "market_interest",
+        "potential_partnership_opportunity"
+      ],
+      "source": "pie_opportunity_radar",
+      "createdAt": "2026-02-19T19:39:50.796Z",
+      "status": "new"
+    },
+    {
+      "id": "market-volume-tether-1771529990796",
+      "title": "Tether Volume Surge",
+      "type": "market_signal",
+      "company": "Tether",
+      "score": 100,
+      "urgency": "high",
+      "description": "Tether showing unusual trading volume ($58.69B)",
+      "action": "Monitor for partnership announcements or exchange listings",
+      "signals": [
+        "high_liquidity",
+        "market_interest",
+        "potential_partnership_opportunity"
+      ],
+      "source": "pie_opportunity_radar",
+      "createdAt": "2026-02-19T19:39:50.796Z",
+      "status": "new"
+    },
+    {
+      "id": "sea-funding-coins-ph",
+      "title": "Coins.ph raised $30M (Philippines)",
+      "type": "funding_round",
+      "company": "Coins.ph",
+      "score": 100,
+      "urgency": "high",
+      "description": "Philippines-based crypto exchange expanding remittance services",
+      "action": "Immediate outreach - SEA expansion opportunity",
+      "signals": [
+        "sea_focus",
+        "fresh_capital",
+        "growth_stage",
+        "high_priority_market"
+      ],
+      "source": "pie_opportunity_radar",
+      "createdAt": "2026-02-19T19:39:50.797Z",
+      "status": "new"
+    },
+    {
+      "id": "sea-funding-xfers",
+      "title": "Xfers raised $50M (Singapore)",
+      "type": "funding_round",
+      "company": "Xfers",
+      "score": 100,
+      "urgency": "high",
+      "description": "Singapore payment infrastructure for Southeast Asia",
+      "action": "Immediate outreach - SEA expansion opportunity",
+      "signals": [
+        "sea_focus",
+        "fresh_capital",
+        "growth_stage",
+        "high_priority_market"
+      ],
+      "source": "pie_opportunity_radar",
+      "createdAt": "2026-02-19T19:39:50.797Z",
+      "status": "new"
+    },
+    {
+      "id": "sea-funding-maya-ph",
+      "title": "Maya raised $75M (Philippines)",
+      "type": "funding_round",
+      "company": "Maya",
+      "score": 100,
+      "urgency": "high",
+      "description": "Philippines super app with crypto integration",
+      "action": "Immediate outreach - SEA expansion opportunity",
+      "signals": [
+        "sea_focus",
+        "fresh_capital",
+        "growth_stage",
+        "high_priority_market"
+      ],
+      "source": "pie_opportunity_radar",
+      "createdAt": "2026-02-19T19:39:50.797Z",
+      "status": "new"
+    },
+    {
+      "id": "sea-funding-pintu",
+      "title": "Pintu raised $35M (Indonesia)",
+      "type": "funding_round",
+      "company": "Pintu",
+      "score": 100,
+      "urgency": "high",
+      "description": "Indonesia crypto exchange focused on education",
+      "action": "Immediate outreach - SEA expansion opportunity",
+      "signals": [
+        "sea_focus",
+        "fresh_capital",
+        "growth_stage",
+        "high_priority_market"
+      ],
+      "source": "pie_opportunity_radar",
+      "createdAt": "2026-02-19T19:39:50.797Z",
+      "status": "new"
+    },
+    {
+      "id": "comp-binance-1771529990796",
+      "title": "Binance launches Philippines P2P trading with 0 fees",
+      "type": "competitor_move",
+      "score": 95,
+      "urgency": "high",
+      "description": "Aggressive market entry strategy",
+      "action": "Monitor and prepare competitive response",
+      "signals": [
+        "competitor_activity",
+        "market_intelligence"
+      ],
+      "source": "pie_opportunity_radar",
+      "createdAt": "2026-02-19T19:39:50.796Z",
+      "status": "new"
+    },
+    {
+      "id": "comp-okx-1771529990796",
+      "title": "OKX partners with major Philippine bank for crypto services",
+      "type": "competitor_move",
+      "score": 95,
+      "urgency": "high",
+      "description": "Banking partnership in target market",
+      "action": "Monitor and prepare competitive response",
+      "signals": [
+        "competitor_activity",
+        "market_intelligence"
+      ],
+      "source": "pie_opportunity_radar",
+      "createdAt": "2026-02-19T19:39:50.796Z",
+      "status": "new"
+    },
+    {
+      "id": "funding-immutable-x",
+      "title": "Immutable raised $200M",
+      "type": "funding_round",
+      "company": "Immutable",
+      "score": 90,
+      "urgency": "high",
+      "description": "Gaming-focused blockchain platform",
+      "action": "Reach out to explore partnership",
+      "signals": [
+        "fresh_capital",
+        "growth_stage",
+        "investor_backing"
+      ],
+      "source": "pie_opportunity_radar",
+      "createdAt": "2026-02-19T19:39:50.796Z",
+      "status": "new"
+    },
+    {
+      "id": "funding-layerzero",
+      "title": "LayerZero raised $120M",
+      "type": "funding_round",
+      "company": "LayerZero",
+      "score": 90,
+      "urgency": "high",
+      "description": "Cross-chain messaging protocol",
+      "action": "Reach out to explore partnership",
+      "signals": [
+        "fresh_capital",
+        "growth_stage",
+        "investor_backing"
+      ],
+      "source": "pie_opportunity_radar",
+      "createdAt": "2026-02-19T19:39:50.796Z",
+      "status": "new"
+    },
+    {
+      "id": "funding-aptos",
+      "title": "Aptos Labs raised $150M",
+      "type": "funding_round",
+      "company": "Aptos Labs",
+      "score": 90,
+      "urgency": "high",
+      "description": "Layer 1 blockchain by former Meta team",
+      "action": "Reach out to explore partnership",
+      "signals": [
+        "fresh_capital",
+        "growth_stage",
+        "investor_backing"
+      ],
+      "source": "pie_opportunity_radar",
+      "createdAt": "2026-02-19T19:39:50.796Z",
+      "status": "new"
+    },
+    {
+      "id": "market-volume-usd-coin-1771529990796",
+      "title": "USDC Volume Surge",
+      "type": "market_signal",
+      "company": "USDC",
+      "score": 89.171244162,
+      "urgency": "high",
+      "description": "USDC showing unusual trading volume ($9.17B)",
+      "action": "Monitor for partnership announcements or exchange listings",
+      "signals": [
+        "high_liquidity",
+        "market_interest",
+        "potential_partnership_opportunity"
+      ],
+      "source": "pie_opportunity_radar",
+      "createdAt": "2026-02-19T19:39:50.796Z",
+      "status": "new"
+    },
+    {
+      "id": "funding-ton-foundation",
+      "title": "TON Foundation raised $50M",
+      "type": "funding_round",
+      "company": "TON Foundation",
+      "score": 80,
+      "urgency": "high",
+      "description": "Telegram-integrated blockchain",
+      "action": "Reach out to explore partnership",
+      "signals": [
+        "fresh_capital",
+        "growth_stage",
+        "investor_backing"
+      ],
+      "source": "pie_opportunity_radar",
+      "createdAt": "2026-02-19T19:39:50.796Z",
+      "status": "new"
+    },
+    {
+      "id": "funding-starkware",
+      "title": "StarkWare raised $100M",
+      "type": "funding_round",
+      "company": "StarkWare",
+      "score": 75,
+      "urgency": "medium",
+      "description": "Ethereum L2 scaling solution",
+      "action": "Reach out to explore partnership",
+      "signals": [
+        "fresh_capital",
+        "growth_stage",
+        "investor_backing"
+      ],
+      "source": "pie_opportunity_radar",
+      "createdAt": "2026-02-19T19:39:50.796Z",
+      "status": "new"
+    },
+    {
+      "id": "market-volume-solana-1771529990796",
+      "title": "Solana Volume Surge",
+      "type": "market_signal",
+      "company": "Solana",
+      "score": 73.069209711,
+      "urgency": "medium",
+      "description": "Solana showing unusual trading volume ($3.07B)",
+      "action": "Monitor for partnership announcements or exchange listings",
+      "signals": [
+        "high_liquidity",
+        "market_interest",
+        "potential_partnership_opportunity"
+      ],
+      "source": "pie_opportunity_radar",
+      "createdAt": "2026-02-19T19:39:50.796Z",
+      "status": "new"
+    },
+    {
+      "id": "market-volume-ripple-1771529990796",
+      "title": "XRP Volume Surge",
+      "type": "market_signal",
+      "company": "XRP",
+      "score": 72.503022096,
+      "urgency": "medium",
+      "description": "XRP showing unusual trading volume ($2.50B)",
+      "action": "Monitor for partnership announcements or exchange listings",
+      "signals": [
+        "high_liquidity",
+        "market_interest",
+        "potential_partnership_opportunity"
+      ],
+      "source": "pie_opportunity_radar",
+      "createdAt": "2026-02-19T19:39:50.796Z",
+      "status": "new"
+    },
+    {
+      "id": "market-volume-usd1-wlfi-1771529990797",
+      "title": "USD1 Volume Surge",
+      "type": "market_signal",
+      "company": "USD1",
+      "score": 71.851028564,
+      "urgency": "medium",
+      "description": "USD1 showing unusual trading volume ($1.85B)",
+      "action": "Monitor for partnership announcements or exchange listings",
+      "signals": [
+        "high_liquidity",
+        "market_interest",
+        "potential_partnership_opportunity"
+      ],
+      "source": "pie_opportunity_radar",
+      "createdAt": "2026-02-19T19:39:50.797Z",
+      "status": "new"
+    },
+    {
+      "id": "comp-coinbase-1771529990796",
+      "title": "Coinbase expands institutional custody to Singapore",
+      "type": "competitor_move",
+      "score": 70,
+      "urgency": "medium",
+      "description": "Institutional focus in SEA",
+      "action": "Monitor and prepare competitive response",
+      "signals": [
+        "competitor_activity",
+        "market_intelligence"
+      ],
+      "source": "pie_opportunity_radar",
+      "createdAt": "2026-02-19T19:39:50.796Z",
+      "status": "new"
+    },
+    {
+      "id": "comp-kraken-1771529990796",
+      "title": "Kraken acquires local exchange for Thailand entry",
+      "type": "competitor_move",
+      "score": 70,
+      "urgency": "medium",
+      "description": "Acquisition-based expansion",
+      "action": "Monitor and prepare competitive response",
+      "signals": [
+        "competitor_activity",
+        "market_intelligence"
+      ],
+      "source": "pie_opportunity_radar",
+      "createdAt": "2026-02-19T19:39:50.796Z",
+      "status": "new"
+    },
+    {
+      "id": "launch-metamask-pay",
+      "title": "MetaMask launches integrated fiat on-ramp in Philippines",
+      "type": "product_launch",
+      "company": "MetaMask",
+      "score": 68,
+      "urgency": "medium",
+      "description": "Wallet provider expanding PHP support",
+      "action": "Evaluate integration opportunity with coins.ph",
+      "signals": [
+        "new_product",
+        "market_expansion",
+        "integration_opportunity"
+      ],
+      "source": "pie_opportunity_radar",
+      "createdAt": "2026-02-19T19:39:50.796Z",
+      "status": "new"
+    },
+    {
+      "id": "launch-telegram-wallet",
+      "title": "Telegram Wallet adds crypto-to-fiat withdrawals",
+      "type": "product_launch",
+      "company": "Telegram",
+      "score": 68,
+      "urgency": "medium",
+      "description": "TON ecosystem expanding utility",
+      "action": "Evaluate integration opportunity with coins.ph",
+      "signals": [
+        "new_product",
+        "market_expansion",
+        "integration_opportunity"
+      ],
+      "source": "pie_opportunity_radar",
+      "createdAt": "2026-02-19T19:39:50.796Z",
+      "status": "new"
+    },
+    {
+      "id": "launch-gala-payment",
+      "title": "Gala Games introduces token payment system for in-game purchases",
+      "type": "product_launch",
+      "company": "Gala Games",
+      "score": 63,
+      "urgency": "medium",
+      "description": "Gaming token utility expansion",
+      "action": "Evaluate integration opportunity with coins.ph",
+      "signals": [
+        "new_product",
+        "market_expansion",
+        "integration_opportunity"
+      ],
+      "source": "pie_opportunity_radar",
+      "createdAt": "2026-02-19T19:39:50.796Z",
+      "status": "new"
+    },
+    {
+      "id": "partnership-coinbase-gaming",
+      "title": "Coinbase partners with major gaming studio for NFT marketplace",
+      "type": "partnership_announcement",
+      "score": 60,
+      "urgency": "medium",
+      "description": "Gaming-NFT integration partnership",
+      "action": "Analyze partnership model for coins.ph application",
+      "signals": [
+        "gaming",
+        "nft",
+        "competitor_partnership"
+      ],
+      "source": "pie_opportunity_radar",
+      "createdAt": "2026-02-19T19:39:50.796Z",
+      "status": "new"
+    }
+  ]
+}

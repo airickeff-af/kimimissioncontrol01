@@ -1,10 +1,14 @@
 /**
- * DealFlow Integration Module
+ * DealFlow Integration Module - Enhanced for PIE Sprint
  * 
  * Bidirectional sync between PIE and DealFlow
  * - PIE enriches DealFlow leads with intelligence
  * - DealFlow provides lead data to PIE
  * - Opportunities flow both ways
+ * - Real-time enrichment with lead scores, timing, and briefings
+ * 
+ * @version 2.0.0 - PIE Sprint Enhancement
+ * @date 2026-02-20
  */
 
 const EventEmitter = require('events');
@@ -16,7 +20,7 @@ class DealFlowIntegration extends EventEmitter {
     super();
     
     this.config = {
-      dataDir: config.dataDir || path.join(__dirname, '../../data'),
+      dataDir: config.dataDir || path.join(__dirname, '..', 'data'),
       dealflowPath: config.dealflowPath || path.join(__dirname, '../../dealflow'),
       syncInterval: config.syncInterval || 300000, // 5 minutes
       ...config
@@ -27,7 +31,8 @@ class DealFlowIntegration extends EventEmitter {
       lastSync: null,
       syncStatus: 'idle',
       leadsCache: new Map(),
-      opportunitiesCache: new Map()
+      opportunitiesCache: new Map(),
+      enrichedLeads: new Map()
     };
     
     this.syncTimer = null;
@@ -87,6 +92,9 @@ class DealFlowIntegration extends EventEmitter {
       // Pull leads from DealFlow
       const dealflowLeads = await this._pullLeads();
       
+      // Enrich leads with PIE intelligence
+      await this._enrichLeads(dealflowLeads);
+      
       // Push PIE intelligence to DealFlow
       await this._pushIntelligence();
       
@@ -101,10 +109,11 @@ class DealFlowIntegration extends EventEmitter {
       this.state.lastSync = new Date().toISOString();
       this.state.syncStatus = 'idle';
       
-      console.log(`🔗 DealFlow Integration: Sync complete - ${dealflowLeads.length} leads`);
+      console.log(`🔗 DealFlow Integration: Sync complete - ${dealflowLeads.length} leads, ${this.state.enrichedLeads.size} enriched`);
       
       this.emit('sync-complete', {
         leadsSynced: dealflowLeads.length,
+        enrichedCount: this.state.enrichedLeads.size,
         timestamp: this.state.lastSync
       });
       
@@ -119,21 +128,12 @@ class DealFlowIntegration extends EventEmitter {
    * Pull leads from DealFlow
    */
   async _pullLeads() {
-    // Read from DealFlow data files
+    // Read from PIE leads data (which serves as DealFlow source)
     try {
-      // Check for leads.json in dealflow directory
-      const leadsPath = path.join(this.config.dealflowPath, 'data', 'leads.json');
-      
-      try {
-        const data = await fs.readFile(leadsPath, 'utf8');
-        const leads = JSON.parse(data);
-        return Array.isArray(leads) ? leads : [];
-      } catch (err) {
-        // Try alternative locations
-        const altPath = path.join(process.cwd(), 'dealflow', 'leads.json');
-        const data = await fs.readFile(altPath, 'utf8');
-        return JSON.parse(data);
-      }
+      const leadsPath = path.join(this.config.dataDir, 'leads.json');
+      const data = await fs.readFile(leadsPath, 'utf8');
+      const leads = JSON.parse(data);
+      return Array.isArray(leads) ? leads : [];
     } catch (err) {
       console.log('🔗 DealFlow Integration: No leads file found, returning empty');
       return [];
@@ -141,25 +141,250 @@ class DealFlowIntegration extends EventEmitter {
   }
   
   /**
+   * Enrich leads with PIE intelligence
+   */
+  async _enrichLeads(leads) {
+    // Load friction analysis
+    let frictionData = null;
+    try {
+      const frictionPath = path.join(this.config.dataDir, 'friction-analysis.json');
+      const data = await fs.readFile(frictionPath, 'utf8');
+      frictionData = JSON.parse(data);
+    } catch (err) {
+      console.log('🔗 DealFlow Integration: No friction analysis available');
+    }
+    
+    // Load opportunities
+    let opportunities = [];
+    try {
+      const oppPath = path.join(this.config.dataDir, 'opportunities-live.json');
+      const data = await fs.readFile(oppPath, 'utf8');
+      opportunities = JSON.parse(data);
+    } catch (err) {
+      console.log('🔗 DealFlow Integration: No opportunities available');
+    }
+    
+    // Enrich each lead
+    for (const lead of leads) {
+      const enrichment = {
+        leadId: lead.id,
+        enrichedAt: new Date().toISOString(),
+        scores: null,
+        optimalTiming: null,
+        frictionAlerts: [],
+        relatedOpportunities: [],
+        marketSentiment: null,
+        recommendedAction: null,
+        outreachTiming: null,
+        industryTrends: [],
+        competitorMentions: []
+      };
+      
+      // Add PIE scores
+      if (frictionData?.leadScores) {
+        const scoreData = frictionData.leadScores.find(s => s.leadId === lead.id);
+        if (scoreData) {
+          enrichment.scores = {
+            overall: scoreData.score,
+            confidence: scoreData.confidence,
+            likelihood: scoreData.likelihood,
+            factors: scoreData.factors
+          };
+          enrichment.optimalTiming = scoreData.optimalTiming;
+          enrichment.recommendedAction = scoreData.recommendedAction;
+        }
+      }
+      
+      // Add friction alerts for this lead
+      if (frictionData?.frictionAlerts) {
+        enrichment.frictionAlerts = frictionData.frictionAlerts.filter(
+          a => a.leadId === lead.id
+        );
+      }
+      
+      // Find related opportunities
+      enrichment.relatedOpportunities = opportunities.filter(opp => {
+        const oppText = `${opp.title} ${opp.description}`.toLowerCase();
+        const companyName = lead.company?.toLowerCase() || '';
+        const industry = lead.industry?.toLowerCase() || '';
+        return oppText.includes(companyName) || 
+               oppText.includes(industry) ||
+               opp.signals?.some(s => lead.signals?.includes(s));
+      }).slice(0, 3);
+      
+      // Add market sentiment
+      enrichment.marketSentiment = this._calculateMarketSentiment(lead, opportunities);
+      
+      // Add industry trends
+      enrichment.industryTrends = this._getIndustryTrends(lead.industry);
+      
+      // Add competitor mentions
+      enrichment.competitorMentions = opportunities
+        .filter(opp => opp.type === 'competitor_move')
+        .filter(opp => {
+          const text = `${opp.title} ${opp.description}`.toLowerCase();
+          return text.includes(lead.industry?.toLowerCase() || '');
+        })
+        .slice(0, 2);
+      
+      // Calculate outreach timing
+      enrichment.outreachTiming = this._calculateOutreachTiming(enrichment);
+      
+      this.state.enrichedLeads.set(lead.id, enrichment);
+    }
+    
+    // Save enriched leads
+    const enrichedPath = path.join(this.config.dataDir, 'enriched-leads.json');
+    await fs.writeFile(
+      enrichedPath,
+      JSON.stringify({
+        timestamp: new Date().toISOString(),
+        leads: Array.from(this.state.enrichedLeads.entries()).map(([id, data]) => ({
+          leadId: id,
+          ...data
+        }))
+      }, null, 2)
+    );
+    
+    console.log(`🔗 DealFlow Integration: Enriched ${this.state.enrichedLeads.size} leads`);
+  }
+  
+  /**
+   * Calculate market sentiment for a lead
+   */
+  _calculateMarketSentiment(lead, opportunities) {
+    const relevantOpps = opportunities.filter(opp => {
+      const text = `${opp.title} ${opp.description}`.toLowerCase();
+      return text.includes(lead.industry?.toLowerCase() || '');
+    });
+    
+    if (relevantOpps.length === 0) return 'neutral';
+    
+    const avgScore = relevantOpps.reduce((sum, o) => sum + (o.score || 50), 0) / relevantOpps.length;
+    
+    if (avgScore >= 80) return 'very_positive';
+    if (avgScore >= 60) return 'positive';
+    if (avgScore >= 40) return 'neutral';
+    return 'cautious';
+  }
+  
+  /**
+   * Get industry trends
+   */
+  _getIndustryTrends(industry) {
+    const trends = {
+      'Cryptocurrency Exchange': [
+        'Increasing regulatory clarity in SEA',
+        'Institutional adoption accelerating',
+        'Payment integration becoming standard'
+      ],
+      'Gaming Blockchain': [
+        'Mobile gaming dominance in Philippines',
+        'Play-to-earn models evolving',
+        'Major studios entering Web3'
+      ],
+      'Web3 Gaming Investment': [
+        'Portfolio diversification trend',
+        'Focus on sustainable tokenomics',
+        'Asia-Pacific market growth'
+      ],
+      'Layer 1 Blockchain': [
+        'Telegram ecosystem expansion',
+        'Mobile-first adoption',
+        'Mini-app economy growth'
+      ],
+      'Decentralized Gaming': [
+        'GalaChain migration ongoing',
+        'Node operator programs popular',
+        'Cross-chain interoperability focus'
+      ],
+      'Fiat-Crypto Payment Gateway': [
+        'PHP on-ramp demand increasing',
+        'Banking partnerships critical',
+        'Remittance use cases growing'
+      ]
+    };
+    
+    return trends[industry] || ['Market expansion opportunities', 'Partnership potential high'];
+  }
+  
+  /**
+   * Calculate optimal outreach timing
+   */
+  _calculateOutreachTiming(enrichment) {
+    const now = new Date();
+    const optimal = enrichment.optimalTiming;
+    
+    if (!optimal) return null;
+    
+    // Find next optimal time
+    const days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+    const currentDay = now.getDay();
+    const currentHour = now.getHours();
+    
+    let nextOptimal = null;
+    let daysUntil = 0;
+    
+    for (let i = 0; i < 7; i++) {
+      const checkDay = (currentDay + i) % 7;
+      const dayName = days[checkDay];
+      
+      if (optimal.bestDays.includes(dayName)) {
+        if (i === 0 && currentHour < 10) {
+          // Today, but before optimal time
+          nextOptimal = new Date(now);
+          nextOptimal.setHours(10, 0, 0, 0);
+        } else if (i > 0) {
+          // Future day
+          nextOptimal = new Date(now);
+          nextOptimal.setDate(now.getDate() + i);
+          nextOptimal.setHours(10, 0, 0, 0);
+        }
+        daysUntil = i;
+        break;
+      }
+    }
+    
+    return {
+      nextOptimal: nextOptimal?.toISOString(),
+      daysUntil,
+      bestDays: optimal.bestDays,
+      bestTimes: optimal.bestTimes,
+      timezone: optimal.timezone,
+      urgency: daysUntil <= 1 ? 'high' : daysUntil <= 3 ? 'medium' : 'low'
+    };
+  }
+  
+  /**
    * Push PIE intelligence to DealFlow
    */
   async _pushIntelligence() {
-    // Read PIE lead scores
-    const scoresPath = path.join(this.config.dataDir, 'lead-scores.json');
+    // Create DealFlow-compatible export
+    const dealflowData = {
+      timestamp: new Date().toISOString(),
+      leads: []
+    };
     
-    try {
-      const data = await fs.readFile(scoresPath, 'utf8');
-      const scores = JSON.parse(data);
-      
-      // Write to DealFlow enrichment directory
-      const enrichmentPath = path.join(this.config.dealflowPath, 'data', 'pie-enrichment.json');
-      await fs.writeFile(enrichmentPath, JSON.stringify(scores, null, 2));
-      
-      console.log(`🔗 DealFlow Integration: Pushed ${scores.length} lead scores`);
-      
-    } catch (err) {
-      // No scores to push yet
+    for (const [leadId, enrichment] of this.state.enrichedLeads) {
+      dealflowData.leads.push({
+        leadId,
+        pieScore: enrichment.scores?.overall || 0,
+        pieConfidence: enrichment.scores?.confidence || 0,
+        pieLikelihood: enrichment.scores?.likelihood || 'unknown',
+        marketSentiment: enrichment.marketSentiment,
+        recommendedAction: enrichment.recommendedAction,
+        outreachTiming: enrichment.outreachTiming,
+        frictionCount: enrichment.frictionAlerts.length,
+        relatedOpportunities: enrichment.relatedOpportunities.length,
+        enrichedAt: enrichment.enrichedAt
+      });
     }
+    
+    // Save to DealFlow directory
+    const dealflowPath = path.join(this.config.dataDir, 'dealflow-export.json');
+    await fs.writeFile(dealflowPath, JSON.stringify(dealflowData, null, 2));
+    
+    console.log(`🔗 DealFlow Integration: Exported ${dealflowData.leads.length} leads to DealFlow format`);
   }
   
   /**
@@ -167,18 +392,39 @@ class DealFlowIntegration extends EventEmitter {
    */
   async _syncOpportunities() {
     // Read PIE opportunities
-    const pieOppsPath = path.join(this.config.dataDir, 'opportunities.json');
+    const pieOppsPath = path.join(this.config.dataDir, 'opportunities-live.json');
     
     try {
       const data = await fs.readFile(pieOppsPath, 'utf8');
       const opportunities = JSON.parse(data);
       
-      // Write to DealFlow
-      const dealflowOppsPath = path.join(this.config.dealflowPath, 'data', 'pie-opportunities.json');
-      await fs.writeFile(dealflowOppsPath, JSON.stringify(opportunities, null, 2));
+      // Create DealFlow-compatible opportunities
+      const dealflowOpps = opportunities.map(opp => ({
+        id: opp.id,
+        title: opp.title,
+        type: opp.type,
+        company: opp.company || opp.coin,
+        score: opp.score,
+        urgency: opp.urgency,
+        description: opp.description,
+        action: opp.action,
+        signals: opp.signals,
+        source: 'pie_opportunity_radar',
+        createdAt: opp.timestamp || new Date().toISOString(),
+        status: 'new'
+      }));
+      
+      // Write to DealFlow export
+      const dealflowPath = path.join(this.config.dataDir, 'dealflow-opportunities.json');
+      await fs.writeFile(dealflowPath, JSON.stringify({
+        timestamp: new Date().toISOString(),
+        opportunities: dealflowOpps
+      }, null, 2));
+      
+      console.log(`🔗 DealFlow Integration: Synced ${dealflowOpps.length} opportunities`);
       
     } catch (err) {
-      // No opportunities yet
+      console.log('🔗 DealFlow Integration: No opportunities to sync');
     }
   }
   
@@ -227,7 +473,7 @@ class DealFlowIntegration extends EventEmitter {
     leads[index] = { ...leads[index], ...updates, updatedAt: new Date().toISOString() };
     
     // Write back
-    const leadsPath = path.join(this.config.dealflowPath, 'data', 'leads.json');
+    const leadsPath = path.join(this.config.dataDir, 'leads.json');
     await fs.writeFile(leadsPath, JSON.stringify(leads, null, 2));
     
     // Update cache
@@ -243,7 +489,7 @@ class DealFlowIntegration extends EventEmitter {
    */
   async createOpportunity(opportunity) {
     // Read existing opportunities
-    const oppsPath = path.join(this.config.dealflowPath, 'data', 'opportunities.json');
+    const oppsPath = path.join(this.config.dataDir, 'opportunities-live.json');
     let opportunities = [];
     
     try {
@@ -304,46 +550,33 @@ class DealFlowIntegration extends EventEmitter {
   }
   
   /**
-   * Get lead with PIE enrichment
+   * Get lead with full PIE enrichment
    */
   async getEnrichedLead(leadId) {
     const lead = await this.getLead(leadId);
     
     if (!lead) return null;
     
-    // Get PIE scores
-    const scoresPath = path.join(this.config.dataDir, 'lead-scores.json');
-    let scores = {};
-    
-    try {
-      const data = await fs.readFile(scoresPath, 'utf8');
-      scores = JSON.parse(data);
-    } catch (err) {
-      // No scores yet
-    }
-    
-    // Get briefings
-    const briefingsPath = path.join(this.config.dataDir, 'briefings');
-    let briefings = [];
-    
-    try {
-      const files = await fs.readdir(briefingsPath);
-      const leadBriefings = files.filter(f => f.startsWith(leadId));
-      
-      for (const file of leadBriefings.slice(-3)) { // Last 3 briefings
-        const data = await fs.readFile(path.join(briefingsPath, file), 'utf8');
-        briefings.push(JSON.parse(data));
-      }
-    } catch (err) {
-      // No briefings yet
-    }
+    const enrichment = this.state.enrichedLeads.get(leadId);
     
     return {
       ...lead,
-      pieScores: scores[leadId] || null,
-      pieBriefings: briefings,
-      pieEnriched: !!lead.pieEnrichment
+      pieEnrichment: enrichment,
+      pieEnriched: !!enrichment
     };
+  }
+  
+  /**
+   * Get all enriched leads
+   */
+  async getAllEnrichedLeads() {
+    const leads = await this._pullLeads();
+    
+    return leads.map(lead => ({
+      ...lead,
+      pieEnrichment: this.state.enrichedLeads.get(lead.id),
+      pieEnriched: this.state.enrichedLeads.has(lead.id)
+    }));
   }
   
   /**
@@ -356,10 +589,14 @@ class DealFlowIntegration extends EventEmitter {
       total: leads.length,
       byStatus: {},
       bySource: {},
-      pieEnriched: leads.filter(l => l.pieEnrichment).length,
+      pieEnriched: 0,
       avgScore: 0,
-      highPriority: 0
+      highPriority: 0,
+      frictionAlerts: 0
     };
+    
+    let totalScore = 0;
+    let scoredCount = 0;
     
     for (const lead of leads) {
       // Count by status
@@ -368,11 +605,25 @@ class DealFlowIntegration extends EventEmitter {
       // Count by source
       metrics.bySource[lead.source] = (metrics.bySource[lead.source] || 0) + 1;
       
-      // Track high priority
-      if (lead.pieEnrichment?.score >= 70) {
-        metrics.highPriority++;
+      // Track PIE enrichment
+      const enrichment = this.state.enrichedLeads.get(lead.id);
+      if (enrichment) {
+        metrics.pieEnriched++;
+        
+        if (enrichment.scores?.overall) {
+          totalScore += enrichment.scores.overall;
+          scoredCount++;
+        }
+        
+        if (enrichment.scores?.overall >= 80) {
+          metrics.highPriority++;
+        }
+        
+        metrics.frictionAlerts += enrichment.frictionAlerts?.length || 0;
       }
     }
+    
+    metrics.avgScore = scoredCount > 0 ? Math.round(totalScore / scoredCount) : 0;
     
     return metrics;
   }
@@ -406,7 +657,7 @@ class DealFlowIntegration extends EventEmitter {
     }
     
     // Write back
-    const leadsPath = path.join(this.config.dealflowPath, 'data', 'leads.json');
+    const leadsPath = path.join(this.config.dataDir, 'leads.json');
     await fs.writeFile(leadsPath, JSON.stringify(existing, null, 2));
     
     console.log(`🔗 DealFlow Integration: Imported ${imported.length} leads`);
@@ -452,9 +703,34 @@ class DealFlowIntegration extends EventEmitter {
       lastSync: this.state.lastSync,
       syncStatus: this.state.syncStatus,
       cachedLeads: this.state.leadsCache.size,
+      enrichedLeads: this.state.enrichedLeads.size,
       cachedOpportunities: this.state.opportunitiesCache.size
     };
   }
 }
 
 module.exports = DealFlowIntegration;
+
+// CLI execution
+if (require.main === module) {
+  const integration = new DealFlowIntegration();
+  
+  async function run() {
+    await integration.initialize();
+    await integration.sync();
+    
+    // Get metrics
+    const metrics = await integration.getPipelineMetrics();
+    console.log('\n📊 Pipeline Metrics:');
+    console.log(JSON.stringify(metrics, null, 2));
+    
+    // Get enriched leads
+    const enriched = await integration.getAllEnrichedLeads();
+    console.log(`\n✅ Enriched ${enriched.length} leads`);
+    
+    // Save final state
+    await integration._saveSyncState();
+  }
+  
+  run().catch(console.error);
+}

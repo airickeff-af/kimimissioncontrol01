@@ -1,70 +1,52 @@
 {
   "agents": [
     {
-      "name": "optimizing",
-      "tokensIn": 5047341,
-      "tokensOut": 205498,
-      "cacheRead": 136021504,
+      "name": "Unknown",
+      "tokensIn": 12072859,
+      "tokensOut": 739837,
+      "cacheRead": 125635687,
       "cacheWrite": 0,
-      "totalTokens": 141274343,
-      "cost": 3.9875,
-      "sessions": 1,
-      "messages": 1039
+      "totalTokens": 138448383,
+      "cost": 4.6441,
+      "sessions": 365,
+      "messages": 3450,
+      "percentage": 66.8
     },
     {
       "name": "Audit",
-      "tokensIn": 4446042,
-      "tokensOut": 276777,
-      "cacheRead": 16775680,
+      "tokensIn": 5995586,
+      "tokensOut": 368597,
+      "cacheRead": 26052096,
       "cacheWrite": 0,
-      "totalTokens": 21498499,
-      "cost": 0.9747,
-      "sessions": 142,
-      "messages": 710
-    },
-    {
-      "name": "the",
-      "tokensIn": 954112,
-      "tokensOut": 113274,
-      "cacheRead": 16735232,
-      "cacheWrite": 0,
-      "totalTokens": 17802618,
-      "cost": 0.5591,
-      "sessions": 42,
-      "messages": 637
+      "totalTokens": 32416279,
+      "cost": 1.3983,
+      "sessions": 262,
+      "messages": 1113,
+      "percentage": 15.6
     },
     {
       "name": "Nexus",
-      "tokensIn": 2126980,
-      "tokensOut": 141707,
-      "cacheRead": 11517440,
+      "tokensIn": 5252189,
+      "tokensOut": 285903,
+      "cacheRead": 24504320,
       "cacheWrite": 0,
-      "totalTokens": 13786127,
-      "cost": 0.5573,
-      "sessions": 127,
-      "messages": 536
+      "totalTokens": 30042412,
+      "cost": 1.2522,
+      "sessions": 318,
+      "messages": 1059,
+      "percentage": 14.5
     },
     {
-      "name": "assigned",
-      "tokensIn": 355050,
-      "tokensOut": 67511,
-      "cacheRead": 6223616,
+      "name": "Sentry",
+      "tokensIn": 370762,
+      "tokensOut": 41702,
+      "cacheRead": 4329705,
       "cacheWrite": 0,
-      "totalTokens": 6646177,
-      "cost": 0.2181,
-      "sessions": 3,
-      "messages": 141
-    },
-    {
-      "name": "Unknown",
-      "tokensIn": 614830,
-      "tokensOut": 49636,
-      "cacheRead": 4507648,
-      "cacheWrite": 0,
-      "totalTokens": 5172114,
-      "cost": 0.194,
-      "sessions": 81,
-      "messages": 229
+      "totalTokens": 4742169,
+      "cost": 0.162,
+      "sessions": 89,
+      "messages": 297,
+      "percentage": 2.3
     },
     {
       "name": "Code",
@@ -75,73 +57,223 @@
       "totalTokens": 1067010,
       "cost": 0.038,
       "sessions": 14,
-      "messages": 56
-    },
-    {
-      "name": "Sentry",
-      "tokensIn": 38509,
-      "tokensOut": 7765,
-      "cacheRead": 820736,
-      "cacheWrite": 0,
-      "totalTokens": 867010,
-      "cost": 0.0275,
-      "sessions": 7,
-      "messages": 49
-    },
-    {
-      "name": "an",
-      "tokensIn": 190988,
-      "tokensOut": 6251,
-      "cacheRead": 337920,
-      "cacheWrite": 0,
-      "totalTokens": 535159,
-      "cost": 0.03,
-      "sessions": 7,
-      "messages": 18
-    },
-    {
-      "name": "Audit-2",
-      "tokensIn": 104398,
-      "tokensOut": 5021,
-      "cacheRead": 335616,
-      "cacheWrite": 0,
-      "totalTokens": 445035,
-      "cost": 0.0208,
-      "sessions": 1,
-      "messages": 13
-    },
-    {
-      "name": "Audit-1",
-      "tokensIn": 76682,
-      "tokensOut": 2314,
-      "cacheRead": 87296,
-      "cacheWrite": 0,
-      "totalTokens": 166292,
-      "cost": 0.0108,
-      "sessions": 1,
-      "messages": 7
+      "messages": 56,
+      "percentage": 0.5
     },
     {
       "name": "Glasses",
-      "tokensIn": 11081,
-      "tokensOut": 1506,
-      "cacheRead": 146688,
+      "tokensIn": 55239,
+      "tokensOut": 6336,
+      "cacheRead": 549632,
       "cacheWrite": 0,
-      "totalTokens": 159275,
-      "cost": 0.0054,
-      "sessions": 6,
-      "messages": 11
+      "totalTokens": 611207,
+      "cost": 0.0218,
+      "sessions": 10,
+      "messages": 34,
+      "percentage": 0.3
+    },
+    {
+      "name": "Scout",
+      "tokensIn": 0,
+      "tokensOut": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "totalTokens": 0,
+      "cost": 0,
+      "sessions": 0,
+      "messages": 0,
+      "percentage": 0
+    },
+    {
+      "name": "Pixel",
+      "tokensIn": 0,
+      "tokensOut": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "totalTokens": 0,
+      "cost": 0,
+      "sessions": 0,
+      "messages": 0,
+      "percentage": 0
+    },
+    {
+      "name": "Forge",
+      "tokensIn": 0,
+      "tokensOut": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "totalTokens": 0,
+      "cost": 0,
+      "sessions": 0,
+      "messages": 0,
+      "percentage": 0
+    },
+    {
+      "name": "DealFlow",
+      "tokensIn": 0,
+      "tokensOut": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "totalTokens": 0,
+      "cost": 0,
+      "sessions": 0,
+      "messages": 0,
+      "percentage": 0
+    },
+    {
+      "name": "Quill",
+      "tokensIn": 0,
+      "tokensOut": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "totalTokens": 0,
+      "cost": 0,
+      "sessions": 0,
+      "messages": 0,
+      "percentage": 0
+    },
+    {
+      "name": "Gary",
+      "tokensIn": 0,
+      "tokensOut": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "totalTokens": 0,
+      "cost": 0,
+      "sessions": 0,
+      "messages": 0,
+      "percentage": 0
+    },
+    {
+      "name": "Larry",
+      "tokensIn": 0,
+      "tokensOut": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "totalTokens": 0,
+      "cost": 0,
+      "sessions": 0,
+      "messages": 0,
+      "percentage": 0
+    },
+    {
+      "name": "Cipher",
+      "tokensIn": 0,
+      "tokensOut": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "totalTokens": 0,
+      "cost": 0,
+      "sessions": 0,
+      "messages": 0,
+      "percentage": 0
+    },
+    {
+      "name": "Buzz",
+      "tokensIn": 0,
+      "tokensOut": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "totalTokens": 0,
+      "cost": 0,
+      "sessions": 0,
+      "messages": 0,
+      "percentage": 0
+    },
+    {
+      "name": "PIE",
+      "tokensIn": 0,
+      "tokensOut": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "totalTokens": 0,
+      "cost": 0,
+      "sessions": 0,
+      "messages": 0,
+      "percentage": 0
+    },
+    {
+      "name": "Code-1",
+      "tokensIn": 0,
+      "tokensOut": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "totalTokens": 0,
+      "cost": 0,
+      "sessions": 0,
+      "messages": 0,
+      "percentage": 0
+    },
+    {
+      "name": "Code-2",
+      "tokensIn": 0,
+      "tokensOut": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "totalTokens": 0,
+      "cost": 0,
+      "sessions": 0,
+      "messages": 0,
+      "percentage": 0
+    },
+    {
+      "name": "Code-3",
+      "tokensIn": 0,
+      "tokensOut": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "totalTokens": 0,
+      "cost": 0,
+      "sessions": 0,
+      "messages": 0,
+      "percentage": 0
+    },
+    {
+      "name": "Forge-1",
+      "tokensIn": 0,
+      "tokensOut": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "totalTokens": 0,
+      "cost": 0,
+      "sessions": 0,
+      "messages": 0,
+      "percentage": 0
+    },
+    {
+      "name": "Forge-2",
+      "tokensIn": 0,
+      "tokensOut": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "totalTokens": 0,
+      "cost": 0,
+      "sessions": 0,
+      "messages": 0,
+      "percentage": 0
+    },
+    {
+      "name": "Forge-3",
+      "tokensIn": 0,
+      "tokensOut": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "totalTokens": 0,
+      "cost": 0,
+      "sessions": 0,
+      "messages": 0,
+      "percentage": 0
     }
   ],
   "total": {
-    "tokensIn": 14092438,
-    "tokensOut": 882165,
-    "cacheRead": 194445056,
+    "tokensIn": 23873060,
+    "tokensOut": 1447280,
+    "cacheRead": 182007120,
     "cacheWrite": 0,
-    "totalTokens": 209419659,
-    "cost": 6.6232,
-    "sessions": 432,
-    "messages": 3446
+    "totalTokens": 207327460,
+    "cost": 7.5164,
+    "sessions": 1058,
+    "messages": 6009
   },
   "dailyUsage": [
     {
@@ -152,99 +284,128 @@
     },
     {
       "date": "2026-02-17",
-      "tokens": 167368643,
-      "cost": 5.0989283000000105,
-      "sessions": 259
+      "tokens": 26094300,
+      "cost": 1.1114574000000006,
+      "sessions": 258
     },
     {
       "date": "2026-02-18",
-      "tokens": 41738139,
-      "cost": 1.5126996,
-      "sessions": 167
+      "tokens": 160673216,
+      "cost": 5.630885675000002,
+      "sessions": 445
+    },
+    {
+      "date": "2026-02-19",
+      "tokens": 20247067,
+      "cost": 0.762444625,
+      "sessions": 349
     }
   ],
   "recentSessions": [
     {
-      "sessionId": "0f10d773-cfe2-4b03-bb3c-d660da8f2c89",
+      "sessionId": "603f4805-44fb-4909-bbcf-687e10551e8d",
       "agent": "Unknown",
-      "timestamp": "2026-02-18T10:20:21.928Z",
-      "tokens": 208382,
-      "cost": 0.007917500000000001,
-      "messages": 8
+      "timestamp": "2026-02-19T19:42:26.677Z",
+      "tokens": 273960,
+      "cost": 0.010392600000000002,
+      "messages": 10
     },
     {
-      "sessionId": "3e7d1b7f-03f0-4569-ad92-76550e5e7a47",
+      "sessionId": "6658301c-0aa8-404c-8575-c283fba341e6",
       "agent": "Unknown",
-      "timestamp": "2026-02-18T10:20:21.352Z",
-      "tokens": 242279,
-      "cost": 0.012199100000000001,
-      "messages": 5
-    },
-    {
-      "sessionId": "4691aea2-2571-43e7-90b6-a1b2ea654ad6",
-      "agent": "Nexus",
-      "timestamp": "2026-02-18T10:20:18.374Z",
-      "tokens": 244976,
-      "cost": 0.0087533,
-      "messages": 7
-    },
-    {
-      "sessionId": "20fd682d-cca9-4c9e-8691-cf86e123c81b",
-      "agent": "an",
-      "timestamp": "2026-02-18T10:20:00.122Z",
-      "tokens": 55020,
-      "cost": 0.0034854,
-      "messages": 2
-    },
-    {
-      "sessionId": "97621009-6dbb-4ee8-9dc0-838953b8a71c",
-      "agent": "Nexus",
-      "timestamp": "2026-02-18T10:18:02.287Z",
-      "tokens": 65375,
-      "cost": 0.0028745000000000003,
-      "messages": 3
-    },
-    {
-      "sessionId": "5ea937af-a2ca-464a-8723-cdafdbaa23d3",
-      "agent": "the",
-      "timestamp": "2026-02-18T10:15:00.125Z",
-      "tokens": 405703,
-      "cost": 0.012798400000000001,
+      "timestamp": "2026-02-19T19:36:46.832Z",
+      "tokens": 505442,
+      "cost": 0.023569100000000006,
       "messages": 16
     },
     {
-      "sessionId": "987ff5e4-5215-4aae-9ef2-1792cda00d42",
-      "agent": "Sentry",
-      "timestamp": "2026-02-18T10:10:32.323Z",
-      "tokens": 125598,
-      "cost": 0.0040311,
+      "sessionId": "47cf8e68-4ffd-4ecd-9f0b-8dd764bb4f5e",
+      "agent": "Unknown",
+      "timestamp": "2026-02-19T19:35:08.268Z",
+      "tokens": 3394852,
+      "cost": 0.1046617,
+      "messages": 29
+    },
+    {
+      "sessionId": "885a5dfe-8a61-4754-9b07-9da50509dd1f",
+      "agent": "Unknown",
+      "timestamp": "2026-02-19T19:33:13.240Z",
+      "tokens": 242679,
+      "cost": 0.017626500000000003,
       "messages": 7
     },
     {
-      "sessionId": "ec67da49-c4eb-449a-9222-24882804886c",
-      "agent": "the",
-      "timestamp": "2026-02-18T10:02:58.444Z",
-      "tokens": 376375,
-      "cost": 0.012850900000000002,
-      "messages": 14
+      "sessionId": "a779da90-c010-458f-af3e-41c89c41cbab",
+      "agent": "Unknown",
+      "timestamp": "2026-02-19T19:32:53.118Z",
+      "tokens": 574803,
+      "cost": 0.027702900000000003,
+      "messages": 10
     },
     {
-      "sessionId": "f6952e56-75fe-4caf-a157-365203f3f8ec",
+      "sessionId": "2e1db086-447c-41b4-a024-ad54a7abe913",
+      "agent": "Sentry",
+      "timestamp": "2026-02-19T19:29:44.725Z",
+      "tokens": 82587,
+      "cost": 0.0026349,
+      "messages": 5
+    },
+    {
+      "sessionId": "e0661f5c-538e-4108-9852-c9530345cb83",
+      "agent": "Sentry",
+      "timestamp": "2026-02-19T19:14:44.745Z",
+      "tokens": 68065,
+      "cost": 0.0021469,
+      "messages": 4
+    },
+    {
+      "sessionId": "499442be-b9d2-48ff-9556-cce8dbf6e97b",
       "agent": "Audit",
-      "timestamp": "2026-02-18T10:02:04.444Z",
-      "tokens": 269053,
-      "cost": 0.0090922,
-      "messages": 9
+      "timestamp": "2026-02-19T18:59:23.106Z",
+      "tokens": 334231,
+      "cost": 0.010501,
+      "messages": 10
     },
     {
-      "sessionId": "2fb05d5c-c0ed-41a8-95d1-16a9d6d309a9",
-      "agent": "Audit-2",
-      "timestamp": "2026-02-18T09:55:13.739Z",
-      "tokens": 445035,
-      "cost": 0.020838600000000002,
-      "messages": 13
+      "sessionId": "ad4340c3-ae0b-4ee9-824d-c3b1fd771006",
+      "agent": "Sentry",
+      "timestamp": "2026-02-19T18:44:44.727Z",
+      "tokens": 49685,
+      "cost": 0.0015971000000000002,
+      "messages": 3
+    },
+    {
+      "sessionId": "d61d7366-2fe7-4cd4-986b-8ab563c8bf05",
+      "agent": "Sentry",
+      "timestamp": "2026-02-19T18:29:44.722Z",
+      "tokens": 93285,
+      "cost": 0.0038121,
+      "messages": 4
     }
   ],
-  "lastUpdated": "2026-02-18T10:21:01.992Z",
-  "sessionCount": 432
+  "lastUpdated": "2026-02-19T19:43:17.034Z",
+  "sessionCount": 1058,
+  "allAgents": [
+    "Nexus",
+    "Code",
+    "Scout",
+    "Pixel",
+    "Forge",
+    "DealFlow",
+    "Audit",
+    "Quill",
+    "Gary",
+    "Larry",
+    "Sentry",
+    "Cipher",
+    "Glasses",
+    "Buzz",
+    "PIE",
+    "Code-1",
+    "Code-2",
+    "Code-3",
+    "Forge-1",
+    "Forge-2",
+    "Forge-3"
+  ]
 }
