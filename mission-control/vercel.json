@@ -13,7 +13,24 @@
       ]
     }
   ],
+  "rewrites": [
+    {
+      "source": "/api/logs/activity",
+      "destination": "/api/logs-activity.js"
+    },
+    {
+      "source": "/api/logs/chat",
+      "destination": "/api/logs-chat.js"
+    },
+    {
+      "source": "/api/logs",
+      "destination": "/api/logs-index.js"
+    }
+  ],
   "functions": {
+    "api/*.js": {
+      "maxDuration": 10
+    },
     "api/**/*.js": {
       "maxDuration": 10
     }

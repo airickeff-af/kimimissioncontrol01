@@ -5,10 +5,18 @@ Creates 16x16 and 32x32 Minecraft-style sprite sheets for all 22 agents
 import pygame
 import json
 import os
-from typing import Dict, List, Tuple
+import sys
+from typing import Dict, List, Tuple, Optional
 from enum import Enum
 
+
+class PygameInitError(Exception):
+    """Raised when pygame initialization fails."""
+    pass
+
+
 class AnimationType(Enum):
+    """Animation types supported by the sprite system."""
     IDLE = "idle"
     WALK_DOWN = "walk_down"
     WALK_UP = "walk_up"
@@ -18,16 +26,30 @@ class AnimationType(Enum):
     TALKING = "talking"
     AUDIT = "audit"
 
+
 class AgentStyle:
-    """Style definition for each agent"""
+    """Style definition for each agent."""
+    
     def __init__(self, name: str, color: Tuple[int, int, int], 
-                 accessory: str = None, skin: Tuple[int, int, int] = None,
-                 hair: Tuple[int, int, int] = None):
+                 accessory: Optional[str] = None, 
+                 skin: Optional[Tuple[int, int, int]] = None,
+                 hair: Optional[Tuple[int, int, int]] = None):
+        """
+        Initialize agent style.
+        
+        Args:
+            name: Display name of the agent
+            color: Primary color (shirt/uniform) as RGB tuple
+            accessory: Optional accessory type (e.g., 'crown', 'glasses')
+            skin: Optional skin color as RGB tuple (defaults to peach)
+            hair: Optional hair color as RGB tuple (defaults to brown)
+        """
         self.name = name
         self.color = color
         self.accessory = accessory
         self.skin = skin or (255, 224, 189)
         self.hair = hair or (101, 67, 33)
+
 
 # Define all 22 agents with their unique styles
 AGENT_STYLES = {
@@ -55,40 +77,96 @@ AGENT_STYLES = {
     'pie': AgentStyle('PIE', (139, 92, 246), 'brain', (240, 194, 123), (30, 30, 30)),
 }
 
+
 class SpriteSheetGenerator:
-    """Generates complete sprite sheets for agents"""
+    """Generates complete sprite sheets for agents."""
     
-    def __init__(self, sprite_size: int = 32):
+    def __init__(self, sprite_size: int = 32, output_dir: Optional[str] = None):
+        """
+        Initialize the sprite sheet generator.
+        
+        Args:
+            sprite_size: Size of each sprite in pixels (16 or 32)
+            output_dir: Output directory for generated sprites (defaults to "assets/sprites")
+        """
         self.sprite_size = sprite_size
         self.frame_size = sprite_size
+        self.output_dir = output_dir or "assets/sprites"
         # 8 animations × 8 frames each = 64 sprites per row
         self.sheet_width = 64 * sprite_size
         self.sheet_height = len(AGENT_STYLES) * sprite_size
         
     def _create_surface(self, width: int, height: int) -> pygame.Surface:
-        """Create transparent surface"""
+        """Create a transparent surface for drawing."""
         return pygame.Surface((width, height), pygame.SRCALPHA)
     
     def _draw_pixel(self, surf: pygame.Surface, x: int, y: int, 
-                   color: Tuple[int, int, int, int]):
-        """Draw a single pixel"""
+                   color: Tuple[int, int, int, int]) -> None:
+        """Draw a single pixel on the surface if within bounds."""
         if 0 <= x < surf.get_width() and 0 <= y < surf.get_height():
             surf.set_at((x, y), color)
     
     def _draw_rect(self, surf: pygame.Surface, x: int, y: int, 
-                  w: int, h: int, color: Tuple[int, int, int]):
-        """Draw a rectangle of pixels"""
+                  w: int, h: int, color: Tuple[int, int, int]) -> None:
+        """Draw a rectangle of pixels on the surface."""
         for dy in range(h):
             for dx in range(w):
                 self._draw_pixel(surf, x + dx, y + dy, (*color, 255))
     
+    def _get_animation_offset(self, anim: AnimationType, frame: int) -> Tuple[int, int, int]:
+        """
+        Calculate animation offsets for bobbing, legs, and arms.
+        
+        Args:
+            anim: The animation type
+            frame: Current frame number (0-7)
+            
+        Returns:
+            Tuple of (bob, leg_offset, arm_offset)
+        """
+        bob = 0
+        leg_offset = 0
+        arm_offset = 0
+        
+        if anim == AnimationType.IDLE:
+            # Breathing animation - subtle bob
+            bob = [0, 0, -1, -1, 0, 0, 0, 0][frame % 8]
+        elif anim == AnimationType.TYPING:
+            # Typing animation - arms moving rapidly
+            bob = [0, 0, -1, -1, 0, 0, 0, 0][frame % 8]
+            arm_offset = [0, 1, 0, 1, 0, 1, 0, 1][frame % 8]
+        elif anim == AnimationType.TALKING:
+            # Talking animation - head bobs more
+            bob = [0, -1, 0, -1, 0, -1, 0, 0][frame % 8]
+        elif anim == AnimationType.AUDIT:
+            # Audit animation - scanning motion
+            bob = [0, 0, -1, -1, 0, 0, 0, 0][frame % 8]
+            arm_offset = [0, 0, 1, 1, 0, 0, 0, 0][frame % 8]
+        elif 'walk' in anim.value:
+            # Walking animation - full body motion
+            walk_cycle = [0, -1, -2, -1, 0, -1, -2, -1]
+            bob = walk_cycle[frame % 8]
+            leg_offset = [0, 1, 0, -1, 0, 1, 0, -1][frame % 8]
+            
+        return bob, leg_offset, arm_offset
+    
     def generate_agent_sprite(self, style: AgentStyle, anim: AnimationType, 
                              frame: int) -> pygame.Surface:
-        """Generate a single agent sprite"""
+        """
+        Generate a single agent sprite.
+        
+        Args:
+            style: The agent's style definition
+            anim: Animation type to render
+            frame: Frame number (0-7)
+            
+        Returns:
+            Pygame surface containing the rendered sprite
+        """
         size = self.sprite_size
         surf = self._create_surface(size, size)
         
-        # Scale factor for different sizes
+        # Scale factor for different sizes (16px vs 32px)
         scale = size // 16
         
         c = style.color
@@ -97,27 +175,12 @@ class SpriteSheetGenerator:
         pants = (45, 45, 60)
         shoes = (60, 40, 30)
         
-        # Animation offsets
-        bob = 0
-        leg_offset = 0
-        arm_offset = 0
-        
-        if anim == AnimationType.IDLE:
-            # Breathing animation
-            bob = [0, 0, -1, -1, 0, 0, 0, 0][frame % 8]
-        elif anim == AnimationType.TYPING:
-            # Typing animation - arms moving
-            bob = [0, 0, -1, -1, 0, 0, 0, 0][frame % 8]
-            arm_offset = [0, 1, 0, 1, 0, 1, 0, 1][frame % 8]
-        elif 'walk' in anim.value:
-            # Walking animation
-            walk_cycle = [0, -1, -2, -1, 0, -1, -2, -1]
-            bob = walk_cycle[frame % 8]
-            leg_offset = [0, 1, 0, -1, 0, 1, 0, -1][frame % 8]
+        # Get animation offsets
+        bob, leg_offset, arm_offset = self._get_animation_offset(anim, frame)
         
         base_y = 8 * scale + bob
         
-        # Direction handling
+        # Determine direction from animation type
         direction = 'down'
         if anim == AnimationType.WALK_UP:
             direction = 'up'
@@ -126,101 +189,10 @@ class SpriteSheetGenerator:
         elif anim == AnimationType.WALK_RIGHT:
             direction = 'right'
         
-        if direction == 'down':
-            # Shoes
-            self._draw_rect(surf, 4*scale, 14*scale + leg_offset, 3*scale, 2*scale, shoes)
-            self._draw_rect(surf, 9*scale, 14*scale - leg_offset, 3*scale, 2*scale, shoes)
-            
-            # Legs
-            self._draw_rect(surf, 4*scale, 11*scale, 3*scale, 4*scale, pants)
-            self._draw_rect(surf, 9*scale, 11*scale, 3*scale, 4*scale, pants)
-            
-            # Body
-            self._draw_rect(surf, 3*scale, 6*scale, 10*scale, 6*scale, c)
-            
-            # Arms
-            arm_y = 7*scale + arm_offset
-            self._draw_rect(surf, 1*scale, arm_y, 2*scale, 4*scale, skin)
-            self._draw_rect(surf, 13*scale, arm_y, 2*scale, 4*scale, skin)
-            
-            # Head
-            head_y = base_y - 6*scale
-            self._draw_rect(surf, 4*scale, head_y, 8*scale, 7*scale, skin)
-            
-            # Hair
-            self._draw_rect(surf, 4*scale, head_y, 8*scale, 2*scale, hair)
-            
-            # Eyes
-            eye_y = head_y + 3*scale
-            self._draw_rect(surf, 5*scale, eye_y, 2*scale, 2*scale, (0, 0, 0))
-            self._draw_rect(surf, 9*scale, eye_y, 2*scale, 2*scale, (0, 0, 0))
-            
-        elif direction == 'up':
-            # Shoes
-            self._draw_rect(surf, 4*scale, 14*scale + leg_offset, 3*scale, 2*scale, shoes)
-            self._draw_rect(surf, 9*scale, 14*scale - leg_offset, 3*scale, 2*scale, shoes)
-            
-            # Legs
-            self._draw_rect(surf, 4*scale, 11*scale, 3*scale, 4*scale, pants)
-            self._draw_rect(surf, 9*scale, 11*scale, 3*scale, 4*scale, pants)
-            
-            # Body
-            self._draw_rect(surf, 3*scale, 6*scale, 10*scale, 6*scale, c)
-            
-            # Head (back view - hair only)
-            head_y = base_y - 6*scale
-            self._draw_rect(surf, 4*scale, head_y, 8*scale, 7*scale, hair)
-            
-        elif direction == 'left':
-            # Shoes
-            self._draw_rect(surf, 5*scale, 14*scale + leg_offset, 3*scale, 2*scale, shoes)
-            self._draw_rect(surf, 8*scale, 14*scale - leg_offset, 2*scale, 2*scale, shoes)
-            
-            # Legs
-            self._draw_rect(surf, 5*scale, 11*scale, 3*scale, 4*scale, pants)
-            self._draw_rect(surf, 8*scale, 11*scale, 2*scale, 4*scale, pants)
-            
-            # Body
-            self._draw_rect(surf, 5*scale, 6*scale, 5*scale, 6*scale, c)
-            
-            # Arm
-            arm_y = 7*scale + arm_offset
-            self._draw_rect(surf, 3*scale, arm_y, 2*scale, 4*scale, skin)
-            
-            # Head
-            head_y = base_y - 6*scale
-            self._draw_rect(surf, 5*scale, head_y, 5*scale, 7*scale, skin)
-            self._draw_rect(surf, 5*scale, head_y, 5*scale, 2*scale, hair)
-            
-            # Eye
-            self._draw_rect(surf, 6*scale, head_y + 3*scale, 2*scale, 2*scale, (0, 0, 0))
-            
-        elif direction == 'right':
-            # Mirror of left
-            # Shoes
-            self._draw_rect(surf, 8*scale, 14*scale + leg_offset, 3*scale, 2*scale, shoes)
-            self._draw_rect(surf, 6*scale, 14*scale - leg_offset, 2*scale, 2*scale, shoes)
-            
-            # Legs
-            self._draw_rect(surf, 8*scale, 11*scale, 3*scale, 4*scale, pants)
-            self._draw_rect(surf, 6*scale, 11*scale, 2*scale, 4*scale, pants)
-            
-            # Body
-            self._draw_rect(surf, 6*scale, 6*scale, 5*scale, 6*scale, c)
-            
-            # Arm
-            arm_y = 7*scale + arm_offset
-            self._draw_rect(surf, 11*scale, arm_y, 2*scale, 4*scale, skin)
-            
-            # Head
-            head_y = base_y - 6*scale
-            self._draw_rect(surf, 6*scale, head_y, 5*scale, 7*scale, skin)
-            self._draw_rect(surf, 6*scale, head_y, 5*scale, 2*scale, hair)
-            
-            # Eye
-            self._draw_rect(surf, 8*scale, head_y + 3*scale, 2*scale, 2*scale, (0, 0, 0))
+        # Draw the base character body based on direction
+        self._draw_character_body(surf, direction, base_y, scale, c, skin, hair, pants, shoes, leg_offset, arm_offset)
         
-        # Add accessory
+        # Add accessory for the current direction
         self._draw_accessory(surf, style, direction, base_y, scale)
         
         # Add glow effect for special agents
@@ -229,41 +201,407 @@ class SpriteSheetGenerator:
         
         return surf
     
+    def _draw_character_body(self, surf: pygame.Surface, direction: str, base_y: int, 
+                             scale: int, color: Tuple[int, int, int], 
+                             skin: Tuple[int, int, int], hair: Tuple[int, int, int],
+                             pants: Tuple[int, int, int], shoes: Tuple[int, int, int],
+                             leg_offset: int, arm_offset: int) -> None:
+        """Draw the character body based on facing direction."""
+        head_y = base_y - 6 * scale
+        
+        if direction == 'down':
+            self._draw_body_down(surf, base_y, head_y, scale, color, skin, hair, pants, shoes, leg_offset, arm_offset)
+        elif direction == 'up':
+            self._draw_body_up(surf, base_y, head_y, scale, color, skin, hair, pants, shoes, leg_offset, arm_offset)
+        elif direction == 'left':
+            self._draw_body_left(surf, base_y, head_y, scale, color, skin, hair, pants, shoes, leg_offset, arm_offset)
+        elif direction == 'right':
+            self._draw_body_right(surf, base_y, head_y, scale, color, skin, hair, pants, shoes, leg_offset, arm_offset)
+    
+    def _draw_body_down(self, surf: pygame.Surface, base_y: int, head_y: int, 
+                        scale: int, color: Tuple[int, int, int], 
+                        skin: Tuple[int, int, int], hair: Tuple[int, int, int],
+                        pants: Tuple[int, int, int], shoes: Tuple[int, int, int],
+                        leg_offset: int, arm_offset: int) -> None:
+        """Draw character facing down (front view)."""
+        # Shoes
+        self._draw_rect(surf, 4*scale, 14*scale + leg_offset, 3*scale, 2*scale, shoes)
+        self._draw_rect(surf, 9*scale, 14*scale - leg_offset, 3*scale, 2*scale, shoes)
+        
+        # Legs
+        self._draw_rect(surf, 4*scale, 11*scale, 3*scale, 4*scale, pants)
+        self._draw_rect(surf, 9*scale, 11*scale, 3*scale, 4*scale, pants)
+        
+        # Body
+        self._draw_rect(surf, 3*scale, 6*scale, 10*scale, 6*scale, color)
+        
+        # Arms
+        arm_y = 7*scale + arm_offset
+        self._draw_rect(surf, 1*scale, arm_y, 2*scale, 4*scale, skin)
+        self._draw_rect(surf, 13*scale, arm_y, 2*scale, 4*scale, skin)
+        
+        # Head
+        self._draw_rect(surf, 4*scale, head_y, 8*scale, 7*scale, skin)
+        
+        # Hair
+        self._draw_rect(surf, 4*scale, head_y, 8*scale, 2*scale, hair)
+        
+        # Eyes
+        eye_y = head_y + 3*scale
+        self._draw_rect(surf, 5*scale, eye_y, 2*scale, 2*scale, (0, 0, 0))
+        self._draw_rect(surf, 9*scale, eye_y, 2*scale, 2*scale, (0, 0, 0))
+    
+    def _draw_body_up(self, surf: pygame.Surface, base_y: int, head_y: int, 
+                      scale: int, color: Tuple[int, int, int], 
+                      skin: Tuple[int, int, int], hair: Tuple[int, int, int],
+                      pants: Tuple[int, int, int], shoes: Tuple[int, int, int],
+                      leg_offset: int, arm_offset: int) -> None:
+        """Draw character facing up (back view)."""
+        # Shoes
+        self._draw_rect(surf, 4*scale, 14*scale + leg_offset, 3*scale, 2*scale, shoes)
+        self._draw_rect(surf, 9*scale, 14*scale - leg_offset, 3*scale, 2*scale, shoes)
+        
+        # Legs
+        self._draw_rect(surf, 4*scale, 11*scale, 3*scale, 4*scale, pants)
+        self._draw_rect(surf, 9*scale, 11*scale, 3*scale, 4*scale, pants)
+        
+        # Body
+        self._draw_rect(surf, 3*scale, 6*scale, 10*scale, 6*scale, color)
+        
+        # Head (back view - hair only, no face)
+        self._draw_rect(surf, 4*scale, head_y, 8*scale, 7*scale, hair)
+    
+    def _draw_body_left(self, surf: pygame.Surface, base_y: int, head_y: int, 
+                        scale: int, color: Tuple[int, int, int], 
+                        skin: Tuple[int, int, int], hair: Tuple[int, int, int],
+                        pants: Tuple[int, int, int], shoes: Tuple[int, int, int],
+                        leg_offset: int, arm_offset: int) -> None:
+        """Draw character facing left (side view)."""
+        # Shoes
+        self._draw_rect(surf, 5*scale, 14*scale + leg_offset, 3*scale, 2*scale, shoes)
+        self._draw_rect(surf, 8*scale, 14*scale - leg_offset, 2*scale, 2*scale, shoes)
+        
+        # Legs
+        self._draw_rect(surf, 5*scale, 11*scale, 3*scale, 4*scale, pants)
+        self._draw_rect(surf, 8*scale, 11*scale, 2*scale, 4*scale, pants)
+        
+        # Body
+        self._draw_rect(surf, 5*scale, 6*scale, 5*scale, 6*scale, color)
+        
+        # Arm (left side - visible from left view)
+        arm_y = 7*scale + arm_offset
+        self._draw_rect(surf, 3*scale, arm_y, 2*scale, 4*scale, skin)
+        
+        # Head
+        self._draw_rect(surf, 5*scale, head_y, 5*scale, 7*scale, skin)
+        self._draw_rect(surf, 5*scale, head_y, 5*scale, 2*scale, hair)
+        
+        # Eye (single eye visible from side)
+        self._draw_rect(surf, 6*scale, head_y + 3*scale, 2*scale, 2*scale, (0, 0, 0))
+    
+    def _draw_body_right(self, surf: pygame.Surface, base_y: int, head_y: int, 
+                         scale: int, color: Tuple[int, int, int], 
+                         skin: Tuple[int, int, int], hair: Tuple[int, int, int],
+                         pants: Tuple[int, int, int], shoes: Tuple[int, int, int],
+                         leg_offset: int, arm_offset: int) -> None:
+        """Draw character facing right (side view, mirrored)."""
+        # Shoes
+        self._draw_rect(surf, 8*scale, 14*scale + leg_offset, 3*scale, 2*scale, shoes)
+        self._draw_rect(surf, 6*scale, 14*scale - leg_offset, 2*scale, 2*scale, shoes)
+        
+        # Legs
+        self._draw_rect(surf, 8*scale, 11*scale, 3*scale, 4*scale, pants)
+        self._draw_rect(surf, 6*scale, 11*scale, 2*scale, 4*scale, pants)
+        
+        # Body
+        self._draw_rect(surf, 6*scale, 6*scale, 5*scale, 6*scale, color)
+        
+        # Arm (right side - visible from right view)
+        arm_y = 7*scale + arm_offset
+        self._draw_rect(surf, 11*scale, arm_y, 2*scale, 4*scale, skin)
+        
+        # Head
+        self._draw_rect(surf, 6*scale, head_y, 5*scale, 7*scale, skin)
+        self._draw_rect(surf, 6*scale, head_y, 5*scale, 2*scale, hair)
+        
+        # Eye (single eye visible from side)
+        self._draw_rect(surf, 8*scale, head_y + 3*scale, 2*scale, 2*scale, (0, 0, 0))
+    
     def _draw_accessory(self, surf: pygame.Surface, style: AgentStyle, 
-                       direction: str, base_y: int, scale: int):
-        """Draw agent accessory"""
+                       direction: str, base_y: int, scale: int) -> None:
+        """
+        Draw agent accessory based on direction.
+        
+        Supports accessories for all directions: down, up, left, right.
+        """
         if not style.accessory:
             return
         
         head_y = base_y - 6*scale
         acc = style.accessory
         
-        if acc == 'crown' and direction == 'down':
-            # Crown
+        # Crown accessory - visible from all directions
+        if acc == 'crown':
             gold = (255, 215, 0)
-            self._draw_rect(surf, 4*scale, head_y - 2*scale, 8*scale, 2*scale, gold)
-            self._draw_rect(surf, 5*scale, head_y - 3*scale, 2*scale, 1*scale, gold)
-            self._draw_rect(surf, 9*scale, head_y - 3*scale, 2*scale, 1*scale, gold)
-            
-        elif acc == 'robot' and direction == 'down':
-            # Robot antenna
+            if direction == 'down':
+                self._draw_rect(surf, 4*scale, head_y - 2*scale, 8*scale, 2*scale, gold)
+                self._draw_rect(surf, 5*scale, head_y - 3*scale, 2*scale, 1*scale, gold)
+                self._draw_rect(surf, 9*scale, head_y - 3*scale, 2*scale, 1*scale, gold)
+            elif direction == 'up':
+                # Crown visible from back
+                self._draw_rect(surf, 4*scale, head_y - 2*scale, 8*scale, 2*scale, gold)
+                self._draw_rect(surf, 7*scale, head_y - 3*scale, 2*scale, 1*scale, gold)
+            elif direction in ('left', 'right'):
+                # Crown from side
+                offset = 0 if direction == 'left' else 1
+                self._draw_rect(surf, (4+offset)*scale, head_y - 2*scale, 5*scale, 2*scale, gold)
+                self._draw_rect(surf, (5+offset)*scale, head_y - 3*scale, 2*scale, 1*scale, gold)
+                
+        # Robot antenna - visible from all directions
+        elif acc == 'robot':
             cyan = (0, 212, 255)
-            self._draw_rect(surf, 7*scale, head_y - 3*scale, 2*scale, 2*scale, cyan)
-            self._draw_rect(surf, 7*scale, head_y - 4*scale, 2*scale, 1*scale, (200, 255, 255))
-            
-        elif acc == 'glasses' and direction == 'down':
-            # Glasses
-            self._draw_rect(surf, 4*scale, head_y + 3*scale, 8*scale, 1*scale, (50, 50, 50))
-            
-        elif acc == 'headphones' and direction == 'down':
-            # Headphones
-            self._draw_rect(surf, 3*scale, head_y + 1*scale, 1*scale, 4*scale, (80, 80, 80))
-            self._draw_rect(surf, 12*scale, head_y + 1*scale, 1*scale, 4*scale, (80, 80, 80))
-            self._draw_rect(surf, 3*scale, head_y, 10*scale, 1*scale, (80, 80, 80))
+            if direction == 'down':
+                self._draw_rect(surf, 7*scale, head_y - 3*scale, 2*scale, 2*scale, cyan)
+                self._draw_rect(surf, 7*scale, head_y - 4*scale, 2*scale, 1*scale, (200, 255, 255))
+            elif direction == 'up':
+                self._draw_rect(surf, 7*scale, head_y - 3*scale, 2*scale, 2*scale, cyan)
+                self._draw_rect(surf, 7*scale, head_y - 4*scale, 2*scale, 1*scale, (200, 255, 255))
+            elif direction in ('left', 'right'):
+                offset = 0 if direction == 'left' else 3
+                self._draw_rect(surf, (5+offset)*scale, head_y - 3*scale, 2*scale, 2*scale, cyan)
+                self._draw_rect(surf, (5+offset)*scale, head_y - 4*scale, 2*scale, 1*scale, (200, 255, 255))
+                
+        # Glasses - visible from front and sides
+        elif acc == 'glasses':
+            if direction == 'down':
+                self._draw_rect(surf, 4*scale, head_y + 3*scale, 8*scale, 1*scale, (50, 50, 50))
+            elif direction == 'left':
+                self._draw_rect(surf, 5*scale, head_y + 3*scale, 4*scale, 1*scale, (50, 50, 50))
+            elif direction == 'right':
+                self._draw_rect(surf, 7*scale, head_y + 3*scale, 4*scale, 1*scale, (50, 50, 50))
+                
+        # Headphones - visible from all directions
+        elif acc == 'headphones':
+            if direction == 'down':
+                self._draw_rect(surf, 3*scale, head_y + 1*scale, 1*scale, 4*scale, (80, 80, 80))
+                self._draw_rect(surf, 12*scale, head_y + 1*scale, 1*scale, 4*scale, (80, 80, 80))
+                self._draw_rect(surf, 3*scale, head_y, 10*scale, 1*scale, (80, 80, 80))
+            elif direction == 'up':
+                self._draw_rect(surf, 3*scale, head_y, 10*scale, 1*scale, (80, 80, 80))
+            elif direction == 'left':
+                self._draw_rect(surf, 3*scale, head_y + 1*scale, 1*scale, 4*scale, (80, 80, 80))
+                self._draw_rect(surf, 3*scale, head_y, 6*scale, 1*scale, (80, 80, 80))
+            elif direction == 'right':
+                self._draw_rect(surf, 12*scale, head_y + 1*scale, 1*scale, 4*scale, (80, 80, 80))
+                self._draw_rect(surf, 7*scale, head_y, 6*scale, 1*scale, (80, 80, 80))
+                
+        # Cap - visible from all directions
+        elif acc == 'cap':
+            if direction == 'down':
+                self._draw_rect(surf, 4*scale, head_y - 1*scale, 8*scale, 3*scale, (50, 100, 200))
+                self._draw_rect(surf, 4*scale, head_y + 2*scale, 8*scale, 1*scale, (30, 70, 150))
+            elif direction == 'up':
+                self._draw_rect(surf, 4*scale, head_y, 8*scale, 2*scale, (50, 100, 200))
+            elif direction == 'left':
+                self._draw_rect(surf, 5*scale, head_y - 1*scale, 5*scale, 3*scale, (50, 100, 200))
+                self._draw_rect(surf, 5*scale, head_y + 2*scale, 5*scale, 1*scale, (30, 70, 150))
+            elif direction == 'right':
+                self._draw_rect(surf, 6*scale, head_y - 1*scale, 5*scale, 3*scale, (50, 100, 200))
+                self._draw_rect(surf, 6*scale, head_y + 2*scale, 5*scale, 1*scale, (30, 70, 150))
+                
+        # Beard - only visible from front
+        elif acc == 'beard':
+            if direction == 'down':
+                self._draw_rect(surf, 5*scale, head_y + 5*scale, 6*scale, 2*scale, (60, 40, 30))
+                
+        # Hammer - tool visible from all directions
+        elif acc == 'hammer':
+            if direction == 'down':
+                self._draw_rect(surf, 13*scale, 5*scale, 2*scale, 6*scale, (150, 150, 150))
+                self._draw_rect(surf, 12*scale, 4*scale, 4*scale, 2*scale, (100, 100, 100))
+            elif direction == 'up':
+                self._draw_rect(surf, 1*scale, 5*scale, 2*scale, 6*scale, (150, 150, 150))
+            elif direction == 'left':
+                self._draw_rect(surf, 1*scale, 6*scale, 2*scale, 6*scale, (150, 150, 150))
+            elif direction == 'right':
+                self._draw_rect(surf, 13*scale, 6*scale, 2*scale, 6*scale, (150, 150, 150))
+                
+        # Brush - tool visible from all directions
+        elif acc == 'brush':
+            if direction == 'down':
+                self._draw_rect(surf, 13*scale, 5*scale, 2*scale, 6*scale, (139, 69, 19))
+                self._draw_rect(surf, 12*scale, 4*scale, 4*scale, 2*scale, (200, 100, 100))
+            elif direction == 'up':
+                self._draw_rect(surf, 1*scale, 5*scale, 2*scale, 6*scale, (139, 69, 19))
+            elif direction == 'left':
+                self._draw_rect(surf, 1*scale, 6*scale, 2*scale, 6*scale, (139, 69, 19))
+            elif direction == 'right':
+                self._draw_rect(surf, 13*scale, 6*scale, 2*scale, 6*scale, (139, 69, 19))
+                
+        # Palette - tool visible from all directions
+        elif acc == 'palette':
+            if direction == 'down':
+                self._draw_rect(surf, 1*scale, 6*scale, 3*scale, 4*scale, (200, 150, 100))
+                self._draw_pixel(surf, 2*scale, 7*scale, (255, 0, 0, 255))
+                self._draw_pixel(surf, 3*scale, 8*scale, (0, 255, 0, 255))
+                self._draw_pixel(surf, 2*scale, 9*scale, (0, 0, 255, 255))
+            elif direction == 'up':
+                self._draw_rect(surf, 13*scale, 6*scale, 3*scale, 4*scale, (200, 150, 100))
+            elif direction == 'left':
+                self._draw_rect(surf, 13*scale, 7*scale, 3*scale, 4*scale, (200, 150, 100))
+            elif direction == 'right':
+                self._draw_rect(surf, 1*scale, 7*scale, 3*scale, 4*scale, (200, 150, 100))
+                
+        # Pixel accessory
+        elif acc == 'pixel':
+            if direction == 'down':
+                self._draw_rect(surf, 12*scale, 4*scale, 3*scale, 3*scale, (168, 85, 247))
+            elif direction == 'up':
+                self._draw_rect(surf, 1*scale, 4*scale, 3*scale, 3*scale, (168, 85, 247))
+            elif direction == 'left':
+                self._draw_rect(surf, 1*scale, 5*scale, 3*scale, 3*scale, (168, 85, 247))
+            elif direction == 'right':
+                self._draw_rect(surf, 12*scale, 5*scale, 3*scale, 3*scale, (168, 85, 247))
+                
+        # Magnifier - visible from all directions
+        elif acc == 'magnifier':
+            if direction == 'down':
+                self._draw_rect(surf, 13*scale, 6*scale, 2*scale, 5*scale, (150, 150, 150))
+                self._draw_rect(surf, 12*scale, 4*scale, 4*scale, 3*scale, (200, 200, 255))
+            elif direction == 'up':
+                self._draw_rect(surf, 1*scale, 6*scale, 2*scale, 5*scale, (150, 150, 150))
+            elif direction == 'left':
+                self._draw_rect(surf, 1*scale, 7*scale, 2*scale, 5*scale, (150, 150, 150))
+            elif direction == 'right':
+                self._draw_rect(surf, 13*scale, 7*scale, 2*scale, 5*scale, (150, 150, 150))
+                
+        # Quill - visible from all directions
+        elif acc == 'quill':
+            if direction == 'down':
+                self._draw_rect(surf, 13*scale, 4*scale, 2*scale, 6*scale, (255, 255, 255))
+                self._draw_rect(surf, 13*scale, 3*scale, 2*scale, 2*scale, (236, 72, 153))
+            elif direction == 'up':
+                self._draw_rect(surf, 1*scale, 4*scale, 2*scale, 6*scale, (255, 255, 255))
+            elif direction == 'left':
+                self._draw_rect(surf, 1*scale, 5*scale, 2*scale, 6*scale, (255, 255, 255))
+            elif direction == 'right':
+                self._draw_rect(surf, 13*scale, 5*scale, 2*scale, 6*scale, (255, 255, 255))
+                
+        # Megaphone - visible from all directions
+        elif acc == 'megaphone':
+            if direction == 'down':
+                self._draw_rect(surf, 1*scale, 6*scale, 2*scale, 4*scale, (200, 100, 0))
+                self._draw_rect(surf, 0*scale, 4*scale, 2*scale, 4*scale, (245, 158, 11))
+            elif direction == 'up':
+                self._draw_rect(surf, 13*scale, 6*scale, 2*scale, 4*scale, (200, 100, 0))
+            elif direction == 'left':
+                self._draw_rect(surf, 0*scale, 7*scale, 3*scale, 4*scale, (245, 158, 11))
+            elif direction == 'right':
+                self._draw_rect(surf, 13*scale, 7*scale, 3*scale, 4*scale, (245, 158, 11))
+                
+        # Phone - visible from all directions
+        elif acc == 'phone':
+            if direction == 'down':
+                self._draw_rect(surf, 1*scale, 6*scale, 2*scale, 4*scale, (50, 50, 50))
+                self._draw_rect(surf, 1*scale, 7*scale, 2*scale, 2*scale, (100, 200, 100))
+            elif direction == 'up':
+                self._draw_rect(surf, 13*scale, 6*scale, 2*scale, 4*scale, (50, 50, 50))
+            elif direction == 'left':
+                self._draw_rect(surf, 1*scale, 7*scale, 2*scale, 4*scale, (50, 50, 50))
+            elif direction == 'right':
+                self._draw_rect(surf, 13*scale, 7*scale, 2*scale, 4*scale, (50, 50, 50))
+                
+        # Bee - visible from all directions
+        elif acc == 'bee':
+            if direction == 'down':
+                self._draw_rect(surf, 12*scale, 3*scale, 3*scale, 3*scale, (251, 191, 36))
+                self._draw_rect(surf, 13*scale, 3*scale, 1*scale, 3*scale, (0, 0, 0))
+            elif direction == 'up':
+                self._draw_rect(surf, 1*scale, 3*scale, 3*scale, 3*scale, (251, 191, 36))
+            elif direction == 'left':
+                self._draw_rect(surf, 1*scale, 4*scale, 3*scale, 3*scale, (251, 191, 36))
+            elif direction == 'right':
+                self._draw_rect(surf, 12*scale, 4*scale, 3*scale, 3*scale, (251, 191, 36))
+                
+        # Shield - visible from all directions
+        elif acc == 'shield':
+            if direction == 'down':
+                self._draw_rect(surf, 1*scale, 5*scale, 3*scale, 5*scale, (100, 100, 150))
+                self._draw_rect(surf, 2*scale, 6*scale, 1*scale, 3*scale, (150, 150, 200))
+            elif direction == 'up':
+                self._draw_rect(surf, 13*scale, 5*scale, 3*scale, 5*scale, (100, 100, 150))
+            elif direction == 'left':
+                self._draw_rect(surf, 13*scale, 6*scale, 3*scale, 5*scale, (100, 100, 150))
+            elif direction == 'right':
+                self._draw_rect(surf, 1*scale, 6*scale, 3*scale, 5*scale, (100, 100, 150))
+                
+        # Magnifier gold - Audit's special accessory
+        elif acc == 'magnifier_gold':
+            gold = (255, 215, 0)
+            if direction == 'down':
+                self._draw_rect(surf, 13*scale, 6*scale, 2*scale, 5*scale, (150, 150, 150))
+                self._draw_rect(surf, 12*scale, 4*scale, 4*scale, 3*scale, gold)
+                self._draw_rect(surf, 13*scale, 5*scale, 2*scale, 1*scale, (255, 255, 200))
+            elif direction == 'up':
+                self._draw_rect(surf, 1*scale, 6*scale, 2*scale, 5*scale, (150, 150, 150))
+                self._draw_rect(surf, 1*scale, 4*scale, 3*scale, 2*scale, gold)
+            elif direction == 'left':
+                self._draw_rect(surf, 1*scale, 7*scale, 2*scale, 5*scale, (150, 150, 150))
+                self._draw_rect(surf, 0*scale, 6*scale, 3*scale, 3*scale, gold)
+            elif direction == 'right':
+                self._draw_rect(surf, 13*scale, 7*scale, 2*scale, 5*scale, (150, 150, 150))
+                self._draw_rect(surf, 13*scale, 6*scale, 3*scale, 3*scale, gold)
+                
+        # Lock - visible from all directions
+        elif acc == 'lock':
+            if direction == 'down':
+                self._draw_rect(surf, 1*scale, 6*scale, 3*scale, 4*scale, (150, 150, 150))
+                self._draw_rect(surf, 2*scale, 7*scale, 1*scale, 2*scale, (100, 100, 100))
+            elif direction == 'up':
+                self._draw_rect(surf, 13*scale, 6*scale, 3*scale, 4*scale, (150, 150, 150))
+            elif direction == 'left':
+                self._draw_rect(surf, 13*scale, 7*scale, 3*scale, 4*scale, (150, 150, 150))
+            elif direction == 'right':
+                self._draw_rect(surf, 1*scale, 7*scale, 3*scale, 4*scale, (150, 150, 150))
+                
+        # Briefcase - visible from all directions
+        elif acc == 'briefcase':
+            if direction == 'down':
+                self._draw_rect(surf, 1*scale, 6*scale, 3*scale, 4*scale, (100, 70, 40))
+                self._draw_rect(surf, 2*scale, 6*scale, 1*scale, 1*scale, (150, 120, 80))
+            elif direction == 'up':
+                self._draw_rect(surf, 13*scale, 6*scale, 3*scale, 4*scale, (100, 70, 40))
+            elif direction == 'left':
+                self._draw_rect(surf, 13*scale, 7*scale, 3*scale, 4*scale, (100, 70, 40))
+            elif direction == 'right':
+                self._draw_rect(surf, 1*scale, 7*scale, 3*scale, 4*scale, (100, 70, 40))
+                
+        # Telescope - visible from all directions
+        elif acc == 'telescope':
+            if direction == 'down':
+                self._draw_rect(surf, 13*scale, 4*scale, 2*scale, 6*scale, (100, 100, 100))
+                self._draw_rect(surf, 12*scale, 4*scale, 2*scale, 2*scale, (150, 150, 150))
+            elif direction == 'up':
+                self._draw_rect(surf, 1*scale, 4*scale, 2*scale, 6*scale, (100, 100, 100))
+            elif direction == 'left':
+                self._draw_rect(surf, 1*scale, 5*scale, 2*scale, 6*scale, (100, 100, 100))
+            elif direction == 'right':
+                self._draw_rect(surf, 13*scale, 5*scale, 2*scale, 6*scale, (100, 100, 100))
+                
+        # Brain - visible from all directions
+        elif acc == 'brain':
+            if direction == 'down':
+                self._draw_rect(surf, 12*scale, 3*scale, 3*scale, 3*scale, (200, 150, 200))
+                self._draw_rect(surf, 13*scale, 4*scale, 1*scale, 1*scale, (150, 100, 150))
+            elif direction == 'up':
+                self._draw_rect(surf, 1*scale, 3*scale, 3*scale, 3*scale, (200, 150, 200))
+            elif direction == 'left':
+                self._draw_rect(surf, 1*scale, 4*scale, 3*scale, 3*scale, (200, 150, 200))
+            elif direction == 'right':
+                self._draw_rect(surf, 12*scale, 4*scale, 3*scale, 3*scale, (200, 150, 200))
     
-    def _add_glow(self, surf: pygame.Surface, style: AgentStyle, scale: int):
-        """Add glow effect around sprite"""
-        # Simple glow by adding light pixels at edges
+    def _add_glow(self, surf: pygame.Surface, style: AgentStyle, scale: int) -> None:
+        """Add glow effect around sprite for special agents."""
         glow_color = style.color
         width, height = surf.get_size()
         
@@ -280,10 +618,20 @@ class SpriteSheetGenerator:
                                 glow = (*glow_color[:3], 50)
                                 surf.set_at((nx, ny), glow)
     
-    def generate_sprite_sheet(self, output_dir: str = "assets/sprites"):
-        """Generate complete sprite sheet for all agents"""
+    def generate_sprite_sheet(self, output_dir: Optional[str] = None) -> str:
+        """
+        Generate complete sprite sheet for all agents.
+        
+        Args:
+            output_dir: Output directory (defaults to self.output_dir)
+            
+        Returns:
+            Path to the generated master sprite sheet
+        """
+        output_dir = output_dir or self.output_dir
         os.makedirs(output_dir, exist_ok=True)
         
+        # Include all animation types including AUDIT
         animations = [
             AnimationType.IDLE,
             AnimationType.WALK_DOWN,
@@ -292,6 +640,7 @@ class SpriteSheetGenerator:
             AnimationType.WALK_RIGHT,
             AnimationType.TYPING,
             AnimationType.TALKING,
+            AnimationType.AUDIT,
         ]
         
         frames_per_anim = 8
@@ -348,8 +697,14 @@ class SpriteSheetGenerator:
         return master_file
 
 
-def generate_furniture_sprites(output_dir: str = "assets/sprites"):
-    """Generate furniture sprite sheets"""
+def generate_furniture_sprites(output_dir: Optional[str] = None) -> None:
+    """
+    Generate furniture sprite sheets.
+    
+    Args:
+        output_dir: Output directory (defaults to "assets/sprites")
+    """
+    output_dir = output_dir or "assets/sprites"
     os.makedirs(output_dir, exist_ok=True)
     
     size = 32
@@ -418,8 +773,14 @@ def generate_furniture_sprites(output_dir: str = "assets/sprites"):
     print(f"Generated furniture sprites in {output_dir}")
 
 
-def generate_effect_sprites(output_dir: str = "assets/sprites"):
-    """Generate effect/particle sprites"""
+def generate_effect_sprites(output_dir: Optional[str] = None) -> None:
+    """
+    Generate effect/particle sprites.
+    
+    Args:
+        output_dir: Output directory (defaults to "assets/sprites")
+    """
+    output_dir = output_dir or "assets/sprites"
     os.makedirs(output_dir, exist_ok=True)
     
     size = 32
@@ -458,26 +819,71 @@ def generate_effect_sprites(output_dir: str = "assets/sprites"):
     print(f"Generated effect sprites in {output_dir}")
 
 
+def init_pygame() -> None:
+    """
+    Initialize pygame with error handling.
+    
+    Raises:
+        PygameInitError: If pygame initialization fails
+    """
+    try:
+        success = pygame.init()
+        if success[0] > 0:  # Number of modules that failed to initialize
+            failed_modules = []
+            # Check common modules
+            if not pygame.get_init():
+                failed_modules.append("base")
+            if failed_modules:
+                raise PygameInitError(f"Failed to initialize pygame modules: {', '.join(failed_modules)}")
+    except Exception as e:
+        raise PygameInitError(f"Pygame initialization failed: {str(e)}")
+
+
+def main() -> int:
+    """
+    Main entry point for sprite generation.
+    
+    Returns:
+        Exit code (0 for success, 1 for failure)
+    """
+    # Get output directory from environment or use default
+    output_dir = os.environ.get('SPRITE_OUTPUT_DIR', 'assets/sprites')
+    
+    try:
+        # Initialize pygame with error handling
+        init_pygame()
+        print(f"Pygame initialized successfully. Output directory: {output_dir}")
+        
+        # Generate 32px sprites
+        print("=== Generating 32px Sprite Sheets ===")
+        gen32 = SpriteSheetGenerator(32, output_dir)
+        gen32.generate_sprite_sheet()
+        
+        # Generate 16px sprites
+        print("\n=== Generating 16px Sprite Sheets ===")
+        gen16 = SpriteSheetGenerator(16, output_dir)
+        gen16.generate_sprite_sheet()
+        
+        # Generate furniture
+        print("\n=== Generating Furniture Sprites ===")
+        generate_furniture_sprites(output_dir)
+        
+        # Generate effects
+        print("\n=== Generating Effect Sprites ===")
+        generate_effect_sprites(output_dir)
+        
+        print("\n=== All sprites generated successfully! ===")
+        pygame.quit()
+        return 0
+        
+    except PygameInitError as e:
+        print(f"ERROR: {e}", file=sys.stderr)
+        print("Sprite generation requires pygame. Install with: pip install pygame", file=sys.stderr)
+        return 1
+    except Exception as e:
+        print(f"ERROR: Unexpected error during sprite generation: {e}", file=sys.stderr)
+        return 1
+
+
 if __name__ == "__main__":
-    pygame.init()
-    
-    # Generate 32px sprites
-    print("=== Generating 32px Sprite Sheets ===")
-    gen32 = SpriteSheetGenerator(32)
-    gen32.generate_sprite_sheet()
-    
-    # Generate 16px sprites
-    print("\n=== Generating 16px Sprite Sheets ===")
-    gen16 = SpriteSheetGenerator(16)
-    gen16.generate_sprite_sheet()
-    
-    # Generate furniture
-    print("\n=== Generating Furniture Sprites ===")
-    generate_furniture_sprites()
-    
-    # Generate effects
-    print("\n=== Generating Effect Sprites ===")
-    generate_effect_sprites()
-    
-    print("\n=== All sprites generated successfully! ===")
-    pygame.quit()
+    sys.exit(main())

@@ -1,0 +1,1369 @@
+openapi: 3.0.3
+info:
+  title: Mission Control API
+  description: |
+    The Mission Control API provides real-time access to agent status, tasks, system metrics, 
+    activity logs, deals, token usage, deployments, and system statistics.
+    
+    All endpoints return JSON responses with consistent formatting and support CORS.
+  version: "2026.2.19"
+  contact:
+    name: Mission Control Support
+    url: https://dashboard-ten-sand-20.vercel.app
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: https://dashboard-ten-sand-20.vercel.app/api
+    description: Production server
+
+paths:
+  /health:
+    get:
+      summary: Health Check
+      description: Returns system health status and basic system information
+      operationId: getHealth
+      tags:
+        - System
+      parameters:
+        - name: bust
+          in: query
+          description: Optional cache-busting parameter
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Health status retrieved successfully
+          headers:
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+              description: Request limit per minute
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+              description: Remaining requests in current window
+            Cache-Control:
+              schema:
+                type: string
+              description: Cache directives (max-age=300)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /agents:
+    get:
+      summary: List Agents
+      description: Returns all agents with real-time status, task counts, and token usage
+      operationId: getAgents
+      tags:
+        - Agents
+      parameters:
+        - name: bust
+          in: query
+          description: Optional cache-busting parameter
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Agents retrieved successfully
+          headers:
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+            Cache-Control:
+              schema:
+                type: string
+              description: Cache directives (max-age=60)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentsResponse'
+        '500':
+          description: Failed to read agent data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /tasks:
+    get:
+      summary: List Tasks
+      description: Returns all tasks with filtering and pagination support
+      operationId: getTasks
+      tags:
+        - Tasks
+      parameters:
+        - name: status
+          in: query
+          description: Filter by task status
+          schema:
+            type: string
+            enum: [pending, in_progress, completed, blocked, planned]
+        - name: priority
+          in: query
+          description: Filter by priority level
+          schema:
+            type: string
+            enum: [P0, P1, P2, P3]
+        - name: agent
+          in: query
+          description: Filter by assigned agent name
+          schema:
+            type: string
+            maxLength: 100
+            pattern: '^[a-zA-Z0-9_-]+$'
+        - name: search
+          in: query
+          description: Search in title and description
+          schema:
+            type: string
+            maxLength: 200
+        - name: limit
+          in: query
+          description: Results per page (1-1000)
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 1000
+            default: 50
+        - name: page
+          in: query
+          description: Page number (1-10000)
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 10000
+            default: 1
+        - name: bust
+          in: query
+          description: Cache-busting parameter
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Tasks retrieved successfully
+          headers:
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TasksResponse'
+        '400':
+          description: Invalid query parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Failed to read task data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /logs-activity:
+    get:
+      summary: Activity Logs
+      description: Returns recent agent activity logs with optional filtering
+      operationId: getActivityLogs
+      tags:
+        - Logs
+      parameters:
+        - name: limit
+          in: query
+          description: Number of logs to return (1-1000)
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 1000
+            default: 100
+        - name: agent
+          in: query
+          description: Filter by agent name
+          schema:
+            type: string
+        - name: type
+          in: query
+          description: Filter by log type
+          schema:
+            type: string
+            enum: [system, task_complete, task_active, audit, idle, error, warning, info]
+      responses:
+        '200':
+          description: Activity logs retrieved successfully
+          headers:
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActivityLogsResponse'
+
+  /metrics:
+    get:
+      summary: System Metrics
+      description: Returns system performance metrics and statistics
+      operationId: getMetrics
+      tags:
+        - Metrics
+      parameters:
+        - name: type
+          in: query
+          description: Specific metric type to retrieve
+          schema:
+            type: string
+            enum: [system, api, agents, tokens]
+      responses:
+        '200':
+          description: Metrics retrieved successfully
+          headers:
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/MetricsResponse'
+                  - $ref: '#/components/schemas/MetricTypeResponse'
+
+  /config:
+    get:
+      summary: API Configuration
+      description: Returns system configuration and available endpoints
+      operationId: getConfig
+      tags:
+        - System
+      responses:
+        '200':
+          description: Configuration retrieved successfully
+          headers:
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConfigResponse'
+
+  /deals:
+    get:
+      summary: List Deals
+      description: Returns lead/deal data from scored leads with enrichment information
+      operationId: getDeals
+      tags:
+        - Deals
+      parameters:
+        - name: bust
+          in: query
+          description: Optional cache-busting parameter
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Deals retrieved successfully
+          headers:
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DealsResponse'
+        '500':
+          description: Failed to read deals data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /tokens:
+    get:
+      summary: Token Usage
+      description: Returns token usage per agent with cost analysis and efficiency metrics
+      operationId: getTokens
+      tags:
+        - Tokens
+      parameters:
+        - name: bust
+          in: query
+          description: Optional cache-busting parameter
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Token usage retrieved successfully
+          headers:
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokensResponse'
+        '500':
+          description: Failed to read token data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /deployments:
+    get:
+      summary: Deployment History
+      description: Returns deployment history and current deployment status
+      operationId: getDeployments
+      tags:
+        - Deployments
+      parameters:
+        - name: bust
+          in: query
+          description: Optional cache-busting parameter
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Deployments retrieved successfully
+          headers:
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeploymentsResponse'
+        '500':
+          description: Failed to fetch deployments
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /stats:
+    get:
+      summary: System Statistics
+      description: Returns comprehensive system statistics
+      operationId: getStats
+      tags:
+        - Statistics
+      parameters:
+        - name: bust
+          in: query
+          description: Optional cache-busting parameter
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Statistics retrieved successfully
+          headers:
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatsResponse'
+        '500':
+          description: Failed to fetch stats
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    # Base Response
+    BaseResponse:
+      type: object
+      required:
+        - success
+        - timestamp
+      properties:
+        success:
+          type: boolean
+          description: Indicates if the request was successful
+        timestamp:
+          type: string
+          format: date-time
+          description: ISO 8601 timestamp of the response
+
+    # Error Response
+    ErrorResponse:
+      type: object
+      required:
+        - success
+        - error
+        - timestamp
+      properties:
+        success:
+          type: boolean
+          example: false
+        error:
+          type: string
+          description: Error message
+        details:
+          type: array
+          items:
+            type: string
+          description: Additional error details
+        code:
+          type: string
+          description: Error code for programmatic handling
+        timestamp:
+          type: string
+          format: date-time
+
+    # Health Response
+    HealthResponse:
+      allOf:
+        - $ref: '#/components/schemas/BaseResponse'
+        - type: object
+          required:
+            - status
+            - checks
+          properties:
+            status:
+              type: string
+              enum: [healthy, degraded, unhealthy]
+              example: healthy
+            uptime:
+              type: string
+              example: "99.9%"
+            version:
+              type: string
+              example: "2026.2.18"
+            checks:
+              type: object
+              properties:
+                api:
+                  type: string
+                  enum: [ok, error]
+                database:
+                  type: string
+                  enum: [ok, error]
+                agents:
+                  type: string
+                  enum: [ok, error]
+                cron:
+                  type: string
+                  enum: [ok, error]
+
+    # Agent
+    Agent:
+      type: object
+      required:
+        - name
+        - status
+        - tasks
+        - tokens
+        - lastActive
+        - role
+        - department
+        - activity
+        - emoji
+        - color
+      properties:
+        name:
+          type: string
+          example: Nexus
+        status:
+          type: string
+          enum: [active, idle, blocked]
+          example: active
+        tasks:
+          type: integer
+          minimum: 0
+          example: 5
+        tokens:
+          type: integer
+          minimum: 0
+          example: 75300
+        lastActive:
+          type: string
+          example: "2 min ago"
+        role:
+          type: string
+          example: Orchestrator
+        department:
+          type: string
+          enum: [executive, dev, content, growth, ops, bd]
+          example: executive
+        activity:
+          type: string
+          example: monitoring
+        emoji:
+          type: string
+          example: "🤖"
+        color:
+          type: string
+          example: cyan
+
+    # Agents Response
+    AgentsResponse:
+      allOf:
+        - $ref: '#/components/schemas/BaseResponse'
+        - type: object
+          required:
+            - agents
+            - summary
+          properties:
+            agents:
+              type: array
+              items:
+                $ref: '#/components/schemas/Agent'
+            summary:
+              type: object
+              required:
+                - total
+                - active
+                - idle
+                - blocked
+                - totalTokens
+              properties:
+                total:
+                  type: integer
+                  example: 22
+                active:
+                  type: integer
+                  example: 19
+                idle:
+                  type: integer
+                  example: 3
+                blocked:
+                  type: integer
+                  example: 0
+                totalTokens:
+                  type: integer
+                  example: 247500
+
+    # Task
+    Task:
+      type: object
+      required:
+        - id
+        - title
+        - status
+        - priority
+      properties:
+        id:
+          type: string
+          example: TASK-070
+        title:
+          type: string
+          example: Fix Complete Deployment Failure
+        assigned:
+          type: string
+          example: Code-1
+        due:
+          type: string
+          example: Feb 18
+        status:
+          type: string
+          enum: [pending, in_progress, completed, blocked, planned]
+          example: in_progress
+        priority:
+          type: string
+          enum: [P0, P1, P2, P3]
+          example: P0
+        description:
+          type: string
+          example: All pages and API endpoints return 404...
+
+    # Tasks Response
+    TasksResponse:
+      allOf:
+        - $ref: '#/components/schemas/BaseResponse'
+        - type: object
+          required:
+            - tasks
+            - total
+            - page
+            - pages
+            - summary
+          properties:
+            tasks:
+              type: array
+              items:
+                $ref: '#/components/schemas/Task'
+            total:
+              type: integer
+              example: 45
+            page:
+              type: integer
+              example: 1
+            pages:
+              type: integer
+              example: 1
+            summary:
+              type: object
+              properties:
+                total:
+                  type: integer
+                  example: 60
+                p0:
+                  type: integer
+                  example: 8
+                p1:
+                  type: integer
+                  example: 29
+                p2:
+                  type: integer
+                  example: 18
+                completed:
+                  type: integer
+                  example: 16
+                in_progress:
+                  type: integer
+                  example: 2
+                blocked:
+                  type: integer
+                  example: 42
+                pending:
+                  type: integer
+                  example: 0
+            source:
+              type: string
+              example: PENDING_TASKS.md
+            filters:
+              type: object
+              properties:
+                status:
+                  type: string
+                  nullable: true
+                priority:
+                  type: string
+                  nullable: true
+                agent:
+                  type: string
+                  nullable: true
+                search:
+                  type: string
+                  nullable: true
+
+    # Activity Log
+    ActivityLog:
+      type: object
+      required:
+        - timestamp
+        - agent
+        - type
+        - message
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          example: "2026-02-19T07:30:00.000Z"
+        agent:
+          type: string
+          example: Nexus
+        type:
+          type: string
+          enum: [system, task_complete, task_active, audit, idle, error, warning, info]
+          example: system
+        message:
+          type: string
+          example: API endpoint /api/logs-activity is working!
+        sessionId:
+          type: string
+          example: api-test
+
+    # Activity Logs Response
+    ActivityLogsResponse:
+      allOf:
+        - $ref: '#/components/schemas/BaseResponse'
+        - type: object
+          required:
+            - logs
+            - total
+          properties:
+            logs:
+              type: array
+              items:
+                $ref: '#/components/schemas/ActivityLog'
+            total:
+              type: integer
+              example: 10
+
+    # System Metrics
+    SystemMetrics:
+      type: object
+      properties:
+        uptime:
+          type: string
+          example: "99.9%"
+        status:
+          type: string
+          enum: [healthy, degraded, unhealthy]
+          example: healthy
+        version:
+          type: string
+          example: "2026.2.18"
+
+    # API Metrics
+    APIMetrics:
+      type: object
+      properties:
+        requests:
+          type: integer
+          example: 15234
+        avgResponseTime:
+          type: string
+          example: "45ms"
+        errorRate:
+          type: string
+          example: "0.1%"
+
+    # Agent Metrics
+    AgentMetrics:
+      type: object
+      properties:
+        total:
+          type: integer
+          example: 20
+        active:
+          type: integer
+          example: 11
+        busy:
+          type: integer
+          example: 4
+        idle:
+          type: integer
+          example: 5
+        avgSuccessRate:
+          type: string
+          example: "91%"
+
+    # Token Metrics
+    TokenMetrics:
+      type: object
+      properties:
+        dailyUsage:
+          type: integer
+          example: 1545592
+        dailyCost:
+          type: number
+          format: float
+          example: 0.43
+        trend:
+          type: string
+          enum: [stable, increasing, decreasing]
+          example: stable
+
+    # Metrics Response
+    MetricsResponse:
+      allOf:
+        - $ref: '#/components/schemas/BaseResponse'
+        - type: object
+          required:
+            - system
+            - api
+            - agents
+            - tokens
+          properties:
+            system:
+              $ref: '#/components/schemas/SystemMetrics'
+            api:
+              $ref: '#/components/schemas/APIMetrics'
+            agents:
+              $ref: '#/components/schemas/AgentMetrics'
+            tokens:
+              $ref: '#/components/schemas/TokenMetrics'
+
+    # Metric Type Response
+    MetricTypeResponse:
+      allOf:
+        - $ref: '#/components/schemas/BaseResponse'
+        - type: object
+          required:
+            - type
+            - data
+          properties:
+            type:
+              type: string
+              enum: [system, api, agents, tokens]
+            data:
+              type: object
+
+    # Endpoint Config
+    EndpointConfig:
+      type: object
+      required:
+        - path
+        - description
+        - methods
+      properties:
+        path:
+          type: string
+          example: /api/health
+        description:
+          type: string
+          example: Health check endpoint
+        methods:
+          type: array
+          items:
+            type: string
+            enum: [GET, POST, PUT, DELETE, OPTIONS]
+          example: [GET]
+        cacheTTL:
+          type: integer
+          example: 300
+        parameters:
+          type: array
+          items:
+            type: string
+          example: [bust]
+
+    # Config Response
+    ConfigResponse:
+      allOf:
+        - $ref: '#/components/schemas/BaseResponse'
+        - type: object
+          required:
+            - version
+            - environment
+            - features
+            - endpoints
+          properties:
+            version:
+              type: string
+              example: "2026.2.18"
+            environment:
+              type: string
+              enum: [production, staging, development]
+              example: production
+            features:
+              type: array
+              items:
+                type: string
+              example: [real-tasks, live-agents, token-tracking]
+            endpoints:
+              type: array
+              items:
+                $ref: '#/components/schemas/EndpointConfig'
+            caching:
+              type: object
+              properties:
+                strategy:
+                  type: string
+                  example: HTTP Cache-Control with ETag
+                defaultTTL:
+                  type: integer
+                  example: 60
+            validation:
+              type: object
+              properties:
+                enabled:
+                  type: boolean
+                  example: true
+            documentation:
+              type: object
+              properties:
+                url:
+                  type: string
+                  example: /docs/API_DOCUMENTATION.md
+                format:
+                  type: string
+                  example: Markdown
+
+    # Deal
+    Deal:
+      type: object
+      required:
+        - id
+        - company
+        - contact
+        - title
+        - score
+        - priority
+        - status
+        - action
+        - industry
+        - region
+        - lastActivity
+        - value
+      properties:
+        id:
+          type: string
+          example: deal_001
+        company:
+          type: string
+          example: PDAX
+        contact:
+          type: string
+          example: Nichel Gaba
+        title:
+          type: string
+          example: Founder & CEO
+        score:
+          type: integer
+          minimum: 0
+          maximum: 100
+          example: 70
+        priority:
+          type: string
+          enum: [P0, P1, P2, P3]
+          example: P1
+        status:
+          type: string
+          enum: [hot, warm, cold]
+          example: hot
+        action:
+          type: string
+          example: Contact within 3 days
+        industry:
+          type: string
+          example: crypto_exchange
+        region:
+          type: string
+          example: philippines
+        lastActivity:
+          type: string
+          format: date-time
+          example: "2026-02-19T07:30:00.000Z"
+        value:
+          type: string
+          enum: [enterprise, large, medium, small, unknown]
+          example: medium
+        accessibility:
+          type: integer
+          minimum: 0
+          maximum: 100
+          example: 35
+        accessibilityChannels:
+          type: array
+          items:
+            type: string
+          example: [email_pattern, linkedin_personal]
+        recommendations:
+          type: array
+          items:
+            type: string
+          example: [Priority outreach, High partnership potential]
+
+    # Deals Response
+    DealsResponse:
+      allOf:
+        - $ref: '#/components/schemas/BaseResponse'
+        - type: object
+          required:
+            - deals
+            - summary
+          properties:
+            deals:
+              type: array
+              items:
+                $ref: '#/components/schemas/Deal'
+            summary:
+              type: object
+              required:
+                - total
+                - hot
+                - warm
+                - cold
+                - averageScore
+                - averageAccessibility
+                - tierDistribution
+              properties:
+                total:
+                  type: integer
+                  example: 30
+                hot:
+                  type: integer
+                  example: 12
+                warm:
+                  type: integer
+                  example: 10
+                cold:
+                  type: integer
+                  example: 8
+                averageScore:
+                  type: integer
+                  example: 72
+                averageAccessibility:
+                  type: integer
+                  example: 58
+                tierDistribution:
+                  type: object
+                  properties:
+                    P0:
+                      type: integer
+                      example: 4
+                    P1:
+                      type: integer
+                      example: 10
+                    P2:
+                      type: integer
+                      example: 12
+                    P3:
+                      type: integer
+                      example: 4
+
+    # Token Agent
+    TokenAgent:
+      type: object
+      required:
+        - name
+        - tokens
+        - cost
+        - percentage
+      properties:
+        name:
+          type: string
+          example: DealFlow
+        tokens:
+          type: integer
+          example: 115300
+        cost:
+          type: number
+          format: float
+          example: 0.23
+        percentage:
+          type: number
+          format: float
+          example: 46.6
+        todayTokens:
+          type: integer
+          example: 17295
+        todayCost:
+          type: number
+          format: float
+          example: 0.03
+        efficiency:
+          type: string
+          enum: [high, medium, low]
+          example: high
+
+    # Tokens Response
+    TokensResponse:
+      allOf:
+        - $ref: '#/components/schemas/BaseResponse'
+        - type: object
+          required:
+            - source
+            - summary
+            - agents
+          properties:
+            source:
+              type: string
+              enum: [report_file, fallback, calculated, error_fallback]
+              example: report_file
+            summary:
+              type: object
+              required:
+                - totalTokens
+                - totalCost
+                - todayTokens
+                - todayCost
+                - projectedMonthly
+                - projectedMonthlyTokens
+              properties:
+                totalTokens:
+                  type: integer
+                  example: 247500
+                totalCost:
+                  type: number
+                  format: float
+                  example: 0.52
+                todayTokens:
+                  type: integer
+                  example: 37125
+                todayCost:
+                  type: number
+                  format: float
+                  example: 0.08
+                projectedMonthly:
+                  type: number
+                  format: float
+                  example: 15.60
+                projectedMonthlyTokens:
+                  type: integer
+                  example: 495000
+            agents:
+              type: array
+              items:
+                $ref: '#/components/schemas/TokenAgent'
+            dailyAverage:
+              type: integer
+              example: 17679
+            hourlyRate:
+              type: integer
+              example: 737
+
+    # Deployment
+    Deployment:
+      type: object
+      required:
+        - id
+        - created
+        - status
+        - target
+      properties:
+        id:
+          type: string
+          example: dep_001
+        url:
+          type: string
+          example: https://dashboard-ten-sand-20.vercel.app
+        created:
+          type: string
+          format: date-time
+          example: "2026-02-18T13:00:00Z"
+        status:
+          type: string
+          enum: [ready, building, error, canceled]
+          example: ready
+        target:
+          type: string
+          enum: [production, staging, preview]
+          example: production
+        commit:
+          type: string
+          example: e50ae964
+
+    # Deployments Response
+    DeploymentsResponse:
+      type: object
+      required:
+        - timestamp
+        - count
+        - latest
+        - history
+        - meta
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          example: "2026-02-19T07:30:00.000Z"
+        count:
+          type: integer
+          example: 47
+        latest:
+          $ref: '#/components/schemas/Deployment'
+        history:
+          type: array
+          items:
+            $ref: '#/components/schemas/Deployment'
+        meta:
+          type: object
+          properties:
+            project:
+              type: string
+              example: dashboard
+            platform:
+              type: string
+              example: vercel
+            region:
+              type: string
+              example: sin1
+
+    # Stats Response
+    StatsResponse:
+      type: object
+      required:
+        - timestamp
+        - status
+        - agents
+        - sessions
+        - messages
+        - tokens
+        - cost
+        - uptime
+        - deployments
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          example: "2026-02-19T07:30:00.000Z"
+        status:
+          type: string
+          enum: [healthy, degraded, unhealthy]
+          example: healthy
+        agents:
+          type: object
+          required:
+            - total
+            - active
+            - idle
+          properties:
+            total:
+              type: integer
+              example: 23
+            active:
+              type: integer
+              example: 18
+            idle:
+              type: integer
+              example: 5
+        sessions:
+          type: object
+          required:
+            - total
+            - active
+            - today
+          properties:
+            total:
+              type: integer
+              example: 269
+            active:
+              type: integer
+              example: 18
+            today:
+              type: integer
+              example: 42
+        messages:
+          type: object
+          required:
+            - total
+            - today
+          properties:
+            total:
+              type: integer
+              example: 1522
+            today:
+              type: integer
+              example: 186
+        tokens:
+          type: object
+          required:
+            - total
+            - today
+            - daily_limit
+            - percent_used
+          properties:
+            total:
+              type: integer
+              example: 442000
+            today:
+              type: integer
+              example: 58000
+            daily_limit:
+              type: integer
+              example: 1000000
+            percent_used:
+              type: integer
+              example: 42
+        cost:
+          type: object
+          required:
+            - total
+            - today
+          properties:
+            total:
+              type: number
+              format: float
+              example: 0.52
+            today:
+              type: number
+              format: float
+              example: 0.08
+        uptime:
+          type: object
+          required:
+            - percentage
+            - duration
+          properties:
+            percentage:
+              type: integer
+              example: 99
+            duration:
+              type: string
+              example: 14h
+        deployments:
+          type: object
+          required:
+            - total
+            - latest
+          properties:
+            total:
+              type: integer
+              example: 47
+            latest:
+              type: string
+              format: date-time
+              example: "2026-02-18T13:00:00Z"
+
+  # Security Definitions
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: API key for authentication (not currently required)
+
+  # Rate Limit Headers
+  headers:
+    X-RateLimit-Limit:
+      description: Request limit per minute
+      schema:
+        type: integer
+    X-RateLimit-Remaining:
+      description: Remaining requests in current window
+      schema:
+        type: integer
+    X-RateLimit-Reset:
+      description: Unix timestamp when the rate limit resets
+      schema:
+        type: integer
+
+# Global Security (public API - no auth required)
+security: []
+
+# Tags
+tags:
+  - name: System
+    description: System-level endpoints for health and configuration
+  - name: Agents
+    description: Agent management and status
+  - name: Tasks
+    description: Task management and filtering
+  - name: Logs
+    description: Activity logs and audit trails
+  - name: Metrics
+    description: System performance metrics
+  - name: Deals
+    description: Lead and deal management
+  - name: Tokens
+    description: Token usage and cost tracking
+  - name: Deployments
+    description: Deployment history and status
+  - name: Statistics
+    description: Comprehensive system statistics

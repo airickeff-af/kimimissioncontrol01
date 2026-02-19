@@ -1,0 +1,12 @@
+# Life Intern Cron Jobs
+# Add these to your crontab for automated check-ins
+# Timezone: Asia/Shanghai (GMT+8)
+
+# Morning check-in: 8:00 AM daily
+0 8 * * * cd /root/.openclaw/workspace && ./scripts/send-telegram.sh "$(./cron/life-intern-morning.sh)"
+
+# Evening wrap-up: 9:00 PM daily
+0 21 * * * cd /root/.openclaw/workspace && ./scripts/send-telegram.sh "$(./cron/life-intern-evening.sh)"
+
+# Weekly summary: Sunday 6:00 PM
+0 18 * * 0 cd /root/.openclaw/workspace && ./cron/life-intern-weekly.sh
