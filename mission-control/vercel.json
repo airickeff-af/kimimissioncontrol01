@@ -1,15 +1,16 @@
 {
   "version": 2,
   "rewrites": [
-    { "source": "/office", "destination": "/office.html" },
-    { "source": "/agents", "destination": "/agents.html" },
-    { "source": "/tasks", "destination": "/task-board.html" },
-    { "source": "/standup", "destination": "/standup.html" },
-    { "source": "/token-tracker", "destination": "/token-tracker.html" },
-    { "source": "/pie-radar", "destination": "/pie-radar.html" },
-    { "source": "/logs", "destination": "/logs-view.html" },
-    { "source": "/data", "destination": "/data-viewer.html" },
-    { "source": "/(.*)", "destination": "/index.html" }
+    { "source": "/office", "destination": "/dashboard/office.html" },
+    { "source": "/agents", "destination": "/dashboard/agents.html" },
+    { "source": "/tasks", "destination": "/dashboard/task-board.html" },
+    { "source": "/standup", "destination": "/dashboard/standup.html" },
+    { "source": "/token-tracker", "destination": "/dashboard/token-tracker.html" },
+    { "source": "/pie-radar", "destination": "/dashboard/pie-radar.html" },
+    { "source": "/logs", "destination": "/dashboard/logs-view.html" },
+    { "source": "/data", "destination": "/dashboard/data-viewer.html" },
+    { "source": "/", "destination": "/dashboard/index.html" },
+    { "source": "/(.*)", "destination": "/dashboard/$1" }
   ],
   "headers": [
     {
