@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="description" content="Mission Control HQ - AI Team Dashboard">
+    <meta name="theme-color" content="#2d1b4e">
+    <title>Mission Control HQ | AI Team Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0a0f;
+            color: #e0e0e0;
+            min-height: 100vh;
+        }
+        .header {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            padding: 1rem 2rem;
+            border-bottom: 2px solid #00d4ff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .logo { font-size: 1.5rem; font-weight: 700; color: #00d4ff; }
+        .nav { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+        .nav a {
+            color: #888;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+        }
+        .nav a:hover, .nav a.active { color: #00d4ff; background: rgba(0,212,255,0.1); }
+        .container { max-width: 1400px; margin: 0 auto; padding: 2rem; }
+        h1 { color: #00d4ff; margin-bottom: 2rem; }
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        .card {
+            background: linear-gradient(135deg, #1a1a2e, #0f0f1a);
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.2s;
+        }
+        .card:hover { border-color: #00d4ff; transform: translateY(-2px); }
+        .card h2 { color: #00d4ff; margin-bottom: 1rem; font-size: 1.25rem; }
+        .card p { color: #888; line-height: 1.6; }
+        .card a {
+            display: inline-block;
+            margin-top: 1rem;
+            color: #00d4ff;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .card a:hover { text-decoration: underline; }
+        .stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-top: 1rem; }
+        .stat { text-align: center; }
+        .stat-value { font-size: 1.5rem; font-weight: 700; color: #00d4ff; }
+        .stat-label { color: #666; font-size: 0.875rem; }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">🎯 Mission Control</div>
+        <nav class="nav">
+            <a href="/index.html" class="active">HQ</a>
+            <a href="/office.html">Office</a>
+            <a href="/agents.html">Agents</a>
+            <a href="/deals.html">DealFlow</a>
+            <a href="/token-tracker.html">Tokens</a>
+            <a href="/task-board.html">Tasks</a>
+            <a href="/standup.html">Standup</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <h1>🏠 Mission Control HQ</h1>
+        
+        <div class="dashboard-grid">
+            <div class="card">
+                <h2>🏢 Pixel Office</h2>
+                <p>Interactive Kairosoft-style office with 22 AI agents. Watch them work, call standups, and generate meeting minutes.</p>
+                <a href="office.html">Enter Office →</a>
+            </div>
+            
+            <div class="card">
+                <h2>👥 Agent Roster</h2>
+                <p>View all 23 AI agents, their status, token usage, tasks completed, and current activity.</p>
+                <a href="agents.html">View Agents →</a>
+                <div class="stats">
+                    <div class="stat">
+                        <div class="stat-value">23</div>
+                        <div class="stat-label">Total Agents</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">18</div>
+                        <div class="stat-label">Active</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2>📋 Task Board</h2>
+                <p>View and manage all tasks. Filter by priority (P0-P3) and status. Track completion progress.</p>
+                <a href="task-board.html">View Tasks →</a>
+                <div class="stats">
+                    <div class="stat">
+                        <div class="stat-value">47</div>
+                        <div class="stat-label">Total</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">12</div>
+                        <div class="stat-label">Pending</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2>📢 Daily Standup</h2>
+                <p>Generate daily standup notes with task summaries, blockers, and next actions.</p>
+                <a href="standup.html">Open Standup →</a>
+            </div>
+            
+            <div class="card">
+                <h2>🪙 Token Tracker</h2>
+                <p>Monitor API token usage across all agents. Track costs and usage patterns.</p>
+                <a href="token-tracker.html">View Tokens →</a>
+                <div class="stats">
+                    <div class="stat">
+                        <div class="stat-value">442K</div>
+                        <div class="stat-label">Tokens</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">$0.52</div>
+                        <div class="stat-label">Cost</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2>💼 DealFlow</h2>
+                <p>Track partnership opportunities and qualified leads with full contact information.</p>
+                <a href="deals.html">View Deals →</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
