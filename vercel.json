@@ -26,6 +26,8 @@
     { "source": "/api/pixel-office-data", "destination": "/api/pixel-office-data.js" },
     { "source": "/api/tokens-live", "destination": "/api/tokens-live.js" },
     { "source": "/pixel-office/assets/sprites/(.*)", "destination": "/pixel-office/assets/sprites/$1" },
+    { "source": "/pie-radar", "destination": "/pie-radar.html" },
+    { "source": "/token-tracker", "destination": "/token-tracker.html" },
     { "source": "/(.+\\.(html|css|js|png|jpg|jpeg|gif|svg|ico))", "destination": "/$1" },
     { "source": "/(.*)", "destination": "/index.html" }
   ],
