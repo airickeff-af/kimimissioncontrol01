@@ -9,7 +9,7 @@
 
 ## Overview
 
-The Mission Control API provides real-time access to agent status, tasks, system metrics, and activity logs. All endpoints return JSON responses with consistent formatting.
+The Mission Control API provides real-time access to agent status, tasks, system metrics, activity logs, deals, token usage, deployments, and system statistics. All endpoints return JSON responses with consistent formatting.
 
 ### Response Format
 
@@ -86,7 +86,7 @@ curl https://dashboard-ten-sand-20.vercel.app/api/health
 
 **Endpoint:** `GET /api/agents`
 
-Returns all 22 agents with real-time status, task counts, and token usage.
+Returns all 22+ agents with real-time status, task counts, and token usage.
 
 #### Request
 
@@ -276,7 +276,7 @@ curl "https://dashboard-ten-sand-20.vercel.app/api/tasks?limit=10&page=1"
 
 ### 4. Activity Logs
 
-**Endpoint:** `GET /api/logs/activity`
+**Endpoint:** `GET /api/logs-activity`
 
 Returns recent agent activity logs with optional filtering.
 
@@ -284,10 +284,10 @@ Returns recent agent activity logs with optional filtering.
 
 ```bash
 # Get default 100 logs
-curl https://dashboard-ten-sand-20.vercel.app/api/logs/activity
+curl https://dashboard-ten-sand-20.vercel.app/api/logs-activity
 
 # Limit results
-curl "https://dashboard-ten-sand-20.vercel.app/api/logs/activity?limit=10"
+curl "https://dashboard-ten-sand-20.vercel.app/api/logs-activity?limit=10"
 ```
 
 #### Query Parameters
@@ -308,7 +308,7 @@ curl "https://dashboard-ten-sand-20.vercel.app/api/logs/activity?limit=10"
       "timestamp": "2026-02-19T07:30:00.000Z",
       "agent": "Nexus",
       "type": "system",
-      "message": "API endpoint /api/logs/activity is working!",
+      "message": "API endpoint /api/logs-activity is working!",
       "sessionId": "api-test"
     },
     {
@@ -461,7 +461,7 @@ curl https://dashboard-ten-sand-20.vercel.app/api/config
       "methods": ["GET"]
     },
     {
-      "path": "/api/logs/activity",
+      "path": "/api/logs-activity",
       "description": "Activity logs",
       "methods": ["GET"]
     },
@@ -482,6 +482,290 @@ curl https://dashboard-ten-sand-20.vercel.app/api/config
     "logsTTL": 30
   },
   "timestamp": "2026-02-19T07:30:00.000Z"
+}
+```
+
+---
+
+### 7. Deals
+
+**Endpoint:** `GET /api/deals`
+
+Returns lead/deal data from scored leads with enrichment information.
+
+#### Request
+
+```bash
+curl https://dashboard-ten-sand-20.vercel.app/api/deals
+```
+
+#### Query Parameters
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `bust` | string | Optional cache-busting parameter |
+
+#### Response Example
+
+```json
+{
+  "success": true,
+  "deals": [
+    {
+      "id": "deal_001",
+      "company": "PDAX",
+      "contact": "Nichel Gaba",
+      "title": "Founder & CEO",
+      "score": 70,
+      "priority": "P1",
+      "status": "hot",
+      "action": "Contact within 3 days",
+      "industry": "crypto_exchange",
+      "region": "philippines",
+      "lastActivity": "2026-02-19T07:30:00.000Z",
+      "value": "medium",
+      "accessibility": 35,
+      "accessibilityChannels": ["email_pattern", "linkedin_personal"],
+      "recommendations": ["Priority outreach", "High partnership potential"]
+    }
+  ],
+  "summary": {
+    "total": 30,
+    "hot": 12,
+    "warm": 10,
+    "cold": 8,
+    "averageScore": 72,
+    "averageAccessibility": 58,
+    "tierDistribution": {
+      "P0": 4,
+      "P1": 10,
+      "P2": 12,
+      "P3": 4
+    }
+  },
+  "timestamp": "2026-02-19T07:30:00.000Z"
+}
+```
+
+#### Deal Status Values
+
+| Status | Description |
+|--------|-------------|
+| `hot` | High priority - immediate action required |
+| `warm` | Medium priority - contact within 1 week |
+| `cold` | Low priority - nurture over time |
+
+#### Deal Priority Tiers
+
+| Tier | Description |
+|------|-------------|
+| `P0` | Critical deals - contact immediately |
+| `P1` | High priority - contact within 3 days |
+| `P2` | Medium priority - contact within 1 week |
+| `P3` | Low priority - nurture campaign |
+
+#### Deal Value Categories
+
+| Value | Description |
+|-------|-------------|
+| `enterprise` | Large enterprise deal |
+| `large` | Large deal |
+| `medium` | Medium-sized deal |
+| `small` | Small deal |
+| `unknown` | Value not determined |
+
+---
+
+### 8. Tokens
+
+**Endpoint:** `GET /api/tokens`
+
+Returns token usage per agent with cost analysis and efficiency metrics.
+
+#### Request
+
+```bash
+curl https://dashboard-ten-sand-20.vercel.app/api/tokens
+```
+
+#### Query Parameters
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `bust` | string | Optional cache-busting parameter |
+
+#### Response Example
+
+```json
+{
+  "success": true,
+  "source": "report_file",
+  "summary": {
+    "totalTokens": 247500,
+    "totalCost": 0.52,
+    "todayTokens": 37125,
+    "todayCost": 0.08,
+    "projectedMonthly": 15.60,
+    "projectedMonthlyTokens": 495000
+  },
+  "agents": [
+    {
+      "name": "DealFlow",
+      "tokens": 115300,
+      "cost": 0.23,
+      "percentage": 46.6,
+      "todayTokens": 17295,
+      "todayCost": 0.03,
+      "efficiency": "high"
+    },
+    {
+      "name": "Nexus",
+      "tokens": 75300,
+      "cost": 0.15,
+      "percentage": 30.4,
+      "todayTokens": 11295,
+      "todayCost": 0.02,
+      "efficiency": "high"
+    }
+  ],
+  "dailyAverage": 17679,
+  "hourlyRate": 737,
+  "timestamp": "2026-02-19T07:30:00.000Z"
+}
+```
+
+#### Efficiency Levels
+
+| Level | Description |
+|-------|-------------|
+| `high` | >50,000 tokens - heavy usage agent |
+| `medium` | 20,000-50,000 tokens - standard usage |
+| `low` | <20,000 tokens - light usage |
+
+---
+
+### 9. Deployments
+
+**Endpoint:** `GET /api/deployments`
+
+Returns deployment history and current deployment status.
+
+#### Request
+
+```bash
+curl https://dashboard-ten-sand-20.vercel.app/api/deployments
+```
+
+#### Query Parameters
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `bust` | string | Optional cache-busting parameter |
+
+#### Response Example
+
+```json
+{
+  "timestamp": "2026-02-19T07:30:00.000Z",
+  "count": 47,
+  "latest": {
+    "id": "dep_1234567890",
+    "url": "https://dashboard-ten-sand-20.vercel.app",
+    "created": "2026-02-18T13:00:00Z",
+    "status": "ready",
+    "target": "production"
+  },
+  "history": [
+    {
+      "id": "dep_001",
+      "created": "2026-02-18T13:00:00Z",
+      "status": "ready",
+      "target": "production",
+      "commit": "e50ae964"
+    },
+    {
+      "id": "dep_002",
+      "created": "2026-02-18T12:00:00Z",
+      "status": "ready",
+      "target": "production",
+      "commit": "81e958d6"
+    }
+  ],
+  "meta": {
+    "project": "dashboard",
+    "platform": "vercel",
+    "region": "sin1"
+  }
+}
+```
+
+#### Deployment Status Values
+
+| Status | Description |
+|--------|-------------|
+| `ready` | Deployment is live and serving traffic |
+| `building` | Deployment is currently building |
+| `error` | Deployment failed |
+| `canceled` | Deployment was canceled |
+
+---
+
+### 10. Statistics
+
+**Endpoint:** `GET /api/stats`
+
+Returns comprehensive system statistics including agents, sessions, messages, tokens, cost, and uptime.
+
+#### Request
+
+```bash
+curl https://dashboard-ten-sand-20.vercel.app/api/stats
+```
+
+#### Query Parameters
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `bust` | string | Optional cache-busting parameter |
+
+#### Response Example
+
+```json
+{
+  "timestamp": "2026-02-19T07:30:00.000Z",
+  "status": "healthy",
+  "agents": {
+    "total": 23,
+    "active": 18,
+    "idle": 5
+  },
+  "sessions": {
+    "total": 269,
+    "active": 18,
+    "today": 42
+  },
+  "messages": {
+    "total": 1522,
+    "today": 186
+  },
+  "tokens": {
+    "total": 442000,
+    "today": 58000,
+    "daily_limit": 1000000,
+    "percent_used": 42
+  },
+  "cost": {
+    "total": 0.52,
+    "today": 0.08
+  },
+  "uptime": {
+    "percentage": 99,
+    "duration": "14h"
+  },
+  "deployments": {
+    "total": 47,
+    "latest": "2026-02-18T13:00:00Z"
+  }
 }
 ```
 
@@ -543,8 +827,13 @@ All endpoints support HTTP caching with the following headers:
 | `/api/health` | 300s | 600s |
 | `/api/agents` | 60s | 120s |
 | `/api/tasks` | 60s | 120s |
-| `/api/logs/activity` | 30s | 60s |
+| `/api/logs-activity` | 30s | 60s |
 | `/api/metrics` | 60s | 120s |
+| `/api/config` | 300s | 600s |
+| `/api/deals` | 60s | 120s |
+| `/api/tokens` | 60s | 120s |
+| `/api/deployments` | 120s | 240s |
+| `/api/stats` | 60s | 120s |
 
 ### Cache Busting
 
@@ -566,11 +855,52 @@ curl -H "If-None-Match: \"abc123\"" https://dashboard-ten-sand-20.vercel.app/api
 
 ## Rate Limiting
 
-Currently, no rate limiting is enforced. However, please be respectful:
+The Mission Control API implements rate limiting to ensure fair usage and system stability.
 
-- Cache responses when possible
-- Use conditional requests (ETag)
-- Avoid polling more than once per minute
+### Limits
+
+| Endpoint Category | Requests per Minute | Requests per Hour | Burst Limit |
+|-------------------|---------------------|-------------------|-------------|
+| Health Check (`/api/health`) | 60 | 3,600 | 10 |
+| Read Operations (`/api/agents`, `/api/tasks`, `/api/metrics`, `/api/stats`, `/api/deals`, `/api/tokens`, `/api/deployments`) | 120 | 7,200 | 20 |
+| Logs (`/api/logs-activity`) | 60 | 3,600 | 10 |
+| Config (`/api/config`) | 30 | 1,800 | 5 |
+
+### Rate Limit Headers
+
+Each response includes rate limit information:
+
+```
+X-RateLimit-Limit: 120
+X-RateLimit-Remaining: 118
+X-RateLimit-Reset: 1708329600
+```
+
+### Rate Limit Exceeded
+
+When rate limit is exceeded, the API returns:
+
+```json
+{
+  "success": false,
+  "error": "Rate limit exceeded",
+  "code": "RATE_LIMIT_EXCEEDED",
+  "retryAfter": 60,
+  "limit": 120,
+  "window": "1 minute",
+  "timestamp": "2026-02-19T07:30:00.000Z"
+}
+```
+
+**HTTP Status:** 429 Too Many Requests
+
+### Best Practices
+
+1. **Cache responses** when possible to reduce API calls
+2. **Use conditional requests** (ETag) to avoid unnecessary data transfer
+3. **Implement exponential backoff** when receiving 429 responses
+4. **Batch requests** instead of making many individual calls
+5. **Use webhooks** if available for real-time updates instead of polling
 
 ---
 
@@ -608,6 +938,30 @@ async function getTasks(filters?: TaskFilters): Promise<Task[]> {
   const data = await response.json();
   return data.tasks;
 }
+
+async function getDeals(): Promise<Deal[]> {
+  const response = await fetch(`${API_BASE}/deals`);
+  const data = await response.json();
+  return data.deals;
+}
+
+async function getTokenUsage(): Promise<TokenSummary> {
+  const response = await fetch(`${API_BASE}/tokens`);
+  const data = await response.json();
+  return data;
+}
+
+async function getDeployments(): Promise<Deployment[]> {
+  const response = await fetch(`${API_BASE}/deployments`);
+  const data = await response.json();
+  return data.history;
+}
+
+async function getStats(): Promise<SystemStats> {
+  const response = await fetch(`${API_BASE}/stats`);
+  const data = await response.json();
+  return data;
+}
 ```
 
 ### Python
@@ -630,6 +984,22 @@ def get_tasks(status=None, priority=None):
     
     response = requests.get(f'{API_BASE}/tasks', params=params)
     return response.json()['tasks']
+
+def get_deals():
+    response = requests.get(f'{API_BASE}/deals')
+    return response.json()['deals']
+
+def get_token_usage():
+    response = requests.get(f'{API_BASE}/tokens')
+    return response.json()
+
+def get_deployments():
+    response = requests.get(f'{API_BASE}/deployments')
+    return response.json()
+
+def get_stats():
+    response = requests.get(f'{API_BASE}/stats')
+    return response.json()
 ```
 
 ### cURL
@@ -645,12 +1015,32 @@ curl https://dashboard-ten-sand-20.vercel.app/api/agents
 curl "https://dashboard-ten-sand-20.vercel.app/api/tasks?priority=P0"
 
 # Get recent logs
-curl "https://dashboard-ten-sand-20.vercel.app/api/logs/activity?limit=5"
+curl "https://dashboard-ten-sand-20.vercel.app/api/logs-activity?limit=5"
+
+# Get deals
+curl https://dashboard-ten-sand-20.vercel.app/api/deals
+
+# Get token usage
+curl https://dashboard-ten-sand-20.vercel.app/api/tokens
+
+# Get deployments
+curl https://dashboard-ten-sand-20.vercel.app/api/deployments
+
+# Get system stats
+curl https://dashboard-ten-sand-20.vercel.app/api/stats
 ```
 
 ---
 
 ## Changelog
+
+### 2026.2.19
+- Added `/api/deals` endpoint for lead/deal data
+- Added `/api/tokens` endpoint for token usage per agent
+- Added `/api/deployments` endpoint for deployment history
+- Added `/api/stats` endpoint for system statistics
+- Completed rate limiting documentation
+- Created OpenAPI 3.0 specification
 
 ### 2026.2.18
 - Added input validation for all query parameters
