@@ -1,20 +1,22 @@
 {
   "version": 2,
-  "name": "mission-control-dashboard",
-  "outputDirectory": "dashboard",
+  "rewrites": [
+    { "source": "/office", "destination": "/office.html" },
+    { "source": "/agents", "destination": "/agents.html" },
+    { "source": "/tasks", "destination": "/task-board.html" },
+    { "source": "/standup", "destination": "/standup.html" },
+    { "source": "/token-tracker", "destination": "/token-tracker.html" },
+    { "source": "/pie-radar", "destination": "/pie-radar.html" },
+    { "source": "/logs", "destination": "/logs-view.html" },
+    { "source": "/data", "destination": "/data-viewer.html" },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ],
   "headers": [
     {
-      "source": "/api/(.*)",
+      "source": "/(.*)",
       "headers": [
-        { "key": "Access-Control-Allow-Origin", "value": "*" },
-        { "key": "Access-Control-Allow-Methods", "value": "GET, POST, PUT, DELETE, OPTIONS" },
-        { "key": "Access-Control-Allow-Headers", "value": "Content-Type, Authorization" }
+        { "key": "Cache-Control", "value": "s-maxage=0" }
       ]
     }
-  ],
-  "functions": {
-    "api/**/*.js": {
-      "maxDuration": 10
-    }
-  }
+  ]
 }
