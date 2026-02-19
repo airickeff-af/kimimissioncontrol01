@@ -1003,8 +1003,8 @@
         document.addEventListener('DOMContentLoaded', () => {
             fetchTasks();
             
-            // Auto-refresh every 30 seconds
-            autoRefreshInterval = setInterval(fetchTasks, 30000);
+            // Auto-refresh every 30 minutes
+            autoRefreshInterval = setInterval(fetchTasks, 30 * 60 * 1000);
         });
 
         // Cleanup on page unload

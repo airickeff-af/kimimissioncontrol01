@@ -457,7 +457,7 @@
         
         <div style="display: flex; align-items: center; gap: 1rem;">
             <span style="font-size: 0.875rem; color: var(--text-secondary);">🟢 Live Data</span>
-            <button class="btn" onclick="if(window.parent!==window){window.parent.location.reload()}else{window.location.reload()}" style="font-size: 0.5rem; padding: 0.5rem;">🔄</button>
+            <button class="btn" onclick="refreshLogs()" style="font-size: 0.5rem; padding: 0.5rem;">🔄</button>
         </div>
     </header>
 
@@ -707,27 +707,6 @@
                 logTable.style.display = 'table';
             }
         }
-                
-            } catch (error) {
-                // Clear the fallback timeout
-                clearTimeout(fetchTimeoutId);
-                fetchTimeoutId = null;
-                
-                console.error('Error fetching logs:', error);
-                loadingIndicator.style.display = 'none';
-                errorContainer.innerHTML = `
-                    <div class="error-message">
-                        ⚠️ Failed to load logs: ${error.message}. 
-                        <br>Using fallback data.
-                    </div>
-                `;
-                // Use mock data as fallback
-                allLogs = getMockLogs();
-                renderLogs();
-                updateStats();
-                logTable.style.display = 'table';
-            }
-        }
         
         // Render logs to table
         function renderLogs() {
@@ -819,10 +798,24 @@
             fetchLogs();
         }
         
-        // Refresh logs manually
-        function refreshLogs() {
-            fetchLogs();
+        // Refresh logs manually with loading state
+        async function refreshLogs() {
+            const refreshBtn = document.querySelector('.refresh-btn');
+            if (refreshBtn) {
+                refreshBtn.disabled = true;
+                refreshBtn.textContent = '⏳ Loading...';
+            }
+            
+            await fetchLogs();
+            
+            if (refreshBtn) {
+                refreshBtn.disabled = false;
+                refreshBtn.textContent = '🔄 Refresh Data';
+            }
         }
+        
+        // Make refreshLogs globally available
+        window.refreshLogs = refreshLogs;
         
         // Initial load
         document.addEventListener('DOMContentLoaded', () => {
@@ -830,10 +823,10 @@
             fetchLogs().catch(err => {
                 console.error('[LogsView] Initial fetch failed:', err);
             });
+            
+            // Auto-refresh every 30 minutes
+            setInterval(fetchLogs, 30 * 60 * 1000);
         });
-        
-        // Auto-refresh every 30 seconds
-        setInterval(fetchLogs, 30000);
         
         // Mock data fallback
         function getMockLogs() {

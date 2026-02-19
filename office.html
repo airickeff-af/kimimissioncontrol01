@@ -1079,6 +1079,31 @@
             });
         }
         
+        // Global refresh function
+        window.refreshData = async function() {
+            console.log('[Manual Refresh] Reloading all data...');
+            const refreshBtns = document.querySelectorAll('.btn-icon');
+            refreshBtns.forEach(btn => {
+                if (btn.textContent === '🔄') {
+                    btn.disabled = true;
+                    btn.textContent = '⏳';
+                }
+            });
+            
+            await refreshActivity();
+            await refreshTasks();
+            renderAllAgents();
+            updateLastUpdated();
+            showToast('✅ Data refreshed!');
+            
+            refreshBtns.forEach(btn => {
+                if (btn.textContent === '⏳') {
+                    btn.disabled = false;
+                    btn.textContent = '🔄';
+                }
+            });
+        };
+        
         // Initialize
         document.addEventListener('DOMContentLoaded', () => {
             renderActivityFeed();
@@ -1094,15 +1119,6 @@
                 updateLastUpdated();
             }, 30 * 60 * 1000);
             
-            // Global refresh function
-            window.refreshData = function() {
-                console.log('[Manual Refresh] Reloading all data...');
-                refreshActivity();
-                refreshTasks();
-                renderAllAgents();
-                updateLastUpdated();
-                showToast('✅ Data refreshed!');
-            };
             
             // Toast notification helper
             function showToast(message) {
