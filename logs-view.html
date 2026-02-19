@@ -466,19 +466,19 @@
         
         <div class="stats-bar">
             <div class="stat-card">
-                <div class="stat-value" style="color: var(--accent-cyan);" id="total-entries">-</div>
+                <div class="stat-value" style="color: var(--accent-cyan);" id="total-entries">...</div>
                 <div class="stat-label">Total Entries (All Time)</div>
             </div>
             <div class="stat-card">
-                <div class="stat-value" style="color: var(--accent-green);" id="user-messages">-</div>
+                <div class="stat-value" style="color: var(--accent-green);" id="user-messages">...</div>
                 <div class="stat-label">EricF Messages</div>
             </div>
             <div class="stat-card">
-                <div class="stat-value" style="color: var(--accent-purple);" id="agent-responses">-</div>
+                <div class="stat-value" style="color: var(--accent-purple);" id="agent-responses">...</div>
                 <div class="stat-label">Agent Responses</div>
             </div>
             <div class="stat-card">
-                <div class="stat-value" style="color: var(--accent-yellow);" id="tasks-completed">-</div>
+                <div class="stat-value" style="color: var(--accent-yellow);" id="tasks-completed">...</div>
                 <div class="stat-label">Tasks Completed</div>
             </div>
         </div>
@@ -527,6 +527,10 @@
         let allLogs = [];
         let showAll = false;
         const RECENT_COUNT = 50;
+        const FETCH_TIMEOUT = 5000; // 5 second timeout
+        let fetchTimeoutId = null;
+        
+        console.log('[LogsView] Script loaded, API_BASE_URL:', API_BASE_URL);
         
         // Format timestamp for display
         function formatTime(timestamp) {
@@ -594,15 +598,35 @@
             return words.slice(0, wordCount).join(' ') + '...';
         }
         
-        // Fetch logs from API
+        // Fetch logs from API with timeout
         async function fetchLogs() {
             const loadingIndicator = document.getElementById('loading-indicator');
             const logTable = document.getElementById('log-table');
             const errorContainer = document.getElementById('error-container');
             
+            // Clear any existing timeout
+            if (fetchTimeoutId) {
+                clearTimeout(fetchTimeoutId);
+            }
+            
             loadingIndicator.style.display = 'flex';
             logTable.style.display = 'none';
             errorContainer.innerHTML = '';
+            
+            // Set timeout to show "No data" after 5 seconds
+            fetchTimeoutId = setTimeout(() => {
+                console.warn('Fetch timeout reached - showing no data state');
+                loadingIndicator.style.display = 'none';
+                errorContainer.innerHTML = `
+                    <div class="error-message">
+                        ⚠️ Request timed out. Showing "No data" state.
+                    </div>
+                `;
+                allLogs = [];
+                renderLogs();
+                updateStats();
+                logTable.style.display = 'table';
+            }, FETCH_TIMEOUT);
             
             try {
                 const limit = showAll ? 1000 : RECENT_COUNT;
@@ -610,14 +634,33 @@
                 const apiUrl = API_BASE_URL 
                     ? `${API_BASE_URL}/api/logs/activity?limit=${limit}`
                     : `/api/logs/activity?limit=${limit}`;
-                const response = await fetch(apiUrl);
+                
+                // Create an AbortController for timeout handling
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), FETCH_TIMEOUT - 500);
+                
+                const response = await fetch(apiUrl, { signal: controller.signal });
+                clearTimeout(timeoutId);
+                
+                // Clear the fallback timeout since we got a response
+                clearTimeout(fetchTimeoutId);
+                fetchTimeoutId = null;
                 
                 if (!response.ok) {
                     throw new Error(`API returned ${response.status}`);
                 }
                 
                 const data = await response.json();
-                allLogs = data.logs || [];
+                
+                // Handle different response formats
+                if (data.logs && Array.isArray(data.logs)) {
+                    allLogs = data.logs;
+                } else if (Array.isArray(data)) {
+                    allLogs = data;
+                } else {
+                    console.warn('Unexpected API response format:', data);
+                    allLogs = [];
+                }
                 
                 renderLogs();
                 updateStats();
@@ -626,6 +669,10 @@
                 logTable.style.display = 'table';
                 
             } catch (error) {
+                // Clear the fallback timeout
+                clearTimeout(fetchTimeoutId);
+                fetchTimeoutId = null;
+                
                 console.error('Error fetching logs:', error);
                 loadingIndicator.style.display = 'none';
                 errorContainer.innerHTML = `
@@ -694,10 +741,10 @@
             const agentResponses = allLogs.filter(l => l.type === 'agent_response').length;
             const tasksCompleted = allLogs.filter(l => l.type === 'task_complete').length;
             
-            document.getElementById('total-entries').textContent = totalEntries;
-            document.getElementById('user-messages').textContent = userMessages;
-            document.getElementById('agent-responses').textContent = agentResponses;
-            document.getElementById('tasks-completed').textContent = tasksCompleted;
+            document.getElementById('total-entries').textContent = totalEntries || '0';
+            document.getElementById('user-messages').textContent = userMessages || '0';
+            document.getElementById('agent-responses').textContent = agentResponses || '0';
+            document.getElementById('tasks-completed').textContent = tasksCompleted || '0';
         }
         
         // Toggle between showing all logs and recent only
