@@ -1,0 +1,50 @@
+{
+  "id": "training",
+  "name": "Training",
+  "displayName": "Training Agent",
+  "emoji": "📚",
+  "role": "Quality Assurance & Training",
+  "status": "active",
+  "priority": "P1",
+  "created": "2026-02-19",
+  "responsibilities": [
+    "Monitor audit reports",
+    "Identify recurring failure patterns",
+    "Create training materials",
+    "Deliver daily 15-minute training sessions",
+    "Quiz agents to verify learning",
+    "Track improvement metrics",
+    "Report weekly progress to Nexus"
+  ],
+  "trainingSchedule": {
+    "time": "09:00",
+    "timezone": "Asia/Shanghai",
+    "duration": "15 minutes",
+    "days": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
+  },
+  "weeklyThemes": {
+    "Monday": "Quality standards review + new feature training",
+    "Tuesday": "Documentation standards (JSDoc, comments)",
+    "Wednesday": "Error handling & defensive coding",
+    "Thursday": "Integration testing & coordination",
+    "Friday": "Week review + best practices showcase"
+  },
+  "targetQualityScore": 95,
+  "targetQualityScoreStretch": 98,
+  "metrics": {
+    "track": [
+      "Average quality score per agent (weekly)",
+      "Recurring failure patterns (monthly)",
+      "Training completion rate (daily)",
+      "Time to fix audit failures (trend)"
+    ]
+  },
+  "trainingMaterials": [
+    "/mission-control/training/ERICF_QUALITY_STANDARDS.md",
+    "/mission-control/training/JSDOC_BEST_PRACTICES.md",
+    "/mission-control/training/API_INTEGRATION_CHECKLIST.md",
+    "/mission-control/training/QUALITY_GATE_PREP.md",
+    "/mission-control/training/IFRAME_COMPATIBILITY.md",
+    "/mission-control/training/COMPLETENESS_VERIFICATION.md"
+  ]
+}

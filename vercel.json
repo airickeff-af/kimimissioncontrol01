@@ -20,9 +20,11 @@
     { "source": "/api/deals", "destination": "/api/deals.js" },
     { "source": "/api/tokens", "destination": "/api/tokens.js" },
     { "source": "/api/deployments", "destination": "/api/deployments.js" },
-    { "source": "/api/logs/activity", "destination": "/api/logs-activity.js" },
-    { "source": "/api/logs/chat", "destination": "/api/logs-chat.js" },
-    { "source": "/api/logs", "destination": "/api/logs-index.js" },
+    { "source": "/api/logs/activity", "destination": "/api/logs/activity.js" },
+    { "source": "/api/logs/chat", "destination": "/api/logs/chat.js" },
+    { "source": "/api/logs", "destination": "/api/logs/index.js" },
+    { "source": "/api/pixel-office-data", "destination": "/api/pixel-office-data.js" },
+    { "source": "/api/tokens-live", "destination": "/api/tokens-live.js" },
     { "source": "/(.+\\.(html|css|js|png|jpg|jpeg|gif|svg|ico))", "destination": "/mission-control/dashboard/$1" },
     { "source": "/(.*)", "destination": "/mission-control/dashboard/index.html" }
   ],
@@ -32,6 +34,16 @@
       "includeFiles": [
         "api/PENDING_TASKS.md",
         "PENDING_TASKS.md"
+      ]
+    },
+    "api/pixel-office-data.js": {
+      "maxDuration": 10,
+      "includeFiles": [
+        "mission-control/dashboard/data/agents.json",
+        "PENDING_TASKS.md",
+        "ACTUAL_TOKEN_USAGE_REPORT.md",
+        "mission-control/TASK_QUEUE.json",
+        "logs/activity.json"
       ]
     },
     "api/**/*.js": {

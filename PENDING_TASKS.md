@@ -180,9 +180,14 @@ Commander: EricF
 ### **TASK-092: P0 - Isometric Pixel Office with Real Agent Activity**
 - **Assigned:** CodeMaster (Python Backend) + Forge + Pixel (Frontend/Visual)
 - **Due:** Feb 19, 9:00 AM (9 hours) - ACCELERATED
-- **Status:** 🟡 IN PROGRESS
+- **Status:** 🟡 IN PROGRESS - Pixel support tasks completed, awaiting Forge integration
 - **Priority:** P0 - CORE FEATURE
 - **Quality Gate:** 95/100 required
+
+**Sub-Task TASK-092-FIX:** Pixel sprite system polish
+- **Assigned:** Pixel (Subagent: agent:main:subagent:d625b6cd-e99f-4839-866d-36f46f83ab48)
+- **Status:** 🟢 IN PROGRESS
+- **Fixes:** Error handling, JSDoc, complete accessories
 
 **Audit Score: 72/100** ❌ (Below 95 minimum)
 
@@ -1215,18 +1220,53 @@ If not resolved by 5:00 PM, escalate to EricF immediately.
 - **Blockers:** None
 - **Next Step:** Start research
 
-### **TASK-009: Regional Leads - Singapore (30-50) - PRIORITY #1**
-- **Assigned:** DealFlow + Glasses
-- **Due:** Feb 20, 11:59 PM (2 days - ACCELERATED)
-- **Status:** 🟢 IN PROGRESS - START NOW
-- **Priority:** P1 - TIER 1 (Highest)
-- **Description:** Find 30-50 leads in Singapore
-- **Focus:** Family offices, VCs, crypto funds
-- **Why #1:** Major crypto hub, high AUM concentration
-- **Lead Criteria:** AUM >$50M, active in crypto/Web3
-- **Blockers:** None
-- **Next Step:** Start research immediately
-- **Full spec:** `/mission-control/delegation/REGIONAL_LEADS_DELEGATION.md`
+### **TASK-080: P0 - API Documentation (FIX IN PROGRESS)**
+- **Assigned:** Quill (Subagent: agent:main:subagent:3fa7ac55-6960-439b-9a3d-218ec1b5a9fa)
+- **Due:** Feb 19, 12:00 PM
+- **Status:** 🟢 IN PROGRESS - Fix spawned
+- **Priority:** P0
+- **Quality Gate:** 95/100 required
+
+**Audit Finding:** 94/100 - Missing 4 endpoints + OpenAPI spec
+
+**Fix Tasks:**
+- [ ] Add /api/deals endpoint documentation
+- [ ] Add /api/tokens endpoint documentation  
+- [ ] Add /api/deployments endpoint documentation
+- [ ] Add /api/stats endpoint documentation
+- [ ] Create /docs/openapi.yaml OpenAPI spec
+- [ ] Complete rate limiting section
+
+---
+
+### **TASK-009: P1 - Regional Leads - Singapore (30-50)**
+- **Assigned:** Scout (Subagent: agent:main:subagent:8d743a9b-8301-4d0d-b2d9-570e3b2c818e)
+- **Due:** Feb 20, 11:59 PM
+- **Status:** 🟢 IN PROGRESS - Research started
+- **Priority:** P1 - TIER 1
+
+**Focus:** Family offices, VCs, crypto funds
+**Criteria:** AUM >$50M, active in crypto/Web3
+
+---
+
+### **TASK-069: P1 - PIE Maximum Functionality Expansion**
+- **Assigned:** Gary (Subagent: agent:main:subagent:5ed24c27-5120-4ca5-a698-fc7ed6ea5650)
+- **Due:** Feb 23, 12:00 PM
+- **Status:** 🟢 IN PROGRESS
+- **Priority:** P1
+
+**Features:** Predictive lead scoring, market timing, sentiment analysis, regulatory monitoring, talent tracking, M&A prediction
+
+---
+
+### **TASK-064: P1 - ColdCall Automated Outreach Sequences**
+- **Assigned:** Larry (Subagent: agent:main:subagent:8df192c4-7a59-4027-b041-e0637d25c11d)
+- **Due:** Feb 22, 5:00 PM
+- **Status:** 🟢 IN PROGRESS
+- **Priority:** P1
+
+**Features:** 5-touch sequences, merge fields, auto-scheduling, tracking dashboard
 
 ### **TASK-008: Regional Leads - Hong Kong (30-50) - PRIORITY #2**
 - **Assigned:** Scout + DealFlow

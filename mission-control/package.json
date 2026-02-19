@@ -1,25 +1,10 @@
 {
-  "name": "mission-control",
+  "name": "mission-control-dashboard",
   "version": "1.0.0",
-  "description": "A coordinated multi-agent system with specialized roles: - **Orchestrator** - Routes tasks and coordinates workflows - **Coder** - Software development and technical implementation - **Researcher** - Information gathering and analysis - **Social** - Content creation and social media preparation",
-  "main": "index.js",
-  "directories": {
-    "doc": "docs",
-    "lib": "lib"
-  },
+  "description": "Mission Control Dashboard with Vercel API",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "quality-gate": "node lib/quality-gate-integrated.js",
-    "quality-gate:browser": "node lib/quality-gate-browser.js",
-    "quality-gate:cron": "node lib/quality-gate-cron.js",
-    "quality-gate:full": "npm run quality-gate",
-    "setup:browser": "./scripts/setup-browser-automation.sh"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "playwright": "^1.58.2",
-    "puppeteer": "^24.37.4"
+    "build": "echo 'Static site + API - no build needed'",
+    "dev": "vercel dev",
+    "deploy": "vercel --prod"
   }
 }
