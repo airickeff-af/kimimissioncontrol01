@@ -3,38 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Pixel Office | Living Pixel Command Center</title>
+    <title>🎮 Pixel Office | Living Command Center</title>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
     <style>
-        * { 
-            margin: 0; 
-            padding: 0; 
-            box-sizing: border-box; 
-            image-rendering: pixelated;
-            image-rendering: -moz-crisp-edges;
-            image-rendering: crisp-edges;
-        }
-        
         :root {
             --bg-primary: #0a0a0f;
             --bg-secondary: #12121a;
             --bg-card: #1a1a2e;
-            --accent-primary: #00d4ff;
+            --panel-border: #e94560;
+            --panel-shadow: #533483;
+            --text-light: #eaeaea;
+            --text-secondary: #888;
             --accent-cyan: #00d4ff;
             --accent-green: #22c55e;
             --accent-yellow: #fbbf24;
-            --accent-orange: #f97316;
-            --accent-purple: #a855f7;
-            --accent-pink: #ff2a6d;
-            --text-primary: #eaeaea;
-            --text-secondary: #888;
-            --border: #2d2d44;
+            --accent-pink: #ff6b9d;
         }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; image-rendering: pixelated; }
         
         body {
             font-family: 'VT323', monospace;
             background: var(--bg-primary);
-            color: var(--text-primary);
+            color: var(--text-light);
             min-height: 100vh;
             overflow: hidden;
             touch-action: none;
@@ -43,10 +34,7 @@
         body::before {
             content: '';
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0; width: 100%; height: 100%;
             background-image: 
                 linear-gradient(rgba(0, 212, 255, 0.02) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(0, 212, 255, 0.02) 1px, transparent 1px);
@@ -55,36 +43,26 @@
             z-index: 0;
         }
         
-        /* Header */
         .header {
             background: var(--bg-secondary);
-            border-bottom: 2px solid var(--accent-primary);
+            border-bottom: 2px solid var(--accent-cyan);
             padding: 0 1rem;
             height: 50px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
+            top: 0; left: 0; right: 0;
             z-index: 1000;
         }
         
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
+        .brand { display: flex; align-items: center; gap: 0.5rem; }
         
         .logo {
-            width: 32px;
-            height: 32px;
-            background: var(--accent-primary);
-            border: 2px solid var(--text-primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            width: 32px; height: 32px;
+            background: var(--accent-cyan);
+            border: 2px solid var(--text-light);
+            display: flex; align-items: center; justify-content: center;
             font-size: 1rem;
         }
         
@@ -98,223 +76,123 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            font-size: 0.8rem;
-            padding: 0.25rem 0.75rem;
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 4px;
+            font-size: 0.7rem;
         }
         
-        .connection-status.connected { border-color: var(--accent-green); color: var(--accent-green); }
-        .connection-status.connecting { border-color: var(--accent-yellow); color: var(--accent-yellow); }
-        .connection-status.error { border-color: var(--accent-pink); color: var(--accent-pink); }
-        
         .status-dot {
-            width: 8px;
-            height: 8px;
+            width: 8px; height: 8px;
             border-radius: 50%;
-            background: currentColor;
-            animation: pulse 1.5s infinite;
+            background: var(--accent-green);
+            animation: pulse 2s infinite;
         }
         
         @keyframes pulse {
             0%, 100% { opacity: 1; }
-            50% { opacity: 0.4; }
-        }
-        
-        /* Main Container */
-        .main-container {
-            position: fixed;
-            top: 50px;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            display: flex;
-        }
-        
-        .canvas-container {
-            flex: 1;
-            position: relative;
-            overflow: hidden;
-            background: linear-gradient(180deg, #0a0a0f 0%, #12121a 100%);
+            50% { opacity: 0.5; }
         }
         
         #officeCanvas {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+            position: fixed;
+            top: 50px; left: 0; right: 0; bottom: 0;
+            width: 100%; height: calc(100% - 50px);
+            background: linear-gradient(135deg, #1a1a2e 0%, #0a0a0f 100%);
             cursor: grab;
         }
         
         #officeCanvas:active { cursor: grabbing; }
         
-        /* Controls */
-        .controls-overlay {
-            position: absolute;
-            bottom: 15px;
-            left: 15px;
+        .controls {
+            position: fixed;
+            bottom: 20px; left: 20px;
             display: flex;
             gap: 8px;
             z-index: 100;
         }
         
-        .control-btn {
-            width: 40px;
-            height: 40px;
+        .btn {
+            padding: 10px 16px;
             background: var(--bg-card);
             border: 2px solid var(--accent-cyan);
-            color: var(--text-primary);
-            font-size: 1rem;
+            border-radius: 4px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.5rem;
+            color: var(--text-light);
             cursor: pointer;
-            transition: all 0.15s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            transition: all 0.1s;
         }
         
-        .control-btn:hover {
+        .btn:hover { 
             background: var(--accent-cyan);
-            color: var(--bg-primary);
+            color: #000;
         }
         
-        /* Side Panel */
-        .side-panel {
-            width: 300px;
-            background: var(--bg-secondary);
-            border-left: 2px solid var(--border);
-            display: flex;
-            flex-direction: column;
-            z-index: 50;
-            transition: transform 0.3s ease;
-        }
-        
-        .panel-section {
-            padding: 0.75rem;
-            border-bottom: 1px solid var(--border);
-        }
-        
-        .panel-title {
-            font-family: 'Press Start 2P', cursive;
-            font-size: 0.5rem;
-            color: var(--accent-cyan);
-            margin-bottom: 0.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .agent-list {
-            max-height: 180px;
-            overflow-y: auto;
-        }
-        
-        .agent-list-item {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.4rem;
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            margin-bottom: 0.4rem;
-            cursor: pointer;
-            transition: all 0.15s;
-            font-size: 0.9rem;
-        }
-        
-        .agent-list-item:hover {
-            border-color: var(--accent-cyan);
-        }
-        
-        .agent-list-item.active {
-            border-color: var(--accent-green);
-            background: rgba(34, 197, 94, 0.1);
-        }
-        
-        .agent-list-avatar {
-            width: 28px;
-            height: 28px;
-            border-radius: 3px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.9rem;
-            border: 1px solid var(--border);
-        }
-        
-        .agent-list-info { flex: 1; }
-        .agent-list-name { font-weight: bold; }
-        .agent-list-role { font-size: 0.75rem; color: var(--text-secondary); }
-        
-        .agent-list-status {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--accent-green);
-        }
-        
-        .activity-feed {
-            max-height: 200px;
-            overflow-y: auto;
-        }
-        
-        .activity-item {
-            display: flex;
-            gap: 0.4rem;
-            padding: 0.4rem;
-            background: var(--bg-card);
-            border-left: 2px solid var(--accent-cyan);
-            margin-bottom: 0.4rem;
-            font-size: 0.85rem;
-            animation: slideIn 0.3s ease-out;
-        }
-        
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateX(-10px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-        
-        .activity-agent { color: var(--accent-cyan); font-weight: bold; }
-        .activity-time { font-size: 0.7rem; color: var(--text-secondary); margin-left: auto; }
-        
-        .quick-actions {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 0.4rem;
-        }
-        
-        .action-btn {
-            padding: 0.5rem;
-            background: var(--bg-card);
-            border: 1px solid var(--accent-primary);
-            color: var(--text-primary);
-            font-family: 'VT323', monospace;
-            font-size: 0.85rem;
-            cursor: pointer;
-        }
-        
-        .action-btn:hover { background: var(--accent-primary); }
-        
-        .tooltip {
-            position: absolute;
-            background: var(--bg-card);
+        .stats-overlay {
+            position: fixed;
+            top: 60px; right: 20px;
+            background: rgba(10, 10, 15, 0.9);
             border: 2px solid var(--accent-cyan);
-            padding: 0.5rem;
-            pointer-events: none;
-            z-index: 200;
-            font-size: 0.8rem;
-            max-width: 180px;
-            display: none;
-        }
-        
-        .tooltip-title {
+            border-radius: 8px;
+            padding: 12px 16px;
             font-family: 'Press Start 2P', cursive;
             font-size: 0.5rem;
-            color: var(--accent-cyan);
+            z-index: 100;
+            min-width: 140px;
         }
         
-        /* Loading Screen */
-        .loading-screen {
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 6px;
+        }
+        
+        .stat-row:last-child { margin-bottom: 0; }
+        
+        /* Tooltip */
+        .agent-tooltip {
+            position: fixed;
+            background: rgba(10, 10, 15, 0.95);
+            border: 2px solid var(--accent-cyan);
+            border-radius: 8px;
+            padding: 12px;
+            pointer-events: none;
+            z-index: 1001;
+            display: none;
+            min-width: 180px;
+            box-shadow: 0 4px 20px rgba(0, 212, 255, 0.3);
+        }
+        
+        .tooltip-name {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.55rem;
+            color: var(--accent-cyan);
+            margin-bottom: 6px;
+        }
+        
+        .tooltip-role {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+        
+        .tooltip-task {
+            font-size: 0.8rem;
+            color: var(--text-light);
+            margin-bottom: 6px;
+        }
+        
+        .tooltip-status {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.5rem;
+            font-family: 'Press Start 2P', cursive;
+        }
+        
+        .status-idle { background: #666; }
+        .status-working { background: var(--accent-green); color: #000; }
+        .status-walking { background: var(--accent-yellow); color: #000; }
+        
+        .loading-overlay {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
             background: var(--bg-primary);
@@ -322,1044 +200,641 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            z-index: 9999;
-            transition: opacity 0.3s;
+            z-index: 2000;
+            transition: opacity 0.5s;
         }
         
-        .loading-screen.hidden { opacity: 0; pointer-events: none; }
+        .loading-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .loading-text {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.8rem;
+            color: var(--accent-cyan);
+            margin-bottom: 20px;
+        }
         
         .loading-bar {
-            width: 200px;
-            height: 6px;
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            margin-top: 1rem;
+            width: 300px;
+            height: 20px;
+            background: var(--bg-card);
+            border: 2px solid var(--accent-cyan);
+            border-radius: 4px;
+            overflow: hidden;
         }
         
-        .loading-progress {
+        .loading-fill {
             height: 100%;
             background: var(--accent-cyan);
             width: 0%;
-            transition: width 0.2s;
+            transition: width 0.3s;
         }
         
-        /* Mobile */
-        .mobile-toggle {
-            display: none;
-            position: absolute;
-            top: 70px;
-            right: 15px;
-            width: 40px;
-            height: 40px;
-            background: var(--bg-card);
-            border: 2px solid var(--accent-cyan);
-            color: var(--text-primary);
-            z-index: 100;
-        }
-        
-        @media (max-width: 900px) {
-            .side-panel {
-                position: fixed;
-                right: 0;
-                top: 50px;
-                bottom: 0;
-                transform: translateX(100%);
-                width: 260px;
-            }
-            .side-panel.open { transform: translateX(0); }
-            .mobile-toggle { display: flex; align-items: center; justify-content: center; }
+        @media (max-width: 768px) {
+            .controls { bottom: 10px; left: 10px; }
+            .btn { padding: 8px 12px; font-size: 0.45rem; }
+            .stats-overlay { top: 60px; right: 10px; font-size: 0.45rem; }
         }
     </style>
 </head>
 <body>
-    <!-- Loading Screen -->
-    <div class="loading-screen" id="loadingScreen">
-        <div style="font-size: 3rem;">🏢</div>
-        <div style="font-family: 'Press Start 2P'; font-size: 0.7rem; margin-top: 0.5rem;">LOADING PIXEL OFFICE...</div>
-        <div class="loading-bar">
-            <div class="loading-progress" id="loadingProgress"></div>
-        </div>
-        <div id="loadingStatus" style="margin-top: 0.5rem; font-size: 0.8rem; color: var(--text-secondary);">Initializing...</div>
-    </div>
-
     <header class="header">
         <div class="brand">
-            <div class="logo">🏢</div>
+            <div class="logo">🎮</div>
             <div class="brand-text">
                 <h1>PIXEL OFFICE</h1>
             </div>
         </div>
-        
-        <div class="connection-status" id="connectionStatus">
+        <div class="connection-status">
             <span class="status-dot"></span>
-            <span id="connectionText">Connecting...</span>
+            <span>LIVE</span>
         </div>
-        
-        <button class="control-btn" onclick="location.href='mission-control/dashboard/office.html'" title="Back to Dashboard">🏠</button>
     </header>
-
-    <div class="main-container">
-        <div class="canvas-container" id="canvasContainer">
-            <canvas id="officeCanvas"></canvas>
-            
-            <div class="controls-overlay">
-                <button class="control-btn" onclick="zoomIn()" title="Zoom In">+</button>
-                <button class="control-btn" onclick="zoomOut()" title="Zoom Out">−</button>
-                <button class="control-btn" onclick="resetView()" title="Reset View">⌂</button>
-                <button class="control-btn" onclick="toggleStandup()" title="Standup">📢</button>
-            </div>
-            
-            <button class="mobile-toggle" id="mobileToggle" onclick="togglePanel()">☰</button>
-            
-            <div class="tooltip" id="tooltip">
-                <div class="tooltip-title" id="tooltipTitle"></div>
-                <div id="tooltipRole"></div>
-                <div style="color: var(--accent-yellow); margin-top: 0.25rem;" id="tooltipTask"></div>
-            </div>
-        </div>
-        
-        <aside class="side-panel" id="sidePanel">
-            <div class="panel-section">
-                <div class="panel-title">👥 AGENTS (<span id="agentCount">0</span>)</div>
-                <div class="agent-list" id="agentList"></div>
-            </div>
-            
-            <div class="panel-section" style="flex: 1; overflow: hidden;">
-                <div class="panel-title">📡 LIVE ACTIVITY</div>
-                <div class="activity-feed" id="activityFeed"></div>
-            </div>
-            
-            <div class="panel-section">
-                <div class="panel-title">⚡ ACTIONS</div>
-                <div class="quick-actions">
-                    <button class="action-btn" onclick="callStandup()">📢 Standup</button>
-                    <button class="action-btn" onclick="syncWithAPI()">🔄 Sync</button>
-                    <button class="action-btn" onclick="findAgent()">🔍 Find</button>
-                    <button class="action-btn" onclick="toggleParticles()">✨ FX</button>
-                </div>
-            </div>
-        </aside>
+    
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-text">🎮 LOADING SPRITES...</div>
+        <div class="loading-bar"><div class="loading-fill" id="loadingFill"></div></div>
+        <div style="margin-top:10px;font-size:0.6rem;color:var(--text-secondary)" id="loadingText">0/22</div>
+    </div>
+    
+    <canvas id="officeCanvas"></canvas>
+    
+    <div class="controls">
+        <button class="btn" onclick="resetCamera()">🎯 RESET</button>
+        <button class="btn" onclick="toggleDebug()">🐛 DEBUG</button>
+    </div>
+    
+    <div class="stats-overlay">
+        <div class="stat-row"><span>FPS:</span><span id="fpsCounter">60</span></div>
+        <div class="stat-row"><span>AGENTS:</span><span>22</span></div>
+        <div class="stat-row"><span>ACTIVE:</span><span id="activeCounter">0</span></div>
+    </div>
+    
+    <div class="agent-tooltip" id="tooltip">
+        <div class="tooltip-name" id="tooltipName">Agent</div>
+        <div class="tooltip-role" id="tooltipRole">Role</div>
+        <div class="tooltip-task" id="tooltipTask">Task</div>
+        <span class="tooltip-status" id="tooltipStatus">Idle</span>
     </div>
 
     <script>
         // ============================================
-        // PIXEL OFFICE v2.0 - REAL API INTEGRATION
+        // AGENT DATA - All 22 agents with tasks
         // ============================================
-        
-        const canvas = document.getElementById('officeCanvas');
-        const ctx = canvas.getContext('2d');
-        const container = document.getElementById('canvasContainer');
-        
-        ctx.imageSmoothingEnabled = false;
-        
-        // API Configuration
-        const API_CONFIG = {
-            baseUrl: '', // Same origin
-            endpoints: {
-                agents: '/api/agents',
-                tasks: '/api/tasks',
-                leads: '/api/leads',
-                system: '/api/system/status',
-                events: '/api/system/events'
-            },
-            refreshInterval: 30000,
-            retryInterval: 5000
-        };
-        
-        // Game State
-        const state = {
-            zoom: 1,
-            panX: 0,
-            panY: 0,
-            isDragging: false,
-            lastMouseX: 0,
-            lastMouseY: 0,
-            soundEnabled: true,
-            particlesEnabled: true,
-            standupMode: false,
-            lastTime: 0,
-            hoveredAgent: null,
-            selectedAgent: null,
-            apiConnected: false,
-            lastApiFetch: 0
-        };
-        
-        // Isometric constants
-        const TILE_WIDTH = 48;
-        const TILE_HEIGHT = 24;
-        const GRID_SIZE = 20;
-        
-        // Office data
-        const office = {
-            tiles: [],
-            furniture: [],
-            agents: [],
-            particles: [],
-            standupSeats: []
-        };
-        
-        // Default agents data (fallback)
-        const defaultAgents = [
-            { id: 'ericf', name: 'EricF', role: 'Commander', type: 'human', color: '#ffd700', sprite: '👑', x: 10, y: 10, task: 'Overseeing operations', status: 'active' },
-            { id: 'nexus', name: 'Nexus', role: 'Orchestrator', type: 'ai', color: '#00d4ff', sprite: '🤖', x: 8, y: 8, task: 'Coordinating agents', status: 'active' },
-            { id: 'codemaster', name: 'CodeMaster', role: 'Backend Lead', type: 'ai', color: '#22c55e', sprite: '💻', x: 6, y: 6, task: 'API architecture', status: 'active' },
-            { id: 'code1', name: 'Code-1', role: 'Backend Dev', type: 'ai', color: '#22c55e', sprite: '⚡', x: 5, y: 7, task: 'Database optimization', status: 'active' },
-            { id: 'code2', name: 'Code-2', role: 'Backend Dev', type: 'ai', color: '#22c55e', sprite: '🔧', x: 7, y: 5, task: 'Fixing API errors', status: 'active' },
-            { id: 'code3', name: 'Code-3', role: 'Backend Dev', type: 'ai', color: '#22c55e', sprite: '🔌', x: 6, y: 8, task: 'Testing endpoints', status: 'active' },
-            { id: 'forge', name: 'Forge', role: 'UI/Frontend Lead', type: 'ai', color: '#f97316', sprite: '🔨', x: 12, y: 6, task: 'Design system', status: 'active' },
-            { id: 'forge2', name: 'Forge-2', role: 'UI Developer', type: 'ai', color: '#f97316', sprite: '🎨', x: 13, y: 5, task: 'Component library', status: 'active' },
-            { id: 'forge3', name: 'Forge-3', role: 'UI Developer', type: 'ai', color: '#f97316', sprite: '✨', x: 11, y: 7, task: 'Theme integration', status: 'active' },
-            { id: 'pixel', name: 'Pixel', role: 'Designer', type: 'ai', color: '#a855f7', sprite: '🎨', x: 14, y: 6, task: 'Creating assets', status: 'active' },
-            { id: 'glasses', name: 'Glasses', role: 'Researcher', type: 'ai', color: '#3b82f6', sprite: '🔍', x: 4, y: 10, task: 'Market analysis', status: 'active' },
-            { id: 'quill', name: 'Quill', role: 'Writer', type: 'ai', color: '#ec4899', sprite: '📝', x: 3, y: 12, task: 'Documentation', status: 'active' },
-            { id: 'gary', name: 'Gary', role: 'Marketing', type: 'ai', color: '#f59e0b', sprite: '📢', x: 16, y: 8, task: 'Campaign planning', status: 'active' },
-            { id: 'larry', name: 'Larry', role: 'Social Media', type: 'ai', color: '#06b6d4', sprite: '📱', x: 17, y: 9, task: 'Content scheduling', status: 'active' },
-            { id: 'sentry', name: 'Sentry', role: 'DevOps', type: 'ai', color: '#ef4444', sprite: '🛡️', x: 9, y: 12, task: 'Server monitoring', status: 'active' },
-            { id: 'audit', name: 'Audit', role: 'QA Lead', type: 'ai', color: '#8b5cf6', sprite: '🔍', x: 8, y: 14, task: 'Quality assurance', status: 'active' },
-            { id: 'cipher', name: 'Cipher', role: 'Security', type: 'ai', color: '#6366f1', sprite: '🔐', x: 10, y: 14, task: 'Security audit', status: 'active' },
-            { id: 'dealflow', name: 'DealFlow', role: 'Lead Gen', type: 'ai', color: '#10b981', sprite: '🤝', x: 15, y: 12, task: 'Lead research', status: 'active' },
-            { id: 'coldcall', name: 'ColdCall', role: 'Outreach', type: 'ai', color: '#f97316', sprite: '📞', x: 16, y: 13, task: 'Cold calling', status: 'active' },
-            { id: 'scout', name: 'Scout', role: 'Intel', type: 'ai', color: '#3b82f6', sprite: '🔭', x: 5, y: 14, task: 'Competitor intel', status: 'active' },
-            { id: 'pie', name: 'PIE', role: 'Predictive AI', type: 'ai', color: '#8b5cf6', sprite: '🧠', x: 10, y: 4, task: 'Data analysis', status: 'active' }
+        const AGENTS_DATA = [
+            { id: 'ericf', name: 'EricF', role: 'Commander', color: '#ffd700', x: -8, y: -6, task: 'Strategic Planning' },
+            { id: 'nexus', name: 'Nexus', role: 'Orchestrator', color: '#00d4ff', x: 4, y: -6, task: 'System Coordination' },
+            { id: 'codemaster', name: 'CodeMaster', role: 'Backend Lead', color: '#22c55e', x: -7, y: 2, task: 'API Architecture' },
+            { id: 'code-1', name: 'Code-1', role: 'Backend', color: '#22c55e', x: -4, y: 2, task: 'Database Optimization' },
+            { id: 'code-2', name: 'Code-2', role: 'Backend', color: '#22c55e', x: -7, y: 4.5, task: 'Microservices' },
+            { id: 'code-3', name: 'Code-3', role: 'Backend', color: '#22c55e', x: -4, y: 4.5, task: 'Security Patches' },
+            { id: 'forge', name: 'Forge', role: 'UI Lead', color: '#f97316', x: 3, y: -3, task: 'Component Library' },
+            { id: 'forge-2', name: 'Forge-2', role: 'UI', color: '#f97316', x: 6, y: -3, task: 'Responsive Design' },
+            { id: 'forge-3', name: 'Forge-3', role: 'UI', color: '#f97316', x: 3, y: -0.5, task: 'Animation System' },
+            { id: 'pixel', name: 'Pixel', role: 'Designer', color: '#a855f7', x: 6, y: -0.5, task: 'Sprite Creation' },
+            { id: 'glasses', name: 'Glasses', role: 'Researcher', color: '#3b82f6', x: 3, y: 2, task: 'Market Analysis' },
+            { id: 'quill', name: 'Quill', role: 'Writer', color: '#ec4899', x: 6, y: 2, task: 'Documentation' },
+            { id: 'gary', name: 'Gary', role: 'Marketing', color: '#f59e0b', x: -2, y: 6, task: 'Campaign Strategy' },
+            { id: 'larry', name: 'Larry', role: 'Social', color: '#06b6d4', x: 1, y: 6, task: 'Community Management' },
+            { id: 'buzz', name: 'Buzz', role: 'Social', color: '#fbbf24', x: 4, y: 6, task: 'Trend Analysis' },
+            { id: 'sentry', name: 'Sentry', role: 'DevOps', color: '#ef4444', x: -5, y: 7, task: 'CI/CD Pipeline' },
+            { id: 'audit', name: 'Audit', role: 'QA', color: '#8b5cf6', x: -2, y: 7, task: 'Code Review' },
+            { id: 'cipher', name: 'Cipher', role: 'Security', color: '#6366f1', x: 1, y: 7, task: 'Threat Detection' },
+            { id: 'dealflow', name: 'DealFlow', role: 'Lead Gen', color: '#10b981', x: 4, y: 7, task: 'Partnership Outreach' },
+            { id: 'coldcall', name: 'ColdCall', role: 'Outreach', color: '#f97316', x: -6, y: 6, task: 'Cold Emails' },
+            { id: 'scout', name: 'Scout', role: 'Intel', color: '#00d4ff', x: 7, y: 4, task: 'Competitor Research' },
+            { id: 'pie', name: 'PIE', role: 'Intelligence', color: '#8b5cf6', x: 7, y: 6, task: 'Data Analytics' },
         ];
-        
+
+        const TASKS = ['Coding', 'Reviewing', 'Testing', 'Deploying', 'Designing', 'Researching', 'Writing', 'Analyzing', 'Meeting', 'Debugging', 'Optimizing', 'Planning'];
+
         // ============================================
-        // API INTEGRATION (CodeMaster)
+        // SPRITE LOADER
         // ============================================
-        
-        async function fetchFromAPI(endpoint) {
-            try {
-                const response = await fetch(`${API_CONFIG.baseUrl}${endpoint}`);
-                if (!response.ok) throw new Error(`HTTP ${response.status}`);
-                return await response.json();
-            } catch (error) {
-                console.warn(`API fetch failed for ${endpoint}:`, error.message);
-                return null;
+        class SpriteLoader {
+            constructor(basePath = 'pixel-office/assets/sprites/') {
+                this.basePath = basePath;
+                this.sprites = new Map();
+                this.metadata = null;
+                this.loaded = false;
+                this.failedLoads = [];
+            }
+
+            async load() {
+                // Load metadata
+                try {
+                    const response = await fetch(`${this.basePath}sprite_metadata.json`);
+                    this.metadata = await response.json();
+                } catch (error) {
+                    console.warn('Using default metadata');
+                    this.metadata = {
+                        sprite_size: 16,
+                        frames_per_animation: 8,
+                        animations: { idle: 0, walk_down: 1, walk_up: 2, walk_left: 3, walk_right: 4, typing: 5, talking: 6 },
+                        agents: {}
+                    };
+                    AGENTS_DATA.forEach((agent, i) => {
+                        this.metadata.agents[agent.id] = { name: agent.name, row: i };
+                    });
+                }
+
+                // Load all agent sprites
+                const total = AGENTS_DATA.length;
+                let loaded = 0;
+                
+                const loadPromises = AGENTS_DATA.map(agent => 
+                    this.loadAgentSprite(agent.id).then(() => {
+                        loaded++;
+                        const pct = (loaded / total) * 100;
+                        document.getElementById('loadingFill').style.width = pct + '%';
+                        document.getElementById('loadingText').textContent = `${loaded}/${total}`;
+                    })
+                );
+                
+                await Promise.all(loadPromises);
+                this.loaded = true;
+                
+                // Hide loading overlay
+                setTimeout(() => {
+                    document.getElementById('loadingOverlay').classList.add('hidden');
+                }, 500);
+            }
+
+            loadAgentSprite(agentId) {
+                return new Promise((resolve) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        const agentMeta = this.metadata.agents[agentId] || { row: 0 };
+                        this.sprites.set(agentId, { image: img, row: agentMeta.row });
+                        resolve();
+                    };
+                    img.onerror = () => {
+                        this.failedLoads.push(agentId);
+                        // Create fallback
+                        const canvas = document.createElement('canvas');
+                        canvas.width = 128; canvas.height = 16;
+                        const ctx = canvas.getContext('2d');
+                        const agent = AGENTS_DATA.find(a => a.id === agentId);
+                        ctx.fillStyle = agent ? agent.color : '#888';
+                        ctx.fillRect(0, 0, 128, 16);
+                        ctx.fillStyle = '#000';
+                        for (let i = 0; i < 8; i++) {
+                            ctx.fillRect(i * 16 + 4, 4, 2, 2);
+                            ctx.fillRect(i * 16 + 10, 4, 2, 2);
+                            ctx.fillRect(i * 16 + 6, 10, 4, 2);
+                        }
+                        const fallbackImg = new Image();
+                        fallbackImg.src = canvas.toDataURL();
+                        fallbackImg.onload = () => {
+                            this.sprites.set(agentId, { image: fallbackImg, row: 0 });
+                            resolve();
+                        };
+                    };
+                    img.crossOrigin = 'anonymous';
+                    img.src = `${this.basePath}${agentId}_sheet.png`;
+                });
+            }
+
+            getSprite(agentId, animation, frame) {
+                const sprite = this.sprites.get(agentId);
+                if (!sprite) return null;
+
+                const animIndex = this.metadata.animations[animation] || 0;
+                const framesPerAnim = this.metadata.frames_per_animation || 8;
+                const spriteSize = this.metadata.sprite_size || 16;
+                
+                const x = (animIndex * framesPerAnim + (Math.floor(frame) % framesPerAnim)) * spriteSize;
+                const y = sprite.row * spriteSize;
+
+                return { image: sprite.image, sx: x, sy: y, sw: spriteSize, sh: spriteSize };
             }
         }
-        
-        async function syncWithAPI() {
-            updateLoadingStatus('Syncing with API...');
-            
-            const [agents, tasks, system] = await Promise.all([
-                fetchFromAPI(API_CONFIG.endpoints.agents),
-                fetchFromAPI(API_CONFIG.endpoints.tasks),
-                fetchFromAPI(API_CONFIG.endpoints.system)
-            ]);
-            
-            if (agents) {
-                updateAgentsFromAPI(agents);
-                state.apiConnected = true;
-                updateConnectionStatus('connected', 'Live');
-                addActivity('system', 'API', 'Synced agent data');
-            } else {
-                state.apiConnected = false;
-                updateConnectionStatus('error', 'Offline Mode');
-                addActivity('system', 'API', 'Using cached data');
+
+        // ============================================
+        // AGENT CLASS
+        // ============================================
+        class Agent {
+            constructor(data) {
+                this.id = data.id;
+                this.name = data.name;
+                this.role = data.role;
+                this.color = data.color;
+                this.baseX = data.x;
+                this.baseY = data.y;
+                this.x = data.x;
+                this.y = data.y;
+                this.targetX = data.x;
+                this.targetY = data.y;
+                this.baseTask = data.task;
+                this.currentTask = data.task;
+                
+                this.animation = 'idle';
+                this.frame = 0;
+                this.frameTimer = 0;
+                this.frameDuration = 120 + Math.random() * 60;
+                
+                this.speed = 1.5 + Math.random();
+                this.direction = 'down';
+                this.activity = 'idle';
+                this.idleTimer = 0;
+                
+                this.scale = 2;
+                this.selected = false;
+                this.hover = false;
+                this.progress = 0;
             }
-            
-            if (tasks) {
-                updateTasksFromAPI(tasks);
+
+            update(dt) {
+                this.frameTimer += dt;
+                if (this.frameTimer >= this.frameDuration) {
+                    this.frameTimer = 0;
+                    this.frame = (this.frame + 1) % 8;
+                }
+
+                if (this.activity === 'idle') {
+                    this.idleTimer += dt;
+                    this.animation = 'idle';
+                    if (this.idleTimer > 4000 + Math.random() * 6000) {
+                        this.startWalking();
+                    }
+                } else if (this.activity === 'walking') {
+                    this.updateWalking(dt);
+                } else if (this.activity === 'working') {
+                    this.animation = 'typing';
+                    this.progress = (this.progress + dt * 0.0001) % 1;
+                }
             }
-            
-            state.lastApiFetch = Date.now();
-            updateLoadingStatus('Ready!');
+
+            startWalking() {
+                const angle = Math.random() * Math.PI * 2;
+                const distance = 2 + Math.random() * 4;
+                this.targetX = Math.max(-10, Math.min(10, this.baseX + Math.cos(angle) * distance));
+                this.targetY = Math.max(-8, Math.min(8, this.baseY + Math.sin(angle) * distance));
+                
+                this.activity = 'walking';
+                const dx = this.targetX - this.x;
+                const dy = this.targetY - this.y;
+                if (Math.abs(dx) > Math.abs(dy)) {
+                    this.direction = dx > 0 ? 'right' : 'left';
+                } else {
+                    this.direction = dy > 0 ? 'down' : 'up';
+                }
+            }
+
+            updateWalking(dt) {
+                const dx = this.targetX - this.x;
+                const dy = this.targetY - this.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+
+                if (dist < 0.2) {
+                    this.x = this.targetX;
+                    this.y = this.targetY;
+                    this.activity = 'working';
+                    this.currentTask = TASKS[Math.floor(Math.random() * TASKS.length)];
+                    this.idleTimer = 0;
+                } else {
+                    const moveDist = this.speed * dt * 0.003;
+                    this.x += (dx / dist) * moveDist;
+                    this.y += (dy / dist) * moveDist;
+                    this.animation = `walk_${this.direction}`;
+                }
+            }
+
+            getScreenPos(isoMath, camera, canvas) {
+                const pos = isoMath.toScreen(this.x, this.y, 0);
+                return {
+                    x: (pos.x - camera.x) * camera.zoom,
+                    y: (pos.y - camera.y) * camera.zoom
+                };
+            }
+
+            render(ctx, spriteLoader, isoMath, camera, canvas) {
+                const screenPos = this.getScreenPos(isoMath, camera, canvas);
+                const size = 32 * camera.zoom;
+                
+                // Shadow
+                ctx.fillStyle = 'rgba(0,0,0,0.3)';
+                ctx.beginPath();
+                ctx.ellipse(screenPos.x, screenPos.y + size * 0.35, size * 0.4, size * 0.12, 0, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // Sprite
+                const sprite = spriteLoader.getSprite(this.id, this.animation, this.frame);
+                if (sprite) {
+                    ctx.drawImage(
+                        sprite.image,
+                        sprite.sx, sprite.sy, sprite.sw, sprite.sh,
+                        screenPos.x - size / 2, screenPos.y - size, size, size
+                    );
+                }
+                
+                // Selection/hover highlight
+                if (this.selected || this.hover) {
+                    ctx.strokeStyle = this.selected ? '#00d4ff' : '#fff';
+                    ctx.lineWidth = 2;
+                    ctx.strokeRect(screenPos.x - size/2 - 2, screenPos.y - size - 2, size + 4, size + 4);
+                }
+            }
+
+            containsPoint(mx, my, isoMath, camera, canvas) {
+                const pos = this.getScreenPos(isoMath, camera, canvas);
+                const size = 32 * camera.zoom;
+                return mx >= pos.x - size/2 && mx <= pos.x + size/2 &&
+                       my >= pos.y - size && my <= pos.y + size * 0.3;
+            }
         }
-        
-        function updateAgentsFromAPI(apiData) {
-            if (!apiData || !Array.isArray(apiData)) return;
-            
-            apiData.forEach(apiAgent => {
-                const agent = office.agents.find(a => a.id === apiAgent.id || a.name === apiAgent.name);
-                if (agent) {
-                    // Update from API
-                    if (apiAgent.status) agent.status = apiAgent.status;
-                    if (apiAgent.currentTask) agent.task = apiAgent.currentTask;
-                    if (apiAgent.activity) agent.activity = apiAgent.activity;
+
+        // ============================================
+        // MAIN RENDERER
+        // ============================================
+        class OfficeRenderer {
+            constructor(canvas) {
+                this.canvas = canvas;
+                this.ctx = canvas.getContext('2d');
+                this.agents = new Map();
+                this.camera = { x: 0, y: 0, zoom: 1 };
+                this.running = false;
+                this.debug = false;
+                this.hoveredAgent = null;
+                
+                this.isoMath = {
+                    toScreen: (x, y, z) => ({
+                        x: (x - y) * 32 + this.canvas.width / 2,
+                        y: (x + y) * 16 - z * 16 + this.canvas.height / 3
+                    })
+                };
+                
+                this.setupCanvas();
+                this.setupInteractions();
+            }
+
+            setupCanvas() {
+                const resize = () => {
+                    this.canvas.width = window.innerWidth;
+                    this.canvas.height = window.innerHeight - 50;
+                };
+                resize();
+                window.addEventListener('resize', resize);
+            }
+
+            setupInteractions() {
+                let isDragging = false;
+                let dragStartX, dragStartY;
+                
+                this.canvas.addEventListener('mousedown', (e) => {
+                    const rect = this.canvas.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
                     
-                    // Update position if provided
-                    if (apiAgent.position) {
-                        agent.targetX = apiAgent.position.x * TILE_WIDTH;
-                        agent.targetY = apiAgent.position.y * TILE_HEIGHT;
-                        agent.isMoving = true;
+                    let clickedAgent = null;
+                    for (const agent of this.agents.values()) {
+                        if (agent.containsPoint(x, y, this.isoMath, this.camera, this.canvas)) {
+                            clickedAgent = agent;
+                            break;
+                        }
+                    }
+                    
+                    if (clickedAgent) {
+                        this.agents.forEach(a => a.selected = false);
+                        clickedAgent.selected = true;
+                    } else {
+                        isDragging = true;
+                        dragStartX = e.clientX;
+                        dragStartY = e.clientY;
+                    }
+                });
+                
+                this.canvas.addEventListener('mousemove', (e) => {
+                    const rect = this.canvas.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    
+                    let newHovered = null;
+                    for (const agent of this.agents.values()) {
+                        agent.hover = false;
+                        if (agent.containsPoint(x, y, this.isoMath, this.camera, this.canvas)) {
+                            newHovered = agent;
+                        }
+                    }
+                    
+                    if (newHovered) newHovered.hover = true;
+                    
+                    if (newHovered !== this.hoveredAgent) {
+                        this.hoveredAgent = newHovered;
+                        this.updateTooltip(e.clientX, e.clientY);
+                    } else if (this.hoveredAgent) {
+                        this.updateTooltip(e.clientX, e.clientY);
+                    }
+                    
+                    if (isDragging) {
+                        const dx = e.clientX - dragStartX;
+                        const dy = e.clientY - dragStartY;
+                        this.camera.x += dx / this.camera.zoom;
+                        this.camera.y += dy / this.camera.zoom;
+                        dragStartX = e.clientX;
+                        dragStartY = e.clientY;
+                    }
+                });
+                
+                this.canvas.addEventListener('mouseup', () => isDragging = false);
+                this.canvas.addEventListener('mouseleave', () => {
+                    this.hoveredAgent = null;
+                    this.agents.forEach(a => a.hover = false);
+                    document.getElementById('tooltip').style.display = 'none';
+                });
+                
+                this.canvas.addEventListener('wheel', (e) => {
+                    e.preventDefault();
+                    const factor = e.deltaY > 0 ? 0.9 : 1.1;
+                    this.camera.zoom = Math.max(0.5, Math.min(3, this.camera.zoom * factor));
+                });
+                
+                // Touch support
+                let touchStartDist = 0;
+                this.canvas.addEventListener('touchstart', (e) => {
+                    if (e.touches.length === 2) {
+                        touchStartDist = Math.hypot(
+                            e.touches[0].clientX - e.touches[1].clientX,
+                            e.touches[0].clientY - e.touches[1].clientY
+                        );
+                    } else if (e.touches.length === 1) {
+                        isDragging = true;
+                        dragStartX = e.touches[0].clientX;
+                        dragStartY = e.touches[0].clientY;
+                    }
+                });
+                
+                this.canvas.addEventListener('touchmove', (e) => {
+                    e.preventDefault();
+                    if (e.touches.length === 2) {
+                        const dist = Math.hypot(
+                            e.touches[0].clientX - e.touches[1].clientX,
+                            e.touches[0].clientY - e.touches[1].clientY
+                        );
+                        const factor = dist / touchStartDist;
+                        this.camera.zoom = Math.max(0.5, Math.min(3, this.camera.zoom * factor));
+                        touchStartDist = dist;
+                    } else if (e.touches.length === 1 && isDragging) {
+                        const dx = e.touches[0].clientX - dragStartX;
+                        const dy = e.touches[0].clientY - dragStartY;
+                        this.camera.x += dx / this.camera.zoom;
+                        this.camera.y += dy / this.camera.zoom;
+                        dragStartX = e.touches[0].clientX;
+                        dragStartY = e.touches[0].clientY;
+                    }
+                });
+                
+                this.canvas.addEventListener('touchend', () => isDragging = false);
+            }
+
+            updateTooltip(clientX, clientY) {
+                const tooltip = document.getElementById('tooltip');
+                if (this.hoveredAgent) {
+                    tooltip.style.display = 'block';
+                    tooltip.style.left = Math.min(clientX + 15, window.innerWidth - 200) + 'px';
+                    tooltip.style.top = Math.min(clientY + 15, window.innerHeight - 120) + 'px';
+                    document.getElementById('tooltipName').textContent = this.hoveredAgent.name;
+                    document.getElementById('tooltipRole').textContent = this.hoveredAgent.role;
+                    document.getElementById('tooltipTask').textContent = this.hoveredAgent.currentTask;
+                    const statusEl = document.getElementById('tooltipStatus');
+                    statusEl.textContent = this.hoveredAgent.activity;
+                    statusEl.className = 'tooltip-status status-' + this.hoveredAgent.activity;
+                } else {
+                    tooltip.style.display = 'none';
+                }
+            }
+
+            addAgent(data) {
+                const agent = new Agent(data);
+                this.agents.set(data.id, agent);
+                return agent;
+            }
+
+            start() {
+                if (this.running) return;
+                this.running = true;
+                this.lastTime = performance.now();
+                this.loop();
+            }
+
+            loop() {
+                if (!this.running) return;
+                const now = performance.now();
+                const dt = now - this.lastTime;
+                this.lastTime = now;
+                this.update(dt);
+                this.render();
+                requestAnimationFrame(() => this.loop());
+            }
+
+            update(dt) {
+                for (const agent of this.agents.values()) agent.update(dt);
+            }
+
+            render() {
+                const ctx = this.ctx;
+                const canvas = this.canvas;
+                
+                ctx.fillStyle = '#0a0a0f';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                this.drawFloor();
+                
+                const sortedAgents = Array.from(this.agents.values())
+                    .sort((a, b) => (a.y + a.x) - (b.y + b.x));
+                
+                for (const agent of sortedAgents) {
+                    agent.render(ctx, spriteLoader, this.isoMath, this.camera, canvas);
+                }
+                
+                if (this.debug) {
+                    ctx.fillStyle = '#0f0';
+                    ctx.font = '12px monospace';
+                    ctx.fillText(`Camera: ${this.camera.x.toFixed(1)}, ${this.camera.y.toFixed(1)}, zoom: ${this.camera.zoom.toFixed(2)}`, 10, 20);
+                    ctx.fillText(`Agents: ${this.agents.size}`, 10, 40);
+                    ctx.fillText(`Hovered: ${this.hoveredAgent ? this.hoveredAgent.name : 'none'}`, 10, 60);
+                }
+            }
+
+            drawFloor() {
+                const ctx = this.ctx;
+                const size = 15;
+                
+                for (let x = -size; x <= size; x++) {
+                    for (let y = -size; y <= size; y++) {
+                        const pos = this.isoMath.toScreen(x, y, 0);
+                        const camX = (pos.x - this.camera.x) * this.camera.zoom;
+                        const camY = (pos.y - this.camera.y) * this.camera.zoom;
+                        
+                        const tileW = 32 * this.camera.zoom;
+                        const tileH = 16 * this.camera.zoom;
+                        
+                        ctx.fillStyle = (x + y) % 2 === 0 ? '#1a1a2e' : '#151525';
+                        
+                        ctx.beginPath();
+                        ctx.moveTo(camX, camY);
+                        ctx.lineTo(camX + tileW, camY + tileH);
+                        ctx.lineTo(camX, camY + tileH * 2);
+                        ctx.lineTo(camX - tileW, camY + tileH);
+                        ctx.closePath();
+                        ctx.fill();
                     }
                 }
-            });
-            
-            renderAgentList();
+            }
         }
-        
-        function updateTasksFromAPI(tasks) {
-            if (!tasks) return;
-            
-            // Distribute tasks to agents
-            const activeTasks = tasks.filter(t => t.status === 'in_progress' || t.status === 'pending');
-            
-            office.agents.forEach((agent, i) => {
-                if (activeTasks[i]) {
-                    agent.task = activeTasks[i].title || activeTasks[i].description;
-                }
-            });
-        }
-        
-        function updateConnectionStatus(status, text) {
-            const statusEl = document.getElementById('connectionStatus');
-            const textEl = document.getElementById('connectionText');
-            
-            statusEl.className = `connection-status ${status}`;
-            textEl.textContent = text;
-        }
-        
+
+        // ============================================
+        // GLOBAL STATE
+        // ============================================
+        let spriteLoader, renderer;
+        let frameCount = 0, lastFpsTime = performance.now();
+
         // ============================================
         // INITIALIZATION
         // ============================================
-        
-        function initOffice() {
-            // Generate floor tiles
-            for (let y = 0; y < GRID_SIZE; y++) {
-                for (let x = 0; x < GRID_SIZE; x++) {
-                    office.tiles.push({
-                        x, y,
-                        type: (x + y) % 2 === 0 ? 'floor1' : 'floor2'
-                    });
-                }
-            }
-            
-            // Furniture
-            office.furniture = [
-                { x: 5, y: 5, type: 'desk' }, { x: 6, y: 5, type: 'desk' },
-                { x: 5, y: 6, type: 'desk' }, { x: 6, y: 6, type: 'desk' },
-                { x: 12, y: 5, type: 'desk' }, { x: 13, y: 5, type: 'desk' },
-                { x: 12, y: 6, type: 'desk' }, { x: 13, y: 6, type: 'desk' },
-                { x: 8, y: 10, type: 'server' },
-                { x: 10, y: 2, type: 'conference' }
-            ];
-            
-            // Initialize agents
-            office.agents = defaultAgents.map(data => ({
-                ...data,
-                pixelX: data.x * TILE_WIDTH,
-                pixelY: data.y * TILE_HEIGHT,
-                targetX: data.x * TILE_WIDTH,
-                targetY: data.y * TILE_HEIGHT,
-                direction: Math.floor(Math.random() * 4),
-                isMoving: false,
-                walkCycle: 0,
-                activity: 'working',
-                activityTimer: Math.random() * 100,
-                speechBubble: null,
-                speechTimer: 0
-            }));
-            
-            // Standup seats
-            office.standupSeats = [
-                { x: 8, y: 3 }, { x: 9, y: 3 }, { x: 10, y: 3 }, { x: 11, y: 3 },
-                { x: 8, y: 4 }, { x: 11, y: 4 },
-                { x: 8, y: 5 }, { x: 9, y: 5 }, { x: 10, y: 5 }, { x: 11, y: 5 }
-            ];
-        }
-        
-        // ============================================
-        // ISOMETRIC RENDERING
-        // ============================================
-        
-        function toIso(x, y) {
-            return {
-                x: (x - y) * (TILE_WIDTH / 2),
-                y: (x + y) * (TILE_HEIGHT / 2)
-            };
-        }
-        
-        function fromIso(isoX, isoY) {
-            return {
-                x: (isoX / (TILE_WIDTH / 2) + isoY / (TILE_HEIGHT / 2)) / 2,
-                y: (isoY / (TILE_HEIGHT / 2) - isoX / (TILE_WIDTH / 2)) / 2
-            };
-        }
-        
-        // ============================================
-        // SPRITE RENDERING (Pixel)
-        // ============================================
-        
-        function drawAgentSprite(agent, screenX, screenY, scale) {
-            const size = 20 * scale;
-            const bounce = agent.isMoving ? Math.sin(agent.walkCycle * 0.5) * 2 * scale : 0;
-            const x = screenX;
-            const y = screenY - size - bounce;
-            
-            // Shadow
-            ctx.fillStyle = 'rgba(0,0,0,0.3)';
-            ctx.beginPath();
-            ctx.ellipse(x, screenY, size * 0.6, size * 0.2, 0, 0, Math.PI * 2);
-            ctx.fill();
-            
-            // Body
-            const bodyColor = agent.color;
-            const darkColor = adjustColor(bodyColor, -30);
-            
-            // Walking animation
-            const walkOffset = agent.isMoving ? Math.sin(agent.walkCycle) * 3 * scale : 0;
-            const dir = agent.direction;
-            
-            // Body
-            ctx.fillStyle = bodyColor;
-            ctx.fillRect(x - size/2, y, size, size * 0.9);
-            
-            // Head
-            const headSize = size * 0.7;
-            const headY = y - headSize + 3;
-            ctx.fillStyle = '#ffdbac';
-            ctx.fillRect(x - headSize/2, headY, headSize, headSize);
-            
-            // Face
-            ctx.fillStyle = '#333';
-            if (dir === 0) { // Down
-                ctx.fillRect(x - 3, headY + 8, 2, 2);
-                ctx.fillRect(x + 1, headY + 8, 2, 2);
-            } else if (dir !== 3) { // Side
-                const eyeX = dir === 1 ? x - 4 : x + 2;
-                ctx.fillRect(eyeX, headY + 8, 2, 2);
-            }
-            
-            // Hair/Hat
-            ctx.fillStyle = darkColor;
-            ctx.fillRect(x - headSize/2 - 1, headY - 2, headSize + 2, 4);
-            
-            // Arms
-            if (dir === 1 || dir === 2) {
-                const armX = dir === 1 ? x - size/2 - 4 : x + size/2;
-                ctx.fillStyle = bodyColor;
-                ctx.fillRect(armX, y + 3, 4, size * 0.5);
-            } else {
-                ctx.fillRect(x - size/2 - 3, y + 3 + walkOffset, 3, size * 0.4);
-                ctx.fillRect(x + size/2, y + 3 - walkOffset, 3, size * 0.4);
-            }
-            
-            // Legs
-            if (agent.isMoving) {
-                const legOffset = Math.sin(agent.walkCycle) * 3 * scale;
-                ctx.fillStyle = '#333';
-                ctx.fillRect(x - size/3, y + size * 0.7, size/3 - 1, size * 0.3 + legOffset);
-                ctx.fillRect(x + 1, y + size * 0.7, size/3 - 1, size * 0.3 - legOffset);
-            } else {
-                ctx.fillStyle = '#333';
-                ctx.fillRect(x - size/3, y + size * 0.7, size/3 - 1, size * 0.3);
-                ctx.fillRect(x + 1, y + size * 0.7, size/3 - 1, size * 0.3);
-            }
-            
-            // Human crown
-            if (agent.type === 'human') {
-                ctx.fillStyle = '#ffd700';
-                ctx.fillRect(x - 6, headY - 6, 12, 4);
-                ctx.fillRect(x - 4, headY - 10, 3, 4);
-                ctx.fillRect(x + 1, headY - 10, 3, 4);
-                
-                // Glow
-                ctx.shadowColor = '#ffd700';
-                ctx.shadowBlur = 8;
-                ctx.strokeStyle = '#ffd700';
-                ctx.strokeRect(x - size/2 - 1, y - 1, size + 2, size + headSize);
-                ctx.shadowBlur = 0;
-            }
-        }
-        
-        function drawFurniture(fur, x, y, scale) {
-            const size = TILE_WIDTH * scale;
-            
-            switch(fur.type) {
-                case 'desk':
-                    ctx.fillStyle = '#8b7355';
-                    ctx.fillRect(x - size/2, y - size/4, size, size/2);
-                    ctx.fillStyle = '#00d4ff';
-                    ctx.fillRect(x - 8, y - size/3 - 12, 16, 10);
-                    break;
-                case 'server':
-                    ctx.fillStyle = '#2d3748';
-                    ctx.fillRect(x - size/3, y - size/2, size/1.5, size);
-                    const blink = Math.sin(Date.now() / 150) > 0;
-                    ctx.fillStyle = blink ? '#22c55e' : '#166534';
-                    ctx.fillRect(x - size/3 + 3, y - size/2 + 3, 4, 4);
-                    break;
-                case 'conference':
-                    ctx.fillStyle = '#654321';
-                    ctx.fillRect(x - size, y - size/3, size * 2, size/1.5);
-                    break;
-            }
-        }
-        
-        function drawTile(tile, x, y, scale) {
-            const w = TILE_WIDTH * scale;
-            const h = TILE_HEIGHT * scale;
-            
-            ctx.fillStyle = tile.type === 'floor1' ? '#1a1a2e' : '#252540';
-            ctx.beginPath();
-            ctx.moveTo(x, y - h/2);
-            ctx.lineTo(x + w/2, y);
-            ctx.lineTo(x, y + h/2);
-            ctx.lineTo(x - w/2, y);
-            ctx.closePath();
-            ctx.fill();
-            
-            ctx.strokeStyle = '#0f0f1a';
-            ctx.lineWidth = 1;
-            ctx.stroke();
-        }
-        
-        function drawActivityBar(agent, x, y, scale) {
-            const w = 36 * scale;
-            const h = 3 * scale;
-            const bx = x - w/2;
-            const by = y - 45 * scale;
-            
-            // Background
-            ctx.fillStyle = 'rgba(0,0,0,0.7)';
-            ctx.fillRect(bx - 1, by - 12, w + 2, 18);
-            
-            // Name
-            ctx.fillStyle = '#fff';
-            ctx.font = `${Math.floor(7 * scale)}px 'Press Start 2P'`;
-            ctx.textAlign = 'center';
-            const emoji = { working: '💻', meeting: '📞', break: '☕', completed: '✅' }[agent.activity] || '💻';
-            ctx.fillText(emoji + ' ' + agent.name, x, by - 2);
-            
-            // Progress bar
-            ctx.fillStyle = '#333';
-            ctx.fillRect(bx, by + 2, w, h);
-            
-            const colors = { working: '#00d4ff', meeting: '#a855f7', break: '#fbbf24', completed: '#22c55e' };
-            ctx.fillStyle = colors[agent.activity] || '#00d4ff';
-            ctx.fillRect(bx, by + 2, w * ((agent.activityTimer % 100) / 100), h);
-        }
-        
-        function drawSpeechBubble(agent, x, y, scale) {
-            if (!agent.speechBubble) return;
-            
-            ctx.font = `${Math.floor(8 * scale)}px 'VT323'`;
-            const text = agent.speechBubble;
-            const width = ctx.measureText(text).width + 10;
-            const height = 16 * scale;
-            const bx = x - width/2;
-            const by = y - 55 * scale - height;
-            
-            ctx.fillStyle = 'rgba(255,255,255,0.95)';
-            ctx.fillRect(bx, by, width, height);
-            ctx.strokeStyle = '#333';
-            ctx.lineWidth = 1;
-            ctx.strokeRect(bx, by, width, height);
-            
-            ctx.fillStyle = '#333';
-            ctx.textAlign = 'left';
-            ctx.fillText(text, bx + 5, by + 11 * scale);
-        }
-        
-        // ============================================
-        // PARTICLES
-        // ============================================
-        
-        function createParticle(x, y, type) {
-            const colors = {
-                work: ['#00d4ff', '#22c55e'],
-                meeting: ['#a855f7', '#ec4899'],
-                completed: ['#22c55e', '#fbbf24']
-            };
-            const colorSet = colors[type] || colors.work;
-            
-            return {
-                x, y,
-                vx: (Math.random() - 0.5) * 1.5,
-                vy: -Math.random() * 1.5 - 0.5,
-                life: 1,
-                decay: 0.02,
-                color: colorSet[Math.floor(Math.random() * colorSet.length)],
-                size: 2
-            };
-        }
-        
-        function updateParticles() {
-            office.particles = office.particles.filter(p => {
-                p.x += p.vx;
-                p.y += p.vy;
-                p.life -= p.decay;
-                return p.life > 0;
-            });
-        }
-        
-        function drawParticles() {
-            office.particles.forEach(p => {
-                ctx.globalAlpha = p.life;
-                ctx.fillStyle = p.color;
-                ctx.fillRect(p.x, p.y, p.size, p.size);
-            });
-            ctx.globalAlpha = 1;
-        }
-        
-        // ============================================
-        // RENDER LOOP
-        // ============================================
-        
-        function render() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
-            const cx = canvas.width / 2 + state.panX;
-            const cy = canvas.height / 2 + state.panY;
-            const scale = state.zoom;
-            
-            const renderList = [];
-            
-            // Collect tiles
-            office.tiles.forEach(tile => {
-                const iso = toIso(tile.x, tile.y);
-                renderList.push({
-                    type: 'tile',
-                    obj: tile,
-                    y: tile.y,
-                    screenX: cx + iso.x * scale,
-                    screenY: cy + iso.y * scale
-                });
-            });
-            
-            // Collect furniture
-            office.furniture.forEach(fur => {
-                const iso = toIso(fur.x, fur.y);
-                renderList.push({
-                    type: 'furniture',
-                    obj: fur,
-                    y: fur.y,
-                    screenX: cx + iso.x * scale,
-                    screenY: cy + iso.y * scale
-                });
-            });
-            
-            // Collect agents
-            office.agents.forEach(agent => {
-                const iso = toIso(agent.pixelX / TILE_WIDTH, agent.pixelY / TILE_HEIGHT);
-                renderList.push({
-                    type: 'agent',
-                    obj: agent,
-                    y: agent.pixelY / TILE_HEIGHT,
-                    screenX: cx + iso.x * scale,
-                    screenY: cy + iso.y * scale
-                });
-            });
-            
-            // Sort by depth
-            renderList.sort((a, b) => a.y - b.y);
-            
-            // Render
-            renderList.forEach(item => {
-                switch(item.type) {
-                    case 'tile':
-                        drawTile(item.obj, item.screenX, item.screenY, scale);
-                        break;
-                    case 'furniture':
-                        drawFurniture(item.obj, item.screenX, item.screenY, scale);
-                        break;
-                    case 'agent':
-                        drawAgentSprite(item.obj, item.screenX, item.screenY, scale);
-                        drawActivityBar(item.obj, item.screenX, item.screenY, scale);
-                        drawSpeechBubble(item.obj, item.screenX, item.screenY, scale);
-                        
-                        if (state.particlesEnabled && Math.random() < 0.015) {
-                            office.particles.push(createParticle(
-                                item.screenX, item.screenY - 25 * scale, item.obj.activity
-                            ));
-                        }
-                        break;
-                }
-            });
-            
-            if (state.particlesEnabled) drawParticles();
-            
-            // Standup highlight
-            if (state.standupMode) {
-                office.standupSeats.forEach(seat => {
-                    const iso = toIso(seat.x, seat.y);
-                    const x = cx + iso.x * scale;
-                    const y = cy + iso.y * scale;
-                    ctx.fillStyle = 'rgba(251, 191, 36, 0.2)';
-                    ctx.beginPath();
-                    ctx.moveTo(x, y - TILE_HEIGHT * scale / 2);
-                    ctx.lineTo(x + TILE_WIDTH * scale / 2, y);
-                    ctx.lineTo(x, y + TILE_HEIGHT * scale / 2);
-                    ctx.lineTo(x - TILE_WIDTH * scale / 2, y);
-                    ctx.closePath();
-                    ctx.fill();
-                });
-            }
-        }
-        
-        // ============================================
-        // GAME LOGIC
-        // ============================================
-        
-        function updateAgents(deltaTime) {
-            office.agents.forEach(agent => {
-                agent.walkCycle += deltaTime * 0.01;
-                
-                // Random movement
-                if (!agent.isMoving && Math.random() < 0.003) {
-                    const tx = agent.pixelX + (Math.random() - 0.5) * TILE_WIDTH * 2;
-                    const ty = agent.pixelY + (Math.random() - 0.5) * TILE_HEIGHT * 2;
-                    
-                    if (tx > 0 && tx < GRID_SIZE * TILE_WIDTH &&
-                        ty > 0 && ty < GRID_SIZE * TILE_HEIGHT) {
-                        agent.targetX = tx;
-                        agent.targetY = ty;
-                        agent.isMoving = true;
-                        
-                        const dx = tx - agent.pixelX;
-                        const dy = ty - agent.pixelY;
-                        agent.direction = Math.abs(dx) > Math.abs(dy) 
-                            ? (dx > 0 ? 2 : 1) 
-                            : (dy > 0 ? 0 : 3);
-                    }
-                }
-                
-                // Move
-                if (agent.isMoving) {
-                    const dx = agent.targetX - agent.pixelX;
-                    const dy = agent.targetY - agent.pixelY;
-                    const dist = Math.sqrt(dx * dx + dy * dy);
-                    
-                    if (dist < 1) {
-                        agent.isMoving = false;
-                        agent.pixelX = agent.targetX;
-                        agent.pixelY = agent.targetY;
-                    } else {
-                        agent.pixelX += (dx / dist) * 0.6;
-                        agent.pixelY += (dy / dist) * 0.6;
-                    }
-                }
-                
-                // Update activity
-                agent.activityTimer += deltaTime * 0.01;
-                if (agent.activityTimer > 100) {
-                    agent.activityTimer = 0;
-                    const acts = ['working', 'meeting', 'break', 'completed'];
-                    agent.activity = acts[Math.floor(Math.random() * acts.length)];
-                }
-                
-                // Speech bubble
-                if (!agent.speechBubble && Math.random() < 0.0008) {
-                    const msgs = ['Working!', 'Almost done!', 'On it!', 'Bug fixed!'];
-                    agent.speechBubble = msgs[Math.floor(Math.random() * msgs.length)];
-                    agent.speechTimer = 2500;
-                }
-                
-                if (agent.speechBubble) {
-                    agent.speechTimer -= deltaTime;
-                    if (agent.speechTimer <= 0) agent.speechBubble = null;
-                }
-            });
-        }
-        
-        function gameLoop(currentTime) {
-            const deltaTime = currentTime - state.lastTime;
-            state.lastTime = currentTime;
-            
-            updateAgents(deltaTime);
-            updateParticles();
-            render();
-            
-            requestAnimationFrame(gameLoop);
-        }
-        
-        // ============================================
-        // INPUT (Forge)
-        // ============================================
-        
-        function getMousePos(evt) {
-            const rect = canvas.getBoundingClientRect();
-            return { x: evt.clientX - rect.left, y: evt.clientY - rect.top };
-        }
-        
-        function screenToWorld(sx, sy) {
-            const cx = canvas.width / 2 + state.panX;
-            const cy = canvas.height / 2 + state.panY;
-            return fromIso((sx - cx) / state.zoom, (sy - cy) / state.zoom);
-        }
-        
-        canvas.addEventListener('mousedown', e => {
-            state.isDragging = true;
-            state.lastMouseX = e.clientX;
-            state.lastMouseY = e.clientY;
-            
-            const pos = getMousePos(e);
-            const world = screenToWorld(pos.x, pos.y);
-            
-            office.agents.forEach(agent => {
-                const ax = agent.pixelX / TILE_WIDTH;
-                const ay = agent.pixelY / TILE_HEIGHT;
-                if (Math.hypot(world.x - ax, world.y - ay) < 0.7) {
-                    selectAgent(agent);
-                }
-            });
-        });
-        
-        canvas.addEventListener('mousemove', e => {
-            const pos = getMousePos(e);
-            
-            if (state.isDragging) {
-                state.panX += e.clientX - state.lastMouseX;
-                state.panY += e.clientY - state.lastMouseY;
-                state.lastMouseX = e.clientX;
-                state.lastMouseY = e.clientY;
-            }
-            
-            const world = screenToWorld(pos.x, pos.y);
-            let hovered = null;
-            
-            office.agents.forEach(agent => {
-                const ax = agent.pixelX / TILE_WIDTH;
-                const ay = agent.pixelY / TILE_HEIGHT;
-                if (Math.hypot(world.x - ax, world.y - ay) < 0.7) {
-                    hovered = agent;
-                }
-            });
-            
-            state.hoveredAgent = hovered;
-            updateTooltip(hovered, e.clientX, e.clientY);
-        });
-        
-        canvas.addEventListener('mouseup', () => state.isDragging = false);
-        canvas.addEventListener('mouseleave', () => {
-            state.isDragging = false;
-            state.hoveredAgent = null;
-            document.getElementById('tooltip').style.display = 'none';
-        });
-        
-        canvas.addEventListener('wheel', e => {
-            e.preventDefault();
-            const delta = e.deltaY > 0 ? 0.9 : 1.1;
-            state.zoom = Math.max(0.5, Math.min(3, state.zoom * delta));
-        });
-        
-        // Touch support
-        canvas.addEventListener('touchstart', e => {
-            e.preventDefault();
-            const t = e.touches[0];
-            state.isDragging = true;
-            state.lastMouseX = t.clientX;
-            state.lastMouseY = t.clientY;
-        });
-        
-        canvas.addEventListener('touchmove', e => {
-            e.preventDefault();
-            if (state.isDragging) {
-                const t = e.touches[0];
-                state.panX += t.clientX - state.lastMouseX;
-                state.panY += t.clientY - state.lastMouseY;
-                state.lastMouseX = t.clientX;
-                state.lastMouseY = t.clientY;
-            }
-        });
-        
-        canvas.addEventListener('touchend', () => state.isDragging = false);
-        
-        // ============================================
-        // UI FUNCTIONS
-        // ============================================
-        
-        function zoomIn() { state.zoom = Math.min(3, state.zoom * 1.2); }
-        function zoomOut() { state.zoom = Math.max(0.5, state.zoom / 1.2); }
-        function resetView() { state.zoom = 1; state.panX = 0; state.panY = 0; }
-        
-        function toggleStandup() {
-            state.standupMode = !state.standupMode;
-            
-            office.agents.forEach((agent, i) => {
-                if (state.standupMode && i < office.standupSeats.length) {
-                    const seat = office.standupSeats[i];
-                    agent.targetX = seat.x * TILE_WIDTH;
-                    agent.targetY = seat.y * TILE_HEIGHT;
-                    agent.isMoving = true;
-                    agent.activity = 'meeting';
-                } else if (!state.standupMode) {
-                    const data = defaultAgents[i];
-                    agent.targetX = data.x * TILE_WIDTH;
-                    agent.targetY = data.y * TILE_HEIGHT;
-                    agent.isMoving = true;
-                    agent.activity = 'working';
-                }
-            });
-        }
-        
-        function togglePanel() {
-            document.getElementById('sidePanel').classList.toggle('open');
-        }
-        
-        function toggleParticles() {
-            state.particlesEnabled = !state.particlesEnabled;
-        }
-        
-        function selectAgent(agent) {
-            state.selectedAgent = agent;
-            agent.speechBubble = 'Yes, Commander?';
-            agent.speechTimer = 2000;
-            
-            document.querySelectorAll('.agent-list-item').forEach(el => {
-                el.classList.toggle('active', el.dataset.id === agent.id);
-            });
-        }
-        
-        function updateTooltip(agent, x, y) {
-            const tt = document.getElementById('tooltip');
-            if (agent) {
-                document.getElementById('tooltipTitle').textContent = agent.name;
-                document.getElementById('tooltipRole').textContent = agent.role;
-                document.getElementById('tooltipTask').textContent = agent.task;
-                tt.style.display = 'block';
-                tt.style.left = (x + 10) + 'px';
-                tt.style.top = (y + 10) + 'px';
-            } else {
-                tt.style.display = 'none';
-            }
-        }
-        
-        function renderAgentList() {
-            const list = document.getElementById('agentList');
-            list.innerHTML = '';
-            
-            office.agents.forEach(agent => {
-                const item = document.createElement('div');
-                item.className = 'agent-list-item';
-                item.dataset.id = agent.id;
-                item.innerHTML = `
-                    <div class="agent-list-avatar" style="background: ${agent.color}20; border-color: ${agent.color};">${agent.sprite}</div>
-                    <div class="agent-list-info">
-                        <div class="agent-list-name">${agent.name}</div>
-                        <div class="agent-list-role">${agent.role}</div>
-                    </div>
-                    <div class="agent-list-status ${agent.activity}"></div>
-                `;
-                item.onclick = () => {
-                    selectAgent(agent);
-                    const iso = toIso(agent.pixelX / TILE_WIDTH, agent.pixelY / TILE_HEIGHT);
-                    state.panX = -iso.x * state.zoom;
-                    state.panY = -iso.y * state.zoom;
-                };
-                list.appendChild(item);
-            });
-            
-            document.getElementById('agentCount').textContent = office.agents.length;
-        }
-        
-        function addActivity(type, agent, msg) {
-            const feed = document.getElementById('activityFeed');
-            const item = document.createElement('div');
-            item.className = 'activity-item';
-            
-            const icons = { working: '💻', meeting: '📞', completed: '✅', system: '⚡' };
-            const time = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false });
-            
-            item.innerHTML = `
-                <span>${icons[type] || '💻'}</span>
-                <div style="flex: 1;"><span class="activity-agent">${agent}</span> ${msg}</div>
-                <span class="activity-time">${time}</span>
-            `;
-            
-            feed.insertBefore(item, feed.firstChild);
-            while (feed.children.length > 15) feed.removeChild(feed.lastChild);
-        }
-        
-        function callStandup() {
-            toggleStandup();
-            addActivity('meeting', 'System', 'Daily standup ' + (state.standupMode ? 'started' : 'ended'));
-        }
-        
-        function findAgent() {
-            const agent = office.agents[Math.floor(Math.random() * office.agents.length)];
-            selectAgent(agent);
-            const iso = toIso(agent.pixelX / TILE_WIDTH, agent.pixelY / TILE_HEIGHT);
-            state.panX = -iso.x * state.zoom;
-            state.panY = -iso.y * state.zoom;
-        }
-        
-        // ============================================
-        // UTILITIES
-        // ============================================
-        
-        function adjustColor(color, amount) {
-            const num = parseInt(color.replace('#', ''), 16);
-            const r = Math.min(255, Math.max(0, (num >> 16) + amount));
-            const g = Math.min(255, Math.max(0, ((num >> 8) & 0x00FF) + amount));
-            const b = Math.min(255, Math.max(0, (num & 0x0000FF) + amount));
-            return `#${((r << 16) | (g << 8) | b).toString(16).padStart(6, '0')}`;
-        }
-        
-        function resizeCanvas() {
-            canvas.width = container.clientWidth;
-            canvas.height = container.clientHeight;
-        }
-        
-        function updateLoadingStatus(text) {
-            document.getElementById('loadingStatus').textContent = text;
-        }
-        
-        // ============================================
-        // INIT
-        // ============================================
-        
         async function init() {
-            // Loading animation
-            const progress = document.getElementById('loadingProgress');
-            let pct = 0;
-            const interval = setInterval(() => {
-                pct += 20;
-                progress.style.width = pct + '%';
-                if (pct >= 100) {
-                    clearInterval(interval);
-                    setTimeout(() => {
-                        document.getElementById('loadingScreen').classList.add('hidden');
-                    }, 200);
-                }
-            }, 40);
+            const canvas = document.getElementById('officeCanvas');
             
-            initOffice();
-            resizeCanvas();
-            renderAgentList();
+            spriteLoader = new SpriteLoader('pixel-office/assets/sprites/');
+            await spriteLoader.load();
             
-            // Try to connect to API
-            updateLoadingStatus('Connecting to API...');
-            await syncWithAPI();
+            renderer = new OfficeRenderer(canvas);
             
-            // Start loop
-            requestAnimationFrame(gameLoop);
+            AGENTS_DATA.forEach(data => renderer.addAgent(data));
             
-            // Initial activities
-            addActivity('system', 'Nexus', 'Pixel Office v2.0 initialized');
-            addActivity('working', 'CodeMaster', 'API connection established');
+            renderer.start();
             
-            // Periodic updates
-            setInterval(() => {
-                const acts = [
-                    { type: 'working', agent: 'Code-1', msg: 'debugging API' },
-                    { type: 'completed', agent: 'Forge', msg: 'completed UI update' },
-                    { type: 'working', agent: 'DealFlow', msg: 'generated leads' }
-                ];
-                const a = acts[Math.floor(Math.random() * acts.length)];
-                addActivity(a.type, a.agent, a.msg);
-            }, 10000);
-            
-            // Auto-sync every 30s
-            setInterval(() => {
-                if (Date.now() - state.lastApiFetch > API_CONFIG.refreshInterval) {
-                    syncWithAPI();
-                }
-            }, 5000);
-            
-            window.addEventListener('resize', resizeCanvas);
-            
-            // Keyboard
-            document.addEventListener('keydown', e => {
-                if (e.key === '+' || e.key === '=') zoomIn();
-                if (e.key === '-') zoomOut();
-                if (e.key === '0') resetView();
-                if (e.key === 'm' || e.key === 'M') toggleStandup();
-            });
+            setInterval(updateFps, 1000);
         }
-        
-        window.addEventListener('DOMContentLoaded', init);
+
+        function updateFps() {
+            const now = performance.now();
+            const fps = Math.round(frameCount * 1000 / (now - lastFpsTime));
+            document.getElementById('fpsCounter').textContent = fps;
+            
+            const active = Array.from(renderer.agents.values())
+                .filter(a => a.activity !== 'idle').length;
+            document.getElementById('activeCounter').textContent = active;
+            
+            frameCount = 0;
+            lastFpsTime = now;
+        }
+
+        function resetCamera() {
+            if (renderer) {
+                renderer.camera.x = 0;
+                renderer.camera.y = 0;
+                renderer.camera.zoom = 1;
+            }
+        }
+
+        function toggleDebug() {
+            if (renderer) renderer.debug = !renderer.debug;
+        }
+
+        window.addEventListener('load', init);
     </script>
 </body>
 </html>
