@@ -16,8 +16,16 @@
             --accent-primary: #8b7355;
             --text-primary: #3d3225;
             --border: #c4b090;
+            --panel-bg: #f5e6c8;
+            --panel-border: #8b7355;
+            --panel-shadow: #5c4a3a;
+            --text-dark: #3d3225;
+            --text-light: #f5e6c8;
+            --accent-pink: #ff6b6b;
+            --accent-yellow: #fcc419;
+            --accent-cyan: #00d4ff;
+            --accent-green: #51cf66;
         }
-        body { font-family: 'Press Start 2P', cursive; }
         
         * { 
             margin: 0; 
@@ -27,11 +35,12 @@
         }
         
         body {
-            font-family: 'VT323', monospace;
+            font-family: 'Press Start 2P', cursive;
             background: var(--bg-primary);
-            color: var(--text-light);
+            color: var(--text-dark);
             min-height: 100vh;
-            line-height: 1.4;
+            line-height: 1.6;
+            font-size: 12px;
         }
         
         /* Pixel Grid Background */
@@ -81,7 +90,7 @@
         }
         
         .game-subtitle {
-            font-size: 1rem;
+            font-size: 0.7rem;
             color: var(--text-light);
             opacity: 0.8;
             margin-top: 5px;
@@ -96,8 +105,8 @@
         
         .nav-btn {
             font-family: 'Press Start 2P', cursive;
-            font-size: 12px;
-            padding: 8px 16px;
+            font-size: 10px;
+            padding: 8px 12px;
             background: #f5e6c8;
             border: 4px solid #8b7355;
             border-radius: 0;
@@ -154,8 +163,8 @@
         /* Stats Bar */
         .stats-bar {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 15px;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
             margin-bottom: 15px;
         }
         
@@ -170,21 +179,21 @@
         
         .stat-value {
             font-family: 'Press Start 2P', cursive;
-            font-size: 1.2rem;
+            font-size: 1rem;
             color: var(--text-dark);
             margin-bottom: 5px;
         }
         
         .stat-label {
             color: #8b7355;
-            font-size: 0.8rem;
+            font-size: 0.6rem;
         }
         
         /* Priority Summary */
         .priority-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 15px;
+            gap: 10px;
             margin-bottom: 15px;
         }
         
@@ -203,32 +212,32 @@
         
         .priority-box .count {
             font-family: 'Press Start 2P', cursive;
-            font-size: 1rem;
+            font-size: 0.9rem;
             margin-bottom: 5px;
         }
         
-        .priority-box.p0 .count { color: #ff6b6b; }
+        .priority-box.p0 .count { color: #c92a2a; }
         .priority-box.p1 .count { color: #e67700; }
         .priority-box.p2 .count { color: #0066cc; }
         .priority-box.p3 .count { color: #495057; }
         
         .priority-box .label {
-            font-size: 0.7rem;
+            font-size: 0.55rem;
             color: var(--text-dark);
         }
         
-        /* Tabs */
-        .tabs {
+        /* Main Tabs */
+        .main-tabs {
             display: flex;
             gap: 8px;
             margin-bottom: 15px;
             flex-wrap: wrap;
         }
         
-        .tab-btn {
+        .main-tab-btn {
             font-family: 'Press Start 2P', cursive;
-            font-size: 0.5rem;
-            padding: 10px 14px;
+            font-size: 0.6rem;
+            padding: 12px 20px;
             background: rgba(255,255,255,0.3);
             border: 3px solid var(--panel-border);
             border-radius: 6px;
@@ -238,14 +247,45 @@
             color: var(--text-dark);
         }
         
-        .tab-btn:hover {
+        .main-tab-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 5px 0 var(--panel-shadow);
         }
         
-        .tab-btn.active {
+        .main-tab-btn.active {
             background: linear-gradient(180deg, #fcc419 0%, #f59f00 100%);
             border-color: #e67700;
+        }
+        
+        /* Priority Filter Tabs */
+        .filter-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-tab-btn {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.5rem;
+            padding: 8px 12px;
+            background: rgba(255,255,255,0.3);
+            border: 3px solid var(--panel-border);
+            border-radius: 6px;
+            cursor: pointer;
+            box-shadow: 0 3px 0 var(--panel-shadow);
+            transition: all 0.1s;
+            color: var(--text-dark);
+        }
+        
+        .filter-tab-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 0 var(--panel-shadow);
+        }
+        
+        .filter-tab-btn.active {
+            background: linear-gradient(180deg, #69db7c 0%, #51cf66 100%);
+            border-color: #2b8a3e;
         }
         
         /* Task Cards */
@@ -265,7 +305,7 @@
             position: absolute;
             top: 0; left: 0; right: 0;
             height: 4px;
-            background: var(--priority-color, var(--accent-blue));
+            background: var(--priority-color, var(--accent-cyan));
         }
         
         .task-card.p0::before { background: var(--accent-pink); }
@@ -283,6 +323,7 @@
             justify-content: space-between;
             align-items: flex-start;
             margin-bottom: 10px;
+            gap: 10px;
         }
         
         .task-title {
@@ -290,26 +331,28 @@
             font-size: 0.6rem;
             color: var(--text-dark);
             line-height: 1.6;
+            flex: 1;
         }
         
         .task-id {
-            font-size: 0.8rem;
+            font-size: 0.65rem;
             color: #8b7355;
             margin-top: 4px;
         }
         
         .task-desc {
             color: #5c4a3a;
-            font-size: 1rem;
+            font-size: 0.75rem;
             margin-bottom: 10px;
-            line-height: 1.3;
+            line-height: 1.4;
+            font-family: monospace;
         }
         
         .task-meta {
             display: flex;
             gap: 15px;
             flex-wrap: wrap;
-            font-size: 0.9rem;
+            font-size: 0.65rem;
             color: var(--text-dark);
         }
         
@@ -323,7 +366,7 @@
         .priority-badge {
             padding: 4px 10px;
             border-radius: 4px;
-            font-size: 0.55rem;
+            font-size: 0.5rem;
             font-family: 'Press Start 2P', cursive;
             border: 2px solid;
             white-space: nowrap;
@@ -332,44 +375,27 @@
         .priority-badge.p0 { background: rgba(255, 107, 107, 0.2); color: #c92a2a; border-color: #ff6b6b; }
         .priority-badge.p1 { background: rgba(252, 196, 25, 0.2); color: #e67700; border-color: #fcc419; }
         .priority-badge.p2 { background: rgba(0, 212, 255, 0.2); color: #0066cc; border-color: #00d4ff; }
+        .priority-badge.p3 { background: rgba(134, 142, 153, 0.2); color: #495057; border-color: #adb5bd; }
         
         .status-badge {
             padding: 4px 10px;
             border-radius: 4px;
-            font-size: 0.55rem;
+            font-size: 0.5rem;
             font-family: 'Press Start 2P', cursive;
             border: 2px solid;
             white-space: nowrap;
         }
         
-        .status-badge.complete { background: rgba(81, 207, 102, 0.2); color: #2b8a3e; border-color: #51cf66; }
-        .status-badge.progress { background: rgba(252, 196, 25, 0.2); color: #e67700; border-color: #fcc419; }
+        .status-badge.completed { background: rgba(81, 207, 102, 0.2); color: #2b8a3e; border-color: #51cf66; }
+        .status-badge.in_progress { background: rgba(252, 196, 25, 0.2); color: #e67700; border-color: #fcc419; }
         .status-badge.blocked { background: rgba(255, 107, 107, 0.2); color: #c92a2a; border-color: #ff6b6b; }
-        .status-badge.pending { background: rgba(134, 142, 153, 0.2); color: #495057; border-color: #adb5bd; }
+        .status-badge.not_started { background: rgba(134, 142, 153, 0.2); color: #495057; border-color: #adb5bd; }
         
         .completed-date {
-            font-size: 0.8rem;
+            font-size: 0.65rem;
             color: #51cf66;
             margin-top: 8px;
             font-weight: bold;
-        }
-        
-        /* Progress Bar */
-        .progress-bar {
-            width: 100%;
-            height: 16px;
-            background: #ddd;
-            border: 2px solid var(--text-dark);
-            border-radius: 8px;
-            overflow: hidden;
-            margin-top: 10px;
-            position: relative;
-        }
-        
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(180deg, #69db7c 0%, #51cf66 100%);
-            transition: width 0.5s ease;
         }
         
         /* Tab Content */
@@ -379,6 +405,99 @@
         
         .tab-content.active {
             display: block;
+        }
+        
+        /* Loading State */
+        .loading-container {
+            text-align: center;
+            padding: 40px;
+        }
+        
+        .loading-spinner {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 4px solid var(--panel-border);
+            border-top-color: var(--accent-yellow);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .loading-text {
+            margin-top: 15px;
+            color: var(--panel-border);
+            font-size: 0.7rem;
+        }
+        
+        /* Error State */
+        .error-container {
+            text-align: center;
+            padding: 40px;
+            background: rgba(255, 107, 107, 0.1);
+            border: 3px solid #ff6b6b;
+            border-radius: 8px;
+        }
+        
+        .error-text {
+            color: #c92a2a;
+            font-size: 0.7rem;
+            margin-bottom: 15px;
+        }
+        
+        .retry-btn {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.55rem;
+            padding: 10px 20px;
+            background: linear-gradient(180deg, #fcc419 0%, #f59f00 100%);
+            border: 3px solid #2d1b4e;
+            border-radius: 6px;
+            cursor: pointer;
+            box-shadow: 0 3px 0 #2d1b4e;
+            color: var(--text-dark);
+        }
+        
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #8b7355;
+            font-size: 0.7rem;
+        }
+        
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin-top: 20px;
+            padding: 15px;
+        }
+        
+        .page-info {
+            font-size: 0.6rem;
+            color: var(--panel-border);
+        }
+        
+        .page-btn {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.55rem;
+            padding: 10px 20px;
+            background: linear-gradient(180deg, #fcc419 0%, #f59f00 100%);
+            border: 3px solid #2d1b4e;
+            border-radius: 6px;
+            cursor: pointer;
+            box-shadow: 0 3px 0 #2d1b4e;
+            color: var(--text-dark);
+        }
+        
+        .page-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
         }
         
         /* Refresh Button */
@@ -397,6 +516,18 @@
         .refresh-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 5px 0 #2d1b4e;
+        }
+        
+        .refresh-btn.spinning {
+            animation: spin 0.5s linear;
+        }
+        
+        /* Last Updated */
+        .last-updated {
+            font-size: 0.55rem;
+            color: #8b7355;
+            text-align: right;
+            margin-top: 10px;
         }
         
         /* Mobile Nav */
@@ -436,11 +567,12 @@
         /* Responsive */
         @media (max-width: 768px) {
             .game-container { padding: 10px; padding-bottom: 90px; }
-            .stats-bar { grid-template-columns: repeat(2, 1fr); }
+            .stats-bar { grid-template-columns: repeat(3, 1fr); }
             .priority-grid { grid-template-columns: repeat(2, 1fr); }
             .nav-panel { display: none; }
             .mobile-nav { display: flex; }
             .task-header { flex-direction: column; gap: 10px; }
+            .main-tab-btn { font-size: 0.5rem; padding: 10px 14px; }
         }
     </style>
 </head>
@@ -464,7 +596,7 @@
                 <a href="data-viewer.html" class="nav-btn">📁 Data</a>
             </nav>
             
-            <button class="refresh-btn" onclick="window.location.reload()">🔄 REFRESH</button>
+            <button class="refresh-btn" onclick="refreshTasks()">🔄 REFRESH</button>
         </header>
 
         <!-- Stats Panel -->
@@ -472,24 +604,24 @@
             <div class="panel-title">📊 TASK STATS</div>
             <div class="stats-bar">
                 <div class="stat-box">
-                    <div class="stat-value" style="color: #00d4ff;">90</div>
+                    <div class="stat-value" id="stat-total" style="color: #00d4ff;">-</div>
                     <div class="stat-label">TOTAL</div>
                 </div>
                 <div class="stat-box">
-                    <div class="stat-value" style="color: #fcc419;">59</div>
-                    <div class="stat-label">PENDING</div>
+                    <div class="stat-value" id="stat-incomplete" style="color: #fcc419;">-</div>
+                    <div class="stat-label">INCOMPLETE</div>
                 </div>
                 <div class="stat-box">
-                    <div class="stat-value" style="color: #ff6b6b;">27</div>
-                    <div class="stat-label">BLOCKED</div>
+                    <div class="stat-value" id="stat-completed" style="color: #51cf66;">-</div>
+                    <div class="stat-label">COMPLETED</div>
                 </div>
                 <div class="stat-box">
-                    <div class="stat-value" style="color: #00d4ff;">6</div>
+                    <div class="stat-value" id="stat-inprogress" style="color: #00d4ff;">-</div>
                     <div class="stat-label">IN PROGRESS</div>
                 </div>
                 <div class="stat-box">
-                    <div class="stat-value" style="color: #51cf66;">31</div>
-                    <div class="stat-label">COMPLETED</div>
+                    <div class="stat-value" id="stat-blocked" style="color: #ff6b6b;">-</div>
+                    <div class="stat-label">BLOCKED</div>
                 </div>
             </div>
         </div>
@@ -497,362 +629,69 @@
         <!-- Priority Summary -->
         <div class="priority-grid">
             <div class="priority-box p0">
-                <div class="count">2</div>
+                <div class="count" id="p0-count">-</div>
                 <div class="label">🔴 P0 CRITICAL</div>
             </div>
             <div class="priority-box p1">
-                <div class="count">20</div>
+                <div class="count" id="p1-count">-</div>
                 <div class="label">🟡 P1 HIGH</div>
             </div>
             <div class="priority-box p2">
-                <div class="count">35</div>
+                <div class="count" id="p2-count">-</div>
                 <div class="label">🟢 P2 MEDIUM</div>
             </div>
             <div class="priority-box p3">
-                <div class="count">2</div>
+                <div class="count" id="p3-count">-</div>
                 <div class="label">⚪ P3 LOW</div>
             </div>
         </div>
 
-        <!-- Tabs -->
-        <div class="tabs">
-            <button class="tab-btn active" onclick="switchTab('p0')">🔴 P0 (2)</button>
-            <button class="tab-btn" onclick="switchTab('p1')">🟡 P1 (20)</button>
-            <button class="tab-btn" onclick="switchTab('p2')">🟢 P2 (35)</button>
-            <button class="tab-btn" onclick="switchTab('p3')">⚪ P3 (2)</button>
-            <button class="tab-btn" onclick="switchTab('completed')">✅ DONE (31)</button>
+        <!-- Main Tabs: Incomplete / Completed -->
+        <div class="main-tabs">
+            <button class="main-tab-btn active" id="tab-incomplete" onclick="switchMainTab('incomplete')">
+                📋 Incomplete (<span id="tab-incomplete-count">-</span>)
+            </button>
+            <button class="main-tab-btn" id="tab-completed" onclick="switchMainTab('completed')">
+                ✅ Completed (<span id="tab-completed-count">-</span>)
+            </button>
         </div>
 
-        <!-- P0 Tasks -->
-        <div id="p0" class="tab-content active">
-            <div class="task-card p0">
-                <div class="task-header">
-                    <div>
-                        <div class="task-title">🔴 Fix Code API 404 Errors</div>
-                        <div class="task-id">TASK-001 | Due: Feb 18</div>
-                    </div>
-                    <span class="status-badge progress">IN PROGRESS</span>
-                </div>
-                <div class="task-desc">API endpoints returning 404 errors. Needs debugging and fixing before deployment.</div>
-                <div class="task-meta">
-                    <div class="meta-item">👤 Code</div>
-                    <div class="meta-item">⏱️ 4 hours</div>
-                    <div class="meta-item">⚡ Critical</div>
-                </div>
-                <div class="progress-bar">
-                    <div class="progress-fill" style="width: 60%"></div>
-                </div>
-            </div>
-
-            <div class="task-card p0">
-                <div class="task-header">
-                    <div>
-                        <div class="task-title">🔴 Complete 30 Leads/Day Quota</div>
-                        <div class="task-id">TASK-002 | Due: Daily</div>
-                    </div>
-                    <span class="status-badge complete">COMPLETE</span>
-                </div>
-                <div class="task-desc">Daily quota met! 30 high-quality leads found. Focus on DeFi and RWA.</div>
-                <div class="task-meta">
-                    <div class="meta-item">👤 DealFlow</div>
-                    <div class="meta-item">📊 30/30 (100%)</div>
-                    <div class="meta-item">✅ Done</div>
-                </div>
-                <div class="completed-date">✓ Completed: Feb 18, 5:35 AM</div>
-            </div>
-
-            <div class="task-card p0">
-                <div class="task-header">
-                    <div>
-                        <div class="task-title">🔴 Scout Realistic Data</div>
-                        <div class="task-id">TASK-033 | Due: Feb 18</div>
-                    </div>
-                    <span class="status-badge complete">COMPLETE</span>
-                </div>
-                <div class="task-desc">Fixed overly optimistic ROI estimates. Added hours/week and prerequisites.</div>
-                <div class="task-meta">
-                    <div class="meta-item">👤 Scout</div>
-                    <div class="meta-item">📊 15 opportunities</div>
-                    <div class="meta-item">🎯 94/100</div>
-                </div>
-                <div class="completed-date">✓ Completed: Feb 18, 10:59 AM</div>
-            </div>
-
-            <div class="task-card p0">
-                <div class="task-header">
-                    <div>
-                        <div class="task-title">🔴 Fix DealFlow Page</div>
-                        <div class="task-id">Forge-1 | Due: Feb 18, 2:00 PM</div>
-                    </div>
-                    <span class="status-badge complete">COMPLETE</span>
-                </div>
-                <div class="task-desc">Added 4 missing leads (30 total), fixed filters, added region filters (PH/HK/SG).</div>
-                <div class="task-meta">
-                    <div class="meta-item">👤 Forge</div>
-                    <div class="meta-item">📊 30 leads</div>
-                    <div class="meta-item">✅ Done</div>
-                </div>
-                <div class="completed-date">✓ Completed: Feb 18, 1:59 PM</div>
-            </div>
-
-            <div class="task-card p0">
-                <div class="task-header">
-                    <div>
-                        <div class="task-title">🔴 Fix Overview Page</div>
-                        <div class="task-id">Forge-2 | Due: Feb 18, 2:00 PM</div>
-                    </div>
-                    <span class="status-badge complete">COMPLETE</span>
-                </div>
-                <div class="task-desc">Dynamic activity feed with real agent data, refresh/export/clear functions.</div>
-                <div class="task-meta">
-                    <div class="meta-item">👤 Forge</div>
-                    <div class="meta-item">🔄 Dynamic</div>
-                    <div class="meta-item">✅ Done</div>
-                </div>
-                <div class="completed-date">✓ Completed: Feb 18, 1:59 PM</div>
-            </div>
+        <!-- Priority Filter Tabs (only for incomplete view) -->
+        <div class="filter-tabs" id="priority-filters">
+            <button class="filter-tab-btn active" onclick="filterByPriority('all')">All</button>
+            <button class="filter-tab-btn" onclick="filterByPriority('P0')">🔴 P0</button>
+            <button class="filter-tab-btn" onclick="filterByPriority('P1')">🟡 P1</button>
+            <button class="filter-tab-btn" onclick="filterByPriority('P2')">🟢 P2</button>
+            <button class="filter-tab-btn" onclick="filterByPriority('P3')">⚪ P3</button>
         </div>
 
-        <!-- P1 Tasks -->
-        <div id="p1" class="tab-content">
-            <div class="task-card p1">
-                <div class="task-header">
-                    <div>
-                        <div class="task-title">🟡 Theme All Pages (Kairosoft)</div>
-                        <div class="task-id">TASK-067 | Due: Today</div>
-                    </div>
-                    <span class="status-badge progress">IN PROGRESS</span>
-                </div>
-                <div class="task-desc">Apply Kairosoft theme to task-board and living-pixel-office. Press Start 2P fonts, pixel aesthetic.</div>
-                <div class="task-meta">
-                    <div class="meta-item">👤 Forge</div>
-                    <div class="meta-item">🎨 Theme</div>
-                    <div class="meta-item">🎯 95/100</div>
-                </div>
-                <div class="progress-bar">
-                    <div class="progress-fill" style="width: 50%"></div>
-                </div>
+        <!-- Content Container -->
+        <div id="content-container">
+            <!-- Loading State -->
+            <div class="loading-container" id="loading-state">
+                <div class="loading-spinner"></div>
+                <div class="loading-text">Loading tasks...</div>
             </div>
-
-            <div class="task-card p1">
-                <div class="task-header">
-                    <div>
-                        <div class="task-title">🟡 Agent Cards Enhancement</div>
-                        <div class="task-id">TASK-068 | Due: Feb 19, 10:00 AM</div>
-                    </div>
-                    <span class="status-badge pending">PENDING</span>
-                </div>
-                <div class="task-desc">Update agent cards with detailed token metrics: daily, weekly, total, cost in USD, efficiency rating.</div>
-                <div class="task-meta">
-                    <div class="meta-item">👤 Forge-2</div>
-                    <div class="meta-item">📊 Token metrics</div>
-                    <div class="meta-item">⏳ Waiting</div>
-                </div>
+            
+            <!-- Error State -->
+            <div class="error-container" id="error-state" style="display: none;">
+                <div class="error-text">Failed to load tasks</div>
+                <button class="retry-btn" onclick="fetchTasks()">Retry</button>
             </div>
-
-            <div class="task-card p1">
-                <div class="task-header">
-                    <div>
-                        <div class="task-title">🟡 PIE Radar Tab</div>
-                        <div class="task-id">TASK-055 | Due: Feb 18, 5:00 PM</div>
-                    </div>
-                    <span class="status-badge pending">PENDING</span>
-                </div>
-                <div class="task-desc">Create Radar tab for PIE intelligence. Live opportunity radar, funding alerts, competitor tracking.</div>
-                <div class="task-meta">
-                    <div class="meta-item">👤 Forge-1 + PIE</div>
-                    <div class="meta-item">🔭 Intelligence</div>
-                    <div class="meta-item">⏳ Waiting</div>
-                </div>
-            </div>
-
-            <div class="task-card p1">
-                <div class="task-header">
-                    <div>
-                        <div class="task-title">🟡 Agent Performance Dashboard</div>
-                        <div class="task-id">TASK-022 | Due: Feb 20</div>
-                    </div>
-                    <span class="status-badge complete">COMPLETE</span>
-                </div>
-                <div class="task-desc">Real-time agent metrics and performance tracking with Chart.js visualizations.</div>
-                <div class="task-meta">
-                    <div class="meta-item">👤 Forge</div>
-                    <div class="meta-item">📊 Dashboard</div>
-                    <div class="meta-item">🎯 96/100</div>
-                </div>
-                <div class="completed-date">✓ Completed: Feb 18, 5:30 AM</div>
-            </div>
-
-            <div class="task-card p1">
-                <div class="task-header">
-                    <div>
-                        <div class="task-title">🟡 Lead Scoring Algorithm v2.0</div>
-                        <div class="task-id">TASK-023 | Due: Feb 20</div>
-                    </div>
-                    <span class="status-badge complete">COMPLETE</span>
-                </div>
-                <div class="task-desc">AI-powered lead quality scoring (0-100) with 4 weighted criteria.</div>
-                <div class="task-meta">
-                    <div class="meta-item">👤 Nexus</div>
-                    <div class="meta-item">🤖 Algorithm</div>
-                    <div class="meta-item">🎯 94/100</div>
-                </div>
-                <div class="completed-date">✓ Completed: Feb 18, 5:30 AM</div>
+            
+            <!-- Task List -->
+            <div id="task-list"></div>
+            
+            <!-- Pagination -->
+            <div class="pagination" id="pagination" style="display: none;">
+                <button class="page-btn" id="prev-btn" onclick="changePage(-1)">◀ Prev</button>
+                <span class="page-info" id="page-info">Page 1 of 1</span>
+                <button class="page-btn" id="next-btn" onclick="changePage(1)">Next ▶</button>
             </div>
         </div>
-
-        <!-- P2 Tasks -->
-        <div id="p2" class="tab-content">
-            <div class="task-card p2">
-                <div class="task-header">
-                    <div>
-                        <div class="task-title">🟢 Content Repurposing System</div>
-                        <div class="task-id">TASK-024 | Due: Feb 21</div>
-                    </div>
-                    <span class="status-badge pending">PENDING</span>
-                </div>
-                <div class="task-desc">Auto-convert content across formats: blog→twitter→linkedin.</div>
-                <div class="task-meta">
-                    <div class="meta-item">👤 Quill</div>
-                    <div class="meta-item">📝 Content</div>
-                    <div class="meta-item">⏳ Planned</div>
-                </div>
-            </div>
-
-            <div class="task-card p2">
-                <div class="task-header">
-                    <div>
-                        <div class="task-title">🟢 Mobile App Mockups</div>
-                        <div class="task-id">TASK-025 | Due: Feb 21</div>
-                    </div>
-                    <span class="status-badge pending">PENDING</span>
-                </div>
-                <div class="task-desc">PWA mobile interface designs for Mission Control.</div>
-                <div class="task-meta">
-                    <div class="meta-item">👤 Pixel</div>
-                    <div class="meta-item">📱 Mobile</div>
-                    <div class="meta-item">⏳ Planned</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- P3 Tasks -->
-        <div id="p3" class="tab-content">
-            <div class="task-card p3">
-                <div class="task-header">
-                    <div>
-                        <div class="task-title">⚪ Register Nexus on Moltbook</div>
-                        <div class="task-id">TASK-053</div>
-                    </div>
-                    <span class="status-badge planned">PLANNED</span>
-                </div>
-                <div class="task-desc">Register Nexus AI agent on Moltbook platform for wider discovery.</div>
-                <div class="task-meta">
-                    <div class="meta-item">👤 Nexus</div>
-                    <div class="meta-item">📅 TBD</div>
-                    <div class="meta-item">🌐 External</div>
-                </div>
-            </div>
-
-            <div class="task-card p3">
-                <div class="task-header">
-                    <div>
-                        <div class="task-title">⚪ Mobile App for Mission Control</div>
-                        <div class="task-id">TASK-015</div>
-                    </div>
-                    <span class="status-badge planned">PLANNED</span>
-                </div>
-                <div class="task-desc">Native mobile app for iOS/Android with push notifications.</div>
-                <div class="task-meta">
-                    <div class="meta-item">👤 Forge</div>
-                    <div class="meta-item">📅 Mar 15</div>
-                    <div class="meta-item">📱 Mobile</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Completed Tasks -->
-        <div id="completed" class="tab-content">
-            <div class="task-card p1">
-                <div class="task-header">
-                    <div>
-                        <div class="task-title">✅ Agent Performance Dashboard</div>
-                        <div class="task-id">TASK-022</div>
-                    </div>
-                    <span class="status-badge complete">COMPLETE</span>
-                </div>
-                <div class="task-desc">Real-time agent metrics and performance tracking dashboard.</div>
-                <div class="task-meta">
-                    <div class="meta-item">👤 Forge</div>
-                    <div class="meta-item">🎯 Score: 96/100</div>
-                </div>
-                <div class="completed-date">✓ Completed: Feb 18, 5:30 AM</div>
-            </div>
-
-            <div class="task-card p1">
-                <div class="task-header">
-                    <div>
-                        <div class="task-title">✅ Lead Scoring Algorithm v2.0</div>
-                        <div class="task-id">TASK-023</div>
-                    </div>
-                    <span class="status-badge complete">COMPLETE</span>
-                </div>
-                <div class="task-desc">AI-powered lead quality scoring system (0-100 scale).</div>
-                <div class="task-meta">
-                    <div class="meta-item">👤 Nexus</div>
-                    <div class="meta-item">🎯 Score: 94/100</div>
-                </div>
-                <div class="completed-date">✓ Completed: Feb 18, 5:30 AM</div>
-            </div>
-
-            <div class="task-card p1">
-                <div class="task-header">
-                    <div>
-                        <div class="task-title">✅ Lead Contact Research (30 leads)</div>
-                        <div class="task-id">TASK-035</div>
-                    </div>
-                    <span class="status-badge complete">COMPLETE</span>
-                </div>
-                <div class="task-desc">All 30 leads enriched with emails, LinkedIn, titles. 22 P0 + 8 P1.</div>
-                <div class="task-meta">
-                    <div class="meta-item">👤 DealFlow</div>
-                    <div class="meta-item">🎯 Score: 92/100</div>
-                </div>
-                <div class="completed-date">✓ Completed: Feb 18, 5:35 AM</div>
-            </div>
-
-            <div class="task-card p0">
-                <div class="task-header">
-                    <div>
-                        <div class="task-title">✅ P0 UI Fixes Bundle</div>
-                        <div class="task-id">TASK-030/031/032</div>
-                    </div>
-                    <span class="status-badge complete">COMPLETE</span>
-                </div>
-                <div class="task-desc">Fixed Office Page, Data Viewer, Refresh Buttons across 5 pages.</div>
-                <div class="task-meta">
-                    <div class="meta-item">👤 Forge</div>
-                    <div class="meta-item">🎯 Score: 95/100</div>
-                </div>
-                <div class="completed-date">✓ Completed: Feb 18, 10:59 AM</div>
-            </div>
-
-            <div class="task-card p0">
-                <div class="task-header">
-                    <div>
-                        <div class="task-title">✅ DealFlow + PIE Integration</div>
-                        <div class="task-id">TASK-043</div>
-                    </div>
-                    <span class="status-badge complete">COMPLETE</span>
-                </div>
-                <div class="task-desc">5 integration modules created. Contact enrichment, lead readiness, handoff API.</div>
-                <div class="task-meta">
-                    <div class="meta-item">👤 DealFlow</div>
-                    <div class="meta-item">🎯 Score: 93/100</div>
-                </div>
-                <div class="completed-date">✓ Completed: Feb 18, 9:21 AM</div>
-            </div>
-        </div>
+        
+        <!-- Last Updated -->
+        <div class="last-updated" id="last-updated"></div>
     </div>
 
     <!-- Mobile Navigation -->
@@ -864,77 +703,315 @@
     </nav>
 
     <script>
-        // Live task data
-        let taskData = {
-            total: 90,
-            completed: 31,
-            inProgress: 6,
-            p0: { total: 8, completed: 6, pending: 2 },
-            p1: { total: 32, completed: 12, pending: 20 },
-            p2: { total: 43, completed: 8, pending: 35 },
-            p3: { total: 7, completed: 5, pending: 2 }
-        };
+        // Global state
+        let allTasks = [];
+        let incompleteTasks = [];
+        let completedTasks = [];
+        let currentMainTab = 'incomplete';
+        let currentPriorityFilter = 'all';
+        let currentPage = 1;
+        const tasksPerPage = 50;
+        let autoRefreshInterval;
 
-        // Fetch live task data from API
-        async function fetchTaskData() {
+        // Fetch tasks from API
+        async function fetchTasks() {
+            showLoading();
+            
             try {
                 const response = await fetch('/api/tasks');
                 const data = await response.json();
-                if (data.success && data.summary) {
-                    updateTaskDisplay(data.summary);
+                
+                if (data.success && data.data && data.data.tasks) {
+                    allTasks = data.data.tasks;
+                    processTasks();
+                    updateUI();
+                    hideLoading();
+                    updateLastUpdated();
+                } else {
+                    throw new Error('Invalid response format');
                 }
             } catch (error) {
-                console.log('Using cached task data');
-                updateTaskDisplay(taskData);
+                console.error('Error fetching tasks:', error);
+                showError();
             }
         }
 
-        // Update task counts on page
-        function updateTaskDisplay(data) {
-            // Update stat boxes
-            document.querySelector('.stat-box:nth-child(1) .stat-value').textContent = data.total || 90;
-            document.querySelector('.stat-box:nth-child(2) .stat-value').textContent = data.pending || 59;
-            document.querySelector('.stat-box:nth-child(3) .stat-value').textContent = data.in_progress || 6;
-            document.querySelector('.stat-box:nth-child(4) .stat-value').textContent = data.completed || 31;
-
-            // Update priority boxes
-            document.querySelector('.priority-box.p0 .count').textContent = taskData.p0.pending;
-            document.querySelector('.priority-box.p1 .count').textContent = taskData.p1.pending;
-            document.querySelector('.priority-box.p2 .count').textContent = taskData.p2.pending;
-            document.querySelector('.priority-box.p3 .count').textContent = taskData.p3.pending;
-
-            // Update tab buttons
-            document.querySelector('.tab-btn:nth-child(1)').textContent = `🔴 P0 (${taskData.p0.pending})`;
-            document.querySelector('.tab-btn:nth-child(2)').textContent = `🟡 P1 (${taskData.p1.pending})`;
-            document.querySelector('.tab-btn:nth-child(3)').textContent = `🟢 P2 (${taskData.p2.pending})`;
-            document.querySelector('.tab-btn:nth-child(4)').textContent = `✅ DONE (${data.completed || 31})`;
+        // Process tasks into incomplete and completed arrays
+        function processTasks() {
+            // Filter incomplete tasks (status != "completed")
+            incompleteTasks = allTasks.filter(task => task.status !== 'completed');
+            
+            // Filter completed tasks (status == "completed")
+            completedTasks = allTasks.filter(task => task.status === 'completed');
+            
+            // Sort incomplete tasks: Priority (P0 first), then Due Date
+            const priorityOrder = { 'P0': 0, 'P1': 1, 'P2': 2, 'P3': 3 };
+            incompleteTasks.sort((a, b) => {
+                const priorityDiff = (priorityOrder[a.priority] || 4) - (priorityOrder[b.priority] || 4);
+                if (priorityDiff !== 0) return priorityDiff;
+                
+                // Sort by due date
+                const dateA = a.dueDate ? new Date(a.dueDate) : new Date('9999-12-31');
+                const dateB = b.dueDate ? new Date(b.dueDate) : new Date('9999-12-31');
+                return dateA - dateB;
+            });
+            
+            // Sort completed tasks by completed date (newest first)
+            completedTasks.sort((a, b) => {
+                const dateA = a.completedAt ? new Date(a.completedAt) : new Date(a.updatedAt || 0);
+                const dateB = b.completedAt ? new Date(b.completedAt) : new Date(b.updatedAt || 0);
+                return dateB - dateA;
+            });
         }
 
-        // Switch tabs
-        function switchTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            document.getElementById(tabId).classList.add('active');
+        // Update all UI elements
+        function updateUI() {
+            updateStats();
+            updatePriorityCounts();
+            updateTabCounts();
+            renderTasks();
+        }
+
+        // Update statistics
+        function updateStats() {
+            document.getElementById('stat-total').textContent = allTasks.length;
+            document.getElementById('stat-incomplete').textContent = incompleteTasks.length;
+            document.getElementById('stat-completed').textContent = completedTasks.length;
+            
+            const inProgressCount = allTasks.filter(t => t.status === 'in_progress').length;
+            const blockedCount = allTasks.filter(t => t.status === 'blocked').length;
+            
+            document.getElementById('stat-inprogress').textContent = inProgressCount;
+            document.getElementById('stat-blocked').textContent = blockedCount;
+        }
+
+        // Update priority counts (for incomplete tasks only)
+        function updatePriorityCounts() {
+            const p0Count = incompleteTasks.filter(t => t.priority === 'P0').length;
+            const p1Count = incompleteTasks.filter(t => t.priority === 'P1').length;
+            const p2Count = incompleteTasks.filter(t => t.priority === 'P2').length;
+            const p3Count = incompleteTasks.filter(t => t.priority === 'P3').length;
+            
+            document.getElementById('p0-count').textContent = p0Count;
+            document.getElementById('p1-count').textContent = p1Count;
+            document.getElementById('p2-count').textContent = p2Count;
+            document.getElementById('p3-count').textContent = p3Count;
+        }
+
+        // Update tab counts
+        function updateTabCounts() {
+            document.getElementById('tab-incomplete-count').textContent = incompleteTasks.length;
+            document.getElementById('tab-completed-count').textContent = completedTasks.length;
+        }
+
+        // Get tasks to display based on current filters
+        function getFilteredTasks() {
+            let tasks = currentMainTab === 'incomplete' ? incompleteTasks : completedTasks;
+            
+            // Apply priority filter (only for incomplete tab)
+            if (currentMainTab === 'incomplete' && currentPriorityFilter !== 'all') {
+                tasks = tasks.filter(t => t.priority === currentPriorityFilter);
+            }
+            
+            return tasks;
+        }
+
+        // Render tasks
+        function renderTasks() {
+            const tasks = getFilteredTasks();
+            const container = document.getElementById('task-list');
+            
+            if (tasks.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        ${currentMainTab === 'incomplete' 
+                            ? 'No incomplete tasks found.' 
+                            : 'No completed tasks found.'}
+                    </div>
+                `;
+                document.getElementById('pagination').style.display = 'none';
+                return;
+            }
+            
+            // Pagination
+            const totalPages = Math.ceil(tasks.length / tasksPerPage);
+            const startIndex = (currentPage - 1) * tasksPerPage;
+            const endIndex = Math.min(startIndex + tasksPerPage, tasks.length);
+            const pageTasks = tasks.slice(startIndex, endIndex);
+            
+            // Render task cards
+            container.innerHTML = pageTasks.map(task => renderTaskCard(task)).join('');
+            
+            // Update pagination
+            if (totalPages > 1) {
+                document.getElementById('pagination').style.display = 'flex';
+                document.getElementById('page-info').textContent = `Page ${currentPage} of ${totalPages} (${tasks.length} tasks)`;
+                document.getElementById('prev-btn').disabled = currentPage === 1;
+                document.getElementById('next-btn').disabled = currentPage === totalPages;
+            } else {
+                document.getElementById('pagination').style.display = 'none';
+            }
+        }
+
+        // Render a single task card
+        function renderTaskCard(task) {
+            const priorityClass = task.priority ? task.priority.toLowerCase() : 'p2';
+            const statusClass = task.status || 'not_started';
+            const statusLabel = formatStatus(task.status);
+            const priorityLabel = task.priority || 'P2';
+            
+            // Format due date
+            let dueDateText = '';
+            if (task.dueDate) {
+                const dueDate = new Date(task.dueDate);
+                dueDateText = `Due: ${dueDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`;
+            }
+            
+            // Format completed date for completed tasks
+            let completedText = '';
+            if (task.status === 'completed') {
+                const completedDate = task.completedAt 
+                    ? new Date(task.completedAt) 
+                    : (task.updatedAt ? new Date(task.updatedAt) : null);
+                if (completedDate) {
+                    completedText = `<div class="completed-date">✓ Completed: ${completedDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</div>`;
+                }
+            }
+            
+            // Truncate description
+            const description = task.description 
+                ? (task.description.length > 150 ? task.description.substring(0, 150) + '...' : task.description)
+                : 'No description';
+            
+            return `
+                <div class="task-card ${priorityClass}">
+                    <div class="task-header">
+                        <div>
+                            <div class="task-title">${escapeHtml(task.title || 'Untitled Task')}</div>
+                            <div class="task-id">${task.taskId || task.id || 'TASK-???'} ${dueDateText ? '| ' + dueDateText : ''}</div>
+                        </div>
+                        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                            <span class="priority-badge ${priorityClass}">${priorityLabel}</span>
+                            <span class="status-badge ${statusClass}">${statusLabel}</span>
+                        </div>
+                    </div>
+                    <div class="task-desc">${escapeHtml(description)}</div>
+                    <div class="task-meta">
+                        <div class="meta-item">👤 ${escapeHtml(task.assignee || 'Unassigned')}</div>
+                        ${task.estimate ? `<div class="meta-item">⏱️ ${task.estimate}</div>` : ''}
+                        ${task.score ? `<div class="meta-item">🎯 ${task.score}/100</div>` : ''}
+                    </div>
+                    ${completedText}
+                </div>
+            `;
+        }
+
+        // Format status for display
+        function formatStatus(status) {
+            if (!status) return 'NOT STARTED';
+            return status.replace(/_/g, ' ').toUpperCase();
+        }
+
+        // Escape HTML to prevent XSS
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Switch main tab (incomplete/completed)
+        function switchMainTab(tab) {
+            currentMainTab = tab;
+            currentPage = 1;
+            
+            // Update tab buttons
+            document.querySelectorAll('.main-tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`tab-${tab}`).classList.add('active');
+            
+            // Show/hide priority filters
+            document.getElementById('priority-filters').style.display = tab === 'incomplete' ? 'flex' : 'none';
+            
+            renderTasks();
+        }
+
+        // Filter by priority
+        function filterByPriority(priority) {
+            currentPriorityFilter = priority;
+            currentPage = 1;
+            
+            // Update filter buttons
+            document.querySelectorAll('.filter-tab-btn').forEach(btn => btn.classList.remove('active'));
             event.target.classList.add('active');
+            
+            renderTasks();
+        }
+
+        // Change page
+        function changePage(direction) {
+            const tasks = getFilteredTasks();
+            const totalPages = Math.ceil(tasks.length / tasksPerPage);
+            
+            currentPage += direction;
+            if (currentPage < 1) currentPage = 1;
+            if (currentPage > totalPages) currentPage = totalPages;
+            
+            renderTasks();
+            // Scroll to top of task list
+            document.getElementById('content-container').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Show loading state
+        function showLoading() {
+            document.getElementById('loading-state').style.display = 'block';
+            document.getElementById('error-state').style.display = 'none';
+            document.getElementById('task-list').innerHTML = '';
+            document.getElementById('pagination').style.display = 'none';
+        }
+
+        // Hide loading state
+        function hideLoading() {
+            document.getElementById('loading-state').style.display = 'none';
+        }
+
+        // Show error state
+        function showError() {
+            document.getElementById('loading-state').style.display = 'none';
+            document.getElementById('error-state').style.display = 'block';
+            document.getElementById('task-list').innerHTML = '';
+            document.getElementById('pagination').style.display = 'none';
+        }
+
+        // Update last updated timestamp
+        function updateLastUpdated() {
+            const now = new Date();
+            document.getElementById('last-updated').textContent = 
+                `Last updated: ${now.toLocaleTimeString()}`;
         }
 
         // Refresh button handler
-        function refreshTasks() {
+        async function refreshTasks() {
             const btn = document.querySelector('.refresh-btn');
-            btn.style.transform = 'rotate(360deg)';
-            setTimeout(() => btn.style.transform = '', 500);
-            fetchTaskData();
+            btn.classList.add('spinning');
+            
+            await fetchTasks();
+            
+            setTimeout(() => btn.classList.remove('spinning'), 500);
         }
 
         // Initialize on load
         document.addEventListener('DOMContentLoaded', () => {
-            fetchTaskData();
-            // Auto-refresh every 30 minutes
-            setInterval(fetchTaskData, 30 * 60 * 1000);
+            fetchTasks();
+            
+            // Auto-refresh every 30 seconds
+            autoRefreshInterval = setInterval(fetchTasks, 30000);
+        });
+
+        // Cleanup on page unload
+        window.addEventListener('beforeunload', () => {
+            if (autoRefreshInterval) {
+                clearInterval(autoRefreshInterval);
+            }
         });
     </script>
 </body>
