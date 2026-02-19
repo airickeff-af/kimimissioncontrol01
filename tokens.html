@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Token Tracker | Mission Control</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0a0a0f;
+      color: #e0e0e0;
+      min-height: 100vh;
+    }
+    .header {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      padding: 1rem 2rem;
+      border-bottom: 2px solid #00d4ff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo { font-size: 1.5rem; font-weight: 700; color: #00d4ff; }
+    .nav { display: flex; gap: 1rem; }
+    .nav a {
+      color: #888;
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      transition: all 0.2s;
+    }
+    .nav a:hover, .nav a.active { color: #00d4ff; background: rgba(0,212,255,0.1); }
+    .container { max-width: 1400px; margin: 0 auto; padding: 2rem; }
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+    h1 { font-size: 2rem; color: #00d4ff; }
+    .refresh-btn {
+      background: linear-gradient(135deg, #00d4ff, #0099cc);
+      color: #000;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .refresh-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,212,255,0.3); }
+    .refresh-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .stat-card {
+      background: linear-gradient(135deg, #1a1a2e, #0f0f1a);
+      border: 1px solid #333;
+      border-radius: 12px;
+      padding: 1.5rem;
+      text-align: center;
+    }
+    .stat-value { font-size: 2.5rem; font-weight: 700; color: #00d4ff; }
+    .stat-label { color: #888; font-size: 0.875rem; margin-top: 0.5rem; }
+    .stat-sub { color: #666; font-size: 0.75rem; margin-top: 0.25rem; }
+    .agents-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1rem;
+    }
+    .agent-card {
+      background: linear-gradient(135deg, #1a1a2e, #0f0f1a);
+      border: 1px solid #333;
+      border-radius: 12px;
+      padding: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .agent-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #00d4ff, #0099cc);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #000;
+    }
+    .agent-info { flex: 1; }
+    .agent-name { font-weight: 600; color: #fff; }
+    .agent-role { font-size: 0.75rem; color: #888; }
+    .agent-tokens {
+      text-align: right;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .token-count { font-size: 1.25rem; font-weight: 700; color: #00ff88; }
+    .token-label { font-size: 0.75rem; color: #666; }
+    .loading { text-align: center; padding: 3rem; color: #888; }
+    .error { text-align: center; padding: 3rem; color: #ff4444; }
+    .last-updated { text-align: center; color: #666; margin-top: 2rem; font-size: 0.875rem; }
+    @media (max-width: 768px) {
+      .header { flex-wrap: wrap; padding: 1rem; }
+      .nav { overflow-x: auto; width: 100%; margin-top: 1rem; }
+      .container { padding: 1rem; }
+      .agents-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="logo">🎯 Mission Control</div>
+    <nav class="nav">
+      <a href="/">HQ</a>
+      <a href="/office.html">Office</a>
+      <a href="/agents.html">Agents</a>
+      <a href="/deals.html">DealFlow</a>
+      <a href="/tokens.html" class="active">Tokens</a>
+      <a href="/task-board.html">Tasks</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <div class="page-header">
+      <h1>💰 Token Tracker</h1>
+      <button class="refresh-btn" id="refreshBtn" onclick="loadTokens()">
+        🔄 Refresh
+      </button>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-value" id="total-tokens">-</div>
+        <div class="stat-label">Total Tokens</div>
+        <div class="stat-sub" id="total-sessions">-</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="total-cost">-</div>
+        <div class="stat-label">Est. Cost (USD)</div>
+        <div class="stat-sub">Based on API pricing</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="active-agents">-</div>
+        <div class="stat-label">Active Agents</div>
+        <div class="stat-sub" id="total-agents">-</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="daily-avg">-</div>
+        <div class="stat-label">Daily Average</div>
+        <div class="stat-sub">tokens/day</div>
+      </div>
+    </div>
+
+    <h2 style="color: #00d4ff; margin-bottom: 1rem;">Agent Token Usage</h2>
+
+    <div id="agents-content">
+      <div class="loading">Loading token data...</div>
+    </div>
+
+    <div class="last-updated" id="last-updated"></div>
+  </div>
+
+  <script>
+    const API_URL = '/api';
+
+    function formatNumber(num) {
+      if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+      if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
+      return num.toString();
+    }
+
+    async function loadTokens() {
+      const content = document.getElementById('agents-content');
+      const refreshBtn = document.getElementById('refreshBtn');
+      content.innerHTML = '<div class="loading">Loading token data...</div>';
+      refreshBtn.disabled = true;
+      refreshBtn.textContent = '⏳ Loading...';
+
+      try {
+        const response = await fetch(`${API_URL}/tokens`);
+        const data = await response.json();
+
+        if (!data.success) {
+          throw new Error('API returned error');
+        }
+
+        const summary = data.summary || {};
+        const agents = data.agents || [];
+
+        // Update stats
+        document.getElementById('total-tokens').textContent = formatNumber(summary.totalTokens || 0);
+        document.getElementById('total-cost').textContent = '$' + (summary.totalCost || 0).toFixed(2);
+        document.getElementById('total-sessions').textContent = `${agents.length} agents tracked`;
+        document.getElementById('active-agents').textContent = agents.filter(a => a.tokens > 0).length;
+        document.getElementById('total-agents').textContent = `${agents.length} total agents`;
+        document.getElementById('daily-avg').textContent = formatNumber(data.dailyAverage || 0);
+
+        // Sort by token usage
+        const sortedAgents = [...agents].sort((a, b) => (b.tokens || 0) - (a.tokens || 0));
+
+        // Render agent cards
+        content.innerHTML = `
+          <div class="agents-grid">
+            ${sortedAgents.map(agent => `
+              <div class="agent-card">
+                <div class="agent-avatar">${agent.name?.charAt(0) || '?'}</div>
+                <div class="agent-info">
+                  <div class="agent-name">${agent.name || 'Unknown'}</div>
+                  <div class="agent-role">${agent.percentage?.toFixed(1) || 0}% of total</div>
+                </div>
+                <div class="agent-tokens">
+                  <div class="token-count">${formatNumber(agent.tokens || 0)}</div>
+                  <div class="token-label">tokens</div>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        `;
+
+        document.getElementById('last-updated').textContent = `Last updated: ${new Date().toLocaleString()}`;
+      } catch (error) {
+        console.error('Error loading tokens:', error);
+        content.innerHTML = `<div class="error">⚠️ Failed to load token data: ${error.message}</div>`;
+      } finally {
+        refreshBtn.disabled = false;
+        refreshBtn.textContent = '🔄 Refresh';
+      }
+    }
+
+    // Load on page load
+    loadTokens();
+
+    // Auto-refresh every 30 minutes
+    setInterval(() => {
+      console.log('[Auto-Refresh] Reloading tokens...');
+      loadTokens();
+    }, 30 * 60 * 1000);
+  </script>
+</body>
+</html>
