@@ -1,13 +1,13 @@
 # PENDING TASKS LOG - MISSION CONTROL
 **Status:** ACTIVE  
-**Last Updated:** 2026-02-20 3:42 AM HKT
-**Total Tasks:** 115  
+**Last Updated:** 2026-02-20 3:46 AM HKT
+**Total Tasks:** 118  
 **Completed:** 16
 **In Progress:** 5
 **P0 Critical:** 9
 **P1 High:** 39
-**P2 Medium:** 62 (59 archived to [Future Ideas](/mission-control/docs/FUTURE_IDEAS_BACKLOG.md))
-**P3 Low:** 5
+**P2 Medium:** 65 (59 archived to [Future Ideas](/mission-control/docs/FUTURE_IDEAS_BACKLOG.md))
+**P3 Low:** 6
 **Delegation Workflow:** [v2.0 with Audit Checkpoints](/mission-control/docs/DELEGATION_WORKFLOW.md)
 
 ---
@@ -28,6 +28,31 @@
 1. TASK-070 (Deployment Fix) 4+ hours overdue
 2. TASK-071 (Header Standardization) not started
 3. 31 P1 tasks blocked on dependencies (79%)
+
+---
+
+## 🆕 NEW P2 TASKS - BATCH 2026-02-20
+
+### **P2-NEW-001: Session Context Optimization**
+- **Assigned:** Nexus
+- **Due:** Feb 25, 2026
+- **Status:** ⏳ NOT STARTED
+- **Priority:** P2
+- **Description:** Optimize session context handling to reduce token usage and improve response quality
+
+### **P2-NEW-002: Token Usage Predictor**
+- **Assigned:** Code-1
+- **Due:** Feb 26, 2026
+- **Status:** ⏳ NOT STARTED
+- **Priority:** P2
+- **Description:** Build predictive model for token usage per task type to optimize agent allocation
+
+### **P2-NEW-003: Auto-Compression System**
+- **Assigned:** Sentry
+- **Due:** Feb 27, 2026
+- **Status:** ⏳ NOT STARTED
+- **Priority:** P2
+- **Description:** Implement automatic context compression when sessions approach token limits
 
 ---
 
@@ -2829,15 +2854,13 @@ Agents must submit progress reports at each checkpoint:
 
 ---
 
-### **TASK-114: P3 - Context Management Protocol** ➤ ARCHIVED
+### **TASK-114: P3 - Context Management Protocol**
 - **Assigned:** Nexus
-- **Due:** Feb 23, 2026
-- **Status:** ➤ ARCHIVED to Future Ideas
-- **Priority:** P3 → ARCHIVED
-- **Archived Date:** 2026-02-20
-- **Reason:** Low priority, superseded by P2 Context Management System v2
-- **Description:** Manage main session context near capacity
-- **Archive Location:** `/mission-control/docs/FUTURE_IDEAS_BACKLOG.md`
+- **Due:** Feb 23, 2026 5:00 PM
+- **Status:** ⏳ NOT STARTED
+- **Priority:** P3
+- **Description:** Manage main session context near capacity (compress old turns, archive discussions)
+- **Reactivated:** 2026-02-20 3:46 AM
 
 ---
 
