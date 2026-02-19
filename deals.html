@@ -52,6 +52,7 @@
       gap: 0.5rem;
     }
     .refresh-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,212,255,0.3); }
+    .refresh-btn:disabled { opacity: 0.6; cursor: not-allowed; }
     .stats-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -88,17 +89,26 @@
     .priority-p0 { color: #ff4444; font-weight: 600; }
     .priority-p1 { color: #ffaa00; font-weight: 600; }
     .priority-p2 { color: #00d4ff; }
+    .priority-p3 { color: #888; }
     .status-badge {
       padding: 0.25rem 0.75rem;
       border-radius: 20px;
       font-size: 0.75rem;
       font-weight: 600;
     }
-    .status-active { background: rgba(0,255,136,0.2); color: #00ff88; }
-    .status-pending { background: rgba(255,170,0,0.2); color: #ffaa00; }
+    .status-hot { background: rgba(255,68,68,0.2); color: #ff4444; }
+    .status-warm { background: rgba(255,170,0,0.2); color: #ffaa00; }
+    .status-cold { background: rgba(136,136,136,0.2); color: #888; }
     .loading { text-align: center; padding: 3rem; color: #888; }
     .error { text-align: center; padding: 3rem; color: #ff4444; }
     .last-updated { text-align: center; color: #666; margin-top: 1rem; font-size: 0.875rem; }
+    @media (max-width: 768px) {
+      .header { flex-wrap: wrap; padding: 1rem; }
+      .nav { overflow-x: auto; width: 100%; margin-top: 1rem; }
+      .container { padding: 1rem; }
+      .deals-table { font-size: 0.8rem; }
+      .deals-table th, .deals-table td { padding: 0.5rem; }
+    }
   </style>
 </head>
 <body>
@@ -117,7 +127,7 @@
   <div class="container">
     <div class="page-header">
       <h1>🤝 DealFlow Pipeline</h1>
-      <button class="refresh-btn" onclick="loadDeals()">
+      <button class="refresh-btn" id="refreshBtn" onclick="loadDeals()">
         🔄 Refresh
       </button>
     </div>
@@ -128,16 +138,16 @@
         <div class="stat-label">Total Deals</div>
       </div>
       <div class="stat-card">
-        <div class="stat-value" id="active-deals">-</div>
-        <div class="stat-label">Active</div>
+        <div class="stat-value" id="hot-deals">-</div>
+        <div class="stat-label">Hot Leads</div>
       </div>
       <div class="stat-card">
         <div class="stat-value" id="p0-deals">-</div>
         <div class="stat-label">P0 Priority</div>
       </div>
       <div class="stat-card">
-        <div class="stat-value" id="regions">-</div>
-        <div class="stat-label">Regions</div>
+        <div class="stat-value" id="avg-score">-</div>
+        <div class="stat-label">Avg Score</div>
       </div>
     </div>
 
@@ -153,7 +163,10 @@
 
     async function loadDeals() {
       const content = document.getElementById('deals-content');
+      const refreshBtn = document.getElementById('refreshBtn');
       content.innerHTML = '<div class="loading">Loading deals...</div>';
+      refreshBtn.disabled = true;
+      refreshBtn.textContent = '⏳ Loading...';
 
       try {
         const response = await fetch(`${API_URL}/deals`);
@@ -164,13 +177,13 @@
         }
 
         const deals = data.deals || [];
+        const summary = data.summary || {};
 
         // Update stats
         document.getElementById('total-deals').textContent = deals.length;
-        document.getElementById('active-deals').textContent = deals.filter(d => d.status === 'active').length;
-        document.getElementById('p0-deals').textContent = deals.filter(d => d.priority === 'P0').length;
-        const regions = [...new Set(deals.map(d => d.region).filter(Boolean))];
-        document.getElementById('regions').textContent = regions.length;
+        document.getElementById('hot-deals').textContent = summary.hot || deals.filter(d => d.status === 'hot').length;
+        document.getElementById('p0-deals').textContent = summary.tierDistribution?.P0 || deals.filter(d => d.priority === 'P0').length;
+        document.getElementById('avg-score').textContent = summary.averageScore || Math.round(deals.reduce((s, d) => s + d.score, 0) / deals.length);
 
         // Render table
         if (deals.length === 0) {
@@ -185,9 +198,9 @@
                 <th>Company</th>
                 <th>Contact</th>
                 <th>Region</th>
+                <th>Score</th>
                 <th>Priority</th>
                 <th>Status</th>
-                <th>Value</th>
               </tr>
             </thead>
             <tbody>
@@ -196,9 +209,9 @@
                   <td><strong>${deal.company || 'N/A'}</strong></td>
                   <td>${deal.contact || 'N/A'}</td>
                   <td>${deal.region || 'N/A'}</td>
-                  <td class="priority-${deal.priority?.toLowerCase() || 'p2'}">${deal.priority || 'P2'}</td>
-                  <td><span class="status-badge status-${deal.status || 'pending'}">${deal.status || 'pending'}</span></td>
-                  <td>${deal.value || 'N/A'}</td>
+                  <td>${deal.score || 0}</td>
+                  <td class="priority-${deal.priority?.toLowerCase() || 'p3'}">${deal.priority || 'P3'}</td>
+                  <td><span class="status-badge status-${deal.status || 'cold'}">${deal.status || 'cold'}</span></td>
                 </tr>
               `).join('')}
             </tbody>
@@ -209,6 +222,9 @@
       } catch (error) {
         console.error('Error loading deals:', error);
         content.innerHTML = `<div class="error">⚠️ Failed to load deals: ${error.message}</div>`;
+      } finally {
+        refreshBtn.disabled = false;
+        refreshBtn.textContent = '🔄 Refresh';
       }
     }
 

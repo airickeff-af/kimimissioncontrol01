@@ -22,7 +22,9 @@
     { "source": "/api/tasks", "destination": "/api/tasks.js" },
     { "source": "/api/stats", "destination": "/api/stats.js" },
     { "source": "/api/deployments", "destination": "/api/deployments.js" },
-    { "source": "/api/metrics", "destination": "/api/metrics.js" }
+    { "source": "/api/metrics", "destination": "/api/metrics.js" },
+    { "source": "/api/tokens", "destination": "/api/tokens.js" },
+    { "source": "/api/tokens-live", "destination": "/api/tokens-live.js" }
   ],
   "functions": {
     "api/*.js": {

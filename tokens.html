@@ -52,6 +52,7 @@
       gap: 0.5rem;
     }
     .refresh-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,212,255,0.3); }
+    .refresh-btn:disabled { opacity: 0.6; cursor: not-allowed; }
     .stats-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -90,7 +91,9 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.5rem;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #000;
     }
     .agent-info { flex: 1; }
     .agent-name { font-weight: 600; color: #fff; }
@@ -104,23 +107,11 @@
     .loading { text-align: center; padding: 3rem; color: #888; }
     .error { text-align: center; padding: 3rem; color: #ff4444; }
     .last-updated { text-align: center; color: #666; margin-top: 2rem; font-size: 0.875rem; }
-    .time-tabs {
-      display: flex;
-      gap: 0.5rem;
-      margin-bottom: 1rem;
-    }
-    .time-tab {
-      padding: 0.5rem 1rem;
-      border: 1px solid #333;
-      background: #1a1a2e;
-      color: #888;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-    .time-tab.active {
-      background: #00d4ff;
-      color: #000;
-      border-color: #00d4ff;
+    @media (max-width: 768px) {
+      .header { flex-wrap: wrap; padding: 1rem; }
+      .nav { overflow-x: auto; width: 100%; margin-top: 1rem; }
+      .container { padding: 1rem; }
+      .agents-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -140,15 +131,9 @@
   <div class="container">
     <div class="page-header">
       <h1>💰 Token Tracker</h1>
-      <button class="refresh-btn" onclick="loadTokens()">
+      <button class="refresh-btn" id="refreshBtn" onclick="loadTokens()">
         🔄 Refresh
       </button>
-    </div>
-
-    <div class="time-tabs">
-      <button class="time-tab active" onclick="setPeriod('24h')">24h</button>
-      <button class="time-tab" onclick="setPeriod('week')">Week</button>
-      <button class="time-tab" onclick="setPeriod('month')">30d</button>
     </div>
 
     <div class="stats-grid">
@@ -167,6 +152,11 @@
         <div class="stat-label">Active Agents</div>
         <div class="stat-sub" id="total-agents">-</div>
       </div>
+      <div class="stat-card">
+        <div class="stat-value" id="daily-avg">-</div>
+        <div class="stat-label">Daily Average</div>
+        <div class="stat-sub">tokens/day</div>
+      </div>
     </div>
 
     <h2 style="color: #00d4ff; margin-bottom: 1rem;">Agent Token Usage</h2>
@@ -180,7 +170,6 @@
 
   <script>
     const API_URL = '/api';
-    let currentPeriod = '24h';
 
     function formatNumber(num) {
       if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
@@ -188,16 +177,12 @@
       return num.toString();
     }
 
-    function setPeriod(period) {
-      currentPeriod = period;
-      document.querySelectorAll('.time-tab').forEach(tab => tab.classList.remove('active'));
-      event.target.classList.add('active');
-      loadTokens();
-    }
-
     async function loadTokens() {
       const content = document.getElementById('agents-content');
+      const refreshBtn = document.getElementById('refreshBtn');
       content.innerHTML = '<div class="loading">Loading token data...</div>';
+      refreshBtn.disabled = true;
+      refreshBtn.textContent = '⏳ Loading...';
 
       try {
         const response = await fetch(`${API_URL}/tokens`);
@@ -207,23 +192,19 @@
           throw new Error('API returned error');
         }
 
-        const tokens = data.tokens || {};
-        const agents = tokens.agents || [];
-
-        // Apply period multiplier (simulated historical data)
-        let multiplier = 1;
-        if (currentPeriod === 'week') multiplier = 7;
-        if (currentPeriod === 'month') multiplier = 30;
+        const summary = data.summary || {};
+        const agents = data.agents || [];
 
         // Update stats
-        document.getElementById('total-tokens').textContent = formatNumber((tokens.total || 0) * multiplier);
-        document.getElementById('total-cost').textContent = '$' + ((tokens.cost || 0) * multiplier).toFixed(2);
-        document.getElementById('total-sessions').textContent = `${tokens.sessions || 0} sessions`;
+        document.getElementById('total-tokens').textContent = formatNumber(summary.totalTokens || 0);
+        document.getElementById('total-cost').textContent = '$' + (summary.totalCost || 0).toFixed(2);
+        document.getElementById('total-sessions').textContent = `${agents.length} agents tracked`;
         document.getElementById('active-agents').textContent = agents.filter(a => a.tokens > 0).length;
         document.getElementById('total-agents').textContent = `${agents.length} total agents`;
+        document.getElementById('daily-avg').textContent = formatNumber(data.dailyAverage || 0);
 
         // Sort by token usage
-        const sortedAgents = [...agents].sort((a, b) => b.tokens - a.tokens);
+        const sortedAgents = [...agents].sort((a, b) => (b.tokens || 0) - (a.tokens || 0));
 
         // Render agent cards
         content.innerHTML = `
@@ -233,10 +214,10 @@
                 <div class="agent-avatar">${agent.name?.charAt(0) || '?'}</div>
                 <div class="agent-info">
                   <div class="agent-name">${agent.name || 'Unknown'}</div>
-                  <div class="agent-role">${agent.tasks || 0} tasks completed</div>
+                  <div class="agent-role">${agent.percentage?.toFixed(1) || 0}% of total</div>
                 </div>
                 <div class="agent-tokens">
-                  <div class="token-count">${formatNumber((agent.tokens || 0) * multiplier)}</div>
+                  <div class="token-count">${formatNumber(agent.tokens || 0)}</div>
                   <div class="token-label">tokens</div>
                 </div>
               </div>
@@ -248,6 +229,9 @@
       } catch (error) {
         console.error('Error loading tokens:', error);
         content.innerHTML = `<div class="error">⚠️ Failed to load token data: ${error.message}</div>`;
+      } finally {
+        refreshBtn.disabled = false;
+        refreshBtn.textContent = '🔄 Refresh';
       }
     }
 
