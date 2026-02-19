@@ -197,11 +197,14 @@ function parsePendingTasks(content) {
  */
 function findPendingTasksFile() {
   const possiblePaths = [
+    // Same directory as this file (for Vercel serverless)
+    path.join(__dirname, 'PENDING_TASKS.md'),
     // Local development paths
     path.join(process.cwd(), 'PENDING_TASKS.md'),
     path.join(process.cwd(), '..', 'PENDING_TASKS.md'),
     path.join(process.cwd(), '..', '..', 'PENDING_TASKS.md'),
     // Vercel deployment paths - serverless functions run from /var/task
+    path.join('/var/task', 'api', 'PENDING_TASKS.md'),
     path.join('/var/task', 'PENDING_TASKS.md'),
     path.join('/var/task', '..', 'PENDING_TASKS.md'),
     path.join('/var/task', 'api', '..', 'PENDING_TASKS.md'),
