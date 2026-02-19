@@ -27,9 +27,12 @@
     { "source": "/(.*)", "destination": "/mission-control/dashboard/index.html" }
   ],
   "functions": {
-    "api/**/*.js": {
+    "api/tasks.js": {
       "maxDuration": 10,
       "includeFiles": "PENDING_TASKS.md"
+    },
+    "api/**/*.js": {
+      "maxDuration": 10
     }
   }
 }
