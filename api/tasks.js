@@ -166,36 +166,70 @@ function getTasksData() {
     };
   }
   
+  // Debug logging for Vercel environment
+  console.log('[Tasks API] process.cwd():', process.cwd());
+  console.log('[Tasks API] __dirname:', __dirname);
+  
   // Try multiple possible paths for PENDING_TASKS.md
+  // Vercel serverless has different file structure
   const possiblePaths = [
+    // Local development paths
     path.join(process.cwd(), 'PENDING_TASKS.md'),
     path.join(process.cwd(), '..', 'PENDING_TASKS.md'),
     path.join(process.cwd(), '..', '..', 'PENDING_TASKS.md'),
+    path.join(__dirname, '..', 'PENDING_TASKS.md'),
+    path.join(__dirname, '..', '..', 'PENDING_TASKS.md'),
     '/root/.openclaw/workspace/PENDING_TASKS.md',
-    '/workspace/PENDING_TASKS.md'
+    '/workspace/PENDING_TASKS.md',
+    // Vercel serverless paths
+    '/var/task/PENDING_TASKS.md',
+    '/var/task/api/PENDING_TASKS.md',
+    path.join(process.cwd(), 'api', 'PENDING_TASKS.md'),
+    // Relative paths from api folder
+    './PENDING_TASKS.md',
+    '../PENDING_TASKS.md',
+    '../../PENDING_TASKS.md',
   ];
+  
+  // List files in cwd for debugging
+  try {
+    const files = fs.readdirSync(process.cwd());
+    console.log('[Tasks API] Files in cwd:', files.slice(0, 20));
+  } catch (e) {
+    console.log('[Tasks API] Could not list cwd:', e.message);
+  }
   
   let content = null;
   let foundPath = null;
   
   for (const tryPath of possiblePaths) {
     try {
-      if (fs.existsSync(tryPath)) {
+      const exists = fs.existsSync(tryPath);
+      console.log(`[Tasks API] Checking: ${tryPath} - Exists: ${exists}`);
+      if (exists) {
         content = fs.readFileSync(tryPath, 'utf-8');
         foundPath = tryPath;
+        console.log(`[Tasks API] SUCCESS: Found PENDING_TASKS.md at ${tryPath}`);
         break;
       }
     } catch (e) {
-      // Continue to next path
+      console.log(`[Tasks API] Error checking ${tryPath}: ${e.message}`);
     }
   }
   
   if (!content) {
+    const errorMsg = `PENDING_TASKS.md not found. Checked paths: ${possiblePaths.join(', ')}`;
+    console.error('[Tasks API]', errorMsg);
     return {
       tasks: [],
-      source: 'error - no data source available',
-      cached: false,
-      error: 'PENDING_TASKS.md not found in any expected location'
+      source: 'error',
+      error: errorMsg,
+      debug: {
+        cwd: process.cwd(),
+        dirname: __dirname,
+        checkedPaths: possiblePaths
+      },
+      cached: false
     };
   }
   
@@ -269,6 +303,11 @@ module.exports = (req, res) => {
       return res.status(500).json({
         success: false,
         error: error,
+        debug: {
+          cwd: process.cwd(),
+          dirname: __dirname,
+          env: process.env.VERCEL ? 'vercel' : 'local'
+        },
         timestamp: new Date().toISOString()
       });
     }
