@@ -600,9 +600,16 @@
         
         // Fetch logs from API with timeout
         async function fetchLogs() {
+            console.log('[LogsView] fetchLogs() started');
+            
             const loadingIndicator = document.getElementById('loading-indicator');
             const logTable = document.getElementById('log-table');
             const errorContainer = document.getElementById('error-container');
+            
+            // Check DOM elements exist
+            if (!loadingIndicator) console.error('[LogsView] loading-indicator element not found!');
+            if (!logTable) console.error('[LogsView] log-table element not found!');
+            if (!errorContainer) console.error('[LogsView] error-container element not found!');
             
             // Clear any existing timeout
             if (fetchTimeoutId) {
@@ -615,14 +622,14 @@
             
             // Set timeout to show "No data" after 5 seconds
             fetchTimeoutId = setTimeout(() => {
-                console.warn('Fetch timeout reached - showing no data state');
+                console.warn('[LogsView] Fetch timeout reached - showing fallback state');
                 loadingIndicator.style.display = 'none';
                 errorContainer.innerHTML = `
                     <div class="error-message">
-                        ⚠️ Request timed out. Showing "No data" state.
+                        ⚠️ Request timed out after ${FETCH_TIMEOUT}ms. Showing fallback data.
                     </div>
                 `;
-                allLogs = [];
+                allLogs = getMockLogs();
                 renderLogs();
                 updateStats();
                 logTable.style.display = 'table';
@@ -635,12 +642,16 @@
                     ? `${API_BASE_URL}/api/logs/activity?limit=${limit}`
                     : `/api/logs/activity?limit=${limit}`;
                 
+                console.log('[LogsView] Fetching from:', apiUrl);
+                
                 // Create an AbortController for timeout handling
                 const controller = new AbortController();
                 const timeoutId = setTimeout(() => controller.abort(), FETCH_TIMEOUT - 500);
                 
                 const response = await fetch(apiUrl, { signal: controller.signal });
                 clearTimeout(timeoutId);
+                
+                console.log('[LogsView] Response received, status:', response.status);
                 
                 // Clear the fallback timeout since we got a response
                 clearTimeout(fetchTimeoutId);
@@ -651,22 +662,50 @@
                 }
                 
                 const data = await response.json();
+                console.log('[LogsView] Data parsed, keys:', Object.keys(data));
                 
                 // Handle different response formats
                 if (data.logs && Array.isArray(data.logs)) {
                     allLogs = data.logs;
+                    console.log('[LogsView] Using data.logs, count:', allLogs.length);
                 } else if (Array.isArray(data)) {
                     allLogs = data;
+                    console.log('[LogsView] Using data array directly, count:', allLogs.length);
                 } else {
-                    console.warn('Unexpected API response format:', data);
+                    console.warn('[LogsView] Unexpected API response format:', data);
                     allLogs = [];
                 }
                 
+                console.log('[LogsView] Calling renderLogs()...');
                 renderLogs();
+                
+                console.log('[LogsView] Calling updateStats()...');
                 updateStats();
                 
                 loadingIndicator.style.display = 'none';
                 logTable.style.display = 'table';
+                console.log('[LogsView] fetchLogs() completed successfully');
+                
+            } catch (error) {
+                // Clear the fallback timeout
+                clearTimeout(fetchTimeoutId);
+                fetchTimeoutId = null;
+                
+                console.error('[LogsView] Error fetching logs:', error);
+                loadingIndicator.style.display = 'none';
+                errorContainer.innerHTML = `
+                    <div class="error-message">
+                        ⚠️ Failed to load logs: ${error.message}. 
+                        <br>Using fallback data.
+                    </div>
+                `;
+                // Use mock data as fallback
+                allLogs = getMockLogs();
+                renderLogs();
+                updateStats();
+                logTable.style.display = 'table';
+            }
+        }
                 
             } catch (error) {
                 // Clear the fallback timeout
@@ -691,11 +730,19 @@
         
         // Render logs to table
         function renderLogs() {
+            console.log('[LogsView] renderLogs() called, allLogs.length:', allLogs.length);
+            
             const tbody = document.getElementById('log-body');
+            if (!tbody) {
+                console.error('[LogsView] log-body element not found!');
+                return;
+            }
+            
             const logsToShow = showAll ? allLogs : allLogs.slice(0, RECENT_COUNT);
             const totalLogs = allLogs.length;
             
             if (logsToShow.length === 0) {
+                console.log('[LogsView] No logs to display');
                 tbody.innerHTML = `
                     <tr>
                         <td colspan="5" style="text-align: center; padding: 3rem; color: var(--text-secondary);">
@@ -704,6 +751,7 @@
                     </tr>
                 `;
             } else {
+                console.log('[LogsView] Rendering', logsToShow.length, 'logs');
                 tbody.innerHTML = logsToShow.map(log => {
                     const sourceClass = getSourceClass(log.agent);
                     const typeClass = getTypeClass(log.type);
@@ -724,27 +772,44 @@
             }
             
             // Update showing text
-            document.getElementById('showing-text').textContent = showAll 
-                ? `Showing all ${totalLogs} entries` 
-                : `Showing most recent ${Math.min(RECENT_COUNT, totalLogs)} of ${totalLogs} entries`;
+            const showingText = document.getElementById('showing-text');
+            if (showingText) {
+                showingText.textContent = showAll 
+                    ? `Showing all ${totalLogs} entries` 
+                    : `Showing most recent ${Math.min(RECENT_COUNT, totalLogs)} of ${totalLogs} entries`;
+            }
             
             // Update button
-            document.getElementById('expand-btn').textContent = showAll 
-                ? '📂 Show Recent Only' 
-                : '📂 Show All Logs';
+            const expandBtn = document.getElementById('expand-btn');
+            if (expandBtn) {
+                expandBtn.textContent = showAll 
+                    ? '📂 Show Recent Only' 
+                    : '📂 Show All Logs';
+            }
+            
+            console.log('[LogsView] renderLogs() completed');
         }
         
         // Update statistics
         function updateStats() {
+            console.log('[LogsView] updateStats() called');
+            
             const totalEntries = allLogs.length;
             const userMessages = allLogs.filter(l => l.type === 'user_message').length;
             const agentResponses = allLogs.filter(l => l.type === 'agent_response').length;
             const tasksCompleted = allLogs.filter(l => l.type === 'task_complete').length;
             
-            document.getElementById('total-entries').textContent = totalEntries || '0';
-            document.getElementById('user-messages').textContent = userMessages || '0';
-            document.getElementById('agent-responses').textContent = agentResponses || '0';
-            document.getElementById('tasks-completed').textContent = tasksCompleted || '0';
+            const totalEl = document.getElementById('total-entries');
+            const userEl = document.getElementById('user-messages');
+            const agentEl = document.getElementById('agent-responses');
+            const tasksEl = document.getElementById('tasks-completed');
+            
+            if (totalEl) totalEl.textContent = totalEntries || '0';
+            if (userEl) userEl.textContent = userMessages || '0';
+            if (agentEl) agentEl.textContent = agentResponses || '0';
+            if (tasksEl) tasksEl.textContent = tasksCompleted || '0';
+            
+            console.log('[LogsView] Stats updated:', { totalEntries, userMessages, agentResponses, tasksCompleted });
         }
         
         // Toggle between showing all logs and recent only
@@ -760,7 +825,10 @@
         
         // Initial load
         document.addEventListener('DOMContentLoaded', () => {
-            fetchLogs();
+            console.log('[LogsView] DOMContentLoaded - initializing...');
+            fetchLogs().catch(err => {
+                console.error('[LogsView] Initial fetch failed:', err);
+            });
         });
         
         // Auto-refresh every 30 seconds
