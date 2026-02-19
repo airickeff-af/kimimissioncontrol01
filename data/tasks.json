@@ -1,0 +1,19 @@
+{
+  "generated": "2026-02-19T23:08:00Z",
+  "source": "PENDING_TASKS.md",
+  "tasks": [
+    {"id": "TASK-070", "priority": "P0", "title": "Fix Deployment Failure", "status": "completed", "assignee": "Code-1", "dueDate": "Feb 18", "progress": 100},
+    {"id": "TASK-066", "priority": "P0", "title": "Fix API Endpoints", "status": "in_progress", "assignee": "Code-1,2,3", "dueDate": "Feb 18", "progress": 75},
+    {"id": "TASK-093", "priority": "P0", "title": "HQ Refresh + Auto-Refresh", "status": "in_progress", "assignee": "Forge", "dueDate": "Feb 19, 9:00 AM", "progress": 50},
+    {"id": "TASK-095", "priority": "P0", "title": "Real API Integration", "status": "in_progress", "assignee": "CodeMaster + Forge", "dueDate": "Feb 19, 9:00 AM", "progress": 50},
+    {"id": "TASK-094", "priority": "P0", "title": "Pixel Office Hierarchy", "status": "in_progress", "assignee": "Forge", "dueDate": "Feb 19, 9:00 AM", "progress": 50},
+    {"id": "TASK-092", "priority": "P0", "title": "Isometric Pixel Office", "status": "in_progress", "assignee": "CodeMaster + Forge + Pixel", "dueDate": "Feb 19, 9:00 AM", "progress": 50},
+    {"id": "TASK-071", "priority": "P0", "title": "Standardize Tab Headers", "status": "in_progress", "assignee": "Forge-1,2,3", "dueDate": "Feb 19, 9:00 AM", "progress": 50},
+    {"id": "TASK-008", "priority": "P1", "title": "Regional Leads - Hong Kong", "status": "completed", "assignee": "Glasses", "dueDate": "Feb 19", "progress": 100}
+  ],
+  "summary": {
+    "total": 8,
+    "byPriority": {"P0": 7, "P1": 1, "P2": 0, "P3": 0},
+    "byStatus": {"completed": 2, "in_progress": 6, "blocked": 0, "pending": 0}
+  }
+}

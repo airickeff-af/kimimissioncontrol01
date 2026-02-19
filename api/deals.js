@@ -1,161 +1,208 @@
-// Vercel Serverless API: /api/deals.js
-// Returns 30 leads/deals with REAL data from scored-leads-v2.json
+// /api/deals.js - Returns DealFlow leads data
+// Version: 1.0 - Real leads data from DealFlow system
 
 const fs = require('fs');
 const path = require('path');
 
-module.exports = async (req, res) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET');
+// Cache configuration
+const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
+let dealsCache = {
+  data: null,
+  timestamp: 0
+};
 
-  try {
-    // Read real leads data from scored-leads-v2.json
-    const leadsPath = path.join(process.cwd(), 'mission-control/data/scored-leads-v2.json');
-    const leadsData = JSON.parse(fs.readFileSync(leadsPath, 'utf8'));
-    
-    // Transform scored leads to deals format
-    const deals = leadsData.scoredLeads.map((lead, idx) => ({
-      id: lead.leadId || `deal_${String(idx + 1).padStart(3, '0')}`,
-      company: lead.company,
-      contact: lead.contactName,
-      title: lead.title,
-      score: lead.totalScore,
-      priority: lead.priorityTier,
-      status: lead.priorityTier === 'P0' || lead.priorityTier === 'P1' ? 'hot' : 
-              lead.priorityTier === 'P2' ? 'warm' : 'cold',
-      action: lead.actionRequired,
-      industry: lead.breakdown?.marketRelevance?.details?.industry?.type || 'unknown',
-      region: lead.breakdown?.marketRelevance?.details?.geography?.region || 'unknown',
-      lastActivity: lead.scoredAt || new Date().toISOString(),
-      value: lead.breakdown?.partnershipPotential?.details?.dealSizePotential?.size || 'unknown',
-      accessibility: lead.breakdown?.contactAccessibility?.score || 0,
-      accessibilityChannels: lead.breakdown?.contactAccessibility?.details?.channels || [],
-      recommendations: lead.recommendations || []
-    }));
-
-    // Add high-value deals to reach 30 if needed
-    const additionalDeals = [
-      { 
-        id: 'deal_027', 
-        company: 'Crypto.com', 
-        contact: 'Kris Marszalek', 
-        title: 'CEO & Co-Founder', 
-        score: 92, 
-        priority: 'P0', 
-        status: 'hot', 
-        action: 'Contact immediately', 
-        industry: 'crypto_exchange', 
-        region: 'global', 
-        lastActivity: new Date().toISOString(), 
-        value: 'large', 
-        accessibility: 85,
-        accessibilityChannels: ['email_verified', 'linkedin_personal', 'twitter'],
-        recommendations: ['Priority outreach - high accessibility', 'Global exchange partnership opportunity']
-      },
-      { 
-        id: 'deal_028', 
-        company: 'Binance', 
-        contact: 'CZ', 
-        title: 'Founder', 
-        score: 95, 
-        priority: 'P0', 
-        status: 'hot', 
-        action: 'Priority outreach', 
-        industry: 'crypto_exchange', 
-        region: 'global', 
-        lastActivity: new Date().toISOString(), 
-        value: 'enterprise', 
-        accessibility: 90,
-        accessibilityChannels: ['email_verified', 'linkedin_personal', 'twitter', 'telegram'],
-        recommendations: ['Top priority - largest exchange', 'Multiple contact channels available']
-      },
-      { 
-        id: 'deal_029', 
-        company: 'Coinbase', 
-        contact: 'Brian Armstrong', 
-        title: 'CEO', 
-        score: 88, 
-        priority: 'P1', 
-        status: 'hot', 
-        action: 'Contact within 3 days', 
-        industry: 'crypto_exchange', 
-        region: 'global', 
-        lastActivity: new Date().toISOString(), 
-        value: 'large', 
-        accessibility: 80,
-        accessibilityChannels: ['email_verified', 'linkedin_personal', 'twitter'],
-        recommendations: ['US market leader', 'Strong partnership potential']
-      },
-      { 
-        id: 'deal_030', 
-        company: 'Kraken', 
-        contact: 'Jesse Powell', 
-        title: 'Co-Founder', 
-        score: 85, 
-        priority: 'P1', 
-        status: 'hot', 
-        action: 'Contact within 3 days', 
-        industry: 'crypto_exchange', 
-        region: 'global', 
-        lastActivity: new Date().toISOString(), 
-        value: 'large', 
-        accessibility: 75,
-        accessibilityChannels: ['email_pattern', 'linkedin_personal', 'twitter'],
-        recommendations: ['Established US exchange', 'Regulatory-focused partnership']
+/**
+ * Find leads data file in various locations
+ */
+function findLeadsFile() {
+  const possiblePaths = [
+    path.join(process.cwd(), 'mission-control', 'data', 'leads', 'leads.json'),
+    path.join(process.cwd(), 'mission-control', 'agents', 'dealflow', 'leads_complete_26.json'),
+    path.join(process.cwd(), 'data', 'leads', 'leads.json'),
+    path.join(process.cwd(), 'leads.json'),
+    '/root/.openclaw/workspace/mission-control/data/leads/leads.json',
+    '/root/.openclaw/workspace/mission-control/agents/dealflow/leads_complete_26.json'
+  ];
+  
+  for (const tryPath of possiblePaths) {
+    try {
+      if (fs.existsSync(tryPath)) {
+        return tryPath;
       }
-    ];
+    } catch (e) {}
+  }
+  return null;
+}
 
-    const allDeals = [...deals, ...additionalDeals].slice(0, 30);
+/**
+ * Get fallback leads data
+ */
+function getFallbackLeads() {
+  return [
+    {
+      id: "lead_001",
+      company: "OSL Digital Securities",
+      contact: "Wayne Huang",
+      title: "CEO",
+      email: "wayne@osl.com",
+      region: "Hong Kong",
+      priority: "P0",
+      status: "new",
+      score: 98,
+      focus: "Digital Asset Exchange"
+    },
+    {
+      id: "lead_002",
+      company: "HashKey Exchange",
+      contact: "Michel Lee",
+      title: "CEO",
+      email: "michel@hashkey.com",
+      region: "Hong Kong",
+      priority: "P0",
+      status: "contacted",
+      score: 98,
+      focus: "Crypto Exchange"
+    },
+    {
+      id: "lead_003",
+      company: "Amber Group",
+      contact: "Michael Wu",
+      title: "CEO",
+      email: "michael@ambergroup.io",
+      region: "Hong Kong",
+      priority: "P0",
+      status: "new",
+      score: 98,
+      focus: "Crypto Trading"
+    }
+  ];
+}
 
-    // Calculate summary stats
-    const hot = allDeals.filter(d => d.status === 'hot').length;
-    const warm = allDeals.filter(d => d.status === 'warm').length;
-    const cold = allDeals.filter(d => d.status === 'cold').length;
-    const avgScore = Math.round(allDeals.reduce((sum, d) => sum + d.score, 0) / allDeals.length);
-    const avgAccessibility = Math.round(allDeals.reduce((sum, d) => sum + (d.accessibility || 0), 0) / allDeals.length);
+/**
+ * Load leads data
+ */
+function loadLeadsData() {
+  const now = Date.now();
+  
+  // Check cache
+  if (dealsCache.data && (now - dealsCache.timestamp) < CACHE_TTL) {
+    return { leads: dealsCache.data, cached: true };
+  }
+  
+  const filePath = findLeadsFile();
+  
+  if (!filePath) {
+    const fallback = getFallbackLeads();
+    dealsCache = { data: fallback, timestamp: now };
+    return { leads: fallback, source: 'fallback', cached: false };
+  }
+  
+  try {
+    const content = fs.readFileSync(filePath, 'utf-8');
+    const data = JSON.parse(content);
+    const leads = Array.isArray(data) ? data : (data.leads || []);
+    
+    dealsCache = { data: leads, timestamp: now };
+    return { leads, source: filePath, cached: false };
+  } catch (error) {
+    console.error('Error loading leads:', error);
+    const fallback = getFallbackLeads();
+    dealsCache = { data: fallback, timestamp: now };
+    return { leads: fallback, source: 'fallback', cached: false };
+  }
+}
 
+/**
+ * Calculate summary statistics
+ */
+function calculateSummary(leads) {
+  return {
+    total: leads.length,
+    byPriority: {
+      P0: leads.filter(l => l.priority === 'P0').length,
+      P1: leads.filter(l => l.priority === 'P1').length,
+      P2: leads.filter(l => l.priority === 'P2').length
+    },
+    byStatus: {
+      new: leads.filter(l => l.status === 'new').length,
+      contacted: leads.filter(l => l.status === 'contacted').length,
+      qualified: leads.filter(l => l.status === 'qualified').length,
+      meeting: leads.filter(l => l.status === 'meeting').length
+    },
+    byRegion: leads.reduce((acc, l) => {
+      acc[l.region] = (acc[l.region] || 0) + 1;
+      return acc;
+    }, {}),
+    avgScore: leads.length > 0 
+      ? Math.round(leads.reduce((sum, l) => sum + (l.score || 0), 0) / leads.length)
+      : 0
+  };
+}
+
+module.exports = (req, res) => {
+  // Set CORS headers
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Content-Type', 'application/json');
+  
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+  
+  try {
+    const { priority, status, region, limit = 100, bust } = req.query || {};
+    
+    // Force cache bust if requested
+    if (bust) {
+      dealsCache.timestamp = 0;
+    }
+    
+    const { leads, source, cached } = loadLeadsData();
+    
+    // Apply filters
+    let filtered = [...leads];
+    
+    if (priority) {
+      filtered = filtered.filter(l => l.priority === priority.toUpperCase());
+    }
+    
+    if (status) {
+      filtered = filtered.filter(l => l.status === status.toLowerCase());
+    }
+    
+    if (region) {
+      filtered = filtered.filter(l => 
+        l.region && l.region.toLowerCase().includes(region.toLowerCase())
+      );
+    }
+    
+    // Apply limit
+    const limitNum = parseInt(limit, 10) || 100;
+    const paginated = filtered.slice(0, limitNum);
+    
+    const summary = calculateSummary(leads);
+    
+    // Set cache headers
+    res.setHeader('Cache-Control', 'public, max-age=300');
+    
     res.status(200).json({
       success: true,
-      deals: allDeals,
-      summary: {
-        total: allDeals.length,
-        hot: hot,
-        warm: warm,
-        cold: cold,
-        averageScore: avgScore,
-        averageAccessibility: avgAccessibility,
-        tierDistribution: {
-          P0: allDeals.filter(d => d.priority === 'P0').length,
-          P1: allDeals.filter(d => d.priority === 'P1').length,
-          P2: allDeals.filter(d => d.priority === 'P2').length,
-          P3: allDeals.filter(d => d.priority === 'P3').length
-        }
+      data: {
+        leads: paginated,
+        summary: summary
       },
-      timestamp: new Date().toISOString()
+      meta: {
+        source: source,
+        cached: cached,
+        timestamp: new Date().toISOString()
+      }
     });
   } catch (error) {
-    console.error('Error reading deals:', error);
-    
-    // Return fallback data
-    res.status(200).json({
-      success: true,
-      deals: [
-        { id: 'deal_001', company: 'PDAX', contact: 'Nichel Gaba', title: 'Founder & CEO', score: 70, priority: 'P1', status: 'hot', action: 'Contact within 3 days', industry: 'crypto_exchange', region: 'philippines', lastActivity: new Date().toISOString(), value: 'medium', accessibility: 35 },
-        { id: 'deal_002', company: 'Coins.ph', contact: 'Wei Zhou', title: 'CEO', score: 68, priority: 'P1', status: 'hot', action: 'Contact within 3 days', industry: 'crypto_wallet', region: 'philippines', lastActivity: new Date().toISOString(), value: 'large', accessibility: 40 },
-        { id: 'deal_003', company: 'Angkas', contact: 'George Royeca', title: 'CEO', score: 56, priority: 'P2', status: 'warm', action: 'Contact within 1 week', industry: 'transportation', region: 'philippines', lastActivity: new Date().toISOString(), value: 'medium', accessibility: 50 },
-        { id: 'deal_004', company: 'GCash', contact: 'Martha Sazon', title: 'CEO', score: 56, priority: 'P2', status: 'warm', action: 'Contact within 1 week', industry: 'fintech', region: 'philippines', lastActivity: new Date().toISOString(), value: 'enterprise', accessibility: 50 },
-        { id: 'deal_005', company: 'Xendit', contact: 'Moses Lo', title: 'CEO & Co-Founder', score: 55, priority: 'P2', status: 'warm', action: 'Contact within 1 week', industry: 'payments', region: 'southeast_asia', lastActivity: new Date().toISOString(), value: 'large', accessibility: 50 },
-        { id: 'deal_027', company: 'Crypto.com', contact: 'Kris Marszalek', title: 'CEO & Co-Founder', score: 92, priority: 'P0', status: 'hot', action: 'Contact immediately', industry: 'crypto_exchange', region: 'global', lastActivity: new Date().toISOString(), value: 'large', accessibility: 85 },
-        { id: 'deal_028', company: 'Binance', contact: 'CZ', title: 'Founder', score: 95, priority: 'P0', status: 'hot', action: 'Priority outreach', industry: 'crypto_exchange', region: 'global', lastActivity: new Date().toISOString(), value: 'enterprise', accessibility: 90 }
-      ],
-      summary: {
-        total: 8,
-        hot: 4,
-        warm: 3,
-        cold: 1,
-        averageScore: 67,
-        averageAccessibility: 56
-      },
+    console.error('Error in /api/deals:', error);
+    res.status(500).json({
+      success: false,
+      error: error.message,
       timestamp: new Date().toISOString()
     });
   }

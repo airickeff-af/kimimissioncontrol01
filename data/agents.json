@@ -1,0 +1,27 @@
+{
+  "generated": "2026-02-19T23:08:00Z",
+  "agents": [
+    {"id": "ericf", "name": "EricF", "role": "Commander", "status": "active", "emoji": "👑", "team": "Leadership", "tasksCompleted": 0, "tokensUsed": 0, "successRate": 100},
+    {"id": "nexus", "name": "Nexus", "role": "Orchestrator", "status": "active", "emoji": "🧠", "team": "AI", "tasksCompleted": 47, "tokensUsed": 75300, "successRate": 94},
+    {"id": "codemaster", "name": "CodeMaster", "role": "Dev Lead", "status": "active", "emoji": "💻", "team": "Dev", "tasksCompleted": 23, "tokensUsed": 15000, "successRate": 92},
+    {"id": "code-1", "name": "Code-1", "role": "Backend Dev", "status": "busy", "emoji": "⚡", "team": "Dev", "tasksCompleted": 12, "tokensUsed": 18500, "successRate": 90},
+    {"id": "code-2", "name": "Code-2", "role": "Frontend Dev", "status": "busy", "emoji": "🎨", "team": "Dev", "tasksCompleted": 10, "tokensUsed": 12000, "successRate": 88},
+    {"id": "code-3", "name": "Code-3", "role": "API Dev", "status": "busy", "emoji": "🔌", "team": "Dev", "tasksCompleted": 8, "tokensUsed": 6500, "successRate": 91},
+    {"id": "forge", "name": "Forge", "role": "Design Lead", "status": "active", "emoji": "🔨", "team": "Design", "tasksCompleted": 31, "tokensUsed": 28000, "successRate": 93},
+    {"id": "forge-2", "name": "Forge-2", "role": "UI Designer", "status": "busy", "emoji": "✏️", "team": "Design", "tasksCompleted": 15, "tokensUsed": 12000, "successRate": 89},
+    {"id": "forge-3", "name": "Forge-3", "role": "UX Designer", "status": "busy", "emoji": "🎯", "team": "Design", "tasksCompleted": 12, "tokensUsed": 10000, "successRate": 87},
+    {"id": "pixel", "name": "Pixel", "role": "Pixel Artist", "status": "busy", "emoji": "🎮", "team": "Design", "tasksCompleted": 8, "tokensUsed": 25000, "successRate": 85},
+    {"id": "glasses", "name": "Glasses", "role": "Research Lead", "status": "active", "emoji": "🔍", "team": "Research", "tasksCompleted": 19, "tokensUsed": 6000, "successRate": 95},
+    {"id": "scout", "name": "Scout", "role": "Lead Gen", "status": "active", "emoji": "🕵️", "team": "Research", "tasksCompleted": 14, "tokensUsed": 8000, "successRate": 92},
+    {"id": "dealflow", "name": "DealFlow", "role": "Pipeline", "status": "active", "emoji": "💰", "team": "Sales", "tasksCompleted": 28, "tokensUsed": 115300, "successRate": 89},
+    {"id": "coldcall", "name": "ColdCall", "role": "Outreach", "status": "idle", "emoji": "📞", "team": "Sales", "tasksCompleted": 6, "tokensUsed": 12000, "successRate": 82},
+    {"id": "audit-1", "name": "Audit-1", "role": "QA Lead", "status": "active", "emoji": "✅", "team": "Audit", "tasksCompleted": 22, "tokensUsed": 15000, "successRate": 96},
+    {"id": "audit-2", "name": "Audit-2", "role": "QA Tester", "status": "idle", "emoji": "🔍", "team": "Audit", "tasksCompleted": 18, "tokensUsed": 9000, "successRate": 94},
+    {"id": "sentry", "name": "Sentry", "role": "Monitoring", "status": "active", "emoji": "🛡️", "team": "Ops", "tasksCompleted": 35, "tokensUsed": 4000, "successRate": 98},
+    {"id": "cipher", "name": "Cipher", "role": "Security", "status": "idle", "emoji": "🔐", "team": "Ops", "tasksCompleted": 11, "tokensUsed": 3000, "successRate": 97},
+    {"id": "quill", "name": "Quill", "role": "Content", "status": "idle", "emoji": "📝", "team": "Content", "tasksCompleted": 9, "tokensUsed": 5000, "successRate": 91},
+    {"id": "gary", "name": "Gary", "role": "Marketing", "status": "idle", "emoji": "📢", "team": "Marketing", "tasksCompleted": 5, "tokensUsed": 2000, "successRate": 86},
+    {"id": "larry", "name": "Larry", "role": "Legal", "status": "offline", "emoji": "⚖️", "team": "Legal", "tasksCompleted": 3, "tokensUsed": 1500, "successRate": 100},
+    {"id": "spark", "name": "Spark", "role": "Innovation", "status": "offline", "emoji": "💡", "team": "R&D", "tasksCompleted": 4, "tokensUsed": 3000, "successRate": 88}
+  ]
+}

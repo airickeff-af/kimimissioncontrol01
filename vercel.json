@@ -25,25 +25,37 @@
     { "source": "/api/logs", "destination": "/api/logs/index.js" },
     { "source": "/api/pixel-office-data", "destination": "/api/pixel-office-data.js" },
     { "source": "/api/tokens-live", "destination": "/api/tokens-live.js" },
-    { "source": "/(.+\\.(html|css|js|png|jpg|jpeg|gif|svg|ico))", "destination": "/mission-control/dashboard/$1" },
-    { "source": "/(.*)", "destination": "/mission-control/dashboard/index.html" }
+    { "source": "/(.+\\.(html|css|js|png|jpg|jpeg|gif|svg|ico))", "destination": "/$1" },
+    { "source": "/(.*)", "destination": "/index.html" }
   ],
   "functions": {
     "api/tasks.js": {
       "maxDuration": 10,
       "includeFiles": [
         "api/PENDING_TASKS.md",
-        "PENDING_TASKS.md"
+        "PENDING_TASKS.md",
+        "data/tasks.json"
+      ]
+    },
+    "api/tokens.js": {
+      "maxDuration": 10,
+      "includeFiles": [
+        "data/tokens.json",
+        "ACTUAL_TOKEN_USAGE_REPORT.md"
+      ]
+    },
+    "api/metrics.js": {
+      "maxDuration": 10,
+      "includeFiles": [
+        "data/metrics.json"
       ]
     },
     "api/pixel-office-data.js": {
       "maxDuration": 10,
       "includeFiles": [
-        "mission-control/dashboard/data/agents.json",
-        "PENDING_TASKS.md",
-        "ACTUAL_TOKEN_USAGE_REPORT.md",
-        "mission-control/TASK_QUEUE.json",
-        "logs/activity.json"
+        "data/agents.json",
+        "data/tasks.json",
+        "data/activity.json"
       ]
     },
     "api/**/*.js": {

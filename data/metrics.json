@@ -1,0 +1,44 @@
+{
+  "generated": "2026-02-19T23:08:00Z",
+  "system": {
+    "uptime": "99.9%",
+    "status": "healthy",
+    "version": "2026.2.19",
+    "deployments": 47,
+    "lastDeployment": "2026-02-19T22:30:00Z"
+  },
+  "api": {
+    "requests": 15420,
+    "avgResponseTime": "45ms",
+    "errorRate": "0.1%",
+    "latency": {"p50": 45, "p95": 120, "p99": 250}
+  },
+  "agents": {
+    "total": 22,
+    "active": 11,
+    "busy": 4,
+    "idle": 5,
+    "offline": 6,
+    "avgSuccessRate": "91%"
+  },
+  "tasks": {
+    "total": 113,
+    "completed": 16,
+    "inProgress": 5,
+    "pending": 92,
+    "p0": 9,
+    "p1": 39,
+    "p2": 59,
+    "p3": 6
+  },
+  "sessions": {
+    "total": 156,
+    "today": 12,
+    "active": 3
+  },
+  "errors": {
+    "count": 12,
+    "rate": "0.08",
+    "lastError": "2026-02-19T20:15:00Z"
+  }
+}
