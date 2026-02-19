@@ -1,0 +1,15 @@
+{
+  "metadata": {
+    "region": "Brazil",
+    "task_id": "TASK-006",
+    "created_date": "2026-02-19",
+    "target_count": "30-50",
+    "actual_count": 0,
+    "focus_areas": ["Fintech", "Crypto", "Remittance Services"],
+    "researcher": "Scout-2",
+    "data_source": "Company research",
+    "status": "PENDING",
+    "quality_score": 0
+  },
+  "leads": []
+}

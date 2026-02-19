@@ -1,0 +1,43 @@
+{
+  "deployment": {
+    "url": "https://dashboard-ten-sand-20.vercel.app",
+    "name": "Mission Control Dashboard",
+    "environment": "production"
+  },
+  "audit": {
+    "min_score": 93,
+    "strict_mode": true,
+    "check_placeholders": true,
+    "check_console_logs": true,
+    "check_secrets": true
+  },
+  "quality_gate": {
+    "min_score": 95,
+    "test_endpoints": [
+      "/api/health",
+      "/api/agents",
+      "/api/logs/activity",
+      "/api/tasks",
+      "/api/deals",
+      "/",
+      "/office.html",
+      "/agents.html",
+      "/dealflow-view.html",
+      "/scout.html"
+    ],
+    "expected_status": 200
+  },
+  "api": {
+    "base_path": "/api",
+    "health_endpoint": "/api/health",
+    "timeout": 30,
+    "retries": 5,
+    "retry_delay": 5
+  },
+  "local": {
+    "api_port": 3001,
+    "websocket_port": 8765
+  },
+  "version": "1.0.0",
+  "updated": "2026-02-18T20:46:00+08:00"
+}

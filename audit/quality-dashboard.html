@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERICF Quality Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --bg-tertiary: #1e1e2e;
+            --bg-card: #161622;
+            --text-primary: #ffffff;
+            --text-secondary: #8b8b9e;
+            --text-muted: #5a5a6e;
+            --accent-primary: #00d4ff;
+            --accent-success: #00ff88;
+            --accent-warning: #ffaa00;
+            --accent-danger: #ff4444;
+            --accent-info: #4488ff;
+            --border-color: #2a2a3e;
+            --gradient-success: linear-gradient(135deg, #00ff88 0%, #00cc6a 100%);
+            --gradient-warning: linear-gradient(135deg, #ffaa00 0%, #cc8800 100%);
+            --gradient-danger: linear-gradient(135deg, #ff4444 0%, #cc3333 100%);
+            --gradient-primary: linear-gradient(135deg, #00d4ff 0%, #0088cc 100%);
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* Header */
+        .header {
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-brand {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .quality-gate-badge {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            padding: 0.375rem 0.875rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .quality-gate-badge.met {
+            border-color: var(--accent-success);
+            color: var(--accent-success);
+        }
+
+        .quality-gate-badge.not-met {
+            border-color: var(--accent-danger);
+            color: var(--accent-danger);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .btn {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 0.625rem 1.25rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn:hover {
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
+            color: var(--bg-primary);
+        }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            border: none;
+            color: var(--bg-primary);
+        }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* KPI Grid */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .kpi-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .kpi-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+        }
+
+        .kpi-card.success::before { background: var(--gradient-success); }
+        .kpi-card.warning::before { background: var(--gradient-warning); }
+        .kpi-card.danger::before { background: var(--gradient-danger); }
+        .kpi-card.info::before { background: var(--gradient-primary); }
+
+        .kpi-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.75rem;
+        }
+
+        .kpi-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .kpi-trend {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .kpi-trend.up {
+            background: rgba(0, 255, 136, 0.15);
+            color: var(--accent-success);
+        }
+
+        .kpi-trend.down {
+            background: rgba(255, 68, 68, 0.15);
+            color: var(--accent-danger);
+        }
+
+        .kpi-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .kpi-value.success { color: var(--accent-success); }
+        .kpi-value.warning { color: var(--accent-warning); }
+        .kpi-value.danger { color: var(--accent-danger); }
+
+        .kpi-subtext {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        /* Dashboard Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1.5rem;
+        }
+
+        @media (max-width: 1200px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Panel */
+        .panel {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .panel-header {
+            background: var(--bg-tertiary);
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .panel-header h2 {
+            font-size: 1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .panel-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        /* Agent Performance Table */
+        .agent-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .agent-table th,
+        .agent-table td {
+            padding: 1rem 1.5rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .agent-table th {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+            font-weight: 600;
+            background: var(--bg-tertiary);
+        }
+
+        .agent-table tr:hover td {
+            background: rgba(0, 212, 255, 0.05);
+        }
+
+        .agent-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .agent-cell {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .agent-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--bg-tertiary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.875rem;
+            color: var(--accent-primary);
+            border: 2px solid var(--border-color);
+        }
+
+        .agent-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .agent-name {
+            font-weight: 600;
+        }
+
+        .agent-role {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        /* Score Bar */
+        .score-bar {
+            width: 100px;
+            height: 8px;
+            background: var(--bg-tertiary);
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .score-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        .score-fill.excellent { background: var(--gradient-success); }
+        .score-fill.pass { background: var(--gradient-success); }
+        .score-fill.conditional { background: var(--gradient-warning); }
+        .score-fill.fail { background: var(--gradient-danger); }
+
+        .score-text {
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-left: 0.75rem;
+        }
+
+        .score-cell {
+            display: flex;
+            align-items: center;
+        }
+
+        /* Status Badges */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.375rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .badge::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+        }
+
+        .badge-excellent {
+            background: rgba(0, 255, 136, 0.15);
+            color: var(--accent-success);
+        }
+        .badge-excellent::before { background: var(--accent-success); }
+
+        .badge-pass {
+            background: rgba(0, 255, 136, 0.15);
+            color: var(--accent-success);
+        }
+        .badge-pass::before { background: var(--accent-success); }
+
+        .badge-conditional {
+            background: rgba(255, 170, 0, 0.15);
+            color: var(--accent-warning);
+        }
+        .badge-conditional::before { background: var(--accent-warning); }
+
+        .badge-fail {
+            background: rgba(255, 68, 68, 0.15);
+            color: var(--accent-danger);
+        }
+        .badge-fail::before { background: var(--accent-danger); }
+
+        /* Trend Indicator */
+        .trend {
+            display: flex;
+            align-items: center;
+            gap: 0.375rem;
+            font-size: 0.875rem;
+        }
+
+        .trend.up { color: var(--accent-success); }
+        .trend.down { color: var(--accent-danger); }
+        .trend.stable { color: var(--text-muted); }
+
+        /* Fix Tasks Panel */
+        .fix-task-list {
+            list-style: none;
+        }
+
+        .fix-task-item {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .fix-task-item:last-child {
+            border-bottom: none;
+        }
+
+        .fix-task-priority {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .fix-task-priority.p0 {
+            background: rgba(255, 68, 68, 0.15);
+            color: var(--accent-danger);
+        }
+
+        .fix-task-priority.p1 {
+            background: rgba(255, 170, 0, 0.15);
+            color: var(--accent-warning);
+        }
+
+        .fix-task-priority.p2 {
+            background: rgba(68, 136, 255, 0.15);
+            color: var(--accent-info);
+        }
+
+        .fix-task-info {
+            flex: 1;
+        }
+
+        .fix-task-id {
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        .fix-task-desc {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        .fix-task-agent {
+            font-size: 0.75rem;
+            color: var(--accent-primary);
+            background: rgba(0, 212, 255, 0.1);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+        }
+
+        /* Chart Container */
+        .chart-container {
+            padding: 1.5rem;
+            height: 300px;
+            position: relative;
+        }
+
+        .chart-placeholder {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+
+        /* Activity Log */
+        .activity-log {
+            max-height: 400px;
+            overflow-y: auto;
+            padding: 1rem;
+        }
+
+        .activity-item {
+            display: flex;
+            gap: 1rem;
+            padding: 0.75rem;
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+            transition: background 0.2s;
+        }
+
+        .activity-item:hover {
+            background: var(--bg-tertiary);
+        }
+
+        .activity-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.875rem;
+        }
+
+        .activity-icon.pass {
+            background: rgba(0, 255, 136, 0.15);
+            color: var(--accent-success);
+        }
+
+        .activity-icon.fail {
+            background: rgba(255, 68, 68, 0.15);
+            color: var(--accent-danger);
+        }
+
+        .activity-icon.audit {
+            background: rgba(0, 212, 255, 0.15);
+            color: var(--accent-primary);
+        }
+
+        .activity-content {
+            flex: 1;
+        }
+
+        .activity-text {
+            font-size: 0.875rem;
+        }
+
+        .activity-time {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        /* Two Column Layout */
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        @media (max-width: 900px) {
+            .two-col {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-secondary);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-muted);
+        }
+
+        .empty-state-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        /* Quality Gate Progress */
+        .gate-progress {
+            padding: 1.5rem;
+        }
+
+        .gate-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .gate-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .gate-value {
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .gate-bar {
+            height: 12px;
+            background: var(--bg-tertiary);
+            border-radius: 6px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .gate-fill {
+            height: 100%;
+            border-radius: 6px;
+            transition: width 0.5s ease;
+            position: relative;
+        }
+
+        .gate-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .gate-markers {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 0.5rem;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .gate-target {
+            position: absolute;
+            top: -4px;
+            width: 2px;
+            height: 20px;
+            background: var(--accent-warning);
+        }
+
+        .gate-target::after {
+            content: 'Target';
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.625rem;
+            color: var(--accent-warning);
+            white-space: nowrap;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-brand">
+            <h1>◆ ERICF Quality Dashboard</h1>
+            <span class="quality-gate-badge not-met" id="qualityGateBadge">
+                <span>●</span> Quality Gate: 95/100
+            </span>
+        </div>
+        <div class="header-actions">
+            <button class="btn" onclick="refreshData()">🔄 Refresh</button>
+            <button class="btn btn-primary" onclick="exportReport()">📊 Export Report</button>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- KPI Cards -->
+        <div class="kpi-grid">
+            <div class="kpi-card warning">
+                <div class="kpi-header">
+                    <span class="kpi-label">Today's Pass Rate</span>
+                    <span class="kpi-trend down">↓ 30%</span>
+                </div>
+                <div class="kpi-value warning" id="passRate">50%</div>
+                <div class="kpi-subtext">Target: 80% | 2 of 4 passed</div>
+            </div>
+            <div class="kpi-card warning">
+                <div class="kpi-header">
+                    <span class="kpi-label">Average Score</span>
+                    <span class="kpi-trend up">↑ 17.3</span>
+                </div>
+                <div class="kpi-value warning" id="avgScore">95.5</div>
+                <div class="kpi-subtext">Quality Gate: 95 | At threshold</div>
+            </div>
+            <div class="kpi-card info">
+                <div class="kpi-header">
+                    <span class="kpi-label">Tasks Audited</span>
+                    <span class="kpi-trend stable">→</span>
+                </div>
+                <div class="kpi-value" id="tasksAudited">4</div>
+                <div class="kpi-subtext">2 passed, 2 failed</div>
+            </div>
+            <div class="kpi-card danger">
+                <div class="kpi-header">
+                    <span class="kpi-label">Fix Tasks Pending</span>
+                    <span class="kpi-trend up">↑ 2</span>
+                </div>
+                <div class="kpi-value danger" id="fixTasks">2</div>
+                <div class="kpi-subtext">Both due within 24h</div>
+            </div>
+            <div class="kpi-card success">
+                <div class="kpi-header">
+                    <span class="kpi-label">7-Day Pass Rate</span>
+                    <span class="kpi-trend up">↑ 5%</span>
+                </div>
+                <div class="kpi-value success" id="sevenDayRate">65%</div>
+                <div class="kpi-subtext">Trend: Improving</div>
+            </div>
+        </div>
+
+        <!-- Quality Gate Progress -->
+        <div class="panel" style="margin-bottom: 1.5rem;">
+            <div class="panel-header">
+                <h2>🎯 Quality Gate Progress</h2>
+            </div>
+            <div class="gate-progress">
+                <div class="gate-header">
+                    <span class="gate-label">Current 7-Day Average Score</span>
+                    <span class="gate-value" id="gateValue">86.85/100</span>
+                </div>
+                <div class="gate-bar">
+                    <div class="gate-fill" id="gateFill" style="width: 86.85%; background: var(--gradient-warning);"></div>
+                    <div class="gate-target" style="left: 95%;"></div>
+                </div>
+                <div class="gate-markers">
+                    <span>0</span>
+                    <span>50</span>
+                    <span style="color: var(--accent-warning); font-weight: 600;">95 (Target)</span>
+                    <span>100</span>
+                </div>
+                <div style="margin-top: 1rem; padding: 0.75rem; background: rgba(255, 170, 0, 0.1); border-radius: 8px; border-left: 3px solid var(--accent-warning);">
+                    <strong style="color: var(--accent-warning);">⚠️ Gap to Target: -8.15 points</strong>
+                    <p style="font-size: 0.875rem; color: var(--text-secondary); margin-top: 0.25rem;">
+                        Need consistent scores ≥95 to meet quality gate. Current trend is improving.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="dashboard-grid">
+            <!-- Agent Performance -->
+            <div class="panel">
+                <div class="panel-header">
+                    <h2>🤖 Agent Performance</h2>
+                    <div class="panel-actions">
+                        <button class="btn btn-small" onclick="sortBy('score')">Sort by Score</button>
+                        <button class="btn btn-small" onclick="sortBy('tasks')">Sort by Tasks</button>
+                    </div>
+                </div>
+                <table class="agent-table">
+                    <thead>
+                        <tr>
+                            <th>Agent</th>
+                            <th>Tasks</th>
+                            <th>Avg Score</th>
+                            <th>Pass Rate</th>
+                            <th>Trend</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="agentTableBody">
+                        <!-- Populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Side Panels -->
+            <div class="side-panels">
+                <!-- Fix Tasks -->
+                <div class="panel" style="margin-bottom: 1.5rem;">
+                    <div class="panel-header">
+                        <h2>🔧 Pending Fix Tasks</h2>
+                    </div>
+                    <ul class="fix-task-list" id="fixTaskList">
+                        <!-- Populated by JS -->
+                    </ul>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="panel">
+                    <div class="panel-header">
+                        <h2>📜 Recent Audits</h2>
+                    </div>
+                    <div class="activity-log" id="activityLog">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Two Column Section -->
+        <div class="two-col">
+            <!-- Score Distribution -->
+            <div class="panel">
+                <div class="panel-header">
+                    <h2>📊 Score Distribution</h2>
+                </div>
+                <div class="chart-container">
+                    <div id="scoreChart">
+                        <!-- Chart bars -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Audit Configuration -->
+            <div class="panel">
+                <div class="panel-header">
+                    <h2>⚙️ Audit Configuration</h2>
+                </div>
+                <div style="padding: 1.5rem;">
+                    <div style="margin-bottom: 1rem;">
+                        <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.25rem;">Deployment URL</div>
+                        <div style="font-family: monospace; font-size: 0.875rem; color: var(--accent-primary);">
+                            https://dashboard-ten-sand-20.vercel.app
+                        </div>
+                    </div>
+                    <div style="margin-bottom: 1rem;">
+                        <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.25rem;">Quality Gate</div>
+                        <div style="font-size: 0.875rem;">95/100 minimum (Strict Mode)</div>
+                    </div>
+                    <div style="margin-bottom: 1rem;">
+                        <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.25rem;">Active Auditors</div>
+                        <div style="font-size: 0.875rem;">Audit-1, Audit-2</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.25rem;">Checks Enabled</div>
+                        <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem;">
+                            <span class="badge badge-pass">Placeholders</span>
+                            <span class="badge badge-pass">Console Logs</span>
+                            <span class="badge badge-pass">Secrets</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Data from agent-scores.json
+        const agentData = {
+            "Audit-1": {
+                name: "Audit-1",
+                role: "Documentation Auditor",
+                tasksAudited: 3,
+                averageScore: 97.0,
+                passRate: 0.67,
+                trend: "stable",
+                type: "auditor"
+            },
+            "Audit-2": {
+                name: "Audit-2",
+                role: "Pixel Office Auditor",
+                tasksAudited: 3,
+                averageScore: 93.0,
+                passRate: 0.33,
+                trend: "declining",
+                type: "auditor"
+            },
+            "Quill": {
+                name: "Quill",
+                role: "Writer Agent",
+                tasksAudited: 3,
+                averageScore: 97.0,
+                passRate: 0.67,
+                trend: "stable",
+                type: "agent"
+            },
+            "Pixel": {
+                name: "Pixel",
+                role: "Visual Agent",
+                tasksAudited: 3,
+                averageScore: 93.0,
+                passRate: 0.33,
+                trend: "declining",
+                type: "agent"
+            }
+        };
+
+        const fixTasks = [
+            {
+                id: "TASK-080-FIX",
+                agent: "Quill",
+                priority: "P2",
+                issue: "Missing API endpoints, OpenAPI spec"
+            },
+            {
+                id: "TASK-092-FIX",
+                agent: "Pixel",
+                priority: "P2",
+                issue: "Audit animation, JSDoc, error handling"
+            }
+        ];
+
+        const recentAudits = [
+            { task: "TASK-028", agent: "Quill", score: 100, status: "pass", time: "09:25" },
+            { task: "TASK-024", agent: "Quill", score: 97, status: "pass", time: "09:25" },
+            { task: "TASK-080", agent: "Quill", score: 94, status: "fail", time: "09:25" },
+            { task: "pixel-office-v2", agent: "Pixel", score: 95, status: "pass", time: "09:25" },
+            { task: "sprite_sheets.py", agent: "Pixel", score: 92, status: "fail", time: "09:25" },
+            { task: "sprite-system.js", agent: "Pixel", score: 92, status: "fail", time: "09:25" }
+        ];
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            renderAgentTable();
+            renderFixTasks();
+            renderActivityLog();
+            renderScoreDistribution();
+        });
+
+        function renderAgentTable() {
+            const tbody = document.getElementById('agentTableBody');
+            const agents = Object.values(agentData);
+
+            tbody.innerHTML = agents.map(agent => {
+                const scoreClass = agent.averageScore >= 95 ? 'excellent' : 
+                                  agent.averageScore >= 90 ? 'conditional' : 'fail';
+                const statusClass = agent.averageScore >= 95 ? 'badge-excellent' : 
+                                   agent.averageScore >= 90 ? 'badge-conditional' : 'badge-fail';
+                const statusText = agent.averageScore >= 95 ? 'EXCELLENT' : 
+                                  agent.averageScore >= 90 ? 'CONDITIONAL' : 'NEEDS WORK';
+                const trendIcon = agent.trend === 'stable' ? '→' : 
+                                 agent.trend === 'improving' ? '↑' : '↓';
+                const trendClass = agent.trend === 'stable' ? 'stable' : 
+                                  agent.trend === 'improving' ? 'up' : 'down';
+
+                return `
+                    <tr>
+                        <td>
+                            <div class="agent-cell">
+                                <div class="agent-avatar">${agent.name.charAt(0)}</div>
+                                <div class="agent-info">
+                                    <div class="agent-name">${agent.name}</div>
+                                    <div class="agent-role">${agent.role}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>${agent.tasksAudited}</td>
+                        <td>
+                            <div class="score-cell">
+                                <div class="score-bar">
+                                    <div class="score-fill ${scoreClass}" style="width: ${agent.averageScore}%"></div>
+                                </div>
+                                <span class="score-text">${agent.averageScore}</span>
+                            </div>
+                        </td>
+                        <td>${Math.round(agent.passRate * 100)}%</td>
+                        <td>
+                            <span class="trend ${trendClass}">${trendIcon} ${agent.trend}</span>
+                        </td>
+                        <td><span class="badge ${statusClass}">${statusText}</span></td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function renderFixTasks() {
+            const list = document.getElementById('fixTaskList');
+            
+            list.innerHTML = fixTasks.map(task => `
+                <li class="fix-task-item">
+                    <div class="fix-task-priority ${task.priority.toLowerCase()}">${task.priority}</div>
+                    <div class="fix-task-info">
+                        <div class="fix-task-id">${task.id}</div>
+                        <div class="fix-task-desc">${task.issue}</div>
+                    </div>
+                    <span class="fix-task-agent">${task.agent}</span>
+                </li>
+            `).join('');
+        }
+
+        function renderActivityLog() {
+            const log = document.getElementById('activityLog');
+            
+            log.innerHTML = recentAudits.map(audit => {
+                const iconClass = audit.status === 'pass' ? 'pass' : 'fail';
+                const icon = audit.status === 'pass' ? '✓' : '✗';
+                
+                return `
+                    <div class="activity-item">
+                        <div class="activity-icon ${iconClass}">${icon}</div>
+                        <div class="activity-content">
+                            <div class="activity-text">
+                                <strong>${audit.task}</strong> audited for <strong>${audit.agent}</strong>
+                                <span style="color: ${audit.status === 'pass' ? 'var(--accent-success)' : 'var(--accent-danger)'};">
+                                    ${audit.score}/100
+                                </span>
+                            </div>
+                            <div class="activity-time">${audit.time} today</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderScoreDistribution() {
+            const chart = document.getElementById('scoreChart');
+            const distribution = {
+                '100': 1,
+                '95-99': 2,
+                '90-94': 3,
+                '<90': 0
+            };
+            const max = Math.max(...Object.values(distribution));
+
+            chart.innerHTML = Object.entries(distribution).map(([range, count]) => {
+                const height = max > 0 ? (count / max) * 200 : 0;
+                const color = range === '100' || range === '95-99' ? 'var(--accent-success)' :
+                             range === '90-94' ? 'var(--accent-warning)' : 'var(--accent-danger)';
+                
+                return `
+                    <div style="display: inline-block; margin: 0 1rem; text-align: center;">
+                        <div style="height: 200px; display: flex; align-items: flex-end; justify-content: center;">
+                            <div style="width: 60px; height: ${height}px; background: ${color}; border-radius: 4px 4px 0 0; transition: height 0.5s ease;"></div>
+                        </div>
+                        <div style="margin-top: 0.5rem; font-size: 0.75rem; color: var(--text-muted);">${range}</div>
+                        <div style="font-size: 1.25rem; font-weight: 600;">${count}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function refreshData() {
+            location.reload();
+        }
+
+        function exportReport() {
+            const data = {
+                date: new Date().toISOString(),
+                agents: agentData,
+                fixTasks: fixTasks,
+                summary: {
+                    passRate: 50,
+                    avgScore: 95.5,
+                    tasksAudited: 4,
+                    fixTasksPending: 2
+                }
+            };
+            
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `quality-report-${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function sortBy(criteria) {
+            // Sort implementation would go here
+            console.log('Sort by:', criteria);
+        }
+    </script>
+</body>
+</html>

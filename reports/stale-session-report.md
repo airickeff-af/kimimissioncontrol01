@@ -1,6 +1,6 @@
 # Stale Session Handler Report
 
-**Generated:** 2026-02-19T08:20:28+08:00  
+**Generated:** 2026-02-19T18:00:01+08:00  
 **Handler:** stale-session-handler.sh  
 
 ## Summary
@@ -19,7 +19,7 @@
 
 ## Next Run
 
-Scheduled: 2026-02-19T14:20:28+08:00
+Scheduled: 2026-02-20T00:00:01+08:00
 
 ---
 

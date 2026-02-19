@@ -1,0 +1,2122 @@
+{
+  "database": {
+    "version": "2026.2.19",
+    "created_at": "2026-02-19T11:30:00Z",
+    "total_leads": 89,
+    "regions": ["hongkong", "singapore"],
+    "by_priority": {
+      "P0": 35,
+      "P1": 42,
+      "P2": 12
+    }
+  },
+  "leads": [
+    {
+      "id": "HK-001",
+      "region": "hongkong",
+      "priority": "P0",
+      "company": "OSL Digital Securities Limited",
+      "company_type": "SFC Licensed Exchange & Prime Brokerage",
+      "website": "https://www.osl.com",
+      "sfc_license": "OSL Digital Securities Limited - Licensed 15/12/2020, CE Ref: BPJ213",
+      "trading_volume": "$1B+ monthly, FY2024 profit HK$47-52M",
+      "aum": "",
+      "focus": "Institutional trading, Prime brokerage, Custody, Retail + Professional investors",
+      "lead_score": 98,
+      "partnership_potential": "Integration partner - High liquidity needs, institutional gateway",
+      "contact": {
+        "primary": {
+          "name": "Kevin Cui",
+          "title": "Executive Director and CEO",
+          "email": "kevin.cui@osl.com",
+          "email_verified": true,
+          "linkedin": "https://www.linkedin.com/in/kevin-cui/",
+          "twitter": "",
+          "phone": "",
+          "telegram": ""
+        },
+        "secondary": [
+          {
+            "name": "Gary Tiu",
+            "title": "Executive Director and Head of Regulatory Affairs",
+            "email": "gary.tiu@osl.com",
+            "linkedin": "https://www.linkedin.com/in/gary-tiu-3691011a0/"
+          },
+          {
+            "name": "Eugene Cheung",
+            "title": "Chief Commercial Officer",
+            "email": "eugene.cheung@osl.com",
+            "linkedin": "https://www.linkedin.com/in/ecgold/"
+          }
+        ]
+      },
+      "enrichment": {
+        "status": "complete",
+        "source": "manual",
+        "date": "2026-02-19",
+        "coverage_score": 85
+      }
+    },
+    {
+      "id": "HK-002",
+      "region": "hongkong",
+      "priority": "P0",
+      "company": "HashKey Exchange (Hash Blockchain Limited)",
+      "company_type": "SFC Licensed Exchange",
+      "website": "https://exchange.hashkey.com",
+      "sfc_license": "Hash Blockchain Limited - Licensed 09/11/2022, CE Ref: BPL992",
+      "trading_volume": "75%+ of HK digital asset trading volume, HK$580B cumulative (~US$74B), HK$10B+ AUM",
+      "aum": "HK$10B+",
+      "focus": "Retail & Institutional crypto trading, Tokenization, RWA",
+      "lead_score": 98,
+      "partnership_potential": "Major liquidity partner - Highest volume in HK, strong institutional pipeline",
+      "contact": {
+        "primary": {
+          "name": "Ru Haiyang",
+          "title": "CEO, HashKey Exchange BG",
+          "email": "haiyang.ru@hashkey.com",
+          "email_verified": true,
+          "linkedin": "https://www.linkedin.com/in/haiyang-ru/",
+          "twitter": "",
+          "phone": "",
+          "telegram": ""
+        },
+        "secondary": [
+          {
+            "name": "Livio Weng",
+            "title": "CEO, HashKey Exchange",
+            "email": "livio.weng@hashkey.com",
+            "linkedin": ""
+          },
+          {
+            "name": "Anna Liu",
+            "title": "CEO, HashKey Tokenisation",
+            "email": "anna.liu@hashkey.com",
+            "linkedin": "https://www.linkedin.com/in/anna-liu-aa793830/"
+          },
+          {
+            "name": "Eric Zhu",
+            "title": "CFO, HashKey Group",
+            "email": "eric.zhu@hashkey.com",
+            "linkedin": ""
+          },
+          {
+            "name": "Michelle Cheng",
+            "title": "Managing Director, HashKey Exchange",
+            "email": "",
+            "linkedin": "https://www.linkedin.com/in/michelle-cheng-39474727/"
+          },
+          {
+            "name": "Ben El-Baz",
+            "title": "Managing Director, Head of Global Expansion",
+            "email": "",
+            "linkedin": "https://www.linkedin.com/in/ben-el-baz/"
+          }
+        ]
+      },
+      "enrichment": {
+        "status": "complete",
+        "source": "manual",
+        "date": "2026-02-19",
+        "coverage_score": 75
+      }
+    },
+    {
+      "id": "HK-003",
+      "region": "hongkong",
+      "priority": "P0",
+      "company": "HKVAX (Hong Kong Virtual Asset Exchange)",
+      "company_type": "SFC Licensed Exchange",
+      "website": "https://www.hkvax.com",
+      "sfc_license": "Hong Kong Virtual Asset Exchange Limited - Licensed 03/10/2024, CE Ref: BPW549",
+      "trading_volume": "Growing institutional focus, OTC + 24/7 institutional trading",
+      "aum": "",
+      "focus": "Virtual asset trading, Brokerage services, STO/RWA tokenization",
+      "lead_score": 92,
+      "partnership_potential": "New entrant with strong backing - OTC focus aligns with liquidity needs",
+      "contact": {
+        "primary": {
+          "name": "Dr. Anthony Ng",
+          "title": "Co-Founder & CEO",
+          "email": "anthony.ng@hkvax.com",
+          "email_verified": true,
+          "linkedin": "https://www.linkedin.com/in/anthony-ng-9234079/",
+          "twitter": "",
+          "phone": "",
+          "telegram": ""
+        },
+        "secondary": [
+          {
+            "name": "Sam Fok",
+            "title": "Co-Founder & COO",
+            "email": "sam.fok@hkvax.com",
+            "linkedin": ""
+          },
+          {
+            "name": "Simon Liu",
+            "title": "Co-Founder & CTO",
+            "email": "simon.liu@hkvax.com",
+            "linkedin": ""
+          },
+          {
+            "name": "Tim Mok",
+            "title": "Head of Brokerage",
+            "email": "tim.mok@hkvax.com",
+            "linkedin": ""
+          }
+        ]
+      },
+      "enrichment": {
+        "status": "complete",
+        "source": "manual",
+        "date": "2026-02-19",
+        "coverage_score": 70
+      }
+    },
+    {
+      "id": "HK-004",
+      "region": "hongkong",
+      "priority": "P0",
+      "company": "VDX (Victory Fintech Company Limited)",
+      "company_type": "SFC Licensed Exchange",
+      "website": "https://www.vdx.com",
+      "sfc_license": "Victory Fintech Company Limited - Licensed Feb 2026, FIRST retail crypto license",
+      "trading_volume": "Newly licensed, retail + institutional",
+      "aum": "",
+      "focus": "Retail and institutional crypto trading, First retail license in HK",
+      "lead_score": 90,
+      "partnership_potential": "First retail license - unique position for retail liquidity partnerships",
+      "contact": {
+        "primary": {
+          "name": "Nathan Simmons",
+          "title": "Chief Compliance Officer",
+          "email": "",
+          "email_verified": false,
+          "linkedin": "https://www.linkedin.com/in/nathan-simmons/",
+          "twitter": "",
+          "phone": "",
+          "telegram": ""
+        },
+        "secondary": []
+      },
+      "enrichment": {
+        "status": "partial",
+        "source": "manual",
+        "date": "2026-02-19",
+        "coverage_score": 40,
+        "missing": ["email", "phone"]
+      }
+    },
+    {
+      "id": "HK-005",
+      "region": "hongkong",
+      "priority": "P1",
+      "company": "HKbitEX (Hong Kong Digital Asset EX Limited)",
+      "company_type": "SFC Licensed Exchange",
+      "website": "https://www.hkbitex.com",
+      "sfc_license": "Hong Kong Digital Asset EX Limited - Licensed 18/12/2024, CE Ref: BPO721",
+      "trading_volume": "Mid-size exchange, Tykhe Capital affiliate",
+      "aum": "",
+      "focus": "Security token offerings, Digital asset trading, Automated trading + OTC pending",
+      "lead_score": 85,
+      "partnership_potential": "STO focus - niche but growing market",
+      "contact": {
+        "primary": {
+          "name": "Jaden Chan",
+          "title": "Former Head of Brokerage & Partnership",
+          "email": "",
+          "email_verified": false,
+          "linkedin": "https://www.linkedin.com/in/0xjchk/",
+          "twitter": "",
+          "phone": "",
+          "telegram": ""
+        },
+        "secondary": [
+          {
+            "name": "Ken Lo",
+            "title": "CEO",
+            "email": "",
+            "linkedin": ""
+          }
+        ]
+      },
+      "enrichment": {
+        "status": "partial",
+        "source": "manual",
+        "date": "2026-02-19",
+        "coverage_score": 35,
+        "missing": ["email", "phone"]
+      }
+    },
+    {
+      "id": "HK-006",
+      "region": "hongkong",
+      "priority": "P1",
+      "company": "Accumulus (Accumulus GBA Technology)",
+      "company_type": "SFC Licensed Exchange",
+      "website": "",
+      "sfc_license": "Accumulus GBA Technology - Licensed 18/12/2024, CE Ref: BUA970",
+      "trading_volume": "New entrant",
+      "aum": "",
+      "focus": "Virtual asset trading platform, Web3 focus",
+      "lead_score": 80,
+      "partnership_potential": "China-backed, potential cross-border opportunities",
+      "contact": {
+        "primary": {
+          "name": "Management Team",
+          "title": "Leadership",
+          "email": "",
+          "email_verified": false,
+          "linkedin": "",
+          "twitter": "",
+          "phone": "",
+          "telegram": ""
+        },
+        "secondary": []
+      },
+      "enrichment": {
+        "status": "pending",
+        "source": "manual",
+        "date": "2026-02-19",
+        "coverage_score": 10,
+        "missing": ["email", "linkedin", "phone", "twitter"]
+      }
+    },
+    {
+      "id": "HK-007",
+      "region": "hongkong",
+      "priority": "P1",
+      "company": "DFX Labs Company Limited",
+      "company_type": "SFC Licensed Exchange",
+      "website": "",
+      "sfc_license": "DFX Labs Company Limited - Licensed 18/12/2024, CE Ref: BUN619",
+      "trading_volume": "New entrant",
+      "aum": "",
+      "focus": "Virtual asset service provider, Liquidity + custody focus",
+      "lead_score": 80,
+      "partnership_potential": "Liquidity focus - potential integration partner",
+      "contact": {
+        "primary": {
+          "name": "Simon Au Yeung",
+          "title": "COO",
+          "email": "",
+          "email_verified": false,
+          "linkedin": "",
+          "twitter": "",
+          "phone": "",
+          "telegram": ""
+        },
+        "secondary": []
+      },
+      "enrichment": {
+        "status": "pending",
+        "source": "manual",
+        "date": "2026-02-19",
+        "coverage_score": 15,
+        "missing": ["email", "linkedin", "phone", "twitter"]
+      }
+    },
+    {
+      "id": "HK-008",
+      "region": "hongkong",
+      "priority": "P1",
+      "company": "EX.IO (EXIO Limited)",
+      "company_type": "SFC Licensed Exchange",
+      "website": "https://www.ex.io",
+      "sfc_license": "EXIO Limited - Licensed 18/12/2024, CE Ref: BUT670",
+      "trading_volume": "Growing, received OTC approval Jan 2026",
+      "aum": "",
+      "focus": "Virtual asset trading, OTC desk for institutional",
+      "lead_score": 82,
+      "partnership_potential": "OTC approved - institutional focus",
+      "contact": {
+        "primary": {
+          "name": "Executive Team",
+          "title": "Management",
+          "email": "",
+          "email_verified": false,
+          "linkedin": "",
+          "twitter": "",
+          "phone": "",
+          "telegram": ""
+        },
+        "secondary": []
+      },
+      "enrichment": {
+        "status": "pending",
+        "source": "manual",
+        "date": "2026-02-19",
+        "coverage_score": 10,
+        "missing": ["email", "linkedin", "phone", "twitter"]
+      }
+    },
+    {
+      "id": "HK-009",
+      "region": "hongkong",
+      "priority": "P0",
+      "company": "PantherTrade (Panthertrade Hong Kong Limited)",
+      "company_type": "SFC Licensed Exchange",
+      "website": "https://www.panthertrade.com",
+      "sfc_license": "Panthertrade (Hong Kong) Limited - Licensed 27/01/2025, CE Ref: BUY578, Futu Holdings subsidiary",
+      "trading_volume": "Newly licensed, BTC + ETH focus",
+      "aum": "",
+      "focus": "Digital asset exchange, Retail + institutional",
+      "lead_score": 90,
+      "partnership_potential": "Futu subsidiary - major brokerage backing, strong retail pipeline",
+      "contact": {
+        "primary": {
+          "name": "Fred Han",
+          "title": "Director Trader and Business Development",
+          "email": "",
+          "email_verified": false,
+          "linkedin": "https://www.linkedin.com/in/fred-han-ph-d-027583153/",
+          "twitter": "",
+          "phone": "",
+          "telegram": ""
+        },
+        "secondary": [
+          {
+            "name": "Chen Zhihu",
+            "title": "Director",
+            "email": "",
+            "linkedin": ""
+          },
+          {
+            "name": "Walton Chan",
+            "title": "Head of Custody Operations and Customer Relations",
+            "email": "",
+            "linkedin": "https://www.linkedin.com/in/walton-chan-12352125/"
+          }
+        ]
+      },
+      "enrichment": {
+        "status": "partial",
+        "source": "manual",
+        "date": "2026-02-19",
+        "coverage_score": 35,
+        "missing": ["email", "phone"]
+      }
+    },
+    {
+      "id": "HK-010",
+      "region": "hongkong",
+      "priority": "P0",
+      "company": "YAX (YAX Hong Kong Limited)",
+      "company_type": "SFC Licensed Exchange",
+      "website": "https://www.yax.hk",
+      "sfc_license": "YAX (Hong Kong) Limited - Licensed 27/01/2025, CE Ref: BUT913, Tiger Brokers subsidiary",
+      "trading_volume": "Newly licensed, retail + custody",
+      "aum": "",
+      "focus": "Crypto exchange, Retail + custody services",
+      "lead_score": 90,
+      "partnership_potential": "Tiger Brokers subsidiary - major fintech backing",
+      "contact": {
+        "primary": {
+          "name": "陈晓航",
+          "title": "Head of Product",
+          "email": "",
+          "email_verified": false,
+          "linkedin": "https://www.linkedin.com/in/%E6%99%93%E8%88%AA-%E9%99%88-0bb9b4265/",
+          "twitter": "",
+          "phone": "",
+          "telegram": ""
+        },
+        "secondary": [
+          {
+            "name": "Ivanhoe Huang",
+            "title": "Director of Institutional Business",
+            "email": "",
+            "linkedin": "https://www.linkedin.com/in/ivanhoe-huang-54026218/"
+          }
+        ]
+      },
+      "enrichment": {
+        "status": "partial",
+        "source": "manual",
+        "date": "2026-02-19",
+        "coverage_score": 30,
+        "missing": ["email", "phone"]
+      }
+    },
+    {
+      "id": "HK-011",
+      "region": "hongkong",
+      "priority": "P0",
+      "company": "Bullish HK Markets Limited",
+      "company_type": "SFC Licensed Exchange",
+      "website": "https://www.bullish.com",
+      "sfc_license": "Bullish HK Markets Limited - Licensed 18/02/2025",
+      "trading_volume": "Newly licensed, Bullish Group exchange",
+      "aum": "",
+      "focus": "Digital asset exchange, Institutional-grade platform",
+      "lead_score": 92,
+      "partnership_potential": "High-profile leadership, institutional focus",
+      "contact": {
+        "primary": {
+          "name": "Tom Farley",
+          "title": "CEO",
+          "email": "",
+          "email_verified": false,
+          "linkedin": "https://www.linkedin.com/in/thomas-farley-b9a806128/",
+          "twitter": "",
+          "phone": "",
+          "telegram": ""
+        },
+        "secondary": [
+          {
+            "name": "Chris Tyrer",
+            "title": "President of Bullish Exchange",
+            "email": "",
+            "linkedin": ""
+          }
+        ]
+      },
+      "enrichment": {
+        "status": "partial",
+        "source": "manual",
+        "date": "2026-02-19",
+        "coverage_score": 35,
+        "missing": ["email", "phone"]
+      }
+    },
+    {
+      "id": "HK-012",
+      "region": "hongkong",
+      "priority": "P1",
+      "company": "Hong Kong BGE Limited",
+      "company_type": "SFC Licensed Exchange",
+      "website": "",
+      "sfc_license": "Hong Kong BGE Limited - Licensed 17/06/2025, CE Ref: BSI739",
+      "trading_volume": "Limited access phase",
+      "aum": "",
+      "focus": "Virtual asset trading platform",
+      "lead_score": 78,
+      "partnership_potential": "Early stage - monitor for partnership opportunities",
+      "contact": {
+        "primary": {
+          "name": "Management",
+          "title": "Leadership",
+          "email": "",
+          "email_verified": false,
+          "linkedin": "",
+          "twitter": "",
+          "phone": "",
+          "telegram": ""
+        },
+        "secondary": []
+      },
+      "enrichment": {
+        "status": "pending",
+        "source": "manual",
+        "date": "2026-02-19",
+        "coverage_score": 10,
+        "missing": ["email", "linkedin", "phone", "twitter"]
+      }
+    },
+    {
+      "id": "HK-013",
+      "region": "hongkong",
+      "priority": "P0",
+      "company": "Amber Group",
+      "company_type": "Crypto Finance & Trading / Prime Brokerage",
+      "website": "https://www.ambergroup.io",
+      "sfc_license": "Global operations, HK headquarters, applying for additional licenses",
+      "trading_volume": "$2B+ daily trading volume",
+      "aum": "",
+      "focus": "Wealth management, Asset management, Liquidity provision, Prime brokerage",
+      "lead_score": 98,
+      "partnership_potential": "Top liquidity provider - Major prime brokerage, unicorn status",
+      "contact": {
+        "primary": {
+          "name": "Michael Wu",
+          "title": "CEO & Co-Founder",
+          "email": "michael.wu@ambergroup.io",
+          "email_verified": true,
+          "linkedin": "https://www.linkedin.com/in/michael-wu-amber/",
+          "twitter": "",
+          "phone": "",
+          "telegram": ""
+        },
+        "secondary": [
+          {
+            "name": "Thomas Zhu",
+            "title": "CTO",
+            "email": "",
+            "linkedin": ""
+          },
+          {
+            "name": "Steve Zhang",
+            "title": "Chief Business Officer",
+            "email": "",
+            "linkedin": ""
+          },
+          {
+            "name": "Kane Guo",
+            "title": "Chief Compliance Officer",
+            "email": "",
+            "linkedin": ""
+          }
+        ]
+      },
+      "enrichment": {
+        "status": "complete",
+        "source": "manual",
+        "date": "2026-02-19",
+        "coverage_score": 70
+      }
+    },
+    {
+      "id": "HK-014",
+      "region": "hongkong",
+      "priority": "P0",
+      "company": "FalconX",
+      "company_type": "Prime Brokerage",
+      "website": "https://www.falconx.io",
+      "sfc_license": "Expanded to HK Feb 2024, institutional prime brokerage services",
+      "trading_volume": "$1T+ annual trading volume",
+      "aum": "",
+      "focus": "Prime brokerage, Trading, Custody, Credit, OTC derivatives",
+      "lead_score": 98,
+      "partnership_potential": "Largest institutional prime broker - Major liquidity and credit provider",
+      "contact": {
+        "primary": {
+          "name": "Raghu Yarlagadda",
+          "title": "CEO & Co-Founder",
+          "email": "raghu@falconx.io",
+          "email_verified": true,
+          "linkedin": "https://www.linkedin.com/in/raghuyarlagadda/",
+          "twitter": "",
+          "phone": "",
+          "telegram": ""
+        },
+        "secondary": [
+          {
+            "name": "Ben Eades",
+            "title": "Hong Kong Operations",
+            "email": "",
+            "linkedin": "https://www.linkedin.com/in/ben-eades/"
+          },
+          {
+            "name": "Jacob Goh",
+            "title": "Institutional Sales & Onchain Ecosystems",
+            "email": "",
+            "linkedin": "https://www.linkedin.com/in/jacob-goh-b7a320106/"
+          }
+        ]
+      },
+      "enrichment": {
+        "status": "complete",
+        "source": "manual",
+        "date": "2026-02-19",
+        "coverage_score": 75
+      }
+    },
+    {
+      "id": "HK-015",
+      "region": "hongkong",
+      "priority": "P0",
+      "company": "Flow Traders",
+      "company_type": "Market Maker & Trading",
+      "website": "https://www.flowtraders.com",
+      "sfc_license": "Trading firm with crypto division, global market maker",
+      "trading_volume": "Major market maker, liquidity provider to HK ETFs",
+      "aum": "",
+      "focus": "Market making, Liquidity provision, Digital assets trading, ETF liquidity",
+      "lead_score": 92,
+      "partnership_potential": "Key liquidity provider - Provides liquidity for HK Bitcoin/Ether ETFs",
+      "contact": {
+        "primary": {
+          "name": "Jaden Chan",
+          "title": "Ventures & Liquidity - Digital Assets",
+          "email": "jaden.chan@flowtraders.com",
+          "email_verified": true,
+          "linkedin": "https://www.linkedin.com/in/0xjchk/",
+          "twitter": "",
+          "phone": "",
+          "telegram": ""
+        },
+        "secondary": []
+      },
+      "enrichment": {
+        "status": "complete",
+        "source": "manual",
+        "date": "2026-02-19",
+        "coverage_score": 80
+      }
+    },
+    {
+      "id": "HK-016",
+      "region": "hongkong",
+      "priority": "P0",
+      "company": "Talos",
+      "company_type": "Institutional Trading Infrastructure",
+      "website": "https://www.talos.com",
+      "sfc_license": "Institutional technology provider, APAC HQ in Singapore with HK presence",
+      "trading_volume": "Major institutional volume through platform",
+      "aum": "",
+      "focus": "Trading infrastructure, Liquidity aggregation, Order management, FIX connectivity",
+      "lead_score": 92,
+      "partnership_potential": "Infrastructure partner - Trading technology, liquidity aggregation",
+      "contact": {
+        "primary": {
+          "name": "Anton Katz",
+          "title": "CEO & Co-Founder",
+          "email": "anton@talos.com",
+          "email_verified": true,
+          "linkedin": "https://www.linkedin.com/in/antonkatz/",
+          "twitter": "",
+          "phone": "",
+          "telegram": ""
+        },
+        "secondary": [
+          {
+            "name": "Ethan Feldman",
+            "title": "President & Co-Founder",
+            "email": "ethan@talos.com",
+            "linkedin": "https://www.linkedin.com/in/ethanfeldman/"
+          }
+        ]
+      },
+      "enrichment": {
+        "status": "complete",
+        "source": "manual",
+        "date": "2026-02-19",
+        "coverage_score": 85
+      }
+    },
+    {
+      "id": "HK-017",
+      "region": "hongkong",
+      "priority": "P0",
+      "company": "RD Technologies",
+      "company_type": "Stablecoin & Payments",
+      "website": "https://rd.group",
+      "sfc_license": "Applying for stablecoin issuer license",
+      "trading_volume": "N/A - Infrastructure play",
+      "aum": "",
+      "focus": "HKD stablecoin (HKDR), Cross-border payments, Web3 infrastructure",
+      "lead_score": 92,
+      "partnership_potential": "Stablecoin infrastructure - HKDR could be major on/off ramp",
+      "contact": {
+        "primary": {
+          "name": "Rita Liu",
+          "title": "CEO",
+          "email": "rita.liu@rd.group",
+          "email_verified": true,
+          "linkedin": "https://www.linkedin.com/in/rita-liu-rd/",
+          "twitter": "",
+          "phone": "",
+          "telegram": ""
+        },
+        "secondary": [
+          {
+            "name": "SK Lee",
+            "title": "CEO, RD Wallet",
+            "email": "",
+            "linkedin": ""
+          },
+          {
+            "name": "Daqi Luo",
+            "title": "Chief Product Officer",
+            "email": "",
+            "linkedin": ""
+          }
+        ]
+      },
+      "enrichment": {
+        "status": "complete",
+        "source": "manual",
+        "date": "2026-02-19",
+        "coverage_score": 70
+      }
+    },
+    {
+      "id": "HK-018",
+      "region": "hongkong",
+      "priority": "P0",
+      "company": "Kenetic Capital",
+      "company_type": "Crypto VC & Trading",
+      "website": "https://www.kenetic.capital",
+      "sfc_license": "Proprietary trading and VC firm",
+      "trading_volume": "Significant crypto trading operations",
+      "aum": "$100M+ fund",
+      "focus": "Blockchain investments, Proprietary trading, Market making",
+      "lead_score": 90,
+      "partnership_potential": "Trading + VC - Potential investor and liquidity partner",
+      "contact": {
+        "primary": {
+          "name": "Jehan Chu",
+          "title": "Co-Founder & Managing Partner",
+          "email": "jehan@kenetic.capital",
+          "email_verified": true,
+          "linkedin": "https://www.linkedin.com/in/jehanchu/",
+          "twitter": "@jehanchu",
+          "phone": "",
+          "telegram": ""
+        },
+        "secondary": [
+          {
+            "name": "Lawrence Chu",
+            "title": "Co-Founder",
+            "email": "",
+            "linkedin": ""
+          },
+          {
+            "name": "David Wills",
+            "title": "Co-Founder",
+            "email": "",
+            "linkedin": ""
+          }
+        ]
+      },
+      "enrichment": {
+        "status": "complete",
+        "source": "manual",
+        "date": "2026-02-19",
+        "coverage_score": 75
+      }
+    },
+    {
+      "id": "HK-019",
+      "region": "hongkong",
+      "priority": "P1",
+      "company": "CMCC Global",
+      "company_type": "Crypto VC",
+      "website": "https://www.cmcc.vc",
+      "sfc_license": "VC fund structure",
+      "trading_volume": "",
+      "aum": "$100M+ fund size",
+      "focus": "Early-stage blockchain investments, Web3, Infrastructure",
+      "lead_score": 88,
+      "partnership_potential": "VC network - Portfolio company connections",
+      "contact": {
+        "primary": {
+          "name": "Charles Morris",
+          "title": "Co-Founder",
+          "email": "charles@cmcc.vc",
+          "email_verified": true,
+          "linkedin": "https://www.linkedin.com/in/charlesmorris/",
+          "twitter": "",
+          "phone": "",
+          "telegram": ""
+        },
+        "secondary": [
+          {
+            "name": "Martin Baumann",
+            "title": "Co-Founder",
+            "email": "martin@cmcc.vc",
+            "linkedin": ""
+          }
+        ]
+      },
+      "enrichment": {
+        "status": "complete",
+        "source": "manual",
+        "date": "2026-02-19",
+        "coverage_score": 75
+      }
+    },
+    {
+      "id": "HK-020",
+      "region": "hongkong",
+      "priority": "P1",
+      "company": "Animoca Brands",
+      "company_type": "Web3 & Gaming",
+      "website": "https://www.animocabrands.com",
+      "sfc_license": "Corporate structure",
+      "trading_volume": "",
+      "aum": "Multi-billion dollar valuation",
+      "focus": "Web3 gaming, NFTs, Metaverse, Digital property rights",
+      "lead_score": 90,
+      "partnership_potential": "Web3 ecosystem - Major portfolio, token partnerships",
+      "contact": {
+        "primary": {
+          "name": "Yat Siu",
+          "title": "Co-Founder & Executive Chairman",
+          "email": "yat@animocabrands.com",
+          "email_verified": true,
+          "linkedin": "https://www.linkedin.com/in/yatsiu/",
+          "twitter": "@yatsiu",
+          "phone": "",
+          "telegram": ""
+        },
+        "secondary": [
+          {
+            "name": "Robby Yung",
+            "title": "CEO",
+            "email": "",
+            "linkedin": ""
+          },
+          {
+            "name": "Alan Lau",
+            "title": "Chief Business Officer",
+            "email": "",
+            "linkedin": ""
+          }
+        ]
+      },
+      "enrichment": {
+        "status": "complete",
+        "source": "manual",
+        "date": "2026-02-19",
+        "coverage_score": 70
+      }
+    },
+    {
+      "id": "HK-021",
+      "region": "hongkong",
+      "priority": "P1",
+      "company": "Cobo",
+      "company_type": "Crypto Custody",
+      "website": "https://www.cobo.com",
+      "sfc_license": "Custody provider, trust company license",
+      "trading_volume": "N/A - Custody focus",
+      "aum": "$10B+ assets under custody",
+      "focus": "Institutional custody, Staking, DeFi access, Wallet infrastructure",
+      "lead_score": 88,
+      "partnership_potential": "Custody partner - Major institutional custodian",
+      "contact": {
+        "primary": {
+          "name": "Discus Fish",
+          "title": "Co-Founder & CEO",
+          "email": "fish@cobo.com",
+          "email_verified": true,
+          "linkedin": "https://www.linkedin.com/in/discusfish/",
+          "twitter": "@discusfish",
+          "phone": "",
+          "telegram": ""
+        },
+        "secondary": [
+          {
+            "name": "Changhao Jiang",
+            "title": "Co-Founder & CTO",
+            "email": "",
+            "linkedin": ""
+          }
+        ]
+      },
+      "enrichment": {
+        "status": "complete",
+        "source": "manual",
+        "date": "2026-02-19",
+        "coverage_score": 75
+      }
+    },
+    {
+      "id": "HK-022",
+      "region": "hongkong",
+      "priority": "P1",
+      "company": "Hex Trust",
+      "company_type": "Crypto Custody",
+      "website": "https://hextrust.com",
+      "sfc_license": "Licensed custodian, SFC registered",
+      "trading_volume": "N/A - Custody focus",
+      "aum": "$5B+ assets under custody",
+      "focus": "Institutional-grade custody, Staking, NFT custody, Markets",
+      "lead_score": 86,
+      "partnership_potential": "Custody partner - Licensed custodian with staking",
+      "contact": {
+        "primary": {
+          "name": "Alessio Quaglini",
+          "title": "CEO & Co-Founder",
+          "email": "alessio@hextrust.com",
+          "email_verified": true,
+          "linkedin": "https://www.linkedin.com/in/alessioquaglini/",
+          "twitter": "",
+          "phone": "",
+          "telegram": ""
+        },
+        "secondary": [
+          {
+            "name": "Rafal Czerniawski",
+            "title": "CTO & Co-Founder",
+            "email": "",
+            "linkedin": ""
+          }
+        ]
+      },
+      "enrichment": {
+        "status": "complete",
+        "source": "manual",
+        "date": "2026-02-19",
+        "coverage_score": 75
+      }
+    },
+    {
+      "id": "HK-023",
+      "region": "hongkong",
+      "priority": "P1",
+      "company": "ZA Bank",
+      "company_type": "Virtual Bank (Crypto-friendly)",
+      "website": "https://www.zabank.com",
+      "sfc_license": "Virtual banking license (HKMA)",
+      "trading_volume": "Retail banking volume",
+      "aum": "",
+      "focus": "Virtual banking, Crypto on/off ramps, Digital assets",
+      "lead_score": 85,
+      "partnership_potential": "Banking partner - Crypto-friendly banking rails",
+      "contact": {
+        "primary": {
+          "name": "Ronald Iu",
+          "title": "CEO",
+          "email": "",
+          "email_verified": false,
+          "linkedin": "https://www.linkedin.com/in/ronald-iu/",
+          "twitter": "",
+          "phone": "",
+          "telegram": ""
+        },
+        "secondary": []
+      },
+      "enrichment": {
+        "status": "partial",
+        "source": "manual",
+        "date": "2026-02-19",
+        "coverage_score": 35,
+        "missing": ["email", "phone"]
+      }
+    },
+    {
+      "id": "HK-024",
+      "region": "hongkong",
+      "priority": "P0",
+      "company": "Circle (Hong Kong Operations)",
+      "company_type": "Stablecoin Issuer",
+      "website": "https://www.circle.com",
+      "sfc_license": "Applying for stablecoin license",
+      "trading_volume": "$30B+ USDC in circulation",
+      "aum": "",
+      "focus": "USDC stablecoin, Cross-border payments, Treasury services",
+      "lead_score": 96,
+      "partnership_potential": "Stablecoin infrastructure - USDC integration for payments",
+      "contact": {
+        "primary": {
+          "name": "Raagulan Pathy",
+          "title": "VP, Asia Pacific",
+          "email": "",
+          "email_verified": false,
+          "linkedin": "https://www.linkedin.com/in/raagulanpathy/",
+          "twitter": "",
+          "phone": "",
+          "telegram": ""
+        },
+        "secondary": []
+      },
+      "enrichment": {
+        "status": "partial",
+        "source": "manual",
+        "date": "2026-02-19",
+        "coverage_score": 35,
+        "missing": ["email", "phone"]
+      }
+    },
+    {
+      "id": "HK-025",
+      "region": "hongkong",
+      "priority": "P0",
+      "company": "Tether (Hong Kong Operations)",
+      "company_type": "Stablecoin Issuer",
+      "website": "https://tether.to",
+      "sfc_license": "Global operations",
+      "trading_volume": "$100B+ USDT in circulation",
+      "aum": "",
+      "focus": "USDT stablecoin, Digital payments, Asset tokenization",
+      "lead_score": 95,
+      "partnership_potential": "Stablecoin liquidity - USDT trading pairs",
+      "contact": {
+        "primary": {
+          "name": "Paolo Ardoino",
+          "title": "CEO",
+          "email": "",
+          "email_verified": false,
+          "linkedin": "https://www.linkedin.com/in/paolo-ardoino/",
+          "twitter": "@paoloardoino",
+          "phone": "",
+          "telegram": ""
+        },
+        "secondary": []
+      },
+      "enrichment": {
+        "status": "partial",
+        "source": "manual",
+        "date": "2026-02-19",
+        "coverage_score": 40,
+        "missing": ["email", "phone"]
+      }
+    },
+    {
+      "id": "HK-026",
+      "region": "hongkong",
+      "priority": "P1",
+      "company": "Paxos (Hong Kong Operations)",
+      "company_type": "Stablecoin & Infrastructure",
+      "website": "https://paxos.com",
+      "sfc_license": "Trust company, applying for HK licenses",
+      "trading_volume": "Significant stablecoin issuance (PYUSD, USDP)",
+      "aum": "",
+      "focus": "Stablecoin infrastructure, Settlement, Tokenization",
+      "lead_score": 88,
+      "partnership_potential": "Regulated stablecoin - PYUSD/USDP integration",
+      "contact": {
+        "primary": {
+          "name": "Charles Cascarilla",
+          "title": "CEO & Co-Founder",
+          "email": "",
+          "email_verified": false,
+          "linkedin": "https://www.linkedin.com/in/charlescascarilla/",
+          "twitter": "",
+          "phone": "",
+          "telegram": ""
+        },
+        "secondary": []
+      },
+      "enrichment": {
+        "status": "partial",
+        "source": "manual",
+        "date": "2026-02-19",
+        "coverage_score": 35,
+        "missing": ["email", "phone"]
+      }
+    },
+    {
+      "id": "HK-027",
+      "region": "hongkong",
+      "priority": "P1",
+      "company": "BC Technology Group (OSL Parent)",
+      "company_type": "Listed Crypto Company",
+      "website": "https://www.bctechnology.com.hk",
+      "sfc_license": "Listed company, OSL subsidiary licensed",
+      "trading_volume": "OSL trading volume",
+      "aum": "",
+      "focus": "Digital asset services through OSL subsidiary",
+      "lead_score": 85,
+      "partnership_potential": "Listed entity - Public market access, OSL parent",
+      "contact": {
+        "primary": {
+          "name": "Wayne Huang",
+          "title": "CEO",
+          "email": "wayne.huang@bctechnology.com.hk",
+          "email_verified": true,
+          "linkedin": "",
+          "twitter": "",
+          "phone": "",
+          "telegram": ""
+        },
+        "secondary": []
+      },
+      "enrichment": {
+        "status": "complete",
+        "source": "manual",
+        "date": "2026-02-19",
+        "coverage_score": 60
+      }
+    },
+    {
+      "id": "HK-028",
+      "region": "hongkong",
+      "priority": "P1",
+      "company": "MaiCapital",
+      "company_type": "Crypto Asset Manager",
+      "website": "https://www.maicapital.com",
+      "sfc_license": "Type 9 license (asset management)",
+      "trading_volume": "",
+      "aum": "$50M+",
+      "focus": "Crypto asset management, Blockchain funds",
+      "lead_score": 82,
+      "partnership_potential": "Asset manager - Fund administration, investment products",
+      "contact": {
+        "primary": {
+          "name": "Marco Lim",
+          "title": "Managing Director",
+          "email": "marco@maicapital.com",
+          "email_verified": true,
+          "linkedin": "https://www.linkedin.com/in/marco-lim/",
+          "twitter": "",
+          "phone": "",
+          "telegram": ""
+        },
+        "secondary": []
+      },
+      "enrichment": {
+        "status": "complete",
+        "source": "manual",
+        "date": "2026-02-19",
+        "coverage_score": 75
+      }
+    },
+    {
+      "id": "HK-029",
+      "region": "hongkong",
+      "priority": "P1",
+      "company": "Metalpha",
+      "company_type": "Crypto Asset Management",
+      "website": "https://www.metalpha.com",
+      "sfc_license": "Asset management license",
+      "trading_volume": "",
+      "aum": "$100M+",
+      "focus": "Crypto wealth management, Staking, Yield products",
+      "lead_score": 80,
+      "partnership_potential": "Wealth management - Staking and yield products",
+      "contact": {
+        "primary": {
+          "name": "Management Team",
+          "title": "Leadership",
+          "email": "",
+          "email_verified": false,
+          "linkedin": "",
+          "twitter": "",
+          "phone": "",
+          "telegram": ""
+        },
+        "secondary": []
+      },
+      "enrichment": {
+        "status": "pending",
+        "source": "manual",
+        "date": "2026-02-19",
+        "coverage_score": 10,
+        "missing": ["email", "linkedin", "phone", "twitter"]
+      }
+    },
+    {
+      "id": "HK-030",
+      "region": "hongkong",
+      "priority": "P1",
+      "company": "Archblock (formerly TrueFi)",
+      "company_type": "RWA & DeFi Infrastructure",
+      "website": "https://www.archblock.com",
+      "sfc_license": "Technology provider",
+      "trading_volume": "Protocol TVL based",
+      "aum": "$500M+ TVL",
+      "focus": "RWA tokenization, DeFi lending, Institutional access",
+      "lead_score": 84,
+      "partnership_potential": "RWA infrastructure - Tokenization technology",
+      "contact": {
+        "primary": {
+          "name": "Charlie Chen",
+          "title": "VP, Asia Pacific",
+          "email": "charlie@archblock.com",
+          "email_verified": true,
+          "linkedin": "https://www.linkedin.com/in/charlie-chen/",
+          "twitter": "",
+          "phone": "",
+          "telegram": ""
+        },
+        "secondary": []
+      },
+      "enrichment": {
+        "status": "complete",
+        "source": "manual",
+        "date": "2026-02-19",
+        "coverage_score": 75
+      }
+    },
+    {
+      "id": "HK-031",
+      "region": "hongkong",
+      "priority": "P1",
+      "company": "IDA (Integrated Digital Assets)",
+      "company_type": "RWA & Stablecoin",
+      "website": "https://www.ida.finance",
+      "sfc_license": "Applying for licenses",
+      "trading_volume": "Early stage",
+      "aum": "",
+      "focus": "HKD stablecoin, Real world asset tokenization",
+      "lead_score": 80,
+      "partnership_potential": "HKD stablecoin - Local currency stablecoin",
+      "contact": {
+        "primary": {
+          "name": "Stephen Leung",
+          "title": "Executive",
+          "email": "",
+          "email_verified": false,
+          "linkedin": "",
+          "twitter": "",
+          "phone": "",
+          "telegram": ""
+        },
+        "secondary": []
+      },
+      "enrichment": {
+        "status": "pending",
+        "source": "manual",
+        "date": "2026-02-19",
+        "coverage_score": 15,
+        "missing": ["email", "linkedin", "phone", "twitter"]
+      }
+    },
+    {
+      "id": "HK-032",
+      "region": "hongkong",
+      "priority": "P0",
+      "company": "Matrixport Hong Kong",
+      "company_type": "Crypto Financial Services",
+      "website": "https://www.matrixport.com",
+      "sfc_license": "Flying Hippo Technologies - Deemed licensed (Matrixport subsidiary)",
+      "trading_volume": "$5B+ platform volume",
+      "aum": "$5B+",
+      "focus": "Trading, Lending, Asset management, Custody",
+      "lead_score": 92,
+      "partnership_potential": "Major Asian platform - Full stack financial services",
+      "contact": {
+        "primary": {
+          "name": "Daniel Yan",
+          "title": "Co-Founder",
+          "email": "daniel.yan@matrixport.com",
+          "email_verified": true,
+          "linkedin": "https://www.linkedin.com/in/danielyan/",
+          "twitter": "",
+          "phone": "",
+          "telegram": ""
+        },
+        "secondary": [
+          {
+            "name": "John Ge",
+            "title": "CEO",
+            "email": "",
+            "linkedin": ""
+          }
+        ]
+      },
+      "enrichment": {
+        "status": "complete",
+        "source": "manual",
+        "date": "2026-02-19",
+        "coverage_score": 70
+      }
+    },
+    {
+      "id": "HK-033",
+      "region": "hongkong",
+      "priority": "P0",
+      "company": "Crypto.com (Foris DAX HK Limited)",
+      "company_type": "Global Exchange (HK Application)",
+      "website": "https://crypto.com",
+      "sfc_license": "Foris DAX HK Limited - Deemed licensed 09/02/2024",
+      "trading_volume": "$10B+ daily global volume",
+      "aum": "",
+      "focus": "Exchange, Payments, Cards, DeFi, NFT",
+      "lead_score": 95,
+      "partnership_potential": "Global exchange - Major brand, expanding HK presence",
+      "contact": {
+        "primary": {
+          "name": "Kris Marszalek",
+          "title": "CEO & Co-Founder",
+          "email": "kris@crypto.com",
+          "email_verified": true,
+          "linkedin": "https://www.linkedin.com/in/krismarszalek/",
+          "twitter": "@Kris_HK",
+          "phone": "",
+          "telegram": ""
+        },
+        "secondary": [
+          {
+            "name": "Eric Anziani",
+            "title": "President & COO",
+            "email": "",
+            "linkedin": ""
+          }
+        ]
+      },
+      "enrichment": {
+        "status": "complete",
+        "source": "manual",
+        "date": "2026-02-19",
+        "coverage_score": 75
+      }
+    },
+    {
+      "id": "HK-034",
+      "region": "hongkong",
+      "priority": "P0",
+      "company": "Bybit (Spark Fintech Limited)",
+      "company_type": "Global Exchange (HK Application)",
+      "website": "https://www.bybit.com",
+      "sfc_license": "Spark Fintech Limited - Applicant (re-applied 06/06/2025)",
+      "trading_volume": "$20B+ daily global volume",
+      "aum": "",
+      "focus": "Derivatives, Spot trading, Institutional services",
+      "lead_score": 94,
+      "partnership_potential": "Top derivatives exchange - High volume, institutional desk",
+      "contact": {
+        "primary": {
+          "name": "Ben Zhou",
+          "title": "CEO & Co-Founder",
+          "email": "",
+          "email_verified": false,
+          "linkedin": "https://www.linkedin.com/in/ben-zhou-bybit/",
+          "twitter": "@benbybit",
+          "phone": "",
+          "telegram": ""
+        },
+        "secondary": []
+      },
+      "enrichment": {
+        "status": "partial",
+        "source": "manual",
+        "date": "2026-02-19",
+        "coverage_score": 45,
+        "missing": ["email", "phone"]
+      }
+    },
+    {
+      "id": "HK-035",
+      "region": "hongkong",
+      "priority": "P0",
+      "company": "Wintermute",
+      "company_type": "Market Maker",
+      "website": "https://www.wintermute.com",
+      "sfc_license": "Global operations, provides liquidity to HK ETFs",
+      "trading_volume": "$5B+ monthly market making",
+      "aum": "",
+      "focus": "Algorithmic trading, Liquidity provision, Market making",
+      "lead_score": 92,
+      "partnership_potential": "Key liquidity provider - Provides liquidity for HK Bitcoin/Ether ETFs",
+      "contact": {
+        "primary": {
+          "name": "Evgeny Gaevoy",
+          "title": "CEO & Founder",
+          "email": "",
+          "email_verified": false,
+          "linkedin": "https://www.linkedin.com/in/evgeny-gaevoy/",
+          "twitter": "@EvgenyGaevoy",
+          "phone": "",
+          "telegram": ""
+        },
+        "secondary": []
+      },
+      "enrichment": {
+        "status": "partial",
+        "source": "manual",
+        "date": "2026-02-19",
+        "coverage_score": 45,
+        "missing": ["email", "phone"]
+      }
+    },
+    {
+      "id": "HK-036",
+      "region": "hongkong",
+      "priority": "P0",
+      "company": "B2C2",
+      "company_type": "Market Maker & Liquidity Provider",
+      "website": "https://www.b2c2.com",
+      "sfc_license": "Global operations, strong APAC presence",
+      "trading_volume": "$2B+ monthly OTC volume",
+      "aum": "",
+      "focus": "OTC liquidity, Derivatives, Institutional trading",
+      "lead_score": 90,
+      "partnership_potential": "OTC liquidity - Major institutional liquidity provider",
+      "contact": {
+        "primary": {
+          "name": "Max Boonen",
+          "title": "CEO & Founder",
+          "email": "",
+          "email_verified": false,
+          "linkedin": "https://www.linkedin.com/in/maxboonen/",
+          "twitter": "@maxboonen",
+          "phone": "",
+          "telegram": ""
+        },
+        "secondary": []
+      },
+      "enrichment": {
+        "status": "partial",
+        "source": "manual",
+        "date": "2026-02-19",
+        "coverage_score": 45,
+        "missing": ["email", "phone"]
+      }
+    },
+    {
+      "id": "HK-037",
+      "region": "hongkong",
+      "priority": "P0",
+      "company": "GSR",
+      "company_type": "Market Maker",
+      "website": "https://www.gsr.io",
+      "sfc_license": "Global operations",
+      "trading_volume": "$3B+ monthly volume",
+      "aum": "",
+      "focus": "OTC liquidity, Derivatives, Market making",
+      "lead_score": 90,
+      "partnership_potential": "Market maker - OTC and derivatives liquidity",
+      "contact": {
+        "primary": {
+          "name": "Rich Rosenblum",
+          "title": "President & Co-Founder",
+          "email": "",
+          "email_verified": false,
+          "linkedin": "https://www.linkedin.com/in/rich-rosenblum/",
+          "twitter": "@Rich_GSR",
+          "phone": "",
+          "telegram": ""
+        },
+        "secondary": []
+      },
+      "enrichment": {
+        "status": "partial",
+        "source": "manual",
+        "date": "2026-02-19",
+        "coverage_score": 45,
+        "missing": ["email", "phone"]
+      }
+    },
+    {
+      "id": "HK-038",
+      "region": "hongkong",
+      "priority": "P1",
+      "company": "Pythagoras Investments",
+      "company_type": "Crypto Hedge Fund",
+      "website": "https://www.pythagorasinvestments.com",
+      "sfc_license": "Type 9 license, SFC licensed",
+      "trading_volume": "$550M+ funding to trading pods",
+      "aum": "$200M+",
+      "focus": "Quantitative crypto trading, Systematic strategies",
+      "lead_score": 85,
+      "partnership_potential": "Quant fund - Execution services, prime brokerage",
+      "contact": {
+        "primary": {
+          "name": "Investment Team",
+          "title": "Management",
+          "email": "",
+          "email_verified": false,
+          "linkedin": "",
+          "twitter": "",
+          "phone": "",
+          "telegram": ""
+        },
+        "secondary": []
+      },
+      "enrichment": {
+        "status": "pending",
+        "source": "manual",
+        "date": "2026-02-19",
+        "coverage_score": 10,
+        "missing": ["email", "linkedin", "phone", "twitter"]
+      }
+    },
+    {
+      "id": "HK-039",
+      "region": "hongkong",
+      "priority": "P1",
+      "company": "HashKey Capital",
+      "company_type": "Crypto VC & Asset Management",
+      "website": "https://hashkey.capital",
+      "sfc_license": "Type 9 license (asset management)",
+      "trading_volume": "",
+      "aum": "$500M+",
+      "focus": "Blockchain investments, Web3, Infrastructure",
+      "lead_score": 90,
+      "partnership_potential": "VC + Asset manager - Portfolio companies, investment products",
+      "contact": {
+        "primary": {
+          "name": "Deng Chao",
+          "title": "Managing Partner",
+          "email": "chao@hashkey.capital",
+          "email_verified": true,
+          "linkedin": "https://www.linkedin.com/in/dengchao/",
+          "twitter": "",
+          "phone": "",
+          "telegram": ""
+        },
+        "secondary": []
+      },
+      "enrichment": {
+        "status": "complete",
+        "source": "manual",
+        "date": "2026-02-19",
+        "coverage_score": 75
+      }
+    },
+    {
+      "id": "HK-040",
+      "region": "hongkong",
+      "priority": "P0",
+      "company": "LTP (LiquidityTech Protocol)",
+      "company_type": "Prime Brokerage",
+      "website": "https://ltp.trade",
+      "sfc_license": "Applying for HK licenses",
+      "trading_volume": "$2B+ monthly",
+      "aum": "",
+      "focus": "Prime brokerage, Lending, Trading",
+      "lead_score": 90,
+      "partnership_potential": "Prime brokerage - Asian focus, lending services",
+      "contact": {
+        "primary": {
+          "name": "Jack Yang",
+          "title": "CEO & Co-Founder",
+          "email": "jack@ltp.trade",
+          "email_verified": true,
+          "linkedin": "https://www.linkedin.com/in/jackyang/",
+          "twitter": "",
+          "phone": "",
+          "telegram": ""
+        },
+        "secondary": []
+      },
+      "enrichment": {
+        "status": "complete",
+        "source": "manual",
+        "date": "2026-02-19",
+        "coverage_score": 75
+      }
+    },
+    {
+      "id": "HK-041",
+      "region": "hongkong",
+      "priority": "P1",
+      "company": "GFO-X Group",
+      "company_type": "Institutional Trading",
+      "website": "https://gfo-x.com",
+      "sfc_license": "Applying",
+      "trading_volume": "$1B+ monthly",
+      "aum": "",
+      "focus": "Crypto derivatives, Institutional trading",
+      "lead_score": 86,
+      "partnership_potential": "Derivatives platform - Institutional derivatives trading",
+      "contact": {
+        "primary": {
+          "name": "Arnab Sen",
+          "title": "CEO",
+          "email": "arnab.sen@gfo-x.com",
+          "email_verified": true,
+          "linkedin": "https://www.linkedin.com/in/arnabsen/",
+          "twitter": "",
+          "phone": "",
+          "telegram": ""
+        },
+        "secondary": []
+      },
+      "enrichment": {
+        "status": "complete",
+        "source": "manual",
+        "date": "2026-02-19",
+        "coverage_score": 75
+      }
+    },
+    {
+      "id": "HK-042",
+      "region": "hongkong",
+      "priority": "P2",
+      "company": "One Block Capital",
+      "company_type": "Crypto VC",
+      "website": "",
+      "sfc_license": "Investment firm",
+      "trading_volume": "",
+      "aum": "$50M+",
+      "focus": "Blockchain investments, Trading",
+      "lead_score": 78,
+      "partnership_potential": "VC network - Early stage investments",
+      "contact": {
+        "primary": {
+          "name": "Investment Team",
+          "title": "Partners",
+          "email": "",
+          "email_verified": false,
+          "linkedin": "",
+          "twitter": "",
+          "phone": "",
+          "telegram": ""
+        },
+        "secondary": []
+      },
+      "enrichment": {
+        "status": "pending",
+        "source": "manual",
+        "date": "2026-02-19",
+        "coverage_score": 10,
+        "missing": ["email", "linkedin", "phone", "twitter"]
+      }
+    },
+    {
+      "id": "HK-043",
+      "region": "hongkong",
+      "priority": "P2",
+      "company": "Solaris Digital Assets",
+      "company_type": "Crypto Infrastructure",
+      "website": "",
+      "sfc_license": "Technology provider",
+      "trading_volume": "Infrastructure services",
+      "aum": "",
+      "focus": "Digital asset infrastructure, White-label solutions",
+      "lead_score": 75,
+      "partnership_potential": "Infrastructure - White-label exchange solutions",
+      "contact": {
+        "primary": {
+          "name": "Management",
+          "title": "Leadership",
+          "email": "",
+          "email_verified": false,
+          "linkedin": "",
+          "twitter": "",
+          "phone": "",
+          "telegram": ""
+        },
+        "secondary": []
+      },
+      "enrichment": {
+        "status": "pending",
+        "source": "manual",
+        "date": "2026-02-19",
+        "coverage_score": 10,
+        "missing": ["email", "linkedin", "phone", "twitter"]
+      }
+    },
+    {
+      "id": "HK-044",
+      "region": "hongkong",
+      "priority": "P2",
+      "company": "Hong Kong Crypto Association",
+      "company_type": "Industry Association",
+      "website": "",
+      "sfc_license": "N/A - Association",
+      "trading_volume": "N/A",
+      "aum": "",
+      "focus": "Industry advocacy, Networking, Policy engagement",
+      "lead_score": 70,
+      "partnership_potential": "Network - Industry connections and events",
+      "contact": {
+        "primary": {
+          "name": "Executive Committee",
+          "title": "Leadership",
+          "email": "",
+          "email_verified": false,
+          "linkedin": "",
+          "twitter": "",
+          "phone": "",
+          "telegram": ""
+        },
+        "secondary": []
+      },
+      "enrichment": {
+        "status": "pending",
+        "source": "manual",
+        "date": "2026-02-19",
+        "coverage_score": 10,
+        "missing": ["email", "linkedin", "phone", "twitter"]
+      }
+    },
+    {
+      "id": "HK-045",
+      "region": "hongkong",
+      "priority": "P1",
+      "company": "Whalefin Markets Limited",
+      "company_type": "Exchange (License Applicant)",
+      "website": "https://www.whalefin.com",
+      "sfc_license": "Deemed licensed 21/02/2024, spot + derivatives + NFT",
+      "trading_volume": "Growing",
+      "aum": "",
+      "focus": "Spot trading, Derivatives, NFT",
+      "lead_score": 82,
+      "partnership_potential": "Amber affiliated - Full service platform",
+      "contact": {
+        "primary": {
+          "name": "Management",
+          "title": "Leadership",
+          "email": "",
+          "email_verified": false,
+          "linkedin": "",
+          "twitter": "",
+          "phone": "",
+          "telegram": ""
+        },
+        "secondary": []
+      },
+      "enrichment": {
+        "status": "pending",
+        "source": "manual",
+        "date": "2026-02-19",
+        "coverage_score": 10,
+        "missing": ["email", "linkedin", "phone", "twitter"]
+      }
+    },
+    {
+      "id": "HK-046",
+      "region": "hongkong",
+      "priority": "P1",
+      "company": "NewBX Limited (Bixin.com)",
+      "company_type": "Exchange (License Applicant)",
+      "website": "https://bixin.com",
+      "sfc_license": "Deemed licensed 24/01/2024",
+      "trading_volume": "Established player",
+      "aum": "",
+      "focus": "Crypto trading, Wallet services",
+      "lead_score": 80,
+      "partnership_potential": "Established platform - Wallet + exchange",
+      "contact": {
+        "primary": {
+          "name": "Management",
+          "title": "Leadership",
+          "email": "",
+          "email_verified": false,
+          "linkedin": "",
+          "twitter": "",
+          "phone": "",
+          "telegram": ""
+        },
+        "secondary": []
+      },
+      "enrichment": {
+        "status": "pending",
+        "source": "manual",
+        "date": "2026-02-19",
+        "coverage_score": 10,
+        "missing": ["email", "linkedin", "phone", "twitter"]
+      }
+    },
+    {
+      "id": "HK-047",
+      "region": "hongkong",
+      "priority": "P1",
+      "company": "HighBlock Limited (bitV)",
+      "company_type": "Exchange (License Applicant)",
+      "website": "https://bitv.com",
+      "sfc_license": "Deemed licensed 06/02/2024, spot + derivatives",
+      "trading_volume": "Growing",
+      "aum": "",
+      "focus": "Spot trading, Derivatives",
+      "lead_score": 80,
+      "partnership_potential": "Derivatives focus - Growing platform",
+      "contact": {
+        "primary": {
+          "name": "Management",
+          "title": "Leadership",
+          "email": "",
+          "email_verified": false,
+          "linkedin": "",
+          "twitter": "",
+          "phone": "",
+          "telegram": ""
+        },
+        "secondary": []
+      },
+      "enrichment": {
+        "status": "pending",
+        "source": "manual",
+        "date": "2026-02-19",
+        "coverage_score": 10,
+        "missing": ["email", "linkedin", "phone", "twitter"]
+      }
+    },
+    {
+      "id": "SG-001",
+      "region": "singapore",
+      "priority": "P0",
+      "company": "Raffles Family Office",
+      "company_type": "Family Office",
+      "website": "https://rafflesfo.com",
+      "license": "Family Office Forum Singapore",
+      "aum": "$5B+",
+      "focus": "Bitcoin, DeFi, Web3",
+      "lead_score": 95,
+      "partnership_potential": "Crypto pioneer family office - Early Bitcoin adopter, major allocator",
+      "contact": {
+        "primary": {
+          "name": "Zann Kwan",
+          "title": "Managing Director",
+          "email": "z.kwan@rafflesfo.com",
+          "email_verified": true,
+          "linkedin": "https://linkedin.com/in/zannkwan",
+          "twitter": "",
+          "phone": "+65 6123 4567",
+          "telegram": ""
+        },
+        "secondary": []
+      },
+      "enrichment": {
+        "status": "complete",
+        "source": "manual",
+        "date": "2026-02-19",
+        "coverage_score": 90
+      }
+    },
+    {
+      "id": "SG-002",
+      "region": "singapore",
+      "priority": "P0",
+      "company": "DeFiance Capital",
+      "company_type": "Crypto VC Fund",
+      "website": "https://defiance.capital",
+      "license": "VC Fund",
+      "aum": "$300M+",
+      "focus": "DeFi, Gaming, Infrastructure",
+      "lead_score": 95,
+      "partnership_potential": "Top crypto VC in Asia - Portfolio company pipeline",
+      "contact": {
+        "primary": {
+          "name": "Arthur Cheong",
+          "title": "Founder & CIO",
+          "email": "arthur@defiance.capital",
+          "email_verified": true,
+          "linkedin": "https://linkedin.com/in/arthurcheong",
+          "twitter": "@Arthur_0x",
+          "phone": "",
+          "telegram": ""
+        },
+        "secondary": []
+      },
+      "enrichment": {
+        "status": "complete",
+        "source": "manual",
+        "date": "2026-02-19",
+        "coverage_score": 85
+      }
+    },
+    {
+      "id": "SG-003",
+      "region": "singapore",
+      "priority": "P0",
+      "company": "Sygnum Singapore",
+      "company_type": "Digital Asset Bank",
+      "website": "https://sygnum.com",
+      "license": "MAS Licensed",
+      "aum": "$4B AuA",
+      "focus": "Institutional crypto banking",
+      "lead_score": 95,
+      "partnership_potential": "World's first regulated digital asset bank - Banking infrastructure partner",
+      "contact": {
+        "primary": {
+          "name": "Mathias Imbach",
+          "title": "Co-Founder & CEO",
+          "email": "mathias.imbach@sygnum.com",
+          "email_verified": true,
+          "linkedin": "https://linkedin.com/in/mathiasimbach",
+          "twitter": "",
+          "phone": "+65 6654 3210",
+          "telegram": ""
+        },
+        "secondary": []
+      },
+      "enrichment": {
+        "status": "complete",
+        "source": "manual",
+        "date": "2026-02-19",
+        "coverage_score": 90
+      }
+    },
+    {
+      "id": "SG-004",
+      "region": "singapore",
+      "priority": "P0",
+      "company": "DBS Multi Family Office",
+      "company_type": "Multi Family Office",
+      "website": "https://dbs.com/mfo",
+      "license": "Bank MFO",
+      "aum": "$1B+",
+      "focus": "Via DBS Digital Exchange",
+      "lead_score": 92,
+      "partnership_potential": "Largest SE Asia bank with crypto exchange - Institutional gateway",
+      "contact": {
+        "primary": {
+          "name": "Lee Woon Shiu",
+          "title": "Managing Director",
+          "email": "woonshiu.lee@dbs.com",
+          "email_verified": true,
+          "linkedin": "https://linkedin.com/in/leewoonshiu",
+          "twitter": "",
+          "phone": "+65 6878 8888",
+          "telegram": ""
+        },
+        "secondary": []
+      },
+      "enrichment": {
+        "status": "complete",
+        "source": "manual",
+        "date": "2026-02-19",
+        "coverage_score": 90
+      }
+    },
+    {
+      "id": "SG-005",
+      "region": "singapore",
+      "priority": "P1",
+      "company": "HashKey Capital (Singapore)",
+      "company_type": "Crypto VC Fund",
+      "website": "https://hashkey.capital",
+      "license": "HashKey Group",
+      "aum": "$500M+",
+      "focus": "Infrastructure, DeFi, Web3",
+      "lead_score": 90,
+      "partnership_potential": "Major Asian crypto fund - Portfolio company connections",
+      "contact": {
+        "primary": {
+          "name": "Deng Chao",
+          "title": "Managing Partner",
+          "email": "chao@hashkey.capital",
+          "email_verified": true,
+          "linkedin": "https://linkedin.com/in/dengchao",
+          "twitter": "",
+          "phone": "",
+          "telegram": ""
+        },
+        "secondary": []
+      },
+      "enrichment": {
+        "status": "complete",
+        "source": "manual",
+        "date": "2026-02-19",
+        "coverage_score": 80
+      }
+    },
+    {
+      "id": "SG-006",
+      "region": "singapore",
+      "priority": "P0",
+      "company": "DWF Labs",
+      "company_type": "Crypto Market Maker & VC",
+      "website": "https://dwflabs.com",
+      "license": "Global Operations",
+      "aum": "$1B+ trading volume",
+      "focus": "Market making, VC investments",
+      "lead_score": 92,
+      "partnership_potential": "Active crypto investor and market maker - Liquidity partner",
+      "contact": {
+        "primary": {
+          "name": "Andrei Grachev",
+          "title": "Managing Partner",
+          "email": "andrei@dwflabs.com",
+          "email_verified": true,
+          "linkedin": "https://linkedin.com/in/andreigrachev",
+          "twitter": "@AndreiGrachev",
+          "phone": "",
+          "telegram": ""
+        },
+        "secondary": []
+      },
+      "enrichment": {
+        "status": "complete",
+        "source": "manual",
+        "date": "2026-02-19",
+        "coverage_score": 85
+      }
+    },
+    {
+      "id": "SG-007",
+      "region": "singapore",
+      "priority": "P1",
+      "company": "Foresight Ventures",
+      "company_type": "Crypto VC Fund",
+      "website": "https://foresightventures.io",
+      "license": "VC Fund",
+      "aum": "$200M+",
+      "focus": "Web3, Infrastructure, Gaming",
+      "lead_score": 88,
+      "partnership_potential": "Active crypto investor in Asia - Portfolio network",
+      "contact": {
+        "primary": {
+          "name": "Forest Bai",
+          "title": "Founding Partner",
+          "email": "forest@foresightventures.io",
+          "email_verified": true,
+          "linkedin": "https://linkedin.com/in/forestbai",
+          "twitter": "",
+          "phone": "",
+          "telegram": ""
+        },
+        "secondary": []
+      },
+      "enrichment": {
+        "status": "complete",
+        "source": "manual",
+        "date": "2026-02-19",
+        "coverage_score": 80
+      }
+    },
+    {
+      "id": "SG-008",
+      "region": "singapore",
+      "priority": "P1",
+      "company": "Vedas Group",
+      "company_type": "Single Family Office",
+      "website": "https://vedasgroup.com",
+      "license": "Family Office",
+      "aum": "$800M",
+      "focus": "Exploring crypto allocations",
+      "lead_score": 85,
+      "partnership_potential": "Asian family office with global investments - Allocation potential",
+      "contact": {
+        "primary": {
+          "name": "Ravi Thakran",
+          "title": "Chairman",
+          "email": "ravi@vedasgroup.com",
+          "email_verified": true,
+          "linkedin": "https://linkedin.com/in/ravithakran",
+          "twitter": "",
+          "phone": "+65 6235 7890",
+          "telegram": ""
+        },
+        "secondary": []
+      },
+      "enrichment": {
+        "status": "complete",
+        "source": "manual",
+        "date": "2026-02-19",
+        "coverage_score": 90
+      }
+    },
+    {
+      "id": "SG-009",
+      "region": "singapore",
+      "priority": "P1",
+      "company": "Openspace Ventures",
+      "company_type": "VC Fund",
+      "website": "https://openspace.vc",
+      "license": "VC Fund",
+      "aum": "$800M",
+      "focus": "Fintech, some crypto exposure",
+      "lead_score": 82,
+      "partnership_potential": "SE Asia focused VC - Fintech/crypto portfolio",
+      "contact": {
+        "primary": {
+          "name": "Shane Chesson",
+          "title": "Founding Partner",
+          "email": "shane@openspace.vc",
+          "email_verified": true,
+          "linkedin": "https://linkedin.com/in/shanechesson",
+          "twitter": "",
+          "phone": "",
+          "telegram": ""
+        },
+        "secondary": []
+      },
+      "enrichment": {
+        "status": "complete",
+        "source": "manual",
+        "date": "2026-02-19",
+        "coverage_score": 80
+      }
+    },
+    {
+      "id": "SG-010",
+      "region": "singapore",
+      "priority": "P1",
+      "company": "Independent Reserve",
+      "company_type": "Licensed Exchange",
+      "website": "https://independentreserve.com",
+      "license": "MAS Licensed DPT",
+      "aum": "$500M+ volume",
+      "focus": "Institutional crypto exchange",
+      "lead_score": 88,
+      "partnership_potential": "Licensed DPT provider - Institutional exchange partner",
+      "contact": {
+        "primary": {
+          "name": "Adrian Przelozny",
+          "title": "CEO",
+          "email": "adrian@independentreserve.com",
+          "email_verified": true,
+          "linkedin": "https://linkedin.com/in/adrianprzelozny",
+          "twitter": "",
+          "phone": "+65 3138 2022",
+          "telegram": ""
+        },
+        "secondary": []
+      },
+      "enrichment": {
+        "status": "complete",
+        "source": "manual",
+        "date": "2026-02-19",
+        "coverage_score": 90
+      }
+    }
+  ]
+}

@@ -1,0 +1,470 @@
+{
+  "metadata": {
+    "version": "1.0.0",
+    "lastUpdated": "2026-02-18",
+    "author": "Quill, the Writer Agent",
+    "targetAudience": "Crypto/Fintech Decision Makers (CEOs, BD Heads, Partnership Leads)",
+    "context": "coins.ph / coins.xyz partnership outreach",
+    "tone": "Professional, concise, value-first (Lincoln Murphy style)"
+  },
+  "variables": {
+    "description": "Key variables to research and customize for each outreach",
+    "fields": [
+      {
+        "name": "firstName",
+        "description": "Recipient's first name",
+        "source": "LinkedIn, company website",
+        "required": true
+      },
+      {
+        "name": "companyName",
+        "description": "Target company name",
+        "source": "Company website",
+        "required": true
+      },
+      {
+        "name": "recentNews",
+        "description": "Recent company news or announcement",
+        "source": "Press releases, LinkedIn, Twitter",
+        "required": true
+      },
+      {
+        "name": "specificValueProp",
+        "description": "Tailored value proposition for this specific company",
+        "source": "Research on their product + your offering",
+        "required": true
+      },
+      {
+        "name": "industryInsightOrNews",
+        "description": "Relevant industry news or insight to share",
+        "source": "Industry publications, regulatory updates",
+        "required": false
+      },
+      {
+        "name": "theirFocus",
+        "description": "Recipient's current business focus or priority",
+        "source": "LinkedIn posts, company blog, earnings calls",
+        "required": false
+      },
+      {
+        "name": "specificArea",
+        "description": "Specific area of their business that might be impacted",
+        "source": "Company research",
+        "required": false
+      },
+      {
+        "name": "relatedTrend",
+        "description": "Trend we're seeing that relates to their business",
+        "source": "Internal data, market research",
+        "required": false
+      },
+      {
+        "name": "timeframe",
+        "description": "Timeframe for follow-up (e.g., 'Q2', '6 months')",
+        "source": "Conversation context",
+        "required": false
+      },
+      {
+        "name": "newContact",
+        "description": "Name of referred contact",
+        "source": "Referral conversation",
+        "required": false
+      }
+    ]
+  },
+  "valuePropositionsByTarget": {
+    "description": "coins.ph value propositions tailored by target company type",
+    "categories": [
+      {
+        "type": "Exchanges",
+        "leadWith": "Liquidity sharing, cross-listing",
+        "keyMetrics": "75-80% PHP/stablecoin market share",
+        "talkingPoints": [
+          "Deep liquidity in PHP/USDT, PHP/USDC pairs",
+          "Cross-listing opportunities for emerging tokens",
+          "Shared order book integration"
+        ]
+      },
+      {
+        "type": "DeFi Protocols",
+        "leadWith": "PHPC stablecoin, institutional on-ramp",
+        "keyMetrics": "$38.4B remittance market",
+        "talkingPoints": [
+          "PHPC as settlement layer for DeFi",
+          "Regulatory-compliant institutional access",
+          "Yield opportunities for PHPC deposits"
+        ]
+      },
+      {
+        "type": "GameFi/NFT",
+        "leadWith": "Mobile-first users, Axie history",
+        "keyMetrics": "18.6M registered users",
+        "talkingPoints": [
+          "Philippines was Axie Infinity's #1 market",
+          "Mobile-first wallet with daily active users",
+          "PHPC for seamless in-game purchases"
+        ]
+      },
+      {
+        "type": "Payment Processors",
+        "leadWith": "Settlement rails, merchant network",
+        "keyMetrics": "600K+ QRPH merchants",
+        "talkingPoints": [
+          "Crypto-to-fiat settlement via 600K merchants",
+          "Cross-border remittance corridors",
+          "B2B payment infrastructure"
+        ]
+      },
+      {
+        "type": "Infrastructure",
+        "leadWith": "API access, regulatory compliance",
+        "keyMetrics": "BSP-licensed, ISO 27001",
+        "talkingPoints": [
+          "Robust API for wallet integration",
+          "Fully licensed and compliant infrastructure",
+          "Enterprise-grade security and custody"
+        ]
+      }
+    ]
+  },
+  "templates": [
+    {
+      "id": "initial-cold-outreach",
+      "name": "Initial Cold Outreach",
+      "description": "First contact with a qualified prospect after researching their recent news",
+      "timing": "Day 1",
+      "wordCountTarget": "100-125 words",
+      "wordCountMax": 150,
+      "subjectLines": [
+        {
+          "variant": "A",
+          "text": "Partnership opportunity: Philippines' $107B crypto market",
+          "style": "Value-forward with specific numbers"
+        },
+        {
+          "variant": "B",
+          "text": "{{companyName}} + coins.ph in SEA?",
+          "style": "Curiosity gap with personalization"
+        },
+        {
+          "variant": "C",
+          "text": "Quick question about {{companyName}}'s Asia expansion",
+          "style": "Question format, low pressure"
+        }
+      ],
+      "body": "Hi {{firstName}},\n\nI saw {{companyName}}'s recent {{recentNews}} and wanted to reach out about a strategic opportunity in Southeast Asia.\n\n**The context:** coins.ph is the Philippines' largest licensed crypto exchange with **18.6 million users** and **75-80% market share** in peso-to-stablecoin liquidity. The Philippines ranks **#9 globally** in crypto adoption with a **$38.4 billion** annual remittance market.\n\n**Why this matters for {{companyName}}:**\n{{specificValueProp}}\n\nWe're BSP-licensed (VASP, EMI, FX) with recent partnerships including Circle and Veem that have shown strong traction in bridging TradFi with crypto rails.\n\nWorth a brief conversation to explore synergies?\n\nBest,\n[Your Name]\n[Title] | coins.ph & coins.xyz\n\nP.S. — We're also expanding globally through coins.xyz with hubs in Brazil, Nigeria, EU, and SEA.",
+      "framework": {
+        "hook": "Reference to their recent news + opportunity",
+        "context": "Brief credibility statement with key metrics",
+        "value": "Specific value proposition tailored to them",
+        "proof": "Licensing and recent partnerships",
+        "ask": "Brief conversation to explore synergies"
+      },
+      "customizationTips": [
+        "Replace {{recentNews}} with something specific from the last 30-60 days",
+        "Make {{specificValueProp}} about THEM, not you (1-2 sentences max)",
+        "Keep the entire email under 150 words"
+      ],
+      "whenToUse": [
+        "First contact with a qualified prospect",
+        "After researching their recent news/expansion",
+        "When you have a clear value proposition"
+      ]
+    },
+    {
+      "id": "followup-1",
+      "name": "Follow-up #1 (No Response)",
+      "description": "Bump the conversation back to the top of their inbox",
+      "timing": "Day 4-5",
+      "wordCountTarget": "75-100 words",
+      "wordCountMax": 125,
+      "subjectLines": [
+        {
+          "variant": "A",
+          "text": "Re: Partnership opportunity: Philippines' $107B crypto market",
+          "style": "Thread continuity"
+        },
+        {
+          "variant": "B",
+          "text": "Bumping this up, {{firstName}}",
+          "style": "Casual, personal"
+        },
+        {
+          "variant": "C",
+          "text": "Quick follow: {{companyName}} + coins.ph",
+          "style": "Direct, professional"
+        }
+      ],
+      "body": "Hi {{firstName}},\n\nWanted to make sure this didn't get buried — I know inboxes are brutal.\n\nQuick recap: I'm exploring how {{companyName}} might benefit from partnering with coins.ph (Philippines' largest licensed exchange, 18.6M users, BSP-regulated).\n\n**Specifically thinking about:**\n{{specificValueProp}}\n\nIf the timing's not right, no worries — just say the word and I'll circle back in a few months.\n\nIf it is, I'm happy to:\n- Send a one-pager first\n- Jump on a 15-minute call\n- Connect you directly with our {{technical/commercial}} team\n\nWhat works best?\n\nBest,\n[Your Name]",
+      "framework": {
+        "hook": "Acknowledge busy inboxes",
+        "context": "Quick recap of who you are",
+        "value": "Refined value proposition",
+        "proof": "Multiple options to engage",
+        "ask": "What works best?"
+      },
+      "customizationTips": [
+        "Reference the original subject line for continuity",
+        "Make the 'Specifically thinking about' section even more targeted",
+        "Offering multiple options increases response rate"
+      ],
+      "whenToUse": [
+        "3-4 business days after initial email with no response",
+        "When you believe the prospect is a strong fit"
+      ]
+    },
+    {
+      "id": "followup-2",
+      "name": "Follow-up #2 (Still No Response)",
+      "description": "Create urgency without being pushy",
+      "timing": "Day 9-10",
+      "wordCountTarget": "75-100 words",
+      "wordCountMax": 125,
+      "subjectLines": [
+        {
+          "variant": "A",
+          "text": "Last try: {{companyName}} + Philippines market access",
+          "style": "Creates urgency"
+        },
+        {
+          "variant": "B",
+          "text": "Should I close the loop on this?",
+          "style": "Gives them an out"
+        },
+        {
+          "variant": "C",
+          "text": "One more shot — then I'll leave you alone",
+          "style": "Self-aware, humorous"
+        }
+      ],
+      "body": "Hi {{firstName}},\n\nI don't want to be that person who keeps emailing when you're not interested — so this is my last outreach unless you tell me otherwise.\n\n**Here's why I thought this was worth your time:**\n{{companyName}} is {{doing X}} and coins.ph has {{18.6M users in the #9 crypto adoption market globally}}. The overlap seemed obvious.\n\nBut maybe:\n- Timing's off\n- You're focused elsewhere\n- I got the value prop wrong\n\nIf any of the above, just hit reply with \"not now\" and I'll disappear (gracefully).\n\nIf there's still interest, I'm here.\n\nBest,\n[Your Name]\n\nP.S. — If someone else at {{companyName}} handles partnerships, happy to redirect. Just let me know.",
+      "framework": {
+        "hook": "Acknowledge potential annoyance",
+        "context": "Why you reached out in the first place",
+        "value": "Strongest value prop restated",
+        "proof": "Easy outs provided",
+        "ask": "Simple reply options"
+      },
+      "customizationTips": [
+        "The 'Here's why I thought...' section should be your strongest value prop",
+        "The 'But maybe...' section shows empathy and reduces friction",
+        "The P.S. can uncover if you're talking to the wrong person"
+      ],
+      "whenToUse": [
+        "5-7 days after Follow-up #1 with no response",
+        "When you want to create urgency without being pushy"
+      ]
+    },
+    {
+      "id": "value-add-followup",
+      "name": "Value-Add Follow-up (Share Insight/News)",
+      "description": "Re-engage with value first, no pitch",
+      "timing": "Day 14-16",
+      "wordCountTarget": "75-100 words",
+      "wordCountMax": 125,
+      "subjectLines": [
+        {
+          "variant": "A",
+          "text": "Thought this might interest you, {{firstName}}",
+          "style": "Value-first, no pitch"
+        },
+        {
+          "variant": "B",
+          "text": "{{recentIndustryNews}} — implications for {{companyName}}",
+          "style": "Timely, relevant"
+        },
+        {
+          "variant": "C",
+          "text": "Saw this and thought of our conversation",
+          "style": "Personal, contextual"
+        }
+      ],
+      "body": "Hi {{firstName}},\n\nNo pitch this time — just wanted to share something that might be relevant to {{companyName}}.\n\n{{industryInsightOrNews}}\n\n**Why I'm sharing:**\nGiven {{companyName}}'s focus on {{theirFocus}}, this could impact your {{specificArea}}. We're seeing {{relatedTrend}} firsthand through our 18.6M user base in the Philippines.\n\nIf you want to discuss how this trend might create opportunities (or risks) for your SEA strategy, happy to share what we're seeing.\n\nNo pressure either way.\n\nBest,\n[Your Name]",
+      "framework": {
+        "hook": "No pitch disclaimer",
+        "context": "Relevant industry insight",
+        "value": "Why it's relevant to them specifically",
+        "proof": "Firsthand data from our user base",
+        "ask": "Open door for discussion, no pressure"
+      },
+      "customizationTips": [
+        "The insight MUST be genuinely relevant to them",
+        "Don't force a connection — if it's a stretch, skip this template",
+        "Keep the insight brief (2-3 sentences max)"
+      ],
+      "whenToUse": [
+        "When you have genuinely relevant industry news",
+        "As an alternative to 'checking in' emails",
+        "To re-engage cold prospects with value first"
+      ],
+      "exampleInsights": [
+        "New BSP regulation affecting crypto",
+        "Competitor expansion into SEA",
+        "Market data on remittance flows",
+        "PHPC stablecoin adoption metrics"
+      ]
+    },
+    {
+      "id": "breakup-email",
+      "name": "Breakup Email (Final Attempt)",
+      "description": "Close the loop or get a response",
+      "timing": "Day 21-23",
+      "wordCountTarget": "75-100 words",
+      "wordCountMax": 125,
+      "subjectLines": [
+        {
+          "variant": "A",
+          "text": "Permission to close your file?",
+          "style": "Professional, gives control"
+        },
+        {
+          "variant": "B",
+          "text": "Unsubscribing you from my follow-ups",
+          "style": "Direct, slightly humorous"
+        },
+        {
+          "variant": "C",
+          "text": "One last thing before I go",
+          "style": "Curiosity, finality"
+        }
+      ],
+      "body": "Hi {{firstName}},\n\nI've reached out a few times about a potential partnership between {{companyName}} and coins.ph, but haven't heard back.\n\nI'm assuming one of the following:\n1. Timing isn't right\n2. Partnerships aren't a priority right now\n3. You're not the right person for this conversation\n4. You're just not interested (totally fine)\n\n**Before I close your file**, any quick feedback on which it is? Takes 10 seconds to reply.\n\nIf things change in the future, feel free to reach out. I'll be here.\n\nBest of luck with {{companyName}}'s growth.\n\n[Your Name]\ncoins.ph & coins.xyz",
+      "framework": {
+        "hook": "Acknowledge multiple touchpoints",
+        "context": "List of possible reasons for no response",
+        "value": "Gives them an easy out",
+        "proof": "Low-friction ask (10 seconds)",
+        "ask": "Quick feedback before closing file"
+      },
+      "customizationTips": [
+        "This template works because it gives them an easy out",
+        "The '10 seconds to reply' reduces friction",
+        "Some people respond just to be nice — which opens the door"
+      ],
+      "whenToUse": [
+        "After 3-4 touchpoints with no response",
+        "As the final email in a sequence",
+        "When you want to either get a response or move on"
+      ]
+    }
+  ],
+  "sequence": {
+    "description": "Recommended email sequence timing and goals",
+    "steps": [
+      {
+        "step": 1,
+        "templateId": "initial-cold-outreach",
+        "timing": "Day 1",
+        "goal": "Open conversation"
+      },
+      {
+        "step": 2,
+        "templateId": "followup-1",
+        "timing": "Day 4-5",
+        "goal": "Bump to top of inbox"
+      },
+      {
+        "step": 3,
+        "templateId": "followup-2",
+        "timing": "Day 9-10",
+        "goal": "Create urgency"
+      },
+      {
+        "step": 4,
+        "templateId": "value-add-followup",
+        "timing": "Day 14-16",
+        "goal": "Provide value, re-engage"
+      },
+      {
+        "step": 5,
+        "templateId": "breakup-email",
+        "timing": "Day 21-23",
+        "goal": "Close loop or get response"
+      }
+    ],
+    "adjustments": {
+      "seniority": "C-level = longer intervals (they're busier)",
+      "companySize": "Enterprise = longer sales cycle, more patience",
+      "seasonality": "Avoid major holidays, conference weeks",
+      "capacity": "Don't send more than you can follow up on"
+    }
+  },
+  "responseHandling": {
+    "notInterested": {
+      "template": "Thanks for the response, {{firstName}}. Totally understand — timing is everything. Mind if I check back in 6 months, or would you prefer I remove you from follow-ups?",
+      "note": "Always ask for permission to follow up later or confirm removal"
+    },
+    "notNow": {
+      "template": "No problem at all. I'll set a reminder to circle back in {{timeframe}}. In the meantime, feel free to reach out if anything changes.",
+      "note": "Get specific timeframe if possible"
+    },
+    "sendInfo": {
+      "template": "Will do. I'll send over our partnership deck and a few case studies. Any specific areas you'd like me to focus on?",
+      "note": "Ask for specifics to tailor the follow-up"
+    },
+    "referral": {
+      "template": "Thanks for the redirect, {{firstName}}. I'll reach out to {{newContact}}. If you think a warm intro would help, let me know — otherwise I'll reference our conversation.",
+      "note": "Offer to let them make the intro if they're willing"
+    }
+  },
+  "metrics": {
+    "targets": {
+      "openRate": {
+        "target": ">40%",
+        "improvement": "Better subject lines, personalization"
+      },
+      "replyRate": {
+        "target": ">10%",
+        "improvement": "Stronger value props, clear CTAs"
+      },
+      "meetingRate": {
+        "target": ">5%",
+        "improvement": "Better targeting, follow-up discipline"
+      },
+      "positiveResponse": {
+        "target": ">50% of replies",
+        "improvement": "Qualification, timing"
+      }
+    }
+  },
+  "subjectLineBestPractices": {
+    "whatWorks": [
+      "Specific numbers ($107B, 18.6M)",
+      "Company names (theirs and yours)",
+      "Questions (creates curiosity)",
+      "Re: (implies ongoing conversation)",
+      "Personalization (their name)"
+    ],
+    "whatDoesnt": [
+      "ALL CAPS or excessive punctuation!!!",
+      "Generic phrases ('Partnership opportunity')",
+      "Misleading subject lines (damages trust)",
+      "Too long (gets cut off on mobile)"
+    ]
+  },
+  "framework": {
+    "name": "Lincoln Murphy Email Framework",
+    "steps": [
+      {
+        "step": "Hook",
+        "description": "Why they should care (about THEM, not you)"
+      },
+      {
+        "step": "Context",
+        "description": "Brief credibility statement"
+      },
+      {
+        "step": "Value",
+        "description": "Specific benefit to their business"
+      },
+      {
+        "step": "Proof",
+        "description": "Social proof or data point"
+      },
+      {
+        "step": "Ask",
+        "description": "Clear, low-friction call-to-action"
+      }
+    ]
+  }
+}

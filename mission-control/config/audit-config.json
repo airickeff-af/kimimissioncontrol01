@@ -5,20 +5,25 @@
     "environment": "production"
   },
   "audit": {
-    "min_score": 93,
+    "min_score": 95,
     "strict_mode": true,
     "check_placeholders": true,
     "check_console_logs": true,
-    "check_secrets": true
+    "check_secrets": true,
+    "target_score": 96
   },
   "quality_gate": {
     "min_score": 95,
+    "target_score": 96,
     "test_endpoints": [
       "/api/health",
       "/api/agents",
       "/api/logs/activity",
       "/api/tasks",
       "/api/deals",
+      "/api/tokens",
+      "/api/deployments",
+      "/api/stats",
       "/",
       "/office.html",
       "/agents.html",
@@ -26,6 +31,25 @@
       "/scout.html"
     ],
     "expected_status": 200
+  },
+  "agents": {
+    "Audit-1": {
+      "role": "Documentation Auditor",
+      "specialization": ["docs", "templates", "content"],
+      "active": true
+    },
+    "Audit-2": {
+      "role": "Pixel Office Auditor",
+      "specialization": ["pixel-office", "sprites", "visual"],
+      "active": true
+    }
+  },
+  "scoring": {
+    "functionality": 40,
+    "code_quality": 25,
+    "testing": 15,
+    "documentation": 10,
+    "deployment": 10
   },
   "api": {
     "base_path": "/api",
@@ -38,6 +62,12 @@
     "api_port": 3001,
     "websocket_port": 8765
   },
-  "version": "1.0.0",
-  "updated": "2026-02-18T20:46:00+08:00"
+  "tracking": {
+    "agent_scores_path": "/audit/tracking/agent-scores.json",
+    "daily_reports_path": "/audit/reports",
+    "standards_path": "/audit/standards/ERICF_QUALITY_STANDARDS.md",
+    "dashboard_path": "/audit/quality-dashboard.html"
+  },
+  "version": "1.1.0",
+  "updated": "2026-02-19T11:30:00+08:00"
 }
