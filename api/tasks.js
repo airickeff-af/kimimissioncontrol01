@@ -1,4 +1,5 @@
 // /api/tasks.js - Returns all tasks from PENDING_TASKS.md with filtering and caching
+// Version: 2.0 - Fixed for Vercel serverless deployment
 // Requirements:
 // 1. Read PENDING_TASKS.md from various possible locations
 // 2. Parse task structure (P0/P1/P2/P3, status, assignee, due dates)
