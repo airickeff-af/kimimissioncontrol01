@@ -1,0 +1,16 @@
+{
+  "name": "mission-control",
+  "version": "1.0.0",
+  "description": "A coordinated multi-agent system with specialized roles: - **Orchestrator** - Routes tasks and coordinates workflows - **Coder** - Software development and technical implementation - **Researcher** - Information gathering and analysis - **Social** - Content creation and social media preparation",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

@@ -12,6 +12,14 @@
     }
   ],
   "rewrites": [
+    { "source": "/api/tasks", "destination": "/api/tasks.js" },
+    { "source": "/api/agents", "destination": "/api/agents.js" },
+    { "source": "/api/stats", "destination": "/api/stats.js" },
+    { "source": "/api/health", "destination": "/api/health.js" },
+    { "source": "/api/metrics", "destination": "/api/metrics.js" },
+    { "source": "/api/deals", "destination": "/api/deals.js" },
+    { "source": "/api/tokens", "destination": "/api/tokens.js" },
+    { "source": "/api/deployments", "destination": "/api/deployments.js" },
     { "source": "/api/logs/activity", "destination": "/api/logs-activity.js" },
     { "source": "/api/logs/chat", "destination": "/api/logs-chat.js" },
     { "source": "/api/logs", "destination": "/api/logs-index.js" },
