@@ -1,0 +1,3 @@
+Vercel CLI 50.18.0
+Retrieving project…
+Error: The specified token is not valid. Use `vercel login` to generate a new token.

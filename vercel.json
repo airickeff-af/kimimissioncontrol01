@@ -24,7 +24,12 @@
     { "source": "/api/deployments", "destination": "/api/deployments.js" },
     { "source": "/api/metrics", "destination": "/api/metrics.js" },
     { "source": "/api/tokens", "destination": "/api/tokens.js" },
-    { "source": "/api/tokens-live", "destination": "/api/tokens-live.js" }
+    { "source": "/api/tokens-live", "destination": "/api/tokens-live.js" },
+    { "source": "/api/dealflow/enrichment-status", "destination": "/api/dealflow-enrichment.js" },
+    { "source": "/api/dealflow/enrich", "destination": "/api/dealflow-enrichment.js" },
+    { "source": "/api/dealflow/enrich-all", "destination": "/api/dealflow-enrichment.js" },
+    { "source": "/api/dealflow/leads", "destination": "/api/dealflow-enrichment.js" },
+    { "source": "/api/dealflow/lead", "destination": "/api/dealflow-enrichment.js" }
   ],
   "functions": {
     "api/*.js": {

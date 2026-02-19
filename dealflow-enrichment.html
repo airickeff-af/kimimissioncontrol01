@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DealFlow - Email Enrichment</title>
+  <style>
+    :root {
+      --bg-primary: #0a0a0f;
+      --bg-secondary: #12121a;
+      --bg-tertiary: #1a1a25;
+      --accent-primary: #00d4ff;
+      --accent-secondary: #7c3aed;
+      --accent-success: #10b981;
+      --accent-warning: #f59e0b;
+      --accent-danger: #ef4444;
+      --text-primary: #ffffff;
+      --text-secondary: #a0a0b0;
+      --text-muted: #606070;
+      --border-color: #2a2a3a;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      min-height: 100vh;
+    }
+    
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border-color);
+      margin-bottom: 24px;
+    }
+    
+    h1 {
+      font-size: 28px;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .subtitle {
+      color: var(--text-secondary);
+      font-size: 14px;
+      margin-top: 4px;
+    }
+    
+    .actions {
+      display: flex;
+      gap: 12px;
+    }
+    
+    .btn {
+      padding: 12px 24px;
+      border-radius: 8px;
+      border: none;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0, 212, 255, 0.3);
+    }
+    
+    .btn-primary:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+    
+    .btn-secondary {
+      background: var(--bg-tertiary);
+      color: var(--text-primary);
+      border: 1px solid var(--border-color);
+    }
+    
+    .btn-secondary:hover {
+      background: var(--bg-secondary);
+    }
+    
+    /* Stats Grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    
+    .stat-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 20px;
+    }
+    
+    .stat-label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+    }
+    
+    .stat-value {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    
+    .stat-change {
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    
+    .stat-change.positive {
+      color: var(--accent-success);
+    }
+    
+    .stat-change.negative {
+      color: var(--accent-danger);
+    }
+    
+    /* Progress Section */
+    .progress-section {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+    
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    
+    .progress-title {
+      font-size: 16px;
+      font-weight: 600;
+    }
+    
+    .progress-value {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--accent-primary);
+    }
+    
+    .progress-bar {
+      height: 8px;
+      background: var(--bg-tertiary);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+      border-radius: 4px;
+      transition: width 0.5s ease;
+    }
+    
+    .progress-target {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+    
+    /* Priority Stats */
+    .priority-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+    }
+    
+    .priority-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+      background: var(--bg-tertiary);
+      border-radius: 8px;
+    }
+    
+    .priority-badge {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 12px;
+    }
+    
+    .priority-badge.p0 {
+      background: rgba(239, 68, 68, 0.2);
+      color: var(--accent-danger);
+    }
+    
+    .priority-badge.p1 {
+      background: rgba(245, 158, 11, 0.2);
+      color: var(--accent-warning);
+    }
+    
+    .priority-badge.p2 {
+      background: rgba(0, 212, 255, 0.2);
+      color: var(--accent-primary);
+    }
+    
+    .priority-badge.p3 {
+      background: rgba(124, 58, 237, 0.2);
+      color: var(--accent-secondary);
+    }
+    
+    .priority-info {
+      flex: 1;
+    }
+    
+    .priority-label {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+    
+    .priority-value {
+      font-size: 16px;
+      font-weight: 600;
+    }
+    
+    /* Filters */
+    .filters {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    
+    .filter-btn {
+      padding: 8px 16px;
+      border-radius: 6px;
+      border: 1px solid var(--border-color);
+      background: var(--bg-secondary);
+      color: var(--text-secondary);
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .filter-btn:hover,
+    .filter-btn.active {
+      background: var(--bg-tertiary);
+      color: var(--text-primary);
+      border-color: var(--accent-primary);
+    }
+    
+    /* Leads Table */
+    .leads-section {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    
+    .leads-header {
+      display: grid;
+      grid-template-columns: 2fr 1.5fr 100px 140px 100px;
+      gap: 16px;
+      padding: 16px 20px;
+      background: var(--bg-tertiary);
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-secondary);
+    }
+    
+    .lead-row {
+      display: grid;
+      grid-template-columns: 2fr 1.5fr 100px 140px 100px;
+      gap: 16px;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border-color);
+      align-items: center;
+      transition: background 0.2s;
+    }
+    
+    .lead-row:hover {
+      background: var(--bg-tertiary);
+    }
+    
+    .lead-row:last-child {
+      border-bottom: none;
+    }
+    
+    .lead-company {
+      font-weight: 600;
+    }
+    
+    .lead-contact {
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+    
+    .lead-priority {
+      font-size: 12px;
+      font-weight: 700;
+      padding: 4px 8px;
+      border-radius: 4px;
+      text-align: center;
+      width: fit-content;
+    }
+    
+    .lead-priority.p0 {
+      background: rgba(239, 68, 68, 0.2);
+      color: var(--accent-danger);
+    }
+    
+    .lead-priority.p1 {
+      background: rgba(245, 158, 11, 0.2);
+      color: var(--accent-warning);
+    }
+    
+    .lead-priority.p2 {
+      background: rgba(0, 212, 255, 0.2);
+      color: var(--accent-primary);
+    }
+    
+    .lead-priority.p3 {
+      background: rgba(124, 58, 237, 0.2);
+      color: var(--accent-secondary);
+    }
+    
+    .lead-email {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .email-status {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+    }
+    
+    .email-status.verified {
+      color: var(--accent-success);
+    }
+    
+    .email-status.pending {
+      color: var(--accent-warning);
+    }
+    
+    .email-status.failed {
+      color: var(--accent-danger);
+    }
+    
+    .email-status.missing {
+      color: var(--text-muted);
+    }
+    
+    .confidence-badge {
+      font-size: 11px;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: var(--bg-tertiary);
+    }
+    
+    .confidence-badge.high {
+      background: rgba(16, 185, 129, 0.2);
+      color: var(--accent-success);
+    }
+    
+    .confidence-badge.medium {
+      background: rgba(245, 158, 11, 0.2);
+      color: var(--accent-warning);
+    }
+    
+    .confidence-badge.low {
+      background: rgba(239, 68, 68, 0.2);
+      color: var(--accent-danger);
+    }
+    
+    .lead-actions {
+      display: flex;
+      gap: 8px;
+    }
+    
+    .btn-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      border: 1px solid var(--border-color);
+      background: var(--bg-tertiary);
+      color: var(--text-secondary);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+    
+    .btn-icon:hover {
+      background: var(--accent-primary);
+      color: white;
+      border-color: var(--accent-primary);
+    }
+    
+    /* Loading State */
+    .loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 48px;
+      color: var(--text-secondary);
+    }
+    
+    .spinner {
+      width: 24px;
+      height: 24px;
+      border: 2px solid var(--border-color);
+      border-top-color: var(--accent-primary);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-right: 12px;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    /* Toast Notifications */
+    .toast-container {
+      position: fixed;
+      top: 24px;
+      right: 24px;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    
+    .toast {
+      padding: 16px 20px;
+      border-radius: 8px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      animation: slideIn 0.3s ease;
+      min-width: 300px;
+    }
+    
+    @keyframes slideIn {
+      from {
+        transform: translateX(100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+    
+    .toast.success {
+      border-left: 4px solid var(--accent-success);
+    }
+    
+    .toast.error {
+      border-left: 4px solid var(--accent-danger);
+    }
+    
+    .toast.info {
+      border-left: 4px solid var(--accent-primary);
+    }
+    
+    /* Empty State */
+    .empty-state {
+      text-align: center;
+      padding: 48px;
+      color: var(--text-secondary);
+    }
+    
+    .empty-state-icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      .leads-header,
+      .lead-row {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+      
+      .leads-header {
+        display: none;
+      }
+      
+      .lead-row {
+        padding: 16px;
+      }
+      
+      .lead-row > div::before {
+        content: attr(data-label);
+        font-size: 11px;
+        color: var(--text-secondary);
+        text-transform: uppercase;
+        display: block;
+        margin-bottom: 4px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div>
+        <h1>DealFlow Email Enrichment</h1>
+        <div class="subtitle">Hunter.io Integration for Lead Verification</div>
+      </div>
+      <div class="actions">
+        <button class="btn btn-secondary" onclick="refreshData()">
+          🔄 Refresh
+        </button>
+        <button class="btn btn-primary" id="enrichAllBtn" onclick="enrichAll()">
+          ✨ Enrich All Leads
+        </button>
+      </div>
+    </header>
+
+    <!-- Stats Grid -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-label">Total Leads</div>
+        <div class="stat-value" id="totalLeads">-</div>
+        <div class="stat-change">In database</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">With Email</div>
+        <div class="stat-value" id="withEmail">-</div>
+        <div class="stat-change positive" id="emailChange">Enriched</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Coverage</div>
+        <div class="stat-value" id="coverage">-</div>
+        <div class="stat-change" id="coverageGap">Target: 95%</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">API Calls</div>
+        <div class="stat-value" id="apiCalls">-</div>
+        <div class="stat-change">Hunter.io</div>
+      </div>
+    </div>
+
+    <!-- Progress Section -->
+    <div class="progress-section">
+      <div class="progress-header">
+        <div class="progress-title">Email Coverage Progress</div>
+        <div class="progress-value" id="progressValue">0%</div>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+      </div>
+      <div class="progress-target">
+        <span>Current Coverage</span>
+        <span>Target: 95%</span>
+      </div>
+      
+      <!-- Priority Stats -->
+      <div class="priority-grid" id="priorityGrid">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="filters">
+      <button class="filter-btn active" onclick="filterLeads('all')">All Leads</button>
+      <button class="filter-btn" onclick="filterLeads('p0')">P0 Priority</button>
+      <button class="filter-btn" onclick="filterLeads('has-email')">With Email</button>
+      <button class="filter-btn" onclick="filterLeads('no-email')">Missing Email</button>
+      <button class="filter-btn" onclick="filterLeads('verified')">Verified</button>
+    </div>
+
+    <!-- Leads Table -->
+    <div class="leads-section">
+      <div class="leads-header">
+        <div>Company / Contact</div>
+        <div>Email</div>
+        <div>Priority</div>
+        <div>Status</div>
+        <div>Actions</div>
+      </div>
+      <div id="leadsList">
+        <div class="loading">
+          <div class="spinner"></div>
+          Loading leads...
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script>
+    // State
+    let leadsData = [];
+    let currentFilter = 'all';
+    let isEnriching = false;
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+      loadData();
+      // Auto-refresh every 30 seconds if enrichment is running
+      setInterval(() => {
+        if (isEnriching) {
+          loadData();
+        }
+      }, 30000);
+    });
+
+    // Load data from API
+    async function loadData() {
+      try {
+        // In production, this would call the actual API
+        // For now, we'll load from the JSON file
+        const response = await fetch('/data/leads/scored-leads.json');
+        const data = await response.json();
+        
+        leadsData = data.scoredLeads || [];
+        updateStats(data);
+        renderLeads();
+      } catch (error) {
+        console.error('Failed to load data:', error);
+        showToast('Failed to load leads data', 'error');
+        
+        // Try loading from parent directory
+        try {
+          const response = await fetch('../data/scored-leads.json');
+          const data = await response.json();
+          leadsData = data.scoredLeads || [];
+          updateStats(data);
+          renderLeads();
+        } catch (e) {
+          document.getElementById('leadsList').innerHTML = `
+            <div class="empty-state">
+              <div class="empty-state-icon">📭</div>
+              <div>Failed to load leads data</div>
+            </div>
+          `;
+        }
+      }
+    }
+
+    // Update statistics
+    function updateStats(data) {
+      const leads = data.scoredLeads || [];
+      const total = leads.length;
+      const withEmail = leads.filter(l => l.email).length;
+      const coverage = total > 0 ? Math.round((withEmail / total) * 100) : 0;
+      
+      document.getElementById('totalLeads').textContent = total;
+      document.getElementById('withEmail').textContent = withEmail;
+      document.getElementById('coverage').textContent = coverage + '%';
+      document.getElementById('progressValue').textContent = coverage + '%';
+      document.getElementById('progressFill').style.width = coverage + '%';
+      
+      const gap = Math.max(0, 95 - coverage);
+      document.getElementById('coverageGap').textContent = gap > 0 ? `${gap}% to target` : 'Target reached!';
+      document.getElementById('coverageGap').className = gap > 0 ? 'stat-change negative' : 'stat-change positive';
+      
+      // Update priority grid
+      updatePriorityGrid(leads);
+    }
+
+    // Update priority breakdown
+    function updatePriorityGrid(leads) {
+      const priorities = ['P0', 'P1', 'P2', 'P3'];
+      const grid = document.getElementById('priorityGrid');
+      
+      grid.innerHTML = priorities.map(priority => {
+        const pLeads = leads.filter(l => l.priorityTier === priority);
+        const pWithEmail = pLeads.filter(l => l.email).length;
+        const pCoverage = pLeads.length > 0 ? Math.round((pWithEmail / pLeads.length) * 100) : 0;
+        
+        return `
+          <div class="priority-item">
+            <div class="priority-badge ${priority.toLowerCase()}">${priority}</div>
+            <div class="priority-info">
+              <div class="priority-label">${pWithEmail}/${pLeads.length} with email</div>
+              <div class="priority-value">${pCoverage}% coverage</div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Render leads list
+    function renderLeads() {
+      const container = document.getElementById('leadsList');
+      
+      let filtered = leadsData;
+      if (currentFilter === 'p0') {
+        filtered = leadsData.filter(l => l.priorityTier === 'P0');
+      } else if (currentFilter === 'has-email') {
+        filtered = leadsData.filter(l => l.email);
+      } else if (currentFilter === 'no-email') {
+        filtered = leadsData.filter(l => !l.email);
+      } else if (currentFilter === 'verified') {
+        filtered = leadsData.filter(l => l.emailStatus === 'verified');
+      }
+      
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-state-icon">🔍</div>
+            <div>No leads match the current filter</div>
+          </div>
+        `;
+        return;
+      }
+      
+      container.innerHTML = filtered.map(lead => {
+        const status = getEmailStatus(lead);
+        const confidence = lead.emailConfidence || 0;
+        const confidenceClass = confidence >= 80 ? 'high' : confidence >= 50 ? 'medium' : 'low';
+        
+        return `
+          <div class="lead-row" data-lead-id="${lead.leadId}">
+            <div data-label="Company">
+              <div class="lead-company">${lead.company}</div>
+              <div class="lead-contact">${lead.contactName}</div>
+            </div>
+            <div data-label="Email">
+              <div class="lead-email">
+                ${status.icon}
+                <span class="${status.class}">${status.text}</span>
+                ${lead.email ? `<span class="confidence-badge ${confidenceClass}">${confidence}%</span>` : ''}
+              </div>
+              ${lead.email ? `<div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">${lead.email}</div>` : ''}
+            </div>
+            <div data-label="Priority">
+              <span class="lead-priority ${(lead.priorityTier || 'p3').toLowerCase()}">${lead.priorityTier || 'P3'}</span>
+            </div>
+            <div data-label="Status">
+              <span class="email-status ${lead.emailStatus || 'missing'}">
+                ${getStatusIcon(lead.emailStatus)}
+                ${lead.emailStatus || 'Missing'}
+              </span>
+            </div>
+            <div data-label="Actions">
+              <div class="lead-actions">
+                <button class="btn-icon" onclick="enrichLead('${lead.leadId}')" title="Enrich this lead">
+                  ✨
+                </button>
+                ${lead.email ? `<button class="btn-icon" onclick="copyEmail('${lead.email}')" title="Copy email">📋</button>` : ''}
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Get email status display
+    function getEmailStatus(lead) {
+      if (!lead.email) {
+        return { icon: '❌', text: 'No email', class: 'email-status missing' };
+      }
+      if (lead.emailStatus === 'verified') {
+        return { icon: '✅', text: 'Verified', class: 'email-status verified' };
+      }
+      if (lead.emailStatus === 'high_confidence') {
+        return { icon: '⚠️', text: 'High Conf', class: 'email-status pending' };
+      }
+      if (lead.emailStatus === 'pattern_match') {
+        return { icon: '🔍', text: 'Pattern', class: 'email-status pending' };
+      }
+      return { icon: '⏳', text: 'Pending', class: 'email-status pending' };
+    }
+
+    // Get status icon
+    function getStatusIcon(status) {
+      switch (status) {
+        case 'verified': return '✅';
+        case 'high_confidence': return '⚠️';
+        case 'pattern_match': return '🔍';
+        case 'failed': return '❌';
+        default: return '⏳';
+      }
+    }
+
+    // Filter leads
+    function filterLeads(filter) {
+      currentFilter = filter;
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.textContent.toLowerCase().includes(filter.replace('-', ' '))) {
+          btn.classList.add('active');
+        }
+      });
+      renderLeads();
+    }
+
+    // Enrich all leads
+    async function enrichAll() {
+      if (isEnriching) return;
+      
+      isEnriching = true;
+      document.getElementById('enrichAllBtn').disabled = true;
+      document.getElementById('enrichAllBtn').textContent = '⏳ Enriching...';
+      
+      showToast('Starting bulk enrichment...', 'info');
+      
+      try {
+        // In production, this would call the actual API
+        const response = await fetch('/api/dealflow/enrich-all', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ batchSize: 10 })
+        });
+        
+        if (response.ok) {
+          showToast('Bulk enrichment started! Check back in a few minutes.', 'success');
+          // Start polling for updates
+          startPolling();
+        } else {
+          throw new Error('Failed to start enrichment');
+        }
+      } catch (error) {
+        console.error('Enrich all error:', error);
+        showToast('Failed to start enrichment. Make sure HUNTER_API_KEY is configured.', 'error');
+        isEnriching = false;
+        document.getElementById('enrichAllBtn').disabled = false;
+        document.getElementById('enrichAllBtn').textContent = '✨ Enrich All Leads';
+      }
+    }
+
+    // Enrich single lead
+    async function enrichLead(leadId) {
+      showToast(`Enriching lead ${leadId}...`, 'info');
+      
+      try {
+        const response = await fetch('/api/dealflow/enrich', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ leadId })
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+          showToast(`Lead enriched: ${result.data.email || 'No email found'}`, 'success');
+          loadData(); // Refresh
+        } else {
+          throw new Error(result.error?.message || 'Unknown error');
+        }
+      } catch (error) {
+        console.error('Enrich lead error:', error);
+        showToast('Failed to enrich lead', 'error');
+      }
+    }
+
+    // Copy email to clipboard
+    function copyEmail(email) {
+      navigator.clipboard.writeText(email).then(() => {
+        showToast('Email copied to clipboard!', 'success');
+      });
+    }
+
+    // Refresh data
+    function refreshData() {
+      showToast('Refreshing data...', 'info');
+      loadData();
+    }
+
+    // Start polling for updates
+    function startPolling() {
+      let attempts = 0;
+      const maxAttempts = 60; // 5 minutes
+      
+      const interval = setInterval(async () => {
+        attempts++;
+        await loadData();
+        
+        // Check if enrichment is complete
+        const coverage = parseInt(document.getElementById('coverage').textContent);
+        if (coverage >= 95 || attempts >= maxAttempts) {
+          clearInterval(interval);
+          isEnriching = false;
+          document.getElementById('enrichAllBtn').disabled = false;
+          document.getElementById('enrichAllBtn').textContent = '✨ Enrich All Leads';
+          showToast('Enrichment complete!', 'success');
+        }
+      }, 5000);
+    }
+
+    // Show toast notification
+    function showToast(message, type = 'info') {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      toast.className = `toast ${type}`;
+      
+      const icon = type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️';
+      toast.innerHTML = `${icon} ${message}`;
+      
+      container.appendChild(toast);
+      
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateX(100%)';
+        setTimeout(() => toast.remove(), 300);
+      }, 5000);
+    }
+  </script>
+</body>
+</html>

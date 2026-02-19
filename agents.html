@@ -514,7 +514,7 @@
         }
 
         async function fetchActivity() {
-            const r = await fetch(`${API_BASE}/logs/activity?limit=20`);
+            const r = await fetch(`${API_BASE}/logs-activity?limit=20`);
             if (!r.ok) throw new Error('Failed to fetch activity');
             return r.json();
         }

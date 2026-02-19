@@ -637,10 +637,11 @@
             
             try {
                 const limit = showAll ? 1000 : RECENT_COUNT;
-                // Use /api/logs/activity endpoint (works with both local server and Vercel)
+                // Use /api/logs-activity endpoint (flat structure works better on Vercel)
+                // Nested paths like /api/logs/activity often return 404 on Vercel
                 const apiUrl = API_BASE_URL 
-                    ? `${API_BASE_URL}/api/logs/activity?limit=${limit}`
-                    : `/api/logs/activity?limit=${limit}`;
+                    ? `${API_BASE_URL}/api/logs-activity?limit=${limit}`
+                    : `/api/logs-activity?limit=${limit}`;
                 
                 console.log('[LogsView] Fetching from:', apiUrl);
                 

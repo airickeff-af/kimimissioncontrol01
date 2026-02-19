@@ -2,58 +2,56 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-    <meta name="description" content="Isometric Pixel Office - Mission Control">
-    <meta name="theme-color" content="#2d1b4e">
-    <title>🎮 Pixel Office | Mission Control</title>
-    
-    <!-- Kairosoft Fonts -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Pixel Office | Live Command Center</title>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
-    
     <style>
-        :root {
-            --bg-primary: #f5e6c8;
-            --bg-secondary: #e8d4a8;
-            --bg-card: #fff8e7;
-            --panel-bg: #f4e4c1;
-            --panel-border: #8b7355;
-            --panel-shadow: #5c4a3a;
-            --text-dark: #2c1810;
-            --text-light: #f4e4c1;
-            --text-secondary: #6b5a45;
-            --accent-cyan: #00d4ff;
-            --accent-pink: #ff6b6b;
-            --accent-green: #51cf66;
-            --accent-blue: #339af0;
-            --accent-yellow: #fcc419;
-            --accent-purple: #da77f2;
-            --accent-orange: #ff8787;
-            --floor-color: #d4c4a8;
-            --wall-color: #c4b498;
-            --desk-color: #8b7355;
-            --plant-green: #51cf66;
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            image-rendering: pixelated;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: crisp-edges;
         }
         
-        * { margin: 0; padding: 0; box-sizing: border-box; image-rendering: pixelated; }
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --bg-card: #1a1a2e;
+            --accent-primary: #00d4ff;
+            --accent-cyan: #00d4ff;
+            --accent-green: #22c55e;
+            --accent-yellow: #fbbf24;
+            --accent-orange: #f97316;
+            --accent-purple: #a855f7;
+            --accent-pink: #ff2a6d;
+            --accent-red: #ef4444;
+            --text-primary: #eaeaea;
+            --text-secondary: #888;
+            --border: #2d2d44;
+        }
         
         body {
             font-family: 'VT323', monospace;
             background: var(--bg-primary);
-            color: var(--text-dark);
+            color: var(--text-primary);
             min-height: 100vh;
-            line-height: 1.4;
-            overflow-x: hidden;
+            overflow: hidden;
+            touch-action: none;
         }
         
-        /* Pixel Grid Background */
         body::before {
             content: '';
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             background-image: 
-                linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
-            background-size: 60px 60px;
+                linear-gradient(rgba(0, 212, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 212, 255, 0.02) 1px, transparent 1px);
+            background-size: 32px 32px;
             pointer-events: none;
             z-index: 0;
         }
@@ -61,1880 +59,1968 @@
         /* Header */
         .header {
             background: var(--bg-secondary);
-            border-bottom: 4px solid var(--panel-border);
-            box-shadow: 0 4px 0 var(--panel-shadow);
+            border-bottom: 2px solid var(--accent-primary);
             padding: 0 1rem;
-            min-height: 70px;
+            height: 50px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            position: sticky;
+            position: fixed;
             top: 0;
-            z-index: 100;
-            flex-wrap: wrap;
-            gap: 10px;
+            left: 0;
+            right: 0;
+            z-index: 1000;
         }
         
         .brand {
             display: flex;
             align-items: center;
-            gap: 0.75rem;
+            gap: 0.5rem;
         }
         
         .logo {
-            width: 40px;
-            height: 40px;
-            background: var(--panel-border);
-            border: 3px solid var(--text-dark);
-            box-shadow: 3px 3px 0 var(--text-dark);
-            border-radius: 4px;
+            width: 32px;
+            height: 32px;
+            background: var(--accent-primary);
+            border: 2px solid var(--text-primary);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.25rem;
+            font-size: 1rem;
         }
         
         .brand-text h1 {
             font-family: 'Press Start 2P', cursive;
-            font-size: 0.65rem;
-            font-weight: 700;
-            letter-spacing: -0.02em;
-            line-height: 1.4;
-        }
-        
-        .brand-text span {
-            font-size: 0.65rem;
-            color: var(--text-secondary);
-        }
-        
-        /* Navigation */
-        .nav-tabs {
-            display: flex;
-            gap: 0.4rem;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-        
-        .nav-tab {
-            padding: 6px 10px;
-            background: var(--bg-card);
-            border: 3px solid var(--panel-border);
-            border-radius: 6px;
-            font-family: 'Press Start 2P', cursive;
-            font-size: 0.45rem;
-            color: var(--text-dark);
-            text-decoration: none;
-            text-align: center;
+            font-size: 0.55rem;
             line-height: 1.3;
-            box-shadow: 0 3px 0 var(--panel-shadow);
-            transition: all 0.1s;
         }
         
-        .nav-tab:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 0 var(--panel-shadow);
+        .connection-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.8rem;
+            padding: 0.25rem 0.75rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 4px;
         }
         
-        .nav-tab.active {
-            background: var(--accent-green);
-            border-color: var(--accent-green);
-            color: white;
+        .connection-status.connected { border-color: var(--accent-green); color: var(--accent-green); }
+        .connection-status.connecting { border-color: var(--accent-yellow); color: var(--accent-yellow); }
+        .connection-status.error { border-color: var(--accent-pink); color: var(--accent-pink); }
+        
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: currentColor;
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+        
+        /* System Load Indicator */
+        .system-load {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.7rem;
+            padding: 0.25rem 0.5rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+        }
+        
+        .load-bar {
+            width: 60px;
+            height: 6px;
+            background: #333;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        
+        .load-fill {
+            height: 100%;
+            transition: width 0.5s, background 0.5s;
+        }
+        
+        .load-fill.low { background: var(--accent-green); }
+        .load-fill.normal { background: var(--accent-yellow); }
+        .load-fill.high { background: var(--accent-orange); }
+        .load-fill.critical { background: var(--accent-red); animation: flash 1s infinite; }
+        
+        @keyframes flash {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
         }
         
         /* Main Container */
-        .container {
+        .main-container {
+            position: fixed;
+            top: 50px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+        }
+        
+        .canvas-container {
+            flex: 1;
             position: relative;
-            z-index: 1;
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 15px;
-        }
-        
-        /* Office Canvas Container */
-        .office-container {
-            background: var(--bg-card);
-            border: 4px solid var(--panel-border);
-            box-shadow: 4px 4px 0 var(--panel-shadow);
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 15px;
-        }
-        
-        .office-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid var(--panel-border);
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-        
-        .office-title {
-            font-family: 'Press Start 2P', cursive;
-            font-size: 0.6rem;
-            color: var(--panel-border);
-        }
-        
-        .action-btns {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-        
-        .btn {
-            padding: 8px 14px;
-            background: var(--bg-secondary);
-            border: 3px solid var(--panel-border);
-            border-radius: 6px;
-            font-family: 'Press Start 2P', cursive;
-            font-size: 0.5rem;
-            color: var(--text-dark);
-            cursor: pointer;
-            box-shadow: 0 3px 0 var(--panel-shadow);
-            transition: all 0.1s;
-        }
-        
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 0 var(--panel-shadow);
-        }
-        
-        .btn-primary {
-            background: var(--accent-green);
-            border-color: var(--accent-green);
-            color: white;
-        }
-        
-        .btn-secondary {
-            background: var(--accent-blue);
-            border-color: var(--accent-blue);
-            color: white;
-        }
-        
-        .btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
+            overflow: hidden;
+            background: linear-gradient(180deg, #0a0a0f 0%, #12121a 100%);
         }
         
         #officeCanvas {
-            width: 100%;
-            height: 600px;
-            background: linear-gradient(135deg, #e8ddd0 0%, #d4c4a8 100%);
-            border: 3px solid var(--panel-border);
-            border-radius: 4px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             cursor: grab;
         }
         
-        #officeCanvas:active {
-            cursor: grabbing;
-        }
+        #officeCanvas:active { cursor: grabbing; }
         
-        .canvas-overlay {
+        /* Controls */
+        .controls-overlay {
             position: absolute;
-            top: 60px;
-            left: 20px;
-            background: rgba(0,0,0,0.7);
-            color: white;
-            padding: 10px;
-            border-radius: 4px;
-            font-family: 'Press Start 2P', cursive;
-            font-size: 0.5rem;
-            pointer-events: none;
-            z-index: 10;
+            bottom: 15px;
+            left: 15px;
+            display: flex;
+            gap: 8px;
+            z-index: 100;
         }
         
-        .fps-counter {
-            color: var(--accent-green);
-        }
-        
-        /* Info Panel */
-        .info-panel {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 15px;
-            margin-bottom: 15px;
-        }
-        
-        .panel {
+        .control-btn {
+            width: 40px;
+            height: 40px;
             background: var(--bg-card);
-            border: 4px solid var(--panel-border);
-            box-shadow: 4px 4px 0 var(--panel-shadow);
-            border-radius: 8px;
-            padding: 15px;
+            border: 2px solid var(--accent-cyan);
+            color: var(--text-primary);
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.15s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .control-btn:hover {
+            background: var(--accent-cyan);
+            color: var(--bg-primary);
+        }
+        
+        /* Side Panel */
+        .side-panel {
+            width: 320px;
+            background: var(--bg-secondary);
+            border-left: 2px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            z-index: 50;
+            transition: transform 0.3s ease;
+        }
+        
+        .panel-section {
+            padding: 0.75rem;
+            border-bottom: 1px solid var(--border);
         }
         
         .panel-title {
             font-family: 'Press Start 2P', cursive;
-            font-size: 0.6rem;
-            color: var(--panel-border);
-            margin-bottom: 10px;
-            padding-bottom: 8px;
-            border-bottom: 2px solid var(--panel-border);
-        }
-        
-        .agent-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
-            gap: 8px;
-        }
-        
-        .agent-mini {
-            background: var(--bg-secondary);
-            border: 2px solid var(--panel-border);
-            border-radius: 6px;
-            padding: 8px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .agent-mini:hover {
-            transform: scale(1.1);
-            border-color: var(--accent-cyan);
-        }
-        
-        .agent-mini.selected {
-            border-color: var(--accent-green);
-            background: rgba(81, 207, 102, 0.2);
-        }
-        
-        .agent-mini-emoji {
-            font-size: 1.5rem;
-        }
-        
-        .agent-mini-name {
-            font-size: 0.7rem;
-            margin-top: 4px;
-        }
-        
-        /* Hierarchy Table Styles */
-        .hierarchy-table-container {
-            max-height: 400px;
-            overflow-y: auto;
-            background: var(--bg-secondary);
-            border: 3px solid var(--panel-border);
-            border-radius: 4px;
-        }
-        
-        .hierarchy-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.85rem;
-        }
-        
-        .hierarchy-table th {
-            background: var(--panel-border);
-            color: var(--text-light);
-            padding: 12px 10px;
-            text-align: left;
-            font-family: 'Press Start 2P', cursive;
             font-size: 0.5rem;
-            position: sticky;
-            top: 0;
-            z-index: 10;
-        }
-        
-        .hierarchy-table td {
-            padding: 10px;
-            border-bottom: 1px solid var(--panel-border);
-        }
-        
-        .hierarchy-table tr:hover {
-            background: rgba(0, 212, 255, 0.1);
-        }
-        
-        .hierarchy-table tr.commander {
-            background: linear-gradient(90deg, rgba(255, 215, 0, 0.2), transparent);
-        }
-        
-        .hierarchy-table tr.ai-lead {
-            background: linear-gradient(90deg, rgba(0, 212, 255, 0.15), transparent);
-        }
-        
-        .hierarchy-table tr.team-lead {
-            background: linear-gradient(90deg, rgba(81, 207, 102, 0.1), transparent);
-        }
-        
-        .hierarchy-agent {
+            color: var(--accent-cyan);
+            margin-bottom: 0.5rem;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 0.5rem;
         }
         
-        .hierarchy-emoji {
-            font-size: 1.25rem;
-        }
-        
-        .hierarchy-name {
-            font-weight: 600;
-        }
-        
-        .level-badge {
-            display: inline-block;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-family: 'Press Start 2P', cursive;
-            font-size: 0.45rem;
-            border: 2px solid;
-        }
-        
-        .level-commander {
-            background: rgba(255, 215, 0, 0.2);
-            color: #b8860b;
-            border-color: #ffd700;
-        }
-        
-        .level-ai-lead {
-            background: rgba(0, 212, 255, 0.2);
-            color: #0066cc;
-            border-color: #00d4ff;
-        }
-        
-        .level-team-lead {
-            background: rgba(81, 207, 102, 0.2);
-            color: #2b8a3e;
-            border-color: #51cf66;
-        }
-        
-        .level-specialist {
-            background: rgba(139, 115, 85, 0.2);
-            color: var(--panel-border);
-            border-color: var(--panel-border);
-        }
-        
-        .status-dot-table {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            display: inline-block;
-        }
-        
-        .status-active { background: var(--accent-green); }
-        .status-busy { background: var(--accent-yellow); }
-        .status-idle { background: var(--accent-pink); }
-        
-        .btn-locate {
-            padding: 6px 10px;
-            background: var(--accent-cyan);
-            border: 2px solid var(--text-dark);
-            border-radius: 4px;
-            font-family: 'Press Start 2P', cursive;
-            font-size: 0.45rem;
-            color: white;
-            cursor: pointer;
-            box-shadow: 2px 2px 0 var(--text-dark);
-            transition: all 0.1s;
-        }
-        
-        .btn-locate:hover {
-            transform: translateY(-2px);
-            box-shadow: 2px 4px 0 var(--text-dark);
-        }
-        
-        .btn-locate:active {
-            transform: translateY(0);
-            box-shadow: 0 0 0 var(--text-dark);
-        }
-        
-        /* Activity Log */
-        .activity-list {
+        .agent-list {
             max-height: 200px;
             overflow-y: auto;
+        }
+        
+        .agent-list-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.4rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            margin-bottom: 0.4rem;
+            cursor: pointer;
+            transition: all 0.15s;
             font-size: 0.9rem;
         }
         
-        .activity-item {
-            padding: 8px;
-            margin-bottom: 5px;
-            background: var(--bg-secondary);
-            border-left: 3px solid var(--accent-cyan);
-            border-radius: 0 4px 4px 0;
+        .agent-list-item:hover {
+            border-color: var(--accent-cyan);
         }
         
-        .activity-time {
-            font-size: 0.75rem;
-            color: var(--text-secondary);
+        .agent-list-item.active {
+            border-color: var(--accent-green);
+            background: rgba(34, 197, 94, 0.1);
         }
         
-        /* Selected Agent Panel */
-        .selected-agent-panel {
-            position: fixed;
-            right: 20px;
-            top: 100px;
-            width: 280px;
-            background: var(--bg-card);
-            border: 4px solid var(--panel-border);
-            box-shadow: 4px 4px 0 var(--panel-shadow);
-            border-radius: 8px;
-            padding: 15px;
-            z-index: 50;
-            display: none;
-        }
-        
-        .selected-agent-panel.active {
-            display: block;
-        }
-        
-        .selected-agent-header {
+        .agent-list-avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 3px;
             display: flex;
             align-items: center;
-            gap: 10px;
-            margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid var(--panel-border);
-        }
-        
-        .selected-agent-emoji {
-            font-size: 2rem;
-        }
-        
-        .selected-agent-info h3 {
-            font-family: 'Press Start 2P', cursive;
-            font-size: 0.6rem;
-            margin-bottom: 4px;
-        }
-        
-        .selected-agent-info span {
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-        }
-        
-        .stat-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 8px 0;
-            border-bottom: 1px solid var(--panel-border);
-        }
-        
-        .stat-row:last-child {
-            border-bottom: none;
-        }
-        
-        .stat-label {
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-        }
-        
-        .stat-value {
-            font-family: 'Press Start 2P', cursive;
-            font-size: 0.5rem;
-        }
-        
-        /* Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.85);
-            z-index: 1000;
             justify-content: center;
-            align-items: center;
-            padding: 20px;
+            font-size: 0.9rem;
+            border: 1px solid var(--border);
+            position: relative;
         }
         
-        .modal.active { display: flex; }
+        .agent-list-info { flex: 1; }
+        .agent-list-name { font-weight: bold; font-size: 0.85rem; }
+        .agent-list-role { font-size: 0.7rem; color: var(--text-secondary); }
         
-        .modal-content {
-            background: var(--bg-card);
-            border: 4px solid var(--panel-border);
-            box-shadow: 8px 8px 0 var(--panel-shadow);
-            border-radius: 8px;
-            padding: 20px;
-            max-width: 600px;
-            width: 100%;
-            max-height: 80vh;
+        .agent-list-status {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+        
+        .agent-list-status.active { background: var(--accent-green); box-shadow: 0 0 4px var(--accent-green); }
+        .agent-list-status.idle { background: var(--accent-yellow); }
+        .agent-list-status.busy { background: var(--accent-red); }
+        .agent-list-status.offline { background: #666; }
+        
+        /* Activity intensity indicator */
+        .activity-indicator {
+            position: absolute;
+            bottom: -2px;
+            right: -2px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            border: 2px solid var(--bg-card);
+            font-size: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .activity-indicator.typing { background: var(--accent-green); animation: blink 0.5s infinite; }
+        .activity-indicator.walking { background: var(--accent-yellow); }
+        .activity-indicator.idle { background: #666; }
+        .activity-indicator.meeting { background: var(--accent-purple); animation: pulse 1s infinite; }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+        
+        .activity-feed {
+            max-height: 180px;
             overflow-y: auto;
         }
         
-        .modal-header {
+        .activity-item {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 3px solid var(--panel-border);
+            gap: 0.4rem;
+            padding: 0.4rem;
+            background: var(--bg-card);
+            border-left: 2px solid var(--accent-cyan);
+            margin-bottom: 0.4rem;
+            font-size: 0.8rem;
+            animation: slideIn 0.3s ease-out;
         }
         
-        .modal-title {
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .activity-agent { color: var(--accent-cyan); font-weight: bold; }
+        .activity-time { font-size: 0.65rem; color: var(--text-secondary); margin-left: auto; }
+        
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.4rem;
+        }
+        
+        .action-btn {
+            padding: 0.5rem;
+            background: var(--bg-card);
+            border: 1px solid var(--accent-primary);
+            color: var(--text-primary);
+            font-family: 'VT323', monospace;
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+        
+        .action-btn:hover { background: var(--accent-primary); }
+        
+        /* Agent Detail Popup */
+        .agent-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--bg-card);
+            border: 2px solid var(--accent-cyan);
+            padding: 1.5rem;
+            z-index: 2000;
+            min-width: 300px;
+            max-width: 400px;
+            display: none;
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.3);
+        }
+        
+        .agent-popup.active { display: block; animation: popupIn 0.2s ease-out; }
+        
+        @keyframes popupIn {
+            from { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
+            to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+        }
+        
+        .popup-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .popup-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            border: 2px solid var(--accent-cyan);
+        }
+        
+        .popup-title h3 {
             font-family: 'Press Start 2P', cursive;
             font-size: 0.7rem;
-            color: var(--panel-border);
+            margin-bottom: 0.25rem;
         }
         
-        .modal-close {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: var(--text-dark);
+        .popup-title .role {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
         }
         
-        .insight-box {
+        .popup-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+        
+        .stat-item {
             background: var(--bg-secondary);
-            border: 3px solid var(--accent-yellow);
-            border-radius: 8px;
-            padding: 15px;
-            margin: 15px 0;
-        }
-        
-        .insight-title {
-            font-family: 'Press Start 2P', cursive;
-            font-size: 0.6rem;
-            color: var(--accent-yellow);
-            margin-bottom: 10px;
-        }
-        
-        /* Loading state */
-        .loading-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 20;
+            padding: 0.5rem;
+            text-align: center;
             border-radius: 4px;
         }
         
-        .loading-spinner {
-            width: 50px;
-            height: 50px;
-            border: 4px solid var(--panel-border);
-            border-top-color: var(--accent-green);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
+        .stat-value {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--accent-cyan);
         }
         
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+        .stat-label {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
         }
         
-        /* Responsive */
-        @media (max-width: 768px) {
-            .header { padding: 10px; }
-            .nav-tabs { display: none; }
-            .office-header { flex-direction: column; align-items: flex-start; }
-            #officeCanvas { height: 400px; }
-            .info-panel { grid-template-columns: 1fr; }
-            .selected-agent-panel {
+        .popup-task {
+            background: var(--bg-secondary);
+            padding: 0.75rem;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+        }
+        
+        .popup-task-label {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.25rem;
+        }
+        
+        .popup-task-title {
+            font-size: 0.9rem;
+            color: var(--text-primary);
+        }
+        
+        .popup-task-priority {
+            display: inline-block;
+            padding: 0.1rem 0.4rem;
+            border-radius: 3px;
+            font-size: 0.65rem;
+            margin-top: 0.5rem;
+        }
+        
+        .priority-P0 { background: var(--accent-red); color: white; }
+        .priority-P1 { background: var(--accent-orange); color: white; }
+        .priority-P2 { background: var(--accent-yellow); color: black; }
+        .priority-P3 { background: var(--accent-green); color: white; }
+        
+        .popup-progress {
+            margin-bottom: 1rem;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background: #333;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 0.25rem;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-green));
+            transition: width 0.3s;
+        }
+        
+        .popup-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .popup-btn {
+            flex: 1;
+            padding: 0.5rem;
+            background: var(--accent-cyan);
+            border: none;
+            color: var(--bg-primary);
+            font-family: 'VT323', monospace;
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+        
+        .popup-btn.secondary {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+        }
+        
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1999;
+            display: none;
+        }
+        
+        .popup-overlay.active { display: block; }
+        
+        /* Tooltip */
+        .tooltip {
+            position: absolute;
+            background: var(--bg-card);
+            border: 2px solid var(--accent-cyan);
+            padding: 0.5rem;
+            pointer-events: none;
+            z-index: 200;
+            font-size: 0.8rem;
+            max-width: 200px;
+            display: none;
+        }
+        
+        .tooltip-title {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.5rem;
+            color: var(--accent-cyan);
+        }
+        
+        .tooltip-task {
+            color: var(--accent-yellow);
+            margin-top: 0.25rem;
+            font-size: 0.75rem;
+        }
+        
+        .tooltip-priority {
+            display: inline-block;
+            padding: 0.1rem 0.3rem;
+            border-radius: 3px;
+            font-size: 0.6rem;
+            margin-top: 0.25rem;
+        }
+        
+        /* Loading Screen */
+        .loading-screen {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: var(--bg-primary);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.3s;
+        }
+        
+        .loading-screen.hidden { opacity: 0; pointer-events: none; }
+        
+        .loading-bar {
+            width: 200px;
+            height: 6px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            margin-top: 1rem;
+        }
+        
+        .loading-progress {
+            height: 100%;
+            background: var(--accent-cyan);
+            width: 0%;
+            transition: width 0.2s;
+        }
+        
+        /* Mobile */
+        .mobile-toggle {
+            display: none;
+            position: absolute;
+            top: 70px;
+            right: 15px;
+            width: 40px;
+            height: 40px;
+            background: var(--bg-card);
+            border: 2px solid var(--accent-cyan);
+            color: var(--text-primary);
+            z-index: 100;
+        }
+        
+        @media (max-width: 900px) {
+            .side-panel {
                 position: fixed;
-                right: 10px;
-                left: 10px;
-                top: auto;
-                bottom: 10px;
-                width: auto;
+                right: 0;
+                top: 50px;
+                bottom: 0;
+                transform: translateX(100%);
+                width: 280px;
             }
+            .side-panel.open { transform: translateX(0); }
+            .mobile-toggle { display: flex; align-items: center; justify-content: center; }
+            .system-load { display: none; }
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div style="font-size: 3rem;">🏢</div>
+        <div style="font-family: 'Press Start 2P'; font-size: 0.7rem; margin-top: 0.5rem;">LOADING PIXEL OFFICE...</div>
+        <div class="loading-bar">
+            <div class="loading-progress" id="loadingProgress"></div>
+        </div>
+        <div id="loadingStatus" style="margin-top: 0.5rem; font-size: 0.8rem; color: var(--text-secondary);">Initializing...</div>
+    </div>
+
+    <!-- Agent Detail Popup -->
+    <div class="popup-overlay" id="popupOverlay" onclick="closePopup()"></div>
+    <div class="agent-popup" id="agentPopup">
+        <div class="popup-header">
+            <div class="popup-avatar" id="popupAvatar">🤖</div>
+            <div class="popup-title">
+                <h3 id="popupName">Agent Name</h3>
+                <div class="role" id="popupRole">Role</div>
+            </div>
+        </div>
+        <div class="popup-stats">
+            <div class="stat-item">
+                <div class="stat-value" id="popupTokens">0</div>
+                <div class="stat-label">Tokens Today</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="popupTasks">0</div>
+                <div class="stat-label">Tasks Done</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="popupEfficiency">0%</div>
+                <div class="stat-label">Efficiency</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="popupStatus">●</div>
+                <div class="stat-label">Status</div>
+            </div>
+        </div>
+        <div class="popup-task">
+            <div class="popup-task-label">CURRENT TASK</div>
+            <div class="popup-task-title" id="popupTask">No active task</div>
+            <span class="popup-task-priority" id="popupPriority"></span>
+        </div>
+        <div class="popup-progress">
+            <div style="display: flex; justify-content: space-between; font-size: 0.75rem;">
+                <span>Task Progress</span>
+                <span id="popupProgressText">0%</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="popupProgressBar" style="width: 0%"></div>
+            </div>
+        </div>
+        <div class="popup-actions">
+            <button class="popup-btn" onclick="viewAgentWork()">View Work</button>
+            <button class="popup-btn secondary" onclick="closePopup()">Close</button>
+        </div>
+    </div>
+
     <header class="header">
         <div class="brand">
-            <div class="logo">🎮</div>
+            <div class="logo">🏢</div>
             <div class="brand-text">
-                <h1>Pixel Office</h1>
-                <span id="agentCount">22 Agents • Isometric View</span>
+                <h1>PIXEL OFFICE LIVE</h1>
             </div>
         </div>
         
-        <nav class="nav-tabs">
-            <a href="index.html" class="nav-tab">🏠 HQ</a>
-            <a href="office.html" class="nav-tab">🏢 Office</a>
-            <a href="pixel-office.html" class="nav-tab active">🎮 Pixel</a>
-            <a href="agents.html" class="nav-tab">👥 Agents</a>
-            <a href="dealflow-view.html" class="nav-tab">💼 Deals</a>
-            <a href="token-tracker.html" class="nav-tab">🪙 Tokens</a>
-            <a href="task-board.html" class="nav-tab">📋 Tasks</a>
-            <a href="data-viewer.html" class="nav-tab">📁 Data</a>
-        </nav>
+        <div class="system-load" id="systemLoad">
+            <span>SYSTEM LOAD</span>
+            <div class="load-bar">
+                <div class="load-fill" id="loadFill" style="width: 0%"></div>
+            </div>
+            <span id="loadText">0%</span>
+        </div>
+        
+        <div class="connection-status" id="connectionStatus">
+            <span class="status-dot"></span>
+            <span id="connectionText">Connecting...</span>
+        </div>
+        
+        <button class="control-btn" onclick="location.href='mission-control/dashboard/office.html'" title="Back to Dashboard">🏠</button>
     </header>
-    
-    <!-- Main Container -->
-    <div class="container">
-        <!-- Office Canvas -->
-        <div class="office-container" style="position: relative;">
-            <div class="office-header">
-                <span class="office-title">🏢 ISOMETRIC OFFICE - <span id="liveAgentCount">22</span> AGENTS</span>
-                <div class="action-btns">
-                    <button class="btn btn-primary" onclick="startStandup()">📢 STANDUP</button>
-                    <button class="btn btn-secondary" onclick="toggleView()">👁️ FOLLOW</button>
-                    <button class="btn" onclick="resetView()">🔄 RESET</button>
-                    <button class="btn" onclick="togglePause()" id="pauseBtn">⏸️ PAUSE</button>
-                </div>
-            </div>
-            <canvas id="officeCanvas"></canvas>
-            <div class="canvas-overlay">
-                <div class="fps-counter">FPS: <span id="fpsCounter">60</span></div>
-                <div>Selected: <span id="selectedAgentName">None</span></div>
-            </div>
-        </div>
-        
-        <!-- Hierarchy Table Panel -->
-        <div class="office-container">
-            <div class="office-header">
-                <span class="office-title">👑 AGENT HIERARCHY</span>
-                <div class="action-btns">
-                    <button class="btn" onclick="refreshData()">🔄 REFRESH</button>
-                </div>
-            </div>
-            <div class="hierarchy-table-container">
-                <table class="hierarchy-table" id="hierarchyTable">
-                    <thead>
-                        <tr>
-                            <th>Level</th>
-                            <th>Agent</th>
-                            <th>Role</th>
-                            <th>Team</th>
-                            <th>Status</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody id="hierarchyBody">
-                        <!-- Populated by JavaScript -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
 
-        <!-- Info Panels -->
-        <div class="info-panel">
-            <!-- Agent Mini Grid -->
-            <div class="panel">
-                <div class="panel-title">👥 AGENT ROSTER (<span id="rosterCount">22</span>)</div>
-                <div class="agent-grid" id="agentGrid"></div>
+    <div class="main-container">
+        <div class="canvas-container" id="canvasContainer">
+            <canvas id="officeCanvas"></canvas>
+            
+            <div class="controls-overlay">
+                <button class="control-btn" onclick="zoomIn()" title="Zoom In">+</button>
+                <button class="control-btn" onclick="zoomOut()" title="Zoom Out">−</button>
+                <button class="control-btn" onclick="resetView()" title="Reset View">⌂</button>
+                <button class="control-btn" onclick="toggleStandup()" title="Standup">📢</button>
+                <button class="control-btn" onclick="forceRefresh()" title="Refresh">🔄</button>
             </div>
             
-            <!-- Activity Log -->
-            <div class="panel">
-                <div class="panel-title">📡 ACTIVITY LOG</div>
-                <div class="activity-list" id="activityLog"></div>
+            <button class="mobile-toggle" id="mobileToggle" onclick="togglePanel()">☰</button>
+            
+            <div class="tooltip" id="tooltip">
+                <div class="tooltip-title" id="tooltipTitle"></div>
+                <div id="tooltipRole"></div>
+                <div class="tooltip-task" id="tooltipTask"></div>
+                <span class="tooltip-priority" id="tooltipPriority"></span>
             </div>
         </div>
-    </div>
-    
-    <!-- Selected Agent Panel -->
-    <div class="selected-agent-panel" id="selectedAgentPanel">
-        <div class="selected-agent-header">
-            <span class="selected-agent-emoji" id="panelEmoji">🤖</span>
-            <div class="selected-agent-info">
-                <h3 id="panelName">Agent Name</h3>
-                <span id="panelRole">Role</span>
+        
+        <aside class="side-panel" id="sidePanel">
+            <div class="panel-section">
+                <div class="panel-title">👥 AGENTS (<span id="agentCount">0</span>)</div>
+                <div class="agent-list" id="agentList"></div>
             </div>
-        </div>
-        <div class="stat-row">
-            <span class="stat-label">Status</span>
-            <span class="stat-value" id="panelStatus">Active</span>
-        </div>
-        <div class="stat-row">
-            <span class="stat-label">Tasks</span>
-            <span class="stat-value" id="panelTasks">0</span>
-        </div>
-        <div class="stat-row">
-            <span class="stat-label">Tokens</span>
-            <span class="stat-value" id="panelTokens">0</span>
-        </div>
-        <div class="stat-row">
-            <span class="stat-label">Success Rate</span>
-            <span class="stat-value" id="panelSuccess">0%</span>
-        </div>
-        <div class="stat-row">
-            <span class="stat-label">Last Active</span>
-            <span class="stat-value" id="panelLastActive">-</span>
-        </div>
-        <button class="btn btn-secondary" style="width: 100%; margin-top: 10px;" onclick="closeSelectedPanel()">Close</button>
-    </div>
-    
-    <!-- Standup Modal -->
-    <div class="modal" id="standupModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <span class="modal-title">📢 DAILY STANDUP - REAL DATA</span>
-                <button class="modal-close" onclick="closeStandupModal()">&times;</button>
+            
+            <div class="panel-section" style="flex: 1; overflow: hidden;">
+                <div class="panel-title">📡 LIVE ACTIVITY</div>
+                <div class="activity-feed" id="activityFeed"></div>
             </div>
-            <div id="standupContent">
-                <div id="standupStats"></div>
-                <div id="standupInsights"></div>
+            
+            <div class="panel-section">
+                <div class="panel-title">⚡ ACTIONS</div>
+                <div class="quick-actions">
+                    <button class="action-btn" onclick="callStandup()">📢 Standup</button>
+                    <button class="action-btn" onclick="syncWithAPI()">🔄 Sync</button>
+                    <button class="action-btn" onclick="findAgent()">🔍 Find</button>
+                    <button class="action-btn" onclick="toggleParticles()">✨ FX</button>
+                </div>
             </div>
-        </div>
+        </aside>
     </div>
 
     <script>
         // ============================================
-        // PIXEL OFFICE - TASK-092 IMPLEMENTATION
-        // Features: 60fps animations, real API, canvas selection
+        // PIXEL OFFICE v3.0 - LIVE DATA INTEGRATION
         // ============================================
         
-        // ============================================
-        // CONFIGURATION
-        // ============================================
-        const CONFIG = {
-            FPS: 60,
-            SPRITE_SIZE: 32,
-            WALK_SPEED: 0.8,
-            ANIMATION_SPEED: 0.15,
-            API_BASE: '', // Relative to current domain
-            REFRESH_INTERVAL: 30000, // 30 seconds
-        };
-        
-        // ============================================
-        // AGENT DATA - Will be populated from API
-        // ============================================
-        let AGENTS_DATA = [];
-        let TASKS_DATA = [];
-        let ACTIVITY_LOGS = [];
-        
-        // ============================================
-        // CANVAS SETUP
-        // ============================================
         const canvas = document.getElementById('officeCanvas');
         const ctx = canvas.getContext('2d');
+        const container = document.getElementById('canvasContainer');
         
-        let scale = 1;
-        let offsetX = 0;
-        let offsetY = 0;
-        let isDragging = false;
-        let dragStartX, dragStartY;
-        let followAgent = null;
-        let selectedAgent = null;
-        let isPaused = false;
+        ctx.imageSmoothingEnabled = false;
         
-        // Animation state
-        let lastTime = 0;
-        let frameCount = 0;
-        let fps = 60;
-        let lastFpsTime = 0;
+        // API Configuration
+        const API_CONFIG = {
+            baseUrl: '',
+            endpoints: {
+                pixelOfficeData: '/api/pixel-office-data',
+                agents: '/api/agents',
+                tasks: '/api/tasks',
+                tokens: '/api/tokens-live'
+            },
+            refreshInterval: 30000, // 30 seconds
+            retryInterval: 5000
+        };
         
-        // Speech bubbles
-        let speechBubbles = [];
+        // Game State
+        const state = {
+            zoom: 1,
+            panX: 0,
+            panY: 0,
+            isDragging: false,
+            lastMouseX: 0,
+            lastMouseY: 0,
+            soundEnabled: true,
+            particlesEnabled: true,
+            standupMode: false,
+            lastTime: 0,
+            hoveredAgent: null,
+            selectedAgent: null,
+            apiConnected: false,
+            lastApiFetch: 0,
+            systemLoad: { level: 'normal', percentage: 0 },
+            liveData: null
+        };
         
-        function resizeCanvas() {
-            const container = canvas.parentElement;
-            canvas.width = container.clientWidth - 30;
-            canvas.height = window.innerWidth < 768 ? 400 : 600;
-        }
-        resizeCanvas();
-        window.addEventListener('resize', resizeCanvas);
+        // Isometric constants
+        const TILE_WIDTH = 48;
+        const TILE_HEIGHT = 24;
+        const GRID_SIZE = 20;
         
-        // ============================================
-        // PIXEL SPRITE GENERATOR (Minecraft-style)
-        // ============================================
+        // Office data
+        const office = {
+            tiles: [],
+            furniture: [],
+            agents: [],
+            particles: [],
+            standupSeats: []
+        };
         
-        const SPRITE_CACHE = new Map();
-        
-        function generatePixelSprite(agent, frame = 0, direction = 'down', state = 'idle') {
-            const cacheKey = `${agent.id}_${frame}_${direction}_${state}`;
-            if (SPRITE_CACHE.has(cacheKey)) {
-                return SPRITE_CACHE.get(cacheKey);
-            }
-            
-            const size = CONFIG.SPRITE_SIZE;
-            const spriteCanvas = document.createElement('canvas');
-            spriteCanvas.width = size;
-            spriteCanvas.height = size;
-            const sCtx = spriteCanvas.getContext('2d');
-            
-            // Disable smoothing for pixel art look
-            sCtx.imageSmoothingEnabled = false;
-            
-            // Base color
-            const baseColor = agent.color || '#888888';
-            const darkColor = shadeColor(baseColor, -30);
-            const lightColor = shadeColor(baseColor, 30);
-            
-            // Animation offsets
-            const walkOffset = state === 'walking' ? Math.sin(frame * 0.5) * 2 : 0;
-            const bounceOffset = state === 'idle' ? Math.sin(frame * 0.2) * 1 : 0;
-            
-            // Draw pixel body (16x16 scaled to 32x32)
-            const pixelSize = 2;
-            const startX = 8;
-            const startY = 8 + bounceOffset;
-            
-            // Body shadow
-            sCtx.fillStyle = 'rgba(0,0,0,0.3)';
-            sCtx.fillRect(startX + 2, startY + 14, 12, 4);
-            
-            // Body (computer/character shape)
-            sCtx.fillStyle = baseColor;
-            // Main body block
-            sCtx.fillRect(startX, startY + 4, 16, 12);
-            // Head/screen area
-            sCtx.fillRect(startX + 2, startY, 12, 6);
-            
-            // Screen glow
-            sCtx.fillStyle = lightColor;
-            sCtx.fillRect(startX + 3, startY + 1, 10, 4);
-            
-            // Eyes/face on screen
-            sCtx.fillStyle = '#000';
-            if (direction === 'right') {
-                sCtx.fillRect(startX + 8, startY + 2, 3, 2);
-            } else if (direction === 'left') {
-                sCtx.fillRect(startX + 5, startY + 2, 3, 2);
-            } else {
-                sCtx.fillRect(startX + 5, startY + 2, 2, 2);
-                sCtx.fillRect(startX + 9, startY + 2, 2, 2);
-            }
-            
-            // Legs (animated when walking)
-            sCtx.fillStyle = darkColor;
-            if (state === 'walking') {
-                const legOffset = Math.abs(Math.sin(frame * 0.5)) * 3;
-                sCtx.fillRect(startX + 2, startY + 14 + legOffset, 4, 4);
-                sCtx.fillRect(startX + 10, startY + 14 - legOffset, 4, 4);
-            } else {
-                sCtx.fillRect(startX + 2, startY + 14, 4, 4);
-                sCtx.fillRect(startX + 10, startY + 14, 4, 4);
-            }
-            
-            // Status indicator dot
-            const statusColors = {
-                active: '#51cf66',
-                busy: '#fcc419',
-                idle: '#ff6b6b'
-            };
-            sCtx.fillStyle = statusColors[agent.status] || '#888';
-            sCtx.fillRect(startX + 12, startY - 2, 4, 4);
-            
-            // Activity bar above agent (if has tasks)
-            if (agent.tasksCompleted > 0) {
-                const barWidth = 16;
-                const barHeight = 2;
-                const progress = Math.min(agent.tasksCompleted / 50, 1);
-                
-                sCtx.fillStyle = 'rgba(0,0,0,0.5)';
-                sCtx.fillRect(startX, startY - 6, barWidth, barHeight);
-                sCtx.fillStyle = progress > 0.7 ? '#51cf66' : progress > 0.4 ? '#fcc419' : '#ff6b6b';
-                sCtx.fillRect(startX, startY - 6, barWidth * progress, barHeight);
-            }
-            
-            SPRITE_CACHE.set(cacheKey, spriteCanvas);
-            return spriteCanvas;
-        }
-        
-        function shadeColor(color, percent) {
-            const num = parseInt(color.replace('#', ''), 16);
-            const amt = Math.round(2.55 * percent);
-            const R = Math.max(0, Math.min(255, (num >> 16) + amt));
-            const G = Math.max(0, Math.min(255, ((num >> 8) & 0x00FF) + amt));
-            const B = Math.max(0, Math.min(255, (num & 0x0000FF) + amt));
-            return '#' + (0x1000000 + R * 0x10000 + G * 0x100 + B).toString(16).slice(1);
-        }
-        
-        // ============================================
-        // AGENT CLASS WITH ANIMATION
-        // ============================================
-        
-        class Agent {
-            constructor(data) {
-                this.id = data.id;
-                this.name = data.name;
-                this.role = data.role;
-                this.emoji = data.emoji;
-                this.color = data.color || '#888888';
-                this.status = data.status || 'idle';
-                this.tasksCompleted = data.tasksCompleted || 0;
-                this.tokensUsed = data.tokensUsed || 0;
-                this.successRate = data.successRate || 0;
-                this.lastActive = data.lastActive;
-                this.team = data.team || 'General';
-                this.level = data.level || 'specialist';
-                
-                // Position
-                this.x = data.x || 0;
-                this.y = data.y || 0;
-                this.z = 0;
-                
-                // Animation state
-                this.targetX = this.x;
-                this.targetY = this.y;
-                this.direction = 'down';
-                this.state = 'idle';
-                this.animationFrame = 0;
-                this.walkCycle = 0;
-                
-                // Desk position (home base)
-                this.deskX = this.x;
-                this.deskY = this.y;
-                
-                // Speech bubble
-                this.speechBubble = null;
-                this.speechTimer = 0;
-            }
-            
-            update(deltaTime) {
-                // Update animation frame
-                this.animationFrame += CONFIG.ANIMATION_SPEED;
-                
-                // Handle movement
-                if (this.state === 'walking') {
-                    const dx = this.targetX - this.x;
-                    const dy = this.targetY - this.y;
-                    const distance = Math.sqrt(dx * dx + dy * dy);
-                    
-                    if (distance < 0.5) {
-                        this.x = this.targetX;
-                        this.y = this.targetY;
-                        this.state = 'idle';
-                    } else {
-                        const speed = CONFIG.WALK_SPEED * deltaTime * 0.06;
-                        this.x += (dx / distance) * speed;
-                        this.y += (dy / distance) * speed;
-                        
-                        // Update direction
-                        if (Math.abs(dx) > Math.abs(dy)) {
-                            this.direction = dx > 0 ? 'right' : 'left';
-                        } else {
-                            this.direction = dy > 0 ? 'down' : 'up';
-                        }
-                    }
-                }
-                
-                // Update speech bubble timer
-                if (this.speechTimer > 0) {
-                    this.speechTimer -= deltaTime;
-                    if (this.speechTimer <= 0) {
-                        this.speechBubble = null;
-                    }
-                }
-            }
-            
-            moveTo(x, y) {
-                this.targetX = x;
-                this.targetY = y;
-                this.state = 'walking';
-            }
-            
-            returnToDesk() {
-                this.moveTo(this.deskX, this.deskY);
-            }
-            
-            say(message, duration = 3000) {
-                this.speechBubble = message;
-                this.speechTimer = duration;
-            }
-            
-            draw(ctx, isoX, isoY) {
-                const sprite = generatePixelSprite(this, this.animationFrame, this.direction, this.state);
-                
-                // Draw sprite
-                const size = CONFIG.SPRITE_SIZE;
-                ctx.drawImage(sprite, isoX - size/2, isoY - size);
-                
-                // Draw name label
-                ctx.font = '10px "Press Start 2P"';
-                ctx.fillStyle = '#2c1810';
-                ctx.textAlign = 'center';
-                ctx.fillText(this.name, isoX, isoY + 15);
-                
-                // Draw selection highlight
-                if (selectedAgent === this.id) {
-                    ctx.strokeStyle = '#00d4ff';
-                    ctx.lineWidth = 2;
-                    ctx.strokeRect(isoX - size/2 - 2, isoY - size - 2, size + 4, size + 4);
-                }
-                
-                // Draw speech bubble
-                if (this.speechBubble) {
-                    drawSpeechBubble(ctx, isoX, isoY - size - 10, this.speechBubble);
-                }
-            }
-        }
-        
-        // ============================================
-        // ISOMETRIC UTILITIES
-        // ============================================
-        
-        function toIso(x, y, z = 0) {
-            const isoX = (x - y) * 0.866 * scale + canvas.width / 2 + offsetX;
-            const isoY = (x + y) * 0.5 * scale - z * 0.866 * scale + canvas.height / 2 + offsetY;
-            return { x: isoX, y: isoY };
-        }
-        
-        function fromIso(isoX, isoY) {
-            const centerX = canvas.width / 2 + offsetX;
-            const centerY = canvas.height / 2 + offsetY;
-            const x = ((isoX - centerX) / 0.866 + (isoY - centerY)) / (2 * scale);
-            const y = ((isoY - centerY) - (isoX - centerX) / 0.866) / (2 * scale);
-            return { x, y };
-        }
-        
-        function drawSpeechBubble(ctx, x, y, text) {
-            ctx.font = '8px "Press Start 2P"';
-            const metrics = ctx.measureText(text);
-            const padding = 8;
-            const width = metrics.width + padding * 2;
-            const height = 20;
-            
-            // Bubble background
-            ctx.fillStyle = 'white';
-            ctx.strokeStyle = '#2c1810';
-            ctx.lineWidth = 2;
-            
-            ctx.beginPath();
-            ctx.roundRect(x - width/2, y - height, width, height, 4);
-            ctx.fill();
-            ctx.stroke();
-            
-            // Triangle pointer
-            ctx.beginPath();
-            ctx.moveTo(x - 5, y);
-            ctx.lineTo(x + 5, y);
-            ctx.lineTo(x, y + 5);
-            ctx.closePath();
-            ctx.fill();
-            ctx.stroke();
-            
-            // Text
-            ctx.fillStyle = '#2c1810';
-            ctx.textAlign = 'center';
-            ctx.fillText(text, x, y - height/2 + 3);
-        }
-        
-        // ============================================
-        // OFFICE LAYOUT
-        // ============================================
-        
-        const agents = new Map();
-        
-        const OFFICE_LAYOUT = {
-            // Commander
-            ericf: { x: -8, y: -6, team: 'Executive', level: 'commander' },
-            // AI Lead
-            nexus: { x: 4, y: -6, team: 'Executive', level: 'ai-lead' },
-            // Dev team
-            codemaster: { x: -7, y: 2, team: 'Engineering', level: 'team-lead' },
-            'code-1': { x: -4, y: 2, team: 'Engineering', level: 'specialist' },
-            'code-2': { x: -7, y: 4.5, team: 'Engineering', level: 'specialist' },
-            'code-3': { x: -4, y: 4.5, team: 'Engineering', level: 'specialist' },
-            // Design team
-            forge: { x: 3, y: -3, team: 'Design', level: 'team-lead' },
-            pixel: { x: 6, y: -3, team: 'Design', level: 'team-lead' },
-            'forge-2': { x: 3, y: -0.5, team: 'Design', level: 'specialist' },
-            'forge-3': { x: 6, y: -0.5, team: 'Design', level: 'specialist' },
-            // Research
-            glasses: { x: -3, y: -2, team: 'Research', level: 'team-lead' },
-            // Content
-            quill: { x: -2, y: 3, team: 'Content', level: 'specialist' },
-            // Marketing
-            gary: { x: 2, y: 3, team: 'Marketing', level: 'specialist' },
-            larry: { x: 4, y: 4, team: 'Marketing', level: 'specialist' },
-            buzz: { x: 6, y: 4, team: 'Marketing', level: 'specialist' },
-            // Operations
-            sentry: { x: -4, y: -1, team: 'Operations', level: 'team-lead' },
-            cipher: { x: -3, y: 2, team: 'Security', level: 'specialist' },
-            // QA
-            audit: { x: 3, y: -2, team: 'Quality', level: 'team-lead' },
-            // Sales
-            dealflow: { x: 4, y: -3, team: 'Sales', level: 'team-lead' },
-            coldcall: { x: 7, y: -2, team: 'Sales', level: 'specialist' },
-            // Intel
-            scout: { x: 2, y: -4, team: 'Intelligence', level: 'team-lead' },
-            pie: { x: 5, y: -5, team: 'Intelligence', level: 'specialist' }
+        // Zone colors for environment reaction
+        const ZONE_COLORS = {
+            command: '#ffd700',
+            nexus: '#00d4ff',
+            backend: '#22c55e',
+            frontend: '#f97316',
+            design: '#a855f7',
+            research: '#3b82f6',
+            content: '#ec4899',
+            marketing: '#f59e0b',
+            devops: '#ef4444',
+            qa: '#8b5cf6',
+            security: '#6366f1',
+            sales: '#10b981',
+            intel: '#00d4ff',
+            ai: '#8b5cf6',
+            general: '#888'
         };
         
         // ============================================
-        // DRAWING FUNCTIONS
+        // API INTEGRATION - LIVE DATA
         // ============================================
         
-        function drawFloor() {
-            for (let x = -12; x <= 12; x += 2) {
-                for (let y = -12; y <= 12; y += 2) {
-                    const p1 = toIso(x, y, 0);
-                    const p2 = toIso(x + 2, y, 0);
-                    const p3 = toIso(x + 2, y + 2, 0);
-                    const p4 = toIso(x, y + 2, 0);
-                    
-                    ctx.fillStyle = ((x + y) / 2) % 2 === 0 ? '#d4c4a8' : '#c4b498';
-                    ctx.beginPath();
-                    ctx.moveTo(p1.x, p1.y);
-                    ctx.lineTo(p2.x, p2.y);
-                    ctx.lineTo(p3.x, p3.y);
-                    ctx.lineTo(p4.x, p4.y);
-                    ctx.closePath();
-                    ctx.fill();
-                    
-                    ctx.strokeStyle = 'rgba(139, 115, 85, 0.2)';
-                    ctx.lineWidth = 1;
-                    ctx.stroke();
-                }
-            }
-        }
-        
-        function drawIsoRect(x, y, z, w, d, h, color) {
-            const p1 = toIso(x, y, z);
-            const p2 = toIso(x + w, y, z);
-            const p3 = toIso(x + w, y + d, z);
-            const p4 = toIso(x, y + d, z);
-            const p5 = toIso(x, y, z + h);
-            const p6 = toIso(x + w, y, z + h);
-            const p7 = toIso(x + w, y + d, z + h);
-            const p8 = toIso(x, y + d, z + h);
-            
-            // Top face
-            ctx.fillStyle = color;
-            ctx.beginPath();
-            ctx.moveTo(p5.x, p5.y);
-            ctx.lineTo(p6.x, p6.y);
-            ctx.lineTo(p7.x, p7.y);
-            ctx.lineTo(p8.x, p8.y);
-            ctx.closePath();
-            ctx.fill();
-            ctx.strokeStyle = 'rgba(0,0,0,0.2)';
-            ctx.lineWidth = 1;
-            ctx.stroke();
-            
-            // Front face
-            ctx.fillStyle = shadeColor(color, -20);
-            ctx.beginPath();
-            ctx.moveTo(p1.x, p1.y);
-            ctx.lineTo(p2.x, p2.y);
-            ctx.lineTo(p6.x, p6.y);
-            ctx.lineTo(p5.x, p5.y);
-            ctx.closePath();
-            ctx.fill();
-            ctx.stroke();
-            
-            // Side face
-            ctx.fillStyle = shadeColor(color, -40);
-            ctx.beginPath();
-            ctx.moveTo(p2.x, p2.y);
-            ctx.lineTo(p3.x, p3.y);
-            ctx.lineTo(p7.x, p7.y);
-            ctx.lineTo(p6.x, p6.y);
-            ctx.closePath();
-            ctx.fill();
-            ctx.stroke();
-        }
-        
-        function drawCommanderDesk(x, y) {
-            drawIsoRect(x, y, 0, 4, 3, 1.5, '#8b6914');
-            drawIsoRect(x + 0.2, y + 0.2, 1.5, 3.6, 2.6, 0.2, '#ffd700');
-            drawIsoRect(x + 1, y + 0.5, 1.7, 0.8, 0.3, 0.6, '#2d3436');
-            drawIsoRect(x + 1.1, y + 0.6, 2.3, 0.6, 0.1, 0.4, '#00d4ff');
-            
-            const pos = toIso(x + 2, y + 1.5, 2.5);
-            ctx.font = 'bold 20px Arial';
-            ctx.textAlign = 'center';
-            ctx.fillText('👑', pos.x, pos.y);
-        }
-        
-        function drawNexusDesk(x, y) {
-            drawIsoRect(x, y, 0, 4, 3, 1.5, '#4a5568');
-            drawIsoRect(x + 0.2, y + 0.2, 1.5, 3.6, 2.6, 0.2, '#00d4ff');
-            drawIsoRect(x + 0.5, y + 0.3, 1.7, 1, 0.2, 0.8, '#2d3436');
-            drawIsoRect(x + 1.8, y + 0.3, 1.7, 1, 0.2, 0.8, '#2d3436');
-            drawIsoRect(x + 0.5, y + 1.5, 1.7, 1, 0.2, 0.8, '#2d3436');
-            
-            const pos = toIso(x + 2, y + 1.5, 2.5);
-            ctx.font = 'bold 20px Arial';
-            ctx.textAlign = 'center';
-            ctx.fillText('🤖', pos.x, pos.y);
-        }
-        
-        function drawAgentDesk(x, y, color) {
-            drawIsoRect(x, y, 0, 2.5, 2, 1, '#8b7355');
-            drawIsoRect(x + 0.1, y + 0.1, 1, 2.3, 1.8, 0.15, color);
-            drawIsoRect(x + 0.3, y + 0.3, 1.15, 0.6, 0.15, 0.4, '#2d3436');
-            drawIsoRect(x + 0.35, y + 0.35, 1.55, 0.5, 0.05, 0.3, '#74b9ff');
-        }
-        
-        function drawMeetingTable(x, y) {
-            drawIsoRect(x, y, 0, 5, 3, 0.8, '#5c4a3a');
-            drawIsoRect(x + 0.2, y + 0.2, 0.8, 4.6, 2.6, 0.1, '#8b7355');
-            
-            const chairPositions = [
-                [x - 1, y + 1], [x + 5, y + 1],
-                [x + 1, y - 1], [x + 3, y - 1],
-                [x + 1, y + 3], [x + 3, y + 3]
-            ];
-            
-            chairPositions.forEach(pos => {
-                drawIsoRect(pos[0], pos[1], 0, 0.8, 0.8, 0.6, '#6b5a45');
-            });
-            
-            const centerPos = toIso(x + 2.5, y + 1.5, 1);
-            ctx.font = 'bold 10px "Press Start 2P"';
-            ctx.fillStyle = '#fff';
-            ctx.textAlign = 'center';
-            ctx.fillText('📢 MEETING', centerPos.x, centerPos.y);
-        }
-        
-        function drawPingPongTable(x, y) {
-            drawIsoRect(x, y, 0, 4, 2.5, 0.8, '#2d3436');
-            drawIsoRect(x + 0.1, y + 0.1, 0.8, 3.8, 2.3, 0.1, '#00b894');
-            drawIsoRect(x + 1.9, y, 0.9, 0.2, 2.5, 0.4, '#fff');
-            
-            const labelPos = toIso(x + 2, y - 0.5, 0.5);
-            ctx.font = '8px "Press Start 2P"';
-            ctx.fillStyle = '#fff';
-            ctx.fillText('PING PONG', labelPos.x, labelPos.y);
-        }
-        
-        function drawPlant(x, y, size = 1) {
-            drawIsoRect(x, y, 0, 0.8 * size, 0.8 * size, 0.6 * size, '#8b4513');
-            const plantPos = toIso(x + 0.4, y + 0.4, 0.6 * size);
-            ctx.font = `${20 * size}px Arial`;
-            ctx.textAlign = 'center';
-            ctx.fillText('🪴', plantPos.x, plantPos.y);
-        }
-        
-        // ============================================
-        // MAIN DRAW LOOP
-        // ============================================
-        
-        function drawOffice() {
-            // Clear canvas
-            ctx.fillStyle = '#2d3436';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
-            drawFloor();
-            
-            // Plants
-            drawPlant(-9, -9, 1.2);
-            drawPlant(8, -9, 1);
-            drawPlant(-9, 8, 1);
-            drawPlant(8, 8, 1.2);
-            drawPlant(-5, -9, 0.8);
-            drawPlant(4, 8, 0.8);
-            
-            // Commander desk
-            drawCommanderDesk(-8, -6);
-            
-            // Nexus desk
-            drawNexusDesk(4, -6);
-            
-            // Meeting table
-            drawMeetingTable(-2.5, -1.5);
-            
-            // Ping pong table
-            drawPingPongTable(3, 4);
-            
-            // Agent desks by team
-            const teamColors = {
-                'Engineering': '#22c55e',
-                'Design': '#f97316',
-                'Research': '#3b82f6',
-                'Content': '#ec4899',
-                'Marketing': '#f59e0b',
-                'Operations': '#22c55e',
-                'Quality': '#8b5cf6',
-                'Sales': '#10b981',
-                'Intelligence': '#00d4ff',
-                'Security': '#6366f1'
-            };
-            
-            // Draw team desks
-            Object.entries(OFFICE_LAYOUT).forEach(([id, layout]) => {
-                if (id !== 'ericf' && id !== 'nexus') {
-                    const color = teamColors[layout.team] || '#8b7355';
-                    drawAgentDesk(layout.x, layout.y, color);
-                }
-            });
-            
-            // Draw agents (sorted by Y for proper depth)
-            const sortedAgents = Array.from(agents.values()).sort((a, b) => a.y - b.y);
-            sortedAgents.forEach(agent => {
-                const pos = toIso(agent.x, agent.y, 0);
-                agent.draw(ctx, pos.x, pos.y);
-            });
-        }
-        
-        // ============================================
-        // ANIMATION LOOP (60fps)
-        // ============================================
-        
-        function animate(currentTime) {
-            const deltaTime = currentTime - lastTime;
-            lastTime = currentTime;
-            
-            // Calculate FPS
-            frameCount++;
-            if (currentTime - lastFpsTime >= 1000) {
-                fps = frameCount;
-                frameCount = 0;
-                lastFpsTime = currentTime;
-                document.getElementById('fpsCounter').textContent = fps;
-            }
-            
-            if (!isPaused) {
-                // Update agents
-                agents.forEach(agent => agent.update(deltaTime));
-                
-                // Handle follow camera
-                if (followAgent && agents.has(followAgent)) {
-                    const agent = agents.get(followAgent);
-                    const targetPos = toIso(agent.x, agent.y, 0);
-                    const centerX = canvas.width / 2;
-                    const centerY = canvas.height / 2;
-                    offsetX += (centerX - targetPos.x) * 0.05;
-                    offsetY += (centerY - targetPos.y) * 0.05;
-                }
-            }
-            
-            drawOffice();
-            requestAnimationFrame(animate);
-        }
-        
-        // ============================================
-        // API INTEGRATION
-        // ============================================
-        
-        async function fetchAgents() {
+        async function fetchFromAPI(endpoint) {
             try {
-                const response = await fetch('/api/agents');
-                const data = await response.json();
-                
-                if (data.success && data.agents) {
-                    AGENTS_DATA = data.agents.map(agent => ({
-                        ...agent,
-                        color: getAgentColor(agent.id),
-                        emoji: getAgentEmoji(agent.id),
-                        team: getAgentTeam(agent.id),
-                        level: getAgentLevel(agent.id),
-                        ...OFFICE_LAYOUT[agent.id]
-                    }));
-                    
-                    // Update or create agent instances
-                    AGENTS_DATA.forEach(data => {
-                        if (agents.has(data.id)) {
-                            const agent = agents.get(data.id);
-                            agent.status = data.status;
-                            agent.tasksCompleted = data.tasksCompleted;
-                            agent.tokensUsed = data.tokensUsed;
-                            agent.successRate = data.successRate;
-                            agent.lastActive = data.lastActive;
-                        } else {
-                            agents.set(data.id, new Agent(data));
-                        }
-                    });
-                    
-                    updateUI();
-                    addActivity('🔄', 'System', `loaded ${AGENTS_DATA.length} agents from API`, 'system');
-                }
+                const response = await fetch(`${API_CONFIG.baseUrl}${endpoint}`);
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                return await response.json();
             } catch (error) {
-                console.error('Failed to fetch agents:', error);
-                addActivity('❌', 'System', 'failed to load agents from API', 'error');
+                console.warn(`API fetch failed for ${endpoint}:`, error.message);
+                return null;
+            }
+        }
+        
+        async function syncWithAPI(force = false) {
+            updateLoadingStatus('Syncing with live data...');
+            updateConnectionStatus('connecting', 'Syncing...');
+            
+            const data = await fetchFromAPI(API_CONFIG.endpoints.pixelOfficeData + (force ? '?refresh=true' : ''));
+            
+            if (data && data.success) {
+                state.liveData = data;
+                updateAgentsFromLiveData(data.agents);
+                updateSystemLoad(data.systemLoad);
+                updateSummary(data.summary);
+                addRecentActivity(data.recentActivity);
+                
+                state.apiConnected = true;
+                state.lastApiFetch = Date.now();
+                updateConnectionStatus('connected', 'Live');
+                updateLoadingStatus('Live data connected!');
+                
+                // Add system activity
+                if (!force) {
+                    addActivity('system', 'Nexus', `Synced ${data.agents.length} agents`);
+                }
+            } else {
+                state.apiConnected = false;
+                updateConnectionStatus('error', 'Offline Mode');
+                updateLoadingStatus('Using fallback data');
                 
                 // Use fallback data
-                initializeFallbackAgents();
-            }
-        }
-        
-        async function fetchTasks() {
-            try {
-                const response = await fetch('/api/tasks?limit=100');
-                const data = await response.json();
-                
-                if (data.success && data.tasks) {
-                    TASKS_DATA = data.tasks;
-                    addActivity('📋', 'System', `loaded ${TASKS_DATA.length} tasks`, 'system');
+                if (!office.agents.length) {
+                    initFallbackAgents();
                 }
-            } catch (error) {
-                console.error('Failed to fetch tasks:', error);
             }
+            
+            renderAgentList();
         }
         
-        async function fetchActivityLogs() {
-            try {
-                const response = await fetch('/api/logs/activity?limit=20');
-                const data = await response.json();
+        function updateAgentsFromLiveData(agents) {
+            if (!agents || !Array.isArray(agents)) return;
+            
+            agents.forEach(liveAgent => {
+                let agent = office.agents.find(a => a.id === liveAgent.id);
                 
-                if (data.success && data.logs) {
-                    ACTIVITY_LOGS = data.logs;
-                    
-                    // Add recent logs to activity panel
-                    data.logs.slice(0, 5).forEach(log => {
-                        const emoji = getActivityEmoji(log.type);
-                        addActivity(emoji, log.agent, log.message, log.type);
-                    });
+                if (!agent) {
+                    // Create new agent
+                    agent = {
+                        id: liveAgent.id,
+                        name: liveAgent.name,
+                        role: liveAgent.role,
+                        emoji: liveAgent.emoji,
+                        color: liveAgent.color,
+                        pixelX: (liveAgent.position?.x || 10) * TILE_WIDTH,
+                        pixelY: (liveAgent.position?.y || 10) * TILE_HEIGHT,
+                        targetX: (liveAgent.position?.x || 10) * TILE_WIDTH,
+                        targetY: (liveAgent.position?.y || 10) * TILE_HEIGHT,
+                        direction: Math.floor(Math.random() * 4),
+                        isMoving: false,
+                        walkCycle: 0,
+                        speechBubble: null,
+                        speechTimer: 0,
+                        activityTimer: Math.random() * 100
+                    };
+                    office.agents.push(agent);
                 }
-            } catch (error) {
-                console.error('Failed to fetch activity logs:', error);
-            }
+                
+                // Update live data
+                agent.status = liveAgent.status;
+                agent.activity = liveAgent.activity;
+                agent.activityType = liveAgent.activityType;
+                agent.animation = liveAgent.animation;
+                agent.intensity = liveAgent.intensity;
+                agent.tasks = liveAgent.tasks;
+                agent.tokens = liveAgent.tokens;
+                agent.tokensToday = liveAgent.tokensToday;
+                agent.efficiency = liveAgent.efficiency;
+                agent.tasksCompleted = liveAgent.tasksCompleted;
+                agent.currentTask = liveAgent.currentTask;
+                agent.taskQueue = liveAgent.taskQueue;
+                agent.lastActive = liveAgent.lastActive;
+                agent.zone = liveAgent.position?.zone || 'general';
+                
+                // Update position if changed
+                const targetX = (liveAgent.position?.x || 10) * TILE_WIDTH;
+                const targetY = (liveAgent.position?.y || 10) * TILE_HEIGHT;
+                
+                if (Math.abs(agent.pixelX - targetX) > TILE_WIDTH || 
+                    Math.abs(agent.pixelY - targetY) > TILE_HEIGHT) {
+                    agent.targetX = targetX;
+                    agent.targetY = targetY;
+                    agent.isMoving = true;
+                }
+            });
+            
+            // Remove agents not in live data
+            office.agents = office.agents.filter(agent => 
+                agents.some(la => la.id === agent.id)
+            );
         }
         
-        function getAgentColor(id) {
-            const colors = {
-                ericf: '#ffd700', nexus: '#00d4ff', codemaster: '#22c55e',
-                'code-1': '#22c55e', 'code-2': '#22c55e', 'code-3': '#22c55e',
-                forge: '#f97316', 'forge-2': '#f97316', 'forge-3': '#f97316',
-                pixel: '#a855f7', glasses: '#3b82f6', quill: '#ec4899',
-                gary: '#f59e0b', larry: '#06b6d4', buzz: '#fbbf24',
-                sentry: '#22c55e', audit: '#8b5cf6', cipher: '#6366f1',
-                dealflow: '#10b981', coldcall: '#f97316', scout: '#00d4ff',
-                pie: '#8b5cf6'
-            };
-            return colors[id] || '#888888';
+        function updateSystemLoad(systemLoad) {
+            if (!systemLoad) return;
+            
+            state.systemLoad = systemLoad;
+            
+            const loadFill = document.getElementById('loadFill');
+            const loadText = document.getElementById('loadText');
+            
+            loadFill.style.width = `${systemLoad.percentage}%`;
+            loadFill.className = `load-fill ${systemLoad.level}`;
+            loadText.textContent = `${systemLoad.percentage}%`;
         }
         
-        function getAgentEmoji(id) {
-            const emojis = {
-                ericf: '👑', nexus: '🤖', codemaster: '💻',
-                'code-1': '⚡', 'code-2': '🔧', 'code-3': '🔌',
-                forge: '🔨', 'forge-2': '🎨', 'forge-3': '✨',
-                pixel: '🎨', glasses: '🔍', quill: '✍️',
-                gary: '📢', larry: '📱', buzz: '🐝',
-                sentry: '🛡️', audit: '🔍', cipher: '🔐',
-                dealflow: '🤝', coldcall: '📞', scout: '🔭',
-                pie: '🧠'
-            };
-            return emojis[id] || '🤖';
+        function updateSummary(summary) {
+            if (!summary) return;
+            document.getElementById('agentCount').textContent = summary.totalAgents || 0;
         }
         
-        function getAgentTeam(id) {
-            return OFFICE_LAYOUT[id]?.team || 'General';
+        function addRecentActivity(activities) {
+            if (!activities || !Array.isArray(activities)) return;
+            
+            activities.slice(-5).forEach(activity => {
+                if (activity.agent && activity.action) {
+                    addActivity(activity.type || 'working', activity.agent, activity.action);
+                }
+            });
         }
         
-        function getAgentLevel(id) {
-            return OFFICE_LAYOUT[id]?.level || 'specialist';
+        function updateConnectionStatus(status, text) {
+            const statusEl = document.getElementById('connectionStatus');
+            const textEl = document.getElementById('connectionText');
+            
+            statusEl.className = `connection-status ${status}`;
+            textEl.textContent = text;
         }
         
-        function getActivityEmoji(type) {
-            const emojis = {
-                task_start: '🚀', task_complete: '✅', research: '🔍',
-                write: '✍️', design: '🎨', code: '💻', deploy: '🚀',
-                audit: '🔍', security_scan: '🔒', system: '⚙️'
-            };
-            return emojis[type] || '📋';
+        function forceRefresh() {
+            syncWithAPI(true);
+            addActivity('system', 'User', 'Manual refresh triggered');
         }
         
-        function initializeFallbackAgents() {
-            const fallbackData = [
-                { id: 'ericf', name: 'EricF', role: 'Commander', status: 'active', tasksCompleted: 0, tokensUsed: 0, successRate: 100 },
-                { id: 'nexus', name: 'Nexus', role: 'Orchestrator', status: 'active', tasksCompleted: 45, tokensUsed: 8400000, successRate: 94 },
-                { id: 'codemaster', name: 'CodeMaster', role: 'Backend Lead', status: 'busy', tasksCompleted: 35, tokensUsed: 1200000, successRate: 93 },
-                { id: 'forge', name: 'Forge', role: 'UI Lead', status: 'active', tasksCompleted: 38, tokensUsed: 1350000, successRate: 93 },
-                { id: 'pixel', name: 'Pixel', role: 'Design Lead', status: 'active', tasksCompleted: 31, tokensUsed: 2500000, successRate: 92 },
-                { id: 'glasses', name: 'Glasses', role: 'Research Lead', status: 'active', tasksCompleted: 31, tokensUsed: 2000000, successRate: 94 },
-                { id: 'quill', name: 'Quill', role: 'Writer', status: 'idle', tasksCompleted: 27, tokensUsed: 380000, successRate: 89 },
-                { id: 'gary', name: 'Gary', role: 'Marketing', status: 'idle', tasksCompleted: 19, tokensUsed: 340000, successRate: 86 },
-                { id: 'sentry', name: 'Sentry', role: 'DevOps Lead', status: 'active', tasksCompleted: 42, tokensUsed: 560000, successRate: 96 },
-                { id: 'audit', name: 'Audit', role: 'QA Lead', status: 'active', tasksCompleted: 28, tokensUsed: 770000, successRate: 96 },
-                { id: 'dealflow', name: 'DealFlow', role: 'Sales Lead', status: 'busy', tasksCompleted: 52, tokensUsed: 7510000, successRate: 95 },
-                { id: 'scout', name: 'Scout', role: 'Intel Lead', status: 'active', tasksCompleted: 15, tokensUsed: 80000, successRate: 87 }
+        // ============================================
+        // FALLBACK AGENTS (when API is unavailable)
+        // ============================================
+        
+        function initFallbackAgents() {
+            const fallbackAgents = [
+                { id: 'ericf', name: 'EricF', role: 'Commander', emoji: '👑', color: '#ffd700', x: 10, y: 10, zone: 'command', status: 'active', activity: 'strategic_planning', animation: 'idle', intensity: 'low' },
+                { id: 'nexus', name: 'Nexus', role: 'Orchestrator', emoji: '🤖', color: '#00d4ff', x: 8, y: 8, zone: 'nexus', status: 'active', activity: 'monitoring', animation: 'idle', intensity: 'medium' },
+                { id: 'codemaster', name: 'CodeMaster', role: 'Backend Lead', emoji: '💻', color: '#22c55e', x: 6, y: 6, zone: 'backend', status: 'active', activity: 'coding', animation: 'typing', intensity: 'high' },
+                { id: 'code1', name: 'Code-1', role: 'Backend Dev', emoji: '⚡', color: '#22c55e', x: 5, y: 7, zone: 'backend', status: 'active', activity: 'api_fix', animation: 'typing', intensity: 'high' },
+                { id: 'code2', name: 'Code-2', role: 'Backend Dev', emoji: '🔧', color: '#22c55e', x: 7, y: 5, zone: 'backend', status: 'active', activity: 'debugging', animation: 'typing', intensity: 'high' },
+                { id: 'code3', name: 'Code-3', role: 'Backend Dev', emoji: '🔌', color: '#22c55e', x: 6, y: 8, zone: 'backend', status: 'active', activity: 'database', animation: 'typing', intensity: 'medium' },
+                { id: 'forge', name: 'Forge', role: 'UI/Frontend Lead', emoji: '🔨', color: '#f97316', x: 12, y: 6, zone: 'frontend', status: 'active', activity: 'design', animation: 'working', intensity: 'medium' },
+                { id: 'forge2', name: 'Forge-2', role: 'UI Developer', emoji: '🎨', color: '#f97316', x: 13, y: 5, zone: 'frontend', status: 'active', activity: 'component_design', animation: 'working', intensity: 'medium' },
+                { id: 'forge3', name: 'Forge-3', role: 'UI Developer', emoji: '✨', color: '#f97316', x: 11, y: 7, zone: 'frontend', status: 'active', activity: 'theme_integration', animation: 'working', intensity: 'medium' },
+                { id: 'pixel', name: 'Pixel', role: 'Designer', emoji: '🎨', color: '#a855f7', x: 14, y: 6, zone: 'design', status: 'active', activity: 'creating_assets', animation: 'working', intensity: 'medium' },
+                { id: 'glasses', name: 'Glasses', role: 'Researcher', emoji: '🔍', color: '#3b82f6', x: 4, y: 10, zone: 'research', status: 'active', activity: 'market_analysis', animation: 'idle', intensity: 'medium' },
+                { id: 'quill', name: 'Quill', role: 'Writer', emoji: '✍️', color: '#ec4899', x: 3, y: 12, zone: 'content', status: 'idle', activity: 'waiting', animation: 'idle', intensity: 'low' },
+                { id: 'gary', name: 'Gary', role: 'Marketing', emoji: '📢', color: '#f59e0b', x: 16, y: 8, zone: 'marketing', status: 'active', activity: 'campaign_planning', animation: 'idle', intensity: 'low' },
+                { id: 'larry', name: 'Larry', role: 'Social Media', emoji: '📱', color: '#06b6d4', x: 17, y: 9, zone: 'marketing', status: 'active', activity: 'scheduling', animation: 'idle', intensity: 'low' },
+                { id: 'buzz', name: 'Buzz', role: 'Social Media', emoji: '🐝', color: '#fbbf24', x: 15, y: 10, zone: 'marketing', status: 'active', activity: 'content_creation', animation: 'working', intensity: 'medium' },
+                { id: 'sentry', name: 'Sentry', role: 'DevOps', emoji: '🛡️', color: '#ef4444', x: 9, y: 12, zone: 'devops', status: 'active', activity: 'monitoring', animation: 'idle', intensity: 'low' },
+                { id: 'audit', name: 'Audit', role: 'QA Lead', emoji: '🔍', color: '#8b5cf6', x: 8, y: 14, zone: 'qa', status: 'active', activity: 'quality_review', animation: 'idle', intensity: 'medium' },
+                { id: 'cipher', name: 'Cipher', role: 'Security', emoji: '🔐', color: '#6366f1', x: 10, y: 14, zone: 'security', status: 'active', activity: 'security_audit', animation: 'idle', intensity: 'medium' },
+                { id: 'dealflow', name: 'DealFlow', role: 'Lead Gen', emoji: '🤝', color: '#10b981', x: 15, y: 12, zone: 'sales', status: 'active', activity: 'lead_research', animation: 'working', intensity: 'high' },
+                { id: 'coldcall', name: 'ColdCall', role: 'Outreach', emoji: '📞', color: '#f97316', x: 16, y: 13, zone: 'sales', status: 'idle', activity: 'waiting', animation: 'idle', intensity: 'low' },
+                { id: 'scout', name: 'Scout', role: 'Intel', emoji: '🔭', color: '#3b82f6', x: 5, y: 14, zone: 'intel', status: 'active', activity: 'competitor_intel', animation: 'idle', intensity: 'medium' },
+                { id: 'pie', name: 'PIE', role: 'Predictive AI', emoji: '🧠', color: '#8b5cf6', x: 10, y: 4, zone: 'ai', status: 'active', activity: 'data_analysis', animation: 'working', intensity: 'high' }
             ];
             
-            fallbackData.forEach(data => {
-                const fullData = {
-                    ...data,
-                    color: getAgentColor(data.id),
-                    emoji: getAgentEmoji(data.id),
-                    team: getAgentTeam(data.id),
-                    level: getAgentLevel(data.id),
-                    ...OFFICE_LAYOUT[data.id]
-                };
-                agents.set(data.id, new Agent(fullData));
-            });
-            
-            updateUI();
-        }
-        
-        // ============================================
-        // UI UPDATES
-        // ============================================
-        
-        function updateUI() {
-            document.getElementById('agentCount').textContent = `${agents.size} Agents • Isometric View`;
-            document.getElementById('liveAgentCount').textContent = agents.size;
-            document.getElementById('rosterCount').textContent = agents.size;
-            
-            renderAgentGrid();
-            renderHierarchyTable();
-        }
-        
-        function renderAgentGrid() {
-            const grid = document.getElementById('agentGrid');
-            grid.innerHTML = '';
-            
-            agents.forEach(agent => {
-                const div = document.createElement('div');
-                div.className = 'agent-mini' + (selectedAgent === agent.id ? ' selected' : '');
-                div.innerHTML = `
-                    <div class="agent-mini-emoji">${agent.emoji}</div>
-                    <div class="agent-mini-name">${agent.name}</div>
-                `;
-                div.onclick = () => selectAgent(agent.id);
-                grid.appendChild(div);
-            });
-        }
-        
-        function renderHierarchyTable() {
-            const tbody = document.getElementById('hierarchyBody');
-            if (!tbody) return;
-            
-            const levelOrder = { 'commander': 0, 'ai-lead': 1, 'team-lead': 2, 'specialist': 3 };
-            const sortedAgents = Array.from(agents.values()).sort((a, b) => levelOrder[a.level] - levelOrder[b.level]);
-            
-            const levels = [
-                { key: 'commander', label: 'Commander', class: 'level-commander' },
-                { key: 'ai-lead', label: 'AI Lead', class: 'level-ai-lead' },
-                { key: 'team-lead', label: 'Team Lead', class: 'level-team-lead' },
-                { key: 'specialist', label: 'Specialist', class: 'level-specialist' }
-            ];
-            
-            let html = '';
-            levels.forEach(level => {
-                const levelAgents = sortedAgents.filter(a => a.level === level.key);
-                levelAgents.forEach(agent => {
-                    const statusClass = agent.status === 'active' ? 'status-active' : 
-                                      agent.status === 'busy' ? 'status-busy' : 'status-idle';
-                    
-                    html += `
-                        <tr class="${agent.level}">
-                            <td><span class="level-badge ${level.class}">${level.label}</span></td>
-                            <td>
-                                <div class="hierarchy-agent">
-                                    <span class="hierarchy-emoji">${agent.emoji}</span>
-                                    <span class="hierarchy-name">${agent.name}</span>
-                                </div>
-                            </td>
-                            <td>${agent.role}</td>
-                            <td>${agent.team}</td>
-                            <td><span class="status-dot-table ${statusClass}"></span> ${agent.status}</td>
-                            <td>
-                                <button class="btn-locate" onclick="locateAgent('${agent.id}')">
-                                    🎯 Locate
-                                </button>
-                            </td>
-                        </tr>
-                    `;
-                });
-            });
-            
-            tbody.innerHTML = html;
-        }
-        
-        // ============================================
-        // INTERACTION
-        // ============================================
-        
-        function selectAgent(agentId) {
-            selectedAgent = agentId;
-            const agent = agents.get(agentId);
-            
-            if (agent) {
-                document.getElementById('selectedAgentName').textContent = agent.name;
-                document.getElementById('panelEmoji').textContent = agent.emoji;
-                document.getElementById('panelName').textContent = agent.name;
-                document.getElementById('panelRole').textContent = agent.role;
-                document.getElementById('panelStatus').textContent = agent.status;
-                document.getElementById('panelTasks').textContent = agent.tasksCompleted;
-                document.getElementById('panelTokens').textContent = formatNumber(agent.tokensUsed);
-                document.getElementById('panelSuccess').textContent = agent.successRate + '%';
-                document.getElementById('panelLastActive').textContent = formatTime(agent.lastActive);
-                document.getElementById('selectedAgentPanel').classList.add('active');
-                
-                renderAgentGrid();
-                
-                // Agent says hello
-                agent.say('Hello!');
-            }
-        }
-        
-        function closeSelectedPanel() {
-            document.getElementById('selectedAgentPanel').classList.remove('active');
-            selectedAgent = null;
-            document.getElementById('selectedAgentName').textContent = 'None';
-            renderAgentGrid();
-        }
-        
-        function locateAgent(agentId) {
-            const agent = agents.get(agentId);
-            if (!agent) return;
-            
-            selectAgent(agentId);
-            
-            // Animate camera to agent
-            const targetIso = toIso(agent.x, agent.y, 0);
-            const centerX = canvas.width / 2;
-            const centerY = canvas.height / 2;
-            const targetOffsetX = centerX - targetIso.x + offsetX;
-            const targetOffsetY = centerY - targetIso.y + offsetY;
-            
-            animateCamera(targetOffsetX, targetOffsetY);
-            addActivity('🎯', 'System', `centered camera on ${agent.name}`, 'system');
-        }
-        
-        function animateCamera(targetX, targetY) {
-            const startX = offsetX;
-            const startY = offsetY;
-            const duration = 500;
-            const startTime = performance.now();
-            
-            function animate(currentTime) {
-                const elapsed = currentTime - startTime;
-                const progress = Math.min(elapsed / duration, 1);
-                const ease = 1 - Math.pow(1 - progress, 3);
-                
-                offsetX = startX + (targetX - startX) * ease;
-                offsetY = startY + (targetY - startY) * ease;
-                
-                if (progress < 1) {
-                    requestAnimationFrame(animate);
-                }
-            }
-            
-            requestAnimationFrame(animate);
-        }
-        
-        // Canvas interactions
-        canvas.addEventListener('mousedown', (e) => {
-            const rect = canvas.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            
-            // Check if clicked on an agent
-            let clickedAgent = null;
-            agents.forEach(agent => {
-                const pos = toIso(agent.x, agent.y, 0);
-                const dist = Math.sqrt((x - pos.x) ** 2 + (y - pos.y) ** 2);
-                if (dist < 20) {
-                    clickedAgent = agent.id;
-                }
-            });
-            
-            if (clickedAgent) {
-                selectAgent(clickedAgent);
-            } else {
-                isDragging = true;
-                dragStartX = e.clientX - offsetX;
-                dragStartY = e.clientY - offsetY;
-            }
-        });
-        
-        canvas.addEventListener('mousemove', (e) => {
-            if (isDragging) {
-                offsetX = e.clientX - dragStartX;
-                offsetY = e.clientY - dragStartY;
-            }
-        });
-        
-        canvas.addEventListener('mouseup', () => {
-            isDragging = false;
-        });
-        
-        canvas.addEventListener('wheel', (e) => {
-            e.preventDefault();
-            scale += e.deltaY * -0.001;
-            scale = Math.max(0.5, Math.min(2, scale));
-        });
-        
-        // ============================================
-        // CONTROLS
-        // ============================================
-        
-        function toggleView() {
-            followAgent = followAgent ? null : 'nexus';
-            addActivity('👁️', 'System', followAgent ? 'following Nexus' : 'free camera mode', 'system');
-        }
-        
-        function resetView() {
-            offsetX = 0;
-            offsetY = 0;
-            scale = 1;
-            followAgent = null;
-            addActivity('🔄', 'System', 'camera reset', 'system');
-        }
-        
-        function togglePause() {
-            isPaused = !isPaused;
-            document.getElementById('pauseBtn').textContent = isPaused ? '▶️ RESUME' : '⏸️ PAUSE';
-            addActivity(isPaused ? '⏸️' : '▶️', 'System', isPaused ? 'animations paused' : 'animations resumed', 'system');
-        }
-        
-        function refreshData() {
-            fetchAgents();
-            fetchTasks();
-            fetchActivityLogs();
-        }
-        
-        // ============================================
-        // STANDUP FUNCTION
-        // ============================================
-        
-        async function startStandup() {
-            const modal = document.getElementById('standupModal');
-            const content = document.getElementById('standupContent');
-            
-            // Fetch real data
-            await fetchActivityLogs();
-            
-            const activeCount = Array.from(agents.values()).filter(a => a.status === 'active').length;
-            const busyCount = Array.from(agents.values()).filter(a => a.status === 'busy').length;
-            const idleCount = Array.from(agents.values()).filter(a => a.status === 'idle').length;
-            
-            const insights = generateInsights();
-            
-            let html = `
-                <div style="margin-bottom: 20px;">
-                    <h3 style="font-family: 'Press Start 2P'; font-size: 0.7rem; margin-bottom: 10px;">
-                        📊 AGENT STATUS OVERVIEW
-                    </h3>
-                    <div style="background: var(--bg-secondary); padding: 10px; border-radius: 8px;">
-                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 15px;">
-                            <div style="text-align: center;">
-                                <div style="font-size: 1.5rem; color: var(--accent-green);">${activeCount}</div>
-                                <div style="font-size: 0.7rem;">Active</div>
-                            </div>
-                            <div style="text-align: center;">
-                                <div style="font-size: 1.5rem; color: var(--accent-yellow);">${busyCount}</div>
-                                <div style="font-size: 0.7rem;">Busy</div>
-                            </div>
-                            <div style="text-align: center;">
-                                <div style="font-size: 1.5rem; color: var(--accent-pink);">${idleCount}</div>
-                                <div style="font-size: 0.7rem;">Idle</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div style="margin-bottom: 20px;">
-                    <h3 style="font-family: 'Press Start 2P'; font-size: 0.7rem; margin-bottom: 10px;">
-                        💡 AI-GENERATED INSIGHTS
-                    </h3>
-                    ${insights.map(insight => `
-                        <div class="insight-box" style="border-color: ${insight.type === 'urgent' ? 'var(--accent-pink)' : insight.type === 'blocker' ? 'var(--accent-yellow)' : 'var(--accent-green)'};">
-                            <div class="insight-title" style="color: ${insight.type === 'urgent' ? 'var(--accent-pink)' : insight.type === 'blocker' ? 'var(--accent-yellow)' : 'var(--accent-green)'};">
-                                ${insight.title}
-                            </div>
-                            <p style="margin: 10px 0; font-size: 0.9rem;">${insight.text}</p>
-                        </div>
-                    `).join('')}
-                </div>
-            `;
-            
-            content.innerHTML = html;
-            modal.classList.add('active');
-            
-            // Animate agents gathering at meeting table
-            animateStandup();
-        }
-        
-        function generateInsights() {
-            const insights = [];
-            const idleAgents = Array.from(agents.values()).filter(a => a.status === 'idle');
-            const highTokenAgents = Array.from(agents.values()).filter(a => a.tokensUsed > 1000000);
-            
-            if (idleAgents.length > 3) {
-                insights.push({
-                    type: 'blocker',
-                    title: '⚠️ Idle Agents Detected',
-                    text: `${idleAgents.length} agents are idle: ${idleAgents.map(a => a.name).join(', ')}`
-                });
-            }
-            
-            if (highTokenAgents.length > 0) {
-                insights.push({
-                    type: 'efficiency',
-                    title: '💰 High Token Usage',
-                    text: `${highTokenAgents.length} agents used >1M tokens. Consider optimization.`
-                });
-            }
-            
-            insights.push({
-                type: 'info',
-                title: '✅ System Status',
-                text: `All systems operational. ${agents.size} agents connected.`
-            });
-            
-            return insights;
-        }
-        
-        function animateStandup() {
-            // Move agents to meeting table
-            const meetingX = -2.5;
-            const meetingY = -1.5;
-            
-            agents.forEach((agent, index) => {
-                setTimeout(() => {
-                    const angle = (index / agents.size) * Math.PI * 2;
-                    const radius = 3;
-                    agent.moveTo(meetingX + Math.cos(angle) * radius, meetingY + Math.sin(angle) * radius);
-                    agent.say('Heading to standup!');
-                }, index * 100);
-            });
-            
-            // Return to desks after 10 seconds
-            setTimeout(() => {
-                agents.forEach(agent => agent.returnToDesk());
-            }, 10000);
-            
-            addActivity('📢', 'Nexus', 'started daily standup', 'system');
-        }
-        
-        function closeStandupModal() {
-            document.getElementById('standupModal').classList.remove('active');
-        }
-        
-        // ============================================
-        // ACTIVITY LOG
-        // ============================================
-        
-        function addActivity(emoji, agent, action, type = 'agent') {
-            const log = document.getElementById('activityLog');
-            const time = new Date().toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit' });
-            
-            const item = document.createElement('div');
-            item.className = 'activity-item';
-            item.innerHTML = `<span class="activity-time">${time}</span> ${emoji} <strong>${agent}</strong> ${action}`;
-            
-            log.insertBefore(item, log.firstChild);
-            while (log.children.length > 20) log.removeChild(log.lastChild);
-        }
-        
-        // ============================================
-        // UTILITIES
-        // ============================================
-        
-        function formatNumber(num) {
-            if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
-            if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
-            return num.toString();
-        }
-        
-        function formatTime(isoString) {
-            if (!isoString) return '-';
-            const date = new Date(isoString);
-            const now = new Date();
-            const diff = Math.floor((now - date) / 60000);
-            
-            if (diff < 1) return 'Just now';
-            if (diff < 60) return `${diff}m ago`;
-            if (diff < 1440) return `${Math.floor(diff / 60)}h ago`;
-            return `${Math.floor(diff / 1440)}d ago`;
+            office.agents = fallbackAgents.map(data => ({
+                ...data,
+                pixelX: data.x * TILE_WIDTH,
+                pixelY: data.y * TILE_HEIGHT,
+                targetX: data.x * TILE_WIDTH,
+                targetY: data.y * TILE_HEIGHT,
+                direction: Math.floor(Math.random() * 4),
+                isMoving: false,
+                walkCycle: 0,
+                speechBubble: null,
+                speechTimer: 0,
+                activityTimer: Math.random() * 100,
+                tokens: Math.floor(Math.random() * 50000) + 5000,
+                tokensToday: Math.floor(Math.random() * 5000) + 500,
+                tasks: Math.floor(Math.random() * 10) + 1,
+                tasksCompleted: Math.floor(Math.random() * 50) + 10,
+                efficiency: Math.floor(Math.random() * 30) + 70,
+                currentTask: null
+            }));
         }
         
         // ============================================
         // INITIALIZATION
         // ============================================
         
-        window.onload = function() {
-            // Initialize with fallback data first
-            initializeFallbackAgents();
+        function initOffice() {
+            // Generate floor tiles
+            for (let y = 0; y < GRID_SIZE; y++) {
+                for (let x = 0; x < GRID_SIZE; x++) {
+                    office.tiles.push({
+                        x, y,
+                        type: (x + y) % 2 === 0 ? 'floor1' : 'floor2'
+                    });
+                }
+            }
             
-            // Then try to fetch real data
-            fetchAgents();
-            fetchTasks();
-            fetchActivityLogs();
+            // Furniture with zone associations
+            office.furniture = [
+                { x: 5, y: 5, type: 'desk', zone: 'backend' }, 
+                { x: 6, y: 5, type: 'desk', zone: 'backend' },
+                { x: 5, y: 6, type: 'desk', zone: 'backend' }, 
+                { x: 6, y: 6, type: 'desk', zone: 'backend' },
+                { x: 12, y: 5, type: 'desk', zone: 'frontend' }, 
+                { x: 13, y: 5, type: 'desk', zone: 'frontend' },
+                { x: 12, y: 6, type: 'desk', zone: 'frontend' }, 
+                { x: 13, y: 6, type: 'desk', zone: 'frontend' },
+                { x: 8, y: 10, type: 'server', zone: 'devops' },
+                { x: 10, y: 2, type: 'conference', zone: 'command' },
+                { x: 10, y: 10, type: 'commander_desk', zone: 'command' },
+                { x: 8, y: 8, type: 'nexus_pod', zone: 'nexus' }
+            ];
             
-            // Start animation loop
-            requestAnimationFrame(animate);
+            // Standup seats
+            office.standupSeats = [
+                { x: 8, y: 3 }, { x: 9, y: 3 }, { x: 10, y: 3 }, { x: 11, y: 3 },
+                { x: 8, y: 4 }, { x: 11, y: 4 },
+                { x: 8, y: 5 }, { x: 9, y: 5 }, { x: 10, y: 5 }, { x: 11, y: 5 }
+            ];
+        }
+        
+        // ============================================
+        // ISOMETRIC RENDERING
+        // ============================================
+        
+        function toIso(x, y) {
+            return {
+                x: (x - y) * (TILE_WIDTH / 2),
+                y: (x + y) * (TILE_HEIGHT / 2)
+            };
+        }
+        
+        function fromIso(isoX, isoY) {
+            return {
+                x: (isoX / (TILE_WIDTH / 2) + isoY / (TILE_HEIGHT / 2)) / 2,
+                y: (isoY / (TILE_HEIGHT / 2) - isoX / (TILE_WIDTH / 2)) / 2
+            };
+        }
+        
+        // ============================================
+        // SPRITE RENDERING WITH LIVE ANIMATIONS
+        // ============================================
+        
+        function drawAgentSprite(agent, screenX, screenY, scale) {
+            const size = 20 * scale;
             
-            // Initial activities
-            setTimeout(() => addActivity('🤖', 'Nexus', 'initialized isometric office', 'system'), 500);
-            setTimeout(() => addActivity('👑', 'EricF', 'watching from commander desk', 'agent'), 1000);
+            // Animation offsets based on activity
+            let bounce = 0;
+            let typingOffset = 0;
+            
+            if (agent.animation === 'typing' && agent.intensity === 'high') {
+                // Fast typing animation
+                bounce = Math.sin(Date.now() / 50) * 1.5 * scale;
+                typingOffset = Math.sin(Date.now() / 30) * 2 * scale;
+            } else if (agent.animation === 'typing') {
+                // Normal typing
+                bounce = Math.sin(Date.now() / 100) * 1 * scale;
+                typingOffset = Math.sin(Date.now() / 60) * 1 * scale;
+            } else if (agent.isMoving) {
+                // Walking animation
+                bounce = Math.sin(agent.walkCycle * 0.5) * 3 * scale;
+            } else if (agent.animation === 'idle') {
+                // Idle breathing
+                bounce = Math.sin(Date.now() / 500) * 0.5 * scale;
+            } else if (agent.animation === 'meeting') {
+                // Meeting/talking animation
+                bounce = Math.sin(Date.now() / 200) * 1 * scale;
+            }
+            
+            const x = screenX + typingOffset;
+            const y = screenY - size - bounce;
+            
+            // Shadow
+            ctx.fillStyle = 'rgba(0,0,0,0.3)';
+            ctx.beginPath();
+            ctx.ellipse(screenX, screenY, size * 0.6, size * 0.2, 0, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Status glow for active agents
+            if (agent.status === 'active') {
+                const glowIntensity = agent.intensity === 'high' ? 0.4 : 0.2;
+                ctx.shadowColor = agent.color;
+                ctx.shadowBlur = 10 * glowIntensity;
+            }
+            
+            // Body color
+            const bodyColor = agent.color;
+            const darkColor = adjustColor(bodyColor, -30);
+            
+            // Body
+            ctx.fillStyle = bodyColor;
+            ctx.fillRect(x - size/2, y, size, size * 0.9);
+            
+            // Reset shadow
+            ctx.shadowBlur = 0;
+            
+            // Head
+            const headSize = size * 0.7;
+            const headY = y - headSize + 3;
+            ctx.fillStyle = '#ffdbac';
+            ctx.fillRect(x - headSize/2, headY, headSize, headSize);
+            
+            // Face - animated based on activity
+            ctx.fillStyle = '#333';
+            if (agent.animation === 'typing') {
+                // Focused expression - looking down
+                ctx.fillRect(x - 3, headY + 10, 2, 2);
+                ctx.fillRect(x + 1, headY + 10, 2, 2);
+            } else if (agent.animation === 'meeting') {
+                // Talking - mouth open
+                ctx.fillRect(x - 3, headY + 8, 2, 2);
+                ctx.fillRect(x + 1, headY + 8, 2, 2);
+                ctx.fillStyle = '#c44';
+                ctx.fillRect(x - 1, headY + 12, 2, 1);
+            } else {
+                // Normal
+                ctx.fillRect(x - 3, headY + 8, 2, 2);
+                ctx.fillRect(x + 1, headY + 8, 2, 2);
+            }
+            
+            // Hair/Hat
+            ctx.fillStyle = darkColor;
+            ctx.fillRect(x - headSize/2 - 1, headY - 2, headSize + 2, 4);
+            
+            // Arms - animated for typing
+            if (agent.animation === 'typing') {
+                ctx.fillStyle = bodyColor;
+                // Arms raised for typing
+                const armOffset = Math.sin(Date.now() / 40) * 2;
+                ctx.fillRect(x - size/2 - 3, y + 3 + armOffset, 3, size * 0.4);
+                ctx.fillRect(x + size/2, y + 3 - armOffset, 3, size * 0.4);
+            } else if (agent.isMoving) {
+                const walkOffset = Math.sin(agent.walkCycle) * 3 * scale;
+                ctx.fillStyle = bodyColor;
+                ctx.fillRect(x - size/2 - 3, y + 3 + walkOffset, 3, size * 0.4);
+                ctx.fillRect(x + size/2, y + 3 - walkOffset, 3, size * 0.4);
+            } else {
+                ctx.fillStyle = bodyColor;
+                ctx.fillRect(x - size/2 - 3, y + 3, 3, size * 0.4);
+                ctx.fillRect(x + size/2, y + 3, 3, size * 0.4);
+            }
+            
+            // Legs
+            if (agent.isMoving) {
+                const legOffset = Math.sin(agent.walkCycle) * 4 * scale;
+                ctx.fillStyle = '#333';
+                ctx.fillRect(x - size/3, y + size * 0.7, size/3 - 1, size * 0.3 + legOffset);
+                ctx.fillRect(x + 1, y + size * 0.7, size/3 - 1, size * 0.3 - legOffset);
+            } else {
+                ctx.fillStyle = '#333';
+                ctx.fillRect(x - size/3, y + size * 0.7, size/3 - 1, size * 0.3);
+                ctx.fillRect(x + 1, y + size * 0.7, size/3 - 1, size * 0.3);
+            }
+            
+            // Commander crown
+            if (agent.id === 'ericf') {
+                ctx.fillStyle = '#ffd700';
+                ctx.fillRect(x - 6, headY - 6, 12, 4);
+                ctx.fillRect(x - 4, headY - 10, 3, 4);
+                ctx.fillRect(x + 1, headY - 10, 3, 4);
+                
+                // Glow effect
+                ctx.shadowColor = '#ffd700';
+                ctx.shadowBlur = 15;
+                ctx.strokeStyle = '#ffd700';
+                ctx.strokeRect(x - size/2 - 1, y - 1, size + 2, size + headSize);
+                ctx.shadowBlur = 0;
+            }
+            
+            // Nexus AI pod glow
+            if (agent.id === 'nexus') {
+                ctx.shadowColor = '#00d4ff';
+                ctx.shadowBlur = 20;
+                ctx.fillStyle = 'rgba(0, 212, 255, 0.3)';
+                ctx.beginPath();
+                ctx.arc(x, y + size/2, size, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.shadowBlur = 0;
+            }
+        }
+        
+        function drawFurniture(fur, x, y, scale) {
+            const size = TILE_WIDTH * scale;
+            const zoneColor = ZONE_COLORS[fur.zone] || '#888';
+            
+            // Check if any agent in this zone is active
+            const zoneAgents = office.agents.filter(a => a.zone === fur.zone);
+            const hasActiveAgent = zoneAgents.some(a => a.status === 'active');
+            const activeIntensity = zoneAgents.reduce((sum, a) => 
+                sum + (a.status === 'active' ? (a.intensity === 'high' ? 3 : 1) : 0), 0);
+            
+            switch(fur.type) {
+                case 'desk':
+                    // Desk glows when agent is active
+                    if (hasActiveAgent) {
+                        ctx.shadowColor = zoneColor;
+                        ctx.shadowBlur = 5 + activeIntensity * 2;
+                    }
+                    ctx.fillStyle = '#8b7355';
+                    ctx.fillRect(x - size/2, y - size/4, size, size/2);
+                    
+                    // Computer screen
+                    const screenColor = hasActiveAgent ? zoneColor : '#333';
+                    ctx.fillStyle = screenColor;
+                    ctx.fillRect(x - 8, y - size/3 - 12, 16, 10);
+                    
+                    // Screen glow for active agents
+                    if (hasActiveAgent) {
+                        ctx.shadowColor = zoneColor;
+                        ctx.shadowBlur = 10;
+                        ctx.fillStyle = zoneColor;
+                        ctx.globalAlpha = 0.3 + (Math.sin(Date.now() / 200) * 0.2);
+                        ctx.fillRect(x - 8, y - size/3 - 12, 16, 10);
+                        ctx.globalAlpha = 1;
+                        ctx.shadowBlur = 0;
+                    }
+                    break;
+                    
+                case 'server':
+                    ctx.fillStyle = '#2d3748';
+                    ctx.fillRect(x - size/3, y - size/2, size/1.5, size);
+                    const blink = Math.sin(Date.now() / 150) > 0;
+                    ctx.fillStyle = blink ? '#22c55e' : '#166534';
+                    ctx.fillRect(x - size/3 + 3, y - size/2 + 3, 4, 4);
+                    break;
+                    
+                case 'conference':
+                    ctx.fillStyle = '#654321';
+                    ctx.fillRect(x - size, y - size/3, size * 2, size/1.5);
+                    break;
+                    
+                case 'commander_desk':
+                    // Special commander desk
+                    ctx.fillStyle = '#4a3728';
+                    ctx.fillRect(x - size, y - size/3, size * 2, size/1.5);
+                    // Commander glow
+                    ctx.shadowColor = '#ffd700';
+                    ctx.shadowBlur = 15;
+                    ctx.fillStyle = '#ffd700';
+                    ctx.globalAlpha = 0.2 + (Math.sin(Date.now() / 500) * 0.1);
+                    ctx.fillRect(x - size + 2, y - size/3 + 2, size * 2 - 4, size/1.5 - 4);
+                    ctx.globalAlpha = 1;
+                    ctx.shadowBlur = 0;
+                    break;
+                    
+                case 'nexus_pod':
+                    // Nexus AI pod with pulsing effect
+                    const pulse = 0.5 + (Math.sin(Date.now() / 300) * 0.3);
+                    ctx.shadowColor = '#00d4ff';
+                    ctx.shadowBlur = 20 * pulse;
+                    ctx.fillStyle = `rgba(0, 212, 255, ${0.3 + pulse * 0.3})`;
+                    ctx.beginPath();
+                    ctx.arc(x, y, size/2, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.shadowBlur = 0;
+                    break;
+            }
+            
+            ctx.shadowBlur = 0;
+        }
+        
+        function drawTile(tile, x, y, scale) {
+            const w = TILE_WIDTH * scale;
+            const h = TILE_HEIGHT * scale;
+            
+            // Zone highlighting based on system load
+            let baseColor = tile.type === 'floor1' ? '#1a1a2e' : '#252540';
+            
+            if (state.systemLoad.level === 'critical') {
+                // Red tint for critical load
+                baseColor = tile.type === 'floor1' ? '#2a1a1e' : '#352530';
+            } else if (state.systemLoad.level === 'high') {
+                // Orange tint for high load
+                baseColor = tile.type === 'floor1' ? '#2a201e' : '#352a25';
+            }
+            
+            ctx.fillStyle = baseColor;
+            ctx.beginPath();
+            ctx.moveTo(x, y - h/2);
+            ctx.lineTo(x + w/2, y);
+            ctx.lineTo(x, y + h/2);
+            ctx.lineTo(x - w/2, y);
+            ctx.closePath();
+            ctx.fill();
+            
+            ctx.strokeStyle = '#0f0f1a';
+            ctx.lineWidth = 1;
+            ctx.stroke();
+        }
+        
+        // ============================================
+        // ACTIVITY BAR & SPEECH BUBBLES
+        // ============================================
+        
+        function drawActivityBar(agent, x, y, scale) {
+            const w = 40 * scale;
+            const h = 4 * scale;
+            const bx = x - w/2;
+            const by = y - 50 * scale;
+            
+            // Background
+            ctx.fillStyle = 'rgba(0,0,0,0.8)';
+            ctx.fillRect(bx - 2, by - 14, w + 4, 22);
+            
+            // Name with emoji based on activity
+            ctx.fillStyle = '#fff';
+            ctx.font = `${Math.floor(7 * scale)}px 'Press Start 2P'`;
+            ctx.textAlign = 'center';
+            
+            const activityEmoji = {
+                typing: '⌨️',
+                working: '💻',
+                meeting: '📞',
+                idle: '☕',
+                walking: '🚶',
+                watching: '👁️'
+            }[agent.animation] || '💻';
+            
+            ctx.fillText(activityEmoji + ' ' + agent.name, x, by - 2);
+            
+            // Progress bar showing task completion
+            ctx.fillStyle = '#333';
+            ctx.fillRect(bx, by + 2, w, h);
+            
+            const colors = {
+                typing: '#00d4ff',
+                working: '#22c55e',
+                meeting: '#a855f7',
+                idle: '#fbbf24',
+                walking: '#f97316'
+            };
+            
+            ctx.fillStyle = colors[agent.animation] || '#00d4ff';
+            
+            // Animate progress based on activity
+            let progress = (agent.activityTimer % 100) / 100;
+            if (agent.currentTask) {
+                progress = agent.currentTask.progress / 100;
+            }
+            
+            ctx.fillRect(bx, by + 2, w * progress, h);
+            
+            // Intensity indicator
+            if (agent.intensity === 'high') {
+                ctx.fillStyle = '#ff2a6d';
+                ctx.fillRect(bx + w + 2, by + 2, 3, h);
+            }
+        }
+        
+        function drawSpeechBubble(agent, x, y, scale) {
+            if (!agent.speechBubble) return;
+            
+            ctx.font = `${Math.floor(8 * scale)}px 'VT323'`;
+            const text = agent.speechBubble;
+            const width = ctx.measureText(text).width + 12;
+            const height = 18 * scale;
+            const bx = x - width/2;
+            const by = y - 60 * scale - height;
+            
+            // Bubble background
+            ctx.fillStyle = 'rgba(255,255,255,0.95)';
+            ctx.fillRect(bx, by, width, height);
+            
+            // Border
+            ctx.strokeStyle = agent.color || '#333';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(bx, by, width, height);
+            
+            // Text
+            ctx.fillStyle = '#333';
+            ctx.textAlign = 'left';
+            ctx.fillText(text, bx + 6, by + 12 * scale);
+            
+            // Pointer
+            ctx.fillStyle = agent.color || '#333';
+            ctx.beginPath();
+            ctx.moveTo(x - 4, by + height);
+            ctx.lineTo(x + 4, by + height);
+            ctx.lineTo(x, by + height + 6);
+            ctx.closePath();
+            ctx.fill();
+        }
+        
+        // ============================================
+        // PARTICLES
+        // ============================================
+        
+        function createParticle(x, y, type, color) {
+            const colors = {
+                work: [color, '#22c55e'],
+                meeting: ['#a855f7', '#ec4899'],
+                completed: ['#22c55e', '#fbbf24'],
+                typing: ['#00d4ff', '#22c55e']
+            };
+            const colorSet = colors[type] || colors.work;
+            
+            return {
+                x, y,
+                vx: (Math.random() - 0.5) * 1.5,
+                vy: -Math.random() * 1.5 - 0.5,
+                life: 1,
+                decay: 0.02,
+                color: colorSet[Math.floor(Math.random() * colorSet.length)],
+                size: 2
+            };
+        }
+        
+        function updateParticles() {
+            office.particles = office.particles.filter(p => {
+                p.x += p.vx;
+                p.y += p.vy;
+                p.life -= p.decay;
+                return p.life > 0;
+            });
+        }
+        
+        function drawParticles() {
+            office.particles.forEach(p => {
+                ctx.globalAlpha = p.life;
+                ctx.fillStyle = p.color;
+                ctx.fillRect(p.x, p.y, p.size, p.size);
+            });
+            ctx.globalAlpha = 1;
+        }
+        
+        // ============================================
+        // RENDER LOOP
+        // ============================================
+        
+        function render() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            const cx = canvas.width / 2 + state.panX;
+            const cy = canvas.height / 2 + state.panY;
+            const scale = state.zoom;
+            
+            const renderList = [];
+            
+            // Collect tiles
+            office.tiles.forEach(tile => {
+                const iso = toIso(tile.x, tile.y);
+                renderList.push({
+                    type: 'tile',
+                    obj: tile,
+                    y: tile.y,
+                    screenX: cx + iso.x * scale,
+                    screenY: cy + iso.y * scale
+                });
+            });
+            
+            // Collect furniture
+            office.furniture.forEach(fur => {
+                const iso = toIso(fur.x, fur.y);
+                renderList.push({
+                    type: 'furniture',
+                    obj: fur,
+                    y: fur.y,
+                    screenX: cx + iso.x * scale,
+                    screenY: cy + iso.y * scale
+                });
+            });
+            
+            // Collect agents
+            office.agents.forEach(agent => {
+                const iso = toIso(agent.pixelX / TILE_WIDTH, agent.pixelY / TILE_HEIGHT);
+                renderList.push({
+                    type: 'agent',
+                    obj: agent,
+                    y: agent.pixelY / TILE_HEIGHT,
+                    screenX: cx + iso.x * scale,
+                    screenY: cy + iso.y * scale
+                });
+            });
+            
+            // Sort by depth
+            renderList.sort((a, b) => a.y - b.y);
+            
+            // Render
+            renderList.forEach(item => {
+                switch(item.type) {
+                    case 'tile':
+                        drawTile(item.obj, item.screenX, item.screenY, scale);
+                        break;
+                    case 'furniture':
+                        drawFurniture(item.obj, item.screenX, item.screenY, scale);
+                        break;
+                    case 'agent':
+                        drawAgentSprite(item.obj, item.screenX, item.screenY, scale);
+                        drawActivityBar(item.obj, item.screenX, item.screenY, scale);
+                        drawSpeechBubble(item.obj, item.screenX, item.screenY, scale);
+                        
+                        // Particles for active agents
+                        if (state.particlesEnabled && item.obj.status === 'active' && Math.random() < 0.02) {
+                            office.particles.push(createParticle(
+                                item.screenX, item.screenY - 25 * scale, 
+                                item.obj.animation, item.obj.color
+                            ));
+                        }
+                        break;
+                }
+            });
+            
+            if (state.particlesEnabled) drawParticles();
+            
+            // Standup highlight
+            if (state.standupMode) {
+                office.standupSeats.forEach(seat => {
+                    const iso = toIso(seat.x, seat.y);
+                    const x = cx + iso.x * scale;
+                    const y = cy + iso.y * scale;
+                    ctx.fillStyle = 'rgba(251, 191, 36, 0.2)';
+                    ctx.beginPath();
+                    ctx.moveTo(x, y - TILE_HEIGHT * scale / 2);
+                    ctx.lineTo(x + TILE_WIDTH * scale / 2, y);
+                    ctx.lineTo(x, y + TILE_HEIGHT * scale / 2);
+                    ctx.lineTo(x - TILE_WIDTH * scale / 2, y);
+                    ctx.closePath();
+                    ctx.fill();
+                });
+            }
+        }
+        
+        // ============================================
+        // GAME LOGIC - LIVE ACTIVITY
+        // ============================================
+        
+        function updateAgents(deltaTime) {
+            office.agents.forEach(agent => {
+                agent.walkCycle += deltaTime * 0.01;
+                agent.activityTimer += deltaTime * 0.01;
+                
+                // Decrease speech timer
+                if (agent.speechTimer > 0) {
+                    agent.speechTimer -= deltaTime;
+                    if (agent.speechTimer <= 0) {
+                        agent.speechBubble = null;
+                    }
+                }
+                
+                // Random speech bubbles for active agents
+                if (!agent.speechBubble && agent.status === 'active' && Math.random() < 0.0005) {
+                    const messages = {
+                        typing: ['Typing...', 'Coding...', 'On it!', 'Almost done!'],
+                        working: ['Working...', 'In progress', 'Designing...'],
+                        meeting: ['In meeting', 'Discussing...', 'On call'],
+                        idle: ['Waiting...', 'Taking a break', 'Ready!']
+                    };
+                    const msgs = messages[agent.animation] || ['Working...'];
+                    agent.speechBubble = msgs[Math.floor(Math.random() * msgs.length)];
+                    agent.speechTimer = 3000;
+                }
+                
+                // Movement logic
+                if (!agent.isMoving && Math.random() < 0.001) {
+                    const tx = agent.targetX + (Math.random() - 0.5) * TILE_WIDTH * 3;
+                    const ty = agent.targetY + (Math.random() - 0.5) * TILE_HEIGHT * 3;
+                    
+                    if (tx > 0 && tx < GRID_SIZE * TILE_WIDTH &&
+                        ty > 0 && ty < GRID_SIZE * TILE_HEIGHT) {
+                        agent.targetX = tx;
+                        agent.targetY = ty;
+                        agent.isMoving = true;
+                        
+                        const dx = tx - agent.pixelX;
+                        const dy = ty - agent.pixelY;
+                        agent.direction = Math.abs(dx) > Math.abs(dy) 
+                            ? (dx > 0 ? 2 : 1) 
+                            : (dy > 0 ? 0 : 3);
+                    }
+                }
+                
+                // Move agent
+                if (agent.isMoving) {
+                    const dx = agent.targetX - agent.pixelX;
+                    const dy = agent.targetY - agent.pixelY;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (dist < 1) {
+                        agent.isMoving = false;
+                        agent.pixelX = agent.targetX;
+                        agent.pixelY = agent.targetY;
+                    } else {
+                        const speed = agent.intensity === 'high' ? 0.8 : 0.5;
+                        agent.pixelX += (dx / dist) * speed;
+                        agent.pixelY += (dy / dist) * speed;
+                    }
+                }
+            });
+        }
+        
+        function gameLoop(currentTime) {
+            const deltaTime = currentTime - state.lastTime;
+            state.lastTime = currentTime;
+            
+            updateAgents(deltaTime);
+            updateParticles();
+            render();
+            
+            requestAnimationFrame(gameLoop);
+        }
+        
+        // ============================================
+        // INPUT HANDLING
+        // ============================================
+        
+        function getMousePos(evt) {
+            const rect = canvas.getBoundingClientRect();
+            return { x: evt.clientX - rect.left, y: evt.clientY - rect.top };
+        }
+        
+        function screenToWorld(sx, sy) {
+            const cx = canvas.width / 2 + state.panX;
+            const cy = canvas.height / 2 + state.panY;
+            return fromIso((sx - cx) / state.zoom, (sy - cy) / state.zoom);
+        }
+        
+        canvas.addEventListener('mousedown', e => {
+            state.isDragging = true;
+            state.lastMouseX = e.clientX;
+            state.lastMouseY = e.clientY;
+            
+            const pos = getMousePos(e);
+            const world = screenToWorld(pos.x, pos.y);
+            
+            office.agents.forEach(agent => {
+                const ax = agent.pixelX / TILE_WIDTH;
+                const ay = agent.pixelY / TILE_HEIGHT;
+                if (Math.hypot(world.x - ax, world.y - ay) < 0.7) {
+                    selectAgent(agent);
+                }
+            });
+        });
+        
+        canvas.addEventListener('mousemove', e => {
+            const pos = getMousePos(e);
+            
+            if (state.isDragging) {
+                state.panX += e.clientX - state.lastMouseX;
+                state.panY += e.clientY - state.lastMouseY;
+                state.lastMouseX = e.clientX;
+                state.lastMouseY = e.clientY;
+            }
+            
+            const world = screenToWorld(pos.x, pos.y);
+            let hovered = null;
+            
+            office.agents.forEach(agent => {
+                const ax = agent.pixelX / TILE_WIDTH;
+                const ay = agent.pixelY / TILE_HEIGHT;
+                if (Math.hypot(world.x - ax, world.y - ay) < 0.7) {
+                    hovered = agent;
+                }
+            });
+            
+            state.hoveredAgent = hovered;
+            updateTooltip(hovered, e.clientX, e.clientY);
+        });
+        
+        canvas.addEventListener('mouseup', () => state.isDragging = false);
+        canvas.addEventListener('mouseleave', () => {
+            state.isDragging = false;
+            state.hoveredAgent = null;
+            document.getElementById('tooltip').style.display = 'none';
+        });
+        
+        canvas.addEventListener('wheel', e => {
+            e.preventDefault();
+            const delta = e.deltaY > 0 ? 0.9 : 1.1;
+            state.zoom = Math.max(0.5, Math.min(3, state.zoom * delta));
+        });
+        
+        // Touch support
+        canvas.addEventListener('touchstart', e => {
+            e.preventDefault();
+            const t = e.touches[0];
+            state.isDragging = true;
+            state.lastMouseX = t.clientX;
+            state.lastMouseY = t.clientY;
+        });
+        
+        canvas.addEventListener('touchmove', e => {
+            e.preventDefault();
+            if (state.isDragging) {
+                const t = e.touches[0];
+                state.panX += t.clientX - state.lastMouseX;
+                state.panY += t.clientY - state.lastMouseY;
+                state.lastMouseX = t.clientX;
+                state.lastMouseY = t.clientY;
+            }
+        });
+        
+        canvas.addEventListener('touchend', () => state.isDragging = false);
+        
+        // ============================================
+        // UI FUNCTIONS
+        // ============================================
+        
+        function zoomIn() { state.zoom = Math.min(3, state.zoom * 1.2); }
+        function zoomOut() { state.zoom = Math.max(0.5, state.zoom / 1.2); }
+        function resetView() { state.zoom = 1; state.panX = 0; state.panY = 0; }
+        
+        function toggleStandup() {
+            state.standupMode = !state.standupMode;
+            
+            office.agents.forEach((agent, i) => {
+                if (state.standupMode && i < office.standupSeats.length) {
+                    const seat = office.standupSeats[i];
+                    agent.targetX = seat.x * TILE_WIDTH;
+                    agent.targetY = seat.y * TILE_HEIGHT;
+                    agent.isMoving = true;
+                    agent.animation = 'meeting';
+                } else if (!state.standupMode) {
+                    const pos = agent.position || { x: 10, y: 10 };
+                    agent.targetX = pos.x * TILE_WIDTH;
+                    agent.targetY = pos.y * TILE_HEIGHT;
+                    agent.isMoving = true;
+                    agent.animation = agent.activityType || 'idle';
+                }
+            });
+        }
+        
+        function togglePanel() {
+            document.getElementById('sidePanel').classList.toggle('open');
+        }
+        
+        function toggleParticles() {
+            state.particlesEnabled = !state.particlesEnabled;
+        }
+        
+        function selectAgent(agent) {
+            state.selectedAgent = agent;
+            agent.speechBubble = 'Yes, Commander?';
+            agent.speechTimer = 2000;
+            
+            // Update popup
+            showAgentPopup(agent);
+            
+            // Update list selection
+            document.querySelectorAll('.agent-list-item').forEach(el => {
+                el.classList.toggle('active', el.dataset.id === agent.id);
+            });
+        }
+        
+        function showAgentPopup(agent) {
+            const popup = document.getElementById('agentPopup');
+            const overlay = document.getElementById('popupOverlay');
+            
+            document.getElementById('popupAvatar').textContent = agent.emoji;
+            document.getElementById('popupAvatar').style.background = agent.color + '20';
+            document.getElementById('popupAvatar').style.borderColor = agent.color;
+            
+            document.getElementById('popupName').textContent = agent.name;
+            document.getElementById('popupRole').textContent = agent.role;
+            
+            document.getElementById('popupTokens').textContent = (agent.tokensToday || 0).toLocaleString();
+            document.getElementById('popupTasks').textContent = agent.tasksCompleted || 0;
+            document.getElementById('popupEfficiency').textContent = (agent.efficiency || 0) + '%';
+            
+            const statusEl = document.getElementById('popupStatus');
+            statusEl.textContent = agent.status === 'active' ? '●' : '○';
+            statusEl.style.color = agent.status === 'active' ? '#22c55e' : '#888';
+            
+            if (agent.currentTask) {
+                document.getElementById('popupTask').textContent = agent.currentTask.title;
+                document.getElementById('popupPriority').textContent = agent.currentTask.priority;
+                document.getElementById('popupPriority').className = 'popup-task-priority priority-' + agent.currentTask.priority;
+                document.getElementById('popupProgressText').textContent = agent.currentTask.progress + '%';
+                document.getElementById('popupProgressBar').style.width = agent.currentTask.progress + '%';
+            } else {
+                document.getElementById('popupTask').textContent = 'No active task';
+                document.getElementById('popupPriority').textContent = '';
+                document.getElementById('popupProgressText').textContent = '0%';
+                document.getElementById('popupProgressBar').style.width = '0%';
+            }
+            
+            popup.classList.add('active');
+            overlay.classList.add('active');
+        }
+        
+        function closePopup() {
+            document.getElementById('agentPopup').classList.remove('active');
+            document.getElementById('popupOverlay').classList.remove('active');
+        }
+        
+        function viewAgentWork() {
+            if (state.selectedAgent) {
+                window.open(`mission-control/dashboard/agent-data.html?agent=${state.selectedAgent.id}`, '_blank');
+            }
+        }
+        
+        function updateTooltip(agent, x, y) {
+            const tt = document.getElementById('tooltip');
+            if (agent) {
+                document.getElementById('tooltipTitle').textContent = agent.name;
+                document.getElementById('tooltipRole').textContent = agent.role;
+                
+                const taskText = agent.currentTask ? agent.currentTask.title : agent.activity;
+                document.getElementById('tooltipTask').textContent = taskText;
+                
+                const priorityEl = document.getElementById('tooltipPriority');
+                if (agent.currentTask) {
+                    priorityEl.textContent = agent.currentTask.priority;
+                    priorityEl.className = 'tooltip-priority priority-' + agent.currentTask.priority;
+                    priorityEl.style.display = 'inline-block';
+                } else {
+                    priorityEl.style.display = 'none';
+                }
+                
+                tt.style.display = 'block';
+                tt.style.left = (x + 10) + 'px';
+                tt.style.top = (y + 10) + 'px';
+            } else {
+                tt.style.display = 'none';
+            }
+        }
+        
+        function renderAgentList() {
+            const list = document.getElementById('agentList');
+            list.innerHTML = '';
+            
+            office.agents.forEach(agent => {
+                const item = document.createElement('div');
+                item.className = 'agent-list-item';
+                item.dataset.id = agent.id;
+                
+                const activityClass = agent.animation || 'idle';
+                
+                item.innerHTML = `
+                    <div class="agent-list-avatar" style="background: ${agent.color}20; border-color: ${agent.color};">
+                        ${agent.emoji}
+                        <div class="activity-indicator ${activityClass}"></div>
+                    </div>
+                    <div class="agent-list-info">
+                        <div class="agent-list-name">${agent.name}</div>
+                        <div class="agent-list-role">${agent.role}</div>
+                    </div>
+                    <div class="agent-list-status ${agent.status}"></div>
+                `;
+                
+                item.onclick = () => {
+                    selectAgent(agent);
+                    const iso = toIso(agent.pixelX / TILE_WIDTH, agent.pixelY / TILE_HEIGHT);
+                    state.panX = -iso.x * state.zoom;
+                    state.panY = -iso.y * state.zoom;
+                };
+                
+                list.appendChild(item);
+            });
+            
+            document.getElementById('agentCount').textContent = office.agents.length;
+        }
+        
+        function addActivity(type, agent, msg) {
+            const feed = document.getElementById('activityFeed');
+            const item = document.createElement('div');
+            item.className = 'activity-item';
+            
+            const icons = { 
+                working: '💻', 
+                meeting: '📞', 
+                completed: '✅', 
+                system: '⚡',
+                typing: '⌨️',
+                idle: '☕'
+            };
+            
+            const time = new Date().toLocaleTimeString('en-US', { 
+                hour: '2-digit', 
+                minute: '2-digit', 
+                hour12: false 
+            });
+            
+            item.innerHTML = `
+                <span>${icons[type] || '💻'}</span>
+                <div style="flex: 1;"><span class="activity-agent">${agent}</span> ${msg}</div>
+                <span class="activity-time">${time}</span>
+            `;
+            
+            feed.insertBefore(item, feed.firstChild);
+            while (feed.children.length > 15) feed.removeChild(feed.lastChild);
+        }
+        
+        function callStandup() {
+            toggleStandup();
+            addActivity('meeting', 'System', 'Daily standup ' + (state.standupMode ? 'started' : 'ended'));
+        }
+        
+        function findAgent() {
+            if (office.agents.length === 0) return;
+            const agent = office.agents[Math.floor(Math.random() * office.agents.length)];
+            selectAgent(agent);
+            const iso = toIso(agent.pixelX / TILE_WIDTH, agent.pixelY / TILE_HEIGHT);
+            state.panX = -iso.x * state.zoom;
+            state.panY = -iso.y * state.zoom;
+        }
+        
+        // ============================================
+        // UTILITIES
+        // ============================================
+        
+        function adjustColor(color, amount) {
+            const num = parseInt(color.replace('#', ''), 16);
+            const r = Math.min(255, Math.max(0, (num >> 16) + amount));
+            const g = Math.min(255, Math.max(0, ((num >> 8) & 0x00FF) + amount));
+            const b = Math.min(255, Math.max(0, (num & 0x0000FF) + amount));
+            return `#${((r << 16) | (g << 8) | b).toString(16).padStart(6, '0')}`;
+        }
+        
+        function resizeCanvas() {
+            canvas.width = container.clientWidth;
+            canvas.height = container.clientHeight;
+        }
+        
+        function updateLoadingStatus(text) {
+            document.getElementById('loadingStatus').textContent = text;
+        }
+        
+        // ============================================
+        // INIT
+        // ============================================
+        
+        async function init() {
+            // Loading animation
+            const progress = document.getElementById('loadingProgress');
+            let pct = 0;
+            const interval = setInterval(() => {
+                pct += 20;
+                progress.style.width = pct + '%';
+                if (pct >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        document.getElementById('loadingScreen').classList.add('hidden');
+                    }, 200);
+                }
+            }, 40);
+            
+            initOffice();
+            resizeCanvas();
+            
+            // Try to connect to API
+            updateLoadingStatus('Connecting to live data...');
+            await syncWithAPI();
+            
+            // Start loop
+            requestAnimationFrame(gameLoop);
             
             // Auto-refresh every 30 seconds
-            setInterval(refreshData, CONFIG.REFRESH_INTERVAL);
-        };
+            setInterval(() => {
+                syncWithAPI();
+            }, API_CONFIG.refreshInterval);
+            
+            // Periodic activity updates
+            setInterval(() => {
+                if (state.apiConnected && state.liveData) {
+                    const agents = state.liveData.agents.filter(a => a.status === 'active');
+                    if (agents.length > 0) {
+                        const agent = agents[Math.floor(Math.random() * agents.length)];
+                        const activities = ['updated task', 'committed code', 'reviewed PR', 'deployed feature'];
+                        addActivity('working', agent.name, activities[Math.floor(Math.random() * activities.length)]);
+                    }
+                }
+            }, 10000);
+            
+            window.addEventListener('resize', resizeCanvas);
+            
+            // Keyboard shortcuts
+            document.addEventListener('keydown', e => {
+                if (e.key === '+' || e.key === '=') zoomIn();
+                if (e.key === '-') zoomOut();
+                if (e.key === '0') resetView();
+                if (e.key === 'm' || e.key === 'M') toggleStandup();
+                if (e.key === 'r' || e.key === 'R') forceRefresh();
+                if (e.key === 'Escape') closePopup();
+            });
+        }
+        
+        window.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
 </html>
