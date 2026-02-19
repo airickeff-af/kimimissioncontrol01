@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎮 Pixel Office | Mission Control</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #1a1a2e;
+            --bg-secondary: #16213e;
+            --bg-card: #0f3460;
+            --panel-border: #e94560;
+            --panel-shadow: #533483;
+            --text-light: #f5e6c8;
+            --text-secondary: #a0a0a0;
+            --accent-cyan: #00d4ff;
+            --accent-green: #51cf66;
+            --accent-yellow: #fcc419;
+            --accent-pink: #ff6b9d;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; image-rendering: pixelated; }
+        
+        body {
+            font-family: 'VT323', monospace;
+            background: var(--bg-primary);
+            color: var(--text-light);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .header {
+            background: var(--bg-secondary);
+            border-bottom: 4px solid var(--panel-border);
+            padding: 0 1rem;
+            min-height: 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .brand { display: flex; align-items: center; gap: 0.75rem; }
+        
+        .logo {
+            width: 40px; height: 40px;
+            background: var(--panel-border);
+            border: 3px solid var(--text-light);
+            border-radius: 4px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.25rem;
+        }
+        
+        .brand-text h1 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.7rem;
+            color: var(--text-light);
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 15px;
+        }
+        
+        .office-wrapper {
+            position: relative;
+            background: var(--bg-card);
+            border: 4px solid var(--panel-border);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        #officeCanvas {
+            width: 100%;
+            height: 600px;
+            background: linear-gradient(135deg, #2d3436 0%, #1a1a2e 100%);
+            cursor: grab;
+            display: block;
+        }
+        
+        #officeCanvas:active { cursor: grabbing; }
+        
+        .controls {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            z-index: 10;
+        }
+        
+        .btn {
+            padding: 8px 14px;
+            background: var(--bg-secondary);
+            border: 3px solid var(--panel-border);
+            border-radius: 6px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.5rem;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: all 0.1s;
+        }
+        
+        .btn:hover { 
+            transform: translateY(-2px);
+            box-shadow: 0 4px 0 var(--panel-shadow);
+        }
+        
+        .btn-primary { background: var(--accent-green); border-color: var(--accent-green); color: #000; }
+        
+        .stats-bar {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0,0,0,0.7);
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.5rem;
+            z-index: 10;
+        }
+        
+        .info-panel {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .panel {
+            background: var(--bg-card);
+            border: 4px solid var(--panel-border);
+            border-radius: 8px;
+            padding: 15px;
+        }
+        
+        .panel-title {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.6rem;
+            color: var(--accent-cyan);
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--panel-border);
+        }
+        
+        .agent-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+            gap: 10px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        .agent-mini {
+            background: var(--bg-secondary);
+            border: 2px solid var(--panel-border);
+            border-radius: 6px;
+            padding: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .agent-mini:hover {
+            transform: scale(1.05);
+            border-color: var(--accent-cyan);
+        }
+        
+        .agent-mini-canvas {
+            width: 32px;
+            height: 32px;
+            margin: 0 auto;
+            image-rendering: pixelated;
+        }
+        
+        .agent-mini-name { 
+            font-size: 0.7rem; 
+            margin-top: 4px;
+            font-family: 'Press Start 2P', cursive;
+        }
+        
+        .agent-mini-role {
+            font-size: 0.6rem;
+            color: var(--text-secondary);
+        }
+        
+        .activity-list { 
+            max-height: 200px; 
+            overflow-y: auto; 
+            font-size: 0.9rem; 
+        }
+        
+        .activity-item {
+            padding: 8px;
+            margin-bottom: 5px;
+            background: var(--bg-secondary);
+            border-left: 3px solid var(--accent-cyan);
+            border-radius: 0 4px 4px 0;
+            font-size: 0.8rem;
+        }
+        
+        .activity-time { 
+            font-size: 0.7rem; 
+            color: var(--text-secondary);
+            font-family: 'Press Start 2P', cursive;
+        }
+        
+        /* Tooltip */
+        .agent-tooltip {
+            position: absolute;
+            background: rgba(0,0,0,0.9);
+            border: 2px solid var(--accent-cyan);
+            border-radius: 8px;
+            padding: 12px;
+            pointer-events: none;
+            z-index: 1000;
+            display: none;
+            min-width: 180px;
+        }
+        
+        .tooltip-name {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.6rem;
+            color: var(--accent-cyan);
+            margin-bottom: 6px;
+        }
+        
+        .tooltip-task {
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+        
+        .tooltip-status {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.6rem;
+            margin-top: 6px;
+            font-family: 'Press Start 2P', cursive;
+        }
+        
+        .status-idle { background: #666; }
+        .status-working { background: var(--accent-green); color: #000; }
+        .status-walking { background: var(--accent-yellow); color: #000; }
+        
+        @media (max-width: 768px) {
+            #officeCanvas { height: 400px; }
+            .info-panel { grid-template-columns: 1fr; }
+            .controls { position: relative; padding: 10px; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="brand">
+            <div class="logo">🎮</div>
+            <div class="brand-text">
+                <h1>PIXEL OFFICE</h1>
+            </div>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="office-wrapper">
+            <div class="controls">
+                <button class="btn btn-primary" onclick="startSimulation()">▶ START</button>
+                <button class="btn" onclick="resetCamera()">🔄 RESET</button>
+                <button class="btn" onclick="toggleDebug()">🐛 DEBUG</button>
+            </div>
+            
+            <div class="stats-bar">
+                <div>FPS: <span id="fpsCounter">60</span></div>
+                <div style="margin-top:4px">AGENTS: <span id="agentCounter">22</span></div>
+            </div>
+            
+            <canvas id="officeCanvas"></canvas>
+            
+            <div class="agent-tooltip" id="tooltip">
+                <div class="tooltip-name" id="tooltipName">Agent Name</div>
+                <div class="tooltip-task" id="tooltipTask">Current Task</div>
+                <span class="tooltip-status" id="tooltipStatus">Idle</span>
+            </div>
+        </div>
+        
+        <div class="info-panel">
+            <div class="panel">
+                <div class="panel-title">👥 AGENT ROSTER</div>
+                <div class="agent-grid" id="agentGrid"></div>
+            </div>
+            
+            <div class="panel">
+                <div class="panel-title">📡 LIVE ACTIVITY</div>
+                <div class="activity-list" id="activityLog"></div>
+            </div>
+            
+            <div class="panel">
+                <div class="panel-title">ℹ️ CONTROLS</div>
+                <div style="font-size:0.85rem;line-height:1.6">
+                    <p>🖱️ <strong>Drag</strong> to pan camera</p>
+                    <p>🔍 <strong>Scroll</strong> to zoom</p>
+                    <p>👆 <strong>Hover</strong> agents for info</p>
+                    <p>🎮 <strong>Click</strong> agents to select</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // AGENT DATA - All 22 agents with tasks
+        // ============================================
+        const AGENTS_DATA = [
+            { id: 'ericf', name: 'EricF', role: 'Commander', color: '#ffd700', x: -8, y: -6, task: 'Strategic Planning' },
+            { id: 'nexus', name: 'Nexus', role: 'Orchestrator', color: '#00d4ff', x: 4, y: -6, task: 'System Coordination' },
+            { id: 'codemaster', name: 'CodeMaster', role: 'Backend Lead', color: '#22c55e', x: -7, y: 2, task: 'API Architecture' },
+            { id: 'code-1', name: 'Code-1', role: 'Backend', color: '#22c55e', x: -4, y: 2, task: 'Database Optimization' },
+            { id: 'code-2', name: 'Code-2', role: 'Backend', color: '#22c55e', x: -7, y: 4.5, task: 'Microservices' },
+            { id: 'code-3', name: 'Code-3', role: 'Backend', color: '#22c55e', x: -4, y: 4.5, task: 'Security Patches' },
+            { id: 'forge', name: 'Forge', role: 'UI Lead', color: '#f97316', x: 3, y: -3, task: 'Component Library' },
+            { id: 'forge-2', name: 'Forge-2', role: 'UI', color: '#f97316', x: 6, y: -3, task: 'Responsive Design' },
+            { id: 'forge-3', name: 'Forge-3', role: 'UI', color: '#f97316', x: 3, y: -0.5, task: 'Animation System' },
+            { id: 'pixel', name: 'Pixel', role: 'Designer', color: '#a855f7', x: 6, y: -0.5, task: 'Sprite Creation' },
+            { id: 'glasses', name: 'Glasses', role: 'Researcher', color: '#3b82f6', x: 3, y: 2, task: 'Market Analysis' },
+            { id: 'quill', name: 'Quill', role: 'Writer', color: '#ec4899', x: 6, y: 2, task: 'Documentation' },
+            { id: 'gary', name: 'Gary', role: 'Marketing', color: '#f59e0b', x: -2, y: 6, task: 'Campaign Strategy' },
+            { id: 'larry', name: 'Larry', role: 'Social', color: '#06b6d4', x: 1, y: 6, task: 'Community Management' },
+            { id: 'buzz', name: 'Buzz', role: 'Social', color: '#fbbf24', x: 4, y: 6, task: 'Trend Analysis' },
+            { id: 'sentry', name: 'Sentry', role: 'DevOps', color: '#ef4444', x: -5, y: 7, task: 'CI/CD Pipeline' },
+            { id: 'audit', name: 'Audit', role: 'QA', color: '#8b5cf6', x: -2, y: 7, task: 'Code Review' },
+            { id: 'cipher', name: 'Cipher', role: 'Security', color: '#6366f1', x: 1, y: 7, task: 'Threat Detection' },
+            { id: 'dealflow', name: 'DealFlow', role: 'Lead Gen', color: '#10b981', x: 4, y: 7, task: 'Partnership Outreach' },
+            { id: 'coldcall', name: 'ColdCall', role: 'Outreach', color: '#f97316', x: -6, y: 6, task: 'Cold Emails' },
+            { id: 'scout', name: 'Scout', role: 'Intel', color: '#00d4ff', x: 7, y: 4, task: 'Competitor Research' },
+            { id: 'pie', name: 'PIE', role: 'Intelligence', color: '#8b5cf6', x: 7, y: 6, task: 'Data Analytics' },
+        ];
+
+        // Tasks for animation
+        const TASKS = [
+            'Coding', 'Reviewing', 'Testing', 'Deploying',
+            'Designing', 'Researching', 'Writing', 'Analyzing',
+            'Meeting', 'Debugging', 'Optimizing', 'Planning'
+        ];
+
+        // ============================================
+        // SPRITE LOADER - Loads 8-frame animations
+        // ============================================
+        class SpriteLoader {
+            constructor(basePath = '../pixel-office/assets/sprites/') {
+                this.basePath = basePath;
+                this.sprites = new Map();
+                this.metadata = null;
+                this.loaded = false;
+            }
+
+            async load() {
+                try {
+                    const response = await fetch(`${this.basePath}sprite_metadata.json`);
+                    this.metadata = await response.json();
+                } catch (error) {
+                    console.error('Failed to load metadata:', error);
+                    // Use default metadata
+                    this.metadata = {
+                        sprite_size: 16,
+                        frames_per_animation: 8,
+                        animations: { idle: 0, walk_down: 1, walk_up: 2, walk_left: 3, walk_right: 4, typing: 5, talking: 6 },
+                        agents: {}
+                    };
+                    AGENTS_DATA.forEach((agent, i) => {
+                        this.metadata.agents[agent.id] = { name: agent.name, row: i };
+                    });
+                }
+
+                // Load all agent sprites
+                const loadPromises = AGENTS_DATA.map(agent => this.loadAgentSprite(agent.id));
+                await Promise.all(loadPromises);
+                
+                this.loaded = true;
+            }
+
+            loadAgentSprite(agentId) {
+                return new Promise((resolve) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        const agentMeta = this.metadata.agents[agentId];
+                        this.sprites.set(agentId, {
+                            image: img,
+                            row: agentMeta ? agentMeta.row : 0
+                        });
+                        resolve();
+                    };
+                    img.onerror = () => {
+                        // Create fallback colored square
+                        const canvas = document.createElement('canvas');
+                        canvas.width = 128; // 8 frames * 16px
+                        canvas.height = 16;
+                        const ctx = canvas.getContext('2d');
+                        const agent = AGENTS_DATA.find(a => a.id === agentId);
+                        ctx.fillStyle = agent ? agent.color : '#888';
+                        ctx.fillRect(0, 0, 128, 16);
+                        // Draw simple face
+                        ctx.fillStyle = '#000';
+                        for (let i = 0; i < 8; i++) {
+                            ctx.fillRect(i * 16 + 4, 4, 2, 2);
+                            ctx.fillRect(i * 16 + 10, 4, 2, 2);
+                            ctx.fillRect(i * 16 + 5, 10, 6, 2);
+                        }
+                        const fallbackImg = new Image();
+                        fallbackImg.src = canvas.toDataURL();
+                        fallbackImg.onload = () => {
+                            this.sprites.set(agentId, { image: fallbackImg, row: 0 });
+                            resolve();
+                        };
+                    };
+                    img.crossOrigin = 'anonymous';
+                    img.src = `${this.basePath}${agentId}_sheet.png`;
+                });
+            }
+
+            getSprite(agentId, animation, frame) {
+                const sprite = this.sprites.get(agentId);
+                if (!sprite) return null;
+
+                const animIndex = this.metadata.animations[animation] || 0;
+                const framesPerAnim = this.metadata.frames_per_animation || 8;
+                const spriteSize = this.metadata.sprite_size || 16;
+                
+                const x = (animIndex * framesPerAnim + (Math.floor(frame) % framesPerAnim)) * spriteSize;
+                const y = sprite.row * spriteSize;
+
+                return {
+                    image: sprite.image,
+                    sx: x,
+                    sy: y,
+                    sw: spriteSize,
+                    sh: spriteSize
+                };
+            }
+        }
+
+        // ============================================
+        // AGENT CLASS - Individual animated agent
+        // ============================================
+        class Agent {
+            constructor(data) {
+                this.id = data.id;
+                this.name = data.name;
+                this.role = data.role;
+                this.color = data.color;
+                this.baseX = data.x;
+                this.baseY = data.y;
+                this.x = data.x;
+                this.y = data.y;
+                this.targetX = data.x;
+                this.targetY = data.y;
+                this.baseTask = data.task;
+                this.currentTask = data.task;
+                
+                // Animation state
+                this.animation = 'idle';
+                this.frame = 0;
+                this.frameTimer = 0;
+                this.frameDuration = 120 + Math.random() * 60; // 120-180ms per frame
+                
+                // Movement
+                this.speed = 1.5 + Math.random() * 1;
+                this.direction = 'down';
+                this.activity = 'idle';
+                this.walkTimer = 0;
+                this.idleTimer = 0;
+                
+                // Visual
+                this.scale = 2; // 32x32 display size (16px * 2)
+                this.selected = false;
+                this.hover = false;
+                
+                // Task progress
+                this.progress = 0;
+            }
+
+            update(dt) {
+                // Animation frame advancement
+                this.frameTimer += dt;
+                if (this.frameTimer >= this.frameDuration) {
+                    this.frameTimer = 0;
+                    this.frame = (this.frame + 1) % 8;
+                }
+
+                // Activity state machine
+                if (this.activity === 'idle') {
+                    this.idleTimer += dt;
+                    this.animation = 'idle';
+                    
+                    // Randomly start walking
+                    if (this.idleTimer > 3000 + Math.random() * 5000) {
+                        this.startWalking();
+                    }
+                } else if (this.activity === 'walking') {
+                    this.updateWalking(dt);
+                } else if (this.activity === 'working') {
+                    this.animation = 'typing';
+                    this.progress = (this.progress + dt * 0.0001) % 1;
+                }
+            }
+
+            startWalking() {
+                // Pick random nearby destination
+                const angle = Math.random() * Math.PI * 2;
+                const distance = 2 + Math.random() * 4;
+                this.targetX = this.baseX + Math.cos(angle) * distance;
+                this.targetY = this.baseY + Math.sin(angle) * distance;
+                
+                // Clamp to office bounds
+                this.targetX = Math.max(-10, Math.min(10, this.targetX));
+                this.targetY = Math.max(-8, Math.min(8, this.targetY));
+                
+                this.activity = 'walking';
+                
+                // Determine direction
+                const dx = this.targetX - this.x;
+                const dy = this.targetY - this.y;
+                if (Math.abs(dx) > Math.abs(dy)) {
+                    this.direction = dx > 0 ? 'right' : 'left';
+                } else {
+                    this.direction = dy > 0 ? 'down' : 'up';
+                }
+            }
+
+            updateWalking(dt) {
+                const dx = this.targetX - this.x;
+                const dy = this.targetY - this.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+
+                if (dist < 0.2) {
+                    // Arrived
+                    this.x = this.targetX;
+                    this.y = this.targetY;
+                    this.activity = 'working';
+                    this.currentTask = TASKS[Math.floor(Math.random() * TASKS.length)];
+                    this.walkTimer = 0;
+                } else {
+                    // Move
+                    const moveDist = this.speed * dt * 0.003;
+                    this.x += (dx / dist) * moveDist;
+                    this.y += (dy / dist) * moveDist;
+                    this.animation = `walk_${this.direction}`;
+                }
+            }
+
+            getScreenPos(isoMath, camera, canvas) {
+                const pos = isoMath.toScreen(this.x, this.y, 0);
+                return {
+                    x: (pos.x - camera.x) * camera.zoom,
+                    y: (pos.y - camera.y) * camera.zoom
+                };
+            }
+
+            render(ctx, spriteLoader, isoMath, camera, canvas) {
+                const screenPos = this.getScreenPos(isoMath, camera, canvas);
+                const size = 32 * camera.zoom;
+                
+                // Draw shadow
+                ctx.fillStyle = 'rgba(0,0,0,0.3)';
+                ctx.beginPath();
+                ctx.ellipse(screenPos.x, screenPos.y + size * 0.3, size * 0.4, size * 0.15, 0, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // Get sprite
+                const sprite = spriteLoader.getSprite(this.id, this.animation, this.frame);
+                if (sprite) {
+                    ctx.drawImage(
+                        sprite.image,
+                        sprite.sx, sprite.sy, sprite.sw, sprite.sh,
+                        screenPos.x - size / 2, screenPos.y - size, size, size
+                    );
+                }
+                
+                // Selection highlight
+                if (this.selected || this.hover) {
+                    ctx.strokeStyle = this.selected ? '#00d4ff' : '#fff';
+                    ctx.lineWidth = 2;
+                    ctx.strokeRect(screenPos.x - size/2 - 2, screenPos.y - size - 2, size + 4, size + 4);
+                }
+                
+                // Name label
+                if (this.hover || this.selected) {
+                    ctx.font = `${10 * camera.zoom}px 'Press Start 2P', monospace`;
+                    ctx.fillStyle = '#fff';
+                    ctx.textAlign = 'center';
+                    ctx.fillText(this.name, screenPos.x, screenPos.y - size - 8);
+                }
+            }
+
+            containsPoint(mx, my, isoMath, camera, canvas) {
+                const pos = this.getScreenPos(isoMath, camera, canvas);
+                const size = 32 * camera.zoom;
+                return mx >= pos.x - size/2 && mx <= pos.x + size/2 &&
+                       my >= pos.y - size && my <= pos.y;
+            }
+        }
+
+        // ============================================
+        // MAIN RENDERER
+        // ============================================
+        class OfficeRenderer {
+            constructor(canvas) {
+                this.canvas = canvas;
+                this.ctx = canvas.getContext('2d');
+                this.agents = new Map();
+                this.camera = { x: 0, y: 0, zoom: 1 };
+                this.running = false;
+                this.debug = false;
+                this.hoveredAgent = null;
+                
+                this.isoMath = {
+                    toScreen: (x, y, z) => ({
+                        x: (x - y) * 32 + this.canvas.width / 2,
+                        y: (x + y) * 16 - z * 16 + this.canvas.height / 3
+                    })
+                };
+                
+                this.setupCanvas();
+                this.setupInteractions();
+            }
+
+            setupCanvas() {
+                const resize = () => {
+                    const container = this.canvas.parentElement;
+                    this.canvas.width = container.clientWidth;
+                    this.canvas.height = window.innerWidth < 768 ? 400 : 600;
+                };
+                resize();
+                window.addEventListener('resize', resize);
+            }
+
+            setupInteractions() {
+                let isDragging = false;
+                let dragStartX, dragStartY;
+                
+                this.canvas.addEventListener('mousedown', (e) => {
+                    const rect = this.canvas.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    
+                    // Check if clicked on agent
+                    let clickedAgent = null;
+                    for (const agent of this.agents.values()) {
+                        if (agent.containsPoint(x, y, this.isoMath, this.camera, this.canvas)) {
+                            clickedAgent = agent;
+                            break;
+                        }
+                    }
+                    
+                    if (clickedAgent) {
+                        // Deselect others
+                        this.agents.forEach(a => a.selected = false);
+                        clickedAgent.selected = true;
+                        addActivity(clickedAgent.name, clickedAgent.currentTask);
+                    } else {
+                        isDragging = true;
+                        dragStartX = e.clientX;
+                        dragStartY = e.clientY;
+                    }
+                });
+                
+                this.canvas.addEventListener('mousemove', (e) => {
+                    const rect = this.canvas.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    
+                    // Update hover state
+                    let newHovered = null;
+                    for (const agent of this.agents.values()) {
+                        if (agent.containsPoint(x, y, this.isoMath, this.camera, this.canvas)) {
+                            newHovered = agent;
+                            break;
+                        }
+                    }
+                    
+                    if (newHovered !== this.hoveredAgent) {
+                        this.hoveredAgent = newHovered;
+                        this.updateTooltip(e.clientX, e.clientY);
+                    }
+                    
+                    if (this.hoveredAgent) {
+                        this.updateTooltip(e.clientX, e.clientY);
+                    }
+                    
+                    // Pan camera
+                    if (isDragging) {
+                        const dx = e.clientX - dragStartX;
+                        const dy = e.clientY - dragStartY;
+                        this.camera.x += dx / this.camera.zoom;
+                        this.camera.y += dy / this.camera.zoom;
+                        dragStartX = e.clientX;
+                        dragStartY = e.clientY;
+                    }
+                });
+                
+                this.canvas.addEventListener('mouseup', () => {
+                    isDragging = false;
+                });
+                
+                this.canvas.addEventListener('mouseleave', () => {
+                    this.hoveredAgent = null;
+                    document.getElementById('tooltip').style.display = 'none';
+                });
+                
+                // Zoom
+                this.canvas.addEventListener('wheel', (e) => {
+                    e.preventDefault();
+                    const factor = e.deltaY > 0 ? 0.9 : 1.1;
+                    const newZoom = Math.max(0.5, Math.min(3, this.camera.zoom * factor));
+                    this.camera.zoom = newZoom;
+                });
+            }
+
+            updateTooltip(clientX, clientY) {
+                const tooltip = document.getElementById('tooltip');
+                if (this.hoveredAgent) {
+                    tooltip.style.display = 'block';
+                    tooltip.style.left = (clientX + 15) + 'px';
+                    tooltip.style.top = (clientY + 15) + 'px';
+                    document.getElementById('tooltipName').textContent = this.hoveredAgent.name;
+                    document.getElementById('tooltipTask').textContent = this.hoveredAgent.currentTask;
+                    const statusEl = document.getElementById('tooltipStatus');
+                    statusEl.textContent = this.hoveredAgent.activity;
+                    statusEl.className = 'tooltip-status status-' + this.hoveredAgent.activity;
+                } else {
+                    tooltip.style.display = 'none';
+                }
+            }
+
+            addAgent(agentData) {
+                const agent = new Agent(agentData);
+                this.agents.set(agentData.id, agent);
+                return agent;
+            }
+
+            start() {
+                if (this.running) return;
+                this.running = true;
+                this.lastTime = performance.now();
+                this.loop();
+            }
+
+            loop() {
+                if (!this.running) return;
+                
+                const now = performance.now();
+                const dt = now - this.lastTime;
+                this.lastTime = now;
+                
+                this.update(dt);
+                this.render();
+                
+                requestAnimationFrame(() => this.loop());
+            }
+
+            update(dt) {
+                for (const agent of this.agents.values()) {
+                    agent.update(dt);
+                }
+            }
+
+            render() {
+                const ctx = this.ctx;
+                const canvas = this.canvas;
+                
+                // Clear
+                ctx.fillStyle = '#1a1a2e';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                // Draw floor grid
+                this.drawFloor();
+                
+                // Sort agents by depth (y + x)
+                const sortedAgents = Array.from(this.agents.values())
+                    .sort((a, b) => (a.y + a.x) - (b.y + b.x));
+                
+                // Draw agents
+                for (const agent of sortedAgents) {
+                    agent.render(ctx, spriteLoader, this.isoMath, this.camera, canvas);
+                }
+                
+                // Debug info
+                if (this.debug) {
+                    ctx.fillStyle = '#0f0';
+                    ctx.font = '12px monospace';
+                    ctx.fillText(`Camera: ${this.camera.x.toFixed(1)}, ${this.camera.y.toFixed(1)}, zoom: ${this.camera.zoom.toFixed(2)}`, 10, 20);
+                    ctx.fillText(`Agents: ${this.agents.size}`, 10, 40);
+                }
+            }
+
+            drawFloor() {
+                const ctx = this.ctx;
+                const size = 15;
+                
+                for (let x = -size; x <= size; x++) {
+                    for (let y = -size; y <= size; y++) {
+                        const pos = this.isoMath.toScreen(x, y, 0);
+                        const camX = (pos.x - this.camera.x) * this.camera.zoom;
+                        const camY = (pos.y - this.camera.y) * this.camera.zoom;
+                        
+                        const tileW = 32 * this.camera.zoom;
+                        const tileH = 16 * this.camera.zoom;
+                        
+                        // Checkerboard pattern
+                        ctx.fillStyle = (x + y) % 2 === 0 ? '#2d3436' : '#252b2c';
+                        
+                        ctx.beginPath();
+                        ctx.moveTo(camX, camY);
+                        ctx.lineTo(camX + tileW, camY + tileH);
+                        ctx.lineTo(camX, camY + tileH * 2);
+                        ctx.lineTo(camX - tileW, camY + tileH);
+                        ctx.closePath();
+                        ctx.fill();
+                    }
+                }
+            }
+        }
+
+        // ============================================
+        // GLOBAL STATE
+        // ============================================
+        let spriteLoader, renderer;
+        let frameCount = 0, lastFpsTime = performance.now();
+
+        // ============================================
+        // INITIALIZATION
+        // ============================================
+        async function init() {
+            const canvas = document.getElementById('officeCanvas');
+            
+            // Initialize sprite loader
+            spriteLoader = new SpriteLoader('../pixel-office/assets/sprites/');
+            await spriteLoader.load();
+            
+            // Create renderer
+            renderer = new OfficeRenderer(canvas);
+            
+            // Add all agents
+            AGENTS_DATA.forEach(data => {
+                renderer.addAgent(data);
+            });
+            
+            // Render agent grid
+            renderAgentGrid();
+            
+            // Start
+            renderer.start();
+            startSimulation();
+            
+            // FPS counter
+            setInterval(updateFps, 1000);
+            
+            addActivity('System', 'Pixel Office initialized with 22 agents');
+        }
+
+        function renderAgentGrid() {
+            const grid = document.getElementById('agentGrid');
+            AGENTS_DATA.forEach(agent => {
+                const div = document.createElement('div');
+                div.className = 'agent-mini';
+                div.innerHTML = `
+                    <canvas class="agent-mini-canvas" id="mini-${agent.id}" width="32" height="32"></canvas>
+                    <div class="agent-mini-name">${agent.name}</div>
+                    <div class="agent-mini-role">${agent.role}</div>
+                `;
+                div.onclick = () => {
+                    renderer.agents.forEach(a => a.selected = false);
+                    const agentObj = renderer.agents.get(agent.id);
+                    if (agentObj) {
+                        agentObj.selected = true;
+                        addActivity(agent.name, agentObj.currentTask);
+                    }
+                };
+                grid.appendChild(div);
+                
+                // Draw mini preview
+                setTimeout(() => drawMiniPreview(agent.id), 100);
+            });
+        }
+
+        function drawMiniPreview(agentId) {
+            const canvas = document.getElementById(`mini-${agentId}`);
+            if (!canvas || !spriteLoader.loaded) return;
+            
+            const ctx = canvas.getContext('2d');
+            const sprite = spriteLoader.getSprite(agentId, 'idle', 0);
+            if (sprite) {
+                ctx.clearRect(0, 0, 32, 32);
+                ctx.drawImage(sprite.image, sprite.sx, sprite.sy, 16, 16, 8, 8, 16, 16);
+            }
+        }
+
+        function updateFps() {
+            const now = performance.now();
+            const fps = Math.round(frameCount * 1000 / (now - lastFpsTime));
+            document.getElementById('fpsCounter').textContent = fps;
+            frameCount = 0;
+            lastFpsTime = now;
+        }
+
+        function startSimulation() {
+            // Random activity simulation
+            setInterval(() => {
+                if (!renderer) return;
+                const agents = Array.from(renderer.agents.values());
+                const randomAgent = agents[Math.floor(Math.random() * agents.length)];
+                
+                if (randomAgent.activity === 'idle' && Math.random() < 0.3) {
+                    randomAgent.startWalking();
+                }
+            }, 2000);
+        }
+
+        function resetCamera() {
+            if (renderer) {
+                renderer.camera.x = 0;
+                renderer.camera.y = 0;
+                renderer.camera.zoom = 1;
+            }
+        }
+
+        function toggleDebug() {
+            if (renderer) {
+                renderer.debug = !renderer.debug;
+            }
+        }
+
+        function addActivity(agent, action) {
+            const log = document.getElementById('activityLog');
+            const time = new Date().toLocaleTimeString('en-US', { 
+                hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit'
+            });
+            
+            const item = document.createElement('div');
+            item.className = 'activity-item';
+            item.innerHTML = `<span class="activity-time">${time}</span> <strong>${agent}</strong>: ${action}`;
+            
+            log.insertBefore(item, log.firstChild);
+            while (log.children.length > 20) log.removeChild(log.lastChild);
+        }
+
+        // Initialize on load
+        window.addEventListener('load', init);
+    </script>
+</body>
+</html>
