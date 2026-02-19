@@ -7,7 +7,12 @@
   },
   "checkRotation": {
     "current": "C",
-    "sequence": ["A", "B", "C", "D"],
+    "sequence": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ],
     "lastRotation": 1771450382,
     "counter": 56
   },
@@ -18,28 +23,29 @@
     "maxAlertsPerHour": 3
   },
   "agentHealth": {
-    "lastFullCheck": 1771410782,
-    "abortedSessions": [
+    "lastFullCheck": 1771460428,
+    "abortedSessions": [],
+    "archivedSessions": [
       {
         "sessionId": "59f5387c-82d9-4f2f-b7a5-8df3346ab3a2",
         "label": "forge-2-pixel-polish",
         "detectedAt": 1771410733,
-        "recoveryStatus": "pending",
-        "recoveryProtocolApplied": false
+        "archivedAt": 1771460400,
+        "reason": "Session file already archived by system",
+        "archiveFile": "59f5387c-82d9-4f2f-b7a5-8df3346ab3a2.jsonl.deleted.2026-02-18T11-29-16.680Z"
       },
       {
         "sessionId": "2f82f264-a7dc-4c91-a860-66c8512657fe",
         "label": "forge-fix-data-issues",
         "detectedAt": 1771410606,
-        "recoveryStatus": "pending",
-        "recoveryProtocolApplied": false
+        "archivedAt": 1771460400,
+        "reason": "Session file already archived by system",
+        "archiveFile": "2f82f264-a7dc-4c91-a860-66c8512657fe.jsonl.deleted.2026-02-18T11-27-16.846Z"
       }
     ],
     "abortPattern": {
-      "last24h": 2,
-      "byAgentType": {
-        "forge": 2
-      }
+      "last24h": 0,
+      "byAgentType": {}
     }
   },
   "tokenUsage": {

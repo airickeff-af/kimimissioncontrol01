@@ -1,0 +1,317 @@
+{
+  "timestamp": "2026-02-19T00:24:28.622Z",
+  "baseUrl": "https://dashboard-ten-sand-20.vercel.app",
+  "categories": {
+    "pageLoads": {
+      "name": "Page Load Tests",
+      "tests": [
+        {
+          "name": "HQ Dashboard",
+          "path": "/",
+          "status": 200,
+          "loadTime": 322,
+          "size": 21946,
+          "hasTitle": true,
+          "hasViewport": true,
+          "passed": true
+        },
+        {
+          "name": "Task Board",
+          "path": "/task-board.html",
+          "status": 200,
+          "loadTime": 326,
+          "size": 36828,
+          "hasTitle": true,
+          "hasViewport": true,
+          "passed": true
+        },
+        {
+          "name": "Agents",
+          "path": "/agents.html",
+          "status": 200,
+          "loadTime": 287,
+          "size": 21711,
+          "hasTitle": true,
+          "hasViewport": true,
+          "passed": true
+        },
+        {
+          "name": "Office",
+          "path": "/office.html",
+          "status": 200,
+          "loadTime": 368,
+          "size": 50414,
+          "hasTitle": true,
+          "hasViewport": true,
+          "passed": true
+        },
+        {
+          "name": "DealFlow",
+          "path": "/dealflow-view.html",
+          "status": 200,
+          "loadTime": 341,
+          "size": 45905,
+          "hasTitle": true,
+          "hasViewport": true,
+          "passed": true
+        },
+        {
+          "name": "Token Tracker",
+          "path": "/token-tracker.html",
+          "status": 200,
+          "loadTime": 348,
+          "size": 48586,
+          "hasTitle": true,
+          "hasViewport": true,
+          "passed": true
+        },
+        {
+          "name": "Scout",
+          "path": "/scout.html",
+          "status": 200,
+          "loadTime": 307,
+          "size": 37599,
+          "hasTitle": true,
+          "hasViewport": true,
+          "passed": true
+        },
+        {
+          "name": "Data Viewer",
+          "path": "/data-viewer.html",
+          "status": 200,
+          "loadTime": 281,
+          "size": 31680,
+          "hasTitle": true,
+          "hasViewport": true,
+          "passed": true
+        },
+        {
+          "name": "Logs",
+          "path": "/logs-view.html",
+          "status": 200,
+          "loadTime": 251,
+          "size": 32878,
+          "hasTitle": true,
+          "hasViewport": true,
+          "passed": true
+        }
+      ],
+      "passed": 9,
+      "total": 9,
+      "score": 100,
+      "weight": 15
+    },
+    "apiEndpoints": {
+      "name": "API Endpoint Tests",
+      "tests": [
+        {
+          "name": "Health API",
+          "path": "/api/health",
+          "status": 200,
+          "loadTime": 262,
+          "contentType": "application/json; charset=utf-8",
+          "isJSON": true,
+          "isValidJSON": true,
+          "bodyPreview": "{\"success\":true,\"status\":\"healthy\",\"uptime\":\"99.9%\",\"version\":\"2026.2.19\",\"checks\":{\"api\":\"ok\",\"data",
+          "passed": true
+        },
+        {
+          "name": "Agents API",
+          "path": "/api/agents",
+          "status": 200,
+          "loadTime": 259,
+          "contentType": "application/json; charset=utf-8",
+          "isJSON": true,
+          "isValidJSON": true,
+          "bodyPreview": "{\"success\":true,\"agents\":[{\"id\":\"ericf\",\"name\":\"EricF\",\"role\":\"Commander\",\"status\":\"active\",\"emoji\":",
+          "passed": true
+        },
+        {
+          "name": "Tasks API",
+          "path": "/api/tasks",
+          "status": 200,
+          "loadTime": 252,
+          "contentType": "application/json; charset=utf-8",
+          "isJSON": true,
+          "isValidJSON": true,
+          "bodyPreview": "{\"success\":true,\"tasks\":[],\"total\":0,\"page\":1,\"pages\":0,\"summary\":{\"total\":0,\"p0\":0,\"p1\":0,\"p2\":0,\"c",
+          "passed": true
+        },
+        {
+          "name": "Deals API",
+          "path": "/api/deals",
+          "status": 200,
+          "loadTime": 530,
+          "contentType": "application/json; charset=utf-8",
+          "isJSON": true,
+          "isValidJSON": true,
+          "bodyPreview": "{\"success\":true,\"deals\":[{\"id\":\"lead_001\",\"company\":\"Coins.ph\",\"contact\":\"Wei Zhou\",\"title\":\"CEO & F",
+          "passed": true
+        },
+        {
+          "name": "Logs API",
+          "path": "/api/logs/activity",
+          "status": 200,
+          "loadTime": 525,
+          "contentType": "application/json; charset=utf-8",
+          "isJSON": true,
+          "isValidJSON": true,
+          "bodyPreview": "{\"success\":true,\"logs\":[{\"timestamp\":\"2026-02-19T00:24:34.235Z\",\"agent\":\"Nexus\",\"type\":\"system\",\"mes",
+          "passed": true
+        },
+        {
+          "name": "Tokens API",
+          "path": "/api/tokens",
+          "status": 200,
+          "loadTime": 586,
+          "contentType": "application/json; charset=utf-8",
+          "isJSON": true,
+          "isValidJSON": true,
+          "bodyPreview": "{\"success\":true,\"agents\":[{\"name\":\"DealFlow\",\"tokensIn\":115300,\"tokensOut\":5234,\"cost\":0.23,\"tasksCo",
+          "passed": true
+        }
+      ],
+      "passed": 6,
+      "total": 6,
+      "score": 100,
+      "weight": 25
+    },
+    "functionality": {
+      "name": "Functionality Tests",
+      "tests": [
+        {
+          "path": "/js/dashboard-utils.js",
+          "type": "javascript",
+          "status": 200,
+          "passed": true
+        },
+        {
+          "path": "/js/theme-system.js",
+          "type": "javascript",
+          "status": 200,
+          "passed": true
+        },
+        {
+          "path": "/js/mobile-responsive.js",
+          "type": "javascript",
+          "status": 200,
+          "passed": true
+        },
+        {
+          "path": "/styles/main.css",
+          "type": "css",
+          "status": 404,
+          "passed": false
+        },
+        {
+          "path": "/styles/dashboard.css",
+          "type": "css",
+          "status": 404,
+          "passed": false
+        }
+      ],
+      "passed": 3,
+      "total": 5,
+      "score": 60,
+      "weight": 15
+    },
+    "responseQuality": {
+      "name": "Response Quality Tests",
+      "tests": [
+        {
+          "name": "CORS Headers",
+          "hasCORS": true,
+          "headers": {
+            "allowOrigin": "*",
+            "allowMethods": "GET",
+            "allowHeaders": "Content-Type, Authorization"
+          },
+          "passed": true
+        },
+        {
+          "name": "Security Headers",
+          "headers": {
+            "X-Content-Type-Options": null,
+            "X-Frame-Options": null,
+            "X-XSS-Protection": null,
+            "Strict-Transport-Security": "max-age=63072000; includeSubDomains; preload",
+            "Content-Security-Policy": null
+          },
+          "present": 1,
+          "total": 5,
+          "score": 20,
+          "passed": false
+        },
+        {
+          "name": "Compression",
+          "encoding": "br",
+          "isCompressed": true,
+          "passed": true
+        }
+      ],
+      "passed": 2,
+      "total": 3,
+      "score": 67,
+      "weight": 10
+    },
+    "mobileResponsive": {
+      "name": "Mobile Responsive Tests",
+      "tests": [
+        {
+          "viewport": "mobile",
+          "device": "iPhone SE",
+          "width": 375,
+          "height": 667,
+          "hasViewportMeta": true,
+          "hasWidthDeviceWidth": true,
+          "hasMediaQueries": true,
+          "passed": true,
+          "mode": "meta-tag-check"
+        },
+        {
+          "viewport": "tablet",
+          "device": "iPad Mini",
+          "width": 768,
+          "height": 1024,
+          "hasViewportMeta": true,
+          "hasWidthDeviceWidth": true,
+          "hasMediaQueries": true,
+          "passed": true,
+          "mode": "meta-tag-check"
+        },
+        {
+          "viewport": "desktop",
+          "device": "Small Desktop",
+          "width": 1024,
+          "height": 768,
+          "hasViewportMeta": true,
+          "hasWidthDeviceWidth": true,
+          "hasMediaQueries": true,
+          "passed": true,
+          "mode": "meta-tag-check"
+        }
+      ],
+      "passed": 3,
+      "total": 3,
+      "score": 100,
+      "weight": 20
+    },
+    "consoleErrors": {
+      "name": "Console Error Detection",
+      "tests": [],
+      "passed": 0,
+      "total": 1,
+      "score": 50,
+      "weight": 15,
+      "note": "Browser automation not available - requires Chrome/Chromium"
+    }
+  },
+  "summary": {
+    "score": 83,
+    "status": "FAIL",
+    "totalTests": 27,
+    "passed": 23,
+    "failed": 4,
+    "threshold": 95
+  }
+}

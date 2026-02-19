@@ -8,9 +8,18 @@
     "lib": "lib"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "quality-gate": "node lib/quality-gate-integrated.js",
+    "quality-gate:browser": "node lib/quality-gate-browser.js",
+    "quality-gate:cron": "node lib/quality-gate-cron.js",
+    "quality-gate:full": "npm run quality-gate",
+    "setup:browser": "./scripts/setup-browser-automation.sh"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "playwright": "^1.58.2",
+    "puppeteer": "^24.37.4"
+  }
 }

@@ -1,0 +1,8 @@
+# Stale Session Handler - Cron Configuration
+# TASK-104: Run every 6 hours to clean up stale sessions
+
+# Run stale session handler every 6 hours
+0 */6 * * * /root/.openclaw/workspace/scripts/stale-session-handler.sh >> /root/.openclaw/workspace/logs/stale-session-cron.log 2>&1
+
+# Also run the existing archive-old-sessions.sh daily at 3 AM
+0 3 * * * /root/.openclaw/workspace/scripts/archive-old-sessions.sh >> /root/.openclaw/workspace/logs/archive-old-sessions.log 2>&1

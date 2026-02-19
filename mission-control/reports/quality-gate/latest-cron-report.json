@@ -1,0 +1,139 @@
+{
+  "timestamp": "2026-02-19T00:26:05.727Z",
+  "baseUrl": "https://dashboard-ten-sand-20.vercel.app",
+  "pages": [
+    {
+      "name": "HQ Dashboard",
+      "path": "/",
+      "status": 200,
+      "loadTime": 157,
+      "passed": true
+    },
+    {
+      "name": "Task Board",
+      "path": "/task-board.html",
+      "status": 200,
+      "loadTime": 37,
+      "passed": true
+    },
+    {
+      "name": "Agents",
+      "path": "/agents.html",
+      "status": 200,
+      "loadTime": 14,
+      "passed": true
+    },
+    {
+      "name": "Office",
+      "path": "/office.html",
+      "status": 200,
+      "loadTime": 12,
+      "passed": true
+    },
+    {
+      "name": "DealFlow",
+      "path": "/dealflow-view.html",
+      "status": 200,
+      "loadTime": 12,
+      "passed": true
+    },
+    {
+      "name": "Token Tracker",
+      "path": "/token-tracker.html",
+      "status": 200,
+      "loadTime": 9,
+      "passed": true
+    },
+    {
+      "name": "Scout",
+      "path": "/scout.html",
+      "status": 200,
+      "loadTime": 19,
+      "passed": true
+    },
+    {
+      "name": "Data Viewer",
+      "path": "/data-viewer.html",
+      "status": 200,
+      "loadTime": 53,
+      "passed": true
+    },
+    {
+      "name": "Logs",
+      "path": "/logs-view.html",
+      "status": 200,
+      "loadTime": 10,
+      "passed": true
+    }
+  ],
+  "apis": [
+    {
+      "name": "Health API",
+      "path": "/api/health",
+      "status": 200,
+      "loadTime": 263,
+      "isJSON": true,
+      "isValidJSON": true,
+      "passed": true
+    },
+    {
+      "name": "Agents API",
+      "path": "/api/agents",
+      "status": 200,
+      "loadTime": 256,
+      "isJSON": true,
+      "isValidJSON": true,
+      "passed": true
+    },
+    {
+      "name": "Tasks API",
+      "path": "/api/tasks",
+      "status": 200,
+      "loadTime": 270,
+      "isJSON": true,
+      "isValidJSON": true,
+      "passed": true
+    },
+    {
+      "name": "Deals API",
+      "path": "/api/deals",
+      "status": 200,
+      "loadTime": 253,
+      "isJSON": true,
+      "isValidJSON": true,
+      "passed": true
+    },
+    {
+      "name": "Logs API",
+      "path": "/api/logs/activity",
+      "status": 200,
+      "loadTime": 277,
+      "isJSON": true,
+      "isValidJSON": true,
+      "passed": true
+    },
+    {
+      "name": "Tokens API",
+      "path": "/api/tokens",
+      "status": 200,
+      "loadTime": 256,
+      "isJSON": true,
+      "isValidJSON": true,
+      "passed": true
+    }
+  ],
+  "mobile": {
+    "hasViewport": true,
+    "hasWidthDeviceWidth": true,
+    "passed": true
+  },
+  "summary": {
+    "score": 100,
+    "status": "PASS",
+    "pagesPassed": 9,
+    "pagesTotal": 9,
+    "apisPassed": 6,
+    "apisTotal": 6,
+    "threshold": 95
+  }
+}
