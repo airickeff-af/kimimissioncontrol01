@@ -236,7 +236,97 @@
             .controls { bottom: 10px; left: 10px; }
             .btn { padding: 8px 12px; font-size: 0.45rem; }
             .stats-overlay { top: 60px; right: 10px; font-size: 0.45rem; }
+            .hierarchy-panel { width: 100%; right: -100%; }
+            .hierarchy-panel.active { right: 0; }
         }
+
+        /* Hierarchy Panel Styles */
+        .hierarchy-panel {
+            position: fixed;
+            top: 50px;
+            right: -350px;
+            width: 320px;
+            height: calc(100% - 50px);
+            background: rgba(10, 10, 15, 0.98);
+            border-left: 2px solid var(--accent-cyan);
+            z-index: 99;
+            transition: right 0.3s ease;
+            overflow-y: auto;
+        }
+        .hierarchy-panel.active { right: 0; }
+        .hierarchy-header {
+            background: var(--bg-card);
+            padding: 12px 16px;
+            border-bottom: 2px solid var(--accent-cyan);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.5rem;
+            position: sticky;
+            top: 0;
+        }
+        .hierarchy-header button {
+            background: none;
+            border: none;
+            color: var(--text-light);
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        .hierarchy-content { padding: 12px; }
+        .hierarchy-section {
+            margin-bottom: 16px;
+        }
+        .hierarchy-title {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.45rem;
+            color: var(--accent-cyan);
+            margin-bottom: 8px;
+            padding-bottom: 4px;
+            border-bottom: 1px solid var(--bg-card);
+        }
+        .hierarchy-agent {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px;
+            margin-bottom: 4px;
+            background: var(--bg-card);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .hierarchy-agent:hover {
+            background: rgba(0, 212, 255, 0.1);
+            border-left: 3px solid var(--accent-cyan);
+        }
+        .hierarchy-agent-avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+        }
+        .hierarchy-agent-info { flex: 1; }
+        .hierarchy-agent-name {
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: var(--text-light);
+        }
+        .hierarchy-agent-role {
+            font-size: 0.65rem;
+            color: var(--text-secondary);
+        }
+        .hierarchy-agent-status {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+        .status-active { background: var(--accent-green); }
+        .status-busy { background: var(--accent-yellow); }
+        .status-idle { background: #666; }
     </style>
 </head>
 <body>
@@ -264,6 +354,8 @@
     <div class="controls">
         <button class="btn" onclick="resetCamera()">🎯 RESET</button>
         <button class="btn" onclick="toggleDebug()">🐛 DEBUG</button>
+        <button class="btn" onclick="toggleHierarchy()">📋 TEAM</button>
+        <button class="btn" onclick="refreshOffice()">🔄 SYNC</button>
     </div>
     
     <div class="stats-overlay">
@@ -277,6 +369,17 @@
         <div class="tooltip-role" id="tooltipRole">Role</div>
         <div class="tooltip-task" id="tooltipTask">Task</div>
         <span class="tooltip-status" id="tooltipStatus">Idle</span>
+    </div>
+
+    <!-- Hierarchy Panel -->
+    <div class="hierarchy-panel" id="hierarchyPanel">
+        <div class="hierarchy-header">
+            <span>👥 AGENT HIERARCHY</span>
+            <button onclick="toggleHierarchy()">✕</button>
+        </div>
+        <div class="hierarchy-content" id="hierarchyContent">
+            <!-- Populated by JS -->
+        </div>
     </div>
 
     <script>
@@ -833,6 +936,68 @@
         function toggleDebug() {
             if (renderer) renderer.debug = !renderer.debug;
         }
+
+        // Hierarchy Panel Functions
+        function toggleHierarchy() {
+            const panel = document.getElementById('hierarchyPanel');
+            panel.classList.toggle('active');
+            if (panel.classList.contains('active')) {
+                renderHierarchy();
+            }
+        }
+
+        function renderHierarchy() {
+            const container = document.getElementById('hierarchyContent');
+            
+            const hierarchy = {
+                'Commander': AGENTS_DATA.filter(a => a.role === 'Commander'),
+                'AI Lead': AGENTS_DATA.filter(a => a.role === 'Orchestrator'),
+                'Dev Team': AGENTS_DATA.filter(a => a.role.includes('Backend') || a.name === 'CodeMaster'),
+                'Design Team': AGENTS_DATA.filter(a => a.role.includes('UI') || a.role === 'Designer' || a.name === 'Forge'),
+                'Research Team': AGENTS_DATA.filter(a => a.role === 'Researcher' || a.name === 'Scout' || a.name === 'Glasses'),
+                'Operations': AGENTS_DATA.filter(a => ['Security', 'DevOps'].includes(a.role)),
+                'Content & Marketing': AGENTS_DATA.filter(a => ['Writer', 'Marketing', 'Social Media'].includes(a.role) || a.name === 'Quill' || a.name === 'Gary' || a.name === 'Larry'),
+                'Lead Generation': AGENTS_DATA.filter(a => a.role === 'Lead Generation' || a.name === 'DealFlow' || a.name === 'ColdCall'),
+                'Audit': AGENTS_DATA.filter(a => a.name.startsWith('Audit'))
+            };
+
+            let html = '';
+            for (const [section, agents] of Object.entries(hierarchy)) {
+                if (agents.length === 0) continue;
+                html += `<div class="hierarchy-section">
+                    <div class="hierarchy-title">${section}</div>
+                    ${agents.map(agent => `
+                        <div class="hierarchy-agent" onclick="focusOnAgent('${agent.id}')">
+                            <div class="hierarchy-agent-avatar" style="background: ${agent.color}30;"></div>
+                            <div class="hierarchy-agent-info">
+                                <div class="hierarchy-agent-name">${agent.name}</div>
+                                <div class="hierarchy-agent-role">${agent.role}</div>
+                            </div>
+                            <div class="hierarchy-agent-status status-${agent.id === 'ericf' || agent.id === 'nexus' ? 'active' : 'busy'}"></div>
+                        </div>
+                    `).join('')}
+                </div>`;
+            }
+            container.innerHTML = html;
+        }
+
+        function focusOnAgent(agentId) {
+            const agent = renderer.agents.get(agentId);
+            if (agent) {
+                renderer.camera.x = agent.x * 32;
+                renderer.camera.y = agent.y * 16;
+                renderer.camera.zoom = 1.5;
+            }
+        }
+
+        function refreshOffice() {
+            location.reload();
+        }
+
+        // Auto-refresh every 30 minutes
+        setInterval(() => {
+            location.reload();
+        }, 30 * 60 * 1000);
 
         window.addEventListener('load', init);
     </script>

@@ -15,6 +15,27 @@
     
     <!-- External Styles -->
     <link rel="stylesheet" href="css/style.css">
+    <style>
+        .refresh-btn {
+            background: rgba(0, 212, 255, 0.2);
+            border: 1px solid #00d4ff;
+            color: #00d4ff;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+        .refresh-btn:hover {
+            background: rgba(0, 212, 255, 0.3);
+            transform: scale(1.1);
+        }
+        .refresh-btn.spinning {
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+    </style>
 </head>
 <body>
     <!-- Loading Overlay -->
@@ -57,6 +78,7 @@
             <a href="/tasks" class="nav-tab">📋 Tasks</a>
             <a href="/logs" class="nav-tab">📡 Logs</a>
             <a href="/data" class="nav-tab">📁 Data</a>
+            <button class="nav-tab refresh-btn" onclick="refreshData()" title="Refresh Data">🔄</button>
         </nav>
 
         <!-- Main Content Grid -->
@@ -710,6 +732,24 @@
         setInterval(() => {
             window.location.reload();
         }, 1800000);
+
+        // Refresh data function
+        function refreshData() {
+            const btn = document.querySelector('.refresh-btn');
+            btn.classList.add('spinning');
+            btn.innerHTML = '⏳';
+            
+            // Show loading state
+            const loader = document.getElementById('loader');
+            if (loader) {
+                loader.classList.remove('hidden');
+            }
+            
+            // Reload page after brief delay
+            setTimeout(() => {
+                window.location.reload();
+            }, 500);
+        }
     </script>
 </body>
 </html>
