@@ -786,6 +786,167 @@
             controls.update();
             renderer.render(scene, camera);
         }
+
+        // Random Movement on Refresh (P0-036)
+        const MOVEMENT_TYPES = [
+            { name: 'Idle Stand', duration: 3000, emoji: '🧍' },
+            { name: 'Walk Cycle', duration: 4000, emoji: '🚶' },
+            { name: 'Wave Hello', duration: 2000, emoji: '👋' },
+            { name: 'Jump', duration: 1000, emoji: '⬆️' },
+            { name: 'Spin Around', duration: 2000, emoji: '🔄' },
+            { name: 'Celebrate', duration: 2000, emoji: '🎉' },
+            { name: 'Stretch', duration: 3000, emoji: '🤸' },
+            { name: 'Dance', duration: 4000, emoji: '💃' }
+        ];
+
+        function selectRandomMovement() {
+            const movement = MOVEMENT_TYPES[Math.floor(Math.random() * MOVEMENT_TYPES.length)];
+            
+            // Show movement indicator
+            const indicator = document.createElement('div');
+            indicator.id = 'movement-indicator';
+            indicator.innerHTML = `
+                <div style="font-size: 48px; margin-bottom: 10px;">${movement.emoji}</div>
+                <div style="font-size: 18px; font-weight: bold;">${movement.name}</div>
+                <div style="font-size: 12px; opacity: 0.7; margin-top: 5px;">🔄 Refresh for new move</div>
+            `;
+            indicator.style.cssText = `
+                position: fixed;
+                bottom: 100px;
+                left: 20px;
+                background: rgba(0, 0, 0, 0.8);
+                backdrop-filter: blur(10px);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                border-radius: 12px;
+                padding: 20px;
+                text-align: center;
+                z-index: 100;
+                animation: fadeInOut ${movement.duration}ms ease-in-out;
+            `;
+            
+            // Add animation keyframes
+            if (!document.getElementById('movement-anim')) {
+                const style = document.createElement('style');
+                style.id = 'movement-anim';
+                style.textContent = `
+                    @keyframes fadeInOut {
+                        0% { opacity: 0; transform: translateY(20px); }
+                        10% { opacity: 1; transform: translateY(0); }
+                        90% { opacity: 1; transform: translateY(0); }
+                        100% { opacity: 0; transform: translateY(-20px); }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+            
+            document.body.appendChild(indicator);
+            
+            // Apply movement effect
+            applyMovementEffect(movement);
+            
+            // Remove indicator after animation
+            setTimeout(() => {
+                indicator.remove();
+            }, movement.duration);
+            
+            return movement;
+        }
+
+        function applyMovementEffect(movement) {
+            // Apply different effects based on movement type
+            switch(movement.name) {
+                case 'Jump':
+                    // Character jump effect
+                    let jumpHeight = 0;
+                    const jumpInterval = setInterval(() => {
+                        jumpHeight += 0.1;
+                        if (character) character.position.y = Math.sin(jumpHeight) * 0.5;
+                        if (jumpHeight > Math.PI) {
+                            clearInterval(jumpInterval);
+                            if (character) character.position.y = 0;
+                        }
+                    }, 50);
+                    break;
+                    
+                case 'Spin Around':
+                    // Character spin effect
+                    let spinAngle = 0;
+                    const spinInterval = setInterval(() => {
+                        spinAngle += 0.2;
+                        if (character) character.rotation.y = spinAngle;
+                        if (spinAngle > Math.PI * 2) {
+                            clearInterval(spinInterval);
+                            if (character) character.rotation.y = 0;
+                        }
+                    }, 50);
+                    break;
+                    
+                case 'Wave Hello':
+                    // Camera wave effect
+                    const originalY = camera.position.y;
+                    let waveTime = 0;
+                    const waveInterval = setInterval(() => {
+                        waveTime += 0.15;
+                        camera.position.y = originalY + Math.sin(waveTime) * 0.3;
+                        if (waveTime > Math.PI * 4) {
+                            clearInterval(waveInterval);
+                            camera.position.y = originalY;
+                        }
+                    }, 50);
+                    break;
+                    
+                case 'Celebrate':
+                    // Celebration color flash
+                    let flashCount = 0;
+                    const flashInterval = setInterval(() => {
+                        flashCount++;
+                        const hue = (flashCount * 30) % 360;
+                        document.body.style.filter = `hue-rotate(${hue}deg)`;
+                        if (flashCount > 20) {
+                            clearInterval(flashInterval);
+                            document.body.style.filter = '';
+                        }
+                    }, 100);
+                    break;
+                    
+                case 'Dance':
+                    // Dance camera movement
+                    let danceTime = 0;
+                    const danceInterval = setInterval(() => {
+                        danceTime += 0.1;
+                        camera.position.x = Math.sin(danceTime) * 2;
+                        camera.position.z = 8 + Math.cos(danceTime * 2) * 1;
+                        camera.lookAt(0, 0, 0);
+                        if (danceTime > Math.PI * 4) {
+                            clearInterval(danceInterval);
+                            camera.position.set(0, 3, 8);
+                            camera.lookAt(0, 0, 0);
+                        }
+                    }, 50);
+                    break;
+                    
+                case 'Walk Cycle':
+                    // Walking movement
+                    isMovementEnabled = true;
+                    document.getElementById('btn-movement').classList.add('active');
+                    document.getElementById('movement-state').textContent = 'Walking...';
+                    setTimeout(() => {
+                        isMovementEnabled = false;
+                        document.getElementById('btn-movement').classList.remove('active');
+                        document.getElementById('movement-state').textContent = 'Paused';
+                    }, movement.duration);
+                    break;
+                    
+                default:
+                    // Idle or stretch - just subtle breathing
+                    break;
+            }
+        }
+
+        // Select random movement on page load
+        window.addEventListener('load', () => {
+            setTimeout(selectRandomMovement, 1000);
+        });
         
         // Simulate stat updates
         function simulateStats() {
