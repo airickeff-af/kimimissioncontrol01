@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MC Project - Health & Wealth Tracker</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #fff;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        header h1 {
+            font-size: 48px;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #4ecdc4, #ffe66d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        header p {
+            font-size: 18px;
+            opacity: 0.8;
+        }
+        
+        /* Character Emotion Section */
+        .emotion-section {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 40px;
+        }
+        
+        .emotion-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px 50px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .emotion-emoji {
+            font-size: 80px;
+            margin-bottom: 15px;
+            animation: pulse 2s ease infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        
+        .emotion-text {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .emotion-subtext {
+            opacity: 0.7;
+            font-size: 14px;
+        }
+        
+        .streak-counter {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #ff6b35, #f7931e);
+            padding: 10px 20px;
+            border-radius: 25px;
+            margin-top: 15px;
+            font-weight: 600;
+        }
+        
+        .streak-fire {
+            font-size: 24px;
+            animation: flicker 0.5s ease infinite alternate;
+        }
+        
+        @keyframes flicker {
+            0% { opacity: 1; transform: scale(1); }
+            100% { opacity: 0.8; transform: scale(1.1); }
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        .card h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .card.health h2 { color: #ff6b6b; }
+        .card.wealth h2 { color: #4ecdc4; }
+        .card.goals h2 { color: #ffe66d; }
+        .card.comparison h2 { color: #a78bfa; }
+        .card.tips h2 { color: #6ee7b7; }
+        
+        /* Stats with Progress Bars */
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 15px 0;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .stat-row:last-child {
+            border-bottom: none;
+        }
+        
+        .stat-info {
+            flex: 1;
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            opacity: 0.8;
+            margin-bottom: 5px;
+        }
+        
+        .stat-bar {
+            width: 100%;
+            height: 10px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .stat-fill {
+            height: 100%;
+            border-radius: 5px;
+            transition: width 0.5s ease;
+        }
+        
+        .health-fill { background: linear-gradient(90deg, #ff6b6b, #ee5a5a); }
+        .wealth-fill { background: linear-gradient(90deg, #4ecdc4, #44a08d); }
+        
+        .stat-value {
+            font-size: 20px;
+            font-weight: bold;
+            margin-left: 15px;
+            min-width: 80px;
+            text-align: right;
+        }
+        
+        /* Chart Container */
+        .chart-container {
+            height: 200px;
+            margin-top: 20px;
+        }
+        
+        /* Goals Section */
+        .goal-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 15px;
+            margin: 10px 0;
+        }
+        
+        .goal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .goal-title {
+            font-weight: 600;
+        }
+        
+        .goal-amount {
+            color: #4ecdc4;
+            font-weight: bold;
+        }
+        
+        .goal-progress {
+            width: 100%;
+            height: 8px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .goal-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ffe66d, #f4d03f);
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+        
+        .goal-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 8px;
+            font-size: 12px;
+            opacity: 0.7;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #4ecdc4, #44a08d);
+            color: #fff;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s;
+            margin-top: 15px;
+        }
+        
+        .btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 10px 30px rgba(78, 205, 196, 0.3);
+        }
+        
+        .btn-small {
+            padding: 8px 16px;
+            font-size: 12px;
+        }
+        
+        /* Comparison Table */
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .comparison-table th,
+        .comparison-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .comparison-table th {
+            opacity: 0.7;
+            font-weight: 500;
+            font-size: 12px;
+            text-transform: uppercase;
+        }
+        
+        .comparison-table tr:hover {
+            background: rgba(255,255,255,0.05);
+        }
+        
+        .you-row {
+            background: rgba(78, 205, 196, 0.1) !important;
+        }
+        
+        .rank-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .rank-1 { background: linear-gradient(135deg, #ffd700, #ffb700); color: #000; }
+        .rank-2 { background: linear-gradient(135deg, #c0c0c0, #a0a0a0); color: #000; }
+        .rank-3 { background: linear-gradient(135deg, #cd7f32, #b87333); color: #fff; }
+        
+        /* Daily Tips */
+        .tip-card {
+            background: rgba(110, 231, 183, 0.1);
+            border-left: 4px solid #6ee7b7;
+            padding: 15px;
+            border-radius: 0 12px 12px 0;
+            margin: 10px 0;
+        }
+        
+        .tip-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+        
+        .tip-text {
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        
+        /* Achievement Popup */
+        .achievement-popup {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #ffd700, #ffb700);
+            color: #000;
+            padding: 20px 25px;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            z-index: 1000;
+            transform: translateX(400px);
+            transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            max-width: 350px;
+        }
+        
+        .achievement-popup.show {
+            transform: translateX(0);
+        }
+        
+        .achievement-icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+        
+        .achievement-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        
+        .achievement-desc {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+        
+        /* Action Buttons */
+        .action-bar {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #4ecdc4, #44a08d);
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        footer {
+            text-align: center;
+            padding: 40px;
+            opacity: 0.6;
+            font-size: 14px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            header h1 { font-size: 32px; }
+            .grid { grid-template-columns: 1fr; }
+            .emotion-emoji { font-size: 60px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎮 MC Project</h1>
+            <p>Your Personal Health & Wealth Command Center</p>
+        </header>
+        
+        <!-- Character Emotion Section -->
+        <div class="emotion-section">
+            <div class="emotion-card">
+                <div class="emotion-emoji" id="emotion-emoji">😊</div>
+                <div class="emotion-text" id="emotion-text">Feeling Great!</div>
+                <div class="emotion-subtext" id="emotion-subtext">Your health and wealth are balanced</div>
+                <div class="streak-counter">
+                    <span class="streak-fire">🔥</span>
+                    <span id="streak-count">12 Day Streak!</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="grid">
+            <!-- Health Card with Chart -->
+            <div class="card health">
+                <h2>💪 Health Tracker</h2>
+                <div class="stat-row">
+                    <div class="stat-info">
+                        <div class="stat-label">Exercise Today</div>
+                        <div class="stat-bar">
+                            <div class="stat-fill health-fill" id="exercise-bar" style="width: 65%"></div>
+                        </div>
+                    </div>
+                    <div class="stat-value" id="exercise-val">45 min</div>
+                </div>
+                <div class="stat-row">
+                    <div class="stat-info">
+                        <div class="stat-label">Sleep Last Night</div>
+                        <div class="stat-bar">
+                            <div class="stat-fill health-fill" id="sleep-bar" style="width: 80%"></div>
+                        </div>
+                    </div>
+                    <div class="stat-value" id="sleep-val">7.5 hrs</div>
+                </div>
+                <div class="stat-row">
+                    <div class="stat-info">
+                        <div class="stat-label">Calories Tracked</div>
+                        <div class="stat-bar">
+                            <div class="stat-fill health-fill" id="calories-bar" style="width: 70%"></div>
+                        </div>
+                    </div>
+                    <div class="stat-value" id="calories-val">1,850</div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="healthChart"></canvas>
+                </div>
+            </div>
+            
+            <!-- Wealth Card with Chart -->
+            <div class="card wealth">
+                <h2>💰 Wealth Tracker</h2>
+                <div class="stat-row">
+                    <div class="stat-info">
+                        <div class="stat-label">Total Savings</div>
+                        <div class="stat-bar">
+                            <div class="stat-fill wealth-fill" id="savings-bar" style="width: 55%"></div>
+                        </div>
+                    </div>
+                    <div class="stat-value" id="savings-val">$12,450</div>
+                </div>
+                <div class="stat-row">
+                    <div class="stat-info">
+                        <div class="stat-label">Investments</div>
+                        <div class="stat-bar">
+                            <div class="stat-fill wealth-fill" id="invest-bar" style="width: 40%"></div>
+                        </div>
+                    </div>
+                    <div class="stat-value" id="invest-val">$8,200</div>
+                </div>
+                <div class="stat-row">
+                    <div class="stat-info">
+                        <div class="stat-label">Gig Earnings</div>
+                        <div class="stat-bar">
+                            <div class="stat-fill wealth-fill" id="gig-bar" style="width: 75%"></div>
+                        </div>
+                    </div>
+                    <div class="stat-value" id="gig-val">$3,800</div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="wealthChart"></canvas>
+                </div>
+            </div>
+            
+            <!-- Goals Card -->
+            <div class="card goals">
+                <h2>🎯 Monthly Goals</h2>
+                <div class="goal-item">
+                    <div class="goal-header">
+                        <span class="goal-title">💰 Save $500 this month</span>
+                        <span class="goal-amount">$420 / $500</span>
+                    </div>
+                    <div class="goal-progress">
+                        <div class="goal-progress-fill" style="width: 84%"></div>
+                    </div>
+                    <div class="goal-meta">
+                        <span>18 days remaining</span>
+                        <span>84% complete</span>
+                    </div>
+                </div>
+                <div class="goal-item">
+                    <div class="goal-header">
+                        <span class="goal-title">💪 Exercise 30 mins/day</span>
+                        <span class="goal-amount">22 / 30 days</span>
+                    </div>
+                    <div class="goal-progress">
+                        <div class="goal-progress-fill" style="width: 73%"></div>
+                    </div>
+                    <div class="goal-meta">
+                        <span>8 days remaining</span>
+                        <span>73% complete</span>
+                    </div>
+                </div>
+                <div class="goal-item">
+                    <div class="goal-header">
+                        <span class="goal-title">📚 Read 4 books</span>
+                        <span class="goal-amount">2 / 4 books</span>
+                    </div>
+                    <div class="goal-progress">
+                        <div class="goal-progress-fill" style="width: 50%"></div>
+                    </div>
+                    <div class="goal-meta">
+                        <span>2 weeks remaining</span>
+                        <span>50% complete</span>
+                    </div>
+                </div>
+                <button class="btn btn-small" onclick="showAchievement('Goal Crusher!', 'You\'re on track to hit all 3 goals this month!')">✨ Set New Goal</button>
+            </div>
+            
+            <!-- Comparison Card -->
+            <div class="card comparison">
+                <h2>🏆 Friend Comparison</h2>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Friend</th>
+                            <th>Health</th>
+                            <th>Wealth</th>
+                            <th>Streak</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="rank-badge rank-1">🥇 1st</span></td>
+                            <td>Anonymous A</td>
+                            <td>92%</td>
+                            <td>$45K</td>
+                            <td>🔥 28</td>
+                        </tr>
+                        <tr class="you-row">
+                            <td><span class="rank-badge rank-2">🥈 2nd</span></td>
+                            <td><strong>You</strong></td>
+                            <td><strong>78%</strong></td>
+                            <td><strong>$24K</strong></td>
+                            <td><strong>🔥 12</strong></td>
+                        </tr>
+                        <tr>
+                            <td><span class="rank-badge rank-3">🥉 3rd</span></td>
+                            <td>Anonymous B</td>
+                            <td>75%</td>
+                            <td>$18K</td>
+                            <td>🔥 8</td>
+                        </tr>
+                        <tr>
+                            <td>#4</td>
+                            <td>Anonymous C</td>
+                            <td>68%</td>
+                            <td>$15K</td>
+                            <td>🔥 5</td>
+                        </tr>
+                        <tr>
+                            <td>#5</td>
+                            <td>Anonymous D</td>
+                            <td>62%</td>
+                            <td>$12K</td>
+                            <td>🔥 3</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p style="font-size: 12px; opacity: 0.6; margin-top: 15px; text-align: center;">
+                    💡 You're in the top 40% of users! Keep it up!
+                </p>
+            </div>
+            
+            <!-- Daily Tips Card -->
+            <div class="card tips">
+                <h2>💡 Daily Tips</h2>
+                <div class="tip-card">
+                    <div class="tip-icon">💰</div>
+                    <div class="tip-text">
+                        <strong>Wealth Tip:</strong> You're spending 15% more on dining out than last month. Try meal prepping to save an estimated $200/month!
+                    </div>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-icon">💪</div>
+                    <div class="tip-text">
+                        <strong>Health Tip:</strong> Great job on exercise! Your sleep average is 6.5 hrs - aim for 7-8 hrs to boost recovery.
+                    </div>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-icon">🎯</div>
+                    <div class="tip-text">
+                        <strong>Goal Tip:</strong> You're $80 away from your savings goal. One more gig this month and you'll hit it!
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Action Bar -->
+        <div class="action-bar">
+            <a href="/viewer.html" class="btn btn-primary">🎮 Launch 3D Viewer</a>
+            <button class="btn btn-secondary" onclick="showAchievement('Early Bird!', 'You checked in before 9 AM! +5 streak bonus')">📊 View Reports</button>
+            <button class="btn btn-secondary" onclick="toggleGoalModal()">🎯 Add Goal</button>
+        </div>
+        
+        <footer>
+            <p>MC Project © 2026 | Built with 💚 by Meemo</p>
+        </footer>
+    </div>
+    
+    <!-- Achievement Popup -->
+    <div class="achievement-popup" id="achievement-popup">
+        <div class="achievement-icon" id="achievement-icon">🏆</div>
+        <div class="achievement-title" id="achievement-title">Achievement Unlocked!</div>
+        <div class="achievement-desc" id="achievement-desc">Keep up the great work!</div>
+    </div>
+    
+    <script>
+        // Health & Wealth History Data (7-day trend)
+        const healthData = {
+            labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            datasets: [{
+                label: 'Health Score',
+                data: [65, 70, 68, 75, 72, 78, 80],
+                borderColor: '#ff6b6b',
+                backgroundColor: 'rgba(255, 107, 107, 0.1)',
+                tension: 0.4,
+                fill: true
+            }]
+        };
+        
+        const wealthData = {
+            labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            datasets: [{
+                label: 'Wealth Score',
+                data: [55, 58, 56, 60, 62, 65, 68],
+                borderColor: '#4ecdc4',
+                backgroundColor: 'rgba(78, 205, 196, 0.1)',
+                tension: 0.4,
+                fill: true
+            }]
+        };
+        
+        // Initialize Charts
+        const healthChart = new Chart(document.getElementById('healthChart'), {
+            type: 'line',
+            data: healthData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        grid: { color: 'rgba(255,255,255,0.1)' },
+                        ticks: { color: 'rgba(255,255,255,0.7)' }
+                    },
+                    x: {
+                        grid: { display: false },
+                        ticks: { color: 'rgba(255,255,255,0.7)' }
+                    }
+                }
+            }
+        });
+        
+        const wealthChart = new Chart(document.getElementById('wealthChart'), {
+            type: 'line',
+            data: wealthData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        grid: { color: 'rgba(255,255,255,0.1)' },
+                        ticks: { color: 'rgba(255,255,255,0.7)' }
+                    },
+                    x: {
+                        grid: { display: false },
+                        ticks: { color: 'rgba(255,255,255,0.7)' }
+                    }
+                }
+            }
+        });
+        
+        // Character Emotion System
+        function updateEmotion() {
+            const health = 78; // Current health score
+            const wealth = 68; // Current wealth score
+            const combined = (health + wealth) / 2;
+            
+            const emotionEmoji = document.getElementById('emotion-emoji');
+            const emotionText = document.getElementById('emotion-text');
+            const emotionSubtext = document.getElementById('emotion-subtext');
+            
+            if (combined >= 80) {
+                emotionEmoji.textContent = '🤩';
+                emotionText.textContent = 'On Top of the World!';
+                emotionSubtext.textContent = 'Your health and wealth are thriving!';
+            } else if (combined >= 65) {
+                emotionEmoji.textContent = '😊';
+                emotionText.textContent = 'Feeling Great!';
+                emotionSubtext.textContent = 'Your health and wealth are balanced';
+            } else if (combined >= 50) {
+                emotionEmoji.textContent = '😐';
+                emotionText.textContent = 'Doing Okay';
+                emotionSubtext.textContent = 'Room for improvement in both areas';
+            } else if (combined >= 35) {
+                emotionEmoji.textContent = '😔';
+                emotionText.textContent = 'Could Be Better';
+                emotionSubtext.textContent = 'Focus on one area to improve';
+            } else {
+                emotionEmoji.textContent = '😰';
+                emotionText.textContent = 'Needs Attention';
+                emotionSubtext.textContent = 'Your health and wealth need care';
+            }
+        }
+        
+        // Achievement Popup System
+        function showAchievement(title, desc, icon = '🏆') {
+            const popup = document.getElementById('achievement-popup');
+            document.getElementById('achievement-icon').textContent = icon;
+            document.getElementById('achievement-title').textContent = title;
+            document.getElementById('achievement-desc').textContent = desc;
+            
+            popup.classList.add('show');
+            
+            setTimeout(() => {
+                popup.classList.remove('show');
+            }, 4000);
+        }
+        
+        // Check for milestones and show achievements
+        function checkMilestones() {
+            const savings = 12450;
+            const streak = 12;
+            
+            // Example milestone checks
+            if (savings >= 12000 && savings < 13000) {
+                setTimeout(() => {
+                    showAchievement('Savings Milestone!', 'You\'ve saved over $12,000! Amazing discipline!', '💰');
+                }, 2000);
+            }
+            
+            if (streak >= 10) {
+                setTimeout(() => {
+                    showAchievement('Streak Master!', '10+ day streak! You\'re building great habits!', '🔥');
+                }, 5000);
+            }
+        }
+        
+        // Toggle Goal Modal (placeholder)
+        function toggleGoalModal() {
+            showAchievement('Coming Soon!', 'Goal setting modal will be available in the next update!', '🎯');
+        }
+        
+        // Initialize
+        updateEmotion();
+        checkMilestones();
+        
+        // Simulate real-time updates
+        setInterval(() => {
+            // Randomly fluctuate health/wealth bars slightly
+            const bars = ['exercise-bar', 'sleep-bar', 'calories-bar', 'savings-bar', 'invest-bar', 'gig-bar'];
+            const randomBar = bars[Math.floor(Math.random() * bars.length)];
+            const bar = document.getElementById(randomBar);
+            if (bar) {
+                const currentWidth = parseInt(bar.style.width);
+                const newWidth = Math.min(100, Math.max(0, currentWidth + (Math.random() > 0.5 ? 1 : -1)));
+                bar.style.width = newWidth + '%';
+            }
+        }, 5000);
+    </script>
+</body>
+</html>

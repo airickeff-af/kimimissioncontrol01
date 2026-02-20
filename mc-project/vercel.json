@@ -1,9 +1,18 @@
 {
   "version": 2,
-  "builds": [
-    {"src": "public/**", "use": "@vercel/static"}
+  "buildCommand": null,
+  "outputDirectory": "public",
+  "framework": null,
+  "rewrites": [
+    { "source": "/viewer", "destination": "/viewer.html" },
+    { "source": "/(.*)", "destination": "/$1" }
   ],
-  "routes": [
-    {"src": "/(.*)", "dest": "/public/$1"}
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "s-maxage=0" }
+      ]
+    }
   ]
 }

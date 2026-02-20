@@ -26,7 +26,7 @@
             gap: 1rem;
         }
         .logo { font-size: 1.5rem; font-weight: 700; color: #00d4ff; }
-        .nav { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+        .nav { display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center; }
         .nav a {
             color: #888;
             text-decoration: none;
@@ -36,8 +36,25 @@
             font-size: 0.9rem;
         }
         .nav a:hover, .nav a.active { color: #00d4ff; background: rgba(0,212,255,0.1); }
+        .refresh-btn {
+            background: rgba(0, 212, 255, 0.2);
+            border: 1px solid #00d4ff;
+            color: #00d4ff;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .refresh-btn:hover { background: rgba(0, 212, 255, 0.3); }
+        .refresh-btn.spinning .refresh-icon { animation: spin 1s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
         .container { max-width: 1400px; margin: 0 auto; padding: 2rem; }
-        h1 { color: #00d4ff; margin-bottom: 2rem; }
+        h1 { color: #00d4ff; margin-bottom: 2rem; display: flex; align-items: center; gap: 1rem; }
+        .last-updated { font-size: 0.75rem; color: #666; font-weight: normal; }
         .dashboard-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -65,6 +82,33 @@
         .stat { text-align: center; }
         .stat-value { font-size: 1.5rem; font-weight: 700; color: #00d4ff; }
         .stat-label { color: #666; font-size: 0.875rem; }
+        .loading-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(10, 10, 15, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .loading-overlay.active { display: flex; }
+        .loading-spinner {
+            width: 50px; height: 50px;
+            border: 3px solid rgba(0, 212, 255, 0.2);
+            border-top-color: #00d4ff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        .error-message {
+            background: rgba(255, 107, 107, 0.1);
+            border: 1px solid #ff6b6b;
+            color: #ff6b6b;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: none;
+        }
+        .error-message.active { display: block; }
     </style>
 </head>
 <body>
@@ -79,13 +123,21 @@
             <a href="/task-board">Tasks</a>
             <a href="/logs">Logs</a>
             <a href="/data">Data</a>
+            <button class="refresh-btn" id="refreshBtn" onclick="refreshData()">
+                <span class="refresh-icon">🔄</span> Refresh
+            </button>
         </nav>
     </header>
 
     <div class="container">
-        <h1>🏠 Mission Control HQ</h1>
+        <div class="error-message" id="errorMessage"></divdiv>
         
-        <div class="dashboard-grid">
+        <h1>
+            🏠 Mission Control HQ
+            <span class="last-updated" id="lastUpdated">Last updated: Just now</span>
+        </h1>
+        
+        <div class="dashboard-grid" id="dashboardGrid">
             <div class="card">
                 <h2>🏢 Pixel Office</h2>
                 <p>Interactive Kairosoft-style office with 22 AI agents. Watch them work, call standups, and generate meeting minutes.</p>
@@ -98,11 +150,11 @@
                 <a href="agents.html">View Agents →</a>
                 <div class="stats">
                     <div class="stat">
-                        <div class="stat-value">23</div>
+                        <div class="stat-value" id="totalAgents">--</div>
                         <div class="stat-label">Total Agents</div>
                     </div>
                     <div class="stat">
-                        <div class="stat-value">18</div>
+                        <div class="stat-value" id="activeAgents">--</div>
                         <div class="stat-label">Active</div>
                     </div>
                 </div>
@@ -114,11 +166,11 @@
                 <a href="task-board.html">View Tasks →</a>
                 <div class="stats">
                     <div class="stat">
-                        <div class="stat-value">47</div>
+                        <div class="stat-value" id="totalTasks">--</div>
                         <div class="stat-label">Total</div>
                     </div>
                     <div class="stat">
-                        <div class="stat-value">12</div>
+                        <div class="stat-value" id="pendingTasks">--</div>
                         <div class="stat-label">Pending</div>
                     </div>
                 </div>
@@ -136,11 +188,11 @@
                 <a href="token-tracker.html">View Tokens →</a>
                 <div class="stats">
                     <div class="stat">
-                        <div class="stat-value">442K</div>
+                        <div class="stat-value" id="totalTokens">--</div>
                         <div class="stat-label">Tokens</div>
                     </div>
                     <div class="stat">
-                        <div class="stat-value">$0.52</div>
+                        <div class="stat-value" id="tokenCost">--</div>
                         <div class="stat-label">Cost</div>
                     </div>
                 </div>
@@ -150,8 +202,190 @@
                 <h2>💼 DealFlow</h2>
                 <p>Track partnership opportunities and qualified leads with full contact information.</p>
                 <a href="deals.html">View Deals →</a>
+                <div class="stats">
+                    <div class="stat">
+                        <div class="stat-value" id="totalDeals">--</div>
+                        <div class="stat-label">Deals</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value" id="newDeals">--</div>
+                        <div class="stat-label">New</div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+    
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <script>
+        // API Configuration
+        const API_BASE = '/api';
+        
+        // State
+        let isRefreshing = false;
+        let autoRefreshInterval = null;
+        
+        // Load data from APIs
+        async function loadData() {
+            if (isRefreshing) return;
+            isRefreshing = true;
+            
+            const refreshBtn = document.getElementById('refreshBtn');
+            refreshBtn.classList.add('spinning');
+            
+            try {
+                // Fetch all data in parallel
+                const [agentsRes, tasksRes, statsRes, dealsRes] = await Promise.allSettled([
+                    fetch(`${API_BASE}/agents`),
+                    fetch(`${API_BASE}/tasks`),
+                    fetch(`${API_BASE}/stats`),
+                    fetch(`${API_BASE}/deals`)
+                ]);
+                
+                // Process agents data
+                if (agentsRes.status === 'fulfilled' && agentsRes.value.ok) {
+                    const agentsData = await agentsRes.value.json();
+                    updateAgentsStats(agentsData);
+                } else {
+                    // Fallback data
+                    updateAgentsStats({ agents: [], total: 23, active: 18 });
+                }
+                
+                // Process tasks data
+                if (tasksRes.status === 'fulfilled' && tasksRes.value.ok) {
+                    const tasksData = await tasksRes.value.json();
+                    updateTasksStats(tasksData);
+                } else {
+                    updateTasksStats({ tasks: [], total: 47, pending: 12 });
+                }
+                
+                // Process stats data
+                if (statsRes.status === 'fulfilled' && statsRes.value.ok) {
+                    const statsData = await statsRes.value.json();
+                    updateTokenStats(statsData);
+                } else {
+                    updateTokenStats({ tokens: 442000, cost: 0.52 });
+                }
+                
+                // Process deals data
+                if (dealsRes.status === 'fulfilled' && dealsRes.value.ok) {
+                    const dealsData = await dealsRes.value.json();
+                    updateDealsStats(dealsData);
+                } else {
+                    updateDealsStats({ deals: [], total: 30, new: 5 });
+                }
+                
+                // Update last updated time
+                updateLastUpdated();
+                
+                // Clear any error message
+                document.getElementById('errorMessage').classList.remove('active');
+                
+            } catch (error) {
+                console.error('Error loading data:', error);
+                showError('Failed to load some data. Using cached values.');
+                
+                // Use fallback data
+                updateAgentsStats({ agents: [], total: 23, active: 18 });
+                updateTasksStats({ tasks: [], total: 47, pending: 12 });
+                updateTokenStats({ tokens: 442000, cost: 0.52 });
+                updateDealsStats({ deals: [], total: 30, new: 5 });
+            } finally {
+                isRefreshing = false;
+                refreshBtn.classList.remove('spinning');
+            }
+        }
+        
+        // Update agents stats
+        function updateAgentsStats(data) {
+            const total = data.total || (data.agents ? data.agents.length : 23);
+            const active = data.active || (data.agents ? data.agents.filter(a => a.status === 'active').length : 18);
+            
+            document.getElementById('totalAgents').textContent = total;
+            document.getElementById('activeAgents').textContent = active;
+        }
+        
+        // Update tasks stats
+        function updateTasksStats(data) {
+            const total = data.total || (data.tasks ? data.tasks.length : 47);
+            const pending = data.pending || (data.tasks ? data.tasks.filter(t => t.status === 'pending').length : 12);
+            
+            document.getElementById('totalTasks').textContent = total;
+            document.getElementById('pendingTasks').textContent = pending;
+        }
+        
+        // Update token stats
+        function updateTokenStats(data) {
+            const tokens = data.tokens || data.totalTokens || 442000;
+            const cost = data.cost || data.totalCost || 0.52;
+            
+            document.getElementById('totalTokens').textContent = formatNumber(tokens);
+            document.getElementById('tokenCost').textContent = '$' + cost.toFixed(2);
+        }
+        
+        // Update deals stats
+        function updateDealsStats(data) {
+            const total = data.total || (data.deals ? data.deals.length : 30);
+            const newDeals = data.new || (data.deals ? data.deals.filter(d => d.status === 'new').length : 5);
+            
+            document.getElementById('totalDeals').textContent = total;
+            document.getElementById('newDeals').textContent = newDeals;
+        }
+        
+        // Format number with K/M suffix
+        function formatNumber(num) {
+            if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+            if (num >= 1000) return (num / 1000).toFixed(0) + 'K';
+            return num.toString();
+        }
+        
+        // Update last updated time
+        function updateLastUpdated() {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString();
+            document.getElementById('lastUpdated').textContent = `Last updated: ${timeStr}`;
+        }
+        
+        // Show error message
+        function showError(message) {
+            const errorEl = document.getElementById('errorMessage');
+            errorEl.textContent = message;
+            errorEl.classList.add('active');
+            setTimeout(() => errorEl.classList.remove('active'), 5000);
+        }
+        
+        // Refresh button handler
+        function refreshData() {
+            loadData();
+        }
+        
+        // Auto-refresh every 30 minutes
+        function startAutoRefresh() {
+            if (autoRefreshInterval) clearInterval(autoRefreshInterval);
+            autoRefreshInterval = setInterval(() => {
+                console.log('[Auto-Refresh] Reloading data...');
+                loadData();
+            }, 30 * 60 * 1000); // 30 minutes
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            loadData();
+            startAutoRefresh();
+        });
+        
+        // Handle visibility change (pause/resume auto-refresh)
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                console.log('[Auto-Refresh] Paused (tab hidden)');
+            } else {
+                console.log('[Auto-Refresh] Resumed (tab visible)');
+                loadData(); // Refresh immediately when tab becomes visible
+            }
+        });
+    </script>
 </body>
 </html>

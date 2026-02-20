@@ -1,25 +1,24 @@
 {
   "version": 2,
   "name": "mission-control-dashboard",
+  "builds": [
+    { "src": "*.html", "use": "@vercel/static" },
+    { "src": "dashboard/*.html", "use": "@vercel/static" },
+    { "src": "api/**/*.js", "use": "@vercel/node" }
+  ],
   "rewrites": [
+    { "source": "/api/(.*)", "destination": "/api/$1" },
     { "source": "/agents", "destination": "/agents.html" },
     { "source": "/tasks", "destination": "/task-board.html" },
     { "source": "/office", "destination": "/office.html" },
+    { "source": "/pixel-office", "destination": "/office.html" },
+    { "source": "/agent-roster", "destination": "/agents.html" },
+    { "source": "/task-board", "destination": "/task-board.html" },
     { "source": "/deals", "destination": "/deals.html" },
     { "source": "/tokens", "destination": "/token-tracker.html" },
     { "source": "/logs", "destination": "/logs.html" },
     { "source": "/data", "destination": "/data.html" },
-    { "source": "/api/logs/activity", "destination": "/api/logs-activity.js" },
-    { "source": "/api/logs/chat", "destination": "/api/logs-chat.js" },
-    { "source": "/api/logs", "destination": "/api/logs-index.js" },
-    { "source": "/api/agents", "destination": "/api/agents.js" },
-    { "source": "/api/health", "destination": "/api/health.js" },
-    { "source": "/api/tasks", "destination": "/api/tasks.js" },
-    { "source": "/api/stats", "destination": "/api/stats.js" },
-    { "source": "/api/deployments", "destination": "/api/deployments.js" },
-    { "source": "/api/metrics", "destination": "/api/metrics.js" },
-    { "source": "/api/tokens", "destination": "/api/tokens.js" },
-    { "source": "/api/tokens-live", "destination": "/api/tokens-live.js" },
+    { "source": "/standup", "destination": "/standup.html" },
     { "source": "/(.*)", "destination": "/$1" }
   ],
   "headers": [
@@ -34,12 +33,13 @@
       "headers": [
         { "key": "Access-Control-Allow-Origin", "value": "*" },
         { "key": "Access-Control-Allow-Methods", "value": "GET, POST, PUT, DELETE, OPTIONS" },
-        { "key": "Access-Control-Allow-Headers", "value": "Content-Type, Authorization" }
+        { "key": "Access-Control-Allow-Headers", "value": "Content-Type, Authorization" },
+        { "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }
       ]
     }
   ],
   "functions": {
-    "api/*.js": {
+    "api/**/*.js": {
       "maxDuration": 10
     }
   }

@@ -278,6 +278,7 @@
                 <h3>📋 Actions</h3>
                 <button class="btn btn-primary" onclick="callStandup()">📢 Call Standup</button>
                 <button class="btn" onclick="generateMinutes()">📝 Meeting Minutes</button>
+                <button class="btn" onclick="showHierarchyTable()">🏢 View Hierarchy</button>
                 <button class="btn" onclick="reviewImprovements()">💡 Nexus Review</button>
             </div>
             
@@ -376,6 +377,67 @@
         
         // Initialize Agents
         let agents = [];
+        
+        // Agent Hierarchy Structure
+        const AGENT_HIERARCHY = {
+            commander: { id: 'ericf', name: 'EricF', role: 'Commander', emoji: '👑', color: '#ff6b6b' },
+            aiLead: { id: 'nexus', name: 'Nexus', role: 'AI Lead', emoji: '🤖', color: '#6b8e6b' },
+            teams: [
+                {
+                    name: 'Dev Team',
+                    lead: { id: 'codemaster', name: 'CodeMaster', role: 'Dev Lead', emoji: '💻', color: '#339af0' },
+                    members: [
+                        { id: 'code-1', name: 'Code-1', role: 'Developer', emoji: '⚡', color: '#51cf66' },
+                        { id: 'code-2', name: 'Code-2', role: 'Developer', emoji: '⚡', color: '#51cf66' },
+                        { id: 'code-3', name: 'Code-3', role: 'Developer', emoji: '⚡', color: '#51cf66' }
+                    ]
+                },
+                {
+                    name: 'Design Team',
+                    lead: { id: 'forge', name: 'Forge', role: 'Design Lead', emoji: '🎨', color: '#ff6b6b' },
+                    members: [
+                        { id: 'forge-2', name: 'Forge-2', role: 'Designer', emoji: '✨', color: '#fcc419' },
+                        { id: 'forge-3', name: 'Forge-3', role: 'Designer', emoji: '✨', color: '#fcc419' },
+                        { id: 'pixel', name: 'Pixel', role: 'Pixel Artist', emoji: '🎮', color: '#a78bfa' }
+                    ]
+                },
+                {
+                    name: 'Research Team',
+                    lead: { id: 'glasses', name: 'Glasses', role: 'Research Lead', emoji: '🔍', color: '#4ecdc4' },
+                    members: [
+                        { id: 'scout', name: 'Scout', role: 'Researcher', emoji: '📡', color: '#74c0fc' }
+                    ]
+                },
+                {
+                    name: 'Operations',
+                    members: [
+                        { id: 'sentry', name: 'Sentry', role: 'DevOps', emoji: '🛡️', color: '#ff8787' },
+                        { id: 'cipher', name: 'Cipher', role: 'Security', emoji: '🔐', color: '#9775fa' }
+                    ]
+                },
+                {
+                    name: 'Content',
+                    members: [
+                        { id: 'quill', name: 'Quill', role: 'Writer', emoji: '✍️', color: '#ffa94d' },
+                        { id: 'larry', name: 'Larry', role: 'Social Media', emoji: '🐦', color: '#69db7c' }
+                    ]
+                },
+                {
+                    name: 'Marketing',
+                    members: [
+                        { id: 'gary', name: 'Gary', role: 'Marketing', emoji: '📢', color: '#ff8787' },
+                        { id: 'coldcall', name: 'ColdCall', role: 'Outreach', emoji: '📞', color: '#ffd43b' }
+                    ]
+                },
+                {
+                    name: 'Audit',
+                    members: [
+                        { id: 'audit-1', name: 'Audit-1', role: 'QA', emoji: '✓', color: '#63e6be' },
+                        { id: 'audit-2', name: 'Audit-2', role: 'QA', emoji: '✓', color: '#63e6be' }
+                    ]
+                }
+            ]
+        };
         
         function initAgents() {
             agents = AGENT_TYPES.map((type, index) => ({
@@ -724,6 +786,127 @@
         
         function closeAgentDetails() {
             document.getElementById('agent-details').style.display = 'none';
+        }
+        
+        // ============================================
+        // HIERARCHY TABLE UI
+        // ============================================
+        
+        function showHierarchyTable() {
+            const modal = document.getElementById('meeting-modal');
+            const title = document.getElementById('modal-title');
+            const body = document.getElementById('modal-body');
+            
+            title.textContent = '🏢 Agent Hierarchy';
+            
+            let html = `
+                <div class="hierarchy-table" style="max-height: 60vh; overflow-y: auto;">
+                    <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+                        <thead>
+                            <tr style="background: #8b7355; color: #f5e6c8;">
+                                <th style="padding: 10px; text-align: left;">Role</th>
+                                <th style="padding: 10px; text-align: left;">Agent</th>
+                                <th style="padding: 10px; text-align: center;">Status</th>
+                                <th style="padding: 10px; text-align: left;">Current Task</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+            
+            // Commander
+            const commander = AGENT_HIERARCHY.commander;
+            const commanderAgent = agents.find(a => a.id === commander.id) || {};
+            html += `
+                <tr style="background: rgba(255, 107, 107, 0.2); cursor: pointer;" onclick="centerOnAgent('${commander.id}')">
+                    <td style="padding: 8px; border-bottom: 1px solid #4a4a4a;">👑 ${commander.role}</td>
+                    <td style="padding: 8px; border-bottom: 1px solid #4a4a4a; font-weight: bold;">${commander.name}</td>
+                    <td style="padding: 8px; border-bottom: 1px solid #4a4a4a; text-align: center;">
+                        <span class="status-indicator status-${commanderAgent.status || 'active'}"></span>
+                    </td>
+                    <td style="padding: 8px; border-bottom: 1px solid #4a4a4a;">${commanderAgent.currentTask || 'Commanding'}</td>
+                </tr>
+            `;
+            
+            // AI Lead
+            const aiLead = AGENT_HIERARCHY.aiLead;
+            const aiLeadAgent = agents.find(a => a.id === aiLead.id) || {};
+            html += `
+                <tr style="background: rgba(107, 142, 107, 0.2); cursor: pointer;" onclick="centerOnAgent('${aiLead.id}')">
+                    <td style="padding: 8px; border-bottom: 1px solid #4a4a4a;">🤖 ${aiLead.role}</td>
+                    <td style="padding: 8px; border-bottom: 1px solid #4a4a4a; font-weight: bold;">${aiLead.name}</td>
+                    <td style="padding: 8px; border-bottom: 1px solid #4a4a4a; text-align: center;">
+                        <span class="status-indicator status-${aiLeadAgent.status || 'active'}"></span>
+                    </td>
+                    <td style="padding: 8px; border-bottom: 1px solid #4a4a4a;">${aiLeadAgent.currentTask || 'Coordinating'}</td>
+                </tr>
+            `;
+            
+            // Teams
+            AGENT_HIERARCHY.teams.forEach((team, teamIndex) => {
+                // Team header
+                html += `
+                    <tr style="background: #3d3d3d;">
+                        <td colspan="4" style="padding: 8px; border-bottom: 1px solid #4a4a4a; color: #d4a574; font-weight: bold;">
+                            📁 ${team.name}
+                        </td>
+                    </tr>
+                `;
+                
+                // Team lead
+                if (team.lead) {
+                    const leadAgent = agents.find(a => a.id === team.lead.id) || {};
+                    html += `
+                        <tr style="background: rgba(212, 165, 116, 0.1); cursor: pointer;" onclick="centerOnAgent('${team.lead.id}')">
+                            <td style="padding: 8px; padding-left: 20px; border-bottom: 1px solid #4a4a4a;">${team.lead.emoji} ${team.lead.role}</td>
+                            <td style="padding: 8px; border-bottom: 1px solid #4a4a4a;">${team.lead.name}</td>
+                            <td style="padding: 8px; border-bottom: 1px solid #4a4a4a; text-align: center;">
+                                <span class="status-indicator status-${leadAgent.status || 'idle'}"></span>
+                            </td>
+                            <td style="padding: 8px; border-bottom: 1px solid #4a4a4a;">${leadAgent.currentTask || 'Leading'}</td>
+                        </tr>
+                    `;
+                }
+                
+                // Team members
+                if (team.members) {
+                    team.members.forEach(member => {
+                        const memberAgent = agents.find(a => a.id === member.id) || {};
+                        html += `
+                            <tr style="cursor: pointer;" onclick="centerOnAgent('${member.id}')">
+                                <td style="padding: 8px; padding-left: 40px; border-bottom: 1px solid #4a4a4a;">${member.emoji} ${member.role}</td>
+                                <td style="padding: 8px; border-bottom: 1px solid #4a4a4a;">${member.name}</td>
+                                <td style="padding: 8px; border-bottom: 1px solid #4a4a4a; text-align: center;">
+                                    <span class="status-indicator status-${memberAgent.status || 'idle'}"></span>
+                                </td>
+                                <td style="padding: 8px; border-bottom: 1px solid #4a4a4a;">${memberAgent.currentTask || 'Available'}</td>
+                            </tr>
+                        `;
+                    });
+                }
+            });
+            
+            html += `
+                        </tbody>
+                    </table>
+                    <p style="margin-top: 15px; font-size: 12px; opacity: 0.7; text-align: center;">
+                        💡 Click on any agent to center the camera on them
+                    </p>
+                </div>
+            `;
+            
+            body.innerHTML = html;
+            modal.style.display = 'flex';
+        }
+        
+        function centerOnAgent(agentId) {
+            const agent = agents.find(a => a.id === agentId);
+            if (agent) {
+                const container = document.getElementById('canvas-container');
+                gameState.offsetX = container.clientWidth / 2 - agent.x * gameState.zoom;
+                gameState.offsetY = container.clientHeight / 2 - agent.y * gameState.zoom;
+                closeMeetingModal();
+                addActivity(`🔍 Camera centered on ${agent.name}`);
+            }
         }
         
         // ============================================
