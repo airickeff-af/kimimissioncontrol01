@@ -1054,5 +1054,52 @@ curl https://dashboard-ten-sand-20.vercel.app/api/stats
 
 ---
 
+## Appendix: Complete Endpoint Reference
+
+### Quick Reference Table
+
+| Endpoint | Method | Description | Auth Required |
+|----------|--------|-------------|---------------|
+| `/api/health` | GET | System health check | No |
+| `/api/agents` | GET | List all agents with status | No |
+| `/api/tasks` | GET | List tasks with filtering | No |
+| `/api/logs/activity` | GET | Activity logs | No |
+| `/api/logs/chat` | GET | Chat logs | No |
+| `/api/metrics` | GET | System metrics | No |
+| `/api/stats` | GET | System statistics | No |
+| `/api/config` | GET | API configuration | No |
+| `/api/deals` | GET | Lead/deal data | No |
+| `/api/tokens` | GET | Token usage per agent | No |
+| `/api/deployments` | GET | Deployment history | No |
+
+### Agent Hierarchy (22 Agents)
+
+| Level | Agent | Role | Department | Reports To |
+|-------|-------|------|------------|------------|
+| 1 | **EricF** | Commander | Executive | - |
+| 2 | **Nexus** | Orchestrator | Executive | EricF |
+| 3 | **CodeMaster** | Backend Lead | Dev | Nexus |
+| 3 | **Code-1** | Backend | Dev | CodeMaster |
+| 3 | **Code-2** | Backend | Dev | CodeMaster |
+| 3 | **Code-3** | Backend | Dev | CodeMaster |
+| 3 | **Forge** | UI Lead | Dev | Nexus |
+| 3 | **Forge-2** | UI | Dev | Forge |
+| 3 | **Forge-3** | UI | Dev | Forge |
+| 3 | **Pixel** | Designer | Dev | Forge |
+| 3 | **Glasses** | Researcher | Content | Nexus |
+| 3 | **Quill** | Writer | Content | Nexus |
+| 3 | **Gary** | Marketing | Growth | Nexus |
+| 3 | **Larry** | Social | Growth | Nexus |
+| 3 | **Buzz** | Social | Growth | Nexus |
+| 3 | **Sentry** | DevOps | Ops | Nexus |
+| 3 | **Audit** | QA | Ops | Nexus |
+| 3 | **Cipher** | Security | Ops | Nexus |
+| 3 | **DealFlow** | Lead Gen | BD | Nexus |
+| 3 | **ColdCall** | Outreach | BD | Nexus |
+| 3 | **Scout** | Intel | Research | Nexus |
+| 3 | **PIE** | Intelligence | Research | Nexus |
+
+---
+
 **Document maintained by:** Quill Agent  
-**Last updated:** 2026-02-19
+**Last updated:** 2026-02-20
