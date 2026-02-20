@@ -1,6 +1,7 @@
 {
   "version": 2,
   "rewrites": [
+    { "source": "/", "destination": "/dashboard/index.html" },
     { "source": "/office", "destination": "/dashboard/office.html" },
     { "source": "/agents", "destination": "/dashboard/agents.html" },
     { "source": "/tasks", "destination": "/dashboard/task-board.html" },
@@ -9,7 +10,6 @@
     { "source": "/logs", "destination": "/dashboard/logs.html" },
     { "source": "/data", "destination": "/dashboard/data.html" },
     { "source": "/standup", "destination": "/dashboard/standup.html" },
-    { "source": "/", "destination": "/dashboard/index.html" },
     { "source": "/(.*)", "destination": "/dashboard/$1" }
   ],
   "headers": [
