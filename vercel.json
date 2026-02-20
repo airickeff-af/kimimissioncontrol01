@@ -1,0 +1,11 @@
+{
+  "rewrites": [
+    { "source": "/agents", "destination": "/agents.html" },
+    { "source": "/tasks", "destination": "/task-board.html" },
+    { "source": "/deals", "destination": "/deals.html" },
+    { "source": "/tokens", "destination": "/token-tracker.html" },
+    { "source": "/logs", "destination": "/logs.html" },
+    { "source": "/data", "destination": "/data.html" },
+    { "source": "/office", "destination": "/office.html" }
+  ]
+}
