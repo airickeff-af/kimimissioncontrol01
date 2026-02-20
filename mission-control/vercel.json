@@ -1,7 +1,9 @@
 {
   "version": 2,
   "rewrites": [
-    { "source": "/", "destination": "/dashboard/index.html" },
+    { "source": "/agents", "destination": "/agents.html" },
+    { "source": "/tasks", "destination": "/task-board.html" },
+    { "source": "/office", "destination": "/office.html" },
     { "source": "/pixel-office", "destination": "/office.html" },
     { "source": "/agent-roster", "destination": "/agents.html" },
     { "source": "/task-board", "destination": "/task-board.html" },
@@ -10,9 +12,7 @@
     { "source": "/logs", "destination": "/dashboard/logs.html" },
     { "source": "/data", "destination": "/dashboard/data.html" },
     { "source": "/standup", "destination": "/dashboard/standup.html" },
-    { "source": "/agents", "destination": "/agents.html" },
-    { "source": "/tasks", "destination": "/task-board.html" },
-    { "source": "/office", "destination": "/office.html" },
+    { "source": "/", "destination": "/dashboard/index.html" },
     { "source": "/(.*)", "destination": "/dashboard/$1" }
   ],
   "headers": [
