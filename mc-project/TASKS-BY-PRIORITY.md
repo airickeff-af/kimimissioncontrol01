@@ -17,8 +17,9 @@
 | 8 | Dashboard with 3D | ✅ DONE | Forge-MC |
 | 9 | Input Interface | ✅ DONE | Forge-MC |
 | 10 | **GitHub Push + Deploy** | 🟡 **IN PROGRESS** | Sentry-MC |
+| 11 | **Random Movement on Refresh** | 🔴 **NEW P0** | Forge-MC/Pixel-MC |
 
-**P0: 9/10 complete (90%)**
+**P0: 9/11 complete (82%)**
 
 ---
 
