@@ -2,15 +2,20 @@
   "version": 2,
   "rewrites": [
     { "source": "/", "destination": "/dashboard/index.html" },
-    { "source": "/office", "destination": "/dashboard/office.html" },
-    { "source": "/agents", "destination": "/dashboard/agents.html" },
-    { "source": "/tasks", "destination": "/dashboard/task-board.html" },
+    { "source": "/pixel-office", "destination": "/dashboard/office.html" },
+    { "source": "/agent-roster", "destination": "/dashboard/agents.html" },
+    { "source": "/task-board", "destination": "/dashboard/task-board.html" },
     { "source": "/deals", "destination": "/dashboard/deals.html" },
     { "source": "/tokens", "destination": "/dashboard/token-tracker.html" },
     { "source": "/logs", "destination": "/dashboard/logs.html" },
     { "source": "/data", "destination": "/dashboard/data.html" },
     { "source": "/standup", "destination": "/dashboard/standup.html" },
     { "source": "/(.*)", "destination": "/dashboard/$1" }
+  ],
+  "redirects": [
+    { "source": "/agents", "destination": "/agents.html", "permanent": false },
+    { "source": "/tasks", "destination": "/task-board.html", "permanent": false },
+    { "source": "/office", "destination": "/office.html", "permanent": false }
   ],
   "headers": [
     {
@@ -19,5 +24,10 @@
         { "key": "Cache-Control", "value": "s-maxage=0" }
       ]
     }
+  ],
+  "routes": [
+    { "src": "/pixel-office", "dest": "/dashboard/office.html" },
+    { "src": "/agent-roster", "dest": "/dashboard/agents.html" },
+    { "src": "/task-board", "dest": "/dashboard/task-board.html" }
   ]
 }

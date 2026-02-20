@@ -1,0 +1,52 @@
+[build]
+  publish = "dashboard"
+
+[[redirects]]
+  from = "/"
+  to = "/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/agents"
+  to = "/agents.html"
+  status = 200
+
+[[redirects]]
+  from = "/tasks"
+  to = "/task-board.html"
+  status = 200
+
+[[redirects]]
+  from = "/office"
+  to = "/office.html"
+  status = 200
+
+[[redirects]]
+  from = "/deals"
+  to = "/deals.html"
+  status = 200
+
+[[redirects]]
+  from = "/tokens"
+  to = "/token-tracker.html"
+  status = 200
+
+[[redirects]]
+  from = "/logs"
+  to = "/logs.html"
+  status = 200
+
+[[redirects]]
+  from = "/data"
+  to = "/data.html"
+  status = 200
+
+[[redirects]]
+  from = "/standup"
+  to = "/standup.html"
+  status = 200
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
