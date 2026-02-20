@@ -1,16 +1,16 @@
 {
   "version": 2,
-  "rewrites": [
-    { "source": "/", "destination": "/dashboard/index.html" },
-    { "source": "/office", "destination": "/dashboard/office.html" },
-    { "source": "/agents", "destination": "/dashboard/agents.html" },
-    { "source": "/tasks", "destination": "/dashboard/task-board.html" },
-    { "source": "/deals", "destination": "/dashboard/deals.html" },
-    { "source": "/tokens", "destination": "/dashboard/token-tracker.html" },
-    { "source": "/logs", "destination": "/dashboard/logs.html" },
-    { "source": "/data", "destination": "/dashboard/data.html" },
-    { "source": "/standup", "destination": "/dashboard/standup.html" },
-    { "source": "/(.*)", "destination": "/dashboard/$1" }
+  "routes": [
+    { "src": "/", "dest": "/dashboard/index.html" },
+    { "src": "/office", "dest": "/dashboard/office.html" },
+    { "src": "/agents", "dest": "/dashboard/agents.html" },
+    { "src": "/tasks", "dest": "/dashboard/task-board.html" },
+    { "src": "/deals", "dest": "/dashboard/deals.html" },
+    { "src": "/tokens", "dest": "/dashboard/token-tracker.html" },
+    { "src": "/logs", "dest": "/dashboard/logs.html" },
+    { "src": "/data", "dest": "/dashboard/data.html" },
+    { "src": "/standup", "dest": "/dashboard/standup.html" },
+    { "src": "/(.*)", "dest": "/dashboard/$1" }
   ],
   "headers": [
     {
