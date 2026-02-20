@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MC Project - Health & Wealth Tracker</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #fff;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        header h1 {
+            font-size: 48px;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #4ecdc4, #ffe66d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        header p {
+            font-size: 18px;
+            opacity: 0.8;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        .card h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .card.health h2 { color: #ff6b6b; }
+        .card.wealth h2 { color: #4ecdc4; }
+        .card.character h2 { color: #ffe66d; }
+        
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 15px 0;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .stat-row:last-child {
+            border-bottom: none;
+        }
+        
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #4ecdc4, #44a08d);
+            color: #fff;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s;
+            width: 100%;
+        }
+        
+        .btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 10px 30px rgba(78, 205, 196, 0.3);
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .feature-list {
+            list-style: none;
+        }
+        
+        .feature-list li {
+            padding: 10px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+        
+        .feature-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #4ecdc4;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .status-ready {
+            background: rgba(78, 205, 196, 0.2);
+            color: #4ecdc4;
+        }
+        
+        .status-pending {
+            background: rgba(255, 230, 109, 0.2);
+            color: #ffe66d;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 40px;
+            opacity: 0.6;
+            font-size: 14px;
+        }
+        
+        .api-status {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        
+        .api-badge {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎮 MC Project</h1>
+            <p>3D Character Health & Wealth Tracker</p>
+            <div class="api-status">
+                <span class="api-badge">🟢 /api/health</span>
+                <span class="api-badge">🟢 /api/wealth</span>
+                <span class="api-badge">🟢 /api/character/glb</span>
+            </div>
+        </header>
+        
+        <div class="grid">
+            <div class="card health">
+                <h2>💪 Health System</h2>
+                <div class="stat-row">
+                    <span>Exercise Today</span>
+                    <span class="stat-value" id="exercise-val">0 min</span>
+                </div>
+                <div class="stat-row">
+                    <span>Sleep Last Night</span>
+                    <span class="stat-value" id="sleep-val">0 hrs</span>
+                </div>
+                <div class="stat-row">
+                    <span>Calories Tracked</span>
+                    <span class="stat-value" id="calories-val">0</span>
+                </div>
+                <a href="/viewer.html" class="btn btn-secondary">View in 3D →</a>
+            </div>
+            
+            <div class="card wealth">
+                <h2>💰 Wealth System</h2>
+                <div class="stat-row">
+                    <span>Total Savings</span>
+                    <span class="stat-value" id="savings-val">$0</span>
+                </div>
+                <div class="stat-row">
+                    <span>Investments</span>
+                    <span class="stat-value" id="invest-val">$0</span>
+                </div>
+                <div class="stat-row">
+                    <span>Gig Earnings</span>
+                    <span class="stat-value" id="gig-val">$0</span>
+                </div>
+                <a href="/viewer.html" class="btn btn-secondary">View in 3D →</a>
+            </div>
+            
+            <div class="card character">
+                <h2>👤 3D Character</h2>
+                <ul class="feature-list">
+                    <li>Interactive GLB Viewer</li>
+                    <li>Real-time Stat Mapping</li>
+                    <li>Rotate, Zoom, Wireframe</li>
+                    <li>2D Sprite Fallback</li>
+                    <li>WebSocket Sync Ready</li>
+                </ul>
+                <span class="status-badge status-ready">Ready</span>
+                <br><br>
+                <a href="/viewer.html" class="btn">Launch 3D Viewer</a>
+            </div>
+        </div>
+        
+        <div class="grid">
+            <div class="card">
+                <h2>📊 API Endpoints</h2>
+                <div class="stat-row">
+                    <code>GET /api/health</code>
+                    <span class="status-badge status-ready">Active</span>
+                </div>
+                <div class="stat-row">
+                    <code>GET /api/wealth</code>
+                    <span class="status-badge status-ready">Active</span>
+                </div>
+                <div class="stat-row">
+                    <code>GET /api/character/glb</code>
+                    <span class="status-badge status-ready">Active</span>
+                </div>
+                <div class="stat-row">
+                    <code>WS /</code>
+                    <span class="status-badge status-pending">Pending</span>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2>🚀 Deployment</h2>
+                <div class="stat-row">
+                    <span>GitHub Pages</span>
+                    <span class="status-badge status-pending">Setup</span>
+                </div>
+                <div class="stat-row">
+                    <span>Vercel</span>
+                    <span class="status-badge status-pending">Setup</span>
+                </div>
+                <div class="stat-row">
+                    <span>GLB File</span>
+                    <span class="status-badge status-pending">Waiting</span>
+                </div>
+                <p style="margin-top: 15px; opacity: 0.7; font-size: 14px;">
+                    Waiting for EricF's GLB character file...
+                </p>
+            </div>
+        </div>
+        
+        <footer>
+            <p>MC Project © 2026 | Built with Three.js + Node.js</p>
+            <p style="margin-top: 10px; font-size: 12px;">
+                <a href="https://github.com/airickeff-af/mc-project" style="color: #4ecdc4;">GitHub Repo</a> • 
+                <a href="/viewer.html" style="color: #4ecdc4;">3D Viewer</a>
+            </p>
+        </footer>
+    </div>
+    
+    <script>
+        // Fetch stats from API
+        async function fetchStats() {
+            try {
+                const healthRes = await fetch('/api/health/stats');
+                const health = await healthRes.json();
+                
+                document.getElementById('exercise-val').textContent = health.exercise.minutes + ' min';
+                document.getElementById('sleep-val').textContent = health.sleep.hours + ' hrs';
+                document.getElementById('calories-val').textContent = health.nutrition.calories;
+            } catch (e) {
+                console.log('Health API not ready');
+            }
+            
+            try {
+                const wealthRes = await fetch('/api/wealth/stats');
+                const wealth = await wealthRes.json();
+                
+                document.getElementById('savings-val').textContent = '$' + wealth.savings.total;
+                document.getElementById('invest-val').textContent = '$' + wealth.investments.total;
+                document.getElementById('gig-val').textContent = '$' + wealth.gigWork.earnings;
+            } catch (e) {
+                console.log('Wealth API not ready');
+            }
+        }
+        
+        fetchStats();
+    </script>
+</body>
+</html>

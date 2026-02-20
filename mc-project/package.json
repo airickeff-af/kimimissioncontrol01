@@ -1,0 +1,40 @@
+{
+  "name": "mc-project",
+  "version": "1.0.0",
+  "description": "MC Project - 3D Character Health & Wealth Tracker",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "build": "echo 'Static site - no build needed'",
+    "test": "jest"
+  },
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^16.6.1",
+    "express": "^4.22.1",
+    "pg": "^8.11.3",
+    "ws": "^8.19.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "nodemon": "^3.0.1"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/airickeff-af/mc-project.git"
+  },
+  "keywords": [
+    "3d",
+    "character",
+    "health",
+    "wealth",
+    "three.js",
+    "glb"
+  ],
+  "author": "airickeff-af",
+  "license": "MIT"
+}
