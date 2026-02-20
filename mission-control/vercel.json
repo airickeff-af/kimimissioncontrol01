@@ -7,13 +7,13 @@
     { "source": "/pixel-office", "destination": "/office.html" },
     { "source": "/agent-roster", "destination": "/agents.html" },
     { "source": "/task-board", "destination": "/task-board.html" },
-    { "source": "/deals", "destination": "/dashboard/deals.html" },
-    { "source": "/tokens", "destination": "/dashboard/token-tracker.html" },
-    { "source": "/logs", "destination": "/dashboard/logs.html" },
-    { "source": "/data", "destination": "/dashboard/data.html" },
-    { "source": "/standup", "destination": "/dashboard/standup.html" },
-    { "source": "/", "destination": "/dashboard/index.html" },
-    { "source": "/(.*)", "destination": "/dashboard/$1" }
+    { "source": "/deals", "destination": "/deals.html" },
+    { "source": "/tokens", "destination": "/tokens.html" },
+    { "source": "/logs", "destination": "/logs.html" },
+    { "source": "/data", "destination": "/data.html" },
+    { "source": "/standup", "destination": "/standup.html" },
+    { "source": "/", "destination": "/index.html" },
+    { "source": "/(.*)", "destination": "/$1" }
   ],
   "headers": [
     {
