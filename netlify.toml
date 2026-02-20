@@ -1,11 +1,8 @@
 [build]
-  publish = "."
-  functions = "api"
+  publish = "dashboard"
+  command = "echo 'Static site'"
 
 [[redirects]]
-  from = "/api/*"
-  to = "/api/:splat"
+  from = "/*"
+  to = "/index.html"
   status = 200
-
-[functions]
-  node_bundler = "esbuild"

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logs View | Mission Control</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0a0f;
+            color: #e0e0e0;
+            min-height: 100vh;
+        }
+        .header {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            padding: 1rem 2rem;
+            border-bottom: 2px solid #00d4ff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo { font-size: 1.5rem; font-weight: 700; color: #00d4ff; }
+        .nav { display: flex; gap: 1rem; }
+        .nav a {
+            color: #888;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+        .nav a:hover, .nav a.active { color: #00d4ff; background: rgba(0,212,255,0.1); }
+        .container { max-width: 1400px; margin: 0 auto; padding: 2rem; }
+        h1 { color: #00d4ff; margin-bottom: 2rem; display: flex; align-items: center; gap: 0.5rem; }
+        .logs-container {
+            background: linear-gradient(135deg, #1a1a2e, #0f0f1a);
+            border: 1px solid #333;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .logs-header {
+            background: rgba(0,212,255,0.1);
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #333;
+        }
+        .log-filters { display: flex; gap: 0.5rem; }
+        .filter-btn {
+            background: transparent;
+            border: 1px solid #333;
+            color: #888;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .filter-btn:hover, .filter-btn.active {
+            border-color: #00d4ff;
+            color: #00d4ff;
+            background: rgba(0,212,255,0.1);
+        }
+        .logs-list {
+            max-height: 600px;
+            overflow-y: auto;
+        }
+        .log-entry {
+            padding: 1rem;
+            border-bottom: 1px solid #222;
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            transition: background 0.2s;
+        }
+        .log-entry:hover { background: rgba(0,212,255,0.05); }
+        .log-time {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: #666;
+            min-width: 140px;
+        }
+        .log-agent {
+            font-weight: 600;
+            color: #00d4ff;
+            min-width: 100px;
+        }
+        .log-action {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            margin-right: 0.5rem;
+        }
+        .log-action.completed { background: rgba(0,255,136,0.1); color: #00ff88; }
+        .log-action.updated { background: rgba(0,212,255,0.1); color: #00d4ff; }
+        .log-action.created { background: rgba(255,193,7,0.1); color: #ffc107; }
+        .log-action.deployed { background: rgba(138,43,226,0.1); color: #8a2be2; }
+        .log-details { color: #aaa; flex: 1; }
+        .loading { text-align: center; padding: 3rem; color: #888; }
+        .error { text-align: center; padding: 3rem; color: #ff4444; }
+        .refresh-btn {
+            background: linear-gradient(135deg, #00d4ff, #0099cc);
+            color: #000; border: none; padding: 0.5rem 1rem;
+            border-radius: 6px; font-weight: 600; cursor: pointer;
+        }
+        .refresh-btn:hover { transform: translateY(-1px); }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">🎯 Mission Control</div>
+        <nav class="nav">
+            <a href="/index.html">HQ</a>
+            <a href="/living-pixel-office.html">Office</a>
+            <a href="/agents.html">Agents</a>
+            <a href="/deals.html">DealFlow</a>
+            <a href="/token-tracker.html">Tokens</a>
+            <a href="/task-board.html">Tasks</a>
+            <a href="/logs-view.html" class="active">Logs</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <h1>📡 Activity Logs</h1>
+        
+        <div class="logs-container">
+            <div class="logs-header">
+                <div class="log-filters">
+                    <button class="filter-btn active" onclick="filterLogs('all')">All</button>
+                    <button class="filter-btn" onclick="filterLogs('completed')">Completed</button>
+                    <button class="filter-btn" onclick="filterLogs('updated')">Updated</button>
+                    <button class="filter-btn" onclick="filterLogs('created')">Created</button>
+                </div>
+                <button class="refresh-btn" onclick="loadLogs()">🔄 Refresh</button>
+            </div>
+            <div class="logs-list" id="logs-content">
+                <div class="loading">Loading activity logs...</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = '/api';
+        let allLogs = [];
+
+        async function loadLogs() {
+            const content = document.getElementById('logs-content');
+            content.innerHTML = '<div class="loading">Loading activity logs...</div>';
+
+            try {
+                const response = await fetch(`${API_URL}/logs/activity?limit=100`);
+                if (!response.ok) throw new Error('Failed to fetch logs');
+                const data = await response.json();
+                
+                allLogs = data.logs || [];
+                renderLogs(allLogs);
+            } catch (error) {
+                content.innerHTML = `<div class="error">⚠️ Failed to load logs: ${error.message}</div>`;
+            }
+        }
+
+        function renderLogs(logs) {
+            const content = document.getElementById('logs-content');
+            if (logs.length === 0) {
+                content.innerHTML = '<div class="loading">No logs found</div>';
+                return;
+            }
+            
+            content.innerHTML = logs.map(log => `
+                <div class="log-entry">
+                    <div class="log-time">${log.timestamp || log.time || 'Unknown'}</div>
+                    <div class="log-agent">${log.agent || 'System'}</div>
+                    <div class="log-details">
+                        <span class="log-action ${log.action || 'updated'}">${log.action || 'updated'}</span>
+                        ${log.details || log.message || ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filterLogs(type) {
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            if (type === 'all') {
+                renderLogs(allLogs);
+            } else {
+                const filtered = allLogs.filter(log => log.action === type);
+                renderLogs(filtered);
+            }
+        }
+
+        // Load on page load
+        loadLogs();
+        
+        // Auto-refresh every 30 seconds
+        setInterval(loadLogs, 30 * 1000);
+    </script>
+</body>
+</html>

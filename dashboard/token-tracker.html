@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Token Tracker | Mission Control</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0a0a0f;
+      color: #e0e0e0;
+      min-height: 100vh;
+    }
+    
+    .header {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      padding: 1rem 2rem;
+      border-bottom: 2px solid #00d4ff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    
+    .logo { 
+      font-size: 1.5rem; 
+      font-weight: 700; 
+      color: #00d4ff; 
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .nav { 
+      display: flex; 
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    
+    .nav a {
+      color: #888;
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      transition: all 0.2s;
+      font-size: 0.9rem;
+    }
+    
+    .nav a:hover, .nav a.active { 
+      color: #00d4ff; 
+      background: rgba(0,212,255,0.1); 
+    }
+    
+    .container { 
+      max-width: 1400px; 
+      margin: 0 auto; 
+      padding: 2rem; 
+    }
+    
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    
+    h1 { 
+      font-size: 2rem; 
+      color: #00d4ff; 
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .refresh-btn {
+      background: linear-gradient(135deg, #00d4ff, #0099cc);
+      color: #000;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.2s;
+    }
+    
+    .refresh-btn:hover:not(:disabled) { 
+      transform: translateY(-2px); 
+      box-shadow: 0 4px 12px rgba(0,212,255,0.3); 
+    }
+    
+    .refresh-btn:disabled { 
+      opacity: 0.6; 
+      cursor: not-allowed; 
+    }
+    
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    
+    .stat-card {
+      background: linear-gradient(135deg, #1a1a2e, #0f0f1a);
+      border: 1px solid #333;
+      border-radius: 12px;
+      padding: 1.5rem;
+      text-align: center;
+      transition: all 0.2s;
+    }
+    
+    .stat-card:hover {
+      border-color: #00d4ff;
+      transform: translateY(-2px);
+    }
+    
+    .stat-value { 
+      font-size: 2rem; 
+      font-weight: 700; 
+      color: #00d4ff;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    
+    .stat-label { 
+      color: #888; 
+      font-size: 0.875rem; 
+      margin-top: 0.5rem; 
+    }
+    
+    .stat-sub { 
+      color: #666; 
+      font-size: 0.75rem; 
+      margin-top: 0.25rem; 
+    }
+    
+    .section-title {
+      color: #00d4ff;
+      margin-bottom: 1rem;
+      font-size: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .agents-table-container {
+      background: linear-gradient(135deg, #1a1a2e, #0f0f1a);
+      border: 1px solid #333;
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 2rem;
+    }
+    
+    .agents-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    
+    .agents-table th {
+      background: rgba(0,212,255,0.1);
+      color: #00d4ff;
+      padding: 1rem;
+      text-align: left;
+      font-weight: 600;
+      font-size: 0.875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .agents-table td {
+      padding: 1rem;
+      border-bottom: 1px solid #333;
+    }
+    
+    .agents-table tr:hover td {
+      background: rgba(0,212,255,0.05);
+    }
+    
+    .agents-table tr:last-child td {
+      border-bottom: none;
+    }
+    
+    .agent-cell {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    
+    .agent-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #00d4ff, #0099cc);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: #000;
+      flex-shrink: 0;
+    }
+    
+    .agent-info {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .agent-name {
+      font-weight: 600;
+      color: #fff;
+    }
+    
+    .agent-role {
+      font-size: 0.75rem;
+      color: #888;
+    }
+    
+    .token-cell {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 600;
+    }
+    
+    .token-count {
+      color: #00ff88;
+    }
+    
+    .token-in {
+      color: #888;
+      font-size: 0.75rem;
+    }
+    
+    .cost-cell {
+      font-family: 'JetBrains Mono', monospace;
+      color: #ffd700;
+    }
+    
+    .sessions-cell {
+      color: #888;
+      font-size: 0.875rem;
+    }
+    
+    .percentage-bar {
+      width: 100%;
+      height: 6px;
+      background: #333;
+      border-radius: 3px;
+      overflow: hidden;
+      margin-top: 0.25rem;
+    }
+    
+    .percentage-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #00d4ff, #00ff88);
+      border-radius: 3px;
+      transition: width 0.3s ease;
+    }
+    
+    .percentage-text {
+      font-size: 0.75rem;
+      color: #888;
+      margin-top: 0.25rem;
+    }
+    
+    .loading { 
+      text-align: center; 
+      padding: 3rem; 
+      color: #888; 
+    }
+    
+    .loading-spinner {
+      display: inline-block;
+      width: 40px;
+      height: 40px;
+      border: 3px solid #333;
+      border-top-color: #00d4ff;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 1rem;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    .error { 
+      text-align: center; 
+      padding: 3rem; 
+      color: #ff4444; 
+      background: rgba(255,68,68,0.1);
+      border-radius: 12px;
+      border: 1px solid #ff4444;
+    }
+    
+    .error-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+    
+    .empty-state {
+      text-align: center;
+      padding: 3rem;
+      color: #888;
+    }
+    
+    .last-updated { 
+      text-align: center; 
+      color: #666; 
+      margin-top: 2rem; 
+      font-size: 0.875rem; 
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+    
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #00ff88;
+      animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    
+    .agent-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      font-size: 0.75rem;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-weight: 500;
+    }
+    
+    .agent-status.active {
+      background: rgba(0,255,136,0.1);
+      color: #00ff88;
+    }
+    
+    .agent-status.inactive {
+      background: rgba(136,136,136,0.1);
+      color: #888;
+    }
+    
+    .timeline-section {
+      margin-top: 2rem;
+    }
+    
+    .timeline-chart {
+      background: linear-gradient(135deg, #1a1a2e, #0f0f1a);
+      border: 1px solid #333;
+      border-radius: 12px;
+      padding: 1.5rem;
+      height: 200px;
+      display: flex;
+      align-items: flex-end;
+      gap: 1rem;
+    }
+    
+    .timeline-bar {
+      flex: 1;
+      background: linear-gradient(180deg, #00d4ff, #0099cc);
+      border-radius: 4px 4px 0 0;
+      min-height: 20px;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+    
+    .timeline-bar:hover {
+      background: linear-gradient(180deg, #00ff88, #00d4ff);
+    }
+    
+    .timeline-label {
+      position: absolute;
+      bottom: -25px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.75rem;
+      color: #888;
+      white-space: nowrap;
+    }
+    
+    .timeline-value {
+      position: absolute;
+      top: -25px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.75rem;
+      color: #00d4ff;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    
+    @media (max-width: 768px) {
+      .header { 
+        padding: 1rem; 
+      }
+      
+      .nav { 
+        overflow-x: auto; 
+        width: 100%;
+        -webkit-overflow-scrolling: touch;
+      }
+      
+      .container { 
+        padding: 1rem; 
+      }
+      
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .stat-value {
+        font-size: 1.5rem;
+      }
+      
+      .agents-table-container {
+        overflow-x: auto;
+      }
+      
+      .agents-table {
+        min-width: 600px;
+      }
+      
+      h1 {
+        font-size: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="logo">🎯 Mission Control</div>
+    <nav class="nav">
+      <a href="/index.html">HQ</a>
+      <a href="/living-pixel-office.html">Office</a>
+      <a href="/agents.html">Agents</a>
+      <a href="/deals.html">DealFlow</a>
+      <a href="/token-tracker.html" class="active">Tokens</a>
+      <a href="/task-board.html">Tasks</a>
+      <a href="/logs-view.html">Logs</a>
+      <a href="/data-viewer.html">Data</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <div class="page-header">
+      <h1>💰 Token Tracker</h1>
+      <button class="refresh-btn" id="refreshBtn" onclick="loadTokens()">
+        🔄 Refresh
+      </button>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-value" id="total-tokens">-</div>
+        <div class="stat-label">Total Tokens</div>
+        <div class="stat-sub" id="total-sessions">-</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="total-cost">-</div>
+        <div class="stat-label">Est. Cost (USD)</div>
+        <div class="stat-sub">Based on API pricing</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="active-agents">-</div>
+        <div class="stat-label">Active Agents</div>
+        <div class="stat-sub" id="total-agents">-</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="daily-avg">-</div>
+        <div class="stat-label">Daily Average</div>
+        <div class="stat-sub">tokens/day</div>
+      </div>
+    </div>
+
+    <h2 class="section-title">👥 Agent Token Usage (All 22 Agents)</h2>
+
+    <div class="agents-table-container">
+      <div id="agents-content">
+        <div class="loading">
+          <div class="loading-spinner"></div>
+          <div>Loading token data from live sessions...</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="timeline-section">
+      <h2 class="section-title">📊 7-Day Token Usage Trend</h2>
+      <div class="timeline-chart" id="timeline-chart">
+        <div class="empty-state">Loading timeline data...</div>
+      </div>
+    </div>
+
+    <div class="last-updated" id="last-updated">
+      <span class="status-dot"></span>
+      <span>Last updated: Never</span>
+    </div>
+  </div>
+
+  <script>
+    // API URL - adjust based on deployment
+    const API_URL = window.location.hostname === 'localhost' 
+      ? 'http://localhost:3000/api'
+      : '/api';
+
+    function formatNumber(num) {
+      if (num >= 1000000) return (num / 1000000).toFixed(2) + 'M';
+      if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
+      return num.toLocaleString();
+    }
+
+    function formatCurrency(num) {
+      return '$' + num.toFixed(4);
+    }
+
+    async function loadTokens() {
+      const content = document.getElementById('agents-content');
+      const refreshBtn = document.getElementById('refreshBtn');
+      
+      content.innerHTML = `
+        <div class="loading">
+          <div class="loading-spinner"></div>
+          <div>Loading token data from live sessions...</div>
+        </div>
+      `;
+      refreshBtn.disabled = true;
+      refreshBtn.textContent = '⏳ Loading...';
+
+      try {
+        const response = await fetch(`${API_URL}/tokens`);
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const result = await response.json();
+
+        if (!result.success) {
+          throw new Error(result.error || 'API returned error');
+        }
+
+        const data = result;
+        const summary = data.summary || {};
+        const agents = data.agents || [];
+        const timeline = data.timeline || [];
+
+        // Update stats
+        document.getElementById('total-tokens').textContent = formatNumber(summary.totalTokens || 0);
+        document.getElementById('total-cost').textContent = formatCurrency(summary.totalCost || 0);
+        document.getElementById('total-sessions').textContent = `${summary.totalSessions || 0} sessions`;
+        document.getElementById('active-agents').textContent = summary.activeAgents || 0;
+        document.getElementById('total-agents').textContent = `${summary.totalAgents || 0} total agents`;
+        document.getElementById('daily-avg').textContent = formatNumber(summary.dailyAverage || 0);
+
+        // Sort by token usage (descending)
+        const sortedAgents = [...agents].sort((a, b) => (b.tokens || 0) - (a.tokens || 0));
+
+        // Render agent table
+        if (sortedAgents.length === 0) {
+          content.innerHTML = `
+            <div class="empty-state">
+              <div style="font-size: 3rem; margin-bottom: 1rem;">📊</div>
+              <div class="empty-state-title">No Token Data</div>
+              <div class="empty-state-text">No agent sessions found. Start some agent tasks to see token usage.</div>
+            </div>
+          `;
+        } else {
+          content.innerHTML = `
+            <table class="agents-table">
+              <thead>
+                <tr>
+                  <th>Agent</th>
+                  <th>Status</th>
+                  <th>Total Tokens</th>
+                  <th>Input / Output</th>
+                  <th>Cost</th>
+                  <th>Sessions</th>
+                  <th>Usage %</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${sortedAgents.map(agent => `
+                  <tr>
+                    <td>
+                      <div class="agent-cell">
+                        <div class="agent-avatar">${agent.name?.charAt(0) || '?'}</div>
+                        <div class="agent-info">
+                          <div class="agent-name">${agent.name || 'Unknown'}</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <span class="agent-status ${agent.tokens > 0 ? 'active' : 'inactive'}">
+                        ${agent.tokens > 0 ? '● Active' : '○ Inactive'}
+                      </span>
+                    </td>
+                    <td class="token-cell">
+                      <span class="token-count">${formatNumber(agent.tokens || 0)}</span>
+                    </td>
+                    <td class="token-cell">
+                      <div>${formatNumber(agent.tokensIn || 0)} in</div>
+                      <div class="token-in">${formatNumber(agent.tokensOut || 0)} out</div>
+                    </td>
+                    <td class="cost-cell">
+                      ${formatCurrency(agent.cost || 0)}
+                    </td>
+                    <td class="sessions-cell">
+                      ${agent.sessions || 0}
+                    </td>
+                    <td>
+                      <div class="percentage-bar">
+                        <div class="percentage-fill" style="width: ${agent.percentage || 0}%"></div>
+                      </div>
+                      <div class="percentage-text">${(agent.percentage || 0).toFixed(1)}%</div>
+                    </td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          `;
+        }
+
+        // Render timeline
+        renderTimeline(timeline);
+
+        document.getElementById('last-updated').innerHTML = `
+          <span class="status-dot"></span>
+          <span>Last updated: ${new Date().toLocaleString()}</span>
+        `;
+      } catch (error) {
+        console.error('Error loading tokens:', error);
+        content.innerHTML = `
+          <div class="error">
+            <div class="error-title">⚠️ Failed to Load Token Data</div>
+            <div>${error.message}</div>
+            <div style="margin-top: 1rem; font-size: 0.875rem;">
+              Make sure the API server is running and accessible.
+            </div>
+          </div>
+        `;
+      } finally {
+        refreshBtn.disabled = false;
+        refreshBtn.textContent = '🔄 Refresh';
+      }
+    }
+
+    function renderTimeline(timeline) {
+      const chart = document.getElementById('timeline-chart');
+      
+      if (!timeline || timeline.length === 0) {
+        chart.innerHTML = '<div class="empty-state">No timeline data available</div>';
+        return;
+      }
+
+      const maxTokens = Math.max(...timeline.map(d => d.tokens || 0));
+      
+      chart.innerHTML = timeline.map(day => {
+        const height = maxTokens > 0 ? (day.tokens / maxTokens) * 100 : 0;
+        const date = new Date(day.date);
+        const label = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        
+        return `
+          <div class="timeline-bar" style="height: ${Math.max(height, 5)}%">
+            <div class="timeline-value">${formatNumber(day.tokens || 0)}</div>
+            <div class="timeline-label">${label}</div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Load on page load
+    document.addEventListener('DOMContentLoaded', loadTokens);
+
+    // Auto-refresh every 5 minutes
+    setInterval(() => {
+      loadTokens();
+    }, 5 * 60 * 1000);
+  </script>
+</body>
+</html>

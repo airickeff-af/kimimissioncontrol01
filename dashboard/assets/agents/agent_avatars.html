@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mission Control - Agent Avatars (Kairosoft Style)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Courier New', monospace;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #fff;
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #888;
+            margin-bottom: 30px;
+        }
+        
+        .agents-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .agent-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            border: 2px solid rgba(255,255,255,0.1);
+            transition: transform 0.2s, border-color 0.2s;
+        }
+        
+        .agent-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255,255,255,0.3);
+        }
+        
+        .avatar-container {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 15px;
+            position: relative;
+        }
+        
+        .avatar-svg {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .agent-name {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .agent-role {
+            font-size: 0.85em;
+            color: #aaa;
+            margin-bottom: 10px;
+        }
+        
+        .agent-symbol {
+            font-size: 1.5em;
+            margin-top: 5px;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.7em;
+            margin-top: 10px;
+        }
+        
+        .status-online {
+            background: #4ade80;
+            color: #000;
+        }
+        
+        .status-offline {
+            background: #6b7280;
+            color: #fff;
+        }
+        
+        /* Pixel art effect */
+        .pixel-art {
+            image-rendering: pixelated;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: crisp-edges;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎮 MISSION CONTROL AGENTS</h1>
+    <p class="subtitle">Kairosoft-Style Pixel Art Avatars</p>
+    
+    <div class="agents-grid">
+        <!-- Air1ck3ff - Nexus -->
+        <div class="agent-card">
+            <div class="avatar-container">
+                <svg class="avatar-svg pixel-art" viewBox="0 0 32 32">
+                    <!-- Head -->
+                    <rect x="10" y="4" width="12" height="10" fill="#60a5fa"/>
+                    <!-- Face -->
+                    <rect x="12" y="6" width="2" height="2" fill="#1e3a5f"/>
+                    <rect x="18" y="6" width="2" height="2" fill="#1e3a5f"/>
+                    <rect x="14" y="9" width="4" height="1" fill="#1e3a5f"/>
+                    <!-- Body -->
+                    <rect x="8" y="14" width="16" height="10" fill="#3b82f6"/>
+                    <!-- Symbol -->
+                    <rect x="14" y="17" width="4" height="4" fill="#fbbf24"/>
+                    <!-- Legs -->
+                    <rect x="11" y="24" width="4" height="6" fill="#1e40af"/>
+                    <rect x="17" y="24" width="4" height="6" fill="#1e40af"/>
+                </svg>
+            </div>
+            <div class="agent-name">Air1ck3ff</div>
+            <div class="agent-role">Nexus - Chief of Staff</div>
+            <div class="agent-symbol">⚡</div>
+            <span class="status-badge status-online">ONLINE</span>
+        </div>
+        
+        <!-- Quill - Writer -->
+        <div class="agent-card">
+            <div class="avatar-container">
+                <svg class="avatar-svg pixel-art" viewBox="0 0 32 32">
+                    <!-- Head -->
+                    <rect x="10" y="4" width="12" height="10" fill="#fbbf24"/>
+                    <!-- Face -->
+                    <rect x="12" y="6" width="2" height="2" fill="#451a03"/>
+                    <rect x="18" y="6" width="2" height="2" fill="#451a03"/>
+                    <rect x="14" y="9" width="4" height="1" fill="#451a03"/>
+                    <!-- Body -->
+                    <rect x="8" y="14" width="16" height="10" fill="#f59e0b"/>
+                    <!-- Symbol -->
+                    <rect x="14" y="17" width="4" height="4" fill="#78350f"/>
+                    <!-- Legs -->
+                    <rect x="11" y="24" width="4" height="6" fill="#92400e"/>
+                    <rect x="17" y="24" width="4" height="6" fill="#92400e"/>
+                </svg>
+            </div>
+            <div class="agent-name">Quill</div>
+            <div class="agent-role">The Writer</div>
+            <div class="agent-symbol">✍️</div>
+            <span class="status-badge status-offline">STANDBY</span>
+        </div>
+        
+        <!-- Pixel - Designer -->
+        <div class="agent-card">
+            <div class="avatar-container">
+                <svg class="avatar-svg pixel-art" viewBox="0 0 32 32">
+                    <!-- Head -->
+                    <rect x="10" y="4" width="12" height="10" fill="#c084fc"/>
+                    <!-- Face -->
+                    <rect x="12" y="6" width="2" height="2" fill="#581c87"/>
+                    <rect x="18" y="6" width="2" height="2" fill="#581c87"/>
+                    <rect x="14" y="9" width="4" height="1" fill="#581c87"/>
+                    <!-- Body -->
+                    <rect x="8" y="14" width="16" height="10" fill="#a855f7"/>
+                    <!-- Symbol -->
+                    <rect x="14" y="17" width="4" height="4" fill="#fbbf24"/>
+                    <!-- Legs -->
+                    <rect x="11" y="24" width="4" height="6" fill="#7c3aed"/>
+                    <rect x="17" y="24" width="4" height="6" fill="#7c3aed"/>
+                </svg>
+            </div>
+            <div class="agent-name">Pixel</div>
+            <div class="agent-role">The Designer</div>
+            <div class="agent-symbol">🎨</div>
+            <span class="status-badge status-offline">STANDBY</span>
+        </div>
+        
+        <!-- Glasses - Researcher -->
+        <div class="agent-card">
+            <div class="avatar-container">
+                <svg class="avatar-svg pixel-art" viewBox="0 0 32 32">
+                    <!-- Head -->
+                    <rect x="10" y="4" width="12" height="10" fill="#86efac"/>
+                    <!-- Glasses -->
+                    <rect x="11" y="5" width="4" height="3" fill="#1f2937"/>
+                    <rect x="17" y="5" width="4" height="3" fill="#1f2937"/>
+                    <rect x="15" y="6" width="2" height="1" fill="#1f2937"/>
+                    <!-- Face -->
+                    <rect x="14" y="9" width="4" height="1" fill="#14532d"/>
+                    <!-- Body -->
+                    <rect x="8" y="14" width="16" height="10" fill="#22c55e"/>
+                    <!-- Symbol -->
+                    <rect x="14" y="17" width="4" height="4" fill="#f0fdf4"/>
+                    <!-- Legs -->
+                    <rect x="11" y="24" width="4" height="6" fill="#15803d"/>
+                    <rect x="17" y="24" width="4" height="6" fill="#15803d"/>
+                </svg>
+            </div>
+            <div class="agent-name">Glasses</div>
+            <div class="agent-role">The Researcher</div>
+            <div class="agent-symbol">🔍</div>
+            <span class="status-badge status-offline">STANDBY</span>
+        </div>
+        
+        <!-- Gary - Marketing Lead -->
+        <div class="agent-card">
+            <div class="avatar-container">
+                <svg class="avatar-svg pixel-art" viewBox="0 0 32 32">
+                    <!-- Head -->
+                    <rect x="10" y="4" width="12" height="10" fill="#fca5a5"/>
+                    <!-- Face -->
+                    <rect x="12" y="6" width="2" height="2" fill="#7f1d1d"/>
+                    <rect x="18" y="6" width="2" height="2" fill="#7f1d1d"/>
+                    <rect x="14" y="9" width="4" height="1" fill="#7f1d1d"/>
+                    <!-- Body -->
+                    <rect x="8" y="14" width="16" height="10" fill="#ef4444"/>
+                    <!-- Symbol -->
+                    <rect x="14" y="17" width="4" height="4" fill="#fecaca"/>
+                    <!-- Legs -->
+                    <rect x="11" y="24" width="4" height="6" fill="#b91c1c"/>
+                    <rect x="17" y="24" width="4" height="6" fill="#b91c1c"/>
+                </svg>
+            </div>
+            <div class="agent-name">Gary</div>
+            <div class="agent-role">Marketing Lead</div>
+            <div class="agent-symbol">📈</div>
+            <span class="status-badge status-offline">STANDBY</span>
+        </div>
+        
+        <!-- Larry - Social Media -->
+        <div class="agent-card">
+            <div class="avatar-container">
+                <svg class="avatar-svg pixel-art" viewBox="0 0 32 32">
+                    <!-- Head -->
+                    <rect x="10" y="4" width="12" height="10" fill="#93c5fd"/>
+                    <!-- Face -->
+                    <rect x="12" y="6" width="2" height="2" fill="#1e3a8a"/>
+                    <rect x="18" y="6" width="2" height="2" fill="#1e3a8a"/>
+                    <rect x="14" y="9" width="4" height="1" fill="#1e3a8a"/>
+                    <!-- Body -->
+                    <rect x="8" y="14" width="16" height="10" fill="#3b82f6"/>
+                    <!-- Symbol -->
+                    <rect x="14" y="17" width="4" height="4" fill="#dbeafe"/>
+                    <!-- Legs -->
+                    <rect x="11" y="24" width="4" height="6" fill="#1d4ed8"/>
+                    <rect x="17" y="24" width="4" height="6" fill="#1d4ed8"/>
+                </svg>
+            </div>
+            <div class="agent-name">Larry</div>
+            <div class="agent-role">Social Media Agent</div>
+            <div class="agent-symbol">📱</div>
+            <span class="status-badge status-offline">STANDBY</span>
+        </div>
+        
+        <!-- Sentry - DevOps -->
+        <div class="agent-card">
+            <div class="avatar-container">
+                <svg class="avatar-svg pixel-art" viewBox="0 0 32 32">
+                    <!-- Head -->
+                    <rect x="10" y="4" width="12" height="10" fill="#fdba74"/>
+                    <!-- Face -->
+                    <rect x="12" y="6" width="2" height="2" fill="#7c2d12"/>
+                    <rect x="18" y="6" width="2" height="2" fill="#7c2d12"/>
+                    <rect x="14" y="9" width="4" height="1" fill="#7c2d12"/>
+                    <!-- Body -->
+                    <rect x="8" y="14" width="16" height="10" fill="#f97316"/>
+                    <!-- Symbol -->
+                    <rect x="14" y="17" width="4" height="4" fill="#fff7ed"/>
+                    <!-- Legs -->
+                    <rect x="11" y="24" width="4" height="6" fill="#c2410c"/>
+                    <rect x="17" y="24" width="4" height="6" fill="#c2410c"/>
+                </svg>
+            </div>
+            <div class="agent-name">Sentry</div>
+            <div class="agent-role">DevOps</div>
+            <div class="agent-symbol">🛡️</div>
+            <span class="status-badge status-offline">STANDBY</span>
+        </div>
+        
+        <!-- Cipher - Security -->
+        <div class="agent-card">
+            <div class="avatar-container">
+                <svg class="avatar-svg pixel-art" viewBox="0 0 32 32">
+                    <!-- Head -->
+                    <rect x="10" y="4" width="12" height="10" fill="#374151"/>
+                    <!-- Face (glowing eyes) -->
+                    <rect x="12" y="6" width="2" height="2" fill="#22d3ee"/>
+                    <rect x="18" y="6" width="2" height="2" fill="#22d3ee"/>
+                    <rect x="14" y="9" width="4" height="1" fill="#6b7280"/>
+                    <!-- Body -->
+                    <rect x="8" y="14" width="16" height="10" fill="#1f2937"/>
+                    <!-- Symbol -->
+                    <rect x="14" y="17" width="4" height="4" fill="#22d3ee"/>
+                    <!-- Legs -->
+                    <rect x="11" y="24" width="4" height="6" fill="#111827"/>
+                    <rect x="17" y="24" width="4" height="6" fill="#111827"/>
+                </svg>
+            </div>
+            <div class="agent-name">Cipher</div>
+            <div class="agent-role">Security Agent</div>
+            <div class="agent-symbol">🔒</div>
+            <span class="status-badge status-offline">STANDBY</span>
+        </div>
+        
+        <!-- Audit - QA -->
+        <div class="agent-card">
+            <div class="avatar-container">
+                <svg class="avatar-svg pixel-art" viewBox="0 0 32 32">
+                    <!-- Head -->
+                    <rect x="10" y="4" width="12" height="10" fill="#e5e7eb"/>
+                    <!-- Face -->
+                    <rect x="12" y="6" width="2" height="2" fill="#374151"/>
+                    <rect x="18" y="6" width="2" height="2" fill="#374151"/>
+                    <rect x="14" y="9" width="4" height="1" fill="#374151"/>
+                    <!-- Body -->
+                    <rect x="8" y="14" width="16" height="10" fill="#9ca3af"/>
+                    <!-- Symbol -->
+                    <rect x="14" y="17" width="4" height="4" fill="#22c55e"/>
+                    <!-- Legs -->
+                    <rect x="11" y="24" width="4" height="6" fill="#6b7280"/>
+                    <rect x="17" y="24" width="4" height="6" fill="#6b7280"/>
+                </svg>
+            </div>
+            <div class="agent-name">Audit</div>
+            <div class="agent-role">Quality Assurance</div>
+            <div class="agent-symbol">✓</div>
+            <span class="status-badge status-online">ONLINE</span>
+        </div>
+        
+        <!-- ColdCall - Outreach -->
+        <div class="agent-card">
+            <div class="avatar-container">
+                <svg class="avatar-svg pixel-art" viewBox="0 0 32 32">
+                    <!-- Head -->
+                    <rect x="10" y="4" width="12" height="10" fill="#fde047"/>
+                    <!-- Face -->
+                    <rect x="12" y="6" width="2" height="2" fill="#713f12"/>
+                    <rect x="18" y="6" width="2" height="2" fill="#713f12"/>
+                    <rect x="14" y="9" width="4" height="1" fill="#713f12"/>
+                    <!-- Body -->
+                    <rect x="8" y="14" width="16" height="10" fill="#eab308"/>
+                    <!-- Symbol -->
+                    <rect x="14" y="17" width="4" height="4" fill="#fef9c3"/>
+                    <!-- Legs -->
+                    <rect x="11" y="24" width="4" height="6" fill="#a16207"/>
+                    <rect x="17" y="24" width="4" height="6" fill="#a16207"/>
+                </svg>
+            </div>
+            <div class="agent-name">ColdCall</div>
+            <div class="agent-role">Outreach Specialist</div>
+            <div class="agent-symbol">📞</div>
+            <span class="status-badge status-online">ONLINE</span>
+        </div>
+        
+        <!-- DealFlow - Lead Gen -->
+        <div class="agent-card">
+            <div class="avatar-container">
+                <svg class="avatar-svg pixel-art" viewBox="0 0 32 32">
+                    <!-- Head -->
+                    <rect x="10" y="4" width="12" height="10" fill="#fcd34d"/>
+                    <!-- Face -->
+                    <rect x="12" y="6" width="2" height="2" fill="#78350f"/>
+                    <rect x="18" y="6" width="2" height="2" fill="#78350f"/>
+                    <rect x="14" y="9" width="4" height="1" fill="#78350f"/>
+                    <!-- Body -->
+                    <rect x="8" y="14" width="16" height="10" fill="#f59e0b"/>
+                    <!-- Symbol -->
+                    <rect x="14" y="17" width="4" height="4" fill="#fffbeb"/>
+                    <!-- Legs -->
+                    <rect x="11" y="24" width="4" height="6" fill="#d97706"/>
+                    <rect x="17" y="24" width="4" height="6" fill="#d97706"/>
+                </svg>
+            </div>
+            <div class="agent-name">DealFlow</div>
+            <div class="agent-role">Lead Generator</div>
+            <div class="agent-symbol">💼</div>
+            <span class="status-badge status-offline">STANDBY</span>
+        </div>
+        
+        <!-- Forge - Code Specialist -->
+        <div class="agent-card">
+            <div class="avatar-container">
+                <svg class="avatar-svg pixel-art" viewBox="0 0 32 32">
+                    <!-- Head -->
+                    <rect x="10" y="4" width="12" height="10" fill="#fb923c"/>
+                    <!-- Face -->
+                    <rect x="12" y="6" width="2" height="2" fill="#7c2d12"/>
+                    <rect x="18" y="6" width="2" height="2" fill="#7c2d12"/>
+                    <rect x="14" y="9" width="4" height="1" fill="#7c2d12"/>
+                    <!-- Body -->
+                    <rect x="8" y="14" width="16" height="10" fill="#ea580c"/>
+                    <!-- Symbol -->
+                    <rect x="14" y="17" width="4" height="4" fill="#fef3c7"/>
+                    <!-- Legs -->
+                    <rect x="11" y="24" width="4" height="6" fill="#9a3412"/>
+                    <rect x="17" y="24" width="4" height="6" fill="#9a3412"/>
+                </svg>
+            </div>
+            <div class="agent-name">Forge</div>
+            <div class="agent-role">Code Specialist</div>
+            <div class="agent-symbol">🔨</div>
+            <span class="status-badge status-offline">STANDBY</span>
+        </div>
+        
+        <!-- Scout - Research Scout -->
+        <div class="agent-card">
+            <div class="avatar-container">
+                <svg class="avatar-svg pixel-art" viewBox="0 0 32 32">
+                    <!-- Head -->
+                    <rect x="10" y="4" width="12" height="10" fill="#d4a574"/>
+                    <!-- Face -->
+                    <rect x="12" y="6" width="2" height="2" fill="#451a03"/>
+                    <rect x="18" y="6" width="2" height="2" fill="#451a03"/>
+                    <rect x="14" y="9" width="4" height="1" fill="#451a03"/>
+                    <!-- Body -->
+                    <rect x="8" y="14" width="16" height="10" fill="#a0522d"/>
+                    <!-- Symbol -->
+                    <rect x="14" y="17" width="4" height="4" fill="#fef3c7"/>
+                    <!-- Legs -->
+                    <rect x="11" y="24" width="4" height="6" fill="#78350f"/>
+                    <rect x="17" y="24" width="4" height="6" fill="#78350f"/>
+                </svg>
+            </div>
+            <div class="agent-name">Scout</div>
+            <div class="agent-role">Research Scout</div>
+            <div class="agent-symbol">🧭</div>
+            <span class="status-badge status-offline">STANDBY</span>
+        </div>
+        
+        <!-- Buzz - Trend Monitor -->
+        <div class="agent-card">
+            <div class="avatar-container">
+                <svg class="avatar-svg pixel-art" viewBox="0 0 32 32">
+                    <!-- Head -->
+                    <rect x="10" y="4" width="12" height="10" fill="#c0ff00"/>
+                    <!-- Face -->
+                    <rect x="12" y="6" width="2" height="2" fill="#1a3300"/>
+                    <rect x="18" y="6" width="2" height="2" fill="#1a3300"/>
+                    <rect x="14" y="9" width="4" height="1" fill="#1a3300"/>
+                    <!-- Body -->
+                    <rect x="8" y="14" width="16" height="10" fill="#84cc16"/>
+                    <!-- Symbol -->
+                    <rect x="14" y="17" width="4" height="4" fill="#ecfccb"/>
+                    <!-- Legs -->
+                    <rect x="11" y="24" width="4" height="6" fill="#4d7c0f"/>
+                    <rect x="17" y="24" width="4" height="6" fill="#4d7c0f"/>
+                </svg>
+            </div>
+            <div class="agent-name">Buzz</div>
+            <div class="agent-role">Trend Monitor</div>
+            <div class="agent-symbol">⚡</div>
+            <span class="status-badge status-offline">STANDBY</span>
+        </div>
+    </div>
+</body>
+</html>

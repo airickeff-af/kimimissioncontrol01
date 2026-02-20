@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="description" content="Mission Control HQ - EricF's AI Team Dashboard">
+    <meta name="theme-color" content="#2d1b4e">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+    <title>Mission Control HQ | AI Team Dashboard</title>
+    
+    <!-- Kairosoft-style Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- External Styles -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loader">
+        <div class="pixel-spinner"></div>
+        <div class="loading-text">LOADING MISSION CONTROL...</div>
+    </div>
+
+    <div class="game-container">
+        <!-- Header -->
+        <header class="game-header">
+            <div class="game-title">◈ MISSION CONTROL HQ</div>
+            <div class="game-stats">
+                <div class="stat-box">
+                    <div class="stat-label">AGENTS</div>
+                    <div class="stat-value" style="color: #51cf66;">23</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">ACTIVE</div>
+                    <div class="stat-value" style="color: #339af0;">18</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">TASKS</div>
+                    <div class="stat-value" style="color: #fcc419;">47</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">TOKENS</div>
+                    <div class="stat-value" style="color: #ff6b6b;">442K</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="nav-tabs">
+            <a href="index.html" class="nav-tab active">🏠 HQ</a>
+            <a href="living-pixel-office.html" class="nav-tab">🏢 Office</a>
+            <a href="agents.html" class="nav-tab">👥 Agents</a>
+            <a href="deals.html" class="nav-tab">💼 Deals</a>
+            <a href="token-tracker.html" class="nav-tab">🪙 Tokens</a>
+            <a href="scout.html" class="nav-tab">🔭 Scout</a>
+            <a href="task-board.html" class="nav-tab">📋 Tasks</a>
+            <a href="logs-view.html" class="nav-tab">📡 Logs</a>
+            <a href="data-viewer.html" class="nav-tab">📁 Data</a>
+        </nav>
+
+        <!-- Main Content Grid -->
+        <div class="main-grid">
+            <!-- Left Column -->
+            <div class="left-column">
+                <!-- Agent Grid Panel -->
+                <div class="panel-box">
+                    <div class="panel-title">
+                        <span class="emoji">🤖</span>
+                        AGENT ROSTER (23)
+                    </div>
+                    <div class="filter-bar">
+                        <button class="filter-btn active" onclick="filterAgents('all')">All</button>
+                        <button class="filter-btn" onclick="filterAgents('active')">Active</button>
+                        <button class="filter-btn" onclick="filterAgents('busy')">Busy</button>
+                        <button class="filter-btn" onclick="filterAgents('idle')">Idle</button>
+                        <button class="filter-btn" onclick="filterAgents('offline')">Offline</button>
+                    </div>
+                    <div class="agent-grid" id="agentGrid">
+                        <!-- Agents will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- System Stats Panel -->
+                <div class="panel-box">
+                    <div class="panel-title">
+                        <span class="emoji">📈</span>
+                        SYSTEM STATISTICS
+                    </div>
+                    <div class="system-stats-grid">
+                        <div class="system-stat">
+                            <span class="system-stat-value" style="color: #339af0;">442K</span>
+                            <span class="system-stat-label">Total Tokens</span>
+                        </div>
+                        <div class="system-stat">
+                            <span class="system-stat-value" style="color: #51cf66;">$0.52</span>
+                            <span class="system-stat-label">Total Cost</span>
+                        </div>
+                        <div class="system-stat">
+                            <span class="system-stat-value" style="color: #ff6b6b;">269</span>
+                            <span class="system-stat-label">Sessions</span>
+                        </div>
+                        <div class="system-stat">
+                            <span class="system-stat-value" style="color: #fcc419;">1,522</span>
+                            <span class="system-stat-label">Messages</span>
+                        </div>
+                        <div class="system-stat">
+                            <span class="system-stat-value" style="color: #da77f2;">18</span>
+                            <span class="system-stat-label">Active Now</span>
+                        </div>
+                        <div class="system-stat">
+                            <span class="system-stat-value" style="color: #69db7c;">47</span>
+                            <span class="system-stat-label">Deployments</span>
+                        </div>
+                        <div class="system-stat">
+                            <span class="system-stat-value" style="color: #4dabf7;">14h</span>
+                            <span class="system-stat-label">Session Time</span>
+                        </div>
+                        <div class="system-stat">
+                            <span class="system-stat-value" style="color: #ff8787;">99%</span>
+                            <span class="system-stat-label">Uptime</span>
+                        </div>
+                        <div class="system-stat">
+                            <span class="system-stat-value" style="color: #20c997;">424K</span>
+                            <span class="system-stat-label">Daily Proj.</span>
+                        </div>
+                    </div>
+                    <div style="margin-top: 15px;">
+                        <div style="font-size: 0.8rem; color: #666; margin-bottom: 5px;">Daily Token Usage</div>
+                        <div class="token-bar">
+                            <div class="token-fill" style="width: 42%;"></div>
+                            <div class="token-text">424K / 1M (42%)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column -->
+            <div class="right-column">
+                <!-- Activity Feed Panel -->
+                <div class="panel-box">
+                    <div class="panel-title">
+                        <span class="emoji">📡</span>
+                        RECENT ACTIVITY (50)
+                    </div>
+                    <div class="activity-list" id="activityList">
+                        <!-- Activities will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="panel-box">
+                    <div class="panel-title">
+                        <span class="emoji">⚡</span>
+                        QUICK ACTIONS
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <button class="nav-btn" style="width: 100%; justify-content: center;" onclick="alert('Call feature coming soon!')">📞 CALL</button>
+                        <button class="nav-btn" style="width: 100%; justify-content: center;" onclick="window.location.href='task-board.html'">✓ TASK</button>
+                        <button class="nav-btn" style="width: 100%; justify-content: center;" onclick="window.location.href='dealflow-view.html'">🤝 LEAD</button>
+                        <button class="nav-btn" style="width: 100%; justify-content: center;" onclick="location.reload()">🔄 SYNC</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Navigation -->
+    <nav class="mobile-nav">
+        <a href="index.html" class="mobile-nav-btn" style="background: #69db7c;">🏠<br>HQ</a>
+        <a href="living-pixel-office.html" class="mobile-nav-btn">🏢<br>Office</a>
+        <a href="agents.html" class="mobile-nav-btn">👥<br>Agents</a>
+        <a href="dealflow-view.html" class="mobile-nav-btn">💼<br>Deals</a>
+    </nav>
+
+    <script>
+        // Complete 23 Agent Roster with Enhanced Metrics
+        // Data sourced from ACTUAL_TOKEN_USAGE_REPORT.md, AGENT_LOGS_DETAILED.md, ALL_AGENT_TASKS.md
+        const agents = [
+            {
+                id: "nexus",
+                name: "Nexus",
+                role: "CEO / Orchestrator",
+                emoji: "◈",
+                status: "active",
+                tokens: 75300,
+                files: 156,
+                tasks: 47,
+                activities: 12,
+                lastActive: "5 min ago",
+                successRate: 98,
+                color: "#ff6b6b",
+                avatar: "◈"
+            },
+            {
+                id: "air1ck3ff",
+                name: "Air1ck3ff",
+                role: "CEO / Orchestrator",
+                emoji: "👑",
+                status: "active",
+                tokens: 0,
+                files: 0,
+                tasks: 0,
+                activities: 0,
+                lastActive: "1 day ago",
+                successRate: 100,
+                color: "#ff6b6b",
+                avatar: "👑"
+            },
+            {
+                id: "audit-1",
+                name: "Audit-1",
+                role: "QA / Auditor",
+                emoji: "🔍",
+                status: "active",
+                tokens: 12000,
+                files: 89,
+                tasks: 23,
+                activities: 8,
+                lastActive: "1 hour ago",
+                successRate: 96,
+                color: "#ffc078",
+                avatar: "🔍"
+            },
+            {
+                id: "audit-2",
+                name: "Audit-2",
+                role: "QA / Auditor",
+                emoji: "🔎",
+                status: "idle",
+                tokens: 0,
+                files: 12,
+                tasks: 8,
+                activities: 2,
+                lastActive: "1 day ago",
+                successRate: 94,
+                color: "#ffc078",
+                avatar: "🔎"
+            },
+            {
+                id: "qa",
+                name: "QA",
+                role: "Quality Assurance",
+                emoji: "✓",
+                status: "busy",
+                tokens: 0,
+                files: 45,
+                tasks: 15,
+                activities: 5,
+                lastActive: "3 hours ago",
+                successRate: 95,
+                color: "#ffa94d",
+                avatar: "✓"
+            },
+            {
+                id: "code-1",
+                name: "Code-1",
+                role: "Backend Developer",
+                emoji: "💻",
+                status: "busy",
+                tokens: 37000,
+                files: 67,
+                tasks: 31,
+                activities: 7,
+                lastActive: "3 hours ago",
+                successRate: 92,
+                color: "#38d9a9",
+                avatar: "💻"
+            },
+            {
+                id: "code-2",
+                name: "Code-2",
+                role: "Backend Developer",
+                emoji: "⚙️",
+                status: "active",
+                tokens: 0,
+                files: 34,
+                tasks: 18,
+                activities: 4,
+                lastActive: "15 hours ago",
+                successRate: 90,
+                color: "#38d9a9",
+                avatar: "⚙️"
+            },
+            {
+                id: "code-3",
+                name: "Code-3",
+                role: "Backend Developer",
+                emoji: "🔧",
+                status: "idle",
+                tokens: 0,
+                files: 22,
+                tasks: 12,
+                activities: 2,
+                lastActive: "1 day ago",
+                successRate: 88,
+                color: "#38d9a9",
+                avatar: "🔧"
+            },
+            {
+                id: "backend",
+                name: "Backend",
+                role: "Backend Lead",
+                emoji: "🖥️",
+                status: "active",
+                tokens: 0,
+                files: 78,
+                tasks: 42,
+                activities: 6,
+                lastActive: "12 hours ago",
+                successRate: 93,
+                color: "#20c997",
+                avatar: "🖥️"
+            },
+            {
+                id: "forge-1",
+                name: "Forge-1",
+                role: "Frontend Developer",
+                emoji: "⚒️",
+                status: "busy",
+                tokens: 45000,
+                files: 94,
+                tasks: 38,
+                activities: 9,
+                lastActive: "9 hours ago",
+                successRate: 94,
+                color: "#ff8787",
+                avatar: "⚒️"
+            },
+            {
+                id: "forge-2",
+                name: "Forge-2",
+                role: "Frontend Developer",
+                emoji: "🔨",
+                status: "active",
+                tokens: 0,
+                files: 56,
+                tasks: 27,
+                activities: 6,
+                lastActive: "5 min ago",
+                successRate: 93,
+                color: "#ff8787",
+                avatar: "🔨"
+            },
+            {
+                id: "forge-3",
+                name: "Forge-3",
+                role: "Frontend Developer",
+                emoji: "🛠️",
+                status: "active",
+                tokens: 0,
+                files: 28,
+                tasks: 14,
+                activities: 4,
+                lastActive: "2 min ago",
+                successRate: 91,
+                color: "#ff8787",
+                avatar: "🛠️"
+            },
+            {
+                id: "frontend",
+                name: "Frontend",
+                role: "Frontend Lead",
+                emoji: "🎨",
+                status: "active",
+                tokens: 0,
+                files: 112,
+                tasks: 52,
+                activities: 8,
+                lastActive: "10 hours ago",
+                successRate: 95,
+                color: "#ff6b6b",
+                avatar: "🎨"
+            },
+            {
+                id: "cipher",
+                name: "Cipher",
+                role: "Security",
+                emoji: "🔒",
+                status: "active",
+                tokens: 0,
+                files: 23,
+                tasks: 19,
+                activities: 5,
+                lastActive: "10 hours ago",
+                successRate: 99,
+                color: "#adb5bd",
+                avatar: "🔒"
+            },
+            {
+                id: "coldcall",
+                name: "ColdCall",
+                role: "Lead Generation",
+                emoji: "📞",
+                status: "active",
+                tokens: 12000,
+                files: 23,
+                tasks: 18,
+                activities: 6,
+                lastActive: "30 min ago",
+                successRate: 87,
+                color: "#e599f7",
+                avatar: "📞"
+            },
+            {
+                id: "dealflow",
+                name: "DealFlow",
+                role: "Lead Generation",
+                emoji: "🤝",
+                status: "busy",
+                tokens: 103300,
+                files: 45,
+                tasks: 33,
+                activities: 10,
+                lastActive: "2 min ago",
+                successRate: 89,
+                color: "#da77f2",
+                avatar: "🤝"
+            },
+            {
+                id: "gary",
+                name: "Gary",
+                role: "Marketing",
+                emoji: "📢",
+                status: "active",
+                tokens: 0,
+                files: 67,
+                tasks: 29,
+                activities: 6,
+                lastActive: "7 hours ago",
+                successRate: 91,
+                color: "#69db7c",
+                avatar: "📢"
+            },
+            {
+                id: "glasses",
+                name: "Glasses",
+                role: "Researcher",
+                emoji: "🔭",
+                status: "active",
+                tokens: 79637,
+                files: 34,
+                tasks: 21,
+                activities: 7,
+                lastActive: "5 hours ago",
+                successRate: 94,
+                color: "#4dabf7",
+                avatar: "🔭"
+            },
+            {
+                id: "larry",
+                name: "Larry",
+                role: "Social Media",
+                emoji: "📱",
+                status: "idle",
+                tokens: 0,
+                files: 28,
+                tasks: 16,
+                activities: 4,
+                lastActive: "17 hours ago",
+                successRate: 87,
+                color: "#ffd43b",
+                avatar: "📱"
+            },
+            {
+                id: "pie",
+                name: "PIE",
+                role: "Predictive Intelligence",
+                emoji: "🧠",
+                status: "active",
+                tokens: 0,
+                files: 18,
+                tasks: 12,
+                activities: 3,
+                lastActive: "2 hours ago",
+                successRate: 96,
+                color: "#cc5de8",
+                avatar: "🧠"
+            },
+            {
+                id: "pixel",
+                name: "Pixel",
+                role: "Designer",
+                emoji: "🎨",
+                status: "busy",
+                tokens: 25000,
+                files: 89,
+                tasks: 35,
+                activities: 8,
+                lastActive: "2 hours ago",
+                successRate: 93,
+                color: "#da77f2",
+                avatar: "🖼️"
+            },
+            {
+                id: "quill",
+                name: "Quill",
+                role: "Writer",
+                emoji: "✍️",
+                status: "active",
+                tokens: 45016,
+                files: 56,
+                tasks: 24,
+                activities: 7,
+                lastActive: "6 hours ago",
+                successRate: 95,
+                color: "#ffa94d",
+                avatar: "✍️"
+            },
+            {
+                id: "scout",
+                name: "Scout",
+                role: "Researcher",
+                emoji: "🎯",
+                status: "busy",
+                tokens: 8000,
+                files: 42,
+                tasks: 28,
+                activities: 9,
+                lastActive: "4 hours ago",
+                successRate: 92,
+                color: "#ffa8a8",
+                avatar: "🎯"
+            },
+            {
+                id: "sentry",
+                name: "Sentry",
+                role: "DevOps",
+                emoji: "🛡️",
+                status: "active",
+                tokens: 0,
+                files: 38,
+                tasks: 22,
+                activities: 6,
+                lastActive: "8 hours ago",
+                successRate: 97,
+                color: "#74c0fc",
+                avatar: "🛡️"
+            }
+        ];
+
+        // Recent Activity Feed - Last 50 Activities
+        const activities = [
+            { agent: "DealFlow", action: "completed", details: "PIE integration protocol", time: "2 min ago", icon: "🤝", color: "#e599f7" },
+            { agent: "Forge-3", action: "updated", details: "Mission Control overview page", time: "2 min ago", icon: "🛠️", color: "#ff8787" },
+            { agent: "Forge-2", action: "synced", details: "dashboard data with Forge-3", time: "5 min ago", icon: "🔨", color: "#ff8787" },
+            { agent: "Nexus", action: "deployed", details: "cron consolidation (73% savings)", time: "15 min ago", icon: "◈", color: "#ff6b6b" },
+            { agent: "Audit-1", action: "approved", details: "DealFlow database structure", time: "1 hour ago", icon: "🔍", color: "#ffc078" },
+            { agent: "Pixel", action: "created", details: "OK Computers office visual", time: "2 hours ago", icon: "🎨", color: "#da77f2" },
+            { agent: "PIE", action: "analyzed", details: "lead scoring patterns", time: "2 hours ago", icon: "🧠", color: "#cc5de8" },
+            { agent: "Code-1", action: "fixed", details: "API 404 errors in endpoints", time: "3 hours ago", icon: "💻", color: "#38d9a9" },
+            { agent: "QA", action: "tested", details: "new dashboard components", time: "3 hours ago", icon: "✓", color: "#ffa94d" },
+            { agent: "Scout", action: "found", details: "26 high-quality leads", time: "4 hours ago", icon: "🎯", color: "#ffa8a8" },
+            { agent: "Glasses", action: "researched", details: "AI tools market trends", time: "5 hours ago", icon: "🔭", color: "#4dabf7" },
+            { agent: "Quill", action: "wrote", details: "Twitter thread on AI tools", time: "6 hours ago", icon: "✍️", color: "#ffa94d" },
+            { agent: "Gary", action: "planned", details: "content calendar for next week", time: "7 hours ago", icon: "📢", color: "#69db7c" },
+            { agent: "Sentry", action: "installed", details: "PyTorch for Pixel", time: "8 hours ago", icon: "🛡️", color: "#74c0fc" },
+            { agent: "Forge-1", action: "built", details: "Task Board UI components", time: "9 hours ago", icon: "⚒️", color: "#ff8787" },
+            { agent: "Frontend", action: "reviewed", details: "Forge-3 dashboard updates", time: "10 hours ago", icon: "🎨", color: "#ff6b6b" },
+            { agent: "Cipher", action: "secured", details: "all API endpoints", time: "10 hours ago", icon: "🔒", color: "#adb5bd" },
+            { agent: "Nexus", action: "synchronized", details: "Memory Bank systems", time: "11 hours ago", icon: "◈", color: "#ff6b6b" },
+            { agent: "Backend", action: "optimized", details: "database query performance", time: "12 hours ago", icon: "🖥️", color: "#20c997" },
+            { agent: "DealFlow", action: "generated", details: "lead scoring algorithm", time: "12 hours ago", icon: "🤝", color: "#e599f7" },
+            { agent: "Audit-1", action: "reviewed", details: "security of critical tasks", time: "13 hours ago", icon: "🔍", color: "#ffc078" },
+            { agent: "Pixel", action: "designed", details: "agent avatar placeholders", time: "14 hours ago", icon: "🎨", color: "#da77f2" },
+            { agent: "Code-2", action: "optimized", details: "database queries", time: "15 hours ago", icon: "⚙️", color: "#38d9a9" },
+            { agent: "Scout", action: "monitored", details: "competitor activities", time: "16 hours ago", icon: "🎯", color: "#ffa8a8" },
+            { agent: "Larry", action: "scheduled", details: "social posts for tomorrow", time: "17 hours ago", icon: "📱", color: "#ffd43b" },
+            { agent: "Forge-3", action: "created", details: "mobile responsive layouts", time: "18 hours ago", icon: "🛠️", color: "#ff8787" },
+            { agent: "Glasses", action: "analyzed", details: "crypto market trends", time: "19 hours ago", icon: "🔭", color: "#4dabf7" },
+            { agent: "Quill", action: "drafted", details: "blog post introduction", time: "20 hours ago", icon: "✍️", color: "#ffa94d" },
+            { agent: "Sentry", action: "configured", details: "watchdog monitoring", time: "21 hours ago", icon: "🛡️", color: "#74c0fc" },
+            { agent: "Nexus", action: "consolidated", details: "13 heartbeats into 1", time: "22 hours ago", icon: "◈", color: "#ff6b6b" },
+            { agent: "DealFlow", action: "enriched", details: "21 lead contact profiles", time: "23 hours ago", icon: "🤝", color: "#e599f7" },
+            { agent: "Audit-2", action: "verified", details: "token usage reports", time: "1 day ago", icon: "🔎", color: "#ffc078" },
+            { agent: "Code-3", action: "debugged", details: "frontend API integration", time: "1 day ago", icon: "🔧", color: "#38d9a9" },
+            { agent: "Pixel", action: "enhanced", details: "Living Pixel Office visuals", time: "1 day ago", icon: "🎨", color: "#da77f2" },
+            { agent: "Gary", action: "identified", details: "4 content calendar gaps", time: "1 day ago", icon: "📢", color: "#69db7c" },
+            { agent: "Scout", action: "researched", details: "DFSA Dubai securities firms", time: "1 day ago", icon: "🎯", color: "#ffa8a8" },
+            { agent: "Forge-1", action: "developed", details: "theme system CSS", time: "1 day ago", icon: "⚒️", color: "#ff8787" },
+            { agent: "Cipher", action: "audited", details: "authentication flows", time: "1 day ago", icon: "🔒", color: "#adb5bd" },
+            { agent: "Nexus", action: "created", details: "Memory Bank system", time: "1 day ago", icon: "◈", color: "#ff6b6b" },
+            { agent: "DealFlow", action: "prioritized", details: "30 leads by readiness", time: "1 day ago", icon: "🤝", color: "#e599f7" },
+            { agent: "Glasses", action: "compiled", details: "AI tools research report", time: "1 day ago", icon: "🔭", color: "#4dabf7" },
+            { agent: "Quill", action: "completed", details: "7-tweet Twitter thread", time: "1 day ago", icon: "✍️", color: "#ffa94d" },
+            { agent: "Sentry", action: "deployed", details: "20 agents to production", time: "1 day ago", icon: "🛡️", color: "#74c0fc" },
+            { agent: "Forge-2", action: "built", details: "UI component library", time: "1 day ago", icon: "🔨", color: "#ff8787" },
+            { agent: "Code-1", action: "implemented", details: "REST API endpoints", time: "1 day ago", icon: "💻", color: "#38d9a9" },
+            { agent: "Pixel", action: "generated", details: "Kairosoft-style avatars", time: "1 day ago", icon: "🎨", color: "#da77f2" },
+            { agent: "Audit-1", action: "checked", details: "system integrity", time: "1 day ago", icon: "🔍", color: "#ffc078" },
+            { agent: "Scout", action: "initialized", details: "competitor tracking", time: "1 day ago", icon: "🎯", color: "#ffa8a8" },
+            { agent: "Nexus", action: "assigned", details: "10 new tasks to agents", time: "1 day ago", icon: "◈", color: "#ff6b6b" },
+            { agent: "Gary", action: "created", details: "5 content pillars", time: "1 day ago", icon: "📢", color: "#69db7c" }
+        ];
+
+        // Format numbers
+        function formatNumber(num) {
+            if (num >= 1000000) {
+                return (num / 1000000).toFixed(1) + 'M';
+            } else if (num >= 1000) {
+                return (num / 1000).toFixed(1) + 'K';
+            }
+            return num.toString();
+        }
+
+        // Render Agent Cards
+        function renderAgents(filter = 'all') {
+            const grid = document.getElementById('agentGrid');
+            const filteredAgents = filter === 'all' 
+                ? agents 
+                : agents.filter(a => a.status === filter);
+            
+            grid.innerHTML = filteredAgents.map(agent => {
+                const successClass = agent.successRate >= 95 ? 'excellent' : 
+                                    agent.successRate >= 90 ? 'good' : 
+                                    agent.successRate >= 80 ? 'average' : 'poor';
+                return `
+                <div class="agent-card" style="--agent-color: ${agent.color}" data-status="${agent.status}">
+                    <div class="agent-header">
+                        <div class="agent-avatar" style="background: ${agent.color}20; color: ${agent.color};">
+                            ${agent.avatar}
+                        </div>
+                        <div class="agent-info">
+                            <div class="agent-name">${agent.name}</div>
+                            <div class="agent-role">${agent.role}</div>
+                        </div>
+                        <span class="agent-status ${agent.status}">${agent.status.toUpperCase()}</span>
+                    </div>
+                    <div class="agent-stats">
+                        <div class="agent-stat">
+                            <span class="agent-stat-value">${formatNumber(agent.tokens)}</span>
+                            <span class="agent-stat-label">tokens</span>
+                        </div>
+                        <div class="agent-stat">
+                            <span class="agent-stat-value">${agent.files}</span>
+                            <span class="agent-stat-label">files</span>
+                        </div>
+                        <div class="agent-stat">
+                            <span class="agent-stat-value">${agent.tasks}</span>
+                            <span class="agent-stat-label">tasks</span>
+                        </div>
+                    </div>
+                    <div class="agent-productivity">
+                        <div class="productivity-row">
+                            <span class="productivity-label">Activities:</span>
+                            <span class="productivity-value">${agent.activities}</span>
+                        </div>
+                        <div class="productivity-row">
+                            <span class="productivity-label">Success Rate:</span>
+                        </div>
+                        <div class="success-rate-bar">
+                            <div class="success-fill ${successClass}" style="width: ${agent.successRate}%;"></div>
+                            <div class="success-text">${agent.successRate}%</div>
+                        </div>
+                    </div>
+                    <div class="last-active">
+                        Last active: <span class="time">${agent.lastActive}</span>
+                    </div>
+                </div>
+            `}).join('');
+        }
+
+        // Filter agents
+        function filterAgents(status) {
+            // Update active button
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Render filtered agents
+            renderAgents(status);
+        }
+
+        // Render Activity Feed
+        function renderActivities() {
+            const list = document.getElementById('activityList');
+            list.innerHTML = activities.map(activity => `
+                <div class="activity-item" style="--activity-color: ${activity.color}">
+                    <div class="activity-icon" style="background: ${activity.color}20;">
+                        ${activity.icon}
+                    </div>
+                    <div class="activity-content">
+                        <div class="activity-text">
+                            <strong>${activity.agent}</strong> ${activity.action} ${activity.details}
+                        </div>
+                        <div class="activity-time">${activity.time}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            // Remove loader
+            setTimeout(() => {
+                const loader = document.getElementById('loader');
+                if (loader) {
+                    loader.classList.add('hidden');
+                    setTimeout(() => loader.remove(), 300);
+                }
+            }, 800);
+
+            // Render content
+            renderAgents();
+            renderActivities();
+        });
+
+        // Auto-refresh every 30 minutes
+        setInterval(() => {
+            window.location.reload();
+        }, 1800000);
+    </script>
+</body>
+</html>

@@ -1,0 +1,103 @@
+{
+  "sprite_size": 16,
+  "frames_per_animation": 8,
+  "animations": {
+    "idle": 0,
+    "walk_down": 1,
+    "walk_up": 2,
+    "walk_left": 3,
+    "walk_right": 4,
+    "typing": 5,
+    "talking": 6
+  },
+  "agents": {
+    "ericf": {
+      "name": "EricF",
+      "row": 0
+    },
+    "nexus": {
+      "name": "Nexus",
+      "row": 1
+    },
+    "codemaster": {
+      "name": "CodeMaster",
+      "row": 2
+    },
+    "code-1": {
+      "name": "Code-1",
+      "row": 3
+    },
+    "code-2": {
+      "name": "Code-2",
+      "row": 4
+    },
+    "code-3": {
+      "name": "Code-3",
+      "row": 5
+    },
+    "forge": {
+      "name": "Forge",
+      "row": 6
+    },
+    "forge-2": {
+      "name": "Forge-2",
+      "row": 7
+    },
+    "forge-3": {
+      "name": "Forge-3",
+      "row": 8
+    },
+    "pixel": {
+      "name": "Pixel",
+      "row": 9
+    },
+    "glasses": {
+      "name": "Glasses",
+      "row": 10
+    },
+    "quill": {
+      "name": "Quill",
+      "row": 11
+    },
+    "gary": {
+      "name": "Gary",
+      "row": 12
+    },
+    "larry": {
+      "name": "Larry",
+      "row": 13
+    },
+    "buzz": {
+      "name": "Buzz",
+      "row": 14
+    },
+    "sentry": {
+      "name": "Sentry",
+      "row": 15
+    },
+    "audit": {
+      "name": "Audit",
+      "row": 16
+    },
+    "cipher": {
+      "name": "Cipher",
+      "row": 17
+    },
+    "dealflow": {
+      "name": "DealFlow",
+      "row": 18
+    },
+    "coldcall": {
+      "name": "ColdCall",
+      "row": 19
+    },
+    "scout": {
+      "name": "Scout",
+      "row": 20
+    },
+    "pie": {
+      "name": "PIE",
+      "row": 21
+    }
+  }
+}
