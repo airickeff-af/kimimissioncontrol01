@@ -3,13 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kairosoft Pixel Office</title>
+    <title>Office | Mission Control</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
             font-family: 'Courier New', monospace;
@@ -17,12 +14,69 @@
             overflow: hidden;
             user-select: none;
         }
+
+        /* Standardized Header */
+        .mc-header {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            padding: 0.75rem 1.5rem;
+            border-bottom: 2px solid #00d4ff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            height: 60px;
+        }
+        .mc-logo { 
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.7rem; 
+            color: #00d4ff; 
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .mc-nav { 
+            display: flex; 
+            gap: 0.5rem;
+            align-items: center;
+        }
+        .mc-nav a {
+            color: #888;
+            text-decoration: none;
+            padding: 0.4rem 0.75rem;
+            border-radius: 6px;
+            transition: all 0.2s;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+        }
+        .mc-nav a:hover, .mc-nav a.active { 
+            color: #00d4ff; 
+            background: rgba(0,212,255,0.1); 
+        }
+        .mc-refresh-btn {
+            background: rgba(0, 212, 255, 0.2);
+            border: 1px solid #00d4ff;
+            color: #00d4ff;
+            padding: 0.4rem 0.75rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+        .mc-refresh-btn:hover { 
+            background: rgba(0, 212, 255, 0.3); 
+            transform: scale(1.05);
+        }
         
         #game-container {
             position: relative;
             width: 100vw;
-            height: 100vh;
+            height: calc(100vh - 60px);
             display: flex;
+            margin-top: 60px;
         }
         
         #canvas-container {
@@ -261,6 +315,22 @@
     </style>
 </head>
 <body>
+    <!-- Standardized Mission Control Header -->
+    <header class="mc-header">
+        <div class="mc-logo">🎯 Mission Control</div>
+        <nav class="mc-nav">
+            <a href="/">HQ</a>
+            <a href="/office" class="active">Office</a>
+            <a href="/agents">Agents</a>
+            <a href="/deals">Deals</a>
+            <a href="/tokens">Tokens</a>
+            <a href="/tasks">Tasks</a>
+            <a href="/logs">Logs</a>
+            <a href="/data">Data</a>
+            <button class="mc-refresh-btn" onclick="location.reload()" title="Refresh">🔄</button>
+        </nav>
+    </header>
+
     <div id="game-container">
         <div id="canvas-container">
             <canvas id="office-canvas"></canvas>
@@ -1132,6 +1202,11 @@ ${improvements.split('\n').map(line => {
         
         // Start the game
         init();
+
+        // Auto-refresh every 30 minutes
+        setInterval(() => {
+            location.reload();
+        }, 30 * 60 * 1000);
     </script>
 </body>
 </html>
