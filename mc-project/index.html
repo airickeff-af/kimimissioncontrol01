@@ -44,14 +44,14 @@
             opacity: 0.8;
         }
         
-        /* Character Emotion Section */
-        .emotion-section {
+        /* Streak Section */
+        .streak-section {
             display: flex;
             justify-content: center;
             margin-bottom: 40px;
         }
         
-        .emotion-card {
+        .streak-card {
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(10px);
             border-radius: 20px;
@@ -60,8 +60,8 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
         
-        .emotion-emoji {
-            font-size: 80px;
+        .streak-emoji {
+            font-size: 60px;
             margin-bottom: 15px;
             animation: pulse 2s ease infinite;
         }
@@ -71,13 +71,13 @@
             50% { transform: scale(1.1); }
         }
         
-        .emotion-text {
+        .streak-text {
             font-size: 24px;
             font-weight: 600;
             margin-bottom: 10px;
         }
         
-        .emotion-subtext {
+        .streak-subtext {
             opacity: 0.7;
             font-size: 14px;
         }
@@ -407,12 +407,12 @@
             <p>Your Personal Health & Wealth Command Center</p>
         </header>
         
-        <!-- Character Emotion Section -->
-        <div class="emotion-section">
-            <div class="emotion-card">
-                <div class="emotion-emoji" id="emotion-emoji">😊</div>
-                <div class="emotion-text" id="emotion-text">Feeling Great!</div>
-                <div class="emotion-subtext" id="emotion-subtext">Your health and wealth are balanced</div>
+        <!-- Streak Section -->
+        <div class="streak-section">
+            <div class="streak-card">
+                <div class="streak-emoji">🎮</div>
+                <div class="streak-text">MC Project</div>
+                <div class="streak-subtext">Your Personal Health & Wealth Command Center</div>
                 <div class="streak-counter">
                     <span class="streak-fire">🔥</span>
                     <span id="streak-count">12 Day Streak!</span>
@@ -782,7 +782,6 @@
         }
         
         // Initialize
-        updateEmotion();
         checkMilestones();
         
         // Simulate real-time updates

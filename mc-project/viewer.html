@@ -160,8 +160,8 @@
             50% { transform: translateY(-10px); }
         }
         
-        /* Emotion Display */
-        .emotion-display {
+        /* Streak Display */
+        .streak-display {
             position: absolute;
             top: 20px;
             right: 20px;
@@ -173,18 +173,12 @@
             z-index: 10;
         }
         
-        .emotion-emoji {
-            font-size: 60px;
+        .streak-emoji {
+            font-size: 40px;
             margin-bottom: 10px;
-            animation: pulse 2s ease infinite;
         }
         
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-        }
-        
-        .emotion-text {
+        .streak-text {
             font-size: 16px;
             font-weight: 600;
         }
@@ -302,13 +296,13 @@
             </div>
         </div>
         
-        <!-- Emotion Display -->
-        <div class="emotion-display">
-            <div class="emotion-emoji" id="emotion-emoji">😊</div>
-            <div class="emotion-text" id="emotion-text">Feeling Great!</div>
+        <!-- Streak Display -->
+        <div class="streak-display">
+            <div class="streak-emoji">🔥</div>
+            <div class="streak-text">12 Day Streak</div>
             <div class="streak-badge">
-                <span>🔥</span>
-                <span id="streak-count">12</span>
+                <span>⚡</span>
+                <span>High Energy</span>
             </div>
         </div>
         
@@ -342,7 +336,6 @@
             <button class="btn" id="btn-wireframe">🔲 Wireframe</button>
             <button class="btn" id="btn-reset">↺ Reset View</button>
             <button class="btn" id="btn-movement">🚶 Toggle Movement</button>
-            <button class="btn" id="btn-emotion">😊 Update Emotion</button>
         </div>
     </div>
     
@@ -705,36 +698,6 @@
             // Wealth affects scale/confidence
             const wealthScale = 0.9 + (stats.wealth / 100) * 0.2;
             character.scale.setScalar(wealthScale);
-        }
-        
-        // Character Emotion System
-        function updateEmotion() {
-            const combined = (stats.health + stats.wealth) / 2;
-            
-            const emotionEmoji = document.getElementById('emotion-emoji');
-            const emotionText = document.getElementById('emotion-text');
-            
-            let emoji, text;
-            
-            if (combined >= 80) {
-                emoji = '🤩';
-                text = 'On Top of the World!';
-            } else if (combined >= 65) {
-                emoji = '😊';
-                text = 'Feeling Great!';
-            } else if (combined >= 50) {
-                emoji = '😐';
-                text = 'Doing Okay';
-            } else if (combined >= 35) {
-                emoji = '😔';
-                text = 'Could Be Better';
-            } else {
-                emoji = '😰';
-                text = 'Needs Attention';
-            }
-            
-            emotionEmoji.textContent = emoji;
-            emotionText.textContent = text;
         }
         
         // Achievement System
