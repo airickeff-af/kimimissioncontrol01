@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-    <meta name="description" content="Activity Logs - Mission Control">
+    <meta name="description" content="Logs Tracker - Mission Control">
     <meta name="theme-color" content="#2d1b4e">
-    <title>Activity Logs | Mission Control</title>
+    <title>Logs Tracker | Mission Control</title>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -25,15 +25,19 @@
             flex-wrap: wrap;
             gap: 1rem;
         }
-        .logo { font-size: 1.5rem; font-weight: 700; color: #00d4ff; }
-        .nav { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+        .logo { 
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.9rem; 
+            color: #00d4ff; 
+        }
+        .nav { display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center; }
         .nav a {
             color: #888;
             text-decoration: none;
             padding: 0.5rem 1rem;
             border-radius: 6px;
             transition: all 0.2s;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
         .nav a:hover, .nav a.active { color: #00d4ff; background: rgba(0,212,255,0.1); }
         .refresh-btn {
@@ -43,7 +47,7 @@
             padding: 0.5rem 1rem;
             border-radius: 6px;
             cursor: pointer;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             transition: all 0.2s;
             display: flex;
             align-items: center;
@@ -53,59 +57,114 @@
         .refresh-btn.spinning { animation: spin 1s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
         .container { max-width: 1400px; margin: 0 auto; padding: 2rem; }
-        h1 { color: #00d4ff; margin-bottom: 2rem; }
-        .log-tabs {
+        h1 { color: #00d4ff; margin-bottom: 1rem; }
+        
+        /* Filters */
+        .filters {
             display: flex;
-            gap: 0.5rem;
-            margin-bottom: 2rem;
-            border-bottom: 1px solid #333;
-            padding-bottom: 1rem;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
         }
-        .log-tab {
-            background: transparent;
-            border: none;
-            color: #888;
+        .filter-btn {
             padding: 0.5rem 1rem;
-            cursor: pointer;
-            transition: all 0.2s;
-            border-radius: 6px;
-        }
-        .log-tab:hover, .log-tab.active {
-            color: #00d4ff;
             background: rgba(0,212,255,0.1);
+            border: 1px solid #333;
+            border-radius: 6px;
+            color: #888;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.2s;
         }
-        .log-container {
-            background: #0f0f1a;
+        .filter-btn:hover, .filter-btn.active {
+            border-color: #00d4ff;
+            color: #00d4ff;
+            background: rgba(0,212,255,0.2);
+        }
+        
+        /* Stats */
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .stat-card {
+            background: linear-gradient(135deg, #1a1a2e, #0f0f1a);
             border: 1px solid #333;
             border-radius: 8px;
             padding: 1rem;
-            font-family: 'VT323', monospace;
-            font-size: 1.1rem;
-            max-height: 70vh;
+            text-align: center;
+        }
+        .stat-value { font-size: 1.5rem; font-weight: 700; color: #00d4ff; }
+        .stat-label { color: #666; font-size: 0.8rem; }
+        
+        /* Logs Container */
+        .logs-container {
+            background: linear-gradient(135deg, #1a1a2e, #0f0f1a);
+            border: 1px solid #333;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .logs-header {
+            display: grid;
+            grid-template-columns: 180px 100px 1fr;
+            gap: 1rem;
+            padding: 1rem;
+            background: rgba(0,212,255,0.05);
+            border-bottom: 1px solid #333;
+            font-size: 0.8rem;
+            color: #888;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .logs-list {
+            max-height: 600px;
             overflow-y: auto;
         }
         .log-entry {
-            padding: 0.5rem 0;
-            border-bottom: 1px solid #1a1a2e;
-            display: flex;
+            display: grid;
+            grid-template-columns: 180px 100px 1fr;
             gap: 1rem;
-        }
-        .log-entry:last-child { border-bottom: none; }
-        .log-time { color: #666; min-width: 160px; }
-        .log-level {
-            min-width: 60px;
-            text-align: center;
-            padding: 0 0.5rem;
-            border-radius: 4px;
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid #222;
             font-size: 0.9rem;
+            transition: background 0.2s;
         }
-        .level-info { background: rgba(0,212,255,0.2); color: #00d4ff; }
-        .level-warn { background: rgba(255,170,0,0.2); color: #ffaa00; }
-        .level-error { background: rgba(255,68,68,0.2); color: #ff4444; }
-        .level-success { background: rgba(0,255,136,0.2); color: #00ff88; }
-        .log-message { color: #ccc; flex: 1; }
-        .loading { text-align: center; padding: 3rem; color: #888; }
-        .empty { text-align: center; padding: 3rem; color: #666; }
+        .log-entry:hover {
+            background: rgba(0,212,255,0.03);
+        }
+        .log-time {
+            color: #666;
+            font-family: monospace;
+            font-size: 0.8rem;
+        }
+        .log-agent {
+            color: #00d4ff;
+            font-weight: 500;
+        }
+        .log-message {
+            color: #e0e0e0;
+        }
+        .log-entry.error .log-message { color: #ff4444; }
+        .log-entry.warning .log-message { color: #ffc107; }
+        .log-entry.success .log-message { color: #00ff88; }
+        
+        /* Type badges */
+        .type-badge {
+            display: inline-block;
+            padding: 0.15rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            margin-right: 0.5rem;
+        }
+        .type-info { background: rgba(0,212,255,0.1); color: #00d4ff; }
+        .type-error { background: rgba(255,68,68,0.1); color: #ff4444; }
+        .type-warning { background: rgba(255,193,7,0.1); color: #ffc107; }
+        .type-success { background: rgba(0,255,136,0.1); color: #00ff88; }
+        
+        .loading { text-align: center; padding: 3rem; color: #666; }
+        .last-updated { color: #666; font-size: 0.8rem; margin-bottom: 1rem; }
     </style>
 </head>
 <body>
@@ -115,169 +174,166 @@
             <a href="/">HQ</a>
             <a href="/pixel-office">Office</a>
             <a href="/agent-roster">Agents</a>
-            <a href="/deals">DealFlow</a>
-            <a href="/tokens">Tokens</a>
             <a href="/task-board">Tasks</a>
+            <a href="/projects">Projects</a>
+            <a href="/tokens">Tokens</a>
             <a href="/logs" class="active">Logs</a>
-            <a href="/data">Data</a>
-            <button class="refresh-btn" id="refreshBtn" onclick="refreshLogs()">
-                <span class="refresh-icon">🔄</span> Refresh
-            </button>
         </nav>
+        <button class="refresh-btn" id="refreshBtn" onclick="loadLogs()">
+            <span class="refresh-icon">🔄</span> Refresh
+        </button>
     </header>
 
     <div class="container">
-        <h1>📋 Activity Logs</h1>
+        <h1>📋 Logs Tracker</h1>
+        <div class="last-updated" id="lastUpdated">Loading...</div>
         
-        <div class="log-tabs">
-            <button class="log-tab active" data-log="enrichment">Enrichment</button>
-            <button class="log-tab" data-log="office">Office</button>
-            <button class="log-tab" data-log="system">System</button>
+        <!-- Filters -->
+        <div class="filters">
+            <button class="filter-btn active" onclick="filterLogs('all')">All</button>
+            <button class="filter-btn" onclick="filterLogs('info')">ℹ️ Info</button>
+            <button class="filter-btn" onclick="filterLogs('success')">✅ Success</button>
+            <button class="filter-btn" onclick="filterLogs('warning')">⚠️ Warning</button>
+            <button class="filter-btn" onclick="filterLogs('error')">❌ Error</button>
         </div>
-
-        <div id="log-content" class="log-container">
-            <div class="loading">Loading logs...</div>
+        
+        <!-- Stats -->
+        <div class="stats-bar">
+            <div class="stat-card">
+                <div class="stat-value" id="totalLogs">--</div>
+                <div class="stat-label">Total Logs</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" style="color: #00ff88;" id="successCount">--</div>
+                <div class="stat-label">Success</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" style="color: #ffc107;" id="warningCount">--</div>
+                <div class="stat-label">Warnings</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" style="color: #ff4444;" id="errorCount">--</div>
+                <div class="stat-label">Errors</div>
+            </div>
+        </div>
+        
+        <!-- Logs List -->
+        <div class="logs-container">
+            <div class="logs-header">
+                <div>Time</div>
+                <div>Agent</div>
+                <div>Message</div>
+            </div>
+            <div class="logs-list" id="logsList">
+                <div class="loading">Loading logs...</div>
+            </div>
         </div>
     </div>
 
     <script>
-        const logs = {
-            enrichment: [],
-            office: [],
-            system: []
-        };
-        
+        // Sample logs data
+        const LOGS_DATA = [
+            { time: '2026-02-20 23:45:12', agent: 'Nexus', type: 'success', message: 'P0 deployment completed successfully' },
+            { time: '2026-02-20 23:44:58', agent: 'Code-1', type: 'info', message: 'API endpoint /api/tasks updated' },
+            { time: '2026-02-20 23:44:32', agent: 'Pixel', type: 'info', message: 'Pixel Office sprites rendered' },
+            { time: '2026-02-20 23:43:18', agent: 'Sentry', type: 'success', message: 'All systems operational' },
+            { time: '2026-02-20 23:42:45', agent: 'DealFlow', type: 'info', message: 'Lead enrichment completed: 30 leads' },
+            { time: '2026-02-20 23:41:22', agent: 'Audit', type: 'warning', message: 'Quality score check: 95/100' },
+            { time: '2026-02-20 23:40:15', agent: 'Forge', type: 'success', message: 'Header standardization complete' },
+            { time: '2026-02-20 23:38:42', agent: 'Scout', type: 'info', message: 'Market scan completed: 12 opportunities found' },
+            { time: '2026-02-20 23:37:18', agent: 'PIE', type: 'success', message: 'Predictive model updated' },
+            { time: '2026-02-20 23:35:55', agent: 'Code-2', type: 'info', message: 'Database backup completed' },
+            { time: '2026-02-20 23:34:22', agent: 'Glasses', type: 'info', message: 'Research report generated' },
+            { time: '2026-02-20 23:33:08', agent: 'Larry', type: 'success', message: 'Social media posts scheduled' },
+            { time: '2026-02-20 23:32:15', agent: 'Cipher', type: 'warning', message: 'Security scan: 2 low-priority alerts' },
+            { time: '2026-02-20 23:31:42', agent: 'ColdCall', type: 'info', message: 'Outreach sequence initiated' },
+            { time: '2026-02-20 23:30:28', agent: 'Quill', type: 'success', message: 'Content draft completed' },
+            { time: '2026-02-20 23:28:55', agent: 'Buzz', type: 'info', message: 'Notifications dispatched: 5 alerts' },
+            { time: '2026-02-20 23:27:33', agent: 'Code-3', type: 'error', message: 'API timeout: /api/stats (resolved)' },
+            { time: '2026-02-20 23:26:18', agent: 'Forge-2', type: 'success', message: 'UI components updated' },
+            { time: '2026-02-20 23:25:42', agent: 'Audit', type: 'success', message: 'All P0 tasks verified' },
+            { time: '2026-02-20 23:24:15', agent: 'Nexus', type: 'info', message: 'Auto-refresh enabled on all pages' }
+        ];
+
+        let currentFilter = 'all';
+        let allLogs = [];
+
         async function loadLogs() {
+            const btn = document.getElementById('refreshBtn');
+            btn.classList.add('spinning');
+            
             try {
-                // Try to fetch enrichment log
-                try {
-                    const enrichmentResp = await fetch('/logs/enrichment.log');
-                    if (enrichmentResp.ok) {
-                        const text = await enrichmentResp.text();
-                        logs.enrichment = parseLogText(text);
-                    }
-                } catch (e) {}
-                
-                // Try to fetch office log
-                try {
-                    const officeResp = await fetch('/logs/office_positions.log');
-                    if (officeResp.ok) {
-                        const text = await officeResp.text();
-                        logs.office = parseLogText(text);
-                    }
-                } catch (e) {}
-                
-                // System log - generate from local data
-                logs.system = generateSystemLog();
-                
-                renderLogs('enrichment');
+                // Try to fetch from API
+                const response = await fetch('/api/logs/activity');
+                if (response.ok) {
+                    const data = await response.json();
+                    allLogs = data.logs || LOGS_DATA;
+                } else {
+                    throw new Error('API error');
+                }
             } catch (error) {
-                document.getElementById('log-content').innerHTML = 
-                    `<div class="empty">Error loading logs: ${error.message}</div>`;
+                // Use local data
+                allLogs = LOGS_DATA;
+            } finally {
+                renderLogs();
+                updateStats();
+                updateLastUpdated();
+                btn.classList.remove('spinning');
             }
         }
-        
-        function parseLogText(text) {
-            return text.split('\n')
-                .filter(line => line.trim())
-                .map(line => {
-                    // Try to parse timestamp
-                    const timeMatch = line.match(/\[(.*?)\]/);
-                    const time = timeMatch ? timeMatch[1] : new Date().toISOString();
-                    const message = timeMatch ? line.replace(timeMatch[0], '').trim() : line;
-                    
-                    // Determine level
-                    let level = 'info';
-                    if (line.includes('ERROR') || line.includes('error')) level = 'error';
-                    else if (line.includes('WARN') || line.includes('warning')) level = 'warn';
-                    else if (line.includes('SUCCESS') || line.includes('success')) level = 'success';
-                    
-                    return { time, message, level };
-                });
-        }
-        
-        function generateSystemLog() {
-            const entries = [];
-            const now = new Date();
+
+        function renderLogs() {
+            const list = document.getElementById('logsList');
             
-            entries.push({
-                time: now.toISOString(),
-                message: 'System initialized - Mission Control Dashboard v2.0',
-                level: 'success'
-            });
+            const filtered = currentFilter === 'all' 
+                ? allLogs 
+                : allLogs.filter(log => log.type === currentFilter);
             
-            entries.push({
-                time: new Date(now - 60000).toISOString(),
-                message: 'Agent roster loaded - 23 agents active',
-                level: 'info'
-            });
-            
-            entries.push({
-                time: new Date(now - 120000).toISOString(),
-                message: 'DealFlow database synced - 89 leads loaded',
-                level: 'info'
-            });
-            
-            entries.push({
-                time: new Date(now - 300000).toISOString(),
-                message: 'Token cache refreshed',
-                level: 'info'
-            });
-            
-            return entries;
-        }
-        
-        function renderLogs(logType) {
-            const container = document.getElementById('log-content');
-            const entries = logs[logType] || [];
-            
-            if (entries.length === 0) {
-                container.innerHTML = '<div class="empty">No log entries found</div>';
+            if (filtered.length === 0) {
+                list.innerHTML = '<div class="loading">No logs found</div>';
                 return;
             }
             
-            container.innerHTML = entries.map(entry => `
-                <div class="log-entry">
-                    <span class="log-time">${formatTime(entry.time)}</span>
-                    <span class="log-level level-${entry.level}">${entry.level.toUpperCase()}</span>
-                    <span class="log-message">${escapeHtml(entry.message)}</span>
+            list.innerHTML = filtered.map(log => `
+                <div class="log-entry ${log.type}">
+                    <div class="log-time">${log.time}</div>
+                    <div class="log-agent">${log.agent}</div>
+                    <div class="log-message">
+                        <span class="type-badge type-${log.type}">${log.type}</span>
+                        ${log.message}
+                    </div>
                 </div>
             `).join('');
         }
-        
-        function formatTime(timeStr) {
-            try {
-                const date = new Date(timeStr);
-                return date.toLocaleString();
-            } catch {
-                return timeStr;
-            }
+
+        function updateStats() {
+            document.getElementById('totalLogs').textContent = allLogs.length;
+            document.getElementById('successCount').textContent = 
+                allLogs.filter(l => l.type === 'success').length;
+            document.getElementById('warningCount').textContent = 
+                allLogs.filter(l => l.type === 'warning').length;
+            document.getElementById('errorCount').textContent = 
+                allLogs.filter(l => l.type === 'error').length;
         }
-        
-        function escapeHtml(text) {
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
-        
-        // Tab switching
-        document.querySelectorAll('.log-tab').forEach(tab => {
-            tab.addEventListener('click', () => {
-                document.querySelectorAll('.log-tab').forEach(t => t.classList.remove('active'));
-                tab.classList.add('active');
-                renderLogs(tab.dataset.log);
-            });
-        });
-        
-        function refreshLogs() {
-            const refreshBtn = document.getElementById('refreshBtn');
-            refreshBtn.classList.add('spinning');
+
+        function filterLogs(type) {
+            currentFilter = type;
             
-            loadLogs().then(() => {
-                setTimeout(() => refreshBtn.classList.remove('spinning'), 500);
+            // Update button states
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
             });
+            event.target.classList.add('active');
+            
+            renderLogs();
         }
-        
+
+        function updateLastUpdated() {
+            const now = new Date();
+            document.getElementById('lastUpdated').textContent = 
+                `Last updated: ${now.toLocaleTimeString()}`;
+        }
+
         // Load on page load
         loadLogs();
         

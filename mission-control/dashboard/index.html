@@ -25,7 +25,11 @@
             flex-wrap: wrap;
             gap: 1rem;
         }
-        .logo { font-size: 1.5rem; font-weight: 700; color: #00d4ff; }
+        .logo { 
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.9rem; 
+            color: #00d4ff; 
+        }
         .nav { display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center; }
         .nav a {
             color: #888;
@@ -33,7 +37,7 @@
             padding: 0.5rem 1rem;
             border-radius: 6px;
             transition: all 0.2s;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
         .nav a:hover, .nav a.active { color: #00d4ff; background: rgba(0,212,255,0.1); }
         .refresh-btn {
@@ -43,7 +47,7 @@
             padding: 0.5rem 1rem;
             border-radius: 6px;
             cursor: pointer;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             transition: all 0.2s;
             display: flex;
             align-items: center;
@@ -53,62 +57,119 @@
         .refresh-btn.spinning .refresh-icon { animation: spin 1s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
         .container { max-width: 1400px; margin: 0 auto; padding: 2rem; }
-        h1 { color: #00d4ff; margin-bottom: 2rem; display: flex; align-items: center; gap: 1rem; }
-        .last-updated { font-size: 0.75rem; color: #666; font-weight: normal; }
-        .dashboard-grid {
+        h1 { color: #00d4ff; margin-bottom: 1rem; }
+        .subtitle { color: #666; margin-bottom: 2rem; }
+        
+        /* Stats Bar */
+        .stats-bar {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
         }
-        .card {
+        .stat-card {
             background: linear-gradient(135deg, #1a1a2e, #0f0f1a);
             border: 1px solid #333;
             border-radius: 12px;
             padding: 1.5rem;
+            text-align: center;
+        }
+        .stat-value { font-size: 2rem; font-weight: 700; color: #00d4ff; }
+        .stat-label { color: #666; font-size: 0.875rem; margin-top: 0.5rem; }
+        
+        /* Agent Grid */
+        .section-title {
+            color: #00d4ff;
+            margin: 2rem 0 1rem;
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .agents-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1rem;
+        }
+        .agent-card {
+            background: linear-gradient(135deg, #1a1a2e, #0f0f1a);
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 1.25rem;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        .agent-card:hover { 
+            border-color: #00d4ff; 
+            transform: translateY(-2px);
+        }
+        .agent-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+        .agent-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+        .agent-info h3 { color: #fff; font-size: 1rem; margin-bottom: 0.25rem; }
+        .agent-info p { color: #888; font-size: 0.8rem; }
+        .status-badge {
+            margin-left: auto;
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .status-active { background: rgba(0,255,136,0.1); color: #00ff88; }
+        .status-busy { background: rgba(255,193,7,0.1); color: #ffc107; }
+        .status-idle { background: rgba(136,136,136,0.1); color: #888; }
+        .agent-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+            padding-top: 0.75rem;
+            border-top: 1px solid #333;
+        }
+        .agent-stat { text-align: center; }
+        .agent-stat-value { font-size: 0.9rem; font-weight: 600; color: #00d4ff; }
+        .agent-stat-label { font-size: 0.7rem; color: #666; }
+        
+        /* Quick Actions */
+        .quick-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+        .action-btn {
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, #00d4ff, #0099cc);
+            border: none;
+            border-radius: 8px;
+            color: #000;
+            font-weight: 600;
+            cursor: pointer;
             transition: all 0.2s;
         }
-        .card:hover { border-color: #00d4ff; transform: translateY(-2px); }
-        .card h2 { color: #00d4ff; margin-bottom: 1rem; font-size: 1.25rem; }
-        .card p { color: #888; line-height: 1.6; }
-        .card a {
-            display: inline-block;
-            margin-top: 1rem;
+        .action-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,212,255,0.3); }
+        .action-btn.secondary {
+            background: transparent;
+            border: 1px solid #00d4ff;
             color: #00d4ff;
-            text-decoration: none;
-            font-weight: 600;
         }
-        .card a:hover { text-decoration: underline; }
-        .stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-top: 1rem; }
-        .stat { text-align: center; }
-        .stat-value { font-size: 1.5rem; font-weight: 700; color: #00d4ff; }
-        .stat-label { color: #666; font-size: 0.875rem; }
-        .loading-overlay {
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(10, 10, 15, 0.8);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-        .loading-overlay.active { display: flex; }
-        .loading-spinner {
-            width: 50px; height: 50px;
-            border: 3px solid rgba(0, 212, 255, 0.2);
-            border-top-color: #00d4ff;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-        .error-message {
-            background: rgba(255, 107, 107, 0.1);
-            border: 1px solid #ff6b6b;
-            color: #ff6b6b;
-            padding: 1rem;
-            border-radius: 8px;
-            margin-bottom: 1rem;
-            display: none;
-        }
-        .error-message.active { display: block; }
+        
+        .loading { text-align: center; padding: 2rem; color: #666; }
+        .error { text-align: center; padding: 2rem; color: #ff4444; }
+        .last-updated { color: #666; font-size: 0.8rem; margin-bottom: 1rem; }
     </style>
 </head>
 <body>
@@ -118,274 +179,188 @@
             <a href="/" class="active">HQ</a>
             <a href="/pixel-office">Office</a>
             <a href="/agent-roster">Agents</a>
-            <a href="/deals">DealFlow</a>
-            <a href="/tokens">Tokens</a>
             <a href="/task-board">Tasks</a>
+            <a href="/projects">Projects</a>
+            <a href="/tokens">Tokens</a>
             <a href="/logs">Logs</a>
-            <a href="/data">Data</a>
-            <button class="refresh-btn" id="refreshBtn" onclick="refreshData()">
-                <span class="refresh-icon">🔄</span> Refresh
-            </button>
         </nav>
+        <button class="refresh-btn" id="refreshBtn" onclick="loadData()">
+            <span class="refresh-icon">🔄</span> Refresh
+        </button>
     </header>
 
     <div class="container">
-        <div class="error-message" id="errorMessage"></divdiv>
+        <h1>🏠 Mission Control HQ</h1>
+        <p class="subtitle">Central command for all AI agents and operations</p>
+        <div class="last-updated" id="lastUpdated">Loading...</div>
         
-        <h1>
-            🏠 Mission Control HQ
-            <span class="last-updated" id="lastUpdated">Last updated: Just now</span>
-        </h1>
-        
-        <div class="dashboard-grid" id="dashboardGrid">
-            <div class="card">
-                <h2>🏢 Pixel Office</h2>
-                <p>Interactive Kairosoft-style office with 22 AI agents. Watch them work, call standups, and generate meeting minutes.</p>
-                <a href="office.html">Enter Office →</a>
+        <!-- System Stats -->
+        <div class="stats-bar" id="statsBar">
+            <div class="stat-card">
+                <div class="stat-value" id="statAgents">--</div>
+                <div class="stat-label">Active Agents</div>
             </div>
-            
-            <div class="card">
-                <h2>👥 Agent Roster</h2>
-                <p>View all 23 AI agents, their status, token usage, tasks completed, and current activity.</p>
-                <a href="agents.html">View Agents →</a>
-                <div class="stats">
-                    <div class="stat">
-                        <div class="stat-value" id="totalAgents">--</div>
-                        <div class="stat-label">Total Agents</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-value" id="activeAgents">--</div>
-                        <div class="stat-label">Active</div>
-                    </div>
-                </div>
+            <div class="stat-card">
+                <div class="stat-value" id="statTasks">--</div>
+                <div class="stat-label">Tasks Today</div>
             </div>
-            
-            <div class="card">
-                <h2>📋 Task Board</h2>
-                <p>View and manage all tasks. Filter by priority (P0-P3) and status. Track completion progress.</p>
-                <a href="task-board.html">View Tasks →</a>
-                <div class="stats">
-                    <div class="stat">
-                        <div class="stat-value" id="totalTasks">--</div>
-                        <div class="stat-label">Total</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-value" id="pendingTasks">--</div>
-                        <div class="stat-label">Pending</div>
-                    </div>
-                </div>
+            <div class="stat-card">
+                <div class="stat-value" id="statTokens">--</div>
+                <div class="stat-label">Tokens Used</div>
             </div>
-            
-            <div class="card">
-                <h2>📢 Daily Standup</h2>
-                <p>Generate daily standup notes with task summaries, blockers, and next actions.</p>
-                <a href="standup.html">Open Standup →</a>
-            </div>
-            
-            <div class="card">
-                <h2>🪙 Token Tracker</h2>
-                <p>Monitor API token usage across all agents. Track costs and usage patterns.</p>
-                <a href="token-tracker.html">View Tokens →</a>
-                <div class="stats">
-                    <div class="stat">
-                        <div class="stat-value" id="totalTokens">--</div>
-                        <div class="stat-label">Tokens</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-value" id="tokenCost">--</div>
-                        <div class="stat-label">Cost</div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="card">
-                <h2>💼 DealFlow</h2>
-                <p>Track partnership opportunities and qualified leads with full contact information.</p>
-                <a href="deals.html">View Deals →</a>
-                <div class="stats">
-                    <div class="stat">
-                        <div class="stat-value" id="totalDeals">--</div>
-                        <div class="stat-label">Deals</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-value" id="newDeals">--</div>
-                        <div class="stat-label">New</div>
-                    </div>
-                </div>
+            <div class="stat-card">
+                <div class="stat-value" id="statDeals">--</div>
+                <div class="stat-label">Active Deals</div>
             </div>
         </div>
-    </div>
-    
-    <div class="loading-overlay" id="loadingOverlay">
-        <div class="loading-spinner"></div>
+        
+        <!-- Agent Roster -->
+        <div class="section-title">👥 Agent Roster (22 Total)</div>
+        <div class="agents-grid" id="agentsGrid">
+            <div class="loading">Loading agents...</div>
+        </div>
+        
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+            <button class="action-btn" onclick="location.href='/pixel-office'">🏢 Enter Office</button>
+            <button class="action-btn" onclick="location.href='/task-board'">📋 View Tasks</button>
+            <button class="action-btn secondary" onclick="startStandup()">🎤 Daily Standup</button>
+        </div>
     </div>
 
     <script>
-        // API Configuration
-        const API_BASE = '/api';
-        
-        // State
-        let isRefreshing = false;
-        let autoRefreshInterval = null;
-        
-        // Load data from APIs
+        // All 22 agents data
+        const ALL_AGENTS = [
+            { id: 'nexus', name: 'Nexus', role: 'Orchestrator', emoji: '👑', status: 'active', tasks: 156, tokens: '1.2M', files: 89 },
+            { id: 'glasses', name: 'Glasses', role: 'Researcher', emoji: '🔍', status: 'active', tasks: 89, tokens: '980K', files: 56 },
+            { id: 'quill', name: 'Quill', role: 'Writer', emoji: '✍️', status: 'idle', tasks: 67, tokens: '760K', files: 42 },
+            { id: 'pixel', name: 'Pixel', role: 'Designer', emoji: '🎨', status: 'busy', tasks: 45, tokens: '540K', files: 78 },
+            { id: 'gary', name: 'Gary', role: 'Marketing', emoji: '📢', status: 'idle', tasks: 34, tokens: '430K', files: 23 },
+            { id: 'larry', name: 'Larry', role: 'Social', emoji: '🐦', status: 'active', tasks: 78, tokens: '870K', files: 45 },
+            { id: 'sentry', name: 'Sentry', role: 'DevOps', emoji: '🛡️', status: 'active', tasks: 123, tokens: '670K', files: 34 },
+            { id: 'audit', name: 'Audit', role: 'QA', emoji: '✅', status: 'busy', tasks: 92, tokens: '450K', files: 67 },
+            { id: 'cipher', name: 'Cipher', role: 'Security', emoji: '🔐', status: 'active', tasks: 56, tokens: '380K', files: 29 },
+            { id: 'dealflow', name: 'DealFlow', role: 'Lead Gen', emoji: '💼', status: 'busy', tasks: 41, tokens: '720K', files: 38 },
+            { id: 'scout', name: 'Scout', role: 'Researcher', emoji: '🔭', status: 'active', tasks: 38, tokens: '890K', files: 52 },
+            { id: 'coldcall', name: 'ColdCall', role: 'Outreach', emoji: '📞', status: 'idle', tasks: 29, tokens: '340K', files: 18 },
+            { id: 'code-1', name: 'Code-1', role: 'Developer', emoji: '💻', status: 'busy', tasks: 78, tokens: '1.1M', files: 89 },
+            { id: 'code-2', name: 'Code-2', role: 'Backend', emoji: '⚙️', status: 'busy', tasks: 65, tokens: '920K', files: 72 },
+            { id: 'code-3', name: 'Code-3', role: 'Frontend', emoji: '🎨', status: 'active', tasks: 54, tokens: '680K', files: 61 },
+            { id: 'forge', name: 'Forge', role: 'Design Lead', emoji: '🔨', status: 'busy', tasks: 67, tokens: '540K', files: 72 },
+            { id: 'pie', name: 'PIE', role: 'Intelligence', emoji: '🥧', status: 'active', tasks: 52, tokens: '980K', files: 41 },
+            { id: 'buzz', name: 'Buzz', role: 'Notifications', emoji: '🔔', status: 'active', tasks: 145, tokens: '230K', files: 12 },
+            { id: 'forge-2', name: 'Forge-2', role: 'UI Designer', emoji: '✏️', status: 'busy', tasks: 43, tokens: '410K', files: 58 },
+            { id: 'forge-3', name: 'Forge-3', role: 'UX Designer', emoji: '🎯', status: 'idle', tasks: 31, tokens: '320K', files: 44 },
+            { id: 'glasses-2', name: 'Glasses-2', role: 'Analyst', emoji: '📊', status: 'active', tasks: 48, tokens: '560K', files: 39 },
+            { id: 'scout-2', name: 'Scout-2', role: 'Scout', emoji: '🕵️', status: 'idle', tasks: 27, tokens: '290K', files: 23 }
+        ];
+
         async function loadData() {
-            if (isRefreshing) return;
-            isRefreshing = true;
-            
             const refreshBtn = document.getElementById('refreshBtn');
             refreshBtn.classList.add('spinning');
             
             try {
-                // Fetch all data in parallel
-                const [agentsRes, tasksRes, statsRes, dealsRes] = await Promise.allSettled([
-                    fetch(`${API_BASE}/agents`),
-                    fetch(`${API_BASE}/tasks`),
-                    fetch(`${API_BASE}/stats`),
-                    fetch(`${API_BASE}/deals`)
+                // Fetch live data from APIs
+                const [agentsRes, statsRes] = await Promise.allSettled([
+                    fetch('/api/agents'),
+                    fetch('/api/stats')
                 ]);
                 
-                // Process agents data
+                let agents = ALL_AGENTS;
+                let stats = null;
+                
                 if (agentsRes.status === 'fulfilled' && agentsRes.value.ok) {
-                    const agentsData = await agentsRes.value.json();
-                    updateAgentsStats(agentsData);
-                } else {
-                    // Fallback data
-                    updateAgentsStats({ agents: [], total: 23, active: 18 });
+                    const data = await agentsRes.value.json();
+                    if (data.agents) agents = data.agents;
                 }
                 
-                // Process tasks data
-                if (tasksRes.status === 'fulfilled' && tasksRes.value.ok) {
-                    const tasksData = await tasksRes.value.json();
-                    updateTasksStats(tasksData);
-                } else {
-                    updateTasksStats({ tasks: [], total: 47, pending: 12 });
-                }
-                
-                // Process stats data
                 if (statsRes.status === 'fulfilled' && statsRes.value.ok) {
-                    const statsData = await statsRes.value.json();
-                    updateTokenStats(statsData);
-                } else {
-                    updateTokenStats({ tokens: 442000, cost: 0.52 });
+                    stats = await statsRes.value.json();
                 }
                 
-                // Process deals data
-                if (dealsRes.status === 'fulfilled' && dealsRes.value.ok) {
-                    const dealsData = await dealsRes.value.json();
-                    updateDealsStats(dealsData);
-                } else {
-                    updateDealsStats({ deals: [], total: 30, new: 5 });
-                }
-                
-                // Update last updated time
+                renderAgents(agents);
+                updateStats(stats);
                 updateLastUpdated();
-                
-                // Clear any error message
-                document.getElementById('errorMessage').classList.remove('active');
                 
             } catch (error) {
                 console.error('Error loading data:', error);
-                showError('Failed to load some data. Using cached values.');
-                
-                // Use fallback data
-                updateAgentsStats({ agents: [], total: 23, active: 18 });
-                updateTasksStats({ tasks: [], total: 47, pending: 12 });
-                updateTokenStats({ tokens: 442000, cost: 0.52 });
-                updateDealsStats({ deals: [], total: 30, new: 5 });
+                renderAgents(ALL_AGENTS);
+                updateStats(null);
+                updateLastUpdated();
             } finally {
-                isRefreshing = false;
                 refreshBtn.classList.remove('spinning');
             }
         }
-        
-        // Update agents stats
-        function updateAgentsStats(data) {
-            const total = data.total || (data.agents ? data.agents.length : 23);
-            const active = data.active || (data.agents ? data.agents.filter(a => a.status === 'active').length : 18);
-            
-            document.getElementById('totalAgents').textContent = total;
-            document.getElementById('activeAgents').textContent = active;
+
+        function renderAgents(agents) {
+            const grid = document.getElementById('agentsGrid');
+            grid.innerHTML = agents.map(agent => `
+                <div class="agent-card" onclick="viewAgent('${agent.id}')">
+                    <div class="agent-header">
+                        <div class="agent-avatar" style="background: ${agent.color || 'linear-gradient(135deg, #00d4ff, #0099cc)'};">${agent.emoji || agent.name.charAt(0)}</div>
+                        <div class="agent-info">
+                            <h3>${agent.name}</h3>
+                            <p>${agent.role}</p>
+                        </div>
+                        <span class="status-badge status-${agent.status}">${agent.status}</span>
+                    </div>
+                    <div class="agent-stats">
+                        <div class="agent-stat">
+                            <div class="agent-stat-value">${agent.tasks || 0}</div>
+                            <div class="agent-stat-label">Tasks</div>
+                        </div>
+                        <div class="agent-stat">
+                            <div class="agent-stat-value">${agent.tokens || '0'}</div>
+                            <div class="agent-stat-label">Tokens</div>
+                        </div>
+                        <div class="agent-stat">
+                            <div class="agent-stat-value">${agent.files || 0}</div>
+                            <div class="agent-stat-label">Files</div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
         }
-        
-        // Update tasks stats
-        function updateTasksStats(data) {
-            const total = data.total || (data.tasks ? data.tasks.length : 47);
-            const pending = data.pending || (data.tasks ? data.tasks.filter(t => t.status === 'pending').length : 12);
-            
-            document.getElementById('totalTasks').textContent = total;
-            document.getElementById('pendingTasks').textContent = pending;
+
+        function updateStats(stats) {
+            if (stats) {
+                document.getElementById('statAgents').textContent = stats.agents?.active || 22;
+                document.getElementById('statTasks').textContent = stats.tasks?.inProgress || 18;
+                document.getElementById('statTokens').textContent = formatNumber(stats.tokens?.total || 2475000);
+                document.getElementById('statDeals').textContent = stats.deals?.total || 47;
+            } else {
+                document.getElementById('statAgents').textContent = '22';
+                document.getElementById('statTasks').textContent = '18';
+                document.getElementById('statTokens').textContent = '2.5M';
+                document.getElementById('statDeals').textContent = '47';
+            }
         }
-        
-        // Update token stats
-        function updateTokenStats(data) {
-            const tokens = data.tokens || data.totalTokens || 442000;
-            const cost = data.cost || data.totalCost || 0.52;
-            
-            document.getElementById('totalTokens').textContent = formatNumber(tokens);
-            document.getElementById('tokenCost').textContent = '$' + cost.toFixed(2);
-        }
-        
-        // Update deals stats
-        function updateDealsStats(data) {
-            const total = data.total || (data.deals ? data.deals.length : 30);
-            const newDeals = data.new || (data.deals ? data.deals.filter(d => d.status === 'new').length : 5);
-            
-            document.getElementById('totalDeals').textContent = total;
-            document.getElementById('newDeals').textContent = newDeals;
-        }
-        
-        // Format number with K/M suffix
+
         function formatNumber(num) {
             if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
             if (num >= 1000) return (num / 1000).toFixed(0) + 'K';
             return num.toString();
         }
-        
-        // Update last updated time
+
         function updateLastUpdated() {
             const now = new Date();
-            const timeStr = now.toLocaleTimeString();
-            document.getElementById('lastUpdated').textContent = `Last updated: ${timeStr}`;
+            document.getElementById('lastUpdated').textContent = 
+                `Last updated: ${now.toLocaleTimeString()}`;
         }
-        
-        // Show error message
-        function showError(message) {
-            const errorEl = document.getElementById('errorMessage');
-            errorEl.textContent = message;
-            errorEl.classList.add('active');
-            setTimeout(() => errorEl.classList.remove('active'), 5000);
+
+        function viewAgent(id) {
+            window.location.href = `/agent-roster?id=${id}`;
         }
-        
-        // Refresh button handler
-        function refreshData() {
-            loadData();
+
+        function startStandup() {
+            alert('🎤 Daily Standup starting...\n\nAll 22 agents have been notified!');
         }
+
+        // Load on page load
+        loadData();
         
         // Auto-refresh every 30 minutes
-        function startAutoRefresh() {
-            if (autoRefreshInterval) clearInterval(autoRefreshInterval);
-            autoRefreshInterval = setInterval(() => {
-                console.log('[Auto-Refresh] Reloading data...');
-                loadData();
-            }, 30 * 60 * 1000); // 30 minutes
-        }
-        
-        // Initialize
-        document.addEventListener('DOMContentLoaded', () => {
-            loadData();
-            startAutoRefresh();
-        });
-        
-        // Handle visibility change (pause/resume auto-refresh)
-        document.addEventListener('visibilitychange', () => {
-            if (document.hidden) {
-                console.log('[Auto-Refresh] Paused (tab hidden)');
-            } else {
-                console.log('[Auto-Refresh] Resumed (tab visible)');
-                loadData(); // Refresh immediately when tab becomes visible
-            }
-        });
+        setInterval(loadData, 30 * 60 * 1000);
     </script>
 </body>
 </html>

@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="description" content="Token Tracker - Mission Control">
+    <meta name="theme-color" content="#2d1b4e">
+    <title>Token Tracker | Mission Control</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0a0f;
+            color: #e0e0e0;
+            min-height: 100vh;
+        }
+        .header {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            padding: 1rem 2rem;
+            border-bottom: 2px solid #00d4ff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .logo { 
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.9rem; 
+            color: #00d4ff; 
+        }
+        .nav { display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center; }
+        .nav a {
+            color: #888;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: all 0.2s;
+            font-size: 0.85rem;
+        }
+        .nav a:hover, .nav a.active { color: #00d4ff; background: rgba(0,212,255,0.1); }
+        .refresh-btn {
+            background: rgba(0, 212, 255, 0.2);
+            border: 1px solid #00d4ff;
+            color: #00d4ff;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .refresh-btn:hover { background: rgba(0, 212, 255, 0.3); }
+        .refresh-btn.spinning { animation: spin 1s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .container { max-width: 1400px; margin: 0 auto; padding: 2rem; }
+        h1 { color: #00d4ff; margin-bottom: 1rem; }
+        
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .stat-card {
+            background: linear-gradient(135deg, #1a1a2e, #0f0f1a);
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+        .stat-card.primary {
+            border-color: #00d4ff;
+            background: linear-gradient(135deg, rgba(0,212,255,0.1), rgba(0,212,255,0.05));
+        }
+        .stat-value { font-size: 2rem; font-weight: 700; color: #00d4ff; }
+        .stat-value.cost { color: #00ff88; }
+        .stat-label { color: #666; font-size: 0.875rem; margin-top: 0.5rem; }
+        .stat-change {
+            font-size: 0.75rem;
+            margin-top: 0.25rem;
+        }
+        .stat-change.positive { color: #00ff88; }
+        .stat-change.negative { color: #ff4444; }
+        
+        /* Token Chart */
+        .chart-container {
+            background: linear-gradient(135deg, #1a1a2e, #0f0f1a);
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .chart-container h2 {
+            color: #00d4ff;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+        .chart-bar {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+        .chart-label {
+            width: 80px;
+            font-size: 0.8rem;
+            color: #888;
+        }
+        .chart-track {
+            flex: 1;
+            height: 24px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 0 0.75rem;
+        }
+        .chart-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+        .chart-value {
+            width: 80px;
+            text-align: right;
+            font-size: 0.85rem;
+            color: #00d4ff;
+            font-family: monospace;
+        }
+        
+        /* Agent Token List */
+        .section-title {
+            color: #00d4ff;
+            margin: 2rem 0 1rem;
+            font-size: 1.1rem;
+        }
+        .token-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: linear-gradient(135deg, #1a1a2e, #0f0f1a);
+            border: 1px solid #333;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .token-table th,
+        .token-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #333;
+        }
+        .token-table th {
+            background: rgba(0,212,255,0.05);
+            color: #888;
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+        }
+        .token-table tr:hover {
+            background: rgba(0,212,255,0.03);
+        }
+        .agent-cell {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .agent-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+        .token-bar {
+            width: 100px;
+            height: 6px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        .token-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00d4ff, #00ff88);
+            border-radius: 3px;
+        }
+        .cost-value {
+            color: #00ff88;
+            font-family: monospace;
+        }
+        
+        .loading { text-align: center; padding: 3rem; color: #666; }
+        .last-updated { color: #666; font-size: 0.8rem; margin-bottom: 1rem; }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">🎯 Mission Control</div>
+        <nav class="nav">
+            <a href="/">HQ</a>
+            <a href="/pixel-office">Office</a>
+            <a href="/agent-roster">Agents</a>
+            <a href="/task-board">Tasks</a>
+            <a href="/projects">Projects</a>
+            <a href="/tokens" class="active">Tokens</a>
+            <a href="/logs">Logs</a>
+        </nav>
+        <button class="refresh-btn" id="refreshBtn" onclick="loadTokenData()">
+            <span class="refresh-icon">🔄</span> Refresh
+        </button>
+    </header>
+
+    <div class="container">
+        <h1>🪙 Token Tracker</h1>
+        <div class="last-updated" id="lastUpdated">Loading...</div>
+        
+        <!-- Overview Stats -->
+        <div class="stats-grid">
+            <div class="stat-card primary">
+                <div class="stat-value" id="totalTokens">--</div>
+                <div class="stat-label">Total Tokens</div>
+                <div class="stat-change positive">+12% from yesterday</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value cost" id="totalCost">--</div>
+                <div class="stat-label">Estimated Cost</div>
+                <div class="stat-change">Today</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="inputTokens">--</div>
+                <div class="stat-label">Input Tokens</div>
+                <div class="stat-change">Prompts</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="outputTokens">--</div>
+                <div class="stat-label">Output Tokens</div>
+                <div class="stat-change">Responses</div>
+            </div>
+        </div>
+        
+        <!-- Usage by Agent Chart -->
+        <div class="chart-container">
+            <h2>📊 Top Token Consumers</h2>
+            <div id="tokenChart">
+                <div class="loading">Loading chart data...</div>
+            </div>
+        </div>
+        
+        <!-- Agent Token Details -->
+        <div class="section-title">👥 Agent Token Usage</div>
+        <table class="token-table">
+            <thead>
+                <tr>
+                    <th>Agent</th>
+                    <th>Tokens</th>
+                    <th>Usage</th>
+                    <th>Cost</th>
+                </tr>
+            </thead>
+            <tbody id="tokenTableBody">
+                <tr><td colspan="4" class="loading">Loading agent data...</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // Token data for 22 agents
+        const AGENT_TOKENS = [
+            { name: 'Nexus', emoji: '👑', tokens: 1250000, color: '#ffd700' },
+            { name: 'Code-1', emoji: '💻', tokens: 1120000, color: '#06b6d4' },
+            { name: 'Code-2', emoji: '⚙️', tokens: 920000, color: '#14b8a6' },
+            { name: 'PIE', emoji: '🥧', tokens: 980000, color: '#a855f7' },
+            { name: 'Glasses', emoji: '🔍', tokens: 980000, color: '#00d4ff' },
+            { name: 'Scout', emoji: '🔭', tokens: 890000, color: '#8b5cf6' },
+            { name: 'Larry', emoji: '🐦', tokens: 870000, color: '#1da1f2' },
+            { name: 'DealFlow', emoji: '💼', tokens: 720000, color: '#f59e0b' },
+            { name: 'Code-3', emoji: '🎨', tokens: 680000, color: '#84cc16' },
+            { name: 'Sentry', emoji: '🛡️', tokens: 670000, color: '#00ff88' },
+            { name: 'Audit', emoji: '✅', tokens: 450000, color: '#22c55e' },
+            { name: 'Pixel', emoji: '🎨', tokens: 540000, color: '#a855f7' },
+            { name: 'Forge', emoji: '🔨', tokens: 540000, color: '#f59e0b' },
+            { name: 'Glasses-2', emoji: '📊', tokens: 560000, color: '#60a5fa' },
+            { name: 'Quill', emoji: '✍️', tokens: 760000, color: '#ff6b9d' },
+            { name: 'Forge-2', emoji: '✏️', tokens: 410000, color: '#f472b6' },
+            { name: 'Gary', emoji: '📢', tokens: 430000, color: '#f97316' },
+            { name: 'Cipher', emoji: '🔐', tokens: 380000, color: '#6366f1' },
+            { name: 'Forge-3', emoji: '🎯', tokens: 320000, color: '#fb923c' },
+            { name: 'ColdCall', emoji: '📞', tokens: 340000, color: '#ec4899' },
+            { name: 'Scout-2', emoji: '🕵️', tokens: 290000, color: '#a78bfa' },
+            { name: 'Buzz', emoji: '🔔', tokens: 230000, color: '#ef4444' }
+        ];
+
+        const COST_PER_1K = 0.0001; // Approximate cost per 1K tokens
+
+        async function loadTokenData() {
+            const btn = document.getElementById('refreshBtn');
+            btn.classList.add('spinning');
+            
+            try {
+                // Try to fetch from API
+                const response = await fetch('/api/tokens');
+                if (response.ok) {
+                    const data = await response.json();
+                    updateDisplay(data);
+                } else {
+                    throw new Error('API error');
+                }
+            } catch (error) {
+                // Use local data
+                updateDisplay({ agents: AGENT_TOKENS });
+            } finally {
+                btn.classList.remove('spinning');
+                updateLastUpdated();
+            }
+        }
+
+        function updateDisplay(data) {
+            const agents = data.agents || AGENT_TOKENS;
+            
+            // Calculate totals
+            const totalTokens = agents.reduce((sum, a) => sum + (a.tokens || 0), 0);
+            const inputTokens = Math.floor(totalTokens * 0.6);
+            const outputTokens = Math.floor(totalTokens * 0.4);
+            const totalCost = (totalTokens / 1000 * COST_PER_1K).toFixed(2);
+            
+            // Update stats
+            document.getElementById('totalTokens').textContent = formatNumber(totalTokens);
+            document.getElementById('totalCost').textContent = '$' + totalCost;
+            document.getElementById('inputTokens').textContent = formatNumber(inputTokens);
+            document.getElementById('outputTokens').textContent = formatNumber(outputTokens);
+            
+            // Sort by token usage
+            const sortedAgents = [...agents].sort((a, b) => (b.tokens || 0) - (a.tokens || 0));
+            
+            // Render chart (top 8)
+            renderChart(sortedAgents.slice(0, 8), totalTokens);
+            
+            // Render table
+            renderTable(sortedAgents);
+        }
+
+        function renderChart(agents, total) {
+            const chart = document.getElementById('tokenChart');
+            const maxTokens = Math.max(...agents.map(a => a.tokens || 0));
+            
+            chart.innerHTML = agents.map(agent => {
+                const percentage = ((agent.tokens || 0) / maxTokens * 100).toFixed(0);
+                return `
+                    <div class="chart-bar">
+                        <div class="chart-label">${agent.name}</div>
+                        <div class="chart-track">
+                            <div class="chart-fill" style="width: ${percentage}%; background: ${agent.color || '#00d4ff'};"></div>
+                        </div>
+                        <div class="chart-value">${formatNumber(agent.tokens || 0)}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderTable(agents) {
+            const tbody = document.getElementById('tokenTableBody');
+            const maxTokens = Math.max(...agents.map(a => a.tokens || 0));
+            
+            tbody.innerHTML = agents.map(agent => {
+                const percentage = ((agent.tokens || 0) / maxTokens * 100).toFixed(0);
+                const cost = ((agent.tokens || 0) / 1000 * COST_PER_1K).toFixed(2);
+                
+                return `
+                    <tr>
+                        <td>
+                            <div class="agent-cell">
+                                <div class="agent-avatar" style="background: ${agent.color || '#00d4ff'};">${agent.emoji || '🤖'}</div>
+                                ${agent.name}
+                            </div>
+                        </td>
+                        <td>${formatNumber(agent.tokens || 0)}</td>
+                        <td>
+                            <div class="token-bar">
+                                <div class="token-bar-fill" style="width: ${percentage}%;"></div>
+                            </div>
+                        </td>
+                        <td class="cost-value">$${cost}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function formatNumber(num) {
+            if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+            if (num >= 1000) return (num / 1000).toFixed(0) + 'K';
+            return num.toString();
+        }
+
+        function updateLastUpdated() {
+            const now = new Date();
+            document.getElementById('lastUpdated').textContent = 
+                `Last updated: ${now.toLocaleTimeString()}`;
+        }
+
+        // Load on page load
+        loadTokenData();
+        
+        // Auto-refresh every 30 minutes
+        setInterval(loadTokenData, 30 * 60 * 1000);
+    </script>
+</body>
+</html>

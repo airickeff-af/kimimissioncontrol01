@@ -1,0 +1,543 @@
+/**
+ * PIXELIZED THEME — MC PROJECT
+ * Kairosoft-style pixel aesthetic
+ * 
+ * @author Sentry-MC (Implementation)
+ * @requested-by Meemo (PM)
+ * @date 2026-02-20
+ */
+
+/* ============================================
+   PIXEL THEME VARIABLES
+   ============================================ */
+:root {
+    /* Pixel Color Palette */
+    --pixel-bg: #0a0a0f;
+    --pixel-bg-light: #1a1a2e;
+    --pixel-bg-lighter: #2d1b4e;
+    --pixel-primary: #00d4ff;
+    --pixel-secondary: #ff6b6b;
+    --pixel-accent: #4ecdc4;
+    --pixel-gold: #ffd700;
+    --pixel-text: #e0e0e0;
+    --pixel-text-dim: #888888;
+    --pixel-border: #333333;
+    
+    /* Pixel Fonts */
+    --font-pixel: 'Press Start 2P', cursive;
+    --font-terminal: 'VT323', monospace;
+    --font-body: 'Inter', sans-serif;
+    
+    /* Pixel Spacing */
+    --pixel-unit: 4px;
+    --pixel-border-width: 2px;
+    --pixel-shadow-offset: 4px;
+}
+
+/* ============================================
+   BASE PIXEL STYLES
+   ============================================ */
+.pixel-theme body {
+    font-family: var(--font-body);
+    background: var(--pixel-bg);
+    color: var(--pixel-text);
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+}
+
+/* ============================================
+   PIXEL BUTTONS
+   ============================================ */
+.pixel-btn {
+    font-family: var(--font-pixel);
+    font-size: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 12px 16px;
+    background: var(--pixel-bg-light);
+    border: var(--pixel-border-width) solid var(--pixel-border);
+    color: var(--pixel-text);
+    cursor: pointer;
+    position: relative;
+    box-shadow: 
+        var(--pixel-shadow-offset) var(--pixel-shadow-offset) 0 var(--pixel-border);
+    transition: all 0.1s;
+    image-rendering: pixelated;
+}
+
+.pixel-btn:hover {
+    background: var(--pixel-bg-lighter);
+    border-color: var(--pixel-primary);
+    color: var(--pixel-primary);
+    box-shadow: 
+        var(--pixel-shadow-offset) var(--pixel-shadow-offset) 0 var(--pixel-primary);
+}
+
+.pixel-btn:active {
+    transform: translate(var(--pixel-shadow-offset), var(--pixel-shadow-offset));
+    box-shadow: none;
+}
+
+.pixel-btn.primary {
+    background: var(--pixel-primary);
+    border-color: var(--pixel-primary);
+    color: var(--pixel-bg);
+    box-shadow: 
+        var(--pixel-shadow-offset) var(--pixel-shadow-offset) 0 #007a99;
+}
+
+.pixel-btn.primary:hover {
+    background: #33ddff;
+    box-shadow: 
+        var(--pixel-shadow-offset) var(--pixel-shadow-offset) 0 var(--pixel-primary);
+}
+
+/* ============================================
+   PIXEL CARDS
+   ============================================ */
+.pixel-card {
+    background: var(--pixel-bg-light);
+    border: var(--pixel-border-width) solid var(--pixel-border);
+    padding: calc(var(--pixel-unit) * 4);
+    position: relative;
+    box-shadow: 
+        var(--pixel-shadow-offset) var(--pixel-shadow-offset) 0 var(--pixel-border);
+}
+
+.pixel-card::before {
+    content: '';
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    right: 4px;
+    height: 2px;
+    background: linear-gradient(90deg, 
+        transparent 0%,
+        var(--pixel-primary) 20%,
+        var(--pixel-primary) 80%,
+        transparent 100%
+    );
+    opacity: 0.5;
+}
+
+.pixel-card:hover {
+    border-color: var(--pixel-primary);
+    box-shadow: 
+        var(--pixel-shadow-offset) var(--pixel-shadow-offset) 0 var(--pixel-primary);
+}
+
+.pixel-card-title {
+    font-family: var(--font-pixel);
+    font-size: 8px;
+    color: var(--pixel-primary);
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* ============================================
+   PIXEL HEADER
+   ============================================ */
+.pixel-header {
+    background: var(--pixel-bg-light);
+    border-bottom: var(--pixel-border-width) solid var(--pixel-primary);
+    padding: 16px 24px;
+    position: relative;
+}
+
+.pixel-header::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: repeating-linear-gradient(
+        90deg,
+        var(--pixel-primary) 0px,
+        var(--pixel-primary) 4px,
+        transparent 4px,
+        transparent 8px
+    );
+}
+
+.pixel-logo {
+    font-family: var(--font-pixel);
+    font-size: 12px;
+    color: var(--pixel-primary);
+    text-shadow: 2px 2px 0 var(--pixel-bg);
+}
+
+/* ============================================
+   PIXEL NAVIGATION
+   ============================================ */
+.pixel-nav {
+    display: flex;
+    gap: 8px;
+}
+
+.pixel-nav a {
+    font-family: var(--font-terminal);
+    font-size: 18px;
+    color: var(--pixel-text-dim);
+    text-decoration: none;
+    padding: 8px 12px;
+    border: 2px solid transparent;
+    position: relative;
+}
+
+.pixel-nav a:hover,
+.pixel-nav a.active {
+    color: var(--pixel-primary);
+    border-color: var(--pixel-primary);
+    background: rgba(0, 212, 255, 0.1);
+}
+
+.pixel-nav a.active::before {
+    content: '▶';
+    position: absolute;
+    left: -4px;
+    color: var(--pixel-primary);
+    font-size: 10px;
+}
+
+/* ============================================
+   PIXEL STATS
+   ============================================ */
+.pixel-stat {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 12px 16px;
+    background: var(--pixel-bg);
+    border: 2px solid var(--pixel-border);
+    min-width: 80px;
+}
+
+.pixel-stat-value {
+    font-family: var(--font-pixel);
+    font-size: 16px;
+    color: var(--pixel-primary);
+    margin-bottom: 4px;
+}
+
+.pixel-stat-label {
+    font-family: var(--font-terminal);
+    font-size: 14px;
+    color: var(--pixel-text-dim);
+    text-transform: uppercase;
+}
+
+/* ============================================
+   PIXEL PROGRESS BARS
+   ============================================ */
+.pixel-progress {
+    width: 100%;
+    height: 16px;
+    background: var(--pixel-bg);
+    border: 2px solid var(--pixel-border);
+    position: relative;
+    overflow: hidden;
+}
+
+.pixel-progress-fill {
+    height: 100%;
+    background: var(--pixel-primary);
+    position: relative;
+    transition: width 0.3s;
+}
+
+.pixel-progress-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: repeating-linear-gradient(
+        90deg,
+        transparent 0px,
+        transparent 4px,
+        rgba(0, 0, 0, 0.2) 4px,
+        rgba(0, 0, 0, 0.2) 8px
+    );
+}
+
+/* ============================================
+   PIXEL INPUTS
+   ============================================ */
+.pixel-input {
+    font-family: var(--font-terminal);
+    font-size: 18px;
+    background: var(--pixel-bg);
+    border: 2px solid var(--pixel-border);
+    color: var(--pixel-text);
+    padding: 12px 16px;
+    outline: none;
+}
+
+.pixel-input:focus {
+    border-color: var(--pixel-primary);
+    box-shadow: inset 0 0 0 2px rgba(0, 212, 255, 0.2);
+}
+
+.pixel-input::placeholder {
+    color: var(--pixel-text-dim);
+}
+
+/* ============================================
+   PIXEL MODAL
+   ============================================ */
+.pixel-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.pixel-modal {
+    background: var(--pixel-bg-light);
+    border: 4px solid var(--pixel-border);
+    padding: 24px;
+    max-width: 500px;
+    width: 90%;
+    position: relative;
+    box-shadow: 
+        8px 8px 0 var(--pixel-border),
+        8px 8px 0 4px var(--pixel-bg);
+}
+
+.pixel-modal-title {
+    font-family: var(--font-pixel);
+    font-size: 10px;
+    color: var(--pixel-primary);
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--pixel-border);
+}
+
+.pixel-modal-close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    font-family: var(--font-pixel);
+    font-size: 10px;
+    color: var(--pixel-text-dim);
+    background: none;
+    border: 2px solid var(--pixel-border);
+    padding: 4px 8px;
+    cursor: pointer;
+}
+
+.pixel-modal-close:hover {
+    color: var(--pixel-secondary);
+    border-color: var(--pixel-secondary);
+}
+
+/* ============================================
+   PIXEL BADGES
+   ============================================ */
+.pixel-badge {
+    font-family: var(--font-pixel);
+    font-size: 6px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 4px 8px;
+    background: var(--pixel-bg);
+    border: 2px solid var(--pixel-border);
+    display: inline-block;
+}
+
+.pixel-badge.primary {
+    background: var(--pixel-primary);
+    border-color: var(--pixel-primary);
+    color: var(--pixel-bg);
+}
+
+.pixel-badge.gold {
+    background: var(--pixel-gold);
+    border-color: var(--pixel-gold);
+    color: var(--pixel-bg);
+}
+
+/* ============================================
+   PIXEL GRID
+   ============================================ */
+.pixel-grid {
+    display: grid;
+    gap: 16px;
+}
+
+.pixel-grid-2 {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.pixel-grid-3 {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.pixel-grid-4 {
+    grid-template-columns: repeat(4, 1fr);
+}
+
+/* ============================================
+   PIXEL DIVIDER
+   ============================================ */
+.pixel-divider {
+    height: 4px;
+    background: repeating-linear-gradient(
+        90deg,
+        var(--pixel-border) 0px,
+        var(--pixel-border) 4px,
+        transparent 4px,
+        transparent 8px
+    );
+    margin: 16px 0;
+}
+
+/* ============================================
+   PIXEL LOADING
+   ============================================ */
+.pixel-loading {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    border: 4px solid var(--pixel-border);
+    border-top-color: var(--pixel-primary);
+    animation: pixel-spin 1s steps(8) infinite;
+}
+
+@keyframes pixel-spin {
+    to { transform: rotate(360deg); }
+}
+
+.pixel-loading-text {
+    font-family: var(--font-pixel);
+    font-size: 8px;
+    color: var(--pixel-primary);
+    margin-top: 12px;
+    animation: pixel-blink 1s steps(2) infinite;
+}
+
+@keyframes pixel-blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+}
+
+/* ============================================
+   HOLIDAY BUTTON (Pixel Style)
+   ============================================ */
+.holiday-btn {
+    font-family: var(--font-pixel);
+    font-size: 8px;
+    padding: 8px 12px;
+    background: var(--pixel-bg-light);
+    border: 2px solid var(--pixel-border);
+    color: var(--pixel-text);
+    cursor: pointer;
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 10;
+    box-shadow: 2px 2px 0 var(--pixel-border);
+}
+
+.holiday-btn:hover {
+    border-color: var(--pixel-primary);
+    color: var(--pixel-primary);
+}
+
+.holiday-btn.active {
+    background: var(--pixel-primary);
+    border-color: var(--pixel-primary);
+    color: var(--pixel-bg);
+}
+
+/* ============================================
+   HOLIDAY MENU (Pixel Style)
+   ============================================ */
+.holiday-menu {
+    position: absolute;
+    top: 50px;
+    right: 12px;
+    background: var(--pixel-bg-light);
+    border: 2px solid var(--pixel-border);
+    min-width: 180px;
+    z-index: 100;
+    box-shadow: 4px 4px 0 var(--pixel-border);
+}
+
+.holiday-menu-header {
+    font-family: var(--font-pixel);
+    font-size: 6px;
+    color: var(--pixel-primary);
+    padding: 8px 12px;
+    background: var(--pixel-bg);
+    border-bottom: 2px solid var(--pixel-border);
+    text-transform: uppercase;
+}
+
+.holiday-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-family: var(--font-terminal);
+    font-size: 16px;
+}
+
+.holiday-option:hover {
+    background: rgba(0, 212, 255, 0.1);
+    color: var(--pixel-primary);
+}
+
+.holiday-icon {
+    font-size: 16px;
+}
+
+.holiday-divider {
+    height: 2px;
+    background: var(--pixel-border);
+    margin: 4px 0;
+}
+
+/* ============================================
+   RESPONSIVE PIXEL
+   ============================================ */
+@media (max-width: 768px) {
+    .pixel-grid-2,
+    .pixel-grid-3,
+    .pixel-grid-4 {
+        grid-template-columns: 1fr;
+    }
+    
+    .pixel-btn {
+        font-size: 7px;
+        padding: 10px 12px;
+    }
+    
+    .pixel-logo {
+        font-size: 10px;
+    }
+}
+
+/* ============================================
+   HOLIDAY THEMES (Pixel Style)
+   ============================================ */
+.holiday-active .pixel-card {
+    border-color: var(--holiday-glow, var(--pixel-primary));
+}
+
+.holiday-active .pixel-btn:hover {
+    border-color: var(--holiday-glow, var(--pixel-primary));
+    box-shadow: 
+        var(--pixel-shadow-offset) var(--pixel-shadow-offset) 0 var(--holiday-glow, var(--pixel-primary));
+}
