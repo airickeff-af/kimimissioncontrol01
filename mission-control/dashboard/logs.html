@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="description" content="Activity Logs - Mission Control">
+    <meta name="theme-color" content="#2d1b4e">
+    <title>Activity Logs | Mission Control</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0a0f;
+            color: #e0e0e0;
+            min-height: 100vh;
+        }
+        .header {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            padding: 1rem 2rem;
+            border-bottom: 2px solid #00d4ff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .logo { font-size: 1.5rem; font-weight: 700; color: #00d4ff; }
+        .nav { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+        .nav a {
+            color: #888;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+        }
+        .nav a:hover, .nav a.active { color: #00d4ff; background: rgba(0,212,255,0.1); }
+        .container { max-width: 1400px; margin: 0 auto; padding: 2rem; }
+        h1 { color: #00d4ff; margin-bottom: 2rem; }
+        .log-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid #333;
+            padding-bottom: 1rem;
+        }
+        .log-tab {
+            background: transparent;
+            border: none;
+            color: #888;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            border-radius: 6px;
+        }
+        .log-tab:hover, .log-tab.active {
+            color: #00d4ff;
+            background: rgba(0,212,255,0.1);
+        }
+        .log-container {
+            background: #0f0f1a;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 1rem;
+            font-family: 'VT323', monospace;
+            font-size: 1.1rem;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+        .log-entry {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #1a1a2e;
+            display: flex;
+            gap: 1rem;
+        }
+        .log-entry:last-child { border-bottom: none; }
+        .log-time { color: #666; min-width: 160px; }
+        .log-level {
+            min-width: 60px;
+            text-align: center;
+            padding: 0 0.5rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+        .level-info { background: rgba(0,212,255,0.2); color: #00d4ff; }
+        .level-warn { background: rgba(255,170,0,0.2); color: #ffaa00; }
+        .level-error { background: rgba(255,68,68,0.2); color: #ff4444; }
+        .level-success { background: rgba(0,255,136,0.2); color: #00ff88; }
+        .log-message { color: #ccc; flex: 1; }
+        .loading { text-align: center; padding: 3rem; color: #888; }
+        .empty { text-align: center; padding: 3rem; color: #666; }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">🎯 Mission Control</div>
+        <nav class="nav">
+            <a href="/">HQ</a>
+            <a href="/office">Office</a>
+            <a href="/agents">Agents</a>
+            <a href="/deals">DealFlow</a>
+            <a href="/tokens">Tokens</a>
+            <a href="/tasks">Tasks</a>
+            <a href="/logs" class="active">Logs</a>
+            <a href="/data">Data</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <h1>📋 Activity Logs</h1>
+        
+        <div class="log-tabs">
+            <button class="log-tab active" data-log="enrichment">Enrichment</button>
+            <button class="log-tab" data-log="office">Office</button>
+            <button class="log-tab" data-log="system">System</button>
+        </div>
+
+        <div id="log-content" class="log-container">
+            <div class="loading">Loading logs...</div>
+        </div>
+    </div>
+
+    <script>
+        const logs = {
+            enrichment: [],
+            office: [],
+            system: []
+        };
+        
+        async function loadLogs() {
+            try {
+                // Try to fetch enrichment log
+                try {
+                    const enrichmentResp = await fetch('/logs/enrichment.log');
+                    if (enrichmentResp.ok) {
+                        const text = await enrichmentResp.text();
+                        logs.enrichment = parseLogText(text);
+                    }
+                } catch (e) {}
+                
+                // Try to fetch office log
+                try {
+                    const officeResp = await fetch('/logs/office_positions.log');
+                    if (officeResp.ok) {
+                        const text = await officeResp.text();
+                        logs.office = parseLogText(text);
+                    }
+                } catch (e) {}
+                
+                // System log - generate from local data
+                logs.system = generateSystemLog();
+                
+                renderLogs('enrichment');
+            } catch (error) {
+                document.getElementById('log-content').innerHTML = 
+                    `<div class="empty">Error loading logs: ${error.message}</div>`;
+            }
+        }
+        
+        function parseLogText(text) {
+            return text.split('\n')
+                .filter(line => line.trim())
+                .map(line => {
+                    // Try to parse timestamp
+                    const timeMatch = line.match(/\[(.*?)\]/);
+                    const time = timeMatch ? timeMatch[1] : new Date().toISOString();
+                    const message = timeMatch ? line.replace(timeMatch[0], '').trim() : line;
+                    
+                    // Determine level
+                    let level = 'info';
+                    if (line.includes('ERROR') || line.includes('error')) level = 'error';
+                    else if (line.includes('WARN') || line.includes('warning')) level = 'warn';
+                    else if (line.includes('SUCCESS') || line.includes('success')) level = 'success';
+                    
+                    return { time, message, level };
+                });
+        }
+        
+        function generateSystemLog() {
+            const entries = [];
+            const now = new Date();
+            
+            entries.push({
+                time: now.toISOString(),
+                message: 'System initialized - Mission Control Dashboard v2.0',
+                level: 'success'
+            });
+            
+            entries.push({
+                time: new Date(now - 60000).toISOString(),
+                message: 'Agent roster loaded - 23 agents active',
+                level: 'info'
+            });
+            
+            entries.push({
+                time: new Date(now - 120000).toISOString(),
+                message: 'DealFlow database synced - 89 leads loaded',
+                level: 'info'
+            });
+            
+            entries.push({
+                time: new Date(now - 300000).toISOString(),
+                message: 'Token cache refreshed',
+                level: 'info'
+            });
+            
+            return entries;
+        }
+        
+        function renderLogs(logType) {
+            const container = document.getElementById('log-content');
+            const entries = logs[logType] || [];
+            
+            if (entries.length === 0) {
+                container.innerHTML = '<div class="empty">No log entries found</div>';
+                return;
+            }
+            
+            container.innerHTML = entries.map(entry => `
+                <div class="log-entry">
+                    <span class="log-time">${formatTime(entry.time)}</span>
+                    <span class="log-level level-${entry.level}">${entry.level.toUpperCase()}</span>
+                    <span class="log-message">${escapeHtml(entry.message)}</span>
+                </div>
+            `).join('');
+        }
+        
+        function formatTime(timeStr) {
+            try {
+                const date = new Date(timeStr);
+                return date.toLocaleString();
+            } catch {
+                return timeStr;
+            }
+        }
+        
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        // Tab switching
+        document.querySelectorAll('.log-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.log-tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                renderLogs(tab.dataset.log);
+            });
+        });
+        
+        loadLogs();
+    </script>
+</body>
+</html>

@@ -395,10 +395,86 @@
             border-radius: 50%;
         }
         
+        .hierarchy-panel {
+            margin-top: 15px;
+            background: var(--bg-card);
+            border: 4px solid var(--panel-border);
+            border-radius: 8px;
+            padding: 15px;
+        }
+        
+        .hierarchy-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+        
+        .hierarchy-table th {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.5rem;
+            color: var(--accent-cyan);
+            text-align: left;
+            padding: 10px 8px;
+            border-bottom: 2px solid var(--panel-border);
+        }
+        
+        .hierarchy-table td {
+            padding: 8px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .hierarchy-table tr:hover {
+            background: rgba(0, 212, 255, 0.1);
+        }
+        
+        .hierarchy-table .level-1 { color: var(--accent-yellow); font-weight: bold; }
+        .hierarchy-table .level-2 { color: var(--accent-cyan); font-weight: bold; }
+        .hierarchy-table .level-3 { color: var(--text-light); }
+        
+        .hierarchy-agent {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+        
+        .hierarchy-agent:hover {
+            color: var(--accent-cyan);
+        }
+        
+        .hierarchy-avatar {
+            width: 24px;
+            height: 24px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+        }
+        
+        .hierarchy-status {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        
+        .status-online { background: var(--accent-green); box-shadow: 0 0 4px var(--accent-green); }
+        .status-busy { background: var(--accent-yellow); box-shadow: 0 0 4px var(--accent-yellow); }
+        .status-offline { background: #666; }
+        
+        .dept-dev { color: var(--accent-green); }
+        .dept-content { color: var(--accent-pink); }
+        .dept-growth { color: var(--accent-orange); }
+        .dept-ops { color: var(--accent-purple); }
+        .dept-bd { color: var(--accent-cyan); }
+        .dept-research { color: #3b82f6; }
+        .dept-executive { color: var(--accent-yellow); }
+        
         @media (max-width: 768px) {
-            #officeCanvas { height: 400px; }
-            .info-panel { grid-template-columns: 1fr; }
-            .controls { position: relative; padding: 10px; }
+            .hierarchy-table { font-size: 0.7rem; }
+            .hierarchy-table th, .hierarchy-table td { padding: 6px 4px; }
+            .hierarchy-avatar { width: 20px; height: 20px; font-size: 0.6rem; }
         }
     </style>
 </head>
@@ -469,6 +545,31 @@
                     <div class="legend-item"><span class="legend-dot" style="background:#4a5568"></span> Sleep</div>
                     <div class="legend-item"><span class="legend-dot" style="background:var(--accent-pink)"></span> Celebrate</div>
                 </div>
+            </div>
+        </div>
+        
+        <!-- Agent Hierarchy Table -->
+        <div class="hierarchy-panel">
+            <div class="panel-title">
+                🏢 AGENT HIERARCHY
+                <span style="font-size:0.5rem;color:var(--text-secondary)">22 Agents • Click to center camera</span>
+            </div>
+            <div style="overflow-x:auto;">
+                <table class="hierarchy-table" id="hierarchyTable">
+                    <thead>
+                        <tr>
+                            <th>LVL</th>
+                            <th>AGENT</th>
+                            <th>ROLE</th>
+                            <th>DEPT</th>
+                            <th>REPORTS TO</th>
+                            <th>STATUS</th>
+                        </tr>
+                    </thead>
+                    <tbody id="hierarchyBody">
+                        <!-- Populated by JS -->
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
@@ -1222,6 +1323,133 @@
         let frameCount = 0, lastFpsTime = performance.now();
 
         // ============================================
+        // AGENT HIERARCHY DATA
+        // ============================================
+        const HIERARCHY_DATA = [
+            { id: 'ericf', name: 'EricF', role: 'Commander', dept: 'executive', reportsTo: '-', level: 1, avatar: '👑', color: '#ffd700' },
+            { id: 'nexus', name: 'Nexus', role: 'Orchestrator', dept: 'executive', reportsTo: 'EricF', level: 2, avatar: '🤖', color: '#00d4ff' },
+            { id: 'codemaster', name: 'CodeMaster', role: 'Backend Lead', dept: 'dev', reportsTo: 'Nexus', level: 3, avatar: '💻', color: '#22c55e' },
+            { id: 'code-1', name: 'Code-1', role: 'Backend', dept: 'dev', reportsTo: 'CodeMaster', level: 3, avatar: '🔧', color: '#22c55e' },
+            { id: 'code-2', name: 'Code-2', role: 'Backend', dept: 'dev', reportsTo: 'CodeMaster', level: 3, avatar: '⚙️', color: '#22c55e' },
+            { id: 'code-3', name: 'Code-3', role: 'Backend', dept: 'dev', reportsTo: 'CodeMaster', level: 3, avatar: '🔨', color: '#22c55e' },
+            { id: 'forge', name: 'Forge', role: 'UI Lead', dept: 'dev', reportsTo: 'Nexus', level: 3, avatar: '🔥', color: '#f97316' },
+            { id: 'forge-2', name: 'Forge-2', role: 'UI', dept: 'dev', reportsTo: 'Forge', level: 3, avatar: '🎨', color: '#f97316' },
+            { id: 'forge-3', name: 'Forge-3', role: 'UI', dept: 'dev', reportsTo: 'Forge', level: 3, avatar: '✨', color: '#f97316' },
+            { id: 'pixel', name: 'Pixel', role: 'Designer', dept: 'dev', reportsTo: 'Forge', level: 3, avatar: '🖼️', color: '#a855f7' },
+            { id: 'glasses', name: 'Glasses', role: 'Researcher', dept: 'content', reportsTo: 'Nexus', level: 3, avatar: '🔍', color: '#3b82f6' },
+            { id: 'quill', name: 'Quill', role: 'Writer', dept: 'content', reportsTo: 'Nexus', level: 3, avatar: '✍️', color: '#ec4899' },
+            { id: 'gary', name: 'Gary', role: 'Marketing', dept: 'growth', reportsTo: 'Nexus', level: 3, avatar: '📢', color: '#f59e0b' },
+            { id: 'larry', name: 'Larry', role: 'Social', dept: 'growth', reportsTo: 'Nexus', level: 3, avatar: '🐦', color: '#06b6d4' },
+            { id: 'buzz', name: 'Buzz', role: 'Social', dept: 'growth', reportsTo: 'Nexus', level: 3, avatar: '📱', color: '#fbbf24' },
+            { id: 'sentry', name: 'Sentry', role: 'DevOps', dept: 'ops', reportsTo: 'Nexus', level: 3, avatar: '🛡️', color: '#ef4444' },
+            { id: 'audit', name: 'Audit', role: 'QA', dept: 'ops', reportsTo: 'Nexus', level: 3, avatar: '✅', color: '#8b5cf6' },
+            { id: 'cipher', name: 'Cipher', role: 'Security', dept: 'ops', reportsTo: 'Nexus', level: 3, avatar: '🔐', color: '#6366f1' },
+            { id: 'dealflow', name: 'DealFlow', role: 'Lead Gen', dept: 'bd', reportsTo: 'Nexus', level: 3, avatar: '💼', color: '#10b981' },
+            { id: 'coldcall', name: 'ColdCall', role: 'Outreach', dept: 'bd', reportsTo: 'Nexus', level: 3, avatar: '📞', color: '#f97316' },
+            { id: 'scout', name: 'Scout', role: 'Intel', dept: 'research', reportsTo: 'Nexus', level: 3, avatar: '🕵️', color: '#00d4ff' },
+            { id: 'pie', name: 'PIE', role: 'Intelligence', dept: 'research', reportsTo: 'Nexus', level: 3, avatar: '🥧', color: '#8b5cf6' }
+        ];
+
+        function renderHierarchyTable() {
+            const tbody = document.getElementById('hierarchyBody');
+            if (!tbody) return;
+            
+            tbody.innerHTML = '';
+            
+            HIERARCHY_DATA.forEach(agent => {
+                const row = document.createElement('tr');
+                row.id = `hierarchy-row-${agent.id}`;
+                
+                const levelClass = `level-${agent.level}`;
+                const deptClass = `dept-${agent.dept}`;
+                
+                // Get real-time status from renderer if available
+                let status = 'online';
+                let statusClass = 'status-online';
+                if (renderer && renderer.agents.has(agent.id)) {
+                    const agentObj = renderer.agents.get(agent.id);
+                    const activity = agentObj.getStatus();
+                    if (activity === 'working' || activity === 'walking') {
+                        status = 'busy';
+                        statusClass = 'status-busy';
+                    } else if (activity === 'sleep') {
+                        status = 'offline';
+                        statusClass = 'status-offline';
+                    }
+                }
+                
+                row.innerHTML = `
+                    <td class="${levelClass}">L${agent.level}</td>
+                    <td>
+                        <div class="hierarchy-agent" onclick="centerOnAgent('${agent.id}')">
+                            <div class="hierarchy-avatar" style="background:${agent.color}20;border:1px solid ${agent.color}">${agent.avatar}</div>
+                            <span>${agent.name}</span>
+                        </div>
+                    </td>
+                    <td>${agent.role}</td>
+                    <td class="${deptClass}">${agent.dept.toUpperCase()}</td>
+                    <td>${agent.reportsTo}</td>
+                    <td><span class="hierarchy-status ${statusClass}" id="hierarchy-status-${agent.id}"></span></td>
+                `;
+                
+                tbody.appendChild(row);
+            });
+        }
+
+        function centerOnAgent(agentId) {
+            if (!renderer) return;
+            
+            const agent = renderer.agents.get(agentId);
+            if (!agent) {
+                addActivity('System', `Agent ${agentId} not found in office`);
+                return;
+            }
+            
+            // Calculate camera position to center on agent
+            const isoMath = renderer.isoMath;
+            const pos = isoMath.toScreen(agent.x, agent.y, 0);
+            
+            renderer.camera.x = pos.x - renderer.canvas.width / (2 * renderer.camera.zoom);
+            renderer.camera.y = pos.y - renderer.canvas.height / (2 * renderer.camera.zoom);
+            
+            // Select the agent
+            renderer.agents.forEach(a => a.selected = false);
+            agent.selected = true;
+            renderer.selectedAgent = agent;
+            
+            addActivity('System', `Camera centered on ${agent.name}`);
+            
+            // Highlight the row
+            document.querySelectorAll('#hierarchyBody tr').forEach(row => row.style.background = '');
+            const row = document.getElementById(`hierarchy-row-${agentId}`);
+            if (row) {
+                row.style.background = 'rgba(0, 212, 255, 0.2)';
+                setTimeout(() => { row.style.background = ''; }, 2000);
+            }
+        }
+
+        function updateHierarchyStatus() {
+            if (!renderer) return;
+            
+            for (const agentData of HIERARCHY_DATA) {
+                const statusEl = document.getElementById(`hierarchy-status-${agentData.id}`);
+                if (!statusEl) continue;
+                
+                const agent = renderer.agents.get(agentData.id);
+                if (!agent) continue;
+                
+                const activity = agent.getStatus();
+                if (activity === 'working' || activity === 'walking') {
+                    statusEl.className = 'hierarchy-status status-busy';
+                } else if (activity === 'sleep') {
+                    statusEl.className = 'hierarchy-status status-offline';
+                } else {
+                    statusEl.className = 'hierarchy-status status-online';
+                }
+            }
+        }
+
+        // ============================================
         // INITIALIZATION
         // ============================================
         async function init() {
@@ -1242,6 +1470,9 @@
             // Render agent grid
             renderAgentGrid();
             
+            // Render hierarchy table
+            renderHierarchyTable();
+            
             // Start
             renderer.start();
             startSimulation();
@@ -1249,8 +1480,12 @@
             // FPS counter
             setInterval(updateFps, 1000);
             
+            // Update hierarchy status periodically
+            setInterval(updateHierarchyStatus, 5000);
+            
             addActivity('System', 'Pixel Office initialized with 22 agents');
             addActivity('System', '7 animation types: idle, walk, work, celebrate, sleep, alert, meeting');
+            addActivity('System', 'Agent Hierarchy Table loaded - Click agents to center camera');
             
             // Fetch real-time agent status
             fetchAgentStatus();
