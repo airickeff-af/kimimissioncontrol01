@@ -1,23 +1,34 @@
 {
   "version": 2,
   "rewrites": [
-    { "source": "/agents", "destination": "/agents.html" },
-    { "source": "/tasks", "destination": "/task-board.html" },
-    { "source": "/office", "destination": "/office.html" },
-    { "source": "/pixel-office", "destination": "/office.html" },
-    { "source": "/agent-roster", "destination": "/agents.html" },
-    { "source": "/task-board", "destination": "/task-board.html" },
-    { "source": "/deals", "destination": "/deals.html" },
-    { "source": "/tokens", "destination": "/tokens.html" },
-    { "source": "/logs", "destination": "/logs.html" },
-    { "source": "/data", "destination": "/data.html" },
-    { "source": "/standup", "destination": "/standup.html" },
-    { "source": "/", "destination": "/index.html" },
-    { "source": "/(.*)", "destination": "/$1" }
+    { "source": "/agents", "destination": "/dashboard/agents.html" },
+    { "source": "/tasks", "destination": "/dashboard/task-board.html" },
+    { "source": "/office", "destination": "/dashboard/office.html" },
+    { "source": "/pixel-office", "destination": "/dashboard/office.html" },
+    { "source": "/agent-roster", "destination": "/dashboard/agents.html" },
+    { "source": "/task-board", "destination": "/dashboard/task-board.html" },
+    { "source": "/deals", "destination": "/dashboard/deals.html" },
+    { "source": "/tokens", "destination": "/dashboard/token-tracker.html" },
+    { "source": "/logs", "destination": "/dashboard/logs.html" },
+    { "source": "/data", "destination": "/dashboard/data.html" },
+    { "source": "/standup", "destination": "/dashboard/standup.html" },
+    { "source": "/", "destination": "/dashboard/index.html" },
+    { "source": "/api/(.*)", "destination": "/api/$1" },
+    { "source": "/dashboard/(.*)", "destination": "/dashboard/$1" },
+    { "source": "/(.*)", "destination": "/dashboard/index.html" }
   ],
   "headers": [
     {
-      "source": "/(.*)",
+      "source": "/api/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "s-maxage=0" },
+        { "key": "Access-Control-Allow-Origin", "value": "*" },
+        { "key": "Access-Control-Allow-Methods", "value": "GET, POST, OPTIONS" },
+        { "key": "Access-Control-Allow-Headers", "value": "Content-Type" }
+      ]
+    },
+    {
+      "source": "/dashboard/(.*)",
       "headers": [
         { "key": "Cache-Control", "value": "s-maxage=0" }
       ]

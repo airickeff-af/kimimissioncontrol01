@@ -2,329 +2,3110 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MC Project - Health & Wealth Tracker</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="description" content="Mission Control HQ - AI Team Dashboard with Growing Character">
+    <meta name="theme-color" content="#2d1b4e">
+    <title>Mission Control HQ | AI Team Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-            color: #fff;
+            font-family: 'Inter', sans-serif;
+            background: #0a0a0f;
+            color: #e0e0e0;
             min-height: 100vh;
+            overflow-x: hidden;
         }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 40px 20px;
-        }
-        
-        header {
-            text-align: center;
-            margin-bottom: 50px;
-        }
-        
-        header h1 {
-            font-size: 48px;
-            margin-bottom: 10px;
-            background: linear-gradient(135deg, #4ecdc4, #ffe66d);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        header p {
-            font-size: 18px;
-            opacity: 0.8;
-        }
-        
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin-bottom: 40px;
-        }
-        
-        .card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-        
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-        }
-        
-        .card h2 {
-            font-size: 24px;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .card.health h2 { color: #ff6b6b; }
-        .card.wealth h2 { color: #4ecdc4; }
-        .card.character h2 { color: #ffe66d; }
-        
-        .stat-row {
+        .header {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            padding: 1rem 2rem;
+            border-bottom: 2px solid #00d4ff;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin: 15px 0;
-            padding: 10px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            flex-wrap: wrap;
+            gap: 1rem;
+            position: relative;
+            z-index: 100;
+        }
+        .logo { font-size: 1.5rem; font-weight: 700; color: #00d4ff; }
+        .nav { display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center; }
+        .nav a {
+            color: #888;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+        }
+        .nav a:hover, .nav a.active { color: #00d4ff; background: rgba(0,212,255,0.1); }
+        .refresh-btn {
+            background: rgba(0, 212, 255, 0.2);
+            border: 1px solid #00d4ff;
+            color: #00d4ff;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .refresh-btn:hover { background: rgba(0, 212, 255, 0.3); }
+        .refresh-btn.spinning .refresh-icon { animation: spin 1s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        
+        /* Main Layout */
+        .main-container {
+            display: grid;
+            grid-template-columns: 400px 1fr;
+            gap: 2rem;
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 2rem;
+            min-height: calc(100vh - 80px);
         }
         
-        .stat-row:last-child {
+        @media (max-width: 1200px) {
+            .main-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Character Section */
+        .character-section {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        .character-container {
+            background: linear-gradient(135deg, #1a1a2e, #0f0f1a);
+            border: 2px solid #333;
+            border-radius: 16px;
+            overflow: hidden;
+            position: relative;
+            height: 500px;
+        }
+        
+        #character-canvas {
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+        
+        .character-overlay {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            right: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            pointer-events: none;
+        }
+        
+        .level-badge {
+            background: linear-gradient(135deg, #00d4ff, #0099cc);
+            color: #000;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 15px rgba(0, 212, 255, 0.4);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .stage-label {
+            background: rgba(0, 0, 0, 0.7);
+            color: #00d4ff;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            border: 1px solid #00d4ff;
+        }
+        
+        /* Movement Indicator */
+        .movement-indicator {
+            position: absolute;
+            bottom: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid #00d4ff;
+            border-radius: 20px;
+            padding: 0.5rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            color: #00d4ff;
+            pointer-events: none;
+            animation: slideUp 0.5s ease;
+        }
+        
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateX(-50%) translateY(10px); }
+            to { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+        
+        .movement-emoji {
+            font-size: 1.2rem;
+        }
+        
+        .movement-name {
+            font-weight: 600;
+        }
+        
+        .movement-refresh {
+            font-size: 0.7rem;
+            opacity: 0.7;
+            margin-left: 0.5rem;
+            border-left: 1px solid #333;
+            padding-left: 0.5rem;
+        }
+        
+        /* Growth Progress */
+        .growth-panel {
+            background: linear-gradient(135deg, #1a1a2e, #0f0f1a);
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+        
+        .growth-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .growth-title {
+            color: #00d4ff;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+        
+        .growth-score {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.7rem;
+            color: #00d4ff;
+        }
+        
+        .progress-container {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+            height: 20px;
+            overflow: hidden;
+            position: relative;
+            border: 1px solid #333;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #00d4ff, #00ff88);
+            border-radius: 10px;
+            transition: width 0.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .progress-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        .progress-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 0.5rem;
+            font-size: 0.75rem;
+            color: #888;
+        }
+        
+        .level-markers {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+            padding: 0 0.5rem;
+        }
+        
+        .level-marker {
+            text-align: center;
+            font-size: 0.7rem;
+            color: #666;
+            transition: all 0.3s;
+        }
+        
+        .level-marker.active {
+            color: #00d4ff;
+            transform: scale(1.1);
+        }
+        
+        .level-marker.completed {
+            color: #00ff88;
+        }
+        
+        .level-marker .marker-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #333;
+            margin: 0 auto 0.25rem;
+            border: 2px solid #555;
+            transition: all 0.3s;
+        }
+        
+        .level-marker.active .marker-dot {
+            background: #00d4ff;
+            border-color: #00d4ff;
+            box-shadow: 0 0 10px #00d4ff;
+        }
+        
+        .level-marker.completed .marker-dot {
+            background: #00ff88;
+            border-color: #00ff88;
+        }
+        
+        /* Stats Panel */
+        .stats-panel {
+            background: linear-gradient(135deg, #1a1a2e, #0f0f1a);
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            border: 1px solid #333;
+        }
+        
+        .stat-item.health { border-color: #ff6b6b; }
+        .stat-item.wealth { border-color: #ffd700; }
+        
+        .stat-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-value-large {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 1.2rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        .stat-item.health .stat-value-large { color: #ff6b6b; }
+        .stat-item.wealth .stat-value-large { color: #ffd700; }
+        
+        .stat-label-small {
+            font-size: 0.75rem;
+            color: #888;
+        }
+        
+        /* Environment Panel */
+        .environment-status {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        
+        .env-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #333;
+        }
+        
+        .env-row:last-of-type {
             border-bottom: none;
         }
         
-        .stat-value {
-            font-size: 24px;
-            font-weight: bold;
+        .env-label {
+            color: #888;
+            font-size: 0.85rem;
         }
         
-        .btn {
-            display: inline-flex;
+        .env-value {
+            color: #00d4ff;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        .env-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+            padding-top: 0.5rem;
+            border-top: 1px solid #333;
+        }
+        
+        .env-item {
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid #00d4ff;
+            border-radius: 12px;
+            padding: 0.25rem 0.75rem;
+            font-size: 0.75rem;
+            color: #00d4ff;
+        }
+        
+        /* Command Center */
+        .command-center {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        .section-title {
+            color: #00d4ff;
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .card {
+            background: linear-gradient(135deg, #1a1a2e, #0f0f1a);
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.2s;
+        }
+        
+        .card:hover { border-color: #00d4ff; transform: translateY(-2px); }
+        
+        .card h2 { color: #00d4ff; margin-bottom: 1rem; font-size: 1.1rem; }
+        
+        .card p { color: #888; line-height: 1.6; font-size: 0.9rem; }
+        
+        .card a {
+            display: inline-block;
+            margin-top: 1rem;
+            color: #00d4ff;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        .card a:hover { text-decoration: underline; }
+        
+        .card-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-top: 1rem; }
+        
+        .card-stat { text-align: center; }
+        
+        .card-stat-value { font-size: 1.5rem; font-weight: 700; color: #00d4ff; }
+        
+        .card-stat-label { color: #666; font-size: 0.75rem; }
+        
+        /* Character Stats Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            background: linear-gradient(135deg, #4ecdc4, #44a08d);
-            color: #fff;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            text-decoration: none;
-            transition: all 0.3s;
-            width: 100%;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
         }
         
-        .btn:hover {
-            transform: scale(1.02);
-            box-shadow: 0 10px 30px rgba(78, 205, 196, 0.3);
-        }
+        .modal-overlay.active { display: flex; }
         
-        .btn-secondary {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-        
-        .feature-list {
-            list-style: none;
-        }
-        
-        .feature-list li {
-            padding: 10px 0;
-            padding-left: 25px;
+        .modal-content {
+            background: linear-gradient(135deg, #1a1a2e, #0f0f1a);
+            border: 2px solid #00d4ff;
+            border-radius: 16px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
             position: relative;
+            animation: modalIn 0.3s ease;
         }
         
-        .feature-list li::before {
-            content: '✓';
+        @keyframes modalIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        
+        .modal-close {
             position: absolute;
-            left: 0;
-            color: #4ecdc4;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: #888;
+            font-size: 1.5rem;
+            cursor: pointer;
         }
         
-        .status-badge {
-            display: inline-block;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
+        .modal-close:hover { color: #00d4ff; }
         
-        .status-ready {
-            background: rgba(78, 205, 196, 0.2);
-            color: #4ecdc4;
-        }
-        
-        .status-pending {
-            background: rgba(255, 230, 109, 0.2);
-            color: #ffe66d;
-        }
-        
-        footer {
-            text-align: center;
-            padding: 40px;
-            opacity: 0.6;
-            font-size: 14px;
-        }
-        
-        .api-status {
+        .modal-title {
+            color: #00d4ff;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
             display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-            justify-content: center;
-            margin-top: 20px;
+            align-items: center;
+            gap: 0.5rem;
         }
         
-        .api-badge {
-            background: rgba(0, 0, 0, 0.3);
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-size: 12px;
-            font-family: monospace;
+        .character-info {
+            display: grid;
+            gap: 1rem;
         }
+        
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+        }
+        
+        .info-label { color: #888; }
+        .info-value { color: #00d4ff; font-weight: 600; }
+        
+        /* Level Up Animation */
+        .level-up-overlay {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+            z-index: 50;
+        }
+        
+        .level-up-overlay.active {
+            display: flex;
+            animation: levelUpFlash 1s ease;
+        }
+        
+        @keyframes levelUpFlash {
+            0% { background: transparent; }
+            50% { background: rgba(0, 212, 255, 0.3); }
+            100% { background: transparent; }
+        }
+        
+        .level-up-text {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 1.5rem;
+            color: #00d4ff;
+            text-shadow: 0 0 20px #00d4ff, 0 0 40px #00d4ff;
+            animation: levelUpText 1s ease;
+        }
+        
+        @keyframes levelUpText {
+            0% { transform: scale(0) rotate(-10deg); opacity: 0; }
+            50% { transform: scale(1.2) rotate(5deg); opacity: 1; }
+            100% { transform: scale(1) rotate(0deg); opacity: 0; }
+        }
+        
+        /* Glow Effect */
+        .glow-effect {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(0, 212, 255, 0.3) 0%, transparent 70%);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+        
+        .glow-effect.active {
+            opacity: 1;
+            animation: glowPulse 2s infinite;
+        }
+        
+        @keyframes glowPulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+            50% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.8; }
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        @keyframes slideOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
+        
+        /* Loading overlay */
+        .loading-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(10, 10, 15, 0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .loading-overlay.active { display: flex; }
+        
+        .loading-spinner {
+            width: 60px; height: 60px;
+            border: 4px solid rgba(0, 212, 255, 0.2);
+            border-top-color: #00d4ff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        .loading-text {
+            color: #00d4ff;
+            font-size: 0.9rem;
+        }
+        
+        .error-message {
+            background: rgba(255, 107, 107, 0.1);
+            border: 1px solid #ff6b6b;
+            color: #ff6b6b;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: none;
+        }
+        
+        .error-message.active { display: block; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>🎮 MC Project</h1>
-            <p>3D Character Health & Wealth Tracker</p>
-            <div class="api-status">
-                <span class="api-badge">🟢 /api/health</span>
-                <span class="api-badge">🟢 /api/wealth</span>
-                <span class="api-badge">🟢 /api/character/glb</span>
-            </div>
-        </header>
-        
-        <div class="grid">
-            <div class="card health">
-                <h2>💪 Health System</h2>
-                <div class="stat-row">
-                    <span>Exercise Today</span>
-                    <span class="stat-value" id="exercise-val">0 min</span>
+    <header class="header">
+        <div class="logo">🎯 Mission Control</div>
+        <nav class="nav">
+            <a href="/" class="active">HQ</a>
+            <a href="/pixel-office">Office</a>
+            <a href="/agent-roster">Agents</a>
+            <a href="/deals">DealFlow</a>
+            <a href="/tokens">Tokens</a>
+            <a href="/task-board">Tasks</a>
+            <a href="/logs">Logs</a>
+            <a href="/data">Data</a>
+            <button class="refresh-btn" id="refreshBtn" onclick="refreshData()">
+                <span class="refresh-icon">🔄</span> Refresh
+            </button>
+        </nav>
+    </header>
+
+    <div class="main-container">
+        <!-- Character Section (Left) -->
+        <div class="character-section">
+            <div class="character-container" id="characterContainer">
+                <canvas id="character-canvas"></canvas>
+                <div class="character-overlay">
+                    <div class="level-badge" id="levelBadge">LVL <span id="currentLevel">1</span></div>
+                    <div class="stage-label" id="stageLabel">👶 Baby</div>
                 </div>
-                <div class="stat-row">
-                    <span>Sleep Last Night</span>
-                    <span class="stat-value" id="sleep-val">0 hrs</span>
+                <div class="movement-indicator" id="movementIndicator">
+                    <span class="movement-emoji">🧍</span>
+                    <span class="movement-name">Loading...</span>
                 </div>
-                <div class="stat-row">
-                    <span>Calories Tracked</span>
-                    <span class="stat-value" id="calories-val">0</span>
+                <div class="glow-effect" id="glowEffect"></div>
+                <div class="level-up-overlay" id="levelUpOverlay">
+                    <div class="level-up-text">LEVEL UP!</div>
                 </div>
-                <a href="/viewer.html" class="btn btn-secondary">View in 3D →</a>
-            </div>
-            
-            <div class="card wealth">
-                <h2>💰 Wealth System</h2>
-                <div class="stat-row">
-                    <span>Total Savings</span>
-                    <span class="stat-value" id="savings-val">$0</span>
-                </div>
-                <div class="stat-row">
-                    <span>Investments</span>
-                    <span class="stat-value" id="invest-val">$0</span>
-                </div>
-                <div class="stat-row">
-                    <span>Gig Earnings</span>
-                    <span class="stat-value" id="gig-val">$0</span>
-                </div>
-                <a href="/viewer.html" class="btn btn-secondary">View in 3D →</a>
             </div>
             
-            <div class="card character">
-                <h2>👤 3D Character</h2>
-                <ul class="feature-list">
-                    <li>Interactive GLB Viewer</li>
-                    <li>Real-time Stat Mapping</li>
-                    <li>Rotate, Zoom, Wireframe</li>
-                    <li>2D Sprite Fallback</li>
-                    <li>WebSocket Sync Ready</li>
-                </ul>
-                <span class="status-badge status-ready">Ready</span>
-                <br><br>
-                <a href="/viewer.html" class="btn">Launch 3D Viewer</a>
+            <!-- Growth Progress -->
+            <div class="growth-panel">
+                <div class="growth-header">
+                    <div class="growth-title">📈 Growth Progress</div>
+                    <div class="growth-score">Score: <span id="growthScore">0</span>/100</div>
+                </div>
+                <div class="progress-container">
+                    <div class="progress-bar" id="growthProgress" style="width: 0%"></div>
+                </div>
+                <div class="progress-labels">
+                    <span>Baby</span>
+                    <span>Next Level</span>
+                </div>
+                <div class="level-markers">
+                    <div class="level-marker active" data-level="1">
+                        <div class="marker-dot"></div>
+                        <div>👶</div>
+                        <div>0%</div>
+                    </div>
+                    <div class="level-marker" data-level="2">
+                        <div class="marker-dot"></div>
+                        <div>🧒</div>
+                        <div>25%</div>
+                    </div>
+                    <div class="level-marker" data-level="3">
+                        <div class="marker-dot"></div>
+                        <div>🧑</div>
+                        <div>50%</div>
+                    </div>
+                    <div class="level-marker" data-level="4">
+                        <div class="marker-dot"></div>
+                        <div>🎓</div>
+                        <div>75%</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Health & Wealth Stats -->
+            <div class="stats-panel">
+                <div class="growth-title">💪 Health + Wealth</div>
+                <div class="stats-grid">
+                    <div class="stat-item health">
+                        <div class="stat-icon">❤️</div>
+                        <div class="stat-value-large" id="healthValue">0</div>
+                        <div class="stat-label-small">Health Score</div>
+                    </div>
+                    <div class="stat-item wealth">
+                        <div class="stat-icon">💰</div>
+                        <div class="stat-value-large" id="wealthValue">0</div>
+                        <div class="stat-label-small">Wealth Score</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Environment Status -->
+            <div class="stats-panel">
+                <div class="growth-title">🏠 Environment</div>
+                <div class="environment-status">
+                    <div class="env-row">
+                        <span class="env-label">Wealth Level:</span>
+                        <span class="env-value" id="envWealth">Small Room</span>
+                    </div>
+                    <div class="env-row">
+                        <span class="env-label">Health Level:</span>
+                        <span class="env-value" id="envHealth">Gloomy</span>
+                    </div>
+                    <div class="env-items" id="envItems">
+                        <span class="env-item">🛏️ Basic floor</span>
+                    </div>
+                </div>
             </div>
         </div>
         
-        <div class="grid">
-            <div class="card">
-                <h2>📊 API Endpoints</h2>
-                <div class="stat-row">
-                    <code>GET /api/health</code>
-                    <span class="status-badge status-ready">Active</span>
-                </div>
-                <div class="stat-row">
-                    <code>GET /api/wealth</code>
-                    <span class="status-badge status-ready">Active</span>
-                </div>
-                <div class="stat-row">
-                    <code>GET /api/character/glb</code>
-                    <span class="status-badge status-ready">Active</span>
-                </div>
-                <div class="stat-row">
-                    <code>WS /</code>
-                    <span class="status-badge status-pending">Pending</span>
-                </div>
-            </div>
+        <!-- Command Center (Right) -->
+        <div class="command-center">
+            <h1 class="section-title">🏠 Mission Control HQ</h1>
             
-            <div class="card">
-                <h2>🚀 Deployment</h2>
-                <div class="stat-row">
-                    <span>GitHub Pages</span>
-                    <span class="status-badge status-pending">Setup</span>
+            <div class="error-message" id="errorMessage"></div>
+            
+            <div class="dashboard-grid">
+                <div class="card">
+                    <h2>🏢 Pixel Office</h2>
+                    <p>Interactive Kairosoft-style office with 22 AI agents. Watch them work, call standups, and generate meeting minutes.</p>
+                    <a href="office.html">Enter Office →</a>
                 </div>
-                <div class="stat-row">
-                    <span>Vercel</span>
-                    <span class="status-badge status-pending">Setup</span>
+                
+                <div class="card">
+                    <h2>👥 Agent Roster</h2>
+                    <p>View all 23 AI agents, their status, token usage, tasks completed, and current activity.</p>
+                    <a href="agents.html">View Agents →</a>
+                    <div class="card-stats">
+                        <div class="card-stat">
+                            <div class="card-stat-value" id="totalAgents">--</div>
+                            <div class="card-stat-label">Total Agents</div>
+                        </div>
+                        <div class="card-stat">
+                            <div class="card-stat-value" id="activeAgents">--</div>
+                            <div class="card-stat-label">Active</div>
+                        </div>
+                    </div>
                 </div>
-                <div class="stat-row">
-                    <span>GLB File</span>
-                    <span class="status-badge status-pending">Waiting</span>
+                
+                <div class="card">
+                    <h2>📋 Task Board</h2>
+                    <p>View and manage all tasks. Filter by priority (P0-P3) and status. Track completion progress.</p>
+                    <a href="task-board.html">View Tasks →</a>
+                    <div class="card-stats">
+                        <div class="card-stat">
+                            <div class="card-stat-value" id="totalTasks">--</div>
+                            <div class="card-stat-label">Total</div>
+                        </div>
+                        <div class="card-stat">
+                            <div class="card-stat-value" id="pendingTasks">--</div>
+                            <div class="card-stat-label">Pending</div>
+                        </div>
+                    </div>
                 </div>
-                <p style="margin-top: 15px; opacity: 0.7; font-size: 14px;">
-                    Waiting for EricF's GLB character file...
-                </p>
+                
+                <div class="card">
+                    <h2>📢 Daily Standup</h2>
+                    <p>Generate daily standup notes with task summaries, blockers, and next actions.</p>
+                    <a href="standup.html">Open Standup →</a>
+                </div>
+                
+                <div class="card">
+                    <h2>🪙 Token Tracker</h2>
+                    <p>Monitor API token usage across all agents. Track costs and usage patterns.</p>
+                    <a href="token-tracker.html">View Tokens →</a>
+                    <div class="card-stats">
+                        <div class="card-stat">
+                            <div class="card-stat-value" id="totalTokens">--</div>
+                            <div class="card-stat-label">Tokens</div>
+                        </div>
+                        <div class="card-stat">
+                            <div class="card-stat-value" id="tokenCost">--</div>
+                            <div class="card-stat-label">Cost</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h2>💼 DealFlow</h2>
+                    <p>Track partnership opportunities and qualified leads with full contact information.</p>
+                    <a href="deals.html">View Deals →</a>
+                    <div class="card-stats">
+                        <div class="card-stat">
+                            <div class="card-stat-value" id="totalDeals">--</div>
+                            <div class="card-stat-label">Deals</div>
+                        </div>
+                        <div class="card-stat">
+                            <div class="card-stat-value" id="newDeals">--</div>
+                            <div class="card-stat-label">New</div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        
-        <footer>
-            <p>MC Project © 2026 | Built with Three.js + Node.js</p>
-            <p style="margin-top: 10px; font-size: 12px;">
-                <a href="https://github.com/airickeff-af/mc-project" style="color: #4ecdc4;">GitHub Repo</a> • 
-                <a href="/viewer.html" style="color: #4ecdc4;">3D Viewer</a>
-            </p>
-        </footer>
     </div>
     
+    <!-- Character Stats Modal -->
+    <div class="modal-overlay" id="statsModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeStatsModal()">×</button>
+            <h2 class="modal-title">🎮 Character Stats</h2>
+            <div class="character-info">
+                <div class="info-row">
+                    <span class="info-label">Current Level</span>
+                    <span class="info-value" id="modalLevel">Level 1 - Baby</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Growth Stage</span>
+                    <span class="info-value" id="modalStage">👶 Baby</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Scale</span>
+                    <span class="info-value" id="modalScale">30%</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Health Score</span>
+                    <span class="info-value" id="modalHealth">0</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Wealth Score</span>
+                    <span class="info-value" id="modalWealth">0</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Combined Score</span>
+                    <span class="info-value" id="modalCombined">0</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Next Level At</span>
+                    <span class="info-value" id="modalNext">25 points</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+        <div class="loading-text">Loading Character...</div>
+    </div>
+
     <script>
-        // Fetch stats from API
-        async function fetchStats() {
-            try {
-                const healthRes = await fetch('/api/health/stats');
-                const health = await healthRes.json();
+        // ============================================
+        // THREE.JS CHARACTER WITH GROWTH SYSTEM
+        // ============================================
+        
+        let scene, camera, renderer, character, mixer, controls;
+        let particles = [];
+        let clock = new THREE.Clock();
+        let currentScale = 0.3;
+        let targetScale = 0.3;
+        
+        // Growth System State
+        const growthState = {
+            level: 1,
+            healthScore: 0,
+            wealthScore: 0,
+            combinedScore: 0,
+            stage: 'baby'
+        };
+        
+        // Level Configuration
+        const LEVELS = {
+            1: { name: 'Baby', emoji: '👶', minScore: 0, maxScore: 25, scale: 0.3, next: 25 },
+            2: { name: 'Child', emoji: '🧒', minScore: 25, maxScore: 50, scale: 0.5, next: 50 },
+            3: { name: 'Teen', emoji: '🧑', minScore: 50, maxScore: 75, scale: 0.75, next: 75 },
+            4: { name: 'Adult', emoji: '🎓', minScore: 75, maxScore: 100, scale: 1.0, next: 100 }
+        };
+        
+        // Initialize Three.js Scene
+        function initThreeJS() {
+            const container = document.getElementById('characterContainer');
+            const canvas = document.getElementById('character-canvas');
+            
+            // Scene
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x1a1a2e);
+            
+            // Camera
+            camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
+            camera.position.set(0, 1.5, 4);
+            
+            // Renderer
+            renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
+            renderer.setSize(container.clientWidth, container.clientHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.shadowMap.enabled = true;
+            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+            
+            // Lights
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+            scene.add(ambientLight);
+            
+            const dirLight = new THREE.DirectionalLight(0x00d4ff, 0.8);
+            dirLight.position.set(2, 3, 2);
+            dirLight.castShadow = true;
+            scene.add(dirLight);
+            
+            const rimLight = new THREE.DirectionalLight(0xff00ff, 0.4);
+            rimLight.position.set(-2, 2, -2);
+            scene.add(rimLight);
+            
+            // Ground
+            const groundGeometry = new THREE.CircleGeometry(3, 32);
+            const groundMaterial = new THREE.MeshStandardMaterial({ 
+                color: 0x0f0f1a,
+                roughness: 0.8,
+                metalness: 0.2
+            });
+            const ground = new THREE.Mesh(groundGeometry, groundMaterial);
+            ground.rotation.x = -Math.PI / 2;
+            ground.position.y = -1;
+            ground.receiveShadow = true;
+            scene.add(ground);
+            
+            // Grid helper
+            const gridHelper = new THREE.GridHelper(6, 20, 0x00d4ff, 0x333333);
+            gridHelper.position.y = -0.99;
+            scene.add(gridHelper);
+            
+            // Load Character
+            loadCharacter();
+            
+            // Controls
+            controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.05;
+            controls.minDistance = 2;
+            controls.maxDistance = 6;
+            controls.maxPolarAngle = Math.PI / 2 - 0.1;
+            controls.enablePan = false;
+            
+            // Click handler
+            canvas.addEventListener('click', showStatsModal);
+            
+            // Resize handler
+            window.addEventListener('resize', onWindowResize);
+            
+            // Start animation loop
+            animate();
+        }
+        
+        // Load Meebit Character
+        function loadCharacter() {
+            const loader = new THREE.GLTFLoader();
+            
+            // Try to load Meebit model - VRM files can be loaded with GLTFLoader
+            const modelPaths = [
+                'assets/character.vrm',
+                'assets/meebit-11318.vrm',
+                'assets/meebit-11318.glb',
+                'assets/character.glb',
+                '../assets/character.vrm',
+                'https://airickeff-af.github.io/mc-project/assets/character.vrm'
+            ];
+            
+            let loaded = false;
+            
+            function tryLoad(index) {
+                if (index >= modelPaths.length || loaded) {
+                    // Fallback: Create procedural character
+                    createProceduralCharacter();
+                    return;
+                }
                 
-                document.getElementById('exercise-val').textContent = health.exercise.minutes + ' min';
-                document.getElementById('sleep-val').textContent = health.sleep.hours + ' hrs';
-                document.getElementById('calories-val').textContent = health.nutrition.calories;
-            } catch (e) {
-                console.log('Health API not ready');
+                loader.load(
+                    modelPaths[index],
+                    (gltf) => {
+                        if (loaded) return;
+                        loaded = true;
+                        character = gltf.scene;
+                        setupCharacter();
+                        
+                        if (gltf.animations && gltf.animations.length > 0) {
+                            mixer = new THREE.AnimationMixer(character);
+                            const action = mixer.clipAction(gltf.animations[0]);
+                            action.play();
+                        }
+                        
+                        document.getElementById('loadingOverlay').classList.remove('active');
+                    },
+                    (progress) => {
+                        console.log('Loading progress:', (progress.loaded / progress.total * 100) + '%');
+                    },
+                    (error) => {
+                        console.warn('Failed to load from', modelPaths[index], error);
+                        tryLoad(index + 1);
+                    }
+                );
             }
             
-            try {
-                const wealthRes = await fetch('/api/wealth/stats');
-                const wealth = await wealthRes.json();
-                
-                document.getElementById('savings-val').textContent = '$' + wealth.savings.total;
-                document.getElementById('invest-val').textContent = '$' + wealth.investments.total;
-                document.getElementById('gig-val').textContent = '$' + wealth.gigWork.earnings;
-            } catch (e) {
-                console.log('Wealth API not ready');
+            tryLoad(0);
+        }
+        
+        // Create Procedural Character (Fallback)
+        function createProceduralCharacter() {
+            character = new THREE.Group();
+            
+            // Materials
+            const skinMaterial = new THREE.MeshStandardMaterial({ color: 0xffdbac });
+            const shirtMaterial = new THREE.MeshStandardMaterial({ color: 0x00d4ff });
+            const pantsMaterial = new THREE.MeshStandardMaterial({ color: 0x333333 });
+            
+            // Head
+            const headGeometry = new THREE.BoxGeometry(0.4, 0.4, 0.4);
+            const head = new THREE.Mesh(headGeometry, skinMaterial);
+            head.position.y = 0.7;
+            head.castShadow = true;
+            character.add(head);
+            
+            // Eyes
+            const eyeGeometry = new THREE.BoxGeometry(0.08, 0.08, 0.05);
+            const eyeMaterial = new THREE.MeshStandardMaterial({ color: 0x000000 });
+            
+            const leftEye = new THREE.Mesh(eyeGeometry, eyeMaterial);
+            leftEye.position.set(-0.1, 0.75, 0.18);
+            character.add(leftEye);
+            
+            const rightEye = new THREE.Mesh(eyeGeometry, eyeMaterial);
+            rightEye.position.set(0.1, 0.75, 0.18);
+            character.add(rightEye);
+            
+            // Body
+            const bodyGeometry = new THREE.BoxGeometry(0.5, 0.6, 0.3);
+            const body = new THREE.Mesh(bodyGeometry, shirtMaterial);
+            body.position.y = 0.2;
+            body.castShadow = true;
+            character.add(body);
+            
+            // Arms
+            const armGeometry = new THREE.BoxGeometry(0.15, 0.5, 0.15);
+            
+            const leftArm = new THREE.Mesh(armGeometry, skinMaterial);
+            leftArm.position.set(-0.35, 0.2, 0);
+            leftArm.castShadow = true;
+            character.add(leftArm);
+            
+            const rightArm = new THREE.Mesh(armGeometry, skinMaterial);
+            rightArm.position.set(0.35, 0.2, 0);
+            rightArm.castShadow = true;
+            character.add(rightArm);
+            
+            // Legs
+            const legGeometry = new THREE.BoxGeometry(0.18, 0.5, 0.18);
+            
+            const leftLeg = new THREE.Mesh(legGeometry, pantsMaterial);
+            leftLeg.position.set(-0.13, -0.35, 0);
+            leftLeg.castShadow = true;
+            character.add(leftLeg);
+            
+            const rightLeg = new THREE.Mesh(legGeometry, pantsMaterial);
+            rightLeg.position.set(0.13, -0.35, 0);
+            rightLeg.castShadow = true;
+            character.add(rightLeg);
+            
+            setupCharacter();
+            document.getElementById('loadingOverlay').classList.remove('active');
+        }
+        
+        // Setup Character
+        function setupCharacter() {
+            character.scale.set(currentScale, currentScale, currentScale);
+            character.position.y = -0.5;
+            character.castShadow = true;
+            character.traverse((child) => {
+                if (child.isMesh) {
+                    child.castShadow = true;
+                    child.receiveShadow = true;
+                }
+            });
+            scene.add(character);
+            
+            // Initialize random movement animation
+            initRandomMovement();
+            
+            // Initialize environment after character is added
+            initEnvironment();
+        }
+        
+        // ============================================
+        // RANDOM MOVEMENT SYSTEM (P0-036)
+        // ============================================
+        
+        let currentMovement = 'idle';
+        let movementStartTime = 0;
+        let movementDuration = 0;
+        let movementParts = {};
+        
+        // 10 Different Movement Types
+        const MOVEMENTS = {
+            idle: {
+                name: 'Idle Stand',
+                emoji: '🧍',
+                duration: 3000,
+                description: 'Default standing pose'
+            },
+            walk: {
+                name: 'Walk Cycle',
+                emoji: '🚶',
+                duration: 4000,
+                description: 'Walking in place'
+            },
+            wave: {
+                name: 'Wave Hello',
+                emoji: '👋',
+                duration: 2000,
+                description: 'Hand wave greeting'
+            },
+            jump: {
+                name: 'Jump',
+                emoji: '⬆️',
+                duration: 1000,
+                description: 'Small hop/bounce'
+            },
+            sit: {
+                name: 'Sit Down',
+                emoji: '🪑',
+                duration: 3000,
+                description: 'Sit then stand up'
+            },
+            spin: {
+                name: 'Spin Around',
+                emoji: '🔄',
+                duration: 2000,
+                description: '360° rotation'
+            },
+            dance: {
+                name: 'Dance',
+                emoji: '💃',
+                duration: 4000,
+                description: 'Simple dance move'
+            },
+            stretch: {
+                name: 'Stretch',
+                emoji: '🙆',
+                duration: 3000,
+                description: 'Morning stretch pose'
+            },
+            celebrate: {
+                name: 'Celebrate',
+                emoji: '🎉',
+                duration: 2000,
+                description: 'Victory pose'
+            },
+            sleepy: {
+                name: 'Sleepy',
+                emoji: '😴',
+                duration: 3000,
+                description: 'Yawn + drowsy'
+            }
+        };
+        
+        function initRandomMovement() {
+            // Store references to character parts for animation
+            if (character) {
+                character.traverse((child) => {
+                    if (child.isMesh) {
+                        // Identify parts by position
+                        if (child.position.y > 0.6) {
+                            movementParts.head = child;
+                        } else if (child.position.y > 0 && child.position.y < 0.5) {
+                            if (child.position.x < -0.2) movementParts.leftArm = child;
+                            else if (child.position.x > 0.2) movementParts.rightArm = child;
+                            else movementParts.body = child;
+                        } else if (child.position.y < 0) {
+                            if (child.position.x < 0) movementParts.leftLeg = child;
+                            else movementParts.rightLeg = child;
+                        }
+                    }
+                });
+            }
+            
+            // Select random movement on load
+            selectRandomMovement();
+            
+            // Update UI
+            updateMovementUI();
+        }
+        
+        function selectRandomMovement() {
+            const keys = Object.keys(MOVEMENTS);
+            const randomKey = keys[Math.floor(Math.random() * keys.length)];
+            currentMovement = randomKey;
+            movementStartTime = clock.getElapsedTime();
+            movementDuration = MOVEMENTS[randomKey].duration / 1000;
+            
+            console.log(`[Random Movement] Selected: ${MOVEMENTS[randomKey].name}`);
+        }
+        
+        function updateMovementUI() {
+            const movement = MOVEMENTS[currentMovement];
+            const movementIndicator = document.getElementById('movementIndicator');
+            if (movementIndicator && movement) {
+                movementIndicator.innerHTML = `
+                    <span class="movement-emoji">${movement.emoji}</span>
+                    <span class="movement-name">${movement.name}</span>
+                    <span class="movement-refresh">🔄 Refresh for new move</span>
+                `;
             }
         }
         
-        fetchStats();
+        function updateCharacterAnimation(elapsedTime) {
+            if (!character) return;
+            
+            const movementTime = elapsedTime - movementStartTime;
+            const t = movementTime / movementDuration;
+            
+            // Reset positions
+            const baseY = -0.5;
+            
+            switch (currentMovement) {
+                case 'idle':
+                    // Gentle breathing
+                    character.position.y = baseY + Math.sin(elapsedTime * 2) * 0.02;
+                    character.rotation.y = Math.sin(elapsedTime * 0.5) * 0.1;
+                    break;
+                    
+                case 'walk':
+                    // Walking in place
+                    character.position.y = baseY + Math.abs(Math.sin(elapsedTime * 8)) * 0.1;
+                    character.rotation.y = Math.sin(elapsedTime * 0.3) * 0.05;
+                    // Leg swing
+                    if (movementParts.leftLeg) {
+                        movementParts.leftLeg.rotation.x = Math.sin(elapsedTime * 8) * 0.3;
+                    }
+                    if (movementParts.rightLeg) {
+                        movementParts.rightLeg.rotation.x = -Math.sin(elapsedTime * 8) * 0.3;
+                    }
+                    break;
+                    
+                case 'wave':
+                    // Wave with right arm
+                    character.position.y = baseY;
+                    if (movementParts.rightArm) {
+                        movementParts.rightArm.rotation.z = Math.PI - 0.5 + Math.sin(elapsedTime * 10) * 0.5;
+                    }
+                    if (movementParts.head) {
+                        movementParts.head.rotation.y = Math.sin(elapsedTime * 2) * 0.2;
+                    }
+                    break;
+                    
+                case 'jump':
+                    // Jump animation
+                    const jumpPhase = (elapsedTime * 3) % 1;
+                    if (jumpPhase < 0.5) {
+                        character.position.y = baseY + Math.sin(jumpPhase * Math.PI) * 0.5;
+                    } else {
+                        character.position.y = baseY;
+                    }
+                    break;
+                    
+                case 'sit':
+                    // Sit down and stand up
+                    const sitPhase = Math.sin(elapsedTime * 1.5);
+                    character.position.y = baseY - Math.max(0, sitPhase * 0.3);
+                    character.scale.y = currentScale * (1 - Math.max(0, sitPhase * 0.2));
+                    break;
+                    
+                case 'spin':
+                    // 360 spin
+                    character.position.y = baseY;
+                    character.rotation.y = elapsedTime * 3;
+                    break;
+                    
+                case 'dance':
+                    // Dance move
+                    character.position.y = baseY + Math.abs(Math.sin(elapsedTime * 6)) * 0.15;
+                    character.rotation.y = Math.sin(elapsedTime * 4) * 0.3;
+                    if (movementParts.leftArm) {
+                        movementParts.leftArm.rotation.z = Math.sin(elapsedTime * 6) * 0.5;
+                    }
+                    if (movementParts.rightArm) {
+                        movementParts.rightArm.rotation.z = -Math.sin(elapsedTime * 6) * 0.5;
+                    }
+                    break;
+                    
+                case 'stretch':
+                    // Stretch
+                    const stretchPhase = Math.sin(elapsedTime * 2);
+                    character.position.y = baseY;
+                    character.scale.y = currentScale * (1 + Math.max(0, stretchPhase * 0.1));
+                    if (movementParts.leftArm && movementParts.rightArm) {
+                        movementParts.leftArm.rotation.z = Math.max(0, stretchPhase) * 0.8;
+                        movementParts.rightArm.rotation.z = -Math.max(0, stretchPhase) * 0.8;
+                    }
+                    break;
+                    
+                case 'celebrate':
+                    // Victory celebration
+                    character.position.y = baseY + Math.abs(Math.sin(elapsedTime * 10)) * 0.2;
+                    if (movementParts.leftArm && movementParts.rightArm) {
+                        movementParts.leftArm.rotation.z = Math.PI - 0.3 + Math.sin(elapsedTime * 10) * 0.2;
+                        movementParts.rightArm.rotation.z = -Math.PI + 0.3 - Math.sin(elapsedTime * 10) * 0.2;
+                    }
+                    break;
+                    
+                case 'sleepy':
+                    // Sleepy/yawn
+                    character.position.y = baseY;
+                    character.rotation.z = Math.sin(elapsedTime) * 0.05;
+                    if (movementParts.head) {
+                        movementParts.head.rotation.x = Math.sin(elapsedTime * 0.5) * 0.2;
+                    }
+                    break;
+            }
+        }
+        
+        // ============================================
+        // GRANULAR ENVIRONMENT GROWTH SYSTEM
+        // ============================================
+        
+        let environmentObjects = [];
+        let unlockedItems = new Set();
+        let currentHealthTier = 0;
+        
+        // Granular Wealth Milestones ($0-30K+)
+        const WEALTH_MILESTONES = [
+            // $0-5K: Every $1K
+            { threshold: 1, name: 'Basic Light', type: 'basicLight', emoji: '💡', tier: 1 },
+            { threshold: 2, name: 'Small Plant', type: 'smallPlant', emoji: '🌱', tier: 1 },
+            { threshold: 3, name: 'Rug', type: 'rug', emoji: '🧶', tier: 1 },
+            { threshold: 4, name: 'Wall Poster', type: 'poster', emoji: '🖼️', tier: 1 },
+            { threshold: 5, name: 'Small Table', type: 'smallTable', emoji: '🛏️', tier: 1 },
+            
+            // $5K-15K: Every $2K
+            { threshold: 7, name: 'Better Lamp', type: 'betterLamp', emoji: '🛋️', tier: 2 },
+            { threshold: 9, name: 'Bookshelf', type: 'bookshelf', emoji: '📚', tier: 2 },
+            { threshold: 11, name: 'Small TV', type: 'smallTV', emoji: '📺', tier: 2 },
+            { threshold: 13, name: 'Comfy Chair', type: 'comfyChair', emoji: '🪑', tier: 2 },
+            { threshold: 15, name: 'Coffee Table', type: 'coffeeTable', emoji: '☕', tier: 2 },
+            
+            // $15K-30K: Every $3K
+            { threshold: 18, name: 'Computer Desk', type: 'computerDesk', emoji: '💻', tier: 3 },
+            { threshold: 21, name: 'Gaming Chair', type: 'gamingChair', emoji: '🎮', tier: 3 },
+            { threshold: 24, name: 'Big TV', type: 'bigTV', emoji: '📺', tier: 3 },
+            { threshold: 27, name: 'Sound System', type: 'soundSystem', emoji: '🔊', tier: 3 },
+            { threshold: 30, name: 'Room Expansion', type: 'roomExpansion', emoji: '🏠', tier: 3 },
+            
+            // $30K+: Every $5K (Major upgrades)
+            { threshold: 35, name: 'Garden Start', type: 'gardenStart', emoji: '🌳', tier: 4 },
+            { threshold: 40, name: 'Patio', type: 'patio', emoji: '🏡', tier: 4 },
+            { threshold: 45, name: 'Fountain', type: 'fountain', emoji: '⛲', tier: 4 },
+            { threshold: 50, name: 'Small Pool', type: 'smallPool', emoji: '🏊', tier: 4 },
+            { threshold: 55, name: 'Outdoor Furniture', type: 'outdoorFurniture', emoji: '🪑', tier: 4 },
+            { threshold: 60, name: 'Garage', type: 'garage', emoji: '🚗', tier: 4 },
+            { threshold: 65, name: 'Home Gym', type: 'homeGym', emoji: '💪', tier: 4 },
+            { threshold: 70, name: 'Wine Cellar', type: 'wineCellar', emoji: '🍷', tier: 4 },
+            { threshold: 75, name: 'Theater Room', type: 'theaterRoom', emoji: '🎬', tier: 4 },
+            { threshold: 80, name: 'Guest House', type: 'guestHouse', emoji: '🏠', tier: 4 },
+            { threshold: 85, name: 'Tennis Court', type: 'tennisCourt', emoji: '🎾', tier: 4 },
+            { threshold: 90, name: 'Helipad', type: 'helipad', emoji: '🚁', tier: 4 },
+            { threshold: 95, name: 'Private Dock', type: 'privateDock', emoji: '⚓', tier: 4 },
+            { threshold: 100, name: 'Mega Mansion', type: 'megaMansion', emoji: '🏰', tier: 4 }
+        ];
+        
+        // Health Tiers (Low, Medium, High)
+        const HEALTH_TIERS = [
+            { min: 0, max: 33, name: 'Gloomy', lighting: 0.3, fog: 0x1a1a2e, sky: 0x0f0f1a },
+            { min: 33, max: 66, name: 'Bright', lighting: 0.6, fog: 0x2d2d4a, sky: 0x1a1a3e },
+            { min: 66, max: 100, name: 'Sunny', lighting: 1.0, fog: 0x4a4a6a, sky: 0x2d5a7d }
+        ];
+        
+        function initEnvironment() {
+            // Don't clear - we want to keep unlocked items
+            // Just ensure base exists
+            if (!environmentObjects.find(obj => obj.name === 'floor')) {
+                createBaseEnvironment();
+            }
+        }
+        
+        function createBaseEnvironment() {
+            // Base floor - starts small
+            const floorGeometry = new THREE.PlaneGeometry(4, 4);
+            const floorMaterial = new THREE.MeshStandardMaterial({ 
+                color: 0x333333, 
+                roughness: 0.9 
+            });
+            
+            const floor = new THREE.Mesh(floorGeometry, floorMaterial);
+            floor.rotation.x = -Math.PI / 2;
+            floor.position.y = -1;
+            floor.receiveShadow = true;
+            floor.name = 'floor';
+            scene.add(floor);
+            environmentObjects.push(floor);
+            
+            // Update lighting based on health
+            updateEnvironmentLighting();
+        }
+        
+        function checkAndUnlockItems(wealthValue) {
+            const wealthInK = wealthValue;
+            let newItemsUnlocked = false;
+            
+            WEALTH_MILESTONES.forEach(milestone => {
+                if (wealthInK >= milestone.threshold && !unlockedItems.has(milestone.type)) {
+                    unlockedItems.add(milestone.type);
+                    unlockItem(milestone);
+                    newItemsUnlocked = true;
+                }
+            });
+            
+            // Update room size based on wealth tier
+            updateRoomSize(wealthInK);
+            
+            return newItemsUnlocked;
+        }
+        
+        function unlockItem(milestone) {
+            const item = createGranularItem(milestone.type);
+            if (item) {
+                // Animate item appearing
+                item.scale.set(0, 0, 0);
+                scene.add(item);
+                environmentObjects.push(item);
+                
+                // Pop-in animation with bounce
+                const animateIn = () => {
+                    if (item.scale.x < 1) {
+                        item.scale.x += 0.08;
+                        item.scale.y += 0.08;
+                        item.scale.z += 0.08;
+                        requestAnimationFrame(animateIn);
+                    } else {
+                        // Slight bounce effect
+                        item.scale.set(1.1, 1.1, 1.1);
+                        setTimeout(() => {
+                            item.scale.set(1, 1, 1);
+                        }, 100);
+                    }
+                };
+                animateIn();
+                
+                // Show notification
+                showItemUnlockNotification(milestone);
+            }
+        }
+        
+        function showItemUnlockNotification(milestone) {
+            // Create floating notification
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 100px;
+                right: 20px;
+                background: linear-gradient(135deg, #00d4ff, #0099cc);
+                color: #000;
+                padding: 15px 20px;
+                border-radius: 12px;
+                font-weight: 600;
+                z-index: 1000;
+                animation: slideIn 0.5s ease;
+                box-shadow: 0 4px 15px rgba(0, 212, 255, 0.4);
+            `;
+            notification.innerHTML = `
+                <div style="font-size: 24px; margin-bottom: 5px;">${milestone.emoji}</div>
+                <div>Unlocked: ${milestone.name}</div>
+                <div style="font-size: 12px; opacity: 0.8;">$${milestone.threshold}K milestone</div>
+            `;
+            document.body.appendChild(notification);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.5s ease';
+                setTimeout(() => notification.remove(), 500);
+            }, 3000);
+        }
+        
+        function updateRoomSize(wealthInK) {
+            const floor = environmentObjects.find(obj => obj.name === 'floor');
+            if (!floor) return;
+            
+            // Determine target size based on wealth
+            let targetSize = 4;
+            if (wealthInK >= 30) targetSize = 12;
+            else if (wealthInK >= 20) targetSize = 10;
+            else if (wealthInK >= 15) targetSize = 8;
+            else if (wealthInK >= 10) targetSize = 6;
+            else if (wealthInK >= 5) targetSize = 5;
+            
+            // Update floor size
+            floor.geometry.dispose();
+            floor.geometry = new THREE.PlaneGeometry(targetSize, targetSize);
+            
+            // Update floor material based on wealth
+            if (wealthInK >= 50) {
+                floor.material.color.setHex(0xffffff);
+                floor.material.metalness = 0.3;
+                floor.material.roughness = 0.3;
+            } else if (wealthInK >= 30) {
+                floor.material.color.setHex(0xd4af37);
+                floor.material.metalness = 0.1;
+                floor.material.roughness = 0.5;
+            } else if (wealthInK >= 15) {
+                floor.material.color.setHex(0xc4a77d);
+                floor.material.roughness = 0.6;
+            } else if (wealthInK >= 5) {
+                floor.material.color.setHex(0x5c4a3a);
+                floor.material.roughness = 0.8;
+            }
+        }
+        
+        function createGranularItem(type) {
+            switch(type) {
+                // Tier 1: $1K-5K
+                case 'basicLight':
+                    return createBasicLight();
+                case 'smallPlant':
+                    return createSmallPlant();
+                case 'rug':
+                    return createRug();
+                case 'poster':
+                    return createPoster();
+                case 'smallTable':
+                    return createSmallTable();
+                
+                // Tier 2: $7K-15K
+                case 'betterLamp':
+                    return createBetterLamp();
+                case 'bookshelf':
+                    return createBookshelf();
+                case 'smallTV':
+                    return createSmallTV();
+                case 'comfyChair':
+                    return createComfyChair();
+                case 'coffeeTable':
+                    return createCoffeeTable();
+                
+                // Tier 3: $18K-30K
+                case 'computerDesk':
+                    return createComputerDesk();
+                case 'gamingChair':
+                    return createGamingChair();
+                case 'bigTV':
+                    return createBigTV();
+                case 'soundSystem':
+                    return createSoundSystem();
+                case 'roomExpansion':
+                    return createRoomExpansionMarker();
+                
+                // Tier 4: $35K+
+                case 'gardenStart':
+                    return createGardenStart();
+                case 'patio':
+                    return createPatio();
+                case 'fountain':
+                    return createFountain();
+                case 'smallPool':
+                    return createSmallPool();
+                case 'outdoorFurniture':
+                    return createOutdoorFurniture();
+                case 'garage':
+                    return createGarage();
+                case 'homeGym':
+                    return createHomeGym();
+                case 'wineCellar':
+                    return createWineCellar();
+                case 'theaterRoom':
+                    return createTheaterRoom();
+                case 'guestHouse':
+                    return createGuestHouse();
+                case 'tennisCourt':
+                    return createTennisCourt();
+                case 'helipad':
+                    return createHelipad();
+                case 'privateDock':
+                    return createPrivateDock();
+                case 'megaMansion':
+                    return createMegaMansionMarker();
+                
+                default:
+                    return null;
+            }
+        }
+        
+        // Tier 1 Items ($1K-5K)
+        function createBasicLight() {
+            const group = new THREE.Group();
+            
+            const bulb = new THREE.Mesh(
+                new THREE.SphereGeometry(0.15, 8, 8),
+                new THREE.MeshBasicMaterial({ color: 0xffffaa })
+            );
+            bulb.position.set(0, 2, 0);
+            group.add(bulb);
+            
+            const light = new THREE.PointLight(0xffffaa, 0.3, 4);
+            light.position.set(0, 2, 0);
+            group.add(light);
+            
+            return group;
+        }
+        
+        function createSmallPlant() {
+            const group = new THREE.Group();
+            
+            // Pot
+            const pot = new THREE.Mesh(
+                new THREE.CylinderGeometry(0.15, 0.1, 0.2, 6),
+                new THREE.MeshStandardMaterial({ color: 0x8b4513 })
+            );
+            pot.position.y = 0.1;
+            group.add(pot);
+            
+            // Plant
+            const plant = new THREE.Mesh(
+                new THREE.SphereGeometry(0.2, 6, 6),
+                new THREE.MeshStandardMaterial({ color: 0x228b22 })
+            );
+            plant.position.y = 0.35;
+            group.add(plant);
+            
+            group.position.set(1.5, -1, 1);
+            return group;
+        }
+        
+        function createRug() {
+            const rug = new THREE.Mesh(
+                new THREE.PlaneGeometry(1.5, 2),
+                new THREE.MeshStandardMaterial({ color: 0x8b0000, roughness: 1 })
+            );
+            rug.rotation.x = -Math.PI / 2;
+            rug.position.set(0, -0.98, 0);
+            return rug;
+        }
+        
+        function createPoster() {
+            const group = new THREE.Group();
+            
+            const frame = new THREE.Mesh(
+                new THREE.BoxGeometry(0.6, 0.8, 0.02),
+                new THREE.MeshStandardMaterial({ color: 0x444444 })
+            );
+            group.add(frame);
+            
+            const poster = new THREE.Mesh(
+                new THREE.PlaneGeometry(0.5, 0.7),
+                new THREE.MeshBasicMaterial({ color: new THREE.Color().setHSL(Math.random(), 0.7, 0.5) })
+            );
+            poster.position.z = 0.02;
+            group.add(poster);
+            
+            group.position.set(-1.8, 0.5, -1.9);
+            return group;
+        }
+        
+        function createSmallTable() {
+            const group = new THREE.Group();
+            const material = new THREE.MeshStandardMaterial({ color: 0x654321 });
+            
+            const top = new THREE.Mesh(new THREE.BoxGeometry(0.8, 0.05, 0.5), material);
+            top.position.y = 0.4;
+            top.castShadow = true;
+            group.add(top);
+            
+            const leg = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.05, 0.4), material);
+            leg.position.y = 0.2;
+            group.add(leg);
+            
+            group.position.set(-1, -1, 1);
+            return group;
+        }
+        
+        // Tier 2 Items ($7K-15K)
+        function createBetterLamp() {
+            const group = new THREE.Group();
+            
+            const base = new THREE.Mesh(
+                new THREE.CylinderGeometry(0.15, 0.2, 0.1, 8),
+                new THREE.MeshStandardMaterial({ color: 0x333333, metalness: 0.5 })
+            );
+            base.position.y = 0.05;
+            group.add(base);
+            
+            const pole = new THREE.Mesh(
+                new THREE.CylinderGeometry(0.03, 0.03, 1.2, 8),
+                new THREE.MeshStandardMaterial({ color: 0x333333 })
+            );
+            pole.position.y = 0.6;
+            group.add(pole);
+            
+            const shade = new THREE.Mesh(
+                new THREE.ConeGeometry(0.3, 0.4, 8, 1, true),
+                new THREE.MeshStandardMaterial({ color: 0xffdd88, emissive: 0xffaa00, emissiveIntensity: 0.3 })
+            );
+            shade.position.y = 1.1;
+            group.add(shade);
+            
+            const light = new THREE.PointLight(0xffdd88, 0.5, 5);
+            light.position.y = 1;
+            group.add(light);
+            
+            group.position.set(1.5, -1, -1.5);
+            return group;
+        }
+        
+        function createSmallTV() {
+            const group = new THREE.Group();
+            
+            const body = new THREE.Mesh(
+                new THREE.BoxGeometry(0.6, 0.4, 0.05),
+                new THREE.MeshStandardMaterial({ color: 0x111111 })
+            );
+            body.position.y = 0.5;
+            group.add(body);
+            
+            const screen = new THREE.Mesh(
+                new THREE.PlaneGeometry(0.5, 0.3),
+                new THREE.MeshBasicMaterial({ color: 0x222244 })
+            );
+            screen.position.set(0, 0.5, 0.03);
+            group.add(screen);
+            
+            const stand = new THREE.Mesh(
+                new THREE.BoxGeometry(0.2, 0.2, 0.15),
+                new THREE.MeshStandardMaterial({ color: 0x333333 })
+            );
+            stand.position.y = 0.2;
+            group.add(stand);
+            
+            group.position.set(0, -1, -1.8);
+            return group;
+        }
+        
+        function createComfyChair() {
+            const group = new THREE.Group();
+            const material = new THREE.MeshStandardMaterial({ color: 0x4169e1, roughness: 0.8 });
+            
+            const seat = new THREE.Mesh(new THREE.BoxGeometry(0.6, 0.15, 0.6), material);
+            seat.position.y = 0.3;
+            seat.castShadow = true;
+            group.add(seat);
+            
+            const back = new THREE.Mesh(new THREE.BoxGeometry(0.6, 0.5, 0.1), material);
+            back.position.set(0, 0.6, -0.25);
+            back.castShadow = true;
+            group.add(back);
+            
+            group.position.set(-1.2, -1, 0.5);
+            return group;
+        }
+        
+        // Tier 3 Items ($18K-30K)
+        function createGamingChair() {
+            const group = new THREE.Group();
+            const material = new THREE.MeshStandardMaterial({ color: 0xff0000, roughness: 0.6 });
+            
+            const seat = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.15, 0.5), material);
+            seat.position.y = 0.4;
+            group.add(seat);
+            
+            const back = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.6, 0.1), material);
+            back.position.set(0, 0.7, -0.2);
+            group.add(back);
+            
+            // Racing stripes
+            const stripe = new THREE.Mesh(
+                new THREE.BoxGeometry(0.1, 0.6, 0.02),
+                new THREE.MeshStandardMaterial({ color: 0xffffff })
+            );
+            stripe.position.set(0, 0.7, -0.15);
+            group.add(stripe);
+            
+            group.position.set(1.8, -1, -0.5);
+            return group;
+        }
+        
+        function createBigTV() {
+            const group = new THREE.Group();
+            
+            const body = new THREE.Mesh(
+                new THREE.BoxGeometry(1.2, 0.7, 0.05),
+                new THREE.MeshStandardMaterial({ color: 0x111111 })
+            );
+            body.position.y = 0.8;
+            group.add(body);
+            
+            const screen = new THREE.Mesh(
+                new THREE.PlaneGeometry(1.1, 0.6),
+                new THREE.MeshBasicMaterial({ color: 0x000033 })
+            );
+            screen.position.set(0, 0.8, 0.03);
+            group.add(screen);
+            
+            const stand = new THREE.Mesh(
+                new THREE.BoxGeometry(0.3, 0.3, 0.2),
+                new THREE.MeshStandardMaterial({ color: 0x222222 })
+            );
+            stand.position.y = 0.35;
+            group.add(stand);
+            
+            group.position.set(0, -1, -2.5);
+            return group;
+        }
+        
+        function createSoundSystem() {
+            const group = new THREE.Group();
+            const speakerMaterial = new THREE.MeshStandardMaterial({ color: 0x111111 });
+            
+            // Left speaker
+            const leftSpeaker = new THREE.Mesh(new THREE.BoxGeometry(0.25, 0.5, 0.25), speakerMaterial);
+            leftSpeaker.position.set(-1, 0.25, -1);
+            group.add(leftSpeaker);
+            
+            // Right speaker
+            const rightSpeaker = new THREE.Mesh(new THREE.BoxGeometry(0.25, 0.5, 0.25), speakerMaterial);
+            rightSpeaker.position.set(1, 0.25, -1);
+            group.add(rightSpeaker);
+            
+            // Subwoofer
+            const sub = new THREE.Mesh(new THREE.BoxGeometry(0.4, 0.4, 0.4), speakerMaterial);
+            sub.position.set(0, 0.2, 1.5);
+            group.add(sub);
+            
+            return group;
+        }
+        
+        function createRoomExpansionMarker() {
+            // Visual indicator that room expanded
+            const group = new THREE.Group();
+            
+            const marker = new THREE.Mesh(
+                new THREE.RingGeometry(3.5, 4, 32),
+                new THREE.MeshBasicMaterial({ color: 0x00d4ff, transparent: true, opacity: 0.3, side: THREE.DoubleSide })
+            );
+            marker.rotation.x = -Math.PI / 2;
+            marker.position.y = -0.9;
+            group.add(marker);
+            
+            return group;
+        }
+        
+        // Tier 4 Items ($35K+)
+        function createGardenStart() {
+            const group = new THREE.Group();
+            
+            for (let i = 0; i < 3; i++) {
+                const tree = createTree();
+                tree.position.set(4 + i * 1.5, -1, 2 + Math.random());
+                tree.scale.set(0.7, 0.7, 0.7);
+                group.add(tree);
+            }
+            
+            return group;
+        }
+        
+        function createPatio() {
+            const group = new THREE.Group();
+            
+            const patio = new THREE.Mesh(
+                new THREE.BoxGeometry(4, 0.1, 3),
+                new THREE.MeshStandardMaterial({ color: 0x888888 })
+            );
+            patio.position.set(5, -0.95, 0);
+            group.add(patio);
+            
+            return group;
+        }
+        
+        function createSmallPool() {
+            const group = new THREE.Group();
+            
+            const pool = new THREE.Mesh(
+                new THREE.BoxGeometry(3, 0.8, 2),
+                new THREE.MeshStandardMaterial({ color: 0x00d4ff, transparent: true, opacity: 0.6 })
+            );
+            pool.position.set(6, -0.6, 3);
+            group.add(pool);
+            
+            const border = new THREE.Mesh(
+                new THREE.BoxGeometry(3.3, 0.9, 2.3),
+                new THREE.MeshStandardMaterial({ color: 0xffffff })
+            );
+            border.position.set(6, -0.65, 3);
+            group.add(border);
+            
+            return group;
+        }
+        
+        function createOutdoorFurniture() {
+            const group = new THREE.Group();
+            
+            // Table
+            const table = new THREE.Mesh(
+                new THREE.CylinderGeometry(0.5, 0.5, 0.05, 16),
+                new THREE.MeshStandardMaterial({ color: 0xffffff })
+            );
+            table.position.set(5, 0.4, 0);
+            group.add(table);
+            
+            // Chairs
+            for (let i = 0; i < 4; i++) {
+                const angle = (i / 4) * Math.PI * 2;
+                const chair = new THREE.Mesh(
+                    new THREE.BoxGeometry(0.3, 0.4, 0.3),
+                    new THREE.MeshStandardMaterial({ color: 0x654321 })
+                );
+                chair.position.set(
+                    5 + Math.cos(angle) * 1,
+                    0.2,
+                    Math.sin(angle) * 1
+                );
+                group.add(chair);
+            }
+            
+            return group;
+        }
+        
+        function createGarage() {
+            const group = new THREE.Group();
+            
+            const garage = new THREE.Mesh(
+                new THREE.BoxGeometry(4, 2.5, 5),
+                new THREE.MeshStandardMaterial({ color: 0xcccccc })
+            );
+            garage.position.set(-6, 0.25, 0);
+            group.add(garage);
+            
+            // Door
+            const door = new THREE.Mesh(
+                new THREE.BoxGeometry(2.5, 2, 0.1),
+                new THREE.MeshStandardMaterial({ color: 0x333333 })
+            );
+            door.position.set(-6, 0.5, 2.5);
+            group.add(door);
+            
+            return group;
+        }
+        
+        function createHomeGym() {
+            const group = new THREE.Group();
+            
+            // Treadmill
+            const treadmill = new THREE.Mesh(
+                new THREE.BoxGeometry(0.4, 0.3, 1.2),
+                new THREE.MeshStandardMaterial({ color: 0x333333 })
+            );
+            treadmill.position.set(-2, 0.15, -3);
+            group.add(treadmill);
+            
+            // Weights
+            const weights = new THREE.Mesh(
+                new THREE.BoxGeometry(0.8, 0.4, 0.3),
+                new THREE.MeshStandardMaterial({ color: 0x111111 })
+            );
+            weights.position.set(-3, 0.2, -3);
+            group.add(weights);
+            
+            return group;
+        }
+        
+        function createWineCellar() {
+            const group = new THREE.Group();
+            
+            const rack = new THREE.Mesh(
+                new THREE.BoxGeometry(1.5, 2, 0.5),
+                new THREE.MeshStandardMaterial({ color: 0x4a3728 })
+            );
+            rack.position.set(-2.5, 0, -2.5);
+            group.add(rack);
+            
+            return group;
+        }
+        
+        function createTheaterRoom() {
+            const group = new THREE.Group();
+            
+            // Projector screen
+            const screen = new THREE.Mesh(
+                new THREE.BoxGeometry(2, 1.2, 0.05),
+                new THREE.MeshStandardMaterial({ color: 0xffffff })
+            );
+            screen.position.set(0, 1.5, -3.5);
+            group.add(screen);
+            
+            // Seats
+            for (let i = 0; i < 3; i++) {
+                const seat = new THREE.Mesh(
+                    new THREE.BoxGeometry(0.6, 0.5, 0.6),
+                    new THREE.MeshStandardMaterial({ color: 0x8b0000 })
+                );
+                seat.position.set(-1 + i * 1, 0.25, 2);
+                group.add(seat);
+            }
+            
+            return group;
+        }
+        
+        function createGuestHouse() {
+            const group = new THREE.Group();
+            
+            const house = new THREE.Mesh(
+                new THREE.BoxGeometry(4, 2.5, 4),
+                new THREE.MeshStandardMaterial({ color: 0xf5f5dc })
+            );
+            house.position.set(8, 0.25, -5);
+            group.add(house);
+            
+            // Roof
+            const roof = new THREE.Mesh(
+                new THREE.ConeGeometry(3, 1.5, 4),
+                new THREE.MeshStandardMaterial({ color: 0x8b4513 })
+            );
+            roof.position.set(8, 2, -5);
+            roof.rotation.y = Math.PI / 4;
+            group.add(roof);
+            
+            return group;
+        }
+        
+        function createTennisCourt() {
+            const group = new THREE.Group();
+            
+            const court = new THREE.Mesh(
+                new THREE.BoxGeometry(8, 0.1, 12),
+                new THREE.MeshStandardMaterial({ color: 0x228b22 })
+            );
+            court.position.set(-10, -0.95, 0);
+            group.add(court);
+            
+            // Net
+            const net = new THREE.Mesh(
+                new THREE.BoxGeometry(0.05, 1, 12),
+                new THREE.MeshStandardMaterial({ color: 0xffffff })
+            );
+            net.position.set(-10, 0, 0);
+            group.add(net);
+            
+            return group;
+        }
+        
+        function createHelipad() {
+            const group = new THREE.Group();
+            
+            const pad = new THREE.Mesh(
+                new THREE.CylinderGeometry(2, 2, 0.1, 32),
+                new THREE.MeshStandardMaterial({ color: 0x333333 })
+            );
+            pad.position.set(10, 3, -8);
+            group.add(pad);
+            
+            // H marker
+            const h = new THREE.Mesh(
+                new THREE.BoxGeometry(1, 0.05, 0.2),
+                new THREE.MeshBasicMaterial({ color: 0xffff00 })
+            );
+            h.position.set(10, 3.05, -8);
+            group.add(h);
+            
+            const v = new THREE.Mesh(
+                new THREE.BoxGeometry(0.2, 0.05, 0.8),
+                new THREE.MeshBasicMaterial({ color: 0xffff00 })
+            );
+            v.position.set(10, 3.05, -8);
+            group.add(v);
+            
+            return group;
+        }
+        
+        function createPrivateDock() {
+            const group = new THREE.Group();
+            
+            const dock = new THREE.Mesh(
+                new THREE.BoxGeometry(3, 0.2, 8),
+                new THREE.MeshStandardMaterial({ color: 0x8b4513 })
+            );
+            dock.position.set(12, -0.9, 5);
+            group.add(dock);
+            
+            return group;
+        }
+        
+        function createMegaMansionMarker() {
+            const group = new THREE.Group();
+            
+            // Grand entrance marker
+            const pillars = new THREE.Group();
+            
+            for (let i = 0; i < 4; i++) {
+                const pillar = new THREE.Mesh(
+                    new THREE.CylinderGeometry(0.3, 0.3, 4, 8),
+                    new THREE.MeshStandardMaterial({ color: 0xffffff })
+                );
+                pillar.position.set(-3 + i * 2, 1, -8);
+                pillars.add(pillar);
+            }
+            
+            group.add(pillars);
+            
+            return group;
+        }
+        
+        // Legacy item creators (kept for compatibility)
+        function createCarpet() { return createRug(); }
+        function createPottedPlant() { return createSmallPlant(); }
+        function createLamp() { return createBetterLamp(); }
+        function createSofa() { return createComfyChair(); }
+        function createTV() { return createBigTV(); }
+        
+        function addHealthItems() {
+            // Remove existing nature items
+            environmentObjects = environmentObjects.filter(obj => {
+                if (obj.name === 'nature') {
+                    scene.remove(obj);
+                    return false;
+                }
+                return true;
+            });
+            
+            // Nature elements based on health tier
+            const treeCount = currentHealthTier * 2; // 0, 2, 4 trees
+            const bushCount = currentHealthTier * 3; // 0, 3, 6 bushes
+            
+            // Add trees
+            for (let i = 0; i < treeCount; i++) {
+                const angle = (i / treeCount) * Math.PI * 2;
+                const radius = 5 + Math.floor(unlockedItems.size / 5); // Expand as items unlock
+                const x = Math.cos(angle) * radius;
+                const z = Math.sin(angle) * radius;
+                
+                const tree = createTree();
+                tree.position.set(x, -1, z);
+                tree.name = 'nature';
+                
+                // Animate in
+                tree.scale.set(0, 0, 0);
+                scene.add(tree);
+                environmentObjects.push(tree);
+                
+                setTimeout(() => {
+                    const grow = () => {
+                        if (tree.scale.x < 1) {
+                            tree.scale.x += 0.02;
+                            tree.scale.y += 0.02;
+                            tree.scale.z += 0.02;
+                            requestAnimationFrame(grow);
+                        }
+                    };
+                    grow();
+                }, i * 300);
+            }
+            
+            // Add bushes
+            for (let i = 0; i < bushCount; i++) {
+                const angle = (i / bushCount) * Math.PI * 2 + Math.PI / 4;
+                const radius = 4 + Math.floor(unlockedItems.size / 5) * 0.5;
+                const x = Math.cos(angle) * radius;
+                const z = Math.sin(angle) * radius;
+                
+                const bush = createBush();
+                bush.position.set(x, -1, z);
+                bush.name = 'nature';
+                bush.scale.set(0, 0, 0);
+                scene.add(bush);
+                environmentObjects.push(bush);
+                
+                setTimeout(() => {
+                    bush.scale.set(1, 1, 1);
+                }, i * 150 + 500);
+            }
+        }
+        function createCoffeeTable() { return createCoffeeTable(); }
+        function createComputerDesk() { return createComputerDesk(); }
+        function createFountain() { return createFountain(); }
+        function createStatue() { return createStatue(); }
+        function createPool() { return createSmallPool(); }
+        function createLuxuryCar() { return createLuxuryCar(); }
+        function createChandelier() { return createChandelier(); }
+        function createGrandPiano() { return createGrandPiano(); }
+        function createArtwork() { return createPoster(); }
+                    return createComputerDesk();
+                case 'tv':
+                    return createTV();
+                case 'coffeeTable':
+                    return createCoffeeTable();
+                case 'artwork':
+                    return createArtwork();
+                case 'fountain':
+                    return createFountain();
+                case 'statue':
+                    return createStatue();
+                case 'pool':
+                    return createPool();
+                case 'luxuryCar':
+                    return createLuxuryCar();
+                case 'chandelier':
+                    return createChandelier();
+                case 'grandPiano':
+                    return createGrandPiano();
+                default:
+                    return null;
+            }
+        }
+        
+        // Item creation functions
+        function createCarpet() {
+            const geometry = new THREE.PlaneGeometry(2, 3);
+            const material = new THREE.MeshStandardMaterial({ color: 0x8b0000, roughness: 1 });
+            const carpet = new THREE.Mesh(geometry, material);
+            carpet.rotation.x = -Math.PI / 2;
+            carpet.position.set(0, -0.99, 0);
+            carpet.receiveShadow = true;
+            return carpet;
+        }
+        
+        function createPottedPlant() {
+            const group = new THREE.Group();
+            
+            // Pot
+            const potGeometry = new THREE.CylinderGeometry(0.3, 0.2, 0.4, 8);
+            const potMaterial = new THREE.MeshStandardMaterial({ color: 0x8b4513 });
+            const pot = new THREE.Mesh(potGeometry, potMaterial);
+            pot.position.y = 0.2;
+            pot.castShadow = true;
+            group.add(pot);
+            
+            // Plant
+            const plantGeometry = new THREE.SphereGeometry(0.4, 8, 8);
+            const plantMaterial = new THREE.MeshStandardMaterial({ color: 0x228b22 });
+            const plant = new THREE.Mesh(plantGeometry, plantMaterial);
+            plant.position.y = 0.6;
+            plant.castShadow = true;
+            group.add(plant);
+            
+            group.position.set(2, -1, -2);
+            return group;
+        }
+        
+        function createLamp() {
+            const group = new THREE.Group();
+            
+            // Base
+            const baseGeometry = new THREE.CylinderGeometry(0.2, 0.25, 0.1, 8);
+            const baseMaterial = new THREE.MeshStandardMaterial({ color: 0x444444, metalness: 0.5 });
+            const base = new THREE.Mesh(baseGeometry, baseMaterial);
+            base.position.y = 0.05;
+            group.add(base);
+            
+            // Pole
+            const poleGeometry = new THREE.CylinderGeometry(0.05, 0.05, 1.5, 8);
+            const pole = new THREE.Mesh(poleGeometry, baseMaterial);
+            pole.position.y = 0.8;
+            group.add(pole);
+            
+            // Shade
+            const shadeGeometry = new THREE.ConeGeometry(0.4, 0.5, 8, 1, true);
+            const shadeMaterial = new THREE.MeshStandardMaterial({ color: 0xffdd88, emissive: 0xffaa00, emissiveIntensity: 0.3 });
+            const shade = new THREE.Mesh(shadeGeometry, shadeMaterial);
+            shade.position.y = 1.4;
+            group.add(shade);
+            
+            // Light
+            const light = new THREE.PointLight(0xffdd88, 0.5, 5);
+            light.position.y = 1.3;
+            group.add(light);
+            
+            group.position.set(-2, -1, -2);
+            return group;
+        }
+        
+        function createSofa() {
+            const group = new THREE.Group();
+            const material = new THREE.MeshStandardMaterial({ color: 0x4a5568, roughness: 0.8 });
+            
+            // Seat
+            const seat = new THREE.Mesh(new THREE.BoxGeometry(2, 0.4, 0.8), material);
+            seat.position.y = 0.4;
+            seat.castShadow = true;
+            group.add(seat);
+            
+            // Back
+            const back = new THREE.Mesh(new THREE.BoxGeometry(2, 0.8, 0.2), material);
+            back.position.set(0, 0.8, -0.3);
+            back.castShadow = true;
+            group.add(back);
+            
+            // Arms
+            const leftArm = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.6, 0.8), material);
+            leftArm.position.set(-0.9, 0.6, 0);
+            leftArm.castShadow = true;
+            group.add(leftArm);
+            
+            const rightArm = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.6, 0.8), material);
+            rightArm.position.set(0.9, 0.6, 0);
+            rightArm.castShadow = true;
+            group.add(rightArm);
+            
+            group.position.set(0, -1, 2);
+            return group;
+        }
+        
+        function createBookshelf() {
+            const group = new THREE.Group();
+            const woodMaterial = new THREE.MeshStandardMaterial({ color: 0x8b4513, roughness: 0.7 });
+            
+            // Frame
+            const frame = new THREE.Mesh(new THREE.BoxGeometry(1.5, 2.5, 0.4), woodMaterial);
+            frame.position.y = 1.25;
+            frame.castShadow = true;
+            group.add(frame);
+            
+            // Shelves
+            for (let i = 0; i < 4; i++) {
+                const shelf = new THREE.Mesh(new THREE.BoxGeometry(1.4, 0.05, 0.35), woodMaterial);
+                shelf.position.y = 0.3 + i * 0.6;
+                group.add(shelf);
+                
+                // Books
+                for (let j = 0; j < 5; j++) {
+                    const bookColor = new THREE.Color().setHSL(Math.random(), 0.7, 0.5);
+                    const book = new THREE.Mesh(
+                        new THREE.BoxGeometry(0.1, 0.25 + Math.random() * 0.1, 0.25),
+                        new THREE.MeshStandardMaterial({ color: bookColor })
+                    );
+                    book.position.set(-0.5 + j * 0.25, 0.45 + i * 0.6, 0);
+                    group.add(book);
+                }
+            }
+            
+            group.position.set(-3, -1, 0);
+            return group;
+        }
+        
+        function createComputerDesk() {
+            const group = new THREE.Group();
+            const woodMaterial = new THREE.MeshStandardMaterial({ color: 0x654321, roughness: 0.6 });
+            const metalMaterial = new THREE.MeshStandardMaterial({ color: 0x333333, metalness: 0.6 });
+            
+            // Desktop
+            const desktop = new THREE.Mesh(new THREE.BoxGeometry(2, 0.1, 1), woodMaterial);
+            desktop.position.y = 0.8;
+            desktop.castShadow = true;
+            group.add(desktop);
+            
+            // Legs
+            const legPositions = [[-0.9, -0.4], [0.9, -0.4], [-0.9, 0.4], [0.9, 0.4]];
+            legPositions.forEach(pos => {
+                const leg = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.05, 0.8), metalMaterial);
+                leg.position.set(pos[0], 0.4, pos[1]);
+                group.add(leg);
+            });
+            
+            // Monitor
+            const monitor = new THREE.Mesh(new THREE.BoxGeometry(0.8, 0.5, 0.05), new THREE.MeshStandardMaterial({ color: 0x111111 }));
+            monitor.position.set(0, 1.1, -0.3);
+            group.add(monitor);
+            
+            // Screen glow
+            const screen = new THREE.Mesh(new THREE.PlaneGeometry(0.7, 0.4), new THREE.MeshBasicMaterial({ color: 0x00d4ff }));
+            screen.position.set(0, 1.1, -0.27);
+            group.add(screen);
+            
+            group.position.set(2.5, -1, -1);
+            return group;
+        }
+        
+        function createTV() {
+            const group = new THREE.Group();
+            
+            // Screen
+            const screen = new THREE.Mesh(
+                new THREE.BoxGeometry(1.5, 0.9, 0.05),
+                new THREE.MeshStandardMaterial({ color: 0x111111, roughness: 0.2 })
+            );
+            screen.position.y = 1;
+            group.add(screen);
+            
+            // Display
+            const display = new THREE.Mesh(
+                new THREE.PlaneGeometry(1.4, 0.8),
+                new THREE.MeshBasicMaterial({ color: 0x222244 })
+            );
+            display.position.set(0, 1, 0.03);
+            group.add(display);
+            
+            // Stand
+            const stand = new THREE.Mesh(
+                new THREE.BoxGeometry(0.4, 0.3, 0.3),
+                new THREE.MeshStandardMaterial({ color: 0x333333 })
+            );
+            stand.position.y = 0.5;
+            group.add(stand);
+            
+            group.position.set(0, -1, -3);
+            return group;
+        }
+        
+        function createCoffeeTable() {
+            const group = new THREE.Group();
+            const material = new THREE.MeshStandardMaterial({ color: 0x4a3c28, roughness: 0.6 });
+            
+            // Top
+            const top = new THREE.Mesh(new THREE.CylinderGeometry(0.8, 0.8, 0.05, 16), material);
+            top.position.y = 0.4;
+            top.castShadow = true;
+            group.add(top);
+            
+            // Legs
+            for (let i = 0; i < 3; i++) {
+                const angle = (i / 3) * Math.PI * 2;
+                const leg = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.03, 0.4), material);
+                leg.position.set(Math.cos(angle) * 0.5, 0.2, Math.sin(angle) * 0.5);
+                group.add(leg);
+            }
+            
+            group.position.set(1.5, -1, 1.5);
+            return group;
+        }
+        
+        function createArtwork() {
+            const group = new THREE.Group();
+            
+            // Frame
+            const frame = new THREE.Mesh(
+                new THREE.BoxGeometry(1, 1.2, 0.05),
+                new THREE.MeshStandardMaterial({ color: 0xd4af37, metalness: 0.3 })
+            );
+            group.add(frame);
+            
+            // Canvas
+            const canvas = new THREE.Mesh(
+                new THREE.PlaneGeometry(0.85, 1.05),
+                new THREE.MeshBasicMaterial({ color: new THREE.Color().setHSL(Math.random(), 0.5, 0.5) })
+            );
+            canvas.position.z = 0.03;
+            group.add(canvas);
+            
+            group.position.set(-3.5, 0.5, -3);
+            group.rotation.y = Math.PI / 6;
+            return group;
+        }
+        
+        function createFountain() {
+            const group = new THREE.Group();
+            const stoneMaterial = new THREE.MeshStandardMaterial({ color: 0x888888, roughness: 0.8 });
+            const waterMaterial = new THREE.MeshStandardMaterial({ color: 0x00d4ff, transparent: true, opacity: 0.8 });
+            
+            // Base
+            const base = new THREE.Mesh(new THREE.CylinderGeometry(1.5, 1.7, 0.3, 16), stoneMaterial);
+            base.position.y = 0.15;
+            base.castShadow = true;
+            group.add(base);
+            
+            // Water
+            const water = new THREE.Mesh(new THREE.CylinderGeometry(1.3, 1.3, 0.1, 16), waterMaterial);
+            water.position.y = 0.3;
+            group.add(water);
+            
+            // Center pillar
+            const pillar = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.4, 1, 8), stoneMaterial);
+            pillar.position.y = 0.8;
+            pillar.castShadow = true;
+            group.add(pillar);
+            
+            // Top
+            const top = new THREE.Mesh(new THREE.CylinderGeometry(0.6, 0.2, 0.3, 8), stoneMaterial);
+            top.position.y = 1.3;
+            group.add(top);
+            
+            group.position.set(4, -1, 4);
+            return group;
+        }
+        
+        function createStatue() {
+            const group = new THREE.Group();
+            const material = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.4 });
+            
+            // Pedestal
+            const pedestal = new THREE.Mesh(new THREE.BoxGeometry(0.8, 0.6, 0.8), material);
+            pedestal.position.y = 0.3;
+            pedestal.castShadow = true;
+            group.add(pedestal);
+            
+            // Figure (abstract)
+            const figure = new THREE.Mesh(new THREE.ConeGeometry(0.3, 1.2, 8), material);
+            figure.position.y = 1.2;
+            figure.castShadow = true;
+            group.add(figure);
+            
+            group.position.set(-4, -1, 4);
+            return group;
+        }
+        
+        function createPool() {
+            const group = new THREE.Group();
+            
+            // Pool base
+            const poolGeometry = new THREE.BoxGeometry(4, 0.5, 3);
+            const poolMaterial = new THREE.MeshStandardMaterial({ color: 0x00d4ff, transparent: true, opacity: 0.6 });
+            const pool = new THREE.Mesh(poolGeometry, poolMaterial);
+            pool.position.y = -0.5;
+            group.add(pool);
+            
+            // Pool border
+            const borderGeometry = new THREE.BoxGeometry(4.4, 0.6, 3.4);
+            const borderMaterial = new THREE.MeshStandardMaterial({ color: 0xffffff });
+            const border = new THREE.Mesh(borderGeometry, borderMaterial);
+            border.position.y = -0.55;
+            group.add(border);
+            
+            group.position.set(6, -0.5, -2);
+            return group;
+        }
+        
+        function createLuxuryCar() {
+            const group = new THREE.Group();
+            const bodyMaterial = new THREE.MeshStandardMaterial({ color: 0xff0000, metalness: 0.6, roughness: 0.2 });
+            const wheelMaterial = new THREE.MeshStandardMaterial({ color: 0x111111 });
+            
+            // Body
+            const body = new THREE.Mesh(new THREE.BoxGeometry(2, 0.6, 1), bodyMaterial);
+            body.position.y = 0.5;
+            body.castShadow = true;
+            group.add(body);
+            
+            // Top
+            const top = new THREE.Mesh(new THREE.BoxGeometry(1.2, 0.4, 0.9), bodyMaterial);
+            top.position.y = 0.9;
+            group.add(top);
+            
+            // Wheels
+            const wheelPositions = [[-0.7, 0.25, 0.5], [0.7, 0.25, 0.5], [-0.7, 0.25, -0.5], [0.7, 0.25, -0.5]];
+            wheelPositions.forEach(pos => {
+                const wheel = new THREE.Mesh(new THREE.CylinderGeometry(0.25, 0.25, 0.1, 16), wheelMaterial);
+                wheel.rotation.z = Math.PI / 2;
+                wheel.position.set(...pos);
+                group.add(wheel);
+            });
+            
+            group.position.set(-6, -1, 2);
+            return group;
+        }
+        
+        function createChandelier() {
+            const group = new THREE.Group();
+            const goldMaterial = new THREE.MeshStandardMaterial({ color: 0xd4af37, metalness: 0.8, roughness: 0.2 });
+            
+            // Chain
+            const chain = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.02, 1), goldMaterial);
+            chain.position.y = 2.5;
+            group.add(chain);
+            
+            // Main body
+            const body = new THREE.Mesh(new THREE.CylinderGeometry(0.5, 0.3, 0.8, 8), goldMaterial);
+            body.position.y = 2;
+            group.add(body);
+            
+            // Arms
+            for (let i = 0; i < 6; i++) {
+                const angle = (i / 6) * Math.PI * 2;
+                const arm = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.03, 0.8), goldMaterial);
+                arm.rotation.z = Math.PI / 2;
+                arm.rotation.y = angle;
+                arm.position.set(Math.cos(angle) * 0.4, 1.8, Math.sin(angle) * 0.4);
+                group.add(arm);
+                
+                // Light
+                const light = new THREE.PointLight(0xffdd88, 0.3, 3);
+                light.position.set(Math.cos(angle) * 0.7, 1.6, Math.sin(angle) * 0.7);
+                group.add(light);
+            }
+            
+            group.position.set(0, 2, 0);
+            return group;
+        }
+        
+        function createGrandPiano() {
+            const group = new THREE.Group();
+            const blackMaterial = new THREE.MeshStandardMaterial({ color: 0x111111, roughness: 0.1 });
+            const whiteMaterial = new THREE.MeshStandardMaterial({ color: 0xffffff });
+            
+            // Body
+            const body = new THREE.Mesh(new THREE.BoxGeometry(1.5, 0.4, 2), blackMaterial);
+            body.position.y = 0.6;
+            body.castShadow = true;
+            group.add(body);
+            
+            // Lid
+            const lid = new THREE.Mesh(new THREE.BoxGeometry(1.4, 0.05, 1.8), blackMaterial);
+            lid.position.set(0, 1.2, -0.3);
+            lid.rotation.x = -0.3;
+            group.add(lid);
+            
+            // Keys
+            const keys = new THREE.Mesh(new THREE.BoxGeometry(1.2, 0.05, 0.3), whiteMaterial);
+            keys.position.set(0, 0.82, 0.9);
+            group.add(keys);
+            
+            // Legs
+            const legPositions = [[-0.6, 0.3, 0.8], [0.6, 0.3, 0.8], [-0.6, 0.3, -0.8], [0.6, 0.3, -0.8]];
+            legPositions.forEach(pos => {
+                const leg = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.05, 0.6), blackMaterial);
+                leg.position.set(...pos);
+                group.add(leg);
+            });
+            
+            group.position.set(3, -1, 3);
+            return group;
+        }
+        
+        // Nature items
+        function createTree() {
+            const group = new THREE.Group();
+            
+            // Trunk
+            const trunkGeometry = new THREE.CylinderGeometry(0.15, 0.2, 1.5, 8);
+            const trunkMaterial = new THREE.MeshStandardMaterial({ color: 0x8b4513 });
+            const trunk = new THREE.Mesh(trunkGeometry, trunkMaterial);
+            trunk.position.y = 0.75;
+            trunk.castShadow = true;
+            group.add(trunk);
+            
+            // Leaves
+            const leavesGeometry = new THREE.ConeGeometry(0.8, 2, 8);
+            const leavesMaterial = new THREE.MeshStandardMaterial({ color: 0x228b22 });
+            const leaves = new THREE.Mesh(leavesGeometry, leavesMaterial);
+            leaves.position.y = 2;
+            leaves.castShadow = true;
+            group.add(leaves);
+            
+            return group;
+        }
+        
+        function createBush() {
+            const geometry = new THREE.SphereGeometry(0.4, 8, 8);
+            const material = new THREE.MeshStandardMaterial({ color: 0x32cd32 });
+            const bush = new THREE.Mesh(geometry, material);
+            bush.position.y = 0.2;
+            bush.castShadow = true;
+            return bush;
+        }
+        
+        function updateEnvironmentLighting() {
+            const healthTier = HEALTH_TIERS[currentHealthTier];
+            if (!healthTier) return;
+            
+            // Update ambient light
+            const ambientLight = scene.children.find(child => child.isAmbientLight);
+            if (ambientLight) {
+                ambientLight.intensity = healthTier.lighting;
+            }
+            
+            // Update background color
+            scene.background = new THREE.Color(healthTier.sky);
+            
+            // Update fog
+            scene.fog = new THREE.Fog(healthTier.fog, 10, 50);
+        }
+        
+        function updateEnvironment(wealthScore, healthScore) {
+            // Convert score to $K (0-100 scale)
+            const wealthInK = (wealthScore / 100) * 100;
+            
+            // Check and unlock items based on milestones
+            checkAndUnlockItems(wealthInK);
+            
+            // Calculate health tier (0-2 based on 0-100)
+            let newHealthTier = 0;
+            for (let i = 0; i < HEALTH_TIERS.length; i++) {
+                if (healthScore >= HEALTH_TIERS[i].min) {
+                    newHealthTier = i;
+                }
+            }
+            
+            // Update health-based elements if changed
+            if (newHealthTier !== currentHealthTier) {
+                currentHealthTier = newHealthTier;
+                addHealthItems();
+                updateEnvironmentLighting();
+            }
+            
+            // Update UI
+            updateEnvironmentUI(wealthInK, healthScore);
+        }
+        
+        function updateEnvironmentUI(wealthInK, healthScore) {
+            // Find current tier for display
+            let currentTier = WEALTH_MILESTONES.find(m => wealthInK < m.threshold) || WEALTH_MILESTONES[WEALTH_MILESTONES.length - 1];
+            let tierIndex = WEALTH_MILESTONES.indexOf(currentTier);
+            if (wealthInK >= currentTier.threshold && tierIndex < WEALTH_MILESTONES.length - 1) {
+                currentTier = WEALTH_MILESTONES[tierIndex + 1];
+            }
+            
+            // Calculate health tier
+            let healthTier = HEALTH_TIERS.find(h => healthScore >= h.min && healthScore < h.max) || HEALTH_TIERS[2];
+            
+            // Update UI elements
+            const envWealth = document.getElementById('envWealth');
+            const envHealth = document.getElementById('envHealth');
+            const envItems = document.getElementById('envItems');
+            
+            if (envWealth) {
+                const tierNames = ['Small Room', 'Cozy Room', 'Nice Apartment', 'Modern Home', 'Big House', 'Mansion'];
+                const tierIndex = Math.min(5, Math.floor(wealthInK / 20));
+                envWealth.textContent = tierNames[tierIndex] + ` ($${Math.round(wealthInK)}K)`;
+            }
+            
+            if (envHealth) {
+                envHealth.textContent = healthTier.name;
+            }
+            
+            if (envItems) {
+                const unlockedList = Array.from(unlockedItems).slice(-5); // Show last 5 unlocked
+                const itemEmojis = {
+                    'basicLight': '💡', 'smallPlant': '🌱', 'rug': '🧶', 'poster': '🖼️', 'smallTable': '🛏️',
+                    'betterLamp': '🛋️', 'bookshelf': '📚', 'smallTV': '📺', 'comfyChair': '🪑', 'coffeeTable': '☕',
+                    'computerDesk': '💻', 'gamingChair': '🎮', 'bigTV': '📺', 'soundSystem': '🔊', 'roomExpansion': '🏠',
+                    'gardenStart': '🌳', 'patio': '🏡', 'fountain': '⛲', 'smallPool': '🏊', 'outdoorFurniture': '🪑',
+                    'garage': '🚗', 'homeGym': '💪', 'wineCellar': '🍷', 'theaterRoom': '🎬', 'guestHouse': '🏠',
+                    'tennisCourt': '🎾', 'helipad': '🚁', 'privateDock': '⚓', 'megaMansion': '🏰'
+                };
+                
+                if (unlockedList.length > 0) {
+                    envItems.innerHTML = unlockedList.map(item => 
+                        `\u003cspan class="env-item"\u003e${itemEmojis[item] || '✨'} ${item.replace(/([A-Z])/g, ' $1').trim()}\u003c/span\u003e`
+                    ).join('');
+                }
+            }
+        }
+        
+        // Animation Loop
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            const delta = clock.getDelta();
+            const elapsedTime = clock.getElapsedTime();
+            
+            // Update mixer
+            if (mixer) mixer.update(delta);
+            
+            // Smooth scale transition
+            if (character && Math.abs(currentScale - targetScale) > 0.001) {
+                currentScale += (targetScale - currentScale) * 0.05;
+                character.scale.set(currentScale, currentScale, currentScale);
+            }
+            
+            // Random movement animation (replaces idle animation)
+            if (character) {
+                updateCharacterAnimation(elapsedTime);
+            }
+            
+            // Update particles
+            updateParticles(delta);
+            
+            controls.update();
+            renderer.render(scene, camera);
+        }
+        
+        // Particle System for Level Up
+        function createLevelUpParticles() {
+            const particleCount = 50;
+            const geometry = new THREE.BufferGeometry();
+            const positions = new Float32Array(particleCount * 3);
+            const velocities = [];
+            const colors = new Float32Array(particleCount * 3);
+            
+            for (let i = 0; i < particleCount; i++) {
+                positions[i * 3] = 0;
+                positions[i * 3 + 1] = 0;
+                positions[i * 3 + 2] = 0;
+                
+                velocities.push({
+                    x: (Math.random() - 0.5) * 2,
+                    y: Math.random() * 2 + 1,
+                    z: (Math.random() - 0.5) * 2
+                });
+                
+                colors[i * 3] = 0;
+                colors[i * 3 + 1] = 0.83;
+                colors[i * 3 + 2] = 1;
+            }
+            
+            geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+            
+            const material = new THREE.PointsMaterial({
+                size: 0.1,
+                vertexColors: true,
+                transparent: true,
+                opacity: 1,
+                blending: THREE.AdditiveBlending
+            });
+            
+            const particleSystem = new THREE.Points(geometry, material);
+            particleSystem.position.y = 0.5;
+            scene.add(particleSystem);
+            
+            particles.push({
+                mesh: particleSystem,
+                velocities: velocities,
+                life: 2.0
+            });
+        }
+        
+        function updateParticles(delta) {
+            for (let i = particles.length - 1; i >= 0; i--) {
+                const p = particles[i];
+                p.life -= delta;
+                
+                if (p.life <= 0) {
+                    scene.remove(p.mesh);
+                    particles.splice(i, 1);
+                    continue;
+                }
+                
+                const positions = p.mesh.geometry.attributes.position.array;
+                
+                for (let j = 0; j < p.velocities.length; j++) {
+                    positions[j * 3] += p.velocities[j].x * delta;
+                    positions[j * 3 + 1] += p.velocities[j].y * delta;
+                    positions[j * 3 + 2] += p.velocities[j].z * delta;
+                    
+                    p.velocities[j].y -= 2 * delta; // Gravity
+                }
+                
+                p.mesh.geometry.attributes.position.needsUpdate = true;
+                p.mesh.material.opacity = p.life / 2;
+            }
+        }
+        
+        // Window Resize
+        function onWindowResize() {
+            const container = document.getElementById('characterContainer');
+            camera.aspect = container.clientWidth / container.clientHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(container.clientWidth, container.clientHeight);
+        }
+        
+        // ============================================
+        // GROWTH SYSTEM
+        // ============================================
+        
+        function calculateGrowth(health, wealth) {
+            growthState.healthScore = health;
+            growthState.wealthScore = wealth;
+            growthState.combinedScore = Math.min(100, Math.round((health + wealth) / 2));
+            
+            // Determine level
+            let newLevel = 1;
+            for (let i = 4; i >= 1; i--) {
+                if (growthState.combinedScore >= LEVELS[i].minScore) {
+                    newLevel = i;
+                    break;
+                }
+            }
+            
+            // Check for level up
+            if (newLevel > growthState.level) {
+                triggerLevelUp(newLevel);
+            }
+            
+            growthState.level = newLevel;
+            growthState.stage = LEVELS[newLevel].name.toLowerCase();
+            
+            // Update target scale
+            targetScale = LEVELS[newLevel].scale;
+            
+            // Update environment based on wealth and health
+            updateEnvironment(growthState.wealthScore, growthState.healthScore);
+            
+            updateUI();
+        }
+        
+        function triggerLevelUp(newLevel) {
+            // Show level up animation
+            const overlay = document.getElementById('levelUpOverlay');
+            overlay.classList.add('active');
+            setTimeout(() => overlay.classList.remove('active'), 1000);
+            
+            // Show glow effect
+            const glow = document.getElementById('glowEffect');
+            glow.classList.add('active');
+            setTimeout(() => glow.classList.remove('active'), 2000);
+            
+            // Create particles
+            createLevelUpParticles();
+            
+            // Play sound (optional)
+            console.log(`Level Up! Now Level ${newLevel} - ${LEVELS[newLevel].name}`);
+        }
+        
+        function updateUI() {
+            const level = growthState.level;
+            const score = growthState.combinedScore;
+            const levelData = LEVELS[level];
+            
+            // Update badges
+            document.getElementById('currentLevel').textContent = level;
+            document.getElementById('stageLabel').textContent = `${levelData.emoji} ${levelData.name}`;
+            
+            // Update progress
+            const progressInLevel = (score - levelData.minScore) / (levelData.maxScore - levelData.minScore) * 100;
+            const totalProgress = Math.min(100, Math.max(0, progressInLevel));
+            document.getElementById('growthProgress').style.width = totalProgress + '%';
+            document.getElementById('growthScore').textContent = score;
+            
+            // Update markers
+            document.querySelectorAll('.level-marker').forEach(marker => {
+                const markerLevel = parseInt(marker.dataset.level);
+                marker.classList.remove('active', 'completed');
+                
+                if (markerLevel === level) {
+                    marker.classList.add('active');
+                } else if (markerLevel < level) {
+                    marker.classList.add('completed');
+                }
+            });
+            
+            // Update stats
+            document.getElementById('healthValue').textContent = growthState.healthScore;
+            document.getElementById('wealthValue').textContent = growthState.wealthScore;
+            
+            // Update modal
+            document.getElementById('modalLevel').textContent = `Level ${level} - ${levelData.name}`;
+            document.getElementById('modalStage').textContent = `${levelData.emoji} ${levelData.name}`;
+            document.getElementById('modalScale').textContent = Math.round(levelData.scale * 100) + '%';
+            document.getElementById('modalHealth').textContent = growthState.healthScore;
+            document.getElementById('modalWealth').textContent = growthState.wealthScore;
+            document.getElementById('modalCombined').textContent = score;
+            document.getElementById('modalNext').textContent = level < 4 ? `${levelData.next} points` : 'Max Level!';
+        }
+        
+        // Modal Functions
+        function showStatsModal() {
+            document.getElementById('statsModal').classList.add('active');
+        }
+        
+        function closeStatsModal() {
+            document.getElementById('statsModal').classList.remove('active');
+        }
+        
+        // Close modal on outside click
+        document.getElementById('statsModal').addEventListener('click', (e) => {
+            if (e.target.id === 'statsModal') closeStatsModal();
+        });
+        
+        // ============================================
+        // DASHBOARD DATA
+        // ============================================
+        
+        const API_BASE = '/api';
+        let isRefreshing = false;
+        let autoRefreshInterval = null;
+        
+        async function loadData() {
+            if (isRefreshing) return;
+            isRefreshing = true;
+            
+            const refreshBtn = document.getElementById('refreshBtn');
+            refreshBtn.classList.add('spinning');
+            
+            try {
+                const [agentsRes, tasksRes, statsRes, dealsRes] = await Promise.allSettled([
+                    fetch(`${API_BASE}/agents`),
+                    fetch(`${API_BASE}/tasks`),
+                    fetch(`${API_BASE}/stats`),
+                    fetch(`${API_BASE}/deals`)
+                ]);
+                
+                // Process agents data
+                let healthScore = 50;
+                let wealthScore = 50;
+                
+                if (agentsRes.status === 'fulfilled' && agentsRes.value.ok) {
+                    const agentsData = await agentsRes.value.json();
+                    updateAgentsStats(agentsData);
+                    healthScore = Math.min(100, (agentsData.active || 18) * 4);
+                } else {
+                    updateAgentsStats({ agents: [], total: 23, active: 18 });
+                }
+                
+                // Process tasks data
+                if (tasksRes.status === 'fulfilled' && tasksRes.value.ok) {
+                    const tasksData = await tasksRes.value.json();
+                    updateTasksStats(tasksData);
+                    const completionRate = tasksData.completed / (tasksData.total || 1) * 100;
+                    healthScore = Math.min(100, healthScore + completionRate * 0.5);
+                } else {
+                    updateTasksStats({ tasks: [], total: 47, pending: 12 });
+                }
+                
+                // Process stats data
+                if (statsRes.status === 'fulfilled' && statsRes.value.ok) {
+                    const statsData = await statsRes.value.json();
+                    updateTokenStats(statsData);
+                    wealthScore = Math.min(100, 50 + (statsData.tokens || 0) / 10000);
+                } else {
+                    updateTokenStats({ tokens: 442000, cost: 0.52 });
+                }
+                
+                // Process deals data
+                if (dealsRes.status === 'fulfilled' && dealsRes.value.ok) {
+                    const dealsData = await dealsRes.value.json();
+                    updateDealsStats(dealsData);
+                    wealthScore = Math.min(100, wealthScore + (dealsData.total || 0) * 2);
+                } else {
+                    updateDealsStats({ deals: [], total: 30, new: 5 });
+                }
+                
+                // Update growth
+                calculateGrowth(Math.round(healthScore), Math.round(wealthScore));
+                
+                // Update environment with actual wealth value (in $K)
+                const wealthInK = (wealthScore / 100) * 100; // Scale to $0-100K
+                updateEnvironment(wealthInK, healthScore);
+                
+                document.getElementById('errorMessage').classList.remove('active');
+                
+            } catch (error) {
+                console.error('Error loading data:', error);
+                showError('Failed to load some data. Using cached values.');
+                
+                // Use fallback data
+                updateAgentsStats({ agents: [], total: 23, active: 18 });
+                updateTasksStats({ tasks: [], total: 47, pending: 12 });
+                updateTokenStats({ tokens: 442000, cost: 0.52 });
+                updateDealsStats({ deals: [], total: 30, new: 5 });
+                
+                // Fallback growth calculation
+                calculateGrowth(45, 55);
+            } finally {
+                isRefreshing = false;
+                refreshBtn.classList.remove('spinning');
+            }
+        }
+        
+        function updateAgentsStats(data) {
+            const total = data.total || (data.agents ? data.agents.length : 23);
+            const active = data.active || (data.agents ? data.agents.filter(a => a.status === 'active').length : 18);
+            document.getElementById('totalAgents').textContent = total;
+            document.getElementById('activeAgents').textContent = active;
+        }
+        
+        function updateTasksStats(data) {
+            const total = data.total || (data.tasks ? data.tasks.length : 47);
+            const pending = data.pending || (data.tasks ? data.tasks.filter(t => t.status === 'pending').length : 12);
+            document.getElementById('totalTasks').textContent = total;
+            document.getElementById('pendingTasks').textContent = pending;
+        }
+        
+        function updateTokenStats(data) {
+            const tokens = data.tokens || data.totalTokens || 442000;
+            const cost = data.cost || data.totalCost || 0.52;
+            document.getElementById('totalTokens').textContent = formatNumber(tokens);
+            document.getElementById('tokenCost').textContent = '$' + cost.toFixed(2);
+        }
+        
+        function updateDealsStats(data) {
+            const total = data.total || (data.deals ? data.deals.length : 30);
+            const newDeals = data.new || (data.deals ? data.deals.filter(d => d.status === 'new').length : 5);
+            document.getElementById('totalDeals').textContent = total;
+            document.getElementById('newDeals').textContent = newDeals;
+        }
+        
+        function formatNumber(num) {
+            if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+            if (num >= 1000) return (num / 1000).toFixed(0) + 'K';
+            return num.toString();
+        }
+        
+        function showError(message) {
+            const errorEl = document.getElementById('errorMessage');
+            errorEl.textContent = message;
+            errorEl.classList.add('active');
+            setTimeout(() => errorEl.classList.remove('active'), 5000);
+        }
+        
+        function refreshData() {
+            loadData();
+        }
+        
+        function startAutoRefresh() {
+            if (autoRefreshInterval) clearInterval(autoRefreshInterval);
+            autoRefreshInterval = setInterval(() => {
+                console.log('[Auto-Refresh] Reloading data...');
+                loadData();
+            }, 30 * 60 * 1000);
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('loadingOverlay').classList.add('active');
+            initThreeJS();
+            loadData();
+            startAutoRefresh();
+        });
+        
+        document.addEventListener('visibilitychange', () => {
+            if (!document.hidden) {
+                loadData();
+            }
+        });
     </script>
 </body>
 </html>

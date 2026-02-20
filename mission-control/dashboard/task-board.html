@@ -4,1258 +4,345 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <meta name="theme-color" content="#2d1b4e">
-    <title>📋 Task Board | Mission Control</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-    
+    <title>Task Board | Mission Control</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --bg-primary: #f5e6c8;
-            --bg-secondary: #e8d4a8;
-            --bg-card: #fff8e7;
-            --accent-primary: #8b7355;
-            --text-primary: #3d3225;
-            --border: #c4b090;
-            --panel-bg: #f5e6c8;
-            --panel-border: #8b7355;
-            --panel-shadow: #5c4a3a;
-            --text-dark: #3d3225;
-            --text-light: #f5e6c8;
-            --accent-pink: #ff6b6b;
-            --accent-yellow: #fcc419;
-            --accent-cyan: #00d4ff;
-            --accent-green: #51cf66;
-        }
-        
-        * { 
-            margin: 0; 
-            padding: 0; 
-            box-sizing: border-box;
-            image-rendering: pixelated;
-        }
-        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Press Start 2P', cursive;
-            background: var(--bg-primary);
-            color: var(--text-dark);
+            font-family: 'Inter', sans-serif;
+            background: #0a0a0f;
+            color: #e0e0e0;
             min-height: 100vh;
-            line-height: 1.6;
-            font-size: 12px;
         }
-        
-        /* Pixel Grid Background */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-image: 
-                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.15) 2px, rgba(0,0,0,0.15) 4px),
-                repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0,0,0,0.15) 2px, rgba(0,0,0,0.15) 4px);
-            pointer-events: none;
-            z-index: 0;
-        }
-        
-        .game-container {
-            position: relative;
-            z-index: 1;
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 15px;
-            min-height: 100vh;
-            padding-bottom: 100px;
-        }
-        
-        /* Header */
-        .game-header {
-            background: linear-gradient(180deg, #5c3d7a 0%, #3d2652 100%);
-            border: 4px solid #2d1b4e;
-            border-radius: 8px;
-            padding: 15px 20px;
-            margin-bottom: 15px;
-            box-shadow: 0 4px 0 #1a0f2e, inset 0 2px 0 rgba(255,255,255,0.1);
+        .header {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            padding: 1rem 2rem;
+            border-bottom: 2px solid #00d4ff;
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 15px;
+            gap: 1rem;
         }
-        
-        .game-title {
+        .logo { 
             font-family: 'Press Start 2P', cursive;
-            font-size: clamp(0.6rem, 2vw, 0.85rem);
-            color: var(--accent-yellow);
-            text-shadow: 3px 3px 0 #2d1b4e;
-            letter-spacing: 2px;
-            line-height: 1.6;
+            font-size: 1rem; 
+            color: #00d4ff; 
         }
-        
-        .game-subtitle {
-            font-size: 0.7rem;
-            color: var(--text-light);
-            opacity: 0.8;
-            margin-top: 5px;
-        }
-        
-        /* Navigation */
-        .nav-panel {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-        
-        .nav-btn {
-            font-family: 'Press Start 2P', cursive;
-            font-size: 10px;
-            padding: 8px 12px;
-            background: #f5e6c8;
-            border: 4px solid #8b7355;
-            border-radius: 0;
-            cursor: pointer;
-            box-shadow: 4px 4px 0 #8b7355;
-            transition: all 0.1s;
-            color: var(--text-dark);
-            line-height: 1.4;
+        .nav { display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center; }
+        .nav a {
+            color: #888;
             text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: all 0.2s;
+            font-size: 0.9rem;
         }
-        
-        .nav-btn:hover {
-            border-color: #00d4ff;
-            transform: translateY(-2px);
-            box-shadow: 4px 6px 0 #8b7355;
-        }
-        
-        .nav-btn:active {
-            transform: translateY(0);
-            box-shadow: 0 0 0 #8b7355;
-        }
-        
-        .nav-btn.active {
-            background: #e8d4a8;
-            border-color: #8b7355;
-        }
-        
-        /* Panel Box */
-        .panel-box {
-            background: var(--panel-bg);
-            border: 4px solid var(--panel-border);
-            border-radius: 8px;
-            padding: 15px;
-            box-shadow: 0 4px 0 var(--panel-shadow), inset 0 2px 0 rgba(255,255,255,0.5);
-            margin-bottom: 15px;
-        }
-        
-        .panel-title {
-            font-family: 'Press Start 2P', cursive;
-            font-size: 0.65rem;
-            color: var(--panel-border);
-            margin-bottom: 12px;
-            padding-bottom: 10px;
-            border-bottom: 3px solid var(--panel-border);
-            line-height: 1.6;
+        .nav a:hover, .nav a.active { color: #00d4ff; background: rgba(0,212,255,0.1); }
+        .refresh-btn {
+            background: rgba(0, 212, 255, 0.2);
+            border: 1px solid #00d4ff;
+            color: #00d4ff;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 0.5rem;
         }
-        
-        /* Stats Bar */
+        .refresh-btn:hover { background: rgba(0, 212, 255, 0.3); }
+        .refresh-btn.spinning { animation: spin 1s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .container { max-width: 1400px; margin: 0 auto; padding: 2rem; }
+        h1 { color: #00d4ff; margin-bottom: 2rem; }
         .stats-bar {
             display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 10px;
-            margin-bottom: 15px;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
         }
-        
-        .stat-box {
-            background: var(--panel-bg);
-            border: 3px solid var(--panel-border);
-            border-radius: 4px;
-            padding: 12px;
+        .stat-card {
+            background: linear-gradient(135deg, #1a1a2e, #0f0f1a);
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 1.5rem;
             text-align: center;
-            box-shadow: 0 3px 0 var(--panel-shadow);
         }
-        
-        .stat-value {
-            font-family: 'Press Start 2P', cursive;
-            font-size: 1rem;
-            color: var(--text-dark);
-            margin-bottom: 5px;
-        }
-        
-        .stat-label {
-            color: #8b7355;
-            font-size: 0.6rem;
-        }
-        
-        /* Priority Summary */
-        .priority-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-        
-        .priority-box {
-            border: 3px solid;
-            border-radius: 6px;
-            padding: 12px;
-            text-align: center;
-            box-shadow: 0 3px 0 var(--panel-shadow);
-        }
-        
-        .priority-box.p0 { background: rgba(255, 107, 107, 0.2); border-color: #ff6b6b; }
-        .priority-box.p1 { background: rgba(252, 196, 25, 0.2); border-color: #fcc419; }
-        .priority-box.p2 { background: rgba(0, 212, 255, 0.2); border-color: #00d4ff; }
-        .priority-box.p3 { background: rgba(134, 142, 153, 0.2); border-color: #adb5bd; }
-        
-        .priority-box .count {
-            font-family: 'Press Start 2P', cursive;
-            font-size: 0.9rem;
-            margin-bottom: 5px;
-        }
-        
-        .priority-box.p0 .count { color: #c92a2a; }
-        .priority-box.p1 .count { color: #e67700; }
-        .priority-box.p2 .count { color: #0066cc; }
-        .priority-box.p3 .count { color: #495057; }
-        
-        .priority-box .label {
-            font-size: 0.55rem;
-            color: var(--text-dark);
-        }
-        
-        /* Main Tabs */
-        .main-tabs {
+        .stat-value { font-size: 2rem; font-weight: 700; color: #00d4ff; }
+        .stat-label { color: #666; font-size: 0.875rem; margin-top: 0.5rem; }
+        .filters {
             display: flex;
-            gap: 8px;
-            margin-bottom: 15px;
+            gap: 1rem;
+            margin-bottom: 2rem;
             flex-wrap: wrap;
         }
-        
-        .main-tab-btn {
-            font-family: 'Press Start 2P', cursive;
-            font-size: 0.6rem;
-            padding: 12px 20px;
-            background: rgba(255,255,255,0.3);
-            border: 3px solid var(--panel-border);
+        .filter-btn {
+            background: #1a1a2e;
+            border: 1px solid #333;
+            color: #888;
+            padding: 0.5rem 1rem;
             border-radius: 6px;
             cursor: pointer;
-            box-shadow: 0 3px 0 var(--panel-shadow);
-            transition: all 0.1s;
-            color: var(--text-dark);
-        }
-        
-        .main-tab-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 0 var(--panel-shadow);
-        }
-        
-        .main-tab-btn.active {
-            background: linear-gradient(180deg, #fcc419 0%, #f59f00 100%);
-            border-color: #e67700;
-        }
-        
-        /* Priority Filter Tabs */
-        .filter-tabs {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 15px;
-            flex-wrap: wrap;
-        }
-        
-        .filter-tab-btn {
-            font-family: 'Press Start 2P', cursive;
-            font-size: 0.5rem;
-            padding: 8px 12px;
-            background: rgba(255,255,255,0.3);
-            border: 3px solid var(--panel-border);
-            border-radius: 6px;
-            cursor: pointer;
-            box-shadow: 0 3px 0 var(--panel-shadow);
-            transition: all 0.1s;
-            color: var(--text-dark);
-        }
-        
-        .filter-tab-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 0 var(--panel-shadow);
-        }
-        
-        .filter-tab-btn.active {
-            background: linear-gradient(180deg, #69db7c 0%, #51cf66 100%);
-            border-color: #2b8a3e;
-        }
-        
-        /* Task Cards */
-        .task-card {
-            background: linear-gradient(180deg, #fff 0%, #f0e6d3 100%);
-            border: 3px solid var(--panel-border);
-            border-radius: 6px;
-            padding: 15px;
-            margin-bottom: 12px;
             transition: all 0.2s;
-            position: relative;
-            overflow: hidden;
         }
-        
-        .task-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0;
-            height: 4px;
-            background: var(--priority-color, var(--accent-cyan));
+        .filter-btn:hover, .filter-btn.active {
+            border-color: #00d4ff;
+            color: #00d4ff;
+            background: rgba(0,212,255,0.1);
         }
-        
-        .task-card.p0::before { background: var(--accent-pink); }
-        .task-card.p1::before { background: var(--accent-yellow); }
-        .task-card.p2::before { background: var(--accent-cyan); }
-        .task-card.p3::before { background: #adb5bd; }
-        
-        .task-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 0 var(--panel-shadow);
+        .task-board {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5rem;
         }
-        
-        .task-header {
+        .column {
+            background: linear-gradient(135deg, #1a1a2e, #0f0f1a);
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+        .column-header {
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 10px;
-            gap: 10px;
-        }
-        
-        .task-title {
-            font-family: 'Press Start 2P', cursive;
-            font-size: 0.6rem;
-            color: var(--text-dark);
-            line-height: 1.6;
-            flex: 1;
-        }
-        
-        .task-id {
-            font-size: 0.65rem;
-            color: #8b7355;
-            margin-top: 4px;
-        }
-        
-        .task-desc {
-            color: #5c4a3a;
-            font-size: 0.75rem;
-            margin-bottom: 10px;
-            line-height: 1.4;
-            font-family: monospace;
-        }
-        
-        .task-meta {
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-            font-size: 0.65rem;
-            color: var(--text-dark);
-        }
-        
-        .meta-item {
-            display: flex;
             align-items: center;
-            gap: 5px;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #333;
         }
-        
-        /* Badges */
-        .priority-badge {
-            padding: 4px 10px;
-            border-radius: 4px;
-            font-size: 0.5rem;
-            font-family: 'Press Start 2P', cursive;
-            border: 2px solid;
-            white-space: nowrap;
+        .column h2 { color: #00d4ff; font-size: 1.1rem; }
+        .count {
+            background: rgba(0,212,255,0.1);
+            color: #00d4ff;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
         }
-        
-        .priority-badge.p0 { background: rgba(255, 107, 107, 0.2); color: #c92a2a; border-color: #ff6b6b; }
-        .priority-badge.p1 { background: rgba(252, 196, 25, 0.2); color: #e67700; border-color: #fcc419; }
-        .priority-badge.p2 { background: rgba(0, 212, 255, 0.2); color: #0066cc; border-color: #00d4ff; }
-        .priority-badge.p3 { background: rgba(134, 142, 153, 0.2); color: #495057; border-color: #adb5bd; }
-        
-        .status-badge {
-            padding: 4px 10px;
-            border-radius: 4px;
-            font-size: 0.5rem;
-            font-family: 'Press Start 2P', cursive;
-            border: 2px solid;
-            white-space: nowrap;
-        }
-        
-        .status-badge.completed { background: rgba(81, 207, 102, 0.2); color: #2b8a3e; border-color: #51cf66; }
-        .status-badge.in_progress { background: rgba(252, 196, 25, 0.2); color: #e67700; border-color: #fcc419; }
-        .status-badge.blocked { background: rgba(255, 107, 107, 0.2); color: #c92a2a; border-color: #ff6b6b; }
-        .status-badge.not_started { background: rgba(134, 142, 153, 0.2); color: #495057; border-color: #adb5bd; }
-        
-        .completed-date {
-            font-size: 0.65rem;
-            color: #51cf66;
-            margin-top: 8px;
-            font-weight: bold;
-        }
-        
-        /* Tab Content */
-        .tab-content {
-            display: none;
-        }
-        
-        .tab-content.active {
-            display: block;
-        }
-        
-        /* Loading State */
-        .loading-container {
-            text-align: center;
-            padding: 40px;
-        }
-        
-        .loading-spinner {
-            display: inline-block;
-            width: 40px;
-            height: 40px;
-            border: 4px solid var(--panel-border);
-            border-top-color: var(--accent-yellow);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        
-        .loading-text {
-            margin-top: 15px;
-            color: var(--panel-border);
-            font-size: 0.7rem;
-        }
-        
-        /* Error State */
-        .error-container {
-            text-align: center;
-            padding: 40px;
-            background: rgba(255, 107, 107, 0.1);
-            border: 3px solid #ff6b6b;
+        .task-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid #333;
             border-radius: 8px;
-        }
-        
-        .error-text {
-            color: #c92a2a;
-            font-size: 0.7rem;
-            margin-bottom: 15px;
-        }
-        
-        .retry-btn {
-            font-family: 'Press Start 2P', cursive;
-            font-size: 0.55rem;
-            padding: 10px 20px;
-            background: linear-gradient(180deg, #fcc419 0%, #f59f00 100%);
-            border: 3px solid #2d1b4e;
-            border-radius: 6px;
-            cursor: pointer;
-            box-shadow: 0 3px 0 #2d1b4e;
-            color: var(--text-dark);
-        }
-        
-        /* Empty State */
-        .empty-state {
-            text-align: center;
-            padding: 40px;
-            color: #8b7355;
-            font-size: 0.7rem;
-        }
-        
-        /* Pagination */
-        .pagination {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 15px;
-            margin-top: 20px;
-            padding: 15px;
-        }
-        
-        .page-info {
-            font-size: 0.6rem;
-            color: var(--panel-border);
-        }
-        
-        .page-btn {
-            font-family: 'Press Start 2P', cursive;
-            font-size: 0.55rem;
-            padding: 10px 20px;
-            background: linear-gradient(180deg, #fcc419 0%, #f59f00 100%);
-            border: 3px solid #2d1b4e;
-            border-radius: 6px;
-            cursor: pointer;
-            box-shadow: 0 3px 0 #2d1b4e;
-            color: var(--text-dark);
-        }
-        
-        .page-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-        
-        /* Refresh Button */
-        .refresh-btn {
-            font-family: 'Press Start 2P', cursive;
-            font-size: 0.5rem;
-            padding: 8px 12px;
-            background: linear-gradient(180deg, #fcc419 0%, #f59f00 100%);
-            border: 3px solid #2d1b4e;
-            border-radius: 6px;
-            cursor: pointer;
-            box-shadow: 0 3px 0 #2d1b4e;
-            color: var(--text-dark);
-        }
-        
-        .refresh-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 0 #2d1b4e;
-        }
-        
-        .refresh-btn.spinning {
-            animation: spin 0.5s linear;
-        }
-        
-        /* Last Updated */
-        .last-updated {
-            font-size: 0.55rem;
-            color: #8b7355;
-            text-align: right;
-            margin-top: 10px;
-        }
-        
-        /* Mobile Nav */
-        .mobile-nav {
-            display: none;
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: #3d2652;
-            border-top: 4px solid #2d1b4e;
-            padding: 10px;
-            z-index: 101;
-            justify-content: space-around;
-        }
-        
-        .mobile-nav-btn {
-            padding: 10px 14px;
-            background: var(--panel-bg);
-            border: 3px solid var(--panel-border);
-            border-radius: 6px;
-            font-family: 'Press Start 2P', cursive;
-            font-size: 0.5rem;
-            color: var(--text-dark);
-            cursor: pointer;
-            text-decoration: none;
-            text-align: center;
-            line-height: 1.4;
-            box-shadow: 0 3px 0 var(--panel-shadow);
-        }
-        
-        /* Task Log Styles */
-        .task-log {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-        
-        .log-section {
-            background: rgba(255,255,255,0.5);
-            border: 2px solid var(--panel-border);
-            border-radius: 6px;
-            padding: 12px;
-        }
-        
-        .log-section-title {
-            font-family: 'Press Start 2P', cursive;
-            font-size: 0.55rem;
-            color: var(--panel-border);
-            margin-bottom: 10px;
-            padding-bottom: 8px;
-            border-bottom: 2px solid var(--border);
-        }
-        
-        .log-entry {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 10px;
-            background: var(--bg-card);
-            border: 2px solid var(--border);
-            border-radius: 4px;
-            margin-bottom: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
             transition: all 0.2s;
         }
-        
-        .log-entry:hover {
-            transform: translateX(4px);
-            border-color: var(--panel-border);
+        .task-card:hover {
+            border-color: #00d4ff;
+            transform: translateY(-2px);
         }
-        
-        .log-entry:last-child {
-            margin-bottom: 0;
-        }
-        
-        .log-icon {
-            font-size: 1.2rem;
-            width: 32px;
-            height: 32px;
+        .task-card h3 { font-size: 0.95rem; margin-bottom: 0.5rem; color: #e0e0e0; }
+        .task-meta {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            background: var(--bg-secondary);
-            border-radius: 4px;
-            border: 2px solid var(--border);
-        }
-        
-        .log-content {
-            flex: 1;
-            min-width: 0;
-        }
-        
-        .log-title {
-            font-size: 0.65rem;
-            color: var(--text-dark);
-            margin-bottom: 4px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        
-        .log-meta {
-            display: flex;
-            gap: 12px;
-            font-size: 0.55rem;
-            color: #8b7355;
+            gap: 1rem;
+            font-size: 0.8rem;
+            color: #666;
             flex-wrap: wrap;
         }
-        
-        .log-id {
-            font-family: monospace;
-            background: rgba(0,0,0,0.05);
-            padding: 2px 6px;
-            border-radius: 3px;
-        }
-        
-        .log-time {
-            color: #666;
-        }
-        
-        .log-priority {
-            font-family: 'Press Start 2P', cursive;
-            font-size: 0.5rem;
-            padding: 4px 8px;
-            border-radius: 4px;
-            border: 2px solid;
-        }
-        
-        .log-priority.p0 { background: rgba(255, 107, 107, 0.2); color: #c92a2a; border-color: #ff6b6b; }
-        .log-priority.p1 { background: rgba(252, 196, 25, 0.2); color: #e67700; border-color: #fcc419; }
-        .log-priority.p2 { background: rgba(0, 212, 255, 0.2); color: #0066cc; border-color: #00d4ff; }
-        .log-priority.p3 { background: rgba(134, 142, 153, 0.2); color: #495057; border-color: #adb5bd; }
-        
-        /* Scrollbar */
-        ::-webkit-scrollbar { width: 10px; }
-        ::-webkit-scrollbar-track { background: var(--panel-bg); border-radius: 5px; }
-        ::-webkit-scrollbar-thumb { background: var(--panel-border); border-radius: 5px; border: 2px solid var(--panel-bg); }
-        
-        /* Responsive */
-        @media (max-width: 768px) {
-            .game-container { padding: 10px; padding-bottom: 90px; }
-            .stats-bar { grid-template-columns: repeat(3, 1fr); }
-            .priority-grid { grid-template-columns: repeat(2, 1fr); }
-            .nav-panel { display: none; }
-            .mobile-nav { display: flex; }
-            .task-header { flex-direction: column; gap: 10px; }
-            .main-tab-btn { font-size: 0.5rem; padding: 10px 14px; }
-        }
+        .priority-p0 { border-left: 3px solid #ff4444; }
+        .priority-p1 { border-left: 3px solid #ffc107; }
+        .priority-p2 { border-left: 3px solid #00d4ff; }
+        .priority-p3 { border-left: 3px solid #888; }
+        .loading { text-align: center; padding: 3rem; color: #888; }
+        .error { text-align: center; padding: 3rem; color: #ff4444; }
+        .last-updated { text-align: center; color: #666; margin-top: 2rem; font-size: 0.875rem; }
     </style>
 </head>
 <body>
-    <div class="game-container">
-        <!-- Header -->
-        <header class="game-header">
-            <div>
-                <div class="game-title">📋 Tasks</div>
-                <div class="game-subtitle">Mission Control HQ</div>
-            </div>
-            
-            <nav class="nav-panel">
-                <a href="/" class="nav-btn">🏠 HQ</a>
-                <a href="/pixel-office" class="nav-btn">🏢 Office</a>
-                <a href="/agent-roster" class="nav-btn">👥 Agents</a>
-                <a href="/deals" class="nav-btn">💼 Deals</a>
-                <a href="/tokens" class="nav-btn">🪙 Tokens</a>
-                <a href="/task-board" class="nav-btn active">📋 Tasks</a>
-                <a href="/logs" class="nav-btn">📝 Logs</a>
-                <a href="/data" class="nav-btn">📁 Data</a>
-            </nav>
-            
-            <button class="refresh-btn" onclick="refreshTasks()">🔄</button>
-        </header>
-
-        <!-- Stats Panel -->
-        <div class="panel-box">
-            <div class="panel-title">📊 TASK STATS</div>
-            <div class="stats-bar">
-                <div class="stat-box">
-                    <div class="stat-value" id="stat-total" style="color: #00d4ff;">-</div>
-                    <div class="stat-label">TOTAL</div>
-                </div>
-                <div class="stat-box">
-                    <div class="stat-value" id="stat-incomplete" style="color: #fcc419;">-</div>
-                    <div class="stat-label">INCOMPLETE</div>
-                </div>
-                <div class="stat-box">
-                    <div class="stat-value" id="stat-completed" style="color: #51cf66;">-</div>
-                    <div class="stat-label">COMPLETED</div>
-                </div>
-                <div class="stat-box">
-                    <div class="stat-value" id="stat-inprogress" style="color: #00d4ff;">-</div>
-                    <div class="stat-label">IN PROGRESS</div>
-                </div>
-                <div class="stat-box">
-                    <div class="stat-value" id="stat-blocked" style="color: #ff6b6b;">-</div>
-                    <div class="stat-label">BLOCKED</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Priority Summary -->
-        <div class="priority-grid">
-            <div class="priority-box p0">
-                <div class="count" id="p0-count">-</div>
-                <div class="label">🔴 P0 CRITICAL</div>
-            </div>
-            <div class="priority-box p1">
-                <div class="count" id="p1-count">-</div>
-                <div class="label">🟡 P1 HIGH</div>
-            </div>
-            <div class="priority-box p2">
-                <div class="count" id="p2-count">-</div>
-                <div class="label">🟢 P2 MEDIUM</div>
-            </div>
-            <div class="priority-box p3">
-                <div class="count" id="p3-count">-</div>
-                <div class="label">⚪ P3 LOW</div>
-            </div>
-        </div>
-
-        <!-- Task Activity Log -->
-        <div class="panel-box">
-            <div class="panel-title">📝 RECENT TASK ACTIVITY</div>
-            <div id="task-log-container">
-                <div class="loading-container" style="padding: 20px;">
-                    <div class="loading-spinner" style="width: 24px; height: 24px;"></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Main Tabs: Incomplete / Completed -->
-        <div class="main-tabs">
-            <button class="main-tab-btn active" id="tab-incomplete" onclick="switchMainTab('incomplete')">
-                📋 Incomplete (<span id="tab-incomplete-count">-</span>)
+    <header class="header">
+        <div class="logo">🎯 Mission Control</div>
+        <nav class="nav">
+            <a href="/">HQ</a>
+            <a href="/pixel-office">Office</a>
+            <a href="/agent-roster">Agents</a>
+            <a href="/deals">DealFlow</a>
+            <a href="/tokens">Tokens</a>
+            <a href="/task-board" class="active">Tasks</a>
+            <a href="/logs">Logs</a>
+            <a href="/data">Data</a>
+            <button class="refresh-btn" id="refreshBtn" onclick="refreshTasks()">
+                <span class="refresh-icon">🔄</span> Refresh
             </button>
-            <button class="main-tab-btn" id="tab-completed" onclick="switchMainTab('completed')">
-                ✅ Completed (<span id="tab-completed-count">-</span>)
-            </button>
+        </nav>
+    </header>
+
+    <div class="container">
+        <h1>📋 Task Board</h1>
+        
+        <div class="stats-bar">
+            <div class="stat-card">
+                <div class="stat-value" id="stat-total">-</div>
+                <div class="stat-label">Total Tasks</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="stat-p0" style="color: #ff4444;">-</div>
+                <div class="stat-label">P0 Critical</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="stat-p1" style="color: #ffc107;">-</div>
+                <div class="stat-label">P1 High</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="stat-completed" style="color: #00ff88;">-</div>
+                <div class="stat-label">Completed</div>
+            </div>
         </div>
 
-        <!-- Priority Filter Tabs (only for incomplete view) -->
-        <div class="filter-tabs" id="priority-filters">
-            <button class="filter-tab-btn active" onclick="filterByPriority('all')">All</button>
-            <button class="filter-tab-btn" onclick="filterByPriority('P0')">🔴 P0</button>
-            <button class="filter-tab-btn" onclick="filterByPriority('P1')">🟡 P1</button>
-            <button class="filter-tab-btn" onclick="filterByPriority('P2')">🟢 P2</button>
-            <button class="filter-tab-btn" onclick="filterByPriority('P3')">⚪ P3</button>
+        <div class="filters">
+            <button class="filter-btn active" onclick="filterTasks('all')">All</button>
+            <button class="filter-btn" onclick="filterTasks('P0')">🔴 P0</button>
+            <button class="filter-btn" onclick="filterTasks('P1')">🟡 P1</button>
+            <button class="filter-btn" onclick="filterTasks('P2')">🔵 P2</button>
+            <button class="filter-btn" onclick="filterTasks('in_progress')">In Progress</button>
         </div>
 
-        <!-- Content Container -->
-        <div id="content-container">
-            <!-- Loading State -->
-            <div class="loading-container" id="loading-state">
-                <div class="loading-spinner"></div>
-                <div class="loading-text">Loading tasks...</div>
-            </div>
-            
-            <!-- Error State -->
-            <div class="error-container" id="error-state" style="display: none;">
-                <div class="error-text">Failed to load tasks</div>
-                <button class="retry-btn" onclick="fetchTasks()">Retry</button>
-            </div>
-            
-            <!-- Task List -->
-            <div id="task-list"></div>
-            
-            <!-- Pagination -->
-            <div class="pagination" id="pagination" style="display: none;">
-                <button class="page-btn" id="prev-btn" onclick="changePage(-1)">◀ Prev</button>
-                <span class="page-info" id="page-info">Page 1 of 1</span>
-                <button class="page-btn" id="next-btn" onclick="changePage(1)">Next ▶</button>
-            </div>
+        <div id="task-content">
+            <div class="loading">Loading tasks...</div>
         </div>
         
-        <!-- Last Updated -->
         <div class="last-updated" id="last-updated"></div>
     </div>
 
-    <!-- Mobile Navigation -->
-    <nav class="mobile-nav">
-        <a href="/" class="mobile-nav-btn">🏠<br>HQ</a>
-        <a href="/pixel-office" class="mobile-nav-btn">🏢<br>Office</a>
-        <a href="/agent-roster" class="mobile-nav-btn">👥<br>Agents</a>
-        <a href="/task-board" class="mobile-nav-btn" style="background: #69db7c;">📋<br>Tasks</a>
-    </nav>
-
     <script>
-        // Global state
         let allTasks = [];
-        let incompleteTasks = [];
-        let completedTasks = [];
-        let currentMainTab = 'incomplete';
-        let currentPriorityFilter = 'all';
-        let currentPage = 1;
-        const tasksPerPage = 50;
-        let autoRefreshInterval;
+        let currentFilter = 'all';
 
-        // Fetch tasks from API
-        async function fetchTasks() {
-            showLoading();
-            
+        async function loadTasks() {
+            const content = document.getElementById('task-content');
+            content.innerHTML = '<div class="loading">Loading tasks...</div>';
+
             try {
-                // Try multiple possible API paths
-                let response;
-                let lastError;
-                
-                const apiPaths = [
-                    '/api/tasks',
-                    '../api/tasks',
-                    '../../api/tasks',
-                    'https://dashboard-ten-sand-20.vercel.app/api/tasks'
-                ];
-                
-                for (const path of apiPaths) {
-                    try {
-                        response = await fetch(path, { 
-                            method: 'GET',
-                            headers: { 'Accept': 'application/json' }
-                        });
-                        if (response.ok) break;
-                    } catch (e) {
-                        lastError = e;
-                        continue;
-                    }
-                }
-                
-                if (!response || !response.ok) {
-                    throw lastError || new Error('Failed to fetch from all API paths');
-                }
-                
+                const response = await fetch('/api/tasks');
+                if (!response.ok) throw new Error('Failed to fetch tasks');
                 const data = await response.json();
                 
                 if (data.success && data.data && data.data.tasks) {
                     allTasks = data.data.tasks;
-                    processTasks();
-                    updateUI();
-                    updateTaskLog();
-                    hideLoading();
-                    updateLastUpdated();
                 } else {
-                    throw new Error('Invalid response format');
+                    // Fallback data
+                    allTasks = getFallbackTasks();
                 }
+                
+                updateStats();
+                renderTasks();
+                updateLastUpdated();
             } catch (error) {
-                console.error('Error fetching tasks:', error);
-                // Use fallback data for demo
-                loadFallbackData();
+                allTasks = getFallbackTasks();
+                updateStats();
+                renderTasks();
+                updateLastUpdated();
             }
         }
-        
-        // Fallback data when API is unavailable
-        function loadFallbackData() {
-            allTasks = [
-                { id: 'TASK-093', taskId: 'TASK-093', priority: 'P0', title: 'Fix HQ Refresh Button + Add Auto-Refresh', status: 'in_progress', assignee: 'Forge', dueDate: 'Feb 19, 9:00 AM', description: 'Add working refresh button and auto-refresh every 30 min to all pages', progress: 50 },
-                { id: 'TASK-095', taskId: 'TASK-095', priority: 'P0', title: 'Real API Integration + Missing Pages Fix', status: 'in_progress', assignee: 'CodeMaster + Forge', dueDate: 'Feb 19, 9:00 AM', description: 'Fix API endpoints and create missing pages for dashboard', progress: 50 },
-                { id: 'TASK-092', taskId: 'TASK-092', priority: 'P0', title: 'Isometric Pixel Office with Real Agent Activity', status: 'in_progress', assignee: 'CodeMaster + Forge + Pixel', dueDate: 'Feb 19, 9:00 AM', description: 'Build isometric pixel office with real-time agent activity', progress: 50 },
-                { id: 'TASK-071', taskId: 'TASK-071', priority: 'P0', title: 'Standardize All Tab Headers to Match HQ Design', status: 'in_progress', assignee: 'Forge-1, Forge-2, Forge-3', dueDate: 'Feb 19, 10:00 AM', description: 'Apply consistent Kairosoft theme headers to all 9 pages', progress: 50 },
-                { id: 'TASK-008', taskId: 'TASK-008', priority: 'P1', title: 'Regional Leads - Hong Kong (47 leads)', status: 'completed', assignee: 'Glasses (Subagent)', dueDate: 'Feb 19, 8:00 AM', description: '47 qualified leads identified with full contact info', progress: 100 },
-                { id: 'TASK-047', taskId: 'TASK-047', priority: 'P1', title: 'Unified Kairosoft Theme + DealFlow', status: 'completed', assignee: 'Forge-1', dueDate: 'Feb 18, 3:00 PM', description: 'DealFlow page deployed with 26 leads, full contact info', progress: 100 }
+
+        function getFallbackTasks() {
+            return [
+                { id: 'TASK-001', title: 'Fix Deployment Failure', priority: 'P0', status: 'in_progress', assignee: 'Code-1', dueDate: 'Feb 19' },
+                { id: 'TASK-002', title: 'Pixel Office Integration', priority: 'P0', status: 'in_progress', assignee: 'Pixel', dueDate: 'Feb 19' },
+                { id: 'TASK-003', title: 'Real API Integration', priority: 'P0', status: 'in_progress', assignee: 'CodeMaster', dueDate: 'Feb 19' },
+                { id: 'TASK-004', title: 'Singapore Regional Leads', priority: 'P1', status: 'in_progress', assignee: 'Scout', dueDate: 'Feb 20' },
+                { id: 'TASK-005', title: 'Larry API Credentials', priority: 'P1', status: 'blocked', assignee: 'BLOCKED', dueDate: 'TBD' },
+                { id: 'TASK-006', title: 'Session Context Optimization', priority: 'P2', status: 'not_started', assignee: 'Nexus', dueDate: 'Feb 25' },
+                { id: 'TASK-007', title: 'Token Usage Predictor', priority: 'P2', status: 'not_started', assignee: 'Code-1', dueDate: 'Feb 26' },
+                { id: 'TASK-008', title: 'Update Documentation', priority: 'P3', status: 'completed', assignee: 'Quill', dueDate: 'Feb 18' }
             ];
-            processTasks();
-            updateUI();
-            updateTaskLog();
-            hideLoading();
-            updateLastUpdated();
         }
 
-        // Process tasks into incomplete and completed arrays
-        function processTasks() {
-            // Filter incomplete tasks (status != "completed")
-            incompleteTasks = allTasks.filter(task => task.status !== 'completed');
-            
-            // Filter completed tasks (status == "completed")
-            completedTasks = allTasks.filter(task => task.status === 'completed');
-            
-            // Sort incomplete tasks: Priority (P0 first), then Due Date
-            const priorityOrder = { 'P0': 0, 'P1': 1, 'P2': 2, 'P3': 3 };
-            incompleteTasks.sort((a, b) => {
-                const priorityDiff = (priorityOrder[a.priority] || 4) - (priorityOrder[b.priority] || 4);
-                if (priorityDiff !== 0) return priorityDiff;
-                
-                // Sort by due date
-                const dateA = a.dueDate ? new Date(a.dueDate) : new Date('9999-12-31');
-                const dateB = b.dueDate ? new Date(b.dueDate) : new Date('9999-12-31');
-                return dateA - dateB;
-            });
-            
-            // Sort completed tasks by completed date (newest first)
-            completedTasks.sort((a, b) => {
-                const dateA = a.completedAt ? new Date(a.completedAt) : new Date(a.updatedAt || 0);
-                const dateB = b.completedAt ? new Date(b.completedAt) : new Date(b.updatedAt || 0);
-                return dateB - dateA;
-            });
-        }
-
-        // Update all UI elements
-        function updateUI() {
-            updateStats();
-            updatePriorityCounts();
-            updateTabCounts();
-            renderTasks();
-        }
-
-        // Update statistics
         function updateStats() {
             document.getElementById('stat-total').textContent = allTasks.length;
-            document.getElementById('stat-incomplete').textContent = incompleteTasks.length;
-            document.getElementById('stat-completed').textContent = completedTasks.length;
-            
-            const inProgressCount = allTasks.filter(t => t.status === 'in_progress').length;
-            const blockedCount = allTasks.filter(t => t.status === 'blocked').length;
-            
-            document.getElementById('stat-inprogress').textContent = inProgressCount;
-            document.getElementById('stat-blocked').textContent = blockedCount;
+            document.getElementById('stat-p0').textContent = allTasks.filter(t => t.priority === 'P0').length;
+            document.getElementById('stat-p1').textContent = allTasks.filter(t => t.priority === 'P1').length;
+            document.getElementById('stat-completed').textContent = allTasks.filter(t => t.status === 'completed').length;
         }
 
-        // Update priority counts (for incomplete tasks only)
-        function updatePriorityCounts() {
-            const p0Count = incompleteTasks.filter(t => t.priority === 'P0').length;
-            const p1Count = incompleteTasks.filter(t => t.priority === 'P1').length;
-            const p2Count = incompleteTasks.filter(t => t.priority === 'P2').length;
-            const p3Count = incompleteTasks.filter(t => t.priority === 'P3').length;
-            
-            document.getElementById('p0-count').textContent = p0Count;
-            document.getElementById('p1-count').textContent = p1Count;
-            document.getElementById('p2-count').textContent = p2Count;
-            document.getElementById('p3-count').textContent = p3Count;
-        }
-
-        // Update tab counts
-        function updateTabCounts() {
-            document.getElementById('tab-incomplete-count').textContent = incompleteTasks.length;
-            document.getElementById('tab-completed-count').textContent = completedTasks.length;
-        }
-
-        // Get tasks to display based on current filters
-        function getFilteredTasks() {
-            let tasks = currentMainTab === 'incomplete' ? incompleteTasks : completedTasks;
-            
-            // Apply priority filter (only for incomplete tab)
-            if (currentMainTab === 'incomplete' && currentPriorityFilter !== 'all') {
-                tasks = tasks.filter(t => t.priority === currentPriorityFilter);
-            }
-            
-            return tasks;
-        }
-
-        // Render tasks
         function renderTasks() {
-            const tasks = getFilteredTasks();
-            const container = document.getElementById('task-list');
+            const content = document.getElementById('task-content');
             
-            if (tasks.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-state">
-                        ${currentMainTab === 'incomplete' 
-                            ? 'No incomplete tasks found.' 
-                            : 'No completed tasks found.'}
-                    </div>
-                `;
-                document.getElementById('pagination').style.display = 'none';
-                return;
-            }
-            
-            // Pagination
-            const totalPages = Math.ceil(tasks.length / tasksPerPage);
-            const startIndex = (currentPage - 1) * tasksPerPage;
-            const endIndex = Math.min(startIndex + tasksPerPage, tasks.length);
-            const pageTasks = tasks.slice(startIndex, endIndex);
-            
-            // Render task cards
-            container.innerHTML = pageTasks.map(task => renderTaskCard(task)).join('');
-            
-            // Update pagination
-            if (totalPages > 1) {
-                document.getElementById('pagination').style.display = 'flex';
-                document.getElementById('page-info').textContent = `Page ${currentPage} of ${totalPages} (${tasks.length} tasks)`;
-                document.getElementById('prev-btn').disabled = currentPage === 1;
-                document.getElementById('next-btn').disabled = currentPage === totalPages;
-            } else {
-                document.getElementById('pagination').style.display = 'none';
-            }
-        }
-
-        // Render a single task card
-        function renderTaskCard(task) {
-            const priorityClass = task.priority ? task.priority.toLowerCase() : 'p2';
-            const statusClass = task.status || 'not_started';
-            const statusLabel = formatStatus(task.status);
-            const priorityLabel = task.priority || 'P2';
-            
-            // Format due date
-            let dueDateText = '';
-            if (task.dueDate) {
-                const dueDate = new Date(task.dueDate);
-                dueDateText = `Due: ${dueDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`;
-            }
-            
-            // Format completed date for completed tasks
-            let completedText = '';
-            if (task.status === 'completed') {
-                const completedDate = task.completedAt 
-                    ? new Date(task.completedAt) 
-                    : (task.updatedAt ? new Date(task.updatedAt) : null);
-                if (completedDate) {
-                    completedText = `<div class="completed-date">✓ Completed: ${completedDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</div>`;
+            let filtered = allTasks;
+            if (currentFilter !== 'all') {
+                if (['P0', 'P1', 'P2', 'P3'].includes(currentFilter)) {
+                    filtered = allTasks.filter(t => t.priority === currentFilter);
+                } else {
+                    filtered = allTasks.filter(t => t.status === currentFilter);
                 }
             }
-            
-            // Truncate description
-            const description = task.description 
-                ? (task.description.length > 150 ? task.description.substring(0, 150) + '...' : task.description)
-                : 'No description';
-            
-            return `
-                <div class="task-card ${priorityClass}">
-                    <div class="task-header">
-                        <div>
-                            <div class="task-title">${escapeHtml(task.title || 'Untitled Task')}</div>
-                            <div class="task-id">${task.taskId || task.id || 'TASK-???'} ${dueDateText ? '| ' + dueDateText : ''}</div>
+
+            const p0Tasks = filtered.filter(t => t.priority === 'P0');
+            const p1Tasks = filtered.filter(t => t.priority === 'P1');
+            const otherTasks = filtered.filter(t => !['P0', 'P1'].includes(t.priority));
+
+            content.innerHTML = `
+                <div class="task-board">
+                    <div class="column">
+                        <div class="column-header">
+                            <h2>🔴 P0 Critical</h2>
+                            <span class="count">${p0Tasks.length}</span>
                         </div>
-                        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                            <span class="priority-badge ${priorityClass}">${priorityLabel}</span>
-                            <span class="status-badge ${statusClass}">${statusLabel}</span>
+                        ${p0Tasks.map(task => renderTaskCard(task)).join('')}
+                    </div>
+                    <div class="column">
+                        <div class="column-header">
+                            <h2>🟡 P1 High</h2>
+                            <span class="count">${p1Tasks.length}</span>
                         </div>
+                        ${p1Tasks.map(task => renderTaskCard(task)).join('')}
                     </div>
-                    <div class="task-desc">${escapeHtml(description)}</div>
-                    <div class="task-meta">
-                        <div class="meta-item">👤 ${escapeHtml(task.assignee || 'Unassigned')}</div>
-                        ${task.estimate ? `<div class="meta-item">⏱️ ${task.estimate}</div>` : ''}
-                        ${task.score ? `<div class="meta-item">🎯 ${task.score}/100</div>` : ''}
+                    <div class="column">
+                        <div class="column-header">
+                            <h2>📋 Other Tasks</h2>
+                            <span class="count">${otherTasks.length}</span>
+                        </div>
+                        ${otherTasks.map(task => renderTaskCard(task)).join('')}
                     </div>
-                    ${completedText}
                 </div>
             `;
         }
 
-        // Format status for display
-        function formatStatus(status) {
-            if (!status) return 'NOT STARTED';
-            return status.replace(/_/g, ' ').toUpperCase();
+        function renderTaskCard(task) {
+            const priorityClass = `priority-${task.priority?.toLowerCase() || 'p2'}`;
+            return `
+                <div class="task-card ${priorityClass}">
+                    <h3>${task.title}</h3>
+                    <div class="task-meta">
+                        <span>👤 ${task.assignee || 'Unassigned'}</span>
+                        <span>🏷️ ${task.priority}</span>
+                        <span>📅 ${task.dueDate || 'No date'}</span>
+                    </div>
+                </div>
+            `;
         }
 
-        // Escape HTML to prevent XSS
-        function escapeHtml(text) {
-            if (!text) return '';
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
-
-        // Switch main tab (incomplete/completed)
-        function switchMainTab(tab) {
-            currentMainTab = tab;
-            currentPage = 1;
-            
-            // Update tab buttons
-            document.querySelectorAll('.main-tab-btn').forEach(btn => btn.classList.remove('active'));
-            document.getElementById(`tab-${tab}`).classList.add('active');
-            
-            // Show/hide priority filters
-            document.getElementById('priority-filters').style.display = tab === 'incomplete' ? 'flex' : 'none';
-            
+        function filterTasks(filter) {
+            currentFilter = filter;
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.textContent.toLowerCase().includes(filter.toLowerCase()) || 
+                    (filter === 'all' && btn.textContent === 'All')) {
+                    btn.classList.add('active');
+                }
+            });
             renderTasks();
         }
 
-        // Filter by priority
-        function filterByPriority(priority) {
-            currentPriorityFilter = priority;
-            currentPage = 1;
+        function refreshTasks() {
+            const refreshBtn = document.getElementById('refreshBtn');
+            refreshBtn.classList.add('spinning');
             
-            // Update filter buttons
-            document.querySelectorAll('.filter-tab-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-            
-            renderTasks();
+            loadTasks().then(() => {
+                setTimeout(() => refreshBtn.classList.remove('spinning'), 500);
+            });
         }
 
-        // Change page
-        function changePage(direction) {
-            const tasks = getFilteredTasks();
-            const totalPages = Math.ceil(tasks.length / tasksPerPage);
-            
-            currentPage += direction;
-            if (currentPage < 1) currentPage = 1;
-            if (currentPage > totalPages) currentPage = totalPages;
-            
-            renderTasks();
-            // Scroll to top of task list
-            document.getElementById('content-container').scrollIntoView({ behavior: 'smooth' });
-        }
-
-        // Show loading state
-        function showLoading() {
-            document.getElementById('loading-state').style.display = 'block';
-            document.getElementById('error-state').style.display = 'none';
-            document.getElementById('task-list').innerHTML = '';
-            document.getElementById('pagination').style.display = 'none';
-        }
-
-        // Hide loading state
-        function hideLoading() {
-            document.getElementById('loading-state').style.display = 'none';
-        }
-
-        // Show error state
-        function showError() {
-            document.getElementById('loading-state').style.display = 'none';
-            document.getElementById('error-state').style.display = 'block';
-            document.getElementById('task-list').innerHTML = '';
-            document.getElementById('pagination').style.display = 'none';
-        }
-
-        // Update last updated timestamp
         function updateLastUpdated() {
             const now = new Date();
             document.getElementById('last-updated').textContent = 
                 `Last updated: ${now.toLocaleTimeString()}`;
         }
 
-        // Refresh button handler
-        async function refreshTasks() {
-            const btn = document.querySelector('.refresh-btn');
-            btn.classList.add('spinning');
-            
-            await fetchTasks();
-            
-            setTimeout(() => btn.classList.remove('spinning'), 500);
-        }
-
-        // Initialize on load
-        document.addEventListener('DOMContentLoaded', () => {
-            fetchTasks();
-            
-            // Auto-refresh every 30 minutes
-            autoRefreshInterval = setInterval(fetchTasks, 30 * 60 * 1000);
-        });
-
-        // Update task log with recent activity
-        function updateTaskLog() {
-            const container = document.getElementById('task-log-container');
-            
-            // Get recent completed tasks
-            const completedTasks = allTasks
-                .filter(t => t.status === 'completed')
-                .sort((a, b) => {
-                    const dateA = a.completedAt || a.updatedAt || 0;
-                    const dateB = b.completedAt || b.updatedAt || 0;
-                    return new Date(dateB) - new Date(dateA);
-                })
-                .slice(0, 5);
-            
-            // Get recent in-progress tasks
-            const inProgressTasks = allTasks
-                .filter(t => t.status === 'in_progress')
-                .slice(0, 5);
-            
-            // Get recent P0 tasks
-            const p0Tasks = allTasks
-                .filter(t => t.priority === 'P0' && t.status !== 'completed')
-                .slice(0, 3);
-            
-            let html = '<div class="task-log">';
-            
-            // Add P0 Critical section if there are P0 tasks
-            if (p0Tasks.length > 0) {
-                html += '<div class="log-section">';
-                html += '<div class="log-section-title">🔴 P0 CRITICAL - ATTENTION REQUIRED</div>';
-                p0Tasks.forEach(task => {
-                    html += renderLogEntry(task, 'p0');
-                });
-                html += '</div>';
-            }
-            
-            // Add in-progress section
-            if (inProgressTasks.length > 0) {
-                html += '<div class="log-section">';
-                html += '<div class="log-section-title">🟡 IN PROGRESS</div>';
-                inProgressTasks.forEach(task => {
-                    html += renderLogEntry(task, 'in_progress');
-                });
-                html += '</div>';
-            }
-            
-            // Add recently completed section
-            if (completedTasks.length > 0) {
-                html += '<div class="log-section">';
-                html += '<div class="log-section-title">✅ RECENTLY COMPLETED</div>';
-                completedTasks.forEach(task => {
-                    html += renderLogEntry(task, 'completed');
-                });
-                html += '</div>';
-            }
-            
-            html += '</div>';
-            container.innerHTML = html;
-        }
+        // Load on page load
+        loadTasks();
         
-        // Render a single log entry
-        function renderLogEntry(task, type) {
-            const time = task.updatedAt || task.completedAt || task.dueDate || 'Recently';
-            const timeDisplay = typeof time === 'string' ? time : new Date(time).toLocaleDateString();
-            
-            let icon = '📝';
-            if (type === 'completed') icon = '✅';
-            if (type === 'in_progress') icon = '🔄';
-            if (type === 'p0') icon = '🔴';
-            
-            return `
-                <div class="log-entry ${type}">
-                    <div class="log-icon">${icon}</div>
-                    <div class="log-content">
-                        <div class="log-title">${escapeHtml(task.title || 'Untitled')}</div>
-                        <div class="log-meta">
-                            <span class="log-id">${task.id || task.taskId || 'TASK-???'}</span>
-                            <span class="log-assignee">👤 ${escapeHtml(task.assignee || 'Unassigned')}</span>
-                            <span class="log-time">${timeDisplay}</span>
-                        </div>
-                    </div>
-                    <div class="log-priority ${task.priority?.toLowerCase() || 'p2'}">${task.priority || 'P2'}</div>
-                </div>
-            `;
-        }
-        // Cleanup on page unload
-        window.addEventListener('beforeunload', () => {
-            if (autoRefreshInterval) {
-                clearInterval(autoRefreshInterval);
-            }
-        });
+        // Auto-refresh every 30 minutes
+        setInterval(loadTasks, 30 * 60 * 1000);
     </script>
 </body>
 </html>

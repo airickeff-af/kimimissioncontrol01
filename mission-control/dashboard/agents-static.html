@@ -4,36 +4,69 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agents | Mission Control</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-            color: #fff;
+            font-family: 'Inter', sans-serif;
+            background: #0a0a0f;
+            color: #e0e0e0;
             min-height: 100vh;
-            padding: 20px;
         }
         .header {
-            background: rgba(255,255,255,0.1);
-            padding: 20px;
-            border-radius: 12px;
-            margin-bottom: 20px;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            padding: 1rem 2rem;
+            border-bottom: 2px solid #00d4ff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
         }
-        .header h1 { font-size: 24px; margin-bottom: 10px; }
-        .header p { opacity: 0.7; }
+        .logo { 
+            font-family: 'Press Start 2P', cursive;
+            font-size: 1rem; 
+            color: #00d4ff; 
+        }
+        .nav { display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center; }
+        .nav a {
+            color: #888;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+        }
+        .nav a:hover, .nav a.active { color: #00d4ff; background: rgba(0,212,255,0.1); }
+        .refresh-btn {
+            background: rgba(0, 212, 255, 0.2);
+            border: 1px solid #00d4ff;
+            color: #00d4ff;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .refresh-btn:hover { background: rgba(0, 212, 255, 0.3); }
+        .container { max-width: 1400px; margin: 0 auto; padding: 2rem; }
+        h1 { color: #00d4ff; margin-bottom: 2rem; }
         .agent-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 16px;
+            gap: 1rem;
         }
         .agent-card {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
+            background: linear-gradient(135deg, #1a1a2e, #0f0f1a);
+            border: 1px solid #333;
             border-radius: 12px;
-            padding: 16px;
-            transition: transform 0.2s;
+            padding: 1.5rem;
+            transition: all 0.2s;
         }
-        .agent-card:hover { transform: translateY(-4px); }
+        .agent-card:hover { border-color: #00d4ff; transform: translateY(-4px); }
         .agent-header {
             display: flex;
             align-items: center;
@@ -44,7 +77,7 @@
             width: 48px;
             height: 48px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #00d4ff, #0099cc);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -53,7 +86,7 @@
         .agent-info h3 { font-size: 16px; margin-bottom: 4px; }
         .agent-info span {
             font-size: 12px;
-            opacity: 0.6;
+            color: #888;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
@@ -64,223 +97,198 @@
             font-size: 12px;
             font-weight: 500;
         }
-        .status-active { background: #10b981; color: #064e3b; }
-        .status-busy { background: #f59e0b; color: #78350f; }
-        .status-idle { background: #6b7280; color: #f3f4f6; }
+        .status-active { background: rgba(0,255,136,0.1); color: #00ff88; }
+        .status-busy { background: rgba(255,193,7,0.1); color: #ffc107; }
+        .status-idle { background: rgba(136,136,136,0.1); color: #888; }
         .stats {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 8px;
             margin-top: 12px;
             padding-top: 12px;
-            border-top: 1px solid rgba(255,255,255,0.1);
+            border-top: 1px solid #333;
         }
         .stat { text-align: center; }
-        .stat-value { font-size: 18px; font-weight: 600; }
-        .stat-label { font-size: 11px; opacity: 0.5; }
-        .nav {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-        .nav a {
-            color: #fff;
-            text-decoration: none;
-            padding: 8px 16px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 8px;
-            font-size: 14px;
-        }
-        .nav a:hover { background: rgba(255,255,255,0.2); }
-        .dummy-notice {
-            background: rgba(245, 158, 11, 0.2);
-            border: 1px solid rgba(245, 158, 11, 0.4);
-            padding: 12px 16px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            font-size: 14px;
-        }
+        .stat-value { font-size: 18px; font-weight: 600; color: #00d4ff; }
+        .stat-label { font-size: 11px; color: #666; }
     </style>
 </head>
 <body>
-    <div class="nav">
-        <a href="/">🏠 HQ</a>
-        <a href="/agents.html">👥 Agents</a>
-        <a href="/task-board.html">📋 Tasks</a>
-        <a href="/office.html">🏢 Office</a>
-    </div>
+    <header class="header">
+        <div class="logo">🎯 Mission Control</div>
+        <nav class="nav">
+            <a href="/">HQ</a>
+            <a href="/pixel-office">Office</a>
+            <a href="/agent-roster" class="active">Agents</a>
+            <a href="/deals">DealFlow</a>
+            <a href="/tokens">Tokens</a>
+            <a href="/task-board">Tasks</a>
+            <a href="/logs">Logs</a>
+            <a href="/data">Data</a>
+            <button class="refresh-btn" onclick="location.reload()">🔄 Refresh</button>
+        </nav>
+    </header>
 
-    <div class="dummy-notice">
-        ⚠️ <strong>DUMMY DATA</strong> — Static version for testing. Real API integration in progress (P1 task).
-    </div>
-
-    <div class="header">
+    <div class="container">
         <h1>👥 Agent Roster</h1>
-        <p>22 agents • 12 active • 5 busy • 5 idle</p>
+        
+        <div class="agent-grid">
+            <!-- Nexus -->
+            <div class="agent-card">
+                <div class="agent-header">
+                    <div class="agent-avatar">🎯</div>
+                    <div class="agent-info">
+                        <h3>Nexus</h3>
+                        <span>AI Lead</span>
+                    </div>
+                </div>
+                <span class="status-badge status-active">Active</span>
+                <div class="stats">
+                    <div class="stat">
+                        <div class="stat-value">94%</div>
+                        <div class="stat-label">Success</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">156</div>
+                        <div class="stat-label">Tasks</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">2.4M</div>
+                        <div class="stat-label">Tokens</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Forge -->
+            <div class="agent-card">
+                <div class="agent-header">
+                    <div class="agent-avatar">🔨</div>
+                    <div class="agent-info">
+                        <h3>Forge</h3>
+                        <span>Design Lead</span>
+                    </div>
+                </div>
+                <span class="status-badge status-busy">Busy</span>
+                <div class="stats">
+                    <div class="stat">
+                        <div class="stat-value">93%</div>
+                        <div class="stat-label">Success</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">89</div>
+                        <div class="stat-label">Tasks</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">1.8M</div>
+                        <div class="stat-label">Tokens</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Code-1 -->
+            <div class="agent-card">
+                <div class="agent-header">
+                    <div class="agent-avatar">💻</div>
+                    <div class="agent-info">
+                        <h3>Code-1</h3>
+                        <span>Backend Dev</span>
+                    </div>
+                </div>
+                <span class="status-badge status-busy">Busy</span>
+                <div class="stats">
+                    <div class="stat">
+                        <div class="stat-value">91%</div>
+                        <div class="stat-label">Success</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">67</div>
+                        <div class="stat-label">Tasks</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">1.2M</div>
+                        <div class="stat-label">Tokens</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pixel -->
+            <div class="agent-card">
+                <div class="agent-header">
+                    <div class="agent-avatar">🎨</div>
+                    <div class="agent-info">
+                        <h3>Pixel</h3>
+                        <span>Pixel Artist</span>
+                    </div>
+                </div>
+                <span class="status-badge status-active">Active</span>
+                <div class="stats">
+                    <div class="stat">
+                        <div class="stat-value">88%</div>
+                        <div class="stat-label">Success</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">45</div>
+                        <div class="stat-label">Tasks</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">890K</div>
+                        <div class="stat-label">Tokens</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sentry -->
+            <div class="agent-card">
+                <div class="agent-header">
+                    <div class="agent-avatar">🛡️</div>
+                    <div class="agent-info">
+                        <h3>Sentry</h3>
+                        <span>DevOps</span>
+                    </div>
+                </div>
+                <span class="status-badge status-active">Active</span>
+                <div class="stats">
+                    <div class="stat">
+                        <div class="stat-value">96%</div>
+                        <div class="stat-label">Success</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">124</div>
+                        <div class="stat-label">Tasks</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">2.1M</div>
+                        <div class="stat-label">Tokens</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Glasses -->
+            <div class="agent-card">
+                <div class="agent-header">
+                    <div class="agent-avatar">🔍</div>
+                    <div class="agent-info">
+                        <h3>Glasses</h3>
+                        <span>Researcher</span>
+                    </div>
+                </div>
+                <span class="status-badge status-idle">Idle</span>
+                <div class="stats">
+                    <div class="stat">
+                        <div class="stat-value">87%</div>
+                        <div class="stat-label">Success</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">34</div>
+                        <div class="stat-label">Tasks</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">650K</div>
+                        <div class="stat-label">Tokens</div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <div class="agent-grid">
-        <!-- Nexus -->
-        <div class="agent-card">
-            <div class="agent-header">
-                <div class="agent-avatar">🎯</div>
-                <div class="agent-info">
-                    <h3>Nexus</h3>
-                    <span>AI Lead</span>
-                </div>
-            </div>
-            <span class="status-badge status-active">Active</span>
-            <div class="stats">
-                <div class="stat">
-                    <div class="stat-value">94%</div>
-                    <div class="stat-label">Success</div>
-                </div>
-                <div class="stat">
-                    <div class="stat-value">156</div>
-                    <div class="stat-label">Tasks</div>
-                </div>
-                <div class="stat">
-                    <div class="stat-value">2.4M</div>
-                    <div class="stat-label">Tokens</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Forge -->
-        <div class="agent-card">
-            <div class="agent-header">
-                <div class="agent-avatar">🔨</div>
-                <div class="agent-info">
-                    <h3>Forge</h3>
-                    <span>Design Lead</span>
-                </div>
-            </div>
-            <span class="status-badge status-busy">Busy</span>
-            <div class="stats">
-                <div class="stat">
-                    <div class="stat-value">93%</div>
-                    <div class="stat-label">Success</div>
-                </div>
-                <div class="stat">
-                    <div class="stat-value">89</div>
-                    <div class="stat-label">Tasks</div>
-                </div>
-                <div class="stat">
-                    <div class="stat-value">1.8M</div>
-                    <div class="stat-label">Tokens</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Code-1 -->
-        <div class="agent-card">
-            <div class="agent-header">
-                <div class="agent-avatar">💻</div>
-                <div class="agent-info">
-                    <h3>Code-1</h3>
-                    <span>Backend Dev</span>
-                </div>
-            </div>
-            <span class="status-badge status-busy">Busy</span>
-            <div class="stats">
-                <div class="stat">
-                    <div class="stat-value">91%</div>
-                    <div class="stat-label">Success</div>
-                </div>
-                <div class="stat">
-                    <div class="stat-value">67</div>
-                    <div class="stat-label">Tasks</div>
-                </div>
-                <div class="stat">
-                    <div class="stat-value">1.2M</div>
-                    <div class="stat-label">Tokens</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Pixel -->
-        <div class="agent-card">
-            <div class="agent-header">
-                <div class="agent-avatar">🎨</div>
-                <div class="agent-info">
-                    <h3>Pixel</h3>
-                    <span>Pixel Artist</span>
-                </div>
-            </div>
-            <span class="status-badge status-active">Active</span>
-            <div class="stats">
-                <div class="stat">
-                    <div class="stat-value">88%</div>
-                    <div class="stat-label">Success</div>
-                </div>
-                <div class="stat">
-                    <div class="stat-value">45</div>
-                    <div class="stat-label">Tasks</div>
-                </div>
-                <div class="stat">
-                    <div class="stat-value">890K</div>
-                    <div class="stat-label">Tokens</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Sentry -->
-        <div class="agent-card">
-            <div class="agent-header">
-                <div class="agent-avatar">🛡️</div>
-                <div class="agent-info">
-                    <h3>Sentry</h3>
-                    <span>DevOps</span>
-                </div>
-            </div>
-            <span class="status-badge status-active">Active</span>
-            <div class="stats">
-                <div class="stat">
-                    <div class="stat-value">96%</div>
-                    <div class="stat-label">Success</div>
-                </div>
-                <div class="stat">
-                    <div class="stat-value">124</div>
-                    <div class="stat-label">Tasks</div>
-                </div>
-                <div class="stat">
-                    <div class="stat-value">2.1M</div>
-                    <div class="stat-label">Tokens</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Glasses -->
-        <div class="agent-card">
-            <div class="agent-header">
-                <div class="agent-avatar">🔍</div>
-                <div class="agent-info">
-                    <h3>Glasses</h3>
-                    <span>Researcher</span>
-                </div>
-            </div>
-            <span class="status-badge status-idle">Idle</span>
-            <div class="stats">
-                <div class="stat">
-                    <div class="stat-value">87%</div>
-                    <div class="stat-label">Success</div>
-                </div>
-                <div class="stat">
-                    <div class="stat-value">34</div>
-                    <div class="stat-label">Tasks</div>
-                </div>
-                <div class="stat">
-                    <div class="stat-value">650K</div>
-                    <div class="stat-label">Tokens</div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // Dummy data loaded - real API coming in P1 fix
-        console.log('[DUMMY] Agents page loaded with static data');
-    </script>
 </body>
 </html>

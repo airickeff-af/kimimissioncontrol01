@@ -4,50 +4,76 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Office | Mission Control</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-            color: #fff;
+            font-family: 'Inter', sans-serif;
+            background: #0a0a0f;
+            color: #e0e0e0;
             min-height: 100vh;
-            padding: 20px;
-        }
-        .nav {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-        .nav a {
-            color: #fff;
-            text-decoration: none;
-            padding: 8px 16px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 8px;
-            font-size: 14px;
-        }
-        .nav a:hover { background: rgba(255,255,255,0.2); }
-        .dummy-notice {
-            background: rgba(245, 158, 11, 0.2);
-            border: 1px solid rgba(245, 158, 11, 0.4);
-            padding: 12px 16px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            font-size: 14px;
         }
         .header {
-            background: rgba(255,255,255,0.1);
-            padding: 20px;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            padding: 1rem 2rem;
+            border-bottom: 2px solid #00d4ff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .logo { 
+            font-family: 'Press Start 2P', cursive;
+            font-size: 1rem; 
+            color: #00d4ff; 
+        }
+        .nav { display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center; }
+        .nav a {
+            color: #888;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+        }
+        .nav a:hover, .nav a.active { color: #00d4ff; background: rgba(0,212,255,0.1); }
+        .refresh-btn {
+            background: rgba(0, 212, 255, 0.2);
+            border: 1px solid #00d4ff;
+            color: #00d4ff;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .refresh-btn:hover { background: rgba(0, 212, 255, 0.3); }
+        .container { max-width: 1400px; margin: 0 auto; padding: 2rem; }
+        h1 { color: #00d4ff; margin-bottom: 2rem; }
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .stat-card {
+            background: linear-gradient(135deg, #1a1a2e, #0f0f1a);
+            border: 1px solid #333;
             border-radius: 12px;
-            margin-bottom: 20px;
+            padding: 1.5rem;
             text-align: center;
         }
-        .header h1 { font-size: 28px; margin-bottom: 10px; }
+        .stat-value { font-size: 2rem; font-weight: 700; color: #00d4ff; }
+        .stat-label { color: #666; font-size: 0.875rem; margin-top: 0.5rem; }
         .office-container {
-            background: rgba(0,0,0,0.3);
-            border-radius: 16px;
-            padding: 40px;
+            background: linear-gradient(135deg, #1a1a2e, #0f0f1a);
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 2rem;
             min-height: 400px;
             display: flex;
             flex-direction: column;
@@ -63,8 +89,8 @@
         .desk {
             width: 60px;
             height: 60px;
-            background: rgba(255,255,255,0.1);
-            border: 2px solid rgba(255,255,255,0.2);
+            background: rgba(0,212,255,0.1);
+            border: 2px solid rgba(0,212,255,0.3);
             border-radius: 8px;
             display: flex;
             align-items: center;
@@ -73,12 +99,12 @@
             transition: all 0.3s;
         }
         .desk:hover {
-            background: rgba(255,255,255,0.2);
+            background: rgba(0,212,255,0.2);
             transform: scale(1.1);
         }
-        .desk.occupied { background: rgba(16, 185, 129, 0.3); border-color: #10b981; }
-        .desk.busy { background: rgba(245, 158, 11, 0.3); border-color: #f59e0b; }
-        .desk.idle { background: rgba(107, 114, 128, 0.3); border-color: #6b7280; }
+        .desk.occupied { background: rgba(0,255,136,0.1); border-color: rgba(0,255,136,0.3); }
+        .desk.busy { background: rgba(255,193,7,0.1); border-color: rgba(255,193,7,0.3); }
+        .desk.idle { background: rgba(136,136,136,0.1); border-color: rgba(136,136,136,0.3); }
         .office-legend {
             display: flex;
             gap: 20px;
@@ -95,94 +121,119 @@
             height: 12px;
             border-radius: 50%;
         }
-        .dot-active { background: #10b981; }
-        .dot-busy { background: #f59e0b; }
-        .dot-idle { background: #6b7280; }
+        .dot-active { background: #00ff88; }
+        .dot-busy { background: #ffc107; }
+        .dot-idle { background: #666; }
         .standup-btn {
             margin-top: 30px;
             padding: 12px 24px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #00d4ff, #0099cc);
             border: none;
             border-radius: 8px;
-            color: #fff;
+            color: #000;
             font-size: 16px;
+            font-weight: 600;
             cursor: pointer;
+            transition: all 0.2s;
         }
-        .standup-btn:hover { opacity: 0.9; }
+        .standup-btn:hover { 
+            transform: translateY(-2px); 
+            box-shadow: 0 4px 12px rgba(0,212,255,0.3);
+        }
     </style>
 </head>
 <body>
-    <div class="nav">
-        <a href="/">🏠 HQ</a>
-        <a href="/agents-static.html">👥 Agents</a>
-        <a href="/tasks-static.html">📋 Tasks</a>
-        <a href="/office-static.html">🏢 Office</a>
-    </div>
+    <header class="header">
+        <div class="logo">🎯 Mission Control</div>
+        <nav class="nav">
+            <a href="/">HQ</a>
+            <a href="/pixel-office" class="active">Office</a>
+            <a href="/agent-roster">Agents</a>
+            <a href="/deals">DealFlow</a>
+            <a href="/tokens">Tokens</a>
+            <a href="/task-board">Tasks</a>
+            <a href="/logs">Logs</a>
+            <a href="/data">Data</a>
+            <button class="refresh-btn" onclick="location.reload()">🔄 Refresh</button>
+        </nav>
+    </header>
 
-    <div class="dummy-notice">
-        ⚠️ <strong>DUMMY DATA</strong> — Static pixel office for testing. Real 3D office coming in P1 fix.
-    </div>
-
-    <div class="header">
+    <div class="container">
         <h1>🏢 Pixel Office</h1>
-        <p>22 agents • Click desks to view agent details</p>
-    </div>
-
-    <div class="office-container">
-        <div class="pixel-office">
-            <!-- Row 1 -->
-            <div class="desk occupied" title="Nexus - AI Lead">🎯</div>
-            <div class="desk busy" title="Forge - Design Lead">🔨</div>
-            <div class="desk busy" title="Code-1 - Backend">💻</div>
-            <div class="desk occupied" title="Pixel - Artist">🎨</div>
-            <div class="desk occupied" title="Sentry - DevOps">🛡️</div>
-            <div class="desk idle" title="Glasses - Research">🔍</div>
-            
-            <!-- Row 2 -->
-            <div class="desk occupied" title="DealFlow - Sales">💼</div>
-            <div class="desk busy" title="CodeMaster - Senior Dev">👨‍💻</div>
-            <div class="desk idle" title="Quill - Writer">✍️</div>
-            <div class="desk idle" title="Gary - Marketing">📢</div>
-            <div class="desk occupied" title="Audit - QA">🔎</div>
-            <div class="desk idle" title="Larry - Social">📱</div>
-            
-            <!-- Row 3 -->
-            <div class="desk occupied" title="Scout - Researcher">🔭>
-            <div class="desk busy" title="PIE - Intelligence">🧠</div>
-            <div class="desk idle" title="ColdCall - Outreach">📞</div>
-            <div class="desk idle" title="Cipher - Security">🔐</div>
-            <div class="desk occupied" title="Buzz - Notifications">🔔</div>
-            <div class="desk idle" title="Spare Desk">🪑</div>
-        </div>
-
-        <div class="office-legend">
-            <div class="legend-item">
-                <div class="legend-dot dot-active"></div>
-                <span>Active (12)</span>
+        
+        <div class="stats-bar">
+            <div class="stat-card">
+                <div class="stat-value">22</div>
+                <div class="stat-label">Total Agents</div>
             </div>
-            <div class="legend-item">
-                <div class="legend-dot dot-busy"></div>
-                <span>Busy (5)</span>
+            <div class="stat-card">
+                <div class="stat-value" style="color: #00ff88;">12</div>
+                <div class="stat-label">Active</div>
             </div>
-            <div class="legend-item">
-                <div class="legend-dot dot-idle"></div>
-                <span>Idle (5)</span>
+            <div class="stat-card">
+                <div class="stat-value" style="color: #ffc107;">5</div>
+                <div class="stat-label">Busy</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" style="color: #888;">5</div>
+                <div class="stat-label">Idle</div>
             </div>
         </div>
 
-        <button class="standup-btn" onclick="alert('Standup starting... (P1 feature)')">
-            🎤 Start Daily Standup
-        </button>
+        <div class="office-container">
+            <div class="pixel-office">
+                <!-- Row 1 -->
+                <div class="desk occupied" title="Nexus - AI Lead">🎯</div>
+                <div class="desk busy" title="Forge - Design Lead">🔨</div>
+                <div class="desk busy" title="Code-1 - Backend">💻</div>
+                <div class="desk occupied" title="Pixel - Artist">🎨</div>
+                <div class="desk occupied" title="Sentry - DevOps">🛡️</div>
+                <div class="desk idle" title="Glasses - Research">🔍</div>
+                
+                <!-- Row 2 -->
+                <div class="desk occupied" title="DealFlow - Sales">💼</div>
+                <div class="desk busy" title="CodeMaster - Senior Dev">👨‍💻</div>
+                <div class="desk idle" title="Quill - Writer">✍️</div>
+                <div class="desk idle" title="Gary - Marketing">📢</div>
+                <div class="desk occupied" title="Audit - QA">🔎</div>
+                <div class="desk idle" title="Larry - Social">📱</div>
+                
+                <!-- Row 3 -->
+                <div class="desk occupied" title="Scout - Researcher">🔭</div>
+                <div class="desk busy" title="PIE - Intelligence">🧠</div>
+                <div class="desk idle" title="ColdCall - Outreach">📞</div>
+                <div class="desk idle" title="Cipher - Security">🔐</div>
+                <div class="desk occupied" title="Buzz - Notifications">🔔</div>
+                <div class="desk idle" title="Spare Desk">🪑</div>
+            </div>
+
+            <div class="office-legend">
+                <div class="legend-item">
+                    <div class="legend-dot dot-active"></div>
+                    <span>Active (12)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot dot-busy"></div>
+                    <span>Busy (5)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot dot-idle"></div>
+                    <span>Idle (5)</span>
+                </div>
+            </div>
+
+            <button class="standup-btn" onclick="alert('Standup starting...')">
+                🎤 Start Daily Standup
+            </button>
+        </div>
     </div>
 
     <script>
-        console.log('[DUMMY] Office page loaded with static pixel grid');
-        
         // Click handlers for desks
         document.querySelectorAll('.desk').forEach(desk => {
             desk.addEventListener('click', () => {
                 const name = desk.getAttribute('title');
-                alert(`Agent: ${name}\n\nDetails coming in P1 fix with real API integration.`);
+                alert(`Agent: ${name}`);
             });
         });
     </script>
