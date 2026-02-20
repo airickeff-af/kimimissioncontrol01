@@ -23,7 +23,7 @@
     "maxAlertsPerHour": 3
   },
   "agentHealth": {
-    "lastFullCheck": 1771560001,
+    "lastFullCheck": 1771581601,
     "abortedSessions": [],
     "archivedSessions": [
       {

@@ -1,20 +1,98 @@
-# MC PROJECT - PHASE 1 PLAN
+# MC PROJECT — REORGANIZED BY PRIORITY
 **Minecraft GenZ Character: Health-Wealth Simulation**
-**Timeline:** 2 Days (Feb 20-21, 2026) — ACCELERATED
-**Team:** 6 Dedicated Agents
-**Deploy Targets:** Vercel + GitHub Pages (dual deployment)
 
 ---
 
-## DEPLOYMENT STRATEGY
+## 🔴 P0 — CRITICAL (Phase 1 Core)
+**Must complete for MVP launch**
 
-| Platform | URL | Purpose |
-|----------|-----|---------|
-| **Vercel (Primary)** | `https://mc-project.vercel.app` | Main deployment, APIs |
-| **GitHub Pages (Backup)** | `https://airickeff-af.github.io/mc-project` | Static backup, no APIs |
-| **GitHub Repo** | `github.com/airickeff-af/mc-project` | Source + backup |
+| Task | Description | Assignee | Hours |
+|------|-------------|----------|-------|
+| **MC-P0-001** | GitHub Repo + GitHub Pages Setup | Sentry-MC | 2 |
+| **MC-P0-002** | 3D VRM Viewer (Three.js) | Forge-MC | 6 |
+| **MC-P0-003** | VRM Character Integration | Code-MC + Pixel-MC | 4 |
+| **MC-P0-004** | Health System API | Code-MC | 4 |
+| **MC-P0-005** | Wealth System API | Code-MC | 4 |
+| **MC-P0-006** | Dual-Metric Mapping | Code-MC + Forge-MC | 4 |
+| **MC-P0-007** | Real-time WebSocket Sync | Code-MC | 3 |
+| **MC-P0-008** | Dashboard with 3D Viewer | Forge-MC | 6 |
+| **MC-P0-009** | Input Interface (Health/Wealth) | Forge-MC | 4 |
+| **MC-P0-010** | Vercel + GitHub Pages Deploy | Sentry-MC | 2 |
+
+**P0 Total: 10 tasks | 39 hours | TARGET: Day 1-2**
 
 ---
+
+## 🟡 P1 — HIGH (Phase 1 Polish)
+**Required for full Phase 1 completion**
+
+| Task | Description | Assignee | Hours |
+|------|-------------|----------|-------|
+| **MC-P1-011** | Anonymous Confessions System | Code-MC + Forge-MC | 6 |
+| **MC-P1-012** | Visual Feedback System | Forge-MC + Pixel-MC | 4 |
+| **MC-P1-013** | Mobile Responsive + PWA | Forge-MC | 4 |
+| **MC-P1-014** | Testing + Bug Fixes | Sentry-MC | 4 |
+| **MC-P1-015** | Documentation | Quill-MC | 6 |
+| **MC-P1-016** | Education Edition Package | Quill-MC + Pixel-MC | 4 |
+
+**P1 Total: 6 tasks | 28 hours | TARGET: Day 2-3**
+
+---
+
+## 🟢 P2 — MEDIUM (Phase 2 Features)
+**Post-launch enhancements**
+
+| Task | Description | Assignee |
+|------|-------------|----------|
+| **MC-P2-017** | Holiday Costume System | Pixel-MC + Forge-MC |
+| **MC-P2-018** | AI Texture Generation | Code-MC + Glasses-MC |
+| **MC-P2-019** | Marketplace Integration | Sentry-MC + Quill-MC |
+| **MC-P2-020** | SaaS Dashboard | Forge-MC + Code-MC |
+| **MC-P2-021** | Enterprise Licensing | Quill-MC + Glasses-MC |
+
+**P2 Total: 5 tasks | TARGET: Month 2-3**
+
+---
+
+## ⚪ P3 — LOW (Phase 3 Scale)
+**Future expansion**
+
+| Task | Description | Assignee |
+|------|-------------|----------|
+| **MC-P3-022** | International Expansion | Glasses-MC |
+| **MC-P3-023** | VR/AR Support | Pixel-MC + Forge-MC |
+| **MC-P3-024** | AI Character Personality | Code-MC |
+| **MC-P3-025** | Community Marketplace | Sentry-MC |
+
+**P3 Total: 4 tasks | TARGET: Month 6+**
+
+---
+
+## PHASE SUMMARY
+
+| Phase | Priority | Tasks | Timeline | Revenue Target |
+|-------|----------|-------|----------|----------------|
+| **Phase 1** | P0-P1 | 16 | 2-3 days | $5K MVP |
+| **Phase 2** | P2 | 5 | Month 2-3 | $20K |
+| **Phase 3** | P3 | 4 | Month 6+ | $100K+ |
+
+---
+
+## CURRENT STATUS (As of Feb 20, 6:00 PM)
+
+### P0 Progress: 90% (9/10 complete)
+- ✅ MC-P0-001 to MC-P0-009: DONE
+- 🟡 MC-P0-010: GitHub push + deploy (in progress)
+
+### P1 Progress: 0% (0/6 started)
+- ⏳ All tasks pending P0 completion
+
+### P2/P3: Not started
+- ⏳ Queued for future phases
+
+---
+
+**Next Action:** Complete MC-P0-010 (deploy) → Start P1 tasks
 
 ---
 
