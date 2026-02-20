@@ -1,4 +1,5 @@
 {
+  "version": 2,
   "rewrites": [
     { "source": "/agents", "destination": "/agents.html" },
     { "source": "/tasks", "destination": "/task-board.html" },
@@ -7,5 +8,13 @@
     { "source": "/logs", "destination": "/logs.html" },
     { "source": "/data", "destination": "/data.html" },
     { "source": "/office", "destination": "/office.html" }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "s-maxage=0" }
+      ]
+    }
   ]
 }
