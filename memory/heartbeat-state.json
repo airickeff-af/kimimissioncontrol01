@@ -23,7 +23,7 @@
     "maxAlertsPerHour": 3
   },
   "agentHealth": {
-    "lastFullCheck": 1771668001,
+    "lastFullCheck": 1771689601,
     "abortedSessions": [],
     "archivedSessions": [
       {
@@ -75,11 +75,11 @@
     "overdueP0Tasks": 0
   },
   "dailyArchival": {
-    "lastRun": 1771614001,
+    "lastRun": 1771700401,
     "filesArchived": 0,
     "filesCompressed": 0,
     "tokensFreed": 0,
-    "totalArchived": 4,
-    "archiveSize": "32K"
+    "totalArchived": 6,
+    "archiveSize": "40K"
   }
 }

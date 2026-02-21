@@ -1,3 +1,10 @@
+---
+ARCHIVED: 2026-02-22T03:00:01+08:00
+ORIGINAL: ARCHITECTURE.md
+TOKENS_EST: 693
+ARCHIVED_BY: archive-old-sessions.sh
+---
+
 # Memory Preservation Architecture
 
 ## Problem Statement
