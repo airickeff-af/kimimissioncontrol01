@@ -19,6 +19,9 @@
     { "source": "/logs", "destination": "/logs.html" },
     { "source": "/data", "destination": "/data.html" },
     { "source": "/standup", "destination": "/standup.html" },
+    { "source": "/vrm", "destination": "/mission-control/dashboard/vrm-viewer.html" },
+    { "source": "/meebit", "destination": "/mission-control/dashboard/vrm-viewer.html" },
+    { "source": "/dashboard/vrm", "destination": "/mission-control/dashboard/vrm-viewer.html" },
     { "source": "/(.*)", "destination": "/$1" }
   ],
   "headers": [
