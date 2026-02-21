@@ -1,0 +1,10 @@
+{
+  "id": "AU-019",
+  "company": "Afterpay (Block)",
+  "type": "BNPL + Crypto",
+  "license": "AUSTRAC DCE",
+  "focus": "Consumer payments, Bitcoin integration",
+  "priority": "P0",
+  "score": 91,
+  "contact_status": "researching"
+}

@@ -1,0 +1,168 @@
+{
+  "region": "Brazil",
+  "research_date": "2026-02-21",
+  "target_count": 30,
+  "leads_found": 15,
+  "source": "Central Bank of Brazil + CVM Research",
+  "leads": [
+    {
+      "id": "BR-001",
+      "company": "Mercado Bitcoin",
+      "type": "Crypto Exchange",
+      "license": "CBSP",
+      "focus": "Largest Brazilian exchange, 3M+ users",
+      "priority": "P0",
+      "score": 95,
+      "contact_status": "researching"
+    },
+    {
+      "id": "BR-002",
+      "company": "Nubank",
+      "type": "Digital Bank",
+      "license": "CBSP",
+      "focus": "70M customers, crypto trading",
+      "priority": "P0",
+      "score": 96,
+      "contact_status": "researching"
+    },
+    {
+      "id": "BR-003",
+      "company": "PicPay",
+      "type": "Payment App",
+      "license": "CBSP",
+      "focus": "60M users, crypto integration",
+      "priority": "P0",
+      "score": 94,
+      "contact_status": "researching"
+    },
+    {
+      "id": "BR-004",
+      "company": "Foxbit",
+      "type": "Crypto Exchange",
+      "license": "CBSP",
+      "focus": "Brazilian exchange, 1M+ users",
+      "priority": "P1",
+      "score": 88,
+      "contact_status": "researching"
+    },
+    {
+      "id": "BR-005",
+      "company": "Bitso",
+      "type": "Crypto Exchange",
+      "license": "CBSP",
+      "focus": "Mexican exchange, Brazil expansion",
+      "priority": "P1",
+      "score": 89,
+      "contact_status": "researching"
+    },
+    {
+      "id": "BR-006",
+      "company": "Ripio",
+      "type": "Crypto Exchange",
+      "license": "CBSP",
+      "focus": "Latin American exchange",
+      "priority": "P1",
+      "score": 87,
+      "contact_status": "researching"
+    },
+    {
+      "id": "BR-007",
+      "company": "Binance Brazil",
+      "type": "Crypto Exchange",
+      "license": "CBSP",
+      "focus": "Global exchange, Brazil operations",
+      "priority": "P0",
+      "score": 92,
+      "contact_status": "researching"
+    },
+    {
+      "id": "BR-008",
+      "company": "Coinbase Brazil",
+      "type": "Crypto Exchange",
+      "license": "CBSP",
+      "focus": "US exchange, Brazil expansion",
+      "priority": "P0",
+      "score": 91,
+      "contact_status": "researching"
+    },
+    {
+      "id": "BR-009",
+      "company": "Hashdex",
+      "type": "Crypto Asset Manager",
+      "license": "CVM",
+      "focus": "Crypto ETFs, institutional",
+      "priority": "P0",
+      "score": 93,
+      "contact_status": "researching"
+    },
+    {
+      "id": "BR-010",
+      "company": "QR Capital",
+      "type": "Crypto Asset Manager",
+      "license": "CVM",
+      "focus": "Crypto funds, tokenization",
+      "priority": "P1",
+      "score": 85,
+      "contact_status": "researching"
+    },
+    {
+      "id": "BR-011",
+      "company": "Transfero",
+      "type": "Payment Solutions",
+      "license": "CBSP",
+      "focus": "Crypto remittances, stablecoins",
+      "priority": "P1",
+      "score": 84,
+      "contact_status": "researching"
+    },
+    {
+      "id": "BR-012",
+      "company": "Biscoint",
+      "type": "Crypto Broker",
+      "license": "CBSP",
+      "focus": "Price comparison, trading",
+      "priority": "P2",
+      "score": 76,
+      "contact_status": "researching"
+    },
+    {
+      "id": "BR-013",
+      "company": "CriptoHub",
+      "type": "Crypto Exchange",
+      "license": "CBSP",
+      "focus": "Brazilian exchange",
+      "priority": "P2",
+      "score": 75,
+      "contact_status": "researching"
+    },
+    {
+      "id": "BR-014",
+      "company": "NovaDAX",
+      "type": "Crypto Exchange",
+      "license": "CBSP",
+      "focus": "Asian exchange, Brazil operations",
+      "priority": "P1",
+      "score": 83,
+      "contact_status": "researching"
+    },
+    {
+      "id": "BR-015",
+      "company": "BitPreco",
+      "type": "Crypto Broker",
+      "license": "CBSP",
+      "focus": "OTC, institutional",
+      "priority": "P2",
+      "score": 78,
+      "contact_status": "researching"
+    }
+  ],
+  "stats": {
+    "p0_leads": 6,
+    "p1_leads": 6,
+    "p2_leads": 3,
+    "cbsp_registered": 15,
+    "exchanges": 9,
+    "asset_managers": 2,
+    "payment_providers": 4
+  }
+}

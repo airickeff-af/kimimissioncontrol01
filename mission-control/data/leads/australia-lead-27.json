@@ -1,0 +1,10 @@
+{
+  "id": "AU-027",
+  "company": "Synthetix",
+  "type": "DeFi Protocol",
+  "license": "N/A - DeFi",
+  "focus": "Synthetic assets, derivatives",
+  "priority": "P0",
+  "score": 90,
+  "contact_status": "researching"
+}

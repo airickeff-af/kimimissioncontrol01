@@ -1,0 +1,169 @@
+{
+  "region": "Nigeria",
+  "research_date": "2026-02-21",
+  "target_count": 30,
+  "leads_found": 15,
+  "source": "SEC Nigeria + CBN Research",
+  "leads": [
+    {
+      "id": "NG-001",
+      "company": "Yellow Card",
+      "type": "Crypto Exchange",
+      "license": "SEC",
+      "focus": "Pan-African exchange, Nigeria HQ",
+      "priority": "P0",
+      "score": 94,
+      "contact_status": "researching"
+    },
+    {
+      "id": "NG-002",
+      "company": "Bundle Africa",
+      "type": "Crypto Wallet",
+      "license": "SEC",
+      "focus": "Social payments, crypto",
+      "priority": "P0",
+      "score": 92,
+      "contact_status": "researching"
+    },
+    {
+      "id": "NG-003",
+      "company": "Quidax",
+      "type": "Crypto Exchange",
+      "license": "SEC",
+      "focus": "Nigerian exchange, 400K+ users",
+      "priority": "P0",
+      "score": 91,
+      "contact_status": "researching"
+    },
+    {
+      "id": "NG-004",
+      "company": "Buycoins",
+      "type": "Crypto Exchange",
+      "license": "SEC",
+      "focus": "Nigerian exchange, 200K+ users",
+      "priority": "P1",
+      "score": 88,
+      "contact_status": "researching"
+    },
+    {
+      "id": "NG-005",
+      "company": "Paxful Nigeria",
+      "type": "P2P Exchange",
+      "license": "N/A - Global",
+      "focus": "P2P Bitcoin trading",
+      "priority": "P0",
+      "score": 90,
+      "contact_status": "researching"
+    },
+    {
+      "id": "NG-006",
+      "company": "Binance Nigeria",
+      "type": "Crypto Exchange",
+      "license": "N/A - Restricted",
+      "focus": "Global exchange, Nigeria P2P",
+      "priority": "P1",
+      "score": 85,
+      "contact_status": "researching"
+    },
+    {
+      "id": "NG-007",
+      "company": "Luno Nigeria",
+      "type": "Crypto Exchange",
+      "license": "SEC",
+      "focus": "South African exchange, Nigeria ops",
+      "priority": "P1",
+      "score": 87,
+      "contact_status": "researching"
+    },
+    {
+      "id": "NG-008",
+      "company": "Patricia",
+      "type": "Crypto Platform",
+      "license": "SEC",
+      "focus": "Gift cards, crypto, payments",
+      "priority": "P1",
+      "score": 84,
+      "contact_status": "researching"
+    },
+    {
+      "id": "NG-009",
+      "company": "Flutterwave",
+      "type": "Payment Infrastructure",
+      "license": "CBN",
+      "focus": "African payments, crypto on-ramp",
+      "priority": "P0",
+      "score": 93,
+      "contact_status": "researching"
+    },
+    {
+      "id": "NG-010",
+      "company": "Chipper Cash",
+      "type": "Remittance App",
+      "license": "CBN",
+      "focus": "Cross-border payments, crypto",
+      "priority": "P0",
+      "score": 91,
+      "contact_status": "researching"
+    },
+    {
+      "id": "NG-011",
+      "company": "Kuda Bank",
+      "type": "Digital Bank",
+      "license": "CBN",
+      "focus": "Neobank, crypto integration",
+      "priority": "P1",
+      "score": 86,
+      "contact_status": "researching"
+    },
+    {
+      "id": "NG-012",
+      "company": "Carbon",
+      "type": "Digital Bank",
+      "license": "CBN",
+      "focus": "Loans, payments, crypto",
+      "priority": "P1",
+      "score": 83,
+      "contact_status": "researching"
+    },
+    {
+      "id": "NG-013",
+      "company": "Afriex",
+      "type": "Remittance App",
+      "license": "N/A - Fintech",
+      "focus": "Crypto remittances",
+      "priority": "P1",
+      "score": 82,
+      "contact_status": "researching"
+    },
+    {
+      "id": "NG-014",
+      "company": "Fliqpay",
+      "type": "Crypto Payments",
+      "license": "SEC",
+      "focus": "B2B crypto payments",
+      "priority": "P2",
+      "score": 79,
+      "contact_status": "researching"
+    },
+    {
+      "id": "NG-015",
+      "company": "Jara",
+      "type": "Crypto Savings",
+      "license": "SEC",
+      "focus": "Dollar savings, stablecoins",
+      "priority": "P2",
+      "score": 77,
+      "contact_status": "researching"
+    }
+  ],
+  "stats": {
+    "p0_leads": 6,
+    "p1_leads": 7,
+    "p2_leads": 2,
+    "sec_registered": 8,
+    "cbn_licensed": 4,
+    "exchanges": 7,
+    "payment_providers": 6,
+    "banks": 2
+  }
+}
