@@ -1,0 +1,200 @@
+{
+  "region": "Australia",
+  "research_date": "2026-02-21",
+  "target_count": 30,
+  "leads_found": 18,
+  "source": "AUSTRAC DCE Registry + AFSL Research",
+  "leads": [
+    {
+      "id": "AU-001",
+      "company": "BTC Markets",
+      "type": "Crypto Exchange",
+      "license": "AUSTRAC DCE + AFSL",
+      "focus": "First AFSL-licensed crypto exchange in Australia",
+      "priority": "P0",
+      "score": 94,
+      "contact_status": "researching"
+    },
+    {
+      "id": "AU-002",
+      "company": "Independent Reserve",
+      "type": "Crypto Exchange",
+      "license": "AUSTRAC DCE",
+      "focus": "AUDM stablecoin, institutional trading",
+      "priority": "P0",
+      "score": 92,
+      "contact_status": "researching"
+    },
+    {
+      "id": "AU-003",
+      "company": "CoinSpot",
+      "type": "Crypto Exchange",
+      "license": "AUSTRAC DCE",
+      "focus": "Retail exchange, crypto card products",
+      "priority": "P0",
+      "score": 90,
+      "contact_status": "researching"
+    },
+    {
+      "id": "AU-004",
+      "company": "CoinJar",
+      "type": "Crypto Exchange",
+      "license": "AUSTRAC DCE",
+      "focus": "Retail + business accounts, crypto card",
+      "priority": "P1",
+      "score": 86,
+      "contact_status": "researching"
+    },
+    {
+      "id": "AU-005",
+      "company": "Swyftx",
+      "type": "Crypto Exchange",
+      "license": "AUSTRAC DCE",
+      "focus": "Fast-growing retail exchange",
+      "priority": "P1",
+      "score": 84,
+      "contact_status": "researching"
+    },
+    {
+      "id": "AU-006",
+      "company": "Digital Surge",
+      "type": "Crypto Exchange",
+      "license": "AUSTRAC DCE",
+      "focus": "Australian exchange, post-administration recovery",
+      "priority": "P2",
+      "score": 75,
+      "contact_status": "researching"
+    },
+    {
+      "id": "AU-007",
+      "company": "Kraken Australia",
+      "type": "Crypto Exchange",
+      "license": "AUSTRAC DCE",
+      "focus": "Global exchange, AU operations",
+      "priority": "P1",
+      "score": 88,
+      "contact_status": "researching"
+    },
+    {
+      "id": "AU-008",
+      "company": "Binance Australia",
+      "type": "Crypto Exchange",
+      "license": "AUSTRAC DCE (suspended)",
+      "focus": "Global exchange, AU operations limited",
+      "priority": "P2",
+      "score": 70,
+      "contact_status": "researching"
+    },
+    {
+      "id": "AU-009",
+      "company": "Stables",
+      "type": "Payment Platform",
+      "license": "AUSTRAC DCE",
+      "focus": "Stablecoin payments, crypto card",
+      "priority": "P1",
+      "score": 82,
+      "contact_status": "researching"
+    },
+    {
+      "id": "AU-010",
+      "company": "Banxa",
+      "type": "Payment Gateway",
+      "license": "AUSTRAC DCE",
+      "focus": "Crypto on-ramp, global payments",
+      "priority": "P0",
+      "score": 89,
+      "contact_status": "researching"
+    },
+    {
+      "id": "AU-011",
+      "company": "Monoova",
+      "type": "Payment Infrastructure",
+      "license": "AUSTRAC DCE",
+      "focus": "Crypto payment processing",
+      "priority": "P1",
+      "score": 83,
+      "contact_status": "researching"
+    },
+    {
+      "id": "AU-012",
+      "company": "ZebPay Australia",
+      "type": "Crypto Exchange",
+      "license": "AUSTRAC DCE",
+      "focus": "Indian exchange, AU expansion",
+      "priority": "P2",
+      "score": 76,
+      "contact_status": "researching"
+    },
+    {
+      "id": "AU-013",
+      "company": "Elbaite",
+      "type": "P2P Exchange",
+      "license": "AUSTRAC DCE",
+      "focus": "Non-custodial P2P trading",
+      "priority": "P2",
+      "score": 74,
+      "contact_status": "researching"
+    },
+    {
+      "id": "AU-014",
+      "company": "Cointree",
+      "type": "Crypto Exchange",
+      "license": "AUSTRAC DCE",
+      "focus": "Retail exchange, bill payments",
+      "priority": "P2",
+      "score": 73,
+      "contact_status": "researching"
+    },
+    {
+      "id": "AU-015",
+      "company": "HardBlock",
+      "type": "OTC Desk",
+      "license": "AUSTRAC DCE",
+      "focus": "Over-the-counter trading",
+      "priority": "P1",
+      "score": 80,
+      "contact_status": "researching"
+    },
+    {
+      "id": "AU-016",
+      "company": "AusMerchant",
+      "type": "OTC Desk",
+      "license": "AUSTRAC DCE",
+      "focus": "Institutional OTC services",
+      "priority": "P1",
+      "score": 81,
+      "contact_status": "researching"
+    },
+    {
+      "id": "AU-017",
+      "company": "Bitcoin.com.au",
+      "type": "Crypto Exchange",
+      "license": "AUSTRAC DCE",
+      "focus": "Retail Bitcoin purchases",
+      "priority": "P2",
+      "score": 72,
+      "contact_status": "researching"
+    },
+    {
+      "id": "AU-018",
+      "company": "ACX.io (Blockchain Global)",
+      "type": "Exchange (Defunct)",
+      "license": "Former AUSTRAC",
+      "focus": "Not operational - exclude",
+      "priority": "P3",
+      "score": 30,
+      "contact_status": "excluded"
+    }
+  ],
+  "stats": {
+    "p0_leads": 4,
+    "p1_leads": 8,
+    "p2_leads": 5,
+    "p3_excluded": 1,
+    "austrac_registered": 17,
+    "afsl_licensed": 1,
+    "exchanges": 10,
+    "otc_desks": 3,
+    "payment_providers": 4
+  }
+}
