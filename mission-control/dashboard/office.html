@@ -276,6 +276,10 @@
             <button class="standup-btn" onclick="startStandup()">
                 🎤 Start Daily Standup
             </button>
+            
+            <button class="standup-btn" onclick="viewVRM()" style="margin-top: 1rem; background: linear-gradient(135deg, #ff6b9d, #ff8fab);">
+                🎭 View Meebit #11318 (VRM)
+            </button>
         </div>
     </div>
 
@@ -363,6 +367,10 @@
 
         function startStandup() {
             alert('🎤 Daily Standup starting...\n\nAll 22 agents have been notified!');
+        }
+
+        function viewVRM() {
+            window.location.href = '/dashboard/vrm-viewer.html';
         }
 
         function refreshOffice() {

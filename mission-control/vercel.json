@@ -12,6 +12,8 @@
     { "source": "/logs", "destination": "/dashboard/logs.html" },
     { "source": "/data", "destination": "/dashboard/data.html" },
     { "source": "/standup", "destination": "/dashboard/standup.html" },
+    { "source": "/vrm", "destination": "/dashboard/vrm-viewer.html" },
+    { "source": "/meebit", "destination": "/dashboard/vrm-viewer.html" },
     { "source": "/", "destination": "/dashboard/index.html" },
     { "source": "/api/(.*)", "destination": "/api/$1" },
     { "source": "/dashboard/(.*)", "destination": "/dashboard/$1" },
