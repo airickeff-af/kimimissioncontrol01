@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#2d1b4e">
+    <title>VRM Viewer | Mission Control</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0a0f;
+            color: #e0e0e0;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+        
+        /* Loading Screen */
+        #loadingScreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1a1a2e 0%, #0a0a0f 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+        
+        #loadingScreen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .loading-spinner {
+            width: 80px;
+            height: 80px;
+            border: 4px solid rgba(0, 212, 255, 0.2);
+            border-top-color: #00d4ff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 2rem;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .loading-text {
+            font-size: 1.5rem;
+            color: #00d4ff;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        
+        .loading-subtext {
+            font-size: 0.9rem;
+            color: #666;
+            text-align: center;
+            max-width: 400px;
+        }
+        
+        .loading-progress {
+            width: 300px;
+            height: 4px;
+            background: rgba(0, 212, 255, 0.2);
+            border-radius: 2px;
+            margin-top: 1.5rem;
+            overflow: hidden;
+        }
+        
+        .loading-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #00d4ff, #00ff88);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        /* Error Screen */
+        #errorScreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1a1a2e 0%, #0a0a0f 100%);
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9998;
+        }
+        
+        #errorScreen.visible {
+            display: flex;
+        }
+        
+        .error-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+        
+        .error-text {
+            font-size: 1.5rem;
+            color: #ff4444;
+            margin-bottom: 1rem;
+        }
+        
+        .error-details {
+            font-size: 0.9rem;
+            color: #666;
+            text-align: center;
+            max-width: 500px;
+            margin-bottom: 2rem;
+        }
+        
+        .retry-btn {
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, #00d4ff, #0099cc);
+            border: none;
+            border-radius: 8px;
+            color: #000;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: transform 0.2s;
+            margin: 0.5rem;
+        }
+        
+        .retry-btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .retry-btn.secondary {
+            background: transparent;
+            border: 1px solid #00d4ff;
+            color: #00d4ff;
+        }
+        
+        /* VRM Container */
+        #vrmContainer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+        
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+        
+        /* UI Overlay */
+        #uiOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+        }
+        
+        #uiOverlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 1.5rem 2rem;
+            background: linear-gradient(180deg, rgba(10,10,15,0.9) 0%, transparent 100%);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            pointer-events: auto;
+        }
+        
+        .logo {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #00d4ff;
+        }
+        
+        .meebit-info {
+            text-align: right;
+        }
+        
+        .meebit-id {
+            font-size: 1rem;
+            color: #fff;
+            font-weight: 600;
+        }
+        
+        .meebit-type {
+            font-size: 0.8rem;
+            color: #888;
+        }
+        
+        .controls {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 1rem;
+            pointer-events: auto;
+        }
+        
+        .control-btn {
+            padding: 0.75rem 1.5rem;
+            background: rgba(0, 212, 255, 0.2);
+            border: 1px solid #00d4ff;
+            border-radius: 8px;
+            color: #00d4ff;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            backdrop-filter: blur(10px);
+        }
+        
+        .control-btn:hover {
+            background: rgba(0, 212, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .fullscreen-btn {
+            position: absolute;
+            bottom: 2rem;
+            right: 2rem;
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, #ff6b9d, #ff8fab);
+            border: none;
+            border-radius: 8px;
+            color: #fff;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.2s;
+            backdrop-filter: blur(10px);
+            pointer-events: auto;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .fullscreen-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(255, 107, 157, 0.4);
+        }
+        
+        .fullscreen-btn.hidden {
+            display: none;
+        }
+        
+        .back-btn {
+            position: absolute;
+            top: 1.5rem;
+            left: 2rem;
+            padding: 0.5rem 1rem;
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid #00d4ff;
+            border-radius: 6px;
+            color: #00d4ff;
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+            pointer-events: auto;
+        }
+        
+        .back-btn:hover {
+            background: rgba(0, 212, 255, 0.2);
+        }
+        
+        /* Exit fullscreen hint */
+        .exit-hint {
+            position: absolute;
+            top: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 0.75rem 1.5rem;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 0.9rem;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            pointer-events: none;
+        }
+        
+        .exit-hint.visible {
+            opacity: 1;
+        }
+        
+        /* Status indicator for AI mode */
+        .ai-status {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            padding: 0.5rem 1rem;
+            background: rgba(0, 255, 136, 0.2);
+            border: 1px solid #00ff88;
+            border-radius: 8px;
+            color: #00ff88;
+            font-size: 0.85rem;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            pointer-events: none;
+        }
+        
+        .ai-status.visible {
+            opacity: 1;
+        }
+        
+        .ai-status-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: #00ff88;
+            border-radius: 50%;
+            margin-right: 0.5rem;
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+        }
+        
+        /* Demo mode indicator */
+        .demo-badge {
+            position: absolute;
+            top: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 0.5rem 1rem;
+            background: rgba(255, 193, 7, 0.2);
+            border: 1px solid #ffc107;
+            border-radius: 8px;
+            color: #ffc107;
+            font-size: 0.85rem;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            pointer-events: none;
+        }
+        
+        .demo-badge.visible {
+            opacity: 1;
+        }
+    </style>
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+            "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/",
+            "@pixiv/three-vrm": "https://unpkg.com/@pixiv/three-vrm@2.1.0/lib/three-vrm.module.js"
+        }
+    }
+    </script>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loadingScreen">
+        <div class="loading-spinner"></div>
+        <div class="loading-text">Loading 3D Character</div>
+        <div class="loading-subtext">Preparing office environment...</div>
+        <div class="loading-progress">
+            <div class="loading-progress-bar" id="progressBar"></div>
+        </div>
+    </div>
+    
+    <!-- Error Screen -->
+    <div id="errorScreen">
+        <div class="error-icon">⚠️</div>
+        <div class="error-text">Failed to Load VRM</div>
+        <div class="error-details" id="errorDetails">Unable to load the VRM file.</div>
+        <div>
+            <button class="retry-btn" onclick="location.reload()">Retry</button>
+            <button class="retry-btn secondary" onclick="startDemoMode()">Use Demo Character</button>
+        </div>
+    </div>
+    
+    <!-- VRM Container -->
+    <div id="vrmContainer"></div>
+    
+    <!-- UI Overlay -->
+    <div id="uiOverlay">
+        <a href="/dashboard/office.html" class="back-btn">← Back to Office</a>
+        <div class="header">
+            <div class="logo">🎯 Mission Control</div>
+            <div class="meebit-info">
+                <div class="meebit-id">3D Avatar</div>
+                <div class="meebit-type">VRM Viewer</div>
+            </div>
+        </div>
+        <div class="controls">
+            <button class="control-btn" id="resetBtn">Reset View</button>
+            <button class="control-btn" id="animBtn">Toggle Animation</button>
+        </div>
+        <button class="fullscreen-btn" id="fullscreenBtn">
+            <span>⛶</span> Enter Fullscreen
+        </button>
+        <div class="exit-hint" id="exitHint">Press ESC to exit fullscreen</div>
+        <div class="ai-status" id="aiStatus">
+            <span class="ai-status-dot"></span>AI Mode Active
+        </div>
+        <div class="demo-badge" id="demoBadge">🎮 Demo Mode</div>
+    </div>
+
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+        import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+        import { VRMLoaderPlugin, VRMUtils } from '@pixiv/three-vrm';
+
+        // Configuration - Try multiple VRM sources
+        const VRM_SOURCES = [
+            'https://files.meebits.app/vrm/11318.vrm',
+            'https://cdn.jsdelivr.net/gh/pixiv/three-vrm@master/packages/three-vrm/examples/models/VRM1_Constraint_Twist_Sample.vrm',
+            'https://cdn.jsdelivr.net/gh/pixiv/three-vrm@master/packages/three-vrm/examples/models/three-vrm-girl.vrm'
+        ];
+        
+        const CORS_PROXIES = [
+            'https://api.allorigins.win/raw?url=',
+            'https://corsproxy.io/?',
+            'https://api.codetabs.com/v1/proxy?quest='
+        ];
+
+        // State
+        let vrm = null;
+        let mixer = null;
+        let clock = new THREE.Clock();
+        let isFullscreen = false;
+        let isAIMode = false;
+        let isDemoMode = false;
+        
+        // AI/Animation State
+        let characterState = 'idle';
+        let targetPosition = null;
+        let currentFurniture = null;
+        let walkSpeed = 1.5;
+        let rotationSpeed = 3.0;
+        let animationTimer = 0;
+        let furniture = [];
+        
+        // Three.js globals
+        let scene, camera, renderer, controls;
+        let cameraOffset = new THREE.Vector3(0, 1.6, 3);
+        let cameraTarget = new THREE.Vector3();
+        let demoCharacter = null;
+
+        // DOM Elements
+        const loadingScreen = document.getElementById('loadingScreen');
+        const progressBar = document.getElementById('progressBar');
+        const errorScreen = document.getElementById('errorScreen');
+        const errorDetails = document.getElementById('errorDetails');
+        const container = document.getElementById('vrmContainer');
+        const uiOverlay = document.getElementById('uiOverlay');
+        const fullscreenBtn = document.getElementById('fullscreenBtn');
+        const exitHint = document.getElementById('exitHint');
+        const aiStatus = document.getElementById('aiStatus');
+        const demoBadge = document.getElementById('demoBadge');
+
+        function updateProgress(percent) {
+            progressBar.style.width = percent + '%';
+        }
+
+        function showError(message) {
+            loadingScreen.classList.add('hidden');
+            errorDetails.textContent = message;
+            errorScreen.classList.add('visible');
+        }
+
+        // Create a demo character (robot/bot) when VRM fails to load
+        function createDemoCharacter() {
+            const group = new THREE.Group();
+            
+            // Materials
+            const bodyMat = new THREE.MeshStandardMaterial({ color: 0x00d4ff, metalness: 0.7, roughness: 0.3 });
+            const jointMat = new THREE.MeshStandardMaterial({ color: 0x2d3748, metalness: 0.5, roughness: 0.5 });
+            const glowMat = new THREE.MeshBasicMaterial({ color: 0x00ff88 });
+            
+            // Head
+            const headGeo = new THREE.BoxGeometry(0.3, 0.35, 0.3);
+            const head = new THREE.Mesh(headGeo, bodyMat);
+            head.position.y = 1.6;
+            head.castShadow = true;
+            group.add(head);
+            
+            // Eyes (glowing)
+            const eyeGeo = new THREE.PlaneGeometry(0.08, 0.05);
+            const leftEye = new THREE.Mesh(eyeGeo, glowMat);
+            leftEye.position.set(-0.08, 1.6, 0.16);
+            group.add(leftEye);
+            const rightEye = new THREE.Mesh(eyeGeo, glowMat);
+            rightEye.position.set(0.08, 1.6, 0.16);
+            group.add(rightEye);
+            
+            // Torso
+            const torsoGeo = new THREE.BoxGeometry(0.4, 0.5, 0.25);
+            const torso = new THREE.Mesh(torsoGeo, bodyMat);
+            torso.position.y = 1.15;
+            torso.castShadow = true;
+            group.add(torso);
+            
+            // Chest glow
+            const chestGeo = new THREE.CircleGeometry(0.08, 16);
+            const chest = new THREE.Mesh(chestGeo, glowMat);
+            chest.position.set(0, 1.2, 0.13);
+            group.add(chest);
+            
+            // Arms
+            const armGeo = new THREE.CylinderGeometry(0.06, 0.05, 0.4, 8);
+            const leftArm = new THREE.Mesh(armGeo, bodyMat);
+            leftArm.position.set(-0.28, 1.15, 0);
+            leftArm.castShadow = true;
+            group.add(leftArm);
+            
+            const rightArm = new THREE.Mesh(armGeo, bodyMat);
+            rightArm.position.set(0.28, 1.15, 0);
+            rightArm.castShadow = true;
+            group.add(rightArm);
+            
+            // Forearms
+            const forearmGeo = new THREE.CylinderGeometry(0.05, 0.04, 0.35, 8);
+            const leftForearm = new THREE.Mesh(forearmGeo, jointMat);
+            leftForearm.position.set(-0.28, 0.8, 0);
+            leftForearm.castShadow = true;
+            group.add(leftForearm);
+            
+            const rightForearm = new THREE.Mesh(forearmGeo, jointMat);
+            rightForearm.position.set(0.28, 0.8, 0);
+            rightForearm.castShadow = true;
+            group.add(rightForearm);
+            
+            // Hands
+            const handGeo = new THREE.BoxGeometry(0.1, 0.1, 0.1);
+            const leftHand = new THREE.Mesh(handGeo, jointMat);
+            leftHand.position.set(-0.28, 0.55, 0);
+            group.add(leftHand);
+            
+            const rightHand = new THREE.Mesh(handGeo, jointMat);
+            rightHand.position.set(0.28, 0.55, 0);
+            group.add(rightHand);
+            
+            // Legs
+            const legGeo = new THREE.CylinderGeometry(0.08, 0.07, 0.5, 8);
+            const leftLeg = new THREE.Mesh(legGeo, bodyMat);
+            leftLeg.position.set(-0.12, 0.65, 0);
+            leftLeg.castShadow = true;
+            group.add(leftLeg);
+            
+            const rightLeg = new THREE.Mesh(legGeo, bodyMat);
+            rightLeg.position.set(0.12, 0.65, 0);
+            rightLeg.castShadow = true;
+            group.add(rightLeg);
+            
+            // Lower legs
+            const lowerLegGeo = new THREE.CylinderGeometry(0.07, 0.06, 0.45, 8);
+            const leftLowerLeg = new THREE.Mesh(lowerLegGeo, jointMat);
+            leftLowerLeg.position.set(-0.12, 0.2, 0);
+            leftLowerLeg.castShadow = true;
+            group.add(leftLowerLeg);
+            
+            const rightLowerLeg = new THREE.Mesh(lowerLegGeo, jointMat);
+            rightLowerLeg.position.set(0.12, 0.2, 0);
+            rightLowerLeg.castShadow = true;
+            group.add(rightLowerLeg);
+            
+            // Feet
+            const footGeo = new THREE.BoxGeometry(0.12, 0.08, 0.2);
+            const leftFoot = new THREE.Mesh(footGeo, jointMat);
+            leftFoot.position.set(-0.12, -0.04, 0.05);
+            group.add(leftFoot);
+            
+            const rightFoot = new THREE.Mesh(footGeo, jointMat);
+            rightFoot.position.set(0.12, -0.04, 0.05);
+            group.add(rightFoot);
+            
+            // Store references for animation
+            group.userData = {
+                head, leftEye, rightEye, chest,
+                leftArm, rightArm, leftForearm, rightForearm,
+                leftHand, rightHand, leftLeg, rightLeg,
+                leftLowerLeg, rightLowerLeg, leftFoot, rightFoot
+            };
+            
+            return group;
+        }
+
+        // Create furniture
+        function createFurniture() {
+            const furnitureGroup = [];
+            
+            // Sofa
+            const sofa = createSofa();
+            sofa.position.set(-2, 0, -2);
+            sofa.rotation.y = Math.PI / 4;
+            scene.add(sofa);
+            furnitureGroup.push({
+                type: 'sofa',
+                object: sofa,
+                position: new THREE.Vector3(-2, 0, -2),
+                sitPosition: new THREE.Vector3(-2, 0.4, -2),
+                interactTime: 5000
+            });
+            
+            // Computer desk
+            const desk = createDesk();
+            desk.position.set(2, 0, -2);
+            desk.rotation.y = -Math.PI / 4;
+            scene.add(desk);
+            furnitureGroup.push({
+                type: 'computer',
+                object: desk,
+                position: new THREE.Vector3(2, 0, -2),
+                sitPosition: new THREE.Vector3(1.6, 0.5, -1.6),
+                interactTime: 8000
+            });
+            
+            // Coffee table
+            const table = createCoffeeTable();
+            table.position.set(0, 0, 1);
+            scene.add(table);
+            furnitureGroup.push({
+                type: 'table',
+                object: table,
+                position: new THREE.Vector3(0, 0, 1),
+                sitPosition: new THREE.Vector3(0, 0.4, 1),
+                interactTime: 4000
+            });
+            
+            // Plant
+            const plant = createPlant();
+            plant.position.set(-2.5, 0, 2);
+            scene.add(plant);
+            furnitureGroup.push({
+                type: 'decoration',
+                object: plant,
+                position: new THREE.Vector3(-2.5, 0, 2),
+                sitPosition: new THREE.Vector3(-2.2, 0, 2),
+                interactTime: 2000
+            });
+            
+            // Bookshelf
+            const bookshelf = createBookshelf();
+            bookshelf.position.set(2.5, 0, 2);
+            scene.add(bookshelf);
+            furnitureGroup.push({
+                type: 'bookshelf',
+                object: bookshelf,
+                position: new THREE.Vector3(2.5, 0, 2),
+                sitPosition: new THREE.Vector3(2.2, 0, 2),
+                interactTime: 3000
+            });
+            
+            return furnitureGroup;
+        }
+        
+        function createSofa() {
+            const group = new THREE.Group();
+            const baseMat = new THREE.MeshStandardMaterial({ color: 0x4a5568 });
+            
+            const base = new THREE.Mesh(new THREE.BoxGeometry(1.8, 0.4, 0.8), baseMat);
+            base.position.y = 0.2;
+            base.castShadow = true;
+            group.add(base);
+            
+            const back = new THREE.Mesh(new THREE.BoxGeometry(1.8, 0.6, 0.2), baseMat);
+            back.position.set(0, 0.5, -0.3);
+            back.castShadow = true;
+            group.add(back);
+            
+            const armGeo = new THREE.BoxGeometry(0.2, 0.5, 0.8);
+            const armLeft = new THREE.Mesh(armGeo, baseMat);
+            armLeft.position.set(-0.8, 0.45, 0);
+            group.add(armLeft);
+            
+            const armRight = new THREE.Mesh(armGeo, baseMat);
+            armRight.position.set(0.8, 0.45, 0);
+            group.add(armRight);
+            
+            return group;
+        }
+        
+        function createDesk() {
+            const group = new THREE.Group();
+            const woodMat = new THREE.MeshStandardMaterial({ color: 0x8b4513 });
+            const legMat = new THREE.MeshStandardMaterial({ color: 0x2d3748 });
+            
+            const top = new THREE.Mesh(new THREE.BoxGeometry(1.5, 0.05, 0.8), woodMat);
+            top.position.y = 0.75;
+            top.castShadow = true;
+            group.add(top);
+            
+            const positions = [[-0.7, -0.35], [0.7, -0.35], [-0.7, 0.35], [0.7, 0.35]];
+            positions.forEach(pos => {
+                const leg = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.75, 0.05), legMat);
+                leg.position.set(pos[0], 0.375, pos[1]);
+                group.add(leg);
+            });
+            
+            const monitor = new THREE.Mesh(new THREE.BoxGeometry(0.4, 0.3, 0.02), new THREE.MeshStandardMaterial({ color: 0x1a202c }));
+            monitor.position.set(0, 0.9, -0.2);
+            group.add(monitor);
+            
+            const screen = new THREE.Mesh(new THREE.PlaneGeometry(0.36, 0.26), new THREE.MeshBasicMaterial({ color: 0x00d4ff, emissive: 0x00d4ff, emissiveIntensity: 0.5 }));
+            screen.position.set(0, 0.9, -0.19);
+            group.add(screen);
+            
+            return group;
+        }
+        
+        function createCoffeeTable() {
+            const group = new THREE.Group();
+            const topMat = new THREE.MeshStandardMaterial({ color: 0x4a5568 });
+            
+            const top = new THREE.Mesh(new THREE.CylinderGeometry(0.6, 0.6, 0.05, 32), topMat);
+            top.position.y = 0.4;
+            top.castShadow = true;
+            group.add(top);
+            
+            for (let i = 0; i < 3; i++) {
+                const angle = (i / 3) * Math.PI * 2;
+                const leg = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.02, 0.4, 8), new THREE.MeshStandardMaterial({ color: 0x2d3748 }));
+                leg.position.set(Math.cos(angle) * 0.3, 0.2, Math.sin(angle) * 0.3);
+                group.add(leg);
+            }
+            
+            return group;
+        }
+        
+        function createPlant() {
+            const group = new THREE.Group();
+            
+            const pot = new THREE.Mesh(new THREE.CylinderGeometry(0.25, 0.2, 0.4, 16), new THREE.MeshStandardMaterial({ color: 0xc05621 }));
+            pot.position.y = 0.2;
+            group.add(pot);
+            
+            const plant = new THREE.Mesh(new THREE.SphereGeometry(0.3, 16, 16), new THREE.MeshStandardMaterial({ color: 0x48bb78 }));
+            plant.position.y = 0.6;
+            group.add(plant);
+            
+            return group;
+        }
+        
+        function createBookshelf() {
+            const group = new THREE.Group();
+            const frameMat = new THREE.MeshStandardMaterial({ color: 0x8b4513 });
+            
+            const frame = new THREE.Mesh(new THREE.BoxGeometry(1.2, 2, 0.3), frameMat);
+            frame.position.y = 1;
+            group.add(frame);
+            
+            for (let i = 1; i < 4; i++) {
+                const shelf = new THREE.Mesh(new THREE.BoxGeometry(1.1, 0.02, 0.28), frameMat);
+                shelf.position.y = i * 0.5;
+                group.add(shelf);
+                
+                for (let j = 0; j < 5; j++) {
+                    const bookHeight = 0.15 + Math.random() * 0.1;
+                    const book = new THREE.Mesh(
+                        new THREE.BoxGeometry(0.02 + Math.random() * 0.02, bookHeight, 0.2),
+                        new THREE.MeshStandardMaterial({ color: new THREE.Color().setHSL(Math.random(), 0.7, 0.5) })
+                    );
+                    book.position.set(-0.4 + j * 0.15 + Math.random() * 0.05, i * 0.5 + bookHeight / 2, 0);
+                    group.add(book);
+                }
+            }
+            
+            return group;
+        }
+
+        function initScene() {
+            updateProgress(20);
+            
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x0a0a0f);
+            scene.fog = new THREE.Fog(0x0a0a0f, 5, 15);
+            
+            camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.set(0, 1.6, 3.5);
+            
+            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            renderer.shadowMap.enabled = true;
+            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+            container.appendChild(renderer.domElement);
+            
+            controls = new OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.05;
+            controls.minDistance = 1.5;
+            controls.maxDistance = 8;
+            controls.maxPolarAngle = Math.PI / 2 - 0.05;
+            controls.target.set(0, 1.0, 0);
+            
+            // Lighting
+            scene.add(new THREE.AmbientLight(0xffffff, 0.3));
+            
+            const mainLight = new THREE.DirectionalLight(0xffffff, 0.8);
+            mainLight.position.set(5, 10, 7);
+            mainLight.castShadow = true;
+            mainLight.shadow.mapSize.width = 2048;
+            mainLight.shadow.mapSize.height = 2048;
+            scene.add(mainLight);
+            
+            scene.add(new THREE.DirectionalLight(0x00d4ff, 0.4).position.set(-5, 5, -5));
+            scene.add(new THREE.DirectionalLight(0xff6b9d, 0.2).position.set(-5, 0, 5));
+            
+            // Floor
+            const floor = new THREE.Mesh(
+                new THREE.PlaneGeometry(20, 20),
+                new THREE.MeshStandardMaterial({ color: 0x1a1a2e, roughness: 0.8, metalness: 0.1 })
+            );
+            floor.rotation.x = -Math.PI / 2;
+            floor.receiveShadow = true;
+            scene.add(floor);
+            
+            // Grid
+            const grid = new THREE.GridHelper(20, 40, 0x00d4ff, 0x2d3748);
+            grid.position.y = 0.01;
+            grid.material.opacity = 0.15;
+            grid.material.transparent = true;
+            scene.add(grid);
+            
+            // Walls
+            const wallMat = new THREE.MeshStandardMaterial({ color: 0x2d3748, roughness: 0.9 });
+            const backWall = new THREE.Mesh(new THREE.BoxGeometry(10, 4, 0.2), wallMat);
+            backWall.position.set(0, 2, -4);
+            scene.add(backWall);
+            
+            const sideWall = new THREE.Mesh(new THREE.BoxGeometry(0.2, 4, 10), wallMat);
+            sideWall.position.set(-4, 2, 0);
+            scene.add(sideWall);
+            
+            // Window
+            const windowFrame = new THREE.Mesh(new THREE.BoxGeometry(2, 1.5, 0.1), new THREE.MeshStandardMaterial({ color: 0x1a202c }));
+            windowFrame.position.set(2, 2.5, -3.9);
+            scene.add(windowFrame);
+            
+            const glass = new THREE.Mesh(new THREE.PlaneGeometry(1.8, 1.3), new THREE.MeshBasicMaterial({ 
+                color: 0x87ceeb, transparent: true, opacity: 0.3, emissive: 0x87ceeb, emissiveIntensity: 0.2 
+            }));
+            glass.position.set(2, 2.5, -3.85);
+            scene.add(glass);
+            
+            furniture = createFurniture();
+            updateProgress(40);
+        }
+
+        async function loadVRM() {
+            updateProgress(50);
+            
+            const loader = new GLTFLoader();
+            loader.register((parser) => new VRMLoaderPlugin(parser));
+            
+            for (const vrmUrl of VRM_SOURCES) {
+                for (let i = 0; i < CORS_PROXIES.length; i++) {
+                    const proxyUrl = CORS_PROXIES[i] + encodeURIComponent(vrmUrl);
+                    
+                    try {
+                        updateProgress(60 + (i * 10));
+                        
+                        const gltf = await new Promise((resolve, reject) => {
+                            loader.load(proxyUrl, resolve, undefined, reject);
+                        });
+                        
+                        vrm = gltf.userData.vrm;
+                        VRMUtils.removeUnnecessaryVertices(gltf.scene);
+                        VRMUtils.combineSkeletons(gltf.scene);
+                        
+                        scene.add(vrm.scene);
+                        vrm.scene.position.set(0, 0, 0);
+                        
+                        vrm.scene.traverse((obj) => {
+                            if (obj.isMesh) {
+                                obj.castShadow = true;
+                                obj.receiveShadow = true;
+                            }
+                        });
+                        
+                        updateProgress(100);
+                        setTimeout(() => loadingScreen.classList.add('hidden'), 500);
+                        return vrm;
+                        
+                    } catch (error) {
+                        console.warn(`Failed: ${vrmUrl} via proxy ${i + 1}`);
+                    }
+                }
+            }
+            
+            throw new Error('All VRM sources failed');
+        }
+
+        // Demo mode - use robot character
+        window.startDemoMode = function() {
+            errorScreen.classList.remove('visible');
+            loadingScreen.classList.remove('hidden');
+            updateProgress(80);
+            
+            isDemoMode = true;
+            demoCharacter = createDemoCharacter();
+            scene.add(demoCharacter);
+            
+            updateProgress(100);
+            setTimeout(() => {
+                loadingScreen.classList.add('hidden');
+                demoBadge.classList.add('visible');
+            }, 500);
+        };
+
+        // AI Character Controller
+        function updateAICharacter(delta) {
+            const character = isDemoMode ? demoCharacter : (vrm ? vrm.scene : null);
+            if (!character || !isAIMode) return;
+            
+            const position = character.position;
+            
+            switch (characterState) {
+                case 'idle':
+                    animationTimer -= delta;
+                    if (animationTimer <= 0) {
+                        chooseNextAction();
+                    }
+                    // Idle breathing
+                    if (isDemoMode && demoCharacter) {
+                        demoCharacter.userData.chest.material.emissiveIntensity = 0.5 + Math.sin(Date.now() * 0.003) * 0.3;
+                    }
+                    break;
+                    
+                case 'walking':
+                    if (targetPosition) {
+                        const direction = new THREE.Vector3().subVectors(targetPosition, position);
+                        const distance = direction.length();
+                        
+                        if (distance < 0.1) {
+                            characterState = 'interacting';
+                            animationTimer = currentFurniture ? currentFurniture.interactTime / 1000 : 2;
+                        } else {
+                            direction.normalize();
+                            position.add(direction.multiplyScalar(walkSpeed * delta));
+                            
+                            const targetRotation = Math.atan2(direction.x, direction.z);
+                            const rotationDiff = targetRotation - character.rotation.y;
+                            character.rotation.y += rotationDiff * rotationSpeed * delta;
+                            
+                            playWalkAnimation(delta);
+                        }
+                    }
+                    break;
+                    
+                case 'interacting':
+                    animationTimer -= delta;
+                    if (animationTimer <= 0) {
+                        characterState = 'idle';
+                        animationTimer = 1 + Math.random() * 2;
+                        currentFurniture = null;
+                        if (isDemoMode) resetDemoPose();
+                    } else {
+                        playInteractAnimation(delta);
+                    }
+                    break;
+            }
+            
+            updateCameraFollow();
+        }
+        
+        function chooseNextAction() {
+            const rand = Math.random();
+            
+            if (rand < 0.7 && furniture.length > 0) {
+                currentFurniture = furniture[Math.floor(Math.random() * furniture.length)];
+                targetPosition = currentFurniture.sitPosition.clone();
+                characterState = 'walking';
+            } else {
+                targetPosition = new THREE.Vector3((Math.random() - 0.5) * 6, 0, (Math.random() - 0.5) * 6);
+                characterState = 'walking';
+            }
+        }
+        
+        function playWalkAnimation(delta) {
+            if (isDemoMode && demoCharacter) {
+                const time = Date.now() * 0.01;
+                const parts = demoCharacter.userData;
+                
+                // Leg swing
+                parts.leftLeg.rotation.x = Math.sin(time) * 0.3;
+                parts.rightLeg.rotation.x = Math.sin(time + Math.PI) * 0.3;
+                parts.leftLowerLeg.rotation.x = Math.abs(Math.sin(time)) * 0.3;
+                parts.rightLowerLeg.rotation.x = Math.abs(Math.sin(time + Math.PI)) * 0.3;
+                
+                // Arm swing
+                parts.leftArm.rotation.x = Math.sin(time + Math.PI) * 0.2;
+                parts.rightArm.rotation.x = Math.sin(time) * 0.2;
+                
+                // Bobbing
+                demoCharacter.position.y = Math.abs(Math.sin(time * 2)) * 0.03;
+            } else if (vrm && vrm.humanoid) {
+                const time = Date.now() * 0.005;
+                const walkCycle = Math.sin(time) * 0.3;
+                
+                vrm.humanoid.getNormalizedBoneNode('leftUpperLeg').rotation.x = walkCycle;
+                vrm.humanoid.getNormalizedBoneNode('rightUpperLeg').rotation.x = -walkCycle;
+                vrm.humanoid.getNormalizedBoneNode('leftLowerLeg').rotation.x = Math.abs(walkCycle) * 0.5;
+                vrm.humanoid.getNormalizedBoneNode('rightLowerLeg').rotation.x = Math.abs(-walkCycle) * 0.5;
+                vrm.humanoid.getNormalizedBoneNode('leftUpperArm').rotation.x = -walkCycle * 0.5;
+                vrm.humanoid.getNormalizedBoneNode('rightUpperArm').rotation.x = walkCycle * 0.5;
+                vrm.scene.position.y = Math.abs(Math.sin(time * 2)) * 0.03;
+            }
+        }
+        
+        function playInteractAnimation(delta) {
+            if (isDemoMode && demoCharacter) {
+                const time = Date.now() * 0.001;
+                const parts = demoCharacter.userData;
+                
+                if (currentFurniture && currentFurniture.type === 'computer') {
+                    // Typing
+                    const typing = Math.sin(time * 15) * 0.1;
+                    parts.leftForearm.rotation.x = -0.5 + typing;
+                    parts.rightForearm.rotation.x = -0.5 - typing;
+                    parts.leftHand.rotation.z = typing * 0.5;
+                    parts.rightHand.rotation.z = -typing * 0.5;
+                } else {
+                    // Look around
+                    parts.head.rotation.y = Math.sin(time * 0.5) * 0.2;
+                }
+            }
+        }
+        
+        function resetDemoPose() {
+            if (!demoCharacter) return;
+            const parts = demoCharacter.userData;
+            Object.values(parts).forEach(part => {
+                if (part && part.rotation) part.rotation.set(0, 0, 0);
+            });
+            demoCharacter.position.y = 0;
+        }
+        
+        function updateCameraFollow() {
+            const character = isDemoMode ? demoCharacter : (vrm ? vrm.scene : null);
+            if (!character) return;
+            
+            const characterPos = character.position.clone();
+            const targetPos = characterPos.clone().add(cameraOffset);
+            camera.position.lerp(targetPos, 0.05);
+            cameraTarget.lerp(characterPos.clone().add(new THREE.Vector3(0, 1, 0)), 0.1);
+            camera.lookAt(cameraTarget);
+        }
+
+        function toggleFullscreen() {
+            isFullscreen = !isFullscreen;
+            
+            if (isFullscreen) {
+                uiOverlay.classList.add('hidden');
+                fullscreenBtn.classList.add('hidden');
+                exitHint.classList.add('visible');
+                aiStatus.classList.add('visible');
+                if (isDemoMode) demoBadge.classList.add('visible');
+                
+                isAIMode = true;
+                characterState = 'idle';
+                animationTimer = 1;
+                
+                if (document.documentElement.requestFullscreen) {
+                    document.documentElement.requestFullscreen();
+                }
+                
+                controls.enabled = false;
+            } else {
+                uiOverlay.classList.remove('hidden');
+                fullscreenBtn.classList.remove('hidden');
+                exitHint.classList.remove('visible');
+                aiStatus.classList.remove('visible');
+                demoBadge.classList.remove('visible');
+                
+                isAIMode = false;
+                characterState = 'idle';
+                if (isDemoMode) resetDemoPose();
+                
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+                
+                controls.enabled = true;
+                camera.position.set(0, 1.6, 3.5);
+                controls.target.set(0, 1.0, 0);
+                controls.update();
+            }
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            const delta = clock.getDelta();
+            
+            if (vrm) vrm.update(delta);
+            updateAICharacter(delta);
+            
+            if (controls.enabled) controls.update();
+            renderer.render(scene, camera);
+        }
+
+        async function init() {
+            try {
+                initScene();
+                
+                try {
+                    await loadVRM();
+                } catch (error) {
+                    console.warn('VRM load failed, using demo mode:', error);
+                    window.startDemoMode();
+                }
+                
+                animate();
+                
+                window.addEventListener('resize', () => {
+                    camera.aspect = window.innerWidth / window.innerHeight;
+                    camera.updateProjectionMatrix();
+                    renderer.setSize(window.innerWidth, window.innerHeight);
+                });
+                
+                document.getElementById('resetBtn').addEventListener('click', () => {
+                    camera.position.set(0, 1.6, 3.5);
+                    controls.target.set(0, 1.0, 0);
+                    controls.update();
+                });
+                
+                let animating = false;
+                document.getElementById('animBtn').addEventListener('click', () => {
+                    animating = !animating;
+                    if (vrm && vrm.expressionManager) {
+                        vrm.expressionManager.setValue('happy', animating ? 0.5 : 0);
+                    }
+                });
+                
+                fullscreenBtn.addEventListener('click', toggleFullscreen);
+                
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape' && isFullscreen) {
+                        toggleFullscreen();
+                    }
+                });
+                
+                document.addEventListener('fullscreenchange', () => {
+                    if (!document.fullscreenElement && isFullscreen) {
+                        toggleFullscreen();
+                    }
+                });
+                
+            } catch (error) {
+                console.error('Initialization failed:', error);
+                showError(error.message || 'An unexpected error occurred.');
+            }
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
+    </script>
+</body>
+</html>

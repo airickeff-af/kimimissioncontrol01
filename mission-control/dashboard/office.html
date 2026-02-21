@@ -66,12 +66,81 @@
             margin-bottom: 2rem;
         }
         
-        /* Pixel Office Grid */
-        .office-grid {
+        /* Department Tabs */
+        .dept-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+        .dept-tab {
+            padding: 0.5rem 1rem;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid #333;
+            border-radius: 6px;
+            color: #888;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+        .dept-tab:hover { border-color: #00d4ff; color: #00d4ff; }
+        .dept-tab.active { 
+            background: rgba(0,212,255,0.1); 
+            border-color: #00d4ff; 
+            color: #00d4ff; 
+        }
+        
+        /* Office Layout - Hierarchical */
+        .office-layout {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+        
+        /* Executive Suite */
+        .executive-suite {
+            background: linear-gradient(135deg, rgba(255,215,0,0.05), rgba(255,170,0,0.02));
+            border: 2px solid rgba(255,215,0,0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+        .suite-header {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.7rem;
+            color: #ffd700;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        
+        /* Department Sections */
+        .dept-section {
+            background: rgba(0,0,0,0.2);
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 1rem;
+        }
+        .dept-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #333;
+        }
+        .dept-header h3 { color: #00d4ff; font-size: 0.9rem; }
+        .dept-count {
+            background: rgba(0,212,255,0.1);
+            color: #00d4ff;
+            padding: 0.15rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+        }
+        
+        /* Desk Grid */
+        .desk-grid {
             display: grid;
-            grid-template-columns: repeat(6, 1fr);
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
             gap: 1rem;
-            margin-bottom: 2rem;
         }
         .desk {
             aspect-ratio: 1;
@@ -89,19 +158,30 @@
         }
         .desk:hover {
             border-color: #00d4ff;
-            transform: scale(1.05);
-            box-shadow: 0 0 20px rgba(0,212,255,0.2);
+            transform: scale(1.08);
+            box-shadow: 0 0 20px rgba(0,212,255,0.3);
+            z-index: 10;
         }
         .desk.occupied { background: rgba(0,255,136,0.05); border-color: rgba(0,255,136,0.3); }
-        .desk.occupied:hover { border-color: #00ff88; box-shadow: 0 0 20px rgba(0,255,136,0.2); }
+        .desk.occupied:hover { border-color: #00ff88; box-shadow: 0 0 20px rgba(0,255,136,0.3); }
         .desk.busy { background: rgba(255,193,7,0.05); border-color: rgba(255,193,7,0.3); }
-        .desk.busy:hover { border-color: #ffc107; box-shadow: 0 0 20px rgba(255,193,7,0.2); }
+        .desk.busy:hover { border-color: #ffc107; box-shadow: 0 0 20px rgba(255,193,7,0.3); }
         .desk.idle { background: rgba(136,136,136,0.05); border-color: rgba(136,136,136,0.2); }
         .desk.idle:hover { border-color: #888; }
+        .desk.lead { 
+            background: linear-gradient(135deg, rgba(0,212,255,0.1), rgba(0,153,204,0.05));
+            border-color: rgba(0,212,255,0.5);
+            box-shadow: 0 0 10px rgba(0,212,255,0.1);
+        }
+        .desk.executive {
+            background: linear-gradient(135deg, rgba(255,215,0,0.1), rgba(255,170,0,0.05));
+            border-color: rgba(255,215,0,0.5);
+            box-shadow: 0 0 15px rgba(255,215,0,0.2);
+        }
         
         .agent-sprite {
             font-size: 2rem;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.25rem;
             animation: bounce 2s infinite;
         }
         @keyframes bounce {
@@ -121,21 +201,35 @@
         }
         
         .desk-name {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             color: #888;
+            text-align: center;
+            font-weight: 600;
+        }
+        .desk-role {
+            font-size: 0.55rem;
+            color: #666;
             text-align: center;
         }
         .status-dot {
             position: absolute;
-            top: 8px;
-            right: 8px;
+            top: 6px;
+            right: 6px;
             width: 8px;
             height: 8px;
             border-radius: 50%;
         }
+        .dot-occupied { background: #00ff88; box-shadow: 0 0 8px #00ff88; }
         .dot-active { background: #00ff88; box-shadow: 0 0 8px #00ff88; }
         .dot-busy { background: #ffc107; box-shadow: 0 0 8px #ffc107; }
         .dot-idle { background: #666; }
+        .lead-badge {
+            position: absolute;
+            top: 6px;
+            left: 6px;
+            font-size: 0.6rem;
+            color: #ffd700;
+        }
         
         /* Agent Detail Panel */
         .agent-panel {
@@ -144,6 +238,11 @@
             border-radius: 8px;
             padding: 1.5rem;
             display: none;
+            animation: slideIn 0.3s ease;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         .agent-panel.active { display: block; }
         .agent-panel-header {
@@ -164,10 +263,25 @@
         }
         .agent-panel h2 { color: #fff; margin-bottom: 0.25rem; }
         .agent-panel p { color: #888; }
+        .agent-stats-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        .agent-stat-box {
+            background: rgba(0,0,0,0.3);
+            border-radius: 6px;
+            padding: 0.75rem;
+            text-align: center;
+        }
+        .agent-stat-value { font-size: 1.25rem; font-weight: 700; color: #00d4ff; }
+        .agent-stat-label { font-size: 0.7rem; color: #666; }
         .agent-actions {
             display: flex;
             gap: 0.5rem;
             margin-top: 1rem;
+            flex-wrap: wrap;
         }
         .agent-action-btn {
             padding: 0.5rem 1rem;
@@ -177,8 +291,9 @@
             color: #00d4ff;
             cursor: pointer;
             font-size: 0.85rem;
+            transition: all 0.2s;
         }
-        .agent-action-btn:hover { background: rgba(0,212,255,0.2); }
+        .agent-action-btn:hover { background: rgba(0,212,255,0.2); transform: translateY(-1px); }
         
         /* Stats */
         .stats-bar {
@@ -198,9 +313,13 @@
         .stat-label { color: #666; font-size: 0.8rem; }
         
         /* Standup Button */
+        .action-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
         .standup-btn {
-            display: block;
-            width: 100%;
             padding: 1rem;
             background: linear-gradient(135deg, #00d4ff, #0099cc);
             border: none;
@@ -209,9 +328,43 @@
             font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
-            margin-top: 1rem;
+            transition: all 0.2s;
         }
         .standup-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,212,255,0.3); }
+        .standup-btn.secondary {
+            background: linear-gradient(135deg, #ff6b9d, #ff8fab);
+            color: #fff;
+        }
+        .standup-btn.tertiary {
+            background: transparent;
+            border: 1px solid #00d4ff;
+            color: #00d4ff;
+        }
+        
+        /* Hierarchy Legend */
+        .legend {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            font-size: 0.8rem;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #888;
+        }
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 3px;
+        }
+        .legend-dot.executive { background: rgba(255,215,0,0.3); border: 1px solid #ffd700; }
+        .legend-dot.lead { background: rgba(0,212,255,0.1); border: 1px solid #00d4ff; }
+        .legend-dot.active { background: rgba(0,255,136,0.1); border: 1px solid #00ff88; }
+        .legend-dot.busy { background: rgba(255,193,7,0.1); border: 1px solid #ffc107; }
+        .legend-dot.idle { background: rgba(136,136,136,0.1); border: 1px solid #666; }
     </style>
 </head>
 <body>
@@ -253,8 +406,28 @@
             </div>
         </div>
 
+        <!-- Legend -->
+        <div class="legend">
+            <div class="legend-item"><div class="legend-dot executive"></div> Executive</div>
+            <div class="legend-item"><div class="legend-dot lead"></div> Team Lead</div>
+            <div class="legend-item"><div class="legend-dot active"></div> Active</div>
+            <div class="legend-item"><div class="legend-dot busy"></div> Busy</div>
+            <div class="legend-item"><div class="legend-dot idle"></div> Idle</div>
+        </div>
+
+        <!-- Department Tabs -->
+        <div class="dept-tabs">
+            <div class="dept-tab active" onclick="filterDept('all')">All Departments</div>
+            <div class="dept-tab" onclick="filterDept('executive')">👑 Executive</div>
+            <div class="dept-tab" onclick="filterDept('engineering')">💻 Engineering</div>
+            <div class="dept-tab" onclick="filterDept('design')">🎨 Design</div>
+            <div class="dept-tab" onclick="filterDept('research')">🔍 Research</div>
+            <div class="dept-tab" onclick="filterDept('marketing')">📢 Marketing</div>
+            <div class="dept-tab" onclick="filterDept('operations')">🛡️ Operations</div>
+        </div>
+
         <div class="office-container">
-            <div class="office-grid" id="officeGrid">
+            <div class="office-layout" id="officeLayout">
                 <!-- Generated by JS -->
             </div>
             
@@ -266,63 +439,193 @@
                         <p id="panelRole">Click on any desk to view details</p>
                     </div>
                 </div>
+                <div class="agent-stats-row" id="panelStats" style="display: none;">
+                    <div class="agent-stat-box">
+                        <div class="agent-stat-value" id="panelTasks">0</div>
+                        <div class="agent-stat-label">Tasks</div>
+                    </div>
+                    <div class="agent-stat-box">
+                        <div class="agent-stat-value" id="panelTokens">0</div>
+                        <div class="agent-stat-label">Tokens</div>
+                    </div>
+                    <div class="agent-stat-box">
+                        <div class="agent-stat-value" id="panelFiles">0</div>
+                        <div class="agent-stat-label">Files</div>
+                    </div>
+                </div>
                 <div class="agent-actions" id="panelActions" style="display: none;">
                     <button class="agent-action-btn" onclick="pingAgent()">📡 Ping</button>
                     <button class="agent-action-btn" onclick="assignTask()">📋 Assign Task</button>
                     <button class="agent-action-btn" onclick="viewProfile()">👤 Profile</button>
+                    <button class="agent-action-btn" onclick="sendMessage()">💬 Message</button>
                 </div>
             </div>
             
-            <button class="standup-btn" onclick="startStandup()">
-                🎤 Start Daily Standup
-            </button>
-            
-            <button class="standup-btn" onclick="viewVRM()" style="margin-top: 1rem; background: linear-gradient(135deg, #ff6b9d, #ff8fab);">
-                🎭 View Meebit #11318 (VRM)
-            </button>
+            <div class="action-buttons">
+                <button class="standup-btn" onclick="startStandup()">
+                    🎤 Start Daily Standup
+                </button>
+                <button class="standup-btn secondary" onclick="viewVRM()">
+                    🎭 View Meebit #11318
+                </button>
+                <button class="standup-btn tertiary" onclick="shuffleDesks()">
+                    🎲 Shuffle Desks
+                </button>
+            </div>
         </div>
     </div>
 
     <script>
-        // 22 Agents for the office
+        // 22 Agents organized by department with hierarchy
         const OFFICE_AGENTS = [
-            { id: 'nexus', name: 'Nexus', role: 'Orchestrator', emoji: '👑', status: 'occupied', color: '#ffd700' },
-            { id: 'glasses', name: 'Glasses', role: 'Researcher', emoji: '🔍', status: 'occupied', color: '#00d4ff' },
-            { id: 'quill', name: 'Quill', role: 'Writer', emoji: '✍️', status: 'idle', color: '#ff6b9d' },
-            { id: 'pixel', name: 'Pixel', role: 'Designer', emoji: '🎨', status: 'busy', color: '#a855f7' },
-            { id: 'gary', name: 'Gary', role: 'Marketing', emoji: '📢', status: 'idle', color: '#f97316' },
-            { id: 'larry', name: 'Larry', role: 'Social', emoji: '🐦', status: 'occupied', color: '#1da1f2' },
-            { id: 'sentry', name: 'Sentry', role: 'DevOps', emoji: '🛡️', status: 'occupied', color: '#00ff88' },
-            { id: 'audit', name: 'Audit', role: 'QA', emoji: '✅', status: 'busy', color: '#22c55e' },
-            { id: 'cipher', name: 'Cipher', role: 'Security', emoji: '🔐', status: 'occupied', color: '#6366f1' },
-            { id: 'dealflow', name: 'DealFlow', role: 'Lead Gen', emoji: '💼', status: 'busy', color: '#f59e0b' },
-            { id: 'scout', name: 'Scout', role: 'Researcher', emoji: '🔭', status: 'occupied', color: '#8b5cf6' },
-            { id: 'coldcall', name: 'ColdCall', role: 'Outreach', emoji: '📞', status: 'idle', color: '#ec4899' },
-            { id: 'code-1', name: 'Code-1', role: 'Developer', emoji: '💻', status: 'busy', color: '#06b6d4' },
-            { id: 'code-2', name: 'Code-2', role: 'Backend', emoji: '⚙️', status: 'busy', color: '#14b8a6' },
-            { id: 'code-3', name: 'Code-3', role: 'Frontend', emoji: '🎨', status: 'occupied', color: '#84cc16' },
-            { id: 'forge', name: 'Forge', role: 'Design Lead', emoji: '🔨', status: 'busy', color: '#f59e0b' },
-            { id: 'pie', name: 'PIE', role: 'Intelligence', emoji: '🥧', status: 'occupied', color: '#a855f7' },
-            { id: 'buzz', name: 'Buzz', role: 'Notifications', emoji: '🔔', status: 'occupied', color: '#ef4444' },
-            { id: 'forge-2', name: 'Forge-2', role: 'UI Designer', emoji: '✏️', status: 'busy', color: '#f472b6' },
-            { id: 'forge-3', name: 'Forge-3', role: 'UX Designer', emoji: '🎯', status: 'idle', color: '#fb923c' },
-            { id: 'glasses-2', name: 'Glasses-2', role: 'Analyst', emoji: '📊', status: 'occupied', color: '#60a5fa' },
-            { id: 'scout-2', name: 'Scout-2', role: 'Scout', emoji: '🕵️', status: 'idle', color: '#a78bfa' }
+            // Executive
+            { id: 'nexus', name: 'Nexus', role: 'Orchestrator', emoji: '👑', status: 'occupied', dept: 'executive', isLead: true, tasks: 156, tokens: '1.2M', files: 89 },
+            
+            // Engineering (6 agents)
+            { id: 'code-1', name: 'Code-1', role: 'Lead Developer', emoji: '💻', status: 'busy', dept: 'engineering', isLead: true, tasks: 78, tokens: '1.1M', files: 89 },
+            { id: 'code-2', name: 'Code-2', role: 'Backend Dev', emoji: '⚙️', status: 'busy', dept: 'engineering', tasks: 65, tokens: '920K', files: 72 },
+            { id: 'code-3', name: 'Code-3', role: 'Frontend Dev', emoji: '🎨', status: 'occupied', dept: 'engineering', tasks: 54, tokens: '680K', files: 61 },
+            { id: 'sentry', name: 'Sentry', role: 'DevOps', emoji: '🛡️', status: 'occupied', dept: 'engineering', tasks: 123, tokens: '670K', files: 34 },
+            { id: 'cipher', name: 'Cipher', role: 'Security', emoji: '🔐', status: 'occupied', dept: 'engineering', tasks: 56, tokens: '380K', files: 29 },
+            { id: 'buzz', name: 'Buzz', role: 'Notifications', emoji: '🔔', status: 'occupied', dept: 'engineering', tasks: 145, tokens: '230K', files: 12 },
+            
+            // Design (4 agents)
+            { id: 'forge', name: 'Forge', role: 'Design Lead', emoji: '🔨', status: 'busy', dept: 'design', isLead: true, tasks: 67, tokens: '540K', files: 72 },
+            { id: 'pixel', name: 'Pixel', role: 'Designer', emoji: '🎨', status: 'busy', dept: 'design', tasks: 45, tokens: '540K', files: 78 },
+            { id: 'forge-2', name: 'Forge-2', role: 'UI Designer', emoji: '✏️', status: 'busy', dept: 'design', tasks: 43, tokens: '410K', files: 58 },
+            { id: 'forge-3', name: 'Forge-3', role: 'UX Designer', emoji: '🎯', status: 'idle', dept: 'design', tasks: 31, tokens: '320K', files: 44 },
+            
+            // Research (4 agents)
+            { id: 'glasses', name: 'Glasses', role: 'Research Lead', emoji: '🔍', status: 'occupied', dept: 'research', isLead: true, tasks: 89, tokens: '980K', files: 56 },
+            { id: 'scout', name: 'Scout', role: 'Researcher', emoji: '🔭', status: 'occupied', dept: 'research', tasks: 38, tokens: '890K', files: 52 },
+            { id: 'pie', name: 'PIE', role: 'Intelligence', emoji: '🧠', status: 'occupied', dept: 'research', tasks: 52, tokens: '980K', files: 41 },
+            { id: 'glasses-2', name: 'Glasses-2', role: 'Analyst', emoji: '📊', status: 'occupied', dept: 'research', tasks: 48, tokens: '560K', files: 39 },
+            
+            // Marketing (3 agents)
+            { id: 'gary', name: 'Gary', role: 'Marketing Lead', emoji: '📢', status: 'idle', dept: 'marketing', isLead: true, tasks: 34, tokens: '430K', files: 23 },
+            { id: 'larry', name: 'Larry', role: 'Social Media', emoji: '🐦', status: 'occupied', dept: 'marketing', tasks: 78, tokens: '870K', files: 45 },
+            { id: 'coldcall', name: 'ColdCall', role: 'Outreach', emoji: '📞', status: 'idle', dept: 'marketing', tasks: 29, tokens: '340K', files: 18 },
+            
+            // Operations (3 agents)
+            { id: 'audit', name: 'Audit', role: 'QA Lead', emoji: '✅', status: 'busy', dept: 'operations', isLead: true, tasks: 92, tokens: '450K', files: 67 },
+            { id: 'dealflow', name: 'DealFlow', role: 'Lead Gen', emoji: '💼', status: 'busy', dept: 'operations', tasks: 41, tokens: '720K', files: 38 },
+            { id: 'scout-2', name: 'Scout-2', role: 'Scout', emoji: '🕵️', status: 'idle', dept: 'operations', tasks: 27, tokens: '290K', files: 23 },
+            { id: 'quill', name: 'Quill', role: 'Writer', emoji: '✍️', status: 'idle', dept: 'operations', tasks: 67, tokens: '760K', files: 42 }
         ];
 
         let selectedAgent = null;
+        let currentDept = 'all';
 
         function renderOffice() {
-            const grid = document.getElementById('officeGrid');
-            grid.innerHTML = OFFICE_AGENTS.map(agent => `
-                <div class="desk ${agent.status}" onclick="selectAgent('${agent.id}')">
-                    <span class="status-dot dot-${agent.status}"></span>
-                    <div class="agent-sprite">${agent.emoji}</div>
-                    <div class="desk-name">${agent.name}</div>
-                </div>
-            `).join('');
+            const layout = document.getElementById('officeLayout');
+            
+            if (currentDept === 'all') {
+                // Show hierarchical layout with all departments
+                layout.innerHTML = `
+                    <!-- Executive Suite -->
+                    <div class="executive-suite">
+                        <div class="suite-header">👑 EXECUTIVE SUITE</div>
+                        <div class="desk-grid">
+                            ${renderDesks(OFFICE_AGENTS.filter(a => a.dept === 'executive'))}
+                        </div>
+                    </div>
+                    
+                    <!-- Engineering -->
+                    <div class="dept-section">
+                        <div class="dept-header">
+                            <h3>💻 Engineering</h3>
+                            <span class="dept-count">${OFFICE_AGENTS.filter(a => a.dept === 'engineering').length}</span>
+                        </div>
+                        <div class="desk-grid">
+                            ${renderDesks(OFFICE_AGENTS.filter(a => a.dept === 'engineering'))}
+                        </div>
+                    </div>
+                    
+                    <!-- Design -->
+                    <div class="dept-section">
+                        <div class="dept-header">
+                            <h3>🎨 Design</h3>
+                            <span class="dept-count">${OFFICE_AGENTS.filter(a => a.dept === 'design').length}</span>
+                        </div>
+                        <div class="desk-grid">
+                            ${renderDesks(OFFICE_AGENTS.filter(a => a.dept === 'design'))}
+                        </div>
+                    </div>
+                    
+                    <!-- Research -->
+                    <div class="dept-section">
+                        <div class="dept-header">
+                            <h3>🔍 Research</h3>
+                            <span class="dept-count">${OFFICE_AGENTS.filter(a => a.dept === 'research').length}</span>
+                        </div>
+                        <div class="desk-grid">
+                            ${renderDesks(OFFICE_AGENTS.filter(a => a.dept === 'research'))}
+                        </div>
+                    </div>
+                    
+                    <!-- Marketing -->
+                    <div class="dept-section">
+                        <div class="dept-header">
+                            <h3>📢 Marketing</h3>
+                            <span class="dept-count">${OFFICE_AGENTS.filter(a => a.dept === 'marketing').length}</span>
+                        </div>
+                        <div class="desk-grid">
+                            ${renderDesks(OFFICE_AGENTS.filter(a => a.dept === 'marketing'))}
+                        </div>
+                    </div>
+                    
+                    <!-- Operations -->
+                    <div class="dept-section">
+                        <div class="dept-header">
+                            <h3>🛡️ Operations</h3>
+                            <span class="dept-count">${OFFICE_AGENTS.filter(a => a.dept === 'operations').length}</span>
+                        </div>
+                        <div class="desk-grid">
+                            ${renderDesks(OFFICE_AGENTS.filter(a => a.dept === 'operations'))}
+                        </div>
+                    </div>
+                `;
+            } else {
+                // Show single department
+                const deptAgents = OFFICE_AGENTS.filter(a => a.dept === currentDept);
+                const deptNames = {
+                    executive: '👑 Executive',
+                    engineering: '💻 Engineering',
+                    design: '🎨 Design',
+                    research: '🔍 Research',
+                    marketing: '📢 Marketing',
+                    operations: '🛡️ Operations'
+                };
+                layout.innerHTML = `
+                    <div class="dept-section">
+                        <div class="dept-header">
+                            <h3>${deptNames[currentDept]}</h3>
+                            <span class="dept-count">${deptAgents.length}</span>
+                        </div>
+                        <div class="desk-grid">
+                            ${renderDesks(deptAgents)}
+                        </div>
+                    </div>
+                `;
+            }
             
             updateStats();
+        }
+
+        function renderDesks(agents) {
+            return agents.map(agent => {
+                const deskClass = agent.isLead ? (agent.dept === 'executive' ? 'executive' : 'lead') : agent.status;
+                const leadBadge = agent.isLead ? '<span class="lead-badge">★</span>' : '';
+                return `
+                    <div class="desk ${deskClass}" onclick="selectAgent('${agent.id}')" data-agent-id="${agent.id}">
+                        ${leadBadge}
+                        <span class="status-dot dot-${agent.status}"></span>
+                        <div class="agent-sprite">${agent.emoji}</div>
+                        <div class="desk-name">${agent.name}</div>
+                        <div class="desk-role">${agent.role}</div>
+                    </div>
+                `;
+            }).join('');
         }
 
         function updateStats() {
@@ -335,29 +638,52 @@
             document.getElementById('idleCount').textContent = idle;
         }
 
+        function filterDept(dept) {
+            currentDept = dept;
+            document.querySelectorAll('.dept-tab').forEach(tab => {
+                tab.classList.remove('active');
+                if (tab.textContent.toLowerCase().includes(dept) || (dept === 'all' && tab.textContent.includes('All'))) {
+                    tab.classList.add('active');
+                }
+            });
+            renderOffice();
+        }
+
         function selectAgent(id) {
             selectedAgent = OFFICE_AGENTS.find(a => a.id === id);
             if (!selectedAgent) return;
             
             document.getElementById('panelAvatar').textContent = selectedAgent.emoji;
+            document.getElementById('panelAvatar').style.background = selectedAgent.isLead ? 
+                'linear-gradient(135deg, #ffd700, #ffaa00)' : 'linear-gradient(135deg, #00d4ff, #0099cc)';
             document.getElementById('panelName').textContent = selectedAgent.name;
-            document.getElementById('panelRole').textContent = `${selectedAgent.role} • ${selectedAgent.status}`;
+            document.getElementById('panelRole').textContent = `${selectedAgent.role} • ${selectedAgent.dept} • ${selectedAgent.status}`;
+            
+            document.getElementById('panelTasks').textContent = selectedAgent.tasks || 0;
+            document.getElementById('panelTokens').textContent = selectedAgent.tokens || '0';
+            document.getElementById('panelFiles').textContent = selectedAgent.files || 0;
+            
+            document.getElementById('panelStats').style.display = 'grid';
             document.getElementById('panelActions').style.display = 'flex';
             document.getElementById('agentPanel').classList.add('active');
             
             // Highlight selected desk
             document.querySelectorAll('.desk').forEach(d => d.style.borderColor = '');
-            event.currentTarget.style.borderColor = '#00d4ff';
+            const selectedDesk = document.querySelector(`[data-agent-id="${id}"]`);
+            if (selectedDesk) selectedDesk.style.borderColor = '#00d4ff';
         }
 
         function pingAgent() {
             if (!selectedAgent) return;
-            alert(`📡 Ping sent to ${selectedAgent.name}!`);
+            showNotification(`📡 Ping sent to ${selectedAgent.name}!`, 'success');
         }
 
         function assignTask() {
             if (!selectedAgent) return;
-            alert(`📋 New task assigned to ${selectedAgent.name}!`);
+            const task = prompt(`Enter task for ${selectedAgent.name}:`);
+            if (task) {
+                showNotification(`📋 Task "${task}" assigned to ${selectedAgent.name}!`, 'success');
+            }
         }
 
         function viewProfile() {
@@ -365,30 +691,79 @@
             window.location.href = `/agent-roster?id=${selectedAgent.id}`;
         }
 
+        function sendMessage() {
+            if (!selectedAgent) return;
+            const message = prompt(`Send message to ${selectedAgent.name}:`);
+            if (message) {
+                showNotification(`💬 Message sent to ${selectedAgent.name}!`, 'success');
+            }
+        }
+
         function startStandup() {
-            alert('🎤 Daily Standup starting...\n\nAll 22 agents have been notified!');
+            const messages = [
+                '🎤 Daily Standup starting...',
+                '👑 Nexus: "Team sync initiated"',
+                '💻 Code-1: "Ready for updates"',
+                '🎨 Forge: "Design team standing by"',
+                '🔍 Glasses: "Research highlights ready"',
+                `📊 All ${OFFICE_AGENTS.length} agents have been notified!`
+            ];
+            alert(messages.join('\n\n'));
         }
 
         function viewVRM() {
             window.location.href = '/vrm';
         }
 
+        function shuffleDesks() {
+            // Randomize agent positions
+            OFFICE_AGENTS.sort(() => Math.random() - 0.5);
+            renderOffice();
+            showNotification('🎲 Desks shuffled!', 'info');
+        }
+
+        function showNotification(message, type) {
+            // Create notification element
+            const notif = document.createElement('div');
+            notif.style.cssText = `
+                position: fixed;
+                top: 80px;
+                right: 20px;
+                background: ${type === 'success' ? 'rgba(0,255,136,0.9)' : 'rgba(0,212,255,0.9)'};
+                color: #000;
+                padding: 1rem 1.5rem;
+                border-radius: 8px;
+                font-weight: 600;
+                z-index: 1000;
+                animation: slideInRight 0.3s ease;
+            `;
+            notif.textContent = message;
+            document.body.appendChild(notif);
+            
+            setTimeout(() => {
+                notif.style.animation = 'slideOutRight 0.3s ease';
+                setTimeout(() => notif.remove(), 300);
+            }, 3000);
+        }
+
         function refreshOffice() {
             const btn = document.getElementById('refreshBtn');
             btn.classList.add('spinning');
             
-            // Randomize statuses
-            OFFICE_AGENTS.forEach(agent => {
-                const rand = Math.random();
-                if (rand > 0.6) agent.status = 'occupied';
-                else if (rand > 0.3) agent.status = 'busy';
-                else agent.status = 'idle';
-            });
-            
+            // Simulate fetching live data
             setTimeout(() => {
+                // Randomize statuses
+                OFFICE_AGENTS.forEach(agent => {
+                    const rand = Math.random();
+                    if (rand > 0.6) agent.status = 'occupied';
+                    else if (rand > 0.3) agent.status = 'busy';
+                    else agent.status = 'idle';
+                });
+                
                 renderOffice();
                 btn.classList.remove('spinning');
-            }, 1000);
+                showNotification('🔄 Office data refreshed!', 'success');
+            }, 800);
         }
 
         // Initialize

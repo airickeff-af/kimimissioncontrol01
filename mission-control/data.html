@@ -1,10 +1,308 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta http-equiv="refresh" content="0; url=/dashboard/data.html">
-  <title>Redirecting...</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="description" content="Data Viewer - Mission Control">
+    <meta name="theme-color" content="#2d1b4e">
+    <title>Data Viewer | Mission Control</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0a0f;
+            color: #e0e0e0;
+            min-height: 100vh;
+        }
+        .header {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            padding: 1rem 2rem;
+            border-bottom: 2px solid #00d4ff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .logo { font-size: 1.5rem; font-weight: 700; color: #00d4ff; }
+        .nav { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+        .nav a {
+            color: #888;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+        }
+        .nav a:hover, .nav a.active { color: #00d4ff; background: rgba(0,212,255,0.1); }
+        .refresh-btn {
+            background: rgba(0, 212, 255, 0.2);
+            border: 1px solid #00d4ff;
+            color: #00d4ff;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .refresh-btn:hover { background: rgba(0, 212, 255, 0.3); }
+        .refresh-btn.spinning { animation: spin 1s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .container { max-width: 1400px; margin: 0 auto; padding: 2rem; }
+        h1 { color: #00d4ff; margin-bottom: 2rem; }
+        .data-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        .data-card {
+            background: linear-gradient(135deg, #1a1a2e, #0f0f1a);
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.2s;
+        }
+        .data-card:hover { border-color: #00d4ff; transform: translateY(-2px); }
+        .data-card h3 {
+            color: #00d4ff;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .data-card p {
+            color: #888;
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+        }
+        .data-meta {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.75rem;
+            color: #666;
+            margin-bottom: 1rem;
+        }
+        .data-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+            cursor: pointer;
+            border: none;
+        }
+        .btn-primary {
+            background: rgba(0,212,255,0.2);
+            color: #00d4ff;
+        }
+        .btn-primary:hover { background: rgba(0,212,255,0.3); }
+        .btn-secondary {
+            background: #333;
+            color: #888;
+        }
+        .btn-secondary:hover { background: #444; color: #fff; }
+        .preview-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            padding: 2rem;
+        }
+        .preview-modal.active { display: flex; }
+        .preview-content {
+            background: #1a1a2e;
+            border: 1px solid #333;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 900px;
+            margin: auto;
+            max-height: 80vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .preview-header {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #333;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .preview-header h3 { color: #00d4ff; }
+        .preview-close {
+            background: none;
+            border: none;
+            color: #888;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        .preview-close:hover { color: #fff; }
+        .preview-body {
+            padding: 1.5rem;
+            overflow: auto;
+            font-family: 'VT323', monospace;
+            font-size: 1.1rem;
+            white-space: pre-wrap;
+            color: #ccc;
+        }
+        .tag {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            margin-right: 0.5rem;
+        }
+        .tag-json { background: rgba(0,212,255,0.2); color: #00d4ff; }
+        .tag-csv { background: rgba(0,255,136,0.2); color: #00ff88; }
+        .tag-log { background: rgba(255,170,0,0.2); color: #ffaa00; }
+    </style>
 </head>
 <body>
-  <p>Redirecting to Data...</p>
+    <header class="header">
+        <div class="logo">🎯 Mission Control</div>
+        <nav class="nav">
+            <a href="/">HQ</a>
+            <a href="/pixel-office">Office</a>
+            <a href="/agent-roster">Agents</a>
+            <a href="/deals">DealFlow</a>
+            <a href="/tokens">Tokens</a>
+            <a href="/task-board">Tasks</a>
+            <a href="/logs">Logs</a>
+            <a href="/data" class="active">Data</a>
+            <button class="refresh-btn" id="refreshBtn" onclick="refreshData()">
+                <span class="refresh-icon">🔄</span> Refresh
+            </button>
+        </nav>
+    </header>
+
+    <div class="container">
+        <h1>📊 Data Viewer</h1>
+        
+        <div class="data-grid" id="data-files">
+            <div class="data-card">
+                <h3>📁 Loading...</h3>
+                <p>Scanning data directory</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="preview-modal" id="preview-modal">
+        <div class="preview-content">
+            <div class="preview-header">
+                <h3 id="preview-title">Preview</h3>
+                <button class="preview-close" onclick="closePreview()">&times;</button>
+            </div>
+            <div class="preview-body" id="preview-body">Loading...</div>
+        </div>
+    </div>
+
+    <script>
+        const dataFiles = [
+            { name: 'dealflow-unified-database.json', path: '/data/dealflow-unified-database.json', type: 'json', desc: 'Unified deal flow database with all leads' },
+            { name: 'enriched-leads.json', path: '/data/enriched-leads.json', type: 'json', desc: 'Enriched lead data with contact info' },
+            { name: 'enriched-leads-v2.json', path: '/data/enriched-leads-v2.json', type: 'json', desc: 'Version 2 enriched leads' },
+            { name: 'competitors.json', path: '/data/competitors.json', type: 'json', desc: 'Competitor analysis data' },
+            { name: 'opportunities.json', path: '/data/opportunities.json', type: 'json', desc: 'Opportunity tracking data' },
+            { name: 'outreach-metrics.json', path: '/data/outreach-metrics.json', type: 'json', desc: 'Outreach campaign metrics' },
+            { name: 'token-cache.json', path: '/data/token-cache.json', type: 'json', desc: 'API token usage cache' },
+            { name: 'agent-registry.json', path: '/data/agent-registry.json', type: 'json', desc: 'AI agent registry' },
+            { name: 'scored-leads.json', path: '/data/scored-leads.json', type: 'json', desc: 'Lead scoring data' },
+            { name: 'onhing_metal_leads.json', path: '/data/onhing_metal_leads.json', type: 'json', desc: 'Onhing Metal specific leads' },
+            { name: 'enrichment.log', path: '/logs/enrichment.log', type: 'log', desc: 'Data enrichment logs' },
+            { name: 'office_positions.log', path: '/logs/office_positions.log', type: 'log', desc: 'Office position tracking logs' }
+        ];
+        
+        function renderDataFiles() {
+            const container = document.getElementById('data-files');
+            
+            container.innerHTML = dataFiles.map(file => `
+                <div class="data-card">
+                    <h3>
+                        ${getIcon(file.type)}
+                        ${file.name}
+                        <span class="tag tag-${file.type}">${file.type.toUpperCase()}</span>
+                    </h3>
+                    <p>${file.desc}</p>
+                    <div class="data-actions">
+                        <button class="btn btn-primary" onclick="previewFile('${file.path}', '${file.name}', '${file.type}')">Preview</button>
+                        <a href="${file.path}" class="btn btn-secondary" download>Download</a>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function getIcon(type) {
+            const icons = { json: '📋', csv: '📊', log: '📄' };
+            return icons[type] || '📄';
+        }
+        
+        async function previewFile(path, name, type) {
+            const modal = document.getElementById('preview-modal');
+            const title = document.getElementById('preview-title');
+            const body = document.getElementById('preview-body');
+            
+            title.textContent = name;
+            body.textContent = 'Loading...';
+            modal.classList.add('active');
+            
+            try {
+                const response = await fetch(path);
+                const text = await response.text();
+                
+                if (type === 'json') {
+                    try {
+                        const json = JSON.parse(text);
+                        body.textContent = JSON.stringify(json, null, 2);
+                    } catch {
+                        body.textContent = text;
+                    }
+                } else {
+                    body.textContent = text;
+                }
+            } catch (error) {
+                body.textContent = `Error loading file: ${error.message}`;
+            }
+        }
+        
+        function closePreview() {
+            document.getElementById('preview-modal').classList.remove('active');
+        }
+        
+        // Close modal on outside click
+        document.getElementById('preview-modal').addEventListener('click', (e) => {
+            if (e.target.id === 'preview-modal') closePreview();
+        });
+        
+        // Close on Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closePreview();
+        });
+        
+        function refreshData() {
+            const refreshBtn = document.getElementById('refreshBtn');
+            refreshBtn.classList.add('spinning');
+            
+            renderDataFiles();
+            
+            setTimeout(() => refreshBtn.classList.remove('spinning'), 500);
+        }
+        
+        // Load on page load
+        renderDataFiles();
+        
+        // Auto-refresh every 30 minutes
+        setInterval(renderDataFiles, 30 * 60 * 1000);
+    </script>
 </body>
 </html>

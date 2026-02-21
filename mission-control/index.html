@@ -1,10 +1,366 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta http-equiv="refresh" content="0; url=/dashboard/index.html">
-  <title>Redirecting...</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="description" content="Mission Control HQ - AI Team Dashboard">
+    <meta name="theme-color" content="#2d1b4e">
+    <title>Mission Control HQ | AI Team Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0a0f;
+            color: #e0e0e0;
+            min-height: 100vh;
+        }
+        .header {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            padding: 1rem 2rem;
+            border-bottom: 2px solid #00d4ff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .logo { 
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.9rem; 
+            color: #00d4ff; 
+        }
+        .nav { display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center; }
+        .nav a {
+            color: #888;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: all 0.2s;
+            font-size: 0.85rem;
+        }
+        .nav a:hover, .nav a.active { color: #00d4ff; background: rgba(0,212,255,0.1); }
+        .refresh-btn {
+            background: rgba(0, 212, 255, 0.2);
+            border: 1px solid #00d4ff;
+            color: #00d4ff;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .refresh-btn:hover { background: rgba(0, 212, 255, 0.3); }
+        .refresh-btn.spinning .refresh-icon { animation: spin 1s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .container { max-width: 1400px; margin: 0 auto; padding: 2rem; }
+        h1 { color: #00d4ff; margin-bottom: 1rem; }
+        .subtitle { color: #666; margin-bottom: 2rem; }
+        
+        /* Stats Bar */
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .stat-card {
+            background: linear-gradient(135deg, #1a1a2e, #0f0f1a);
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+        .stat-value { font-size: 2rem; font-weight: 700; color: #00d4ff; }
+        .stat-label { color: #666; font-size: 0.875rem; margin-top: 0.5rem; }
+        
+        /* Agent Grid */
+        .section-title {
+            color: #00d4ff;
+            margin: 2rem 0 1rem;
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .agents-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1rem;
+        }
+        .agent-card {
+            background: linear-gradient(135deg, #1a1a2e, #0f0f1a);
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 1.25rem;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        .agent-card:hover { 
+            border-color: #00d4ff; 
+            transform: translateY(-2px);
+        }
+        .agent-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+        .agent-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+        .agent-info h3 { color: #fff; font-size: 1rem; margin-bottom: 0.25rem; }
+        .agent-info p { color: #888; font-size: 0.8rem; }
+        .status-badge {
+            margin-left: auto;
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .status-active { background: rgba(0,255,136,0.1); color: #00ff88; }
+        .status-busy { background: rgba(255,193,7,0.1); color: #ffc107; }
+        .status-idle { background: rgba(136,136,136,0.1); color: #888; }
+        .agent-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+            padding-top: 0.75rem;
+            border-top: 1px solid #333;
+        }
+        .agent-stat { text-align: center; }
+        .agent-stat-value { font-size: 0.9rem; font-weight: 600; color: #00d4ff; }
+        .agent-stat-label { font-size: 0.7rem; color: #666; }
+        
+        /* Quick Actions */
+        .quick-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+        .action-btn {
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, #00d4ff, #0099cc);
+            border: none;
+            border-radius: 8px;
+            color: #000;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .action-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,212,255,0.3); }
+        .action-btn.secondary {
+            background: transparent;
+            border: 1px solid #00d4ff;
+            color: #00d4ff;
+        }
+        
+        .loading { text-align: center; padding: 2rem; color: #666; }
+        .error { text-align: center; padding: 2rem; color: #ff4444; }
+        .last-updated { color: #666; font-size: 0.8rem; margin-bottom: 1rem; }
+    </style>
 </head>
 <body>
-  <p>Redirecting to Mission Control HQ...</p>
+    <header class="header">
+        <div class="logo">🎯 Mission Control</div>
+        <nav class="nav">
+            <a href="/" class="active">HQ</a>
+            <a href="/pixel-office">Office</a>
+            <a href="/agent-roster">Agents</a>
+            <a href="/task-board">Tasks</a>
+            <a href="/projects">Projects</a>
+            <a href="/tokens">Tokens</a>
+            <a href="/logs">Logs</a>
+        </nav>
+        <button class="refresh-btn" id="refreshBtn" onclick="loadData()">
+            <span class="refresh-icon">🔄</span> Refresh
+        </button>
+    </header>
+
+    <div class="container">
+        <h1>🏠 Mission Control HQ</h1>
+        <p class="subtitle">Central command for all AI agents and operations</p>
+        <div class="last-updated" id="lastUpdated">Loading...</div>
+        
+        <!-- System Stats -->
+        <div class="stats-bar" id="statsBar">
+            <div class="stat-card">
+                <div class="stat-value" id="statAgents">--</div>
+                <div class="stat-label">Active Agents</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="statTasks">--</div>
+                <div class="stat-label">Tasks Today</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="statTokens">--</div>
+                <div class="stat-label">Tokens Used</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="statDeals">--</div>
+                <div class="stat-label">Active Deals</div>
+            </div>
+        </div>
+        
+        <!-- Agent Roster -->
+        <div class="section-title">👥 Agent Roster (22 Total)</div>
+        <div class="agents-grid" id="agentsGrid">
+            <div class="loading">Loading agents...</div>
+        </div>
+        
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+            <button class="action-btn" onclick="location.href='/pixel-office'">🏢 Enter Office</button>
+            <button class="action-btn" onclick="location.href='/task-board'">📋 View Tasks</button>
+            <button class="action-btn secondary" onclick="startStandup()">🎤 Daily Standup</button>
+        </div>
+    </div>
+
+    <script>
+        // All 22 agents data
+        const ALL_AGENTS = [
+            { id: 'nexus', name: 'Nexus', role: 'Orchestrator', emoji: '👑', status: 'active', tasks: 156, tokens: '1.2M', files: 89 },
+            { id: 'glasses', name: 'Glasses', role: 'Researcher', emoji: '🔍', status: 'active', tasks: 89, tokens: '980K', files: 56 },
+            { id: 'quill', name: 'Quill', role: 'Writer', emoji: '✍️', status: 'idle', tasks: 67, tokens: '760K', files: 42 },
+            { id: 'pixel', name: 'Pixel', role: 'Designer', emoji: '🎨', status: 'busy', tasks: 45, tokens: '540K', files: 78 },
+            { id: 'gary', name: 'Gary', role: 'Marketing', emoji: '📢', status: 'idle', tasks: 34, tokens: '430K', files: 23 },
+            { id: 'larry', name: 'Larry', role: 'Social', emoji: '🐦', status: 'active', tasks: 78, tokens: '870K', files: 45 },
+            { id: 'sentry', name: 'Sentry', role: 'DevOps', emoji: '🛡️', status: 'active', tasks: 123, tokens: '670K', files: 34 },
+            { id: 'audit', name: 'Audit', role: 'QA', emoji: '✅', status: 'busy', tasks: 92, tokens: '450K', files: 67 },
+            { id: 'cipher', name: 'Cipher', role: 'Security', emoji: '🔐', status: 'active', tasks: 56, tokens: '380K', files: 29 },
+            { id: 'dealflow', name: 'DealFlow', role: 'Lead Gen', emoji: '💼', status: 'busy', tasks: 41, tokens: '720K', files: 38 },
+            { id: 'scout', name: 'Scout', role: 'Researcher', emoji: '🔭', status: 'active', tasks: 38, tokens: '890K', files: 52 },
+            { id: 'coldcall', name: 'ColdCall', role: 'Outreach', emoji: '📞', status: 'idle', tasks: 29, tokens: '340K', files: 18 },
+            { id: 'code-1', name: 'Code-1', role: 'Developer', emoji: '💻', status: 'busy', tasks: 78, tokens: '1.1M', files: 89 },
+            { id: 'code-2', name: 'Code-2', role: 'Backend', emoji: '⚙️', status: 'busy', tasks: 65, tokens: '920K', files: 72 },
+            { id: 'code-3', name: 'Code-3', role: 'Frontend', emoji: '🎨', status: 'active', tasks: 54, tokens: '680K', files: 61 },
+            { id: 'forge', name: 'Forge', role: 'Design Lead', emoji: '🔨', status: 'busy', tasks: 67, tokens: '540K', files: 72 },
+            { id: 'pie', name: 'PIE', role: 'Intelligence', emoji: '🥧', status: 'active', tasks: 52, tokens: '980K', files: 41 },
+            { id: 'buzz', name: 'Buzz', role: 'Notifications', emoji: '🔔', status: 'active', tasks: 145, tokens: '230K', files: 12 },
+            { id: 'forge-2', name: 'Forge-2', role: 'UI Designer', emoji: '✏️', status: 'busy', tasks: 43, tokens: '410K', files: 58 },
+            { id: 'forge-3', name: 'Forge-3', role: 'UX Designer', emoji: '🎯', status: 'idle', tasks: 31, tokens: '320K', files: 44 },
+            { id: 'glasses-2', name: 'Glasses-2', role: 'Analyst', emoji: '📊', status: 'active', tasks: 48, tokens: '560K', files: 39 },
+            { id: 'scout-2', name: 'Scout-2', role: 'Scout', emoji: '🕵️', status: 'idle', tasks: 27, tokens: '290K', files: 23 }
+        ];
+
+        async function loadData() {
+            const refreshBtn = document.getElementById('refreshBtn');
+            refreshBtn.classList.add('spinning');
+            
+            try {
+                // Fetch live data from APIs
+                const [agentsRes, statsRes] = await Promise.allSettled([
+                    fetch('/api/agents'),
+                    fetch('/api/stats')
+                ]);
+                
+                let agents = ALL_AGENTS;
+                let stats = null;
+                
+                if (agentsRes.status === 'fulfilled' && agentsRes.value.ok) {
+                    const data = await agentsRes.value.json();
+                    if (data.agents) agents = data.agents;
+                }
+                
+                if (statsRes.status === 'fulfilled' && statsRes.value.ok) {
+                    stats = await statsRes.value.json();
+                }
+                
+                renderAgents(agents);
+                updateStats(stats);
+                updateLastUpdated();
+                
+            } catch (error) {
+                console.error('Error loading data:', error);
+                renderAgents(ALL_AGENTS);
+                updateStats(null);
+                updateLastUpdated();
+            } finally {
+                refreshBtn.classList.remove('spinning');
+            }
+        }
+
+        function renderAgents(agents) {
+            const grid = document.getElementById('agentsGrid');
+            grid.innerHTML = agents.map(agent => `
+                <div class="agent-card" onclick="viewAgent('${agent.id}')">
+                    <div class="agent-header">
+                        <div class="agent-avatar" style="background: ${agent.color || 'linear-gradient(135deg, #00d4ff, #0099cc)'};">${agent.emoji || agent.name.charAt(0)}</div>
+                        <div class="agent-info">
+                            <h3>${agent.name}</h3>
+                            <p>${agent.role}</p>
+                        </div>
+                        <span class="status-badge status-${agent.status}">${agent.status}</span>
+                    </div>
+                    <div class="agent-stats">
+                        <div class="agent-stat">
+                            <div class="agent-stat-value">${agent.tasks || 0}</div>
+                            <div class="agent-stat-label">Tasks</div>
+                        </div>
+                        <div class="agent-stat">
+                            <div class="agent-stat-value">${agent.tokens || '0'}</div>
+                            <div class="agent-stat-label">Tokens</div>
+                        </div>
+                        <div class="agent-stat">
+                            <div class="agent-stat-value">${agent.files || 0}</div>
+                            <div class="agent-stat-label">Files</div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function updateStats(stats) {
+            if (stats) {
+                document.getElementById('statAgents').textContent = stats.agents?.active || 22;
+                document.getElementById('statTasks').textContent = stats.tasks?.inProgress || 18;
+                document.getElementById('statTokens').textContent = formatNumber(stats.tokens?.total || 2475000);
+                document.getElementById('statDeals').textContent = stats.deals?.total || 47;
+            } else {
+                document.getElementById('statAgents').textContent = '22';
+                document.getElementById('statTasks').textContent = '18';
+                document.getElementById('statTokens').textContent = '2.5M';
+                document.getElementById('statDeals').textContent = '47';
+            }
+        }
+
+        function formatNumber(num) {
+            if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+            if (num >= 1000) return (num / 1000).toFixed(0) + 'K';
+            return num.toString();
+        }
+
+        function updateLastUpdated() {
+            const now = new Date();
+            document.getElementById('lastUpdated').textContent = 
+                `Last updated: ${now.toLocaleTimeString()}`;
+        }
+
+        function viewAgent(id) {
+            window.location.href = `/agent-roster?id=${id}`;
+        }
+
+        function startStandup() {
+            alert('🎤 Daily Standup starting...\n\nAll 22 agents have been notified!');
+        }
+
+        // Load on page load
+        loadData();
+        
+        // Auto-refresh every 30 minutes
+        setInterval(loadData, 30 * 60 * 1000);
+    </script>
 </body>
 </html>

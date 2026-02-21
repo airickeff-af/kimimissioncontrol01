@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="description" content="Projects - Mission Control">
+    <meta name="theme-color" content="#2d1b4e">
+    <title>Projects | Mission Control</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0a0f;
+            color: #e0e0e0;
+            min-height: 100vh;
+        }
+        .header {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            padding: 1rem 2rem;
+            border-bottom: 2px solid #00d4ff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .logo { 
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.9rem; 
+            color: #00d4ff; 
+        }
+        .nav { display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center; }
+        .nav a {
+            color: #888;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: all 0.2s;
+            font-size: 0.85rem;
+        }
+        .nav a:hover, .nav a.active { color: #00d4ff; background: rgba(0,212,255,0.1); }
+        .refresh-btn {
+            background: rgba(0, 212, 255, 0.2);
+            border: 1px solid #00d4ff;
+            color: #00d4ff;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .refresh-btn:hover { background: rgba(0, 212, 255, 0.3); }
+        .refresh-btn.spinning { animation: spin 1s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .container { max-width: 1400px; margin: 0 auto; padding: 2rem; }
+        h1 { color: #00d4ff; margin-bottom: 2rem; }
+        
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+        .project-card {
+            background: linear-gradient(135deg, #1a1a2e, #0f0f1a);
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+        .project-card:hover { 
+            border-color: #00d4ff; 
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(0,212,255,0.1);
+        }
+        .project-card.external::after {
+            content: '↗';
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            color: #00d4ff;
+            font-size: 1.2rem;
+        }
+        .project-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        .project-card h2 { 
+            color: #fff; 
+            margin-bottom: 0.5rem; 
+            font-size: 1.1rem;
+        }
+        .project-card p { 
+            color: #888; 
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+        }
+        .project-meta {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.8rem;
+            color: #666;
+            margin-bottom: 1rem;
+        }
+        .project-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #00d4ff;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        .project-link:hover { text-decoration: underline; }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .status-active { background: rgba(0,255,136,0.1); color: #00ff88; }
+        .status-beta { background: rgba(255,193,7,0.1); color: #ffc107; }
+        .status-dev { background: rgba(0,212,255,0.1); color: #00d4ff; }
+        
+        .section-title {
+            color: #888;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 2rem 0 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #333;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">🎯 Mission Control</div>
+        <nav class="nav">
+            <a href="/">HQ</a>
+            <a href="/pixel-office">Office</a>
+            <a href="/agent-roster">Agents</a>
+            <a href="/task-board">Tasks</a>
+            <a href="/projects" class="active">Projects</a>
+            <a href="/tokens">Tokens</a>
+            <a href="/logs">Logs</a>
+        </nav>
+        <button class="refresh-btn" id="refreshBtn" onclick="refreshData()">
+            <span class="refresh-icon">🔄</span> Refresh
+        </button>
+    </header>
+
+    <div class="container">
+        <h1>🚀 Projects</h1>
+        
+        <div class="section-title">External Projects</div>
+        <div class="projects-grid">
+            <div class="project-card external">
+                <div class="project-icon" style="background: linear-gradient(135deg, #e94560, #533483);">📊</div>
+                <h2>MC Project</h2>
+                <span class="status-badge status-active">Live</span>
+                <p>Full project management suite with team collaboration, task tracking, and analytics dashboard.</p>
+                <div class="project-meta">
+                    <span>👥 12 members</span>
+                    <span>📋 156 tasks</span>
+                </div>
+                <a href="https://mc-project-tawny.vercel.app" target="_blank" class="project-link">
+                    Open MC Project →
+                </a>
+            </div>
+        </div>
+
+        <div class="section-title">Mission Control Modules</div>
+        <div class="projects-grid">
+            <div class="project-card">
+                <div class="project-icon" style="background: linear-gradient(135deg, #a855f7, #7c3aed);">🥧</div>
+                <h2>PIE</h2>
+                <span class="status-badge status-active">Active</span>
+                <p>Predictive Intelligence Engine. AI-powered analytics, trend forecasting, and strategic insights.</p>
+                <div class="project-meta">
+                    <span>🧠 847 predictions</span>
+                    <span>📈 94% accuracy</span>
+                </div>
+                <a href="/pie" class="project-link">Open PIE →</a>
+            </div>
+            
+            <div class="project-card">
+                <div class="project-icon" style="background: linear-gradient(135deg, #22c55e, #16a34a);">🔭</div>
+                <h2>Scout</h2>
+                <span class="status-badge status-active">Active</span>
+                <p>Market research and opportunity scouting. Discovers leads, partnerships, and market trends.</p>
+                <div class="project-meta">
+                    <span>🔍 2,847 leads</span>
+                    <span>🌍 12 regions</span>
+                </div>
+                <a href="/scout" class="project-link">Open Scout →</a>
+            </div>
+            
+            <div class="project-card">
+                <div class="project-icon" style="background: linear-gradient(135deg, #f59e0b, #d97706);">💼</div>
+                <h2>DealFlow</h2>
+                <span class="status-badge status-active">Active</span>
+                <p>Lead generation and deal pipeline management. Tracks opportunities from discovery to close.</p>
+                <div class="project-meta">
+                    <span>💰 $2.4M pipeline</span>
+                    <span>📊 47 deals</span>
+                </div>
+                <a href="/deals" class="project-link">Open DealFlow →</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function refreshData() {
+            const btn = document.getElementById('refreshBtn');
+            btn.classList.add('spinning');
+            setTimeout(() => {
+                btn.classList.remove('spinning');
+                location.reload();
+            }, 1000);
+        }
+        
+        // Auto-refresh every 30 minutes
+        setInterval(() => {
+            console.log('[Auto-Refresh] Reloading projects...');
+            location.reload();
+        }, 30 * 60 * 1000);
+    </script>
+</body>
+</html>

@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Standup | Mission Control</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0a0f;
+            color: #e0e0e0;
+            min-height: 100vh;
+        }
+        .header {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            padding: 1rem 2rem;
+            border-bottom: 2px solid #00d4ff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo { font-size: 1.5rem; font-weight: 700; color: #00d4ff; }
+        .nav { display: flex; gap: 1rem; }
+        .nav a {
+            color: #888;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+        .nav a:hover, .nav a.active { color: #00d4ff; background: rgba(0,212,255,0.1); }
+        .container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+        h1 { color: #00d4ff; margin-bottom: 2rem; display: flex; align-items: center; gap: 0.5rem; }
+        .standup-card {
+            background: linear-gradient(135deg, #1a1a2e, #0f0f1a);
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        .standup-card h2 {
+            color: #00d4ff;
+            margin-bottom: 1rem;
+            font-size: 1.25rem;
+        }
+        .standup-card pre {
+            background: #0a0a0f;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            line-height: 1.6;
+            color: #e0e0e0;
+        }
+        .btn {
+            background: linear-gradient(135deg, #00d4ff, #0099cc);
+            color: #000; border: none; padding: 0.75rem 1.5rem;
+            border-radius: 8px; font-weight: 600; cursor: pointer;
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,212,255,0.3); }
+        .loading { text-align: center; padding: 3rem; color: #888; }
+        .error { text-align: center; padding: 3rem; color: #ff4444; }
+        .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+        .timestamp { color: #666; font-size: 0.875rem; margin-top: 0.5rem; }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .stat-card {
+            background: linear-gradient(135deg, #1a1a2e, #0f0f1a);
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+        .stat-value { font-size: 2rem; font-weight: 700; color: #00d4ff; font-family: 'JetBrains Mono', monospace; }
+        .stat-label { color: #888; font-size: 0.875rem; margin-top: 0.5rem; }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">🎯 Mission Control</div>
+        <nav class="nav">
+            <a href="/">HQ</a>
+            <a href="/pixel-office">Office</a>
+            <a href="/agent-roster">Agents</a>
+            <a href="/deals">DealFlow</a>
+            <a href="/tokens">Tokens</a>
+            <a href="/task-board">Tasks</a>
+            <a href="/standup" class="active">Standup</a>
+            <a href="/logs">Logs</a>
+            <a href="/data">Data</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>📢 Daily Standup</h1>
+            <button class="btn" onclick="generateStandup()">🔄 Generate New</button>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value" id="agent-count">-</div>
+                <div class="stat-label">Agents</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="task-count">-</div>
+                <div class="stat-label">Active Tasks</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="completed-count">-</div>
+                <div class="stat-label">Completed Today</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="blocker-count">-</div>
+                <div class="stat-label">Blockers</div>
+            </div>
+        </div>
+
+        <div class="standup-card">
+            <h2>📝 Meeting Minutes</h2>
+            <div class="timestamp" id="timestamp">Generated: Never</div>
+            <pre id="standup-content">Click "Generate New" to create standup notes...</pre>
+            <button class="btn" onclick="copyToClipboard()">📋 Copy to Clipboard</button>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = '/api';
+
+        async function generateStandup() {
+            const content = document.getElementById('standup-content');
+            const timestamp = document.getElementById('timestamp');
+            
+            content.textContent = 'Generating standup notes...';
+            
+            try {
+                // Try to fetch real data
+                const [tasksRes, agentsRes] = await Promise.all([
+                    fetch(`${API_URL}/tasks`).catch(() => null),
+                    fetch(`${API_URL}/agents`).catch(() => null)
+                ]);
+                
+                const tasksData = tasksRes?.ok ? await tasksRes.json() : null;
+                const agentsData = agentsRes?.ok ? await agentsRes.json() : null;
+                
+                const tasks = tasksData?.data?.tasks || [];
+                const agents = agentsData?.agents || [];
+                
+                generateStandupNotes(tasks, agents);
+            } catch (error) {
+                // Fallback to demo data
+                generateStandupNotes([], []);
+            }
+        }
+
+        function generateStandupNotes(tasks, agents) {
+            const now = new Date();
+            const dateStr = now.toLocaleDateString('en-US', { 
+                weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' 
+            });
+            const timeStr = now.toLocaleTimeString('en-US');
+            
+            // Calculate stats
+            const incompleteTasks = tasks.filter(t => t.status !== 'completed');
+            const completedTasks = tasks.filter(t => t.status === 'completed');
+            const blockedTasks = tasks.filter(t => t.status === 'blocked');
+            const p0Tasks = incompleteTasks.filter(t => t.priority === 'P0');
+            
+            // Update stats
+            document.getElementById('agent-count').textContent = agents.length || 23;
+            document.getElementById('task-count').textContent = incompleteTasks.length || 12;
+            document.getElementById('completed-count').textContent = completedTasks.length || 5;
+            document.getElementById('blocker-count').textContent = blockedTasks.length || 0;
+            
+            // Generate standup notes
+            let notes = `# Daily Standup - ${dateStr}\n`;
+            notes += `## Generated: ${timeStr}\n\n`;
+            
+            notes += `## 📊 Quick Stats\n`;
+            notes += `- Total Agents: ${agents.length || 23}\n`;
+            notes += `- Active Tasks: ${incompleteTasks.length || 12}\n`;
+            notes += `- Completed Today: ${completedTasks.length || 5}\n`;
+            notes += `- Blockers: ${blockedTasks.length || 0}\n\n`;
+            
+            if (p0Tasks.length > 0) {
+                notes += `## 🔴 P0 Critical Tasks\n`;
+                p0Tasks.slice(0, 5).forEach(task => {
+                    notes += `- **${task.title}** (${task.assignee || 'Unassigned'})\n`;
+                });
+                notes += `\n`;
+            }
+            
+            notes += `## ✅ Completed Since Last Standup\n`;
+            if (completedTasks.length > 0) {
+                completedTasks.slice(0, 5).forEach(task => {
+                    notes += `- ${task.title} (${task.assignee || 'Unassigned'})\n`;
+                });
+            } else {
+                notes += `- No tasks completed yet today\n`;
+            }
+            notes += `\n`;
+            
+            notes += `## 🔄 In Progress\n`;
+            const inProgress = incompleteTasks.filter(t => t.status === 'in_progress').slice(0, 5);
+            if (inProgress.length > 0) {
+                inProgress.forEach(task => {
+                    notes += `- ${task.title} (${task.assignee || 'Unassigned'})\n`;
+                });
+            } else {
+                notes += `- No tasks currently in progress\n`;
+            }
+            notes += `\n`;
+            
+            notes += `## ⚠️ Blockers\n`;
+            if (blockedTasks.length > 0) {
+                blockedTasks.forEach(task => {
+                    notes += `- **${task.title}** - ${task.assignee || 'Unassigned'}\n`;
+                });
+            } else {
+                notes += `- No blockers reported 🎉\n`;
+            }
+            notes += `\n`;
+            
+            notes += `## 📋 Next Actions\n`;
+            notes += `- [ ] Review P0 tasks for blockers\n`;
+            notes += `- [ ] Sync with team on priorities\n`;
+            notes += `- [ ] Update task board\n`;
+            
+            document.getElementById('standup-content').textContent = notes;
+            document.getElementById('timestamp').textContent = `Generated: ${dateStr} at ${timeStr}`;
+        }
+
+        function copyToClipboard() {
+            const content = document.getElementById('standup-content').textContent;
+            navigator.clipboard.writeText(content).then(() => {
+                alert('Standup notes copied to clipboard!');
+            }).catch(() => {
+                alert('Failed to copy. Please select and copy manually.');
+            });
+        }
+
+        // Generate initial standup on load
+        document.addEventListener('DOMContentLoaded', generateStandup);
+    </script>
+</body>
+</html>

@@ -1,23 +1,25 @@
 {
   "version": 2,
-  "rewrites": [
-    { "source": "/agents", "destination": "/dashboard/agents.html" },
-    { "source": "/tasks", "destination": "/dashboard/task-board.html" },
-    { "source": "/office", "destination": "/dashboard/office.html" },
-    { "source": "/pixel-office", "destination": "/dashboard/office.html" },
-    { "source": "/agent-roster", "destination": "/dashboard/agents.html" },
-    { "source": "/task-board", "destination": "/dashboard/task-board.html" },
-    { "source": "/deals", "destination": "/dashboard/deals.html" },
-    { "source": "/tokens", "destination": "/dashboard/token-tracker.html" },
-    { "source": "/logs", "destination": "/dashboard/logs.html" },
-    { "source": "/data", "destination": "/dashboard/data.html" },
-    { "source": "/standup", "destination": "/dashboard/standup.html" },
-    { "source": "/vrm", "destination": "/dashboard/vrm-viewer.html" },
-    { "source": "/meebit", "destination": "/dashboard/vrm-viewer.html" },
-    { "source": "/", "destination": "/dashboard/index.html" },
-    { "source": "/api/(.*)", "destination": "/api/$1" },
-    { "source": "/dashboard/(.*)", "destination": "/dashboard/$1" },
-    { "source": "/(.*)", "destination": "/dashboard/index.html" }
+  "routes": [
+    { "src": "/api/(.*)", "dest": "/api/$1" },
+    { "src": "/agents", "dest": "/dashboard/agents.html" },
+    { "src": "/agent-roster", "dest": "/dashboard/agents.html" },
+    { "src": "/tasks", "dest": "/dashboard/task-board.html" },
+    { "src": "/task-board", "dest": "/dashboard/task-board.html" },
+    { "src": "/office", "dest": "/dashboard/office.html" },
+    { "src": "/pixel-office", "dest": "/dashboard/office.html" },
+    { "src": "/pixel", "dest": "/dashboard/office.html" },
+    { "src": "/deals", "dest": "/dashboard/deals.html" },
+    { "src": "/tokens", "dest": "/dashboard/tokens.html" },
+    { "src": "/token-tracker", "dest": "/dashboard/token-tracker.html" },
+    { "src": "/logs", "dest": "/dashboard/logs.html" },
+    { "src": "/data", "dest": "/dashboard/data.html" },
+    { "src": "/projects", "dest": "/dashboard/projects.html" },
+    { "src": "/standup", "dest": "/dashboard/standup.html" },
+    { "src": "/vrm", "dest": "/dashboard/vrm-viewer.html" },
+    { "src": "/meebit", "dest": "/dashboard/vrm-viewer.html" },
+    { "src": "/dashboard/(.*)", "dest": "/dashboard/$1" },
+    { "src": "/(.*)", "dest": "/dashboard/index.html" }
   ],
   "headers": [
     {
@@ -27,12 +29,6 @@
         { "key": "Access-Control-Allow-Origin", "value": "*" },
         { "key": "Access-Control-Allow-Methods", "value": "GET, POST, OPTIONS" },
         { "key": "Access-Control-Allow-Headers", "value": "Content-Type" }
-      ]
-    },
-    {
-      "source": "/dashboard/(.*)",
-      "headers": [
-        { "key": "Cache-Control", "value": "s-maxage=0" }
       ]
     }
   ]

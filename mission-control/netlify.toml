@@ -1,52 +1,97 @@
 [build]
-  publish = "dashboard"
+  publish = "."
 
 [[redirects]]
   from = "/"
-  to = "/index.html"
+  to = "/dashboard/index.html"
   status = 200
 
 [[redirects]]
   from = "/agents"
-  to = "/agents.html"
+  to = "/dashboard/agents.html"
+  status = 200
+
+[[redirects]]
+  from = "/agent-roster"
+  to = "/dashboard/agents.html"
   status = 200
 
 [[redirects]]
   from = "/tasks"
-  to = "/task-board.html"
+  to = "/dashboard/task-board.html"
+  status = 200
+
+[[redirects]]
+  from = "/task-board"
+  to = "/dashboard/task-board.html"
   status = 200
 
 [[redirects]]
   from = "/office"
-  to = "/office.html"
+  to = "/dashboard/office.html"
+  status = 200
+
+[[redirects]]
+  from = "/pixel-office"
+  to = "/dashboard/office.html"
+  status = 200
+
+[[redirects]]
+  from = "/pixel"
+  to = "/dashboard/office.html"
   status = 200
 
 [[redirects]]
   from = "/deals"
-  to = "/deals.html"
+  to = "/dashboard/deals.html"
   status = 200
 
 [[redirects]]
   from = "/tokens"
-  to = "/token-tracker.html"
+  to = "/dashboard/tokens.html"
+  status = 200
+
+[[redirects]]
+  from = "/token-tracker"
+  to = "/dashboard/token-tracker.html"
   status = 200
 
 [[redirects]]
   from = "/logs"
-  to = "/logs.html"
+  to = "/dashboard/logs.html"
   status = 200
 
 [[redirects]]
   from = "/data"
-  to = "/data.html"
+  to = "/dashboard/data.html"
+  status = 200
+
+[[redirects]]
+  from = "/projects"
+  to = "/dashboard/projects.html"
   status = 200
 
 [[redirects]]
   from = "/standup"
-  to = "/standup.html"
+  to = "/dashboard/standup.html"
+  status = 200
+
+[[redirects]]
+  from = "/vrm"
+  to = "/dashboard/vrm-viewer.html"
+  status = 200
+
+[[redirects]]
+  from = "/meebit"
+  to = "/dashboard/vrm-viewer.html"
+  status = 200
+
+[[redirects]]
+  from = "/api/*"
+  to = "/api/:splat"
   status = 200
 
 [[redirects]]
   from = "/*"
-  to = "/index.html"
+  to = "/dashboard/index.html"
   status = 200

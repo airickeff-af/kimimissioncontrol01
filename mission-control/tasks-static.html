@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tasks | Mission Control</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0a0f;
+            color: #e0e0e0;
+            min-height: 100vh;
+        }
+        .header {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            padding: 1rem 2rem;
+            border-bottom: 2px solid #00d4ff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .logo { 
+            font-family: 'Press Start 2P', cursive;
+            font-size: 1rem; 
+            color: #00d4ff; 
+        }
+        .nav { display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center; }
+        .nav a {
+            color: #888;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+        }
+        .nav a:hover, .nav a.active { color: #00d4ff; background: rgba(0,212,255,0.1); }
+        .refresh-btn {
+            background: rgba(0, 212, 255, 0.2);
+            border: 1px solid #00d4ff;
+            color: #00d4ff;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .refresh-btn:hover { background: rgba(0, 212, 255, 0.3); }
+        .container { max-width: 1400px; margin: 0 auto; padding: 2rem; }
+        h1 { color: #00d4ff; margin-bottom: 2rem; }
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .stat-card {
+            background: linear-gradient(135deg, #1a1a2e, #0f0f1a);
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+        .stat-value { font-size: 2rem; font-weight: 700; color: #00d4ff; }
+        .stat-label { color: #666; font-size: 0.875rem; margin-top: 0.5rem; }
+        .task-board {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        .column {
+            background: linear-gradient(135deg, #1a1a2e, #0f0f1a);
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+        .column-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #333;
+        }
+        .column h2 { color: #00d4ff; font-size: 1.1rem; }
+        .count {
+            background: rgba(0,212,255,0.1);
+            color: #00d4ff;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+        }
+        .task-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            transition: all 0.2s;
+        }
+        .task-card:hover {
+            border-color: #00d4ff;
+            transform: translateY(-2px);
+        }
+        .task-card h3 { font-size: 0.95rem; margin-bottom: 0.5rem; color: #e0e0e0; }
+        .task-meta {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.8rem;
+            color: #666;
+            flex-wrap: wrap;
+        }
+        .priority-p0 { border-left: 3px solid #ff4444; }
+        .priority-p1 { border-left: 3px solid #ffc107; }
+        .priority-p2 { border-left: 3px solid #00d4ff; }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">🎯 Mission Control</div>
+        <nav class="nav">
+            <a href="/">HQ</a>
+            <a href="/pixel-office">Office</a>
+            <a href="/agent-roster">Agents</a>
+            <a href="/deals">DealFlow</a>
+            <a href="/tokens">Tokens</a>
+            <a href="/task-board" class="active">Tasks</a>
+            <a href="/logs">Logs</a>
+            <a href="/data">Data</a>
+            <button class="refresh-btn" onclick="location.reload()">🔄 Refresh</button>
+        </nav>
+    </header>
+
+    <div class="container">
+        <h1>📋 Task Board</h1>
+        
+        <div class="stats-bar">
+            <div class="stat-card">
+                <div class="stat-value">139</div>
+                <div class="stat-label">Total Tasks</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" style="color: #ff4444;">7</div>
+                <div class="stat-label">P0 Critical</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" style="color: #ffc107;">14</div>
+                <div class="stat-label">P1 High</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" style="color: #00ff88;">12</div>
+                <div class="stat-label">Completed Today</div>
+            </div>
+        </div>
+
+        <div class="task-board">
+            <div class="column">
+                <div class="column-header">
+                    <h2>🔴 P0 Critical</h2>
+                    <span class="count">3</span>
+                </div>
+                <div class="task-card priority-p0">
+                    <h3>Fix Deployment Failure</h3>
+                    <div class="task-meta">
+                        <span>👤 Code-1</span>
+                        <span>📅 OVERDUE</span>
+                    </div>
+                </div>
+                <div class="task-card priority-p0">
+                    <h3>Pixel Office Integration</h3>
+                    <div class="task-meta">
+                        <span>👤 Pixel</span>
+                        <span>📅 Due Feb 19</span>
+                    </div>
+                </div>
+                <div class="task-card priority-p0">
+                    <h3>Real API Integration</h3>
+                    <div class="task-meta">
+                        <span>👤 CodeMaster</span>
+                        <span>📅 Due Feb 19</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="column">
+                <div class="column-header">
+                    <h2>🟡 P1 High</h2>
+                    <span class="count">3</span>
+                </div>
+                <div class="task-card priority-p1">
+                    <h3>Singapore Regional Leads</h3>
+                    <div class="task-meta">
+                        <span>👤 Scout</span>
+                        <span>🔄 In Progress</span>
+                    </div>
+                </div>
+                <div class="task-card priority-p1">
+                    <h3>Larry API Credentials</h3>
+                    <div class="task-meta">
+                        <span>👤 BLOCKED</span>
+                        <span>🚫 Needs EricF</span>
+                    </div>
+                </div>
+                <div class="task-card priority-p1">
+                    <h3>ColdCall Approval</h3>
+                    <div class="task-meta">
+                        <span>👤 BLOCKED</span>
+                        <span>🚫 Needs EricF</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="column">
+                <div class="column-header">
+                    <h2>🔵 P2 Medium</h2>
+                    <span class="count">2</span>
+                </div>
+                <div class="task-card priority-p2">
+                    <h3>Session Context Optimization</h3>
+                    <div class="task-meta">
+                        <span>👤 Nexus</span>
+                        <span>📅 Feb 25</span>
+                    </div>
+                </div>
+                <div class="task-card priority-p2">
+                    <h3>Token Usage Predictor</h3>
+                    <div class="task-meta">
+                        <span>👤 Code-1</span>
+                        <span>📅 Feb 26</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

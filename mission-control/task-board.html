@@ -1,10 +1,348 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta http-equiv="refresh" content="0; url=/dashboard/task-board.html">
-  <title>Redirecting...</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="theme-color" content="#2d1b4e">
+    <title>Task Board | Mission Control</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0a0f;
+            color: #e0e0e0;
+            min-height: 100vh;
+        }
+        .header {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            padding: 1rem 2rem;
+            border-bottom: 2px solid #00d4ff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .logo { 
+            font-family: 'Press Start 2P', cursive;
+            font-size: 1rem; 
+            color: #00d4ff; 
+        }
+        .nav { display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center; }
+        .nav a {
+            color: #888;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+        }
+        .nav a:hover, .nav a.active { color: #00d4ff; background: rgba(0,212,255,0.1); }
+        .refresh-btn {
+            background: rgba(0, 212, 255, 0.2);
+            border: 1px solid #00d4ff;
+            color: #00d4ff;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .refresh-btn:hover { background: rgba(0, 212, 255, 0.3); }
+        .refresh-btn.spinning { animation: spin 1s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .container { max-width: 1400px; margin: 0 auto; padding: 2rem; }
+        h1 { color: #00d4ff; margin-bottom: 2rem; }
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .stat-card {
+            background: linear-gradient(135deg, #1a1a2e, #0f0f1a);
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+        .stat-value { font-size: 2rem; font-weight: 700; color: #00d4ff; }
+        .stat-label { color: #666; font-size: 0.875rem; margin-top: 0.5rem; }
+        .filters {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        .filter-btn {
+            background: #1a1a2e;
+            border: 1px solid #333;
+            color: #888;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .filter-btn:hover, .filter-btn.active {
+            border-color: #00d4ff;
+            color: #00d4ff;
+            background: rgba(0,212,255,0.1);
+        }
+        .task-board {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+        .column {
+            background: linear-gradient(135deg, #1a1a2e, #0f0f1a);
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+        .column-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #333;
+        }
+        .column h2 { color: #00d4ff; font-size: 1.1rem; }
+        .count {
+            background: rgba(0,212,255,0.1);
+            color: #00d4ff;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+        }
+        .task-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            transition: all 0.2s;
+        }
+        .task-card:hover {
+            border-color: #00d4ff;
+            transform: translateY(-2px);
+        }
+        .task-card h3 { font-size: 0.95rem; margin-bottom: 0.5rem; color: #e0e0e0; }
+        .task-meta {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.8rem;
+            color: #666;
+            flex-wrap: wrap;
+        }
+        .priority-p0 { border-left: 3px solid #ff4444; }
+        .priority-p1 { border-left: 3px solid #ffc107; }
+        .priority-p2 { border-left: 3px solid #00d4ff; }
+        .priority-p3 { border-left: 3px solid #888; }
+        .loading { text-align: center; padding: 3rem; color: #888; }
+        .error { text-align: center; padding: 3rem; color: #ff4444; }
+        .last-updated { text-align: center; color: #666; margin-top: 2rem; font-size: 0.875rem; }
+    </style>
 </head>
 <body>
-  <p>Redirecting to Task Board...</p>
+    <header class="header">
+        <div class="logo">🎯 Mission Control</div>
+        <nav class="nav">
+            <a href="/">HQ</a>
+            <a href="/pixel-office">Office</a>
+            <a href="/agent-roster">Agents</a>
+            <a href="/deals">DealFlow</a>
+            <a href="/tokens">Tokens</a>
+            <a href="/task-board" class="active">Tasks</a>
+            <a href="/logs">Logs</a>
+            <a href="/data">Data</a>
+            <button class="refresh-btn" id="refreshBtn" onclick="refreshTasks()">
+                <span class="refresh-icon">🔄</span> Refresh
+            </button>
+        </nav>
+    </header>
+
+    <div class="container">
+        <h1>📋 Task Board</h1>
+        
+        <div class="stats-bar">
+            <div class="stat-card">
+                <div class="stat-value" id="stat-total">-</div>
+                <div class="stat-label">Total Tasks</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="stat-p0" style="color: #ff4444;">-</div>
+                <div class="stat-label">P0 Critical</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="stat-p1" style="color: #ffc107;">-</div>
+                <div class="stat-label">P1 High</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="stat-completed" style="color: #00ff88;">-</div>
+                <div class="stat-label">Completed</div>
+            </div>
+        </div>
+
+        <div class="filters">
+            <button class="filter-btn active" onclick="filterTasks('all')">All</button>
+            <button class="filter-btn" onclick="filterTasks('P0')">🔴 P0</button>
+            <button class="filter-btn" onclick="filterTasks('P1')">🟡 P1</button>
+            <button class="filter-btn" onclick="filterTasks('P2')">🔵 P2</button>
+            <button class="filter-btn" onclick="filterTasks('in_progress')">In Progress</button>
+        </div>
+
+        <div id="task-content">
+            <div class="loading">Loading tasks...</div>
+        </div>
+        
+        <div class="last-updated" id="last-updated"></div>
+    </div>
+
+    <script>
+        let allTasks = [];
+        let currentFilter = 'all';
+
+        async function loadTasks() {
+            const content = document.getElementById('task-content');
+            content.innerHTML = '<div class="loading">Loading tasks...</div>';
+
+            try {
+                const response = await fetch('/api/tasks');
+                if (!response.ok) throw new Error('Failed to fetch tasks');
+                const data = await response.json();
+                
+                if (data.success && data.data && data.data.tasks) {
+                    allTasks = data.data.tasks;
+                } else {
+                    // Fallback data
+                    allTasks = getFallbackTasks();
+                }
+                
+                updateStats();
+                renderTasks();
+                updateLastUpdated();
+            } catch (error) {
+                allTasks = getFallbackTasks();
+                updateStats();
+                renderTasks();
+                updateLastUpdated();
+            }
+        }
+
+        function getFallbackTasks() {
+            return [
+                { id: 'TASK-001', title: 'Fix Deployment Failure', priority: 'P0', status: 'in_progress', assignee: 'Code-1', dueDate: 'Feb 19' },
+                { id: 'TASK-002', title: 'Pixel Office Integration', priority: 'P0', status: 'in_progress', assignee: 'Pixel', dueDate: 'Feb 19' },
+                { id: 'TASK-003', title: 'Real API Integration', priority: 'P0', status: 'in_progress', assignee: 'CodeMaster', dueDate: 'Feb 19' },
+                { id: 'TASK-004', title: 'Singapore Regional Leads', priority: 'P1', status: 'in_progress', assignee: 'Scout', dueDate: 'Feb 20' },
+                { id: 'TASK-005', title: 'Larry API Credentials', priority: 'P1', status: 'blocked', assignee: 'BLOCKED', dueDate: 'TBD' },
+                { id: 'TASK-006', title: 'Session Context Optimization', priority: 'P2', status: 'not_started', assignee: 'Nexus', dueDate: 'Feb 25' },
+                { id: 'TASK-007', title: 'Token Usage Predictor', priority: 'P2', status: 'not_started', assignee: 'Code-1', dueDate: 'Feb 26' },
+                { id: 'TASK-008', title: 'Update Documentation', priority: 'P3', status: 'completed', assignee: 'Quill', dueDate: 'Feb 18' }
+            ];
+        }
+
+        function updateStats() {
+            document.getElementById('stat-total').textContent = allTasks.length;
+            document.getElementById('stat-p0').textContent = allTasks.filter(t => t.priority === 'P0').length;
+            document.getElementById('stat-p1').textContent = allTasks.filter(t => t.priority === 'P1').length;
+            document.getElementById('stat-completed').textContent = allTasks.filter(t => t.status === 'completed').length;
+        }
+
+        function renderTasks() {
+            const content = document.getElementById('task-content');
+            
+            let filtered = allTasks;
+            if (currentFilter !== 'all') {
+                if (['P0', 'P1', 'P2', 'P3'].includes(currentFilter)) {
+                    filtered = allTasks.filter(t => t.priority === currentFilter);
+                } else {
+                    filtered = allTasks.filter(t => t.status === currentFilter);
+                }
+            }
+
+            const p0Tasks = filtered.filter(t => t.priority === 'P0');
+            const p1Tasks = filtered.filter(t => t.priority === 'P1');
+            const otherTasks = filtered.filter(t => !['P0', 'P1'].includes(t.priority));
+
+            content.innerHTML = `
+                <div class="task-board">
+                    <div class="column">
+                        <div class="column-header">
+                            <h2>🔴 P0 Critical</h2>
+                            <span class="count">${p0Tasks.length}</span>
+                        </div>
+                        ${p0Tasks.map(task => renderTaskCard(task)).join('')}
+                    </div>
+                    <div class="column">
+                        <div class="column-header">
+                            <h2>🟡 P1 High</h2>
+                            <span class="count">${p1Tasks.length}</span>
+                        </div>
+                        ${p1Tasks.map(task => renderTaskCard(task)).join('')}
+                    </div>
+                    <div class="column">
+                        <div class="column-header">
+                            <h2>📋 Other Tasks</h2>
+                            <span class="count">${otherTasks.length}</span>
+                        </div>
+                        ${otherTasks.map(task => renderTaskCard(task)).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderTaskCard(task) {
+            const priorityClass = `priority-${task.priority?.toLowerCase() || 'p2'}`;
+            return `
+                <div class="task-card ${priorityClass}">
+                    <h3>${task.title}</h3>
+                    <div class="task-meta">
+                        <span>👤 ${task.assignee || 'Unassigned'}</span>
+                        <span>🏷️ ${task.priority}</span>
+                        <span>📅 ${task.dueDate || 'No date'}</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        function filterTasks(filter) {
+            currentFilter = filter;
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.textContent.toLowerCase().includes(filter.toLowerCase()) || 
+                    (filter === 'all' && btn.textContent === 'All')) {
+                    btn.classList.add('active');
+                }
+            });
+            renderTasks();
+        }
+
+        function refreshTasks() {
+            const refreshBtn = document.getElementById('refreshBtn');
+            refreshBtn.classList.add('spinning');
+            
+            loadTasks().then(() => {
+                setTimeout(() => refreshBtn.classList.remove('spinning'), 500);
+            });
+        }
+
+        function updateLastUpdated() {
+            const now = new Date();
+            document.getElementById('last-updated').textContent = 
+                `Last updated: ${now.toLocaleTimeString()}`;
+        }
+
+        // Load on page load
+        loadTasks();
+        
+        // Auto-refresh every 30 minutes
+        setInterval(loadTasks, 30 * 60 * 1000);
+    </script>
 </body>
 </html>
