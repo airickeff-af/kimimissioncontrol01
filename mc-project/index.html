@@ -137,6 +137,51 @@
             .main-container {
                 grid-template-columns: 1fr;
             }
+            
+            /* P1-022: Mobile touch controls */
+            #character-canvas {
+                height: 300px;
+                touch-action: pan-y pinch-zoom;
+            }
+            
+            .pixel-header {
+                flex-direction: column;
+                gap: 0.5rem;
+                padding: 0.5rem;
+            }
+            
+            .pixel-nav {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .pixel-nav a, .pixel-btn {
+                font-size: 6px;
+                padding: 0.4rem 0.6rem;
+            }
+            
+            .viewer-controls {
+                gap: 0.3rem;
+            }
+            
+            .pixel-card {
+                padding: 1rem;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            #character-canvas {
+                height: 250px;
+            }
+            
+            .pixel-logo {
+                font-size: 10px;
+            }
+            
+            .level-badge, .stage-label {
+                font-size: 8px;
+                padding: 0.3rem 0.6rem;
+            }
         }
 
         /* Character Viewer Section */
@@ -356,6 +401,48 @@
         .holiday-option.active {
             background: var(--pixel-pink);
             color: #000;
+        }
+
+        /* P1-024: Color Menu */
+        .color-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, #2d1b4e, #1a1a2e);
+            border: 3px solid var(--pixel-cyan);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 0.5rem;
+            z-index: 100;
+            box-shadow: 4px 4px 0 #000;
+            display: none;
+        }
+
+        .color-menu.active {
+            display: block;
+            animation: slideDown 0.2s ease;
+        }
+
+        .color-option {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            margin: 0.25rem;
+            border: 3px solid #333;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .color-option:hover {
+            transform: scale(1.1);
+            border-color: #fff;
+        }
+
+        .color-option.active {
+            border-color: var(--pixel-cyan);
+            box-shadow: 0 0 10px var(--pixel-cyan);
         }
 
         /* Stats Section */
@@ -1074,9 +1161,11 @@
                 <button class="pixel-btn" onclick="resetView()">🏠 RESET</button>
                 <button class="pixel-btn" onclick="randomPose()">🎲 POSE</button>
                 <button class="pixel-btn meditate" id="meditateBtn" onclick="toggleMeditation()">🧘 MEDITATE</button>
+                <button class="pixel-btn" onclick="shareToTwitter()">📤 SHARE</button>
                 <button class="pixel-btn" style="background: linear-gradient(135deg, #ff6b9d, #ff8fab);" onclick="toggleFullscreen()">⛶ FULLSCREEN</button>
                 <div style="position: relative; display: inline-block;">
                     <button class="pixel-btn holiday" id="holidayBtn" onclick="toggleHolidayMenu()">🎄 HOLIDAY</button>
+                    <button class="pixel-btn" onclick="toggleColorMenu()">🎨 COLOR</button>
                     <div class="holiday-menu" id="holidayMenu">
                         <div class="holiday-option" data-holiday="newyear" onclick="selectHoliday('newyear')">🎆 NEW YEAR (JAN)</div>
                         <div class="holiday-option" data-holiday="valentine" onclick="selectHoliday('valentine')">💝 VALENTINE'S (FEB)</div>
@@ -1085,6 +1174,14 @@
                         <div class="holiday-option" data-holiday="christmas" onclick="selectHoliday('christmas')">🎄 CHRISTMAS (DEC)</div>
                         <div class="holiday-option" data-holiday="birthday" onclick="selectHoliday('birthday')">🎂 BIRTHDAY</div>
                         <div class="holiday-option" data-holiday="none" onclick="selectHoliday('none')">❌ NO COSTUME</div>
+                    </div>
+                    <div class="color-menu" id="colorMenu">
+                        <div class="color-option" style="background: #00d4ff;" onclick="setCharacterColor('#00d4ff')"></div>
+                        <div class="color-option" style="background: #ff6b9d;" onclick="setCharacterColor('#ff6b9d')"></div>
+                        <div class="color-option" style="background: #4ecdc4;" onclick="setCharacterColor('#4ecdc4')"></div>
+                        <div class="color-option" style="background: #ffe66d;" onclick="setCharacterColor('#ffe66d')"></div>
+                        <div class="color-option" style="background: #9d4edd;" onclick="setCharacterColor('#9d4edd')"></div>
+                        <div class="color-option" style="background: #ff8c42;" onclick="setCharacterColor('#ff8c42')"></div>
                     </div>
                 </div>
             </div>
@@ -1256,6 +1353,25 @@
             <div style="text-align: center; padding: 2rem; color: #666; font-family: var(--font-pixel); font-size: 8px;">
                 📝 NO CONFESSIONS YET. BE THE FIRST!
             </div>
+        </div>
+    </section>
+
+    <!-- Daily Quiz Section -->
+    <section class="challenge-section" id="quiz">
+        <div class="challenge-header">
+            <h2 class="pixel-card-title">❓ DAILY QUIZ</h2>
+            <span id="quizStatus" style="font-family: var(--font-pixel); font-size: 8px; color: #888;">🔒 NOT ATTEMPTED</span>
+        </div>
+        <div id="quizContainer">
+            <div id="quizQuestion" class="pixel-card" style="margin-bottom: 1rem;">
+                <p style="font-size: 16px; margin-bottom: 1rem;">🧠 What is the 50/30/20 rule in budgeting?</p>
+                <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                    <button class="pixel-btn" onclick="answerQuiz('a')">A) 50% needs, 30% wants, 20% savings</button>
+                    <button class="pixel-btn" onclick="answerQuiz('b')">B) 50% savings, 30% needs, 20% wants</button>
+                    <button class="pixel-btn" onclick="answerQuiz('c')">C) 50% wants, 30% savings, 20% needs</button>
+                </div>
+            </div>
+            <div id="quizResult" style="display: none; text-align: center; padding: 1rem;"></div>
         </div>
     </section>
 
@@ -2407,8 +2523,120 @@
             applyPose(currentPose);
         }
 
+        // P1-018: Daily Quiz
+        const QUIZ_QUESTIONS = [
+            {
+                q: "🧠 What is the 50/30/20 rule in budgeting?",
+                options: ["50% needs, 30% wants, 20% savings", "50% savings, 30% needs, 20% wants", "50% wants, 30% savings, 20% needs"],
+                correct: 0
+            },
+            {
+                q: "💪 How many minutes of exercise per week is recommended?",
+                options: ["60 minutes", "150 minutes", "300 minutes"],
+                correct: 1
+            },
+            {
+                q: "💰 What is compound interest?",
+                options: ["Interest on principal only", "Interest on principal + accumulated interest", "A type of bank account"],
+                correct: 1
+            }
+        ];
+
+        let quizAnswered = localStorage.getItem('mc_quiz_' + new Date().toDateString()) || false;
+
+        function loadDailyQuiz() {
+            if (quizAnswered) {
+                document.getElementById('quizStatus').textContent = '✅ COMPLETED';
+                document.getElementById('quizQuestion').style.display = 'none';
+                document.getElementById('quizResult').style.display = 'block';
+                document.getElementById('quizResult').innerHTML = '<p style="color: var(--pixel-green);">🎉 Already answered today!</p>';
+            }
+        }
+
+        function answerQuiz(answer) {
+            if (quizAnswered) return;
+
+            const correct = answer === 'a'; // First option is correct for now
+            quizAnswered = true;
+            localStorage.setItem('mc_quiz_' + new Date().toDateString(), 'true');
+
+            document.getElementById('quizStatus').textContent = '✅ COMPLETED';
+            document.getElementById('quizQuestion').style.display = 'none';
+            document.getElementById('quizResult').style.display = 'block';
+
+            if (correct) {
+                document.getElementById('quizResult').innerHTML = '<p style="color: var(--pixel-green);">🎉 CORRECT! +10 COINS</p>';
+                showNotification('🎉 QUIZ CORRECT! +10 COINS');
+            } else {
+                document.getElementById('quizResult').innerHTML = '<p style="color: var(--pixel-pink);">❌ WRONG! Try again tomorrow.</p>';
+                showNotification('❌ WRONG ANSWER');
+            }
+        }
+
+        // P1-010: Achievement Badges System
+        const ACHIEVEMENTS = [
+            { id: 'first_login', name: 'First Steps', desc: 'Log in for the first time', emoji: '👶', condition: () => true },
+            { id: 'week_streak', name: 'Week Warrior', desc: '7-day streak', emoji: '🔥', condition: () => (growthState.streak || 0) >= 7 },
+            { id: 'wealth_50', name: 'Money Maker', desc: 'Reach 50 wealth', emoji: '💰', condition: () => growthState.wealthScore >= 50 },
+            { id: 'health_50', name: 'Health Nut', desc: 'Reach 50 health', emoji: '❤️', condition: () => growthState.healthScore >= 50 },
+            { id: 'max_level', name: 'Maxed Out', desc: 'Reach max level', emoji: '👑', condition: () => growthState.level >= 4 }
+        ];
+
+        let unlockedAchievements = JSON.parse(localStorage.getItem('mc_achievements') || '[]');
+
+        function checkAchievements() {
+            ACHIEVEMENTS.forEach(ach => {
+                if (!unlockedAchievements.includes(ach.id) && ach.condition()) {
+                    unlockAchievement(ach);
+                }
+            });
+        }
+
+        function unlockAchievement(ach) {
+            unlockedAchievements.push(ach.id);
+            localStorage.setItem('mc_achievements', JSON.stringify(unlockedAchievements));
+            showNotification(`🏆 ACHIEVEMENT: ${ach.emoji} ${ach.name}!`);
+        }
+
         // FULLSCREEN MODE
         let isFullscreen = false;
+
+        // P1-026: Browser Notifications
+        function requestNotificationPermission() {
+            if ('Notification' in window) {
+                Notification.requestPermission().then(permission => {
+                    if (permission === 'granted') {
+                        showNotification('🔔 NOTIFICATIONS ENABLED!');
+                    }
+                });
+            }
+        }
+
+        function sendStreakReminder() {
+            if (Notification.permission === 'granted') {
+                new Notification('🔥 MC Project Streak!', {
+                    body: 'Don\'t break your streak! Log your progress today.',
+                    icon: '🎮'
+                });
+            }
+        }
+
+        // Check streak at 8 PM
+        setInterval(() => {
+            const hour = new Date().getHours();
+            if (hour === 20) {
+                sendStreakReminder();
+            }
+        }, 3600000); // Check every hour
+
+        // P1-025: Social Sharing
+        function shareToTwitter() {
+            const text = `🎮 My MC Project Character is LVL ${growthState.level}!\n💰 Wealth: ${growthState.wealthScore}/100\n❤️ Health: ${growthState.healthScore}/100\n🔥 ${growthState.combinedScore}/100 Combined Score!`;
+            const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&hashtags=MCProject,GenZWealth,HealthStreak`;
+            window.open(url, '_blank');
+            showNotification('📤 OPENED TWITTER SHARE!');
+        }
+
         function toggleFullscreen() {
             isFullscreen = !isFullscreen;
             const canvas = document.getElementById('character-canvas');
@@ -3379,6 +3607,9 @@
             renderConfessions();
             renderChallenges();
             updateGrowth();
+            loadDailyQuiz();
+            checkAchievements();
+            requestNotificationPermission();
         });
 
         window.addEventListener('resize', () => {
@@ -3605,9 +3836,38 @@
             }
         };
 
+        // P1-024: Color Menu Functions
+        let currentCharacterColor = localStorage.getItem('mc_character_color') || '#00d4ff';
+
+        function toggleColorMenu() {
+            const menu = document.getElementById('colorMenu');
+            menu.classList.toggle('active');
+            document.getElementById('holidayMenu').classList.remove('active');
+        }
+
+        function setCharacterColor(color) {
+            currentCharacterColor = color;
+            localStorage.setItem('mc_character_color', color);
+
+            // Apply color to character
+            if (character) {
+                character.traverse((child) => {
+                    if (child.isMesh && child.material) {
+                        const newColor = new THREE.Color(color);
+                        child.material.emissive = newColor;
+                        child.material.emissiveIntensity = 0.3;
+                    }
+                });
+            }
+
+            document.getElementById('colorMenu').classList.remove('active');
+            showNotification(`🎨 COLOR CHANGED!`);
+        }
+
         function toggleHolidayMenu() {
             const menu = document.getElementById('holidayMenu');
             menu.classList.toggle('active');
+            document.getElementById('colorMenu').classList.remove('active');
 
             // Update active state
             document.querySelectorAll('.holiday-option').forEach(opt => {
