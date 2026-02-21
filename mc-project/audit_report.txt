@@ -1,0 +1,16 @@
+# MC PROJECT QUALITY AUDIT
+Date: 2026-02-21
+
+## VRM #11318 DISPLAY ✅
+- CORS proxy added (api.allorigins.win)
+- Timeout increased to 15s
+- Fallback character ready
+- Scale fixed at 0.4
+
+## FULLSCREEN MODE ✅
+- Button added to controls
+- Hides all UI when active
+- ESC key exits
+- Browser fullscreen API integrated
+
+## CODE QUALITY CHECKS
