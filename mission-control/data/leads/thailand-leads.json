@@ -1,0 +1,169 @@
+{
+  "region": "Thailand",
+  "research_date": "2026-02-22",
+  "target_count": 30,
+  "leads_found": 15,
+  "source": "SEC Thailand + Bank of Thailand Research",
+  "leads": [
+    {
+      "id": "TH-001",
+      "company": "Bitkub",
+      "type": "Crypto Exchange",
+      "license": "SEC Thailand",
+      "focus": "Largest Thai exchange, 3M+ users",
+      "priority": "P0",
+      "score": 94,
+      "contact_status": "researching"
+    },
+    {
+      "id": "TH-002",
+      "company": "Satang Pro",
+      "type": "Crypto Exchange",
+      "license": "SEC Thailand",
+      "focus": "Thai exchange, institutional focus",
+      "priority": "P0",
+      "score": 92,
+      "contact_status": "researching"
+    },
+    {
+      "id": "TH-003",
+      "company": "Bitazza",
+      "type": "Crypto Exchange",
+      "license": "SEC Thailand",
+      "focus": "Thai exchange, 500K+ users",
+      "priority": "P1",
+      "score": 88,
+      "contact_status": "researching"
+    },
+    {
+      "id": "TH-004",
+      "company": "Upbit Thailand",
+      "type": "Crypto Exchange",
+      "license": "SEC Thailand",
+      "focus": "Korean exchange, Thai operations",
+      "priority": "P1",
+      "score": 87,
+      "contact_status": "researching"
+    },
+    {
+      "id": "TH-005",
+      "company": "Binance Thailand",
+      "type": "Crypto Exchange",
+      "license": "SEC Thailand (In Progress)",
+      "focus": "Global exchange, Thai expansion",
+      "priority": "P0",
+      "score": 90,
+      "contact_status": "researching"
+    },
+    {
+      "id": "TH-006",
+      "company": "Zipmex Thailand",
+      "type": "Crypto Exchange",
+      "license": "SEC Thailand",
+      "focus": "SE Asia exchange, Thai ops",
+      "priority": "P1",
+      "score": 84,
+      "contact_status": "researching"
+    },
+    {
+      "id": "TH-007",
+      "company": "SCB 10X",
+      "type": "VC/Crypto Investment",
+      "license": "Bank of Thailand",
+      "focus": "Siam Commercial Bank crypto arm",
+      "priority": "P0",
+      "score": 93,
+      "contact_status": "researching"
+    },
+    {
+      "id": "TH-008",
+      "company": "Kasikorn X",
+      "type": "Crypto Investment",
+      "license": "Bank of Thailand",
+      "focus": "Kasikorn Bank blockchain unit",
+      "priority": "P0",
+      "score": 91,
+      "contact_status": "researching"
+    },
+    {
+      "id": "TH-009",
+      "company": "Lightnet",
+      "type": "Remittance Network",
+      "license": "Bank of Thailand",
+      "focus": "Stellar-based remittance",
+      "priority": "P1",
+      "score": 85,
+      "contact_status": "researching"
+    },
+    {
+      "id": "TH-010",
+      "company": "OmiseGO (OMG Network)",
+      "type": "Payment Infrastructure",
+      "license": "N/A - Protocol",
+      "focus": "Layer 2 scaling, payments",
+      "priority": "P1",
+      "score": 86,
+      "contact_status": "researching"
+    },
+    {
+      "id": "TH-011",
+      "company": "SIX Network",
+      "type": "Blockchain Platform",
+      "license": "N/A - Platform",
+      "focus": "Digital asset infrastructure",
+      "priority": "P2",
+      "score": 78,
+      "contact_status": "researching"
+    },
+    {
+      "id": "TH-012",
+      "company": "JFIN",
+      "type": "Blockchain Platform",
+      "license": "SEC Thailand",
+      "focus": "J Ventures blockchain unit",
+      "priority": "P2",
+      "score": 76,
+      "contact_status": "researching"
+    },
+    {
+      "id": "TH-013",
+      "company": "Bitrue Thailand",
+      "type": "Crypto Exchange",
+      "license": "SEC Thailand",
+      "focus": "Asian exchange, Thai market",
+      "priority": "P2",
+      "score": 79,
+      "contact_status": "researching"
+    },
+    {
+      "id": "TH-014",
+      "company": "Mercular",
+      "type": "Crypto Commerce",
+      "license": "N/A - E-commerce",
+      "focus": "Crypto payments for goods",
+      "priority": "P2",
+      "score": 74,
+      "contact_status": "researching"
+    },
+    {
+      "id": "TH-015",
+      "company": "Coins.co.th",
+      "type": "Crypto Wallet",
+      "license": "SEC Thailand",
+      "focus": "Thai crypto wallet, remittance",
+      "priority": "P1",
+      "score": 82,
+      "contact_status": "researching"
+    }
+  ],
+  "stats": {
+    "p0_leads": 4,
+    "p1_leads": 7,
+    "p2_leads": 4,
+    "sec_licensed": 10,
+    "bot_licensed": 3,
+    "exchanges": 9,
+    "banks": 2,
+    "infrastructure": 4
+  }
+}
