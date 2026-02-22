@@ -10,6 +10,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@pixiv/three-vrm@0.6.7/lib/three-vrm.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -289,6 +291,8 @@
             box-shadow: 2px 2px 0 #000;
             position: relative;
             overflow: hidden;
+            will-change: transform, box-shadow;
+            transform: translateZ(0);
         }
 
         .pixel-btn::before {
@@ -462,6 +466,8 @@
             transition: all 0.2s;
             position: relative;
             overflow: hidden;
+            will-change: transform, box-shadow;
+            transform: translateZ(0);
         }
 
         .pixel-card::before {
@@ -1181,12 +1187,17 @@
                         <div class="holiday-option" data-holiday="none" onclick="selectHoliday('none')">❌ NO COSTUME</div>
                     </div>
                     <div class="color-menu" id="colorMenu">
-                        <div class="color-option" style="background: #00d4ff;" onclick="setCharacterColor('#00d4ff')"></div>
-                        <div class="color-option" style="background: #ff6b9d;" onclick="setCharacterColor('#ff6b9d')"></div>
-                        <div class="color-option" style="background: #4ecdc4;" onclick="setCharacterColor('#4ecdc4')"></div>
-                        <div class="color-option" style="background: #ffe66d;" onclick="setCharacterColor('#ffe66d')"></div>
-                        <div class="color-option" style="background: #9d4edd;" onclick="setCharacterColor('#9d4edd')"></div>
-                        <div class="color-option" style="background: #ff8c42;" onclick="setCharacterColor('#ff8c42')"></div>
+                        <input type="color" id="colorPicker" value="#00d4ff" onchange="setCharacterColor(this.value)" style="width: 100%; height: 40px; border: none; cursor: pointer;">
+                        <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem;">
+                            <div class="color-option" style="background: #00d4ff;" onclick="setCharacterColor('#00d4ff')"></div>
+                            <div class="color-option" style="background: #ff6b9d;" onclick="setCharacterColor('#ff6b9d')"></div>
+                            <div class="color-option" style="background: #4ecdc4;" onclick="setCharacterColor('#4ecdc4')"></div>
+                            <div class="color-option" style="background: #ffe66d;" onclick="setCharacterColor('#ffe66d')"></div>
+                            <div class="color-option" style="background: #9d4edd;" onclick="setCharacterColor('#9d4edd')"></div>
+                            <div class="color-option" style="background: #ff8c42;" onclick="setCharacterColor('#ff8c42')"></div>
+                            <div class="color-option" style="background: #ff0000;" onclick="setCharacterColor('#ff0000')"></div>
+                            <div class="color-option" style="background: #00ff00;" onclick="setCharacterColor('#00ff00')"></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1946,16 +1957,32 @@
         // ============================================
 
         // Linear interpolation between two values
+        /**
+         * Linear interpolation between two values
+         * @param {number} a - Start value
+         * @param {number} b - End value
+         * @param {number} t - Interpolation factor (0-1)
+         * @returns {number} Interpolated value
+         */
         function lerp(a, b, t) {
             return a + (b - a) * t;
         }
 
-        // Cubic ease interpolation (smooth start/end)
+        /**
+         * Cubic ease interpolation for smooth animations
+         * @param {number} t - Input time (0-1)
+         * @returns {number} Eased value
+         */
         function easeInOutCubic(t) {
             return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
         }
 
-        // Find keyframe indices for current time
+        /**
+         * Find keyframe indices for current time
+         * @param {Array} keyframes - Array of keyframe objects
+         * @param {number} currentTime - Current animation time
+         * @returns {Object} Previous and next keyframe indices
+         */
         function findKeyframes(keyframes, currentTime) {
             for (let i = 0; i < keyframes.length - 1; i++) {
                 if (currentTime >= keyframes[i].t && currentTime <= keyframes[i + 1].t) {
@@ -2302,6 +2329,9 @@
             // Initialize environment
             initEnvironment();
 
+            // P1-022: Hammer.js touch gestures
+            initTouchGestures();
+
             // Animation loop
             animate();
 
@@ -2610,6 +2640,10 @@
             if (correct) {
                 document.getElementById('quizResult').innerHTML = '<p style="color: var(--pixel-green);">🎉 CORRECT! +10 COINS</p>';
                 showNotification('🎉 QUIZ CORRECT! +10 COINS');
+                // Track correct answers for achievement
+                const current = parseInt(localStorage.getItem('mc_quiz_correct') || '0');
+                localStorage.setItem('mc_quiz_correct', (current + 1).toString());
+                checkAchievements();
             } else {
                 document.getElementById('quizResult').innerHTML = '<p style="color: var(--pixel-pink);">❌ WRONG! Try again tomorrow.</p>';
                 showNotification('❌ WRONG ANSWER');
@@ -2627,7 +2661,7 @@
             { id: 'health_100', name: 'Fitness God', desc: 'Reach 100 health', emoji: '💪', condition: () => growthState.healthScore >= 100 },
             { id: 'max_level', name: 'Maxed Out', desc: 'Reach max level', emoji: '🏆', condition: () => growthState.level >= 4 },
             { id: 'first_confession', name: 'Confessor', desc: 'Post first confession', emoji: '📢', condition: () => confessions.length > 0 },
-            { id: 'quiz_master', name: 'Quiz Master', desc: 'Answer 5 quizzes correctly', emoji: '🧠', condition: () => false } // Would track quiz history
+            { id: 'quiz_master', name: 'Quiz Master', desc: 'Answer 5 quizzes correctly', emoji: '🧠', condition: () => parseInt(localStorage.getItem('mc_quiz_correct') || '0') >= 5 }
         ];
 
         let unlockedAchievements = JSON.parse(localStorage.getItem('mc_achievements') || '[]');
@@ -2668,6 +2702,46 @@
         }
 
         // Export Report (P1-032 alternative)
+
+        // P1-022: Initialize Hammer.js touch gestures
+        function initTouchGestures() {
+            const canvas = document.getElementById('character-canvas');
+            if (!canvas || typeof Hammer === 'undefined') return;
+
+            const hammer = new Hammer(canvas);
+            hammer.get('swipe').set({ direction: Hammer.DIRECTION_HORIZONTAL });
+            hammer.get('pinch').set({ enable: true });
+
+            // Swipe to change pose
+            hammer.on('swipeleft', () => {
+                currentPose = (currentPose + 1) % poses.length;
+                applyPose(currentPose);
+                showNotification(`🎭 ${poses[currentPose].name}`);
+            });
+
+            hammer.on('swiperight', () => {
+                currentPose = (currentPose - 1 + poses.length) % poses.length;
+                applyPose(currentPose);
+                showNotification(`🎭 ${poses[currentPose].name}`);
+            });
+
+            // Pinch to zoom
+            let initialScale = 1;
+            hammer.on('pinchstart', () => {
+                initialScale = camera.zoom;
+            });
+
+            hammer.on('pinch', (e) => {
+                camera.zoom = Math.max(0.5, Math.min(2, initialScale * e.scale));
+                camera.updateProjectionMatrix();
+            });
+
+            // Double tap to reset
+            hammer.on('doubletap', () => {
+                resetView();
+                showNotification('🏠 VIEW RESET');
+            });
+        }
 
         // FULLSCREEN MODE
         let isFullscreen = false;
@@ -2725,12 +2799,42 @@ Keep up the great work! 🎮`;
             showNotification('📊 REPORT DOWNLOADED!');
         }
 
-        // P1-025: Social Sharing
-        function shareToTwitter() {
-            const text = `🎮 My MC Project Character is LVL ${growthState.level}!\n💰 Wealth: ${growthState.wealthScore}/100\n❤️ Health: ${growthState.healthScore}/100\n🔥 ${growthState.combinedScore}/100 Combined Score!`;
-            const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&hashtags=MCProject,GenZWealth,HealthStreak`;
-            window.open(url, '_blank');
-            showNotification('📤 OPENED TWITTER SHARE!');
+        // P1-025: Social Sharing with Screenshot
+        async function shareToTwitter() {
+            const canvas = document.getElementById('character-canvas');
+            
+            // Capture screenshot
+            try {
+                const screenshot = await html2canvas(canvas, {
+                    backgroundColor: '#1a1a2e',
+                    scale: 2
+                });
+                
+                // Convert to blob
+                screenshot.toBlob(async (blob) => {
+                    const file = new File([blob], 'mc-project.png', { type: 'image/png' });
+                    
+                    // Share if Web Share API available
+                    if (navigator.share && navigator.canShare({ files: [file] })) {
+                        await navigator.share({
+                            title: 'My MC Project Character',
+                            text: `🎮 LVL ${growthState.level} | 💰 ${growthState.wealthScore} | ❤️ ${growthState.healthScore}`,
+                            files: [file]
+                        });
+                    } else {
+                        // Fallback to Twitter intent
+                        const text = `🎮 My MC Project Character is LVL ${growthState.level}!\n💰 Wealth: ${growthState.wealthScore}/100\n❤️ Health: ${growthState.healthScore}/100\n🔥 ${growthState.combinedScore}/100 Combined Score!`;
+                        const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&hashtags=MCProject,GenZWealth,HealthStreak`;
+                        window.open(url, '_blank');
+                    }
+                });
+                
+                showNotification('📤 SCREENSHOT CAPTURED!');
+            } catch (err) {
+                // Fallback
+                const text = `🎮 My MC Project Character is LVL ${growthState.level}!`;
+                window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`, '_blank');
+            }
         }
 
         // P1-023: Sound Effects System
@@ -3274,7 +3378,11 @@ Keep up the great work! 🎮`;
             }
         }
 
-        // P1-027: Get environment tier based on wealth
+        /**
+         * P1-027: Get environment tier based on wealth score
+         * @param {number} wealthScore - Current wealth score (0-100)
+         * @returns {number} Tier index (0-4)
+         */
         function getEnvironmentTier(wealthScore) {
             for (let i = ENVIRONMENT_TIERS.length - 1; i >= 0; i--) {
                 if (wealthScore >= ENVIRONMENT_TIERS[i].minWealth) {
@@ -3284,7 +3392,10 @@ Keep up the great work! 🎮`;
             return 0;
         }
 
-        // P1-027: Smooth transition between environment tiers
+        /**
+         * P1-027: Smooth transition between environment tiers
+         * @param {number} tierIndex - Target tier index
+         */
         function transitionEnvironmentTier(tierIndex) {
             const tier = ENVIRONMENT_TIERS[tierIndex];
 
@@ -3327,7 +3438,9 @@ Keep up the great work! 🎮`;
             createTierUpgradeParticles();
         }
 
-        // P1-027: Particle burst on tier upgrade
+        /**
+         * P1-027: Create particle burst effect on tier upgrade
+         */
         function createTierUpgradeParticles() {
             const particleCount = 50;
             const geometry = new THREE.BufferGeometry();
