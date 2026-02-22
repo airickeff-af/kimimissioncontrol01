@@ -1133,9 +1133,13 @@
             <a href="#character" class="active">CHARACTER</a>
             <a href="#health">HEALTH</a>
             <a href="#wealth">WEALTH</a>
+            <a href="#quiz">QUIZ</a>
+            <a href="#achievements">BADGES</a>
+            <a href="#friends">FRIENDS</a>
             <a href="#confessions">CONFESSIONS</a>
             <a href="#challenges">CHALLENGES</a>
             <button class="pixel-btn" onclick="toggleTheme()" style="font-size: 8px; padding: 0.5rem;">🌓 THEME</button>
+            <button class="pixel-btn" onclick="SoundFX.toggle()" style="font-size: 8px; padding: 0.5rem;">🔊 SOUND</button>
         </nav>
     </header>
 
@@ -1161,6 +1165,7 @@
                 <button class="pixel-btn" onclick="resetView()">🏠 RESET</button>
                 <button class="pixel-btn" onclick="randomPose()">🎲 POSE</button>
                 <button class="pixel-btn meditate" id="meditateBtn" onclick="toggleMeditation()">🧘 MEDITATE</button>
+                <button class="pixel-btn" onclick="exportReport()">📊 EXPORT</button>
                 <button class="pixel-btn" onclick="shareToTwitter()">📤 SHARE</button>
                 <button class="pixel-btn" style="background: linear-gradient(135deg, #ff6b9d, #ff8fab);" onclick="toggleFullscreen()">⛶ FULLSCREEN</button>
                 <div style="position: relative; display: inline-block;">
@@ -1352,6 +1357,44 @@
         <div id="confessionFeed" class="confession-feed">
             <div style="text-align: center; padding: 2rem; color: #666; font-family: var(--font-pixel); font-size: 8px;">
                 📝 NO CONFESSIONS YET. BE THE FIRST!
+            </div>
+        </div>
+    </section>
+
+    <!-- Achievements Section -->
+    <section class="challenge-section" id="achievements">
+        <div class="challenge-header">
+            <h2 class="pixel-card-title">🏆 ACHIEVEMENTS</h2>
+            <span id="achievementCount" style="font-family: var(--font-pixel); font-size: 8px; color: #888;">0/10</span>
+        </div>
+        <div id="achievementsList" style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+            <!-- Achievements rendered here -->
+        </div>
+    </section>
+
+    <!-- Friend Comparison Section -->
+    <section class="challenge-section" id="friends">
+        <div class="challenge-header">
+            <h2 class="pixel-card-title">👥 FRIEND LEADERBOARD</h2>
+        </div>
+        <div id="friendLeaderboard">
+            <div class="pixel-card" style="margin-bottom: 0.5rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span>🥇 Alex</span>
+                    <span style="color: var(--pixel-gold);">92 PTS</span>
+                </div>
+            </div>
+            <div class="pixel-card" style="margin-bottom: 0.5rem; background: rgba(0,212,255,0.1); border-color: var(--pixel-cyan);">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span>🥈 YOU</span>
+                    <span style="color: var(--pixel-cyan);">${growthState.combinedScore} PTS</span>
+                </div>
+            </div>
+            <div class="pixel-card" style="margin-bottom: 0.5rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span>🥉 Sam</span>
+                    <span style="color: var(--pixel-orange);">68 PTS</span>
+                </div>
             </div>
         </div>
     </section>
@@ -2577,9 +2620,14 @@
         const ACHIEVEMENTS = [
             { id: 'first_login', name: 'First Steps', desc: 'Log in for the first time', emoji: '👶', condition: () => true },
             { id: 'week_streak', name: 'Week Warrior', desc: '7-day streak', emoji: '🔥', condition: () => (growthState.streak || 0) >= 7 },
+            { id: 'month_streak', name: 'Month Master', desc: '30-day streak', emoji: '💎', condition: () => (growthState.streak || 0) >= 30 },
             { id: 'wealth_50', name: 'Money Maker', desc: 'Reach 50 wealth', emoji: '💰', condition: () => growthState.wealthScore >= 50 },
+            { id: 'wealth_100', name: 'Wealth King', desc: 'Reach 100 wealth', emoji: '👑', condition: () => growthState.wealthScore >= 100 },
             { id: 'health_50', name: 'Health Nut', desc: 'Reach 50 health', emoji: '❤️', condition: () => growthState.healthScore >= 50 },
-            { id: 'max_level', name: 'Maxed Out', desc: 'Reach max level', emoji: '👑', condition: () => growthState.level >= 4 }
+            { id: 'health_100', name: 'Fitness God', desc: 'Reach 100 health', emoji: '💪', condition: () => growthState.healthScore >= 100 },
+            { id: 'max_level', name: 'Maxed Out', desc: 'Reach max level', emoji: '🏆', condition: () => growthState.level >= 4 },
+            { id: 'first_confession', name: 'Confessor', desc: 'Post first confession', emoji: '📢', condition: () => confessions.length > 0 },
+            { id: 'quiz_master', name: 'Quiz Master', desc: 'Answer 5 quizzes correctly', emoji: '🧠', condition: () => false } // Would track quiz history
         ];
 
         let unlockedAchievements = JSON.parse(localStorage.getItem('mc_achievements') || '[]');
@@ -2595,8 +2643,31 @@
         function unlockAchievement(ach) {
             unlockedAchievements.push(ach.id);
             localStorage.setItem('mc_achievements', JSON.stringify(unlockedAchievements));
+            SoundFX.play('achievement');
             showNotification(`🏆 ACHIEVEMENT: ${ach.emoji} ${ach.name}!`);
+            renderAchievements();
         }
+
+        function renderAchievements() {
+            const container = document.getElementById('achievementsList');
+            const countEl = document.getElementById('achievementCount');
+            if (!container) return;
+
+            container.innerHTML = ACHIEVEMENTS.map(ach => {
+                const unlocked = unlockedAchievements.includes(ach.id);
+                return `
+                    <div class="pixel-card" style="flex: 1; min-width: 150px; padding: 0.75rem; opacity: ${unlocked ? 1 : 0.5};">
+                        <div style="font-size: 2rem; text-align: center; margin-bottom: 0.5rem;">${ach.emoji}</div>
+                        <div style="font-family: var(--font-pixel); font-size: 8px; text-align: center;">${ach.name}</div>
+                        <div style="font-size: 12px; color: #888; text-align: center; margin-top: 0.25rem;">${unlocked ? '✅' : '🔒'}</div>
+                    </div>
+                `;
+            }).join('');
+
+            if (countEl) countEl.textContent = `${unlockedAchievements.length}/${ACHIEVEMENTS.length}`;
+        }
+
+        // Export Report (P1-032 alternative)
 
         // FULLSCREEN MODE
         let isFullscreen = false;
@@ -2629,6 +2700,31 @@
             }
         }, 3600000); // Check every hour
 
+        // Export Report (P1-032 alternative)
+        function exportReport() {
+            const report = `MC PROJECT WEEKLY REPORT
+Date: ${new Date().toLocaleDateString()}
+
+CHARACTER STATS:
+- Level: ${growthState.level}
+- Health: ${growthState.healthScore}/100
+- Wealth: ${growthState.wealthScore}/100
+- Combined: ${growthState.combinedScore}/100
+
+ACHIEVEMENTS: ${unlockedAchievements.length}/${ACHIEVEMENTS.length}
+
+Keep up the great work! 🎮`;
+            
+            const blob = new Blob([report], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'mc-project-report.txt';
+            a.click();
+            URL.revokeObjectURL(url);
+            showNotification('📊 REPORT DOWNLOADED!');
+        }
+
         // P1-025: Social Sharing
         function shareToTwitter() {
             const text = `🎮 My MC Project Character is LVL ${growthState.level}!\n💰 Wealth: ${growthState.wealthScore}/100\n❤️ Health: ${growthState.healthScore}/100\n🔥 ${growthState.combinedScore}/100 Combined Score!`;
@@ -2636,6 +2732,68 @@
             window.open(url, '_blank');
             showNotification('📤 OPENED TWITTER SHARE!');
         }
+
+        // P1-023: Sound Effects System
+        const SoundFX = {
+            enabled: localStorage.getItem('mc_sound') !== 'off',
+            
+            play(type) {
+                if (!this.enabled) return;
+                
+                const audio = new Audio();
+                audio.volume = 0.3;
+                
+                switch(type) {
+                    case 'click':
+                        // Simple beep using Web Audio API
+                        this.playBeep(800, 0.1);
+                        break;
+                    case 'pose':
+                        this.playBeep(600, 0.15);
+                        break;
+                    case 'achievement':
+                        this.playBeep(1000, 0.3);
+                        setTimeout(() => this.playBeep(1200, 0.3), 100);
+                        break;
+                    case 'levelup':
+                        this.playBeep(800, 0.2);
+                        setTimeout(() => this.playBeep(1000, 0.2), 100);
+                        setTimeout(() => this.playBeep(1200, 0.3), 200);
+                        break;
+                }
+            },
+            
+            playBeep(frequency, duration) {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioCtx.createOscillator();
+                const gainNode = audioCtx.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioCtx.destination);
+                
+                oscillator.frequency.value = frequency;
+                oscillator.type = 'square';
+                
+                gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
+                
+                oscillator.start(audioCtx.currentTime);
+                oscillator.stop(audioCtx.currentTime + duration);
+            },
+            
+            toggle() {
+                this.enabled = !this.enabled;
+                localStorage.setItem('mc_sound', this.enabled ? 'on' : 'off');
+                showNotification(this.enabled ? '🔊 SOUND ON' : '🔇 SOUND OFF');
+            }
+        };
+
+        // Add sound to button clicks
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('pixel-btn')) {
+                SoundFX.play('click');
+            }
+        });
 
         function toggleFullscreen() {
             isFullscreen = !isFullscreen;
@@ -3609,6 +3767,7 @@
             updateGrowth();
             loadDailyQuiz();
             checkAchievements();
+            renderAchievements();
             requestNotificationPermission();
         });
 

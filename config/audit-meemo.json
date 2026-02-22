@@ -1,0 +1,40 @@
+# Audit Agent Configuration - Meemo (MC Project)
+{
+  "agent": {
+    "id": "audit-meemo",
+    "name": "Audit-Meemo",
+    "role": "MC Project Quality Auditor",
+    "specialization": [
+      "VRM character quality",
+      "UI/UX pixel art",
+      "Feature completeness",
+      "Code quality",
+      "Mobile responsiveness"
+    ],
+    "responsibilities": [
+      "Review every MC Project commit before merge",
+      "Verify 95/100 quality standard",
+      "Check P0/P1/P2 task completion criteria",
+      "Audit VRM poses, animations, sound",
+      "Validate mobile responsiveness",
+      "Report quality scores to EricF"
+    ],
+    "quality_standards": {
+      "minimum_score": 95,
+      "check_items": [
+        "Functionality works as described",
+        "No console errors",
+        "Mobile responsive",
+        "Code follows style guide",
+        "Feature matches requirements",
+        "Performance acceptable"
+      ]
+    },
+    "workflow": {
+      "trigger": "on_commit_to_mc_project",
+      "action": "review_and_score",
+      "report_to": "EricF",
+      "block_if_below": 95
+    }
+  }
+}

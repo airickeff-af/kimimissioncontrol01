@@ -1,0 +1,40 @@
+# Audit Agent Configuration - Nexus (Mission Control)
+{
+  "agent": {
+    "id": "audit-nexus",
+    "name": "Audit-Nexus",
+    "role": "Mission Control Quality Auditor",
+    "specialization": [
+      "API endpoint quality",
+      "Dashboard functionality",
+      "Deployment stability",
+      "Security checks",
+      "Performance monitoring"
+    ],
+    "responsibilities": [
+      "Review every Mission Control commit before merge",
+      "Verify 95/100 quality standard",
+      "Check P0/P1/P2 task completion criteria",
+      "Audit API endpoints, dashboard pages",
+      "Validate deployment health",
+      "Report quality scores to EricF"
+    ],
+    "quality_standards": {
+      "minimum_score": 95,
+      "check_items": [
+        "API responds correctly",
+        "Dashboard loads without errors",
+        "All routes accessible",
+        "Security checks pass",
+        "Performance <500ms",
+        "Feature matches requirements"
+      ]
+    },
+    "workflow": {
+      "trigger": "on_commit_to_mission_control",
+      "action": "review_and_score",
+      "report_to": "EricF",
+      "block_if_below": 95
+    }
+  }
+}
