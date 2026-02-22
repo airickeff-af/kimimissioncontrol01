@@ -90,7 +90,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 async function init() {
-  console.log('[App] Initializing Mission Control Mobile...');
   
   // Register service worker
   await registerServiceWorker();
@@ -116,7 +115,6 @@ async function init() {
   // Handle deep links
   handleDeepLink();
   
-  console.log('[App] Initialization complete');
 }
 
 // ====================
@@ -131,7 +129,6 @@ async function registerServiceWorker() {
   
   try {
     const registration = await navigator.serviceWorker.register('sw.js');
-    console.log('[App] Service worker registered:', registration.scope);
     
     // Listen for messages from service worker
     navigator.serviceWorker.addEventListener('message', (event) => {
@@ -155,7 +152,6 @@ async function registerServiceWorker() {
 }
 
 function handleSWMessage(data) {
-  console.log('[App] Message from SW:', data);
   
   switch (data.type) {
     case 'ACTION_SYNCED':
@@ -288,7 +284,6 @@ async function loadData() {
       state.tasks = JSON.parse(localStorage.getItem('cached_tasks') || '[]');
     }
   } catch (error) {
-    console.log('[App] Using cached tasks');
     state.tasks = JSON.parse(localStorage.getItem('cached_tasks') || '[]');
   }
   
@@ -301,7 +296,6 @@ async function loadData() {
       state.agents = JSON.parse(localStorage.getItem('cached_agents') || '[]');
     }
   } catch (error) {
-    console.log('[App] Using cached agents');
     state.agents = JSON.parse(localStorage.getItem('cached_agents') || '[]');
   }
   
@@ -314,7 +308,6 @@ async function loadData() {
       state.alerts = JSON.parse(localStorage.getItem('cached_alerts') || '[]');
     }
   } catch (error) {
-    console.log('[App] Using cached alerts');
     state.alerts = JSON.parse(localStorage.getItem('cached_alerts') || '[]');
   }
   
@@ -800,7 +793,6 @@ async function subscribeToPush() {
       body: JSON.stringify(subscription)
     });
     
-    console.log('[App] Push subscription created');
   } catch (error) {
     console.error('[App] Push subscription failed:', error);
   }
@@ -827,7 +819,6 @@ async function installApp() {
   const { outcome } = await state.deferredPrompt.userChoice;
   
   if (outcome === 'accepted') {
-    console.log('[App] User accepted install');
     state.isInstalled = true;
   }
   

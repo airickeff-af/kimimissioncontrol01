@@ -49,12 +49,6 @@ class IntegratedQualityGate {
    * Run complete quality gate suite
    */
   async run() {
-    console.log('═══════════════════════════════════════════════════════════════');
-    console.log('           INTEGRATED QUALITY GATE - FULL SUITE               ');
-    console.log('═══════════════════════════════════════════════════════════════');
-    console.log(`URL: ${CONFIG.baseUrl}`);
-    console.log(`Time: ${new Date().toLocaleString()}`);
-    console.log('═══════════════════════════════════════════════════════════════\n');
 
     // Initialize browser automation
     const browserAutomation = new QualityGateBrowserAutomation({
@@ -97,8 +91,6 @@ class IntegratedQualityGate {
    * Category 1: Page Load Tests
    */
   async runCategory1_PageLoads(automation) {
-    console.log('\n📄 CATEGORY 1: Page Load Tests');
-    console.log('─────────────────────────────────────────────────────────────');
 
     const pages = [
       { path: '/', name: 'HQ Dashboard' },
@@ -116,7 +108,6 @@ class IntegratedQualityGate {
     for (const page of pages) {
       const result = await this.testPageLoad(page);
       results.push(result);
-      console.log(`   ${result.passed ? '✅' : '❌'} ${page.name}: ${result.status} (${result.loadTime}ms)`);
     }
 
     const passed = results.filter(r => r.passed).length;
@@ -177,8 +168,6 @@ class IntegratedQualityGate {
    * Category 2: API Endpoint Tests
    */
   async runCategory2_APIEndpoints(automation) {
-    console.log('\n🔌 CATEGORY 2: API Endpoint Tests');
-    console.log('─────────────────────────────────────────────────────────────');
 
     const apis = [
       { path: '/api/health', name: 'Health API' },
@@ -193,7 +182,6 @@ class IntegratedQualityGate {
     for (const api of apis) {
       const result = await this.testAPIEndpoint(api);
       results.push(result);
-      console.log(`   ${result.passed ? '✅' : '❌'} ${api.name}: ${result.status} (${result.isJSON ? 'JSON' : 'Not JSON'})`);
     }
 
     const passed = results.filter(r => r.passed).length;
@@ -270,8 +258,6 @@ class IntegratedQualityGate {
    * Category 3: Functionality Tests
    */
   async runCategory3_Functionality(automation) {
-    console.log('\n⚙️  CATEGORY 3: Functionality Tests');
-    console.log('─────────────────────────────────────────────────────────────');
 
     // Test JavaScript functionality
     const results = [];
@@ -286,7 +272,6 @@ class IntegratedQualityGate {
     for (const js of jsFiles) {
       const result = await this.testResource(js, 'javascript');
       results.push(result);
-      console.log(`   ${result.passed ? '✅' : '❌'} ${js}: ${result.status}`);
     }
 
     // Test 2: Check CSS files
@@ -298,7 +283,6 @@ class IntegratedQualityGate {
     for (const css of cssFiles) {
       const result = await this.testResource(css, 'css');
       results.push(result);
-      console.log(`   ${result.passed ? '✅' : '⚠️'} ${css}: ${result.status} ${!result.passed ? '(optional)' : ''}`);
     }
 
     const passed = results.filter(r => r.passed).length;
@@ -343,25 +327,20 @@ class IntegratedQualityGate {
    * Category 4: Response Quality Tests
    */
   async runCategory4_ResponseQuality(automation) {
-    console.log('\n📊 CATEGORY 4: Response Quality Tests');
-    console.log('─────────────────────────────────────────────────────────────');
 
     const results = [];
 
     // Test 1: Check CORS headers
     const corsResult = await this.testCORSHeaders();
     results.push(corsResult);
-    console.log(`   ${corsResult.passed ? '✅' : '⚠️'} CORS Headers: ${corsResult.hasCORS ? 'Present' : 'Not Present'}`);
 
     // Test 2: Check security headers
     const securityResult = await this.testSecurityHeaders();
     results.push(securityResult);
-    console.log(`   ${securityResult.passed ? '✅' : '⚠️'} Security Headers: ${securityResult.score}/100`);
 
     // Test 3: Check compression
     const compressionResult = await this.testCompression();
     results.push(compressionResult);
-    console.log(`   ${compressionResult.passed ? '✅' : '⚠️'} Compression: ${compressionResult.encoding || 'None'}`);
 
     const passed = results.filter(r => r.passed).length;
     const score = Math.round((passed / results.length) * 100);
@@ -484,8 +463,6 @@ class IntegratedQualityGate {
    * Category 5: Mobile Responsive Tests (Browser Automation)
    */
   async runCategory5_MobileResponsive(automation) {
-    console.log('\n📱 CATEGORY 5: Mobile Responsive Tests');
-    console.log('─────────────────────────────────────────────────────────────');
 
     const viewports = [
       { name: 'mobile', width: 375, height: 667, device: 'iPhone SE' },
@@ -497,7 +474,6 @@ class IntegratedQualityGate {
 
     if (automation.browserType === 'fetch') {
       // Fallback: Check meta tags only
-      console.log('   ℹ️  Using fetch mode - limited mobile testing');
       
       try {
         const response = await fetch(CONFIG.baseUrl);
@@ -520,10 +496,8 @@ class IntegratedQualityGate {
             mode: 'meta-tag-check'
           });
           
-          console.log(`   ${hasViewport && hasWidthDevice ? '✅' : '⚠️'} ${viewport.name} (${viewport.width}px): Meta viewport ${hasViewport ? '✅' : '❌'}`);
         }
       } catch (error) {
-        console.log(`   ❌ Failed to test mobile: ${error.message}`);
       }
     } else {
       // Full browser automation
@@ -536,7 +510,6 @@ class IntegratedQualityGate {
         
         const status = result.passed ? '✅' : '❌';
         const issues = result.errors.length > 0 ? `[${result.errors.join(', ')}]` : '';
-        console.log(`   ${status} ${viewport.name} (${viewport.width}px): ${issues || 'OK'}`);
       }
     }
 
@@ -557,12 +530,8 @@ class IntegratedQualityGate {
    * Category 6: Console Error Detection (Browser Automation)
    */
   async runCategory6_ConsoleErrors(automation) {
-    console.log('\n🐛 CATEGORY 6: Console Error Detection');
-    console.log('─────────────────────────────────────────────────────────────');
 
     if (automation.browserType === 'fetch') {
-      console.log('   ℹ️  Fetch mode - console error detection requires browser');
-      console.log('   ⚠️  Skipping console error tests');
       
       this.results.categories.consoleErrors = {
         name: 'Console Error Detection',
@@ -583,14 +552,11 @@ class IntegratedQualityGate {
     const passed = consoleResults.passed ? 1 : 0;
     const score = consoleResults.passed ? 100 : Math.max(0, 100 - consoleResults.errorCount * 10);
 
-    console.log(`   ${consoleResults.passed ? '✅' : '❌'} Console Errors: ${consoleResults.errorCount} errors, ${consoleResults.warningCount} warnings`);
     
     if (consoleResults.errors.length > 0) {
       for (const error of consoleResults.errors.slice(0, 5)) {
-        console.log(`      ❌ [${error.type}] ${error.message.slice(0, 80)}`);
       }
       if (consoleResults.errors.length > 5) {
-        console.log(`      ... and ${consoleResults.errors.length - 5} more`);
       }
     }
 
@@ -666,9 +632,6 @@ class IntegratedQualityGate {
       markdown
     );
 
-    console.log(`\n📊 Reports saved to:`);
-    console.log(`   ${jsonPath}`);
-    console.log(`   ${mdPath}`);
   }
 
   /**
@@ -759,18 +722,9 @@ class IntegratedQualityGate {
     const { summary } = this.results;
     const statusEmoji = summary.status === 'PASS' ? '✅' : '❌';
 
-    console.log('\n═══════════════════════════════════════════════════════════════');
-    console.log('                    FINAL QUALITY GATE RESULTS                  ');
-    console.log('═══════════════════════════════════════════════════════════════');
-    console.log(`Status: ${statusEmoji} ${summary.status}`);
-    console.log(`Score: ${summary.score}/100 (Threshold: ${summary.threshold})`);
-    console.log(`Tests: ${summary.passed}/${summary.totalTests} passed`);
-    console.log('═══════════════════════════════════════════════════════════════');
 
     if (summary.status === 'PASS') {
-      console.log('\n🎉 Quality gate PASSED! Deployment approved.');
     } else {
-      console.log('\n⚠️  Quality gate FAILED. Please fix issues before deploying.');
     }
   }
 }

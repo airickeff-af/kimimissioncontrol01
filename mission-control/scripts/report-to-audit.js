@@ -45,7 +45,6 @@ async function reportToAudit(agent, task, progress, status, details, issues = []
   
   fs.writeFileSync(filepath, JSON.stringify(report, null, 2));
   
-  console.log(`[Audit Report] ${agent} - ${task} - ${progress}% - ${status}`);
   
   return report;
 }

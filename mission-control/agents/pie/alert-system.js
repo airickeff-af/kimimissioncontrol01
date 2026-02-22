@@ -143,7 +143,6 @@ class ConsoleChannel extends AlertChannel {
     
     output += `${'='.repeat(60)}\n`;
     
-    console.log(output);
   }
 }
 

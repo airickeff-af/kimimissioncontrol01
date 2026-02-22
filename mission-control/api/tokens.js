@@ -359,7 +359,6 @@ function getRecentSessions(sessionStats, limit = 10) {
  */
 function collectTokenData() {
   const sessionFiles = getSessionFiles();
-  console.log(`Found ${sessionFiles.length} session files`);
   
   const sessionStats = [];
   for (const filePath of sessionFiles) {
@@ -453,12 +452,10 @@ function getTokenData(forceRefresh = false) {
   if (!forceRefresh) {
     const cached = loadCache();
     if (cached && !isCacheStale(cached)) {
-      console.log('Returning cached token data');
       return cached;
     }
   }
   
-  console.log('Collecting fresh token data...');
   const data = collectTokenData();
   saveCache(data);
   return data;
@@ -526,5 +523,4 @@ module.exports = {
 // If run directly, print token data
 if (require.main === module) {
   const data = collectTokenData();
-  console.log(JSON.stringify(data, null, 2));
 }

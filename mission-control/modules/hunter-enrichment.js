@@ -65,9 +65,7 @@ class EnrichmentState {
       const data = await fs.readFile(this.statePath, 'utf8');
       const saved = JSON.parse(data);
       this.state = { ...this.state, ...saved };
-      console.log(`[EnrichmentState] Loaded state: ${this.state.processedCount} leads processed`);
     } catch (error) {
-      console.log('[EnrichmentState] No existing state, starting fresh');
     }
   }
 
@@ -156,7 +154,6 @@ class Cache {
           this.memory.set(key, entry);
         }
       });
-      console.log(`[Cache] Loaded ${this.memory.size} cached entries`);
     } catch (error) {
       // No cache yet
     }
@@ -215,7 +212,6 @@ class RateLimiter {
     if (this.requests.length >= CONFIG.MAX_REQUESTS_PER_MINUTE) {
       const oldestRequest = this.requests[0];
       const waitTime = this.minuteWindow - (now - oldestRequest) + 100;
-      console.log(`[RateLimiter] Waiting ${waitTime}ms to respect rate limit...`);
       await this.sleep(waitTime);
       return this.waitIfNeeded();
     }
@@ -340,7 +336,6 @@ async function domainSearch(domain, state, cache) {
   const cacheKey = `domain:${domain}`;
   const cached = cache.get(cacheKey);
   if (cached) {
-    console.log(`  [Cache] Domain search for ${domain}`);
     return cached;
   }
 
@@ -384,7 +379,6 @@ async function emailFinder(firstName, lastName, domain, state, cache) {
   const cacheKey = `finder:${firstName}:${lastName}:${domain}`;
   const cached = cache.get(cacheKey);
   if (cached) {
-    console.log(`  [Cache] Email finder for ${firstName} ${lastName}`);
     return cached;
   }
 
@@ -425,7 +419,6 @@ async function verifyEmail(email, state, cache) {
   const cacheKey = `verify:${email}`;
   const cached = cache.get(cacheKey);
   if (cached) {
-    console.log(`  [Cache] Email verification for ${email}`);
     return cached;
   }
 
@@ -468,7 +461,6 @@ async function verifyEmail(email, state, cache) {
 async function enrichLead(lead, state, cache, rateLimiter) {
   const { leadId, company, contactName, priorityTier } = lead;
   
-  console.log(`\n[Enrich] ${contactName} @ ${company} (${priorityTier})`);
   
   state.markLeadProcessing(leadId);
   
@@ -480,28 +472,24 @@ async function enrichLead(lead, state, cache, rateLimiter) {
       .replace(/[^a-z0-9]/g, '')
       .replace(/(corporation|inc|llc|ltd|gmbh|pte|co)$/i, '');
     domain = `${companySlug}.com`;
-    console.log(`  [Guess] Domain: ${domain}`);
   }
   
   // Clean domain
   domain = domain.replace(/^https?:\/\//, '').replace(/\/.*$/, '');
   
   const { first, last } = parseName(contactName);
-  console.log(`  [Name] ${first} ${last} @ ${domain}`);
   
   // Step 1: Try Email Finder (most accurate)
   await rateLimiter.waitIfNeeded();
   const finderResult = await emailFinder(first, last, domain, state, cache);
   
   if (finderResult?.email && finderResult.score >= 70) {
-    console.log(`  [Finder] Found: ${finderResult.email} (score: ${finderResult.score})`);
     
     // Verify the found email
     await rateLimiter.waitIfNeeded();
     const verifyResult = await verifyEmail(finderResult.email, state, cache);
     
     if (verifyResult?.result === 'deliverable' && verifyResult.score >= 80) {
-      console.log(`  [Verify] ✅ Verified: ${verifyResult.score}% confidence`);
       state.markLeadSuccess(leadId, finderResult.email, verifyResult.score, 'hunter_finder_verified');
       return {
         email: finderResult.email,
@@ -512,7 +500,6 @@ async function enrichLead(lead, state, cache, rateLimiter) {
       };
     } else if (finderResult.score >= 85) {
       // High confidence from finder even if verification failed
-      console.log(`  [Verify] ⚠️  Finder high confidence: ${finderResult.score}%`);
       state.markLeadSuccess(leadId, finderResult.email, finderResult.score, 'hunter_finder_high_confidence');
       return {
         email: finderResult.email,
@@ -536,7 +523,6 @@ async function enrichLead(lead, state, cache, rateLimiter) {
     );
     
     if (exactMatch) {
-      console.log(`  [Domain] Exact match: ${exactMatch.value} (confidence: ${exactMatch.confidence})`);
       state.markLeadSuccess(leadId, exactMatch.value, exactMatch.confidence || 80, 'hunter_domain_exact');
       return {
         email: exactMatch.value,
@@ -556,14 +542,12 @@ async function enrichLead(lead, state, cache, rateLimiter) {
         .replace('{l}', last.charAt(0).toLowerCase());
       
       const generatedEmail = `${pattern}@${domain}`;
-      console.log(`  [Pattern] Generated: ${generatedEmail} (pattern: ${domainResult.pattern})`);
       
       // Verify generated email
       await rateLimiter.waitIfNeeded();
       const verifyResult = await verifyEmail(generatedEmail, state, cache);
       
       if (verifyResult?.result === 'deliverable') {
-        console.log(`  [Verify] ✅ Pattern verified: ${verifyResult.score}% confidence`);
         state.markLeadSuccess(leadId, generatedEmail, verifyResult.score, 'hunter_pattern_verified');
         return {
           email: generatedEmail,
@@ -574,7 +558,6 @@ async function enrichLead(lead, state, cache, rateLimiter) {
         };
       } else {
         // Return pattern-based email with lower confidence
-        console.log(`  [Pattern] ⚠️  Unverified pattern match: 60% confidence`);
         state.markLeadSuccess(leadId, generatedEmail, 60, 'hunter_pattern_unverified');
         return {
           email: generatedEmail,
@@ -588,7 +571,6 @@ async function enrichLead(lead, state, cache, rateLimiter) {
   }
   
   // Step 3: Fallback - generate common patterns
-  console.log(`  [Fallback] Generating common patterns...`);
   const patterns = generateEmailPatterns(first, last, domain);
   
   // Try to verify a few patterns
@@ -597,7 +579,6 @@ async function enrichLead(lead, state, cache, rateLimiter) {
     const verifyResult = await verifyEmail(email, state, cache);
     
     if (verifyResult?.result === 'deliverable') {
-      console.log(`  [Fallback] ✅ Verified: ${email} (${verifyResult.score}%)`);
       state.markLeadSuccess(leadId, email, verifyResult.score, 'hunter_fallback_verified');
       return {
         email,
@@ -610,7 +591,6 @@ async function enrichLead(lead, state, cache, rateLimiter) {
   }
   
   // Failed to find email
-  console.log(`  [Failed] Could not verify email for ${contactName}`);
   state.markLeadFailed(leadId, 'No verifiable email found');
   return {
     email: null,
@@ -640,7 +620,6 @@ async function processLeads(leads, options = {}) {
   await cache.load();
   
   if (state.state.isRunning) {
-    console.log('[BulkProcess] Previous run was interrupted, resuming...');
   }
   
   state.state.isRunning = true;
@@ -659,12 +638,6 @@ async function processLeads(leads, options = {}) {
     ? sortedLeads.filter(l => !state.state.leads[l.leadId] || state.state.leads[l.leadId].status === 'processing')
     : sortedLeads;
   
-  console.log(`\n========================================`);
-  console.log(`[BulkProcess] Starting enrichment`);
-  console.log(`  Total leads: ${leads.length}`);
-  console.log(`  To process: ${leadsToProcess.length}`);
-  console.log(`  Batch size: ${batchSize}`);
-  console.log(`========================================\n`);
   
   const results = [];
   
@@ -674,7 +647,6 @@ async function processLeads(leads, options = {}) {
     const batchNum = Math.floor(i / batchSize) + 1;
     const totalBatches = Math.ceil(leadsToProcess.length / batchSize);
     
-    console.log(`\n--- Batch ${batchNum}/${totalBatches} ---`);
     
     for (const lead of batch) {
       try {
@@ -690,19 +662,11 @@ async function processLeads(leads, options = {}) {
     
     // Progress report
     const stats = state.getStats();
-    console.log(`\n[Progress] ${stats.processedCount}/${leadsToProcess.length} leads`);
-    console.log(`  ✅ Success: ${stats.successfulEnrichments}`);
-    console.log(`  ❌ Failed: ${stats.failedEnrichments}`);
-    console.log(`  📊 Coverage: ${stats.coverage}%`);
-    console.log(`  🔌 API calls: ${stats.apiCalls.total}`);
   }
   
   state.state.isRunning = false;
   await state.save();
   
-  console.log(`\n========================================`);
-  console.log(`[BulkProcess] Complete!`);
-  console.log(`========================================\n`);
   
   return {
     results,
@@ -757,8 +721,6 @@ async function updateLeadsFile(enrichmentResults) {
     // Write updated file
     await fs.writeFile(CONFIG.OUTPUT_FILE, JSON.stringify(updatedData, null, 2));
     
-    console.log(`[Data] Updated ${CONFIG.OUTPUT_FILE}`);
-    console.log(`  📊 Email coverage: ${coverage}% (${withEmail}/${updatedScoredLeads.length})`);
     
     return updatedData;
   } catch (error) {
@@ -870,48 +832,23 @@ if (require.main === module) {
         process.exit(1);
       }
       handleEnrichLead(leadId).then(result => {
-        console.log(JSON.stringify(result, null, 2));
       });
       break;
       
     case 'enrich-all':
       const batchSize = parseInt(args[1]) || 10;
       handleEnrichAll({ batchSize }).then(result => {
-        console.log('\n✅ Enrichment complete!');
-        console.log(`   Processed: ${result.stats.processedCount}`);
-        console.log(`   Successful: ${result.stats.successfulEnrichments}`);
-        console.log(`   Coverage: ${result.stats.coverage}%`);
       });
       break;
       
     case 'status':
       handleEnrichmentStatus().then(stats => {
-        console.log('\n📊 Enrichment Status');
-        console.log('====================');
-        console.log(`Started: ${stats.startedAt || 'Never'}`);
-        console.log(`Processed: ${stats.processedCount}`);
-        console.log(`Successful: ${stats.successfulEnrichments}`);
-        console.log(`Failed: ${stats.failedEnrichments}`);
-        console.log(`Coverage: ${stats.coverage}%`);
-        console.log(`API Calls: ${stats.apiCalls?.total || 0}`);
         if (stats.isRunning) {
-          console.log('⚠️  Enrichment is currently running');
         }
       });
       break;
       
     default:
-      console.log('Hunter.io Email Enrichment for DealFlow');
-      console.log('========================================');
-      console.log('');
-      console.log('Commands:');
-      console.log('  enrich <leadId>     - Enrich a specific lead');
-      console.log('  enrich-all [batch]  - Enrich all leads (default batch: 10)');
-      console.log('  status              - Show enrichment status');
-      console.log('');
-      console.log('Environment:');
-      console.log('  HUNTER_API_KEY      - Your Hunter.io API key');
-      console.log('');
       process.exit(0);
   }
 }

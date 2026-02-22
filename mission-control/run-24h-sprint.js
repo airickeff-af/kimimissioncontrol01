@@ -56,10 +56,8 @@ class SprintLogger {
     };
     
     this.logs.push(entry);
-    console.log(`[${phase}] ${message}`);
     
     if (Object.keys(data).length > 0) {
-      console.log('  ', JSON.stringify(data, null, 2).split('\n').join('\n   '));
     }
   }
 
@@ -248,14 +246,7 @@ async function main() {
   const test = args.includes('--test');
   const approve = args.includes('--approve');
 
-  console.log('\n╔════════════════════════════════════════════════════════════╗');
-  console.log('║   24-HOUR SPRINT EXECUTION                                 ║');
-  console.log('║   PIE → Scout → DealFlow → ColdCall Pipeline              ║');
-  console.log('╚════════════════════════════════════════════════════════════\n');
 
-  console.log(`Phase: ${phase === '0' ? 'ALL' : phase}`);
-  console.log(`Test Mode: ${test}`);
-  console.log(`Auto-Approve: ${approve}\n`);
 
   const results = {};
 
@@ -276,21 +267,14 @@ async function main() {
   await logger.save();
 
   // Final summary
-  console.log('\n╔════════════════════════════════════════════════════════════╗');
-  console.log('║   SPRINT EXECUTION COMPLETE                                ║');
-  console.log('╚════════════════════════════════════════════════════════════\n');
 
   if (results.phase1?.success) {
-    console.log('✅ PHASE 1: PIE WebSocket streaming live predictions');
   }
   if (results.phase2?.success) {
-    console.log(`✅ PHASE 2: DealFlow with ${results.phase2.results.coverage.coveragePercent}% email coverage`);
   }
   if (results.phase3?.success) {
-    console.log('✅ PHASE 3: ColdCall ready with approved sequences');
   }
 
-  console.log(`\n📊 Log saved to: ${CONFIG.logFile}\n`);
 
   // Return exit code
   const allSuccess = Object.values(results).every(r => r?.success);

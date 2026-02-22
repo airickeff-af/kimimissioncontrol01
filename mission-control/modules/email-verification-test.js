@@ -24,11 +24,9 @@ async function runTest(testCase) {
     await testCase.fn();
     testResults.passed++;
     testResults.tests.push({ name: testCase.name, status: '✅ PASS' });
-    console.log(`✅ ${testCase.name}`);
   } catch (error) {
     testResults.failed++;
     testResults.tests.push({ name: testCase.name, status: '❌ FAIL', error: error.message });
-    console.log(`❌ ${testCase.name}: ${error.message}`);
   }
 }
 
@@ -217,23 +215,14 @@ const tests = [
 // ============================================
 
 async function runAllTests() {
-  console.log('🧪 Email Verification API - Test Suite\n');
-  console.log('==============================================\n');
 
   for (const testCase of tests) {
     await runTest(testCase);
   }
 
-  console.log('\n==============================================');
-  console.log(`\n📊 Test Results:`);
-  console.log(`   ✅ Passed: ${testResults.passed}`);
-  console.log(`   ❌ Failed: ${testResults.failed}`);
-  console.log(`   📋 Total:  ${testResults.passed + testResults.failed}`);
   
   if (testResults.failed === 0) {
-    console.log('\n🎉 All tests passed!');
   } else {
-    console.log('\n⚠️ Some tests failed. See details above.');
     process.exit(1);
   }
 }

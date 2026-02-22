@@ -41,7 +41,6 @@ class Prefetcher extends EventEmitter {
   }
   
   async initialize() {
-    console.log('📚 Pre-fetcher: Initializing...');
     
     // Ensure briefing directory exists
     await fs.mkdir(path.join(this.config.dataDir, 'briefings'), { recursive: true });
@@ -54,7 +53,6 @@ class Prefetcher extends EventEmitter {
    * Generate comprehensive briefing for a lead
    */
   async generateBriefing(leadId, options = {}) {
-    console.log(`📚 Pre-fetcher: Generating briefing for ${leadId}...`);
     
     // Get lead data
     const lead = await this._getLeadData(leadId);
@@ -156,7 +154,6 @@ class Prefetcher extends EventEmitter {
     this.state.briefings.set(briefing.id, briefing);
     this.emit('briefing-ready', briefing);
     
-    console.log(`📚 Pre-fetcher: Briefing generated - ${briefing.id}`);
     
     return briefing;
   }
@@ -165,7 +162,6 @@ class Prefetcher extends EventEmitter {
    * Enrich lead data from external sources
    */
   async enrichLead(lead) {
-    console.log(`📚 Pre-fetcher: Enriching lead ${lead.id || lead.email}...`);
     
     const enriched = { ...lead };
     

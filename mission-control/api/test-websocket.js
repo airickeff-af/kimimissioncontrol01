@@ -7,20 +7,17 @@
 const WebSocket = require('ws');
 
 async function testWebSocketServer() {
-  console.log('🧪 Testing WebSocket Server...\n');
 
   // Start the server
   const { wsServer, EVENT_TYPES } = require('../api/websocket');
   
   try {
     await wsServer.start();
-    console.log('✅ Server started successfully');
 
     // Wait a moment for server to be ready
     await new Promise(resolve => setTimeout(resolve, 500));
 
     // Test 1: Health check endpoint
-    console.log('\n📡 Test 1: Health Check');
     const http = require('http');
     
     const healthCheck = await new Promise((resolve, reject) => {
@@ -31,12 +28,8 @@ async function testWebSocketServer() {
       }).on('error', reject);
     });
     
-    console.log('  Health:', healthCheck.status);
-    console.log('  Clients:', healthCheck.wsClients);
-    console.log('  ✅ Health check passed');
 
     // Test 2: WebSocket connection and welcome message
-    console.log('\n🔌 Test 2: WebSocket Connection');
     
     const ws = new WebSocket('ws://localhost:3002/api/ws');
     
@@ -55,11 +48,8 @@ async function testWebSocketServer() {
       });
     });
     
-    console.log('  Client ID:', welcomeMessage.data?.clientId);
-    console.log('  ✅ Connection and welcome message received');
 
     // Test 3: Subscription
-    console.log('\n📋 Test 3: Event Subscription');
     
     ws.send(JSON.stringify({
       type: 'subscribe',
@@ -78,11 +68,8 @@ async function testWebSocketServer() {
       });
     });
     
-    console.log('  Subscribed to:', subscriptionResult.data?.events);
-    console.log('  ✅ Subscription successful');
 
     // Test 4: Broadcast
-    console.log('\n📢 Test 4: Broadcast Message');
     
     // Set up broadcast listener first
     const broadcastPromise = new Promise((resolve, reject) => {
@@ -105,12 +92,8 @@ async function testWebSocketServer() {
     
     const broadcastReceived = await broadcastPromise;
     
-    console.log('  Agent:', broadcastReceived.data?.agentId);
-    console.log('  Status:', broadcastReceived.data?.status);
-    console.log('  ✅ Broadcast received');
 
     // Test 5: Ping/Pong
-    console.log('\n🏓 Test 5: Ping/Pong');
     
     ws.send(JSON.stringify({ type: 'ping' }));
     
@@ -129,11 +112,8 @@ async function testWebSocketServer() {
       ws.on('message', onMessage);
     });
     
-    console.log('  Pong received');
-    console.log('  ✅ Ping/Pong working');
 
     // Test 6: Multiple clients
-    console.log('\n👥 Test 6: Multiple Clients');
     
     const ws2 = new WebSocket('ws://localhost:3002/api/ws');
     
@@ -145,19 +125,12 @@ async function testWebSocketServer() {
       });
     });
     
-    console.log('  Client 2 connected');
-    console.log('  Total clients:', wsServer.clients.size);
-    console.log('  ✅ Multiple clients supported');
     
     ws2.close();
 
     // Cleanup
     ws.close();
     
-    console.log('\n✅ All tests passed!');
-    console.log('\n📊 Final Metrics:');
-    console.log('  Connected clients:', wsServer.clients.size);
-    console.log('  Message history:', wsServer.messageHistory.length);
 
   } catch (err) {
     console.error('\n❌ Test failed:', err.message);
@@ -165,7 +138,6 @@ async function testWebSocketServer() {
   } finally {
     // Stop server
     await wsServer.stop();
-    console.log('\n🔌 Server stopped');
   }
 }
 

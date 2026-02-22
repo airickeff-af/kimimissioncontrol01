@@ -8,17 +8,11 @@
 
 const tokenTracker = require('./tokens.js');
 
-console.log(`[${new Date().toISOString()}] Token Tracker Cron - Starting update...`);
 
 try {
   // Force refresh token data
   const data = tokenTracker.getTokenData(true);
   
-  console.log(`[${new Date().toISOString()}] Token Tracker Cron - Update complete`);
-  console.log(`  - Sessions: ${data.sessionCount}`);
-  console.log(`  - Agents: ${data.agents.length}`);
-  console.log(`  - Total Tokens: ${data.total.totalTokens.toLocaleString()}`);
-  console.log(`  - Total Cost: $${data.total.cost.toFixed(4)}`);
   
   process.exit(0);
 } catch (error) {

@@ -519,26 +519,12 @@ if (require.main === module) {
   const leadsPath = path.join(__dirname, '../dealflow/leads.json');
   const outputPath = path.join(__dirname, '../../data/scored-leads.json');
   
-  console.log('🔍 DealFlow Lead Scoring Algorithm');
-  console.log('=====================================\n');
   
   const result = scoreLeadsFromFile(leadsPath, outputPath);
   
   if (result.success) {
-    console.log('✅ Scoring completed successfully!\n');
-    console.log('📊 Summary:');
-    console.log(`   Total Leads: ${result.summary.totalLeads}`);
-    console.log(`   Average Score: ${result.summary.averageScore}/100`);
-    console.log('\n📈 Tier Distribution:');
-    console.log(`   P0 (High Priority): ${result.summary.tierDistribution.P0}`);
-    console.log(`   P1 (Medium Priority): ${result.summary.tierDistribution.P1}`);
-    console.log(`   P2 (Low Priority): ${result.summary.tierDistribution.P2}`);
-    console.log(`   P3 (Cold): ${result.summary.tierDistribution.P3}`);
-    console.log('\n🏆 Top 5 Leads:');
     result.summary.topLeads.forEach((lead, i) => {
-      console.log(`   ${i + 1}. ${lead.company} - Score: ${lead.score} (${lead.tier})`);
     });
-    console.log(`\n💾 Results saved to: ${outputPath}`);
   } else {
     console.error('❌ Scoring failed:', result.error);
     process.exit(1);

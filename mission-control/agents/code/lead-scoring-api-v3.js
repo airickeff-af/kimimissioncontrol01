@@ -769,7 +769,6 @@ function loadLeads() {
       const content = fs.readFileSync(CONFIG.scoredLeadsFile, 'utf-8');
       const data = JSON.parse(content);
       leadIndex.fromJSON(data);
-      console.log(`📊 Loaded ${leadIndex.leads.size} pre-scored leads`);
       return true;
     }
     
@@ -780,7 +779,6 @@ function loadLeads() {
       
       if (Array.isArray(leads)) {
         leadIndex.batchSet(leads);
-        console.log(`📊 Loaded and scored ${leads.length} leads`);
         saveLeads(); // Save pre-scored version
         return true;
       }
@@ -803,7 +801,6 @@ function saveLeads() {
     const data = leadIndex.toJSON();
     fs.writeFileSync(CONFIG.scoredLeadsFile, JSON.stringify(data, null, 2));
     leadIndex.dirty = false;
-    console.log('💾 Saved scored leads to cache');
   } catch (e) {
     console.error('Error saving leads:', e.message);
   }
@@ -1119,4 +1116,3 @@ module.exports.loadLeads = loadLeads;
 // Initialize
 loadLeads();
 
-console.log('🚀 Optimized Lead Scoring API v3.0 initialized');

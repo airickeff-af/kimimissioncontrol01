@@ -1,15 +1,8 @@
 {
-  "version": 2,
-  "builds": [
-    {"src": "*.html", "use": "@vercel/static"},
-    {"src": "api/**/*.js", "use": "@vercel/node"}
-  ],
-  "routes": [
-    {"src": "/api/(.*)", "dest": "/api/$1"},
-    {"src": "/dashboard/(.*)", "dest": "/dashboard/$1"},
-    {"src": "/(.*)", "dest": "/$1"}
-  ],
   "rewrites": [
-    {"source": "/(.*)", "destination": "/index.html"}
+    { "source": "/office", "destination": "/office.html" },
+    { "source": "/agents", "destination": "/agents.html" },
+    { "source": "/tasks", "destination": "/tasks.html" },
+    { "source": "/(.*)", "destination": "/index.html" }
   ]
 }

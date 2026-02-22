@@ -675,13 +675,5 @@ if (require.main === module) {
   const PORT = process.env.PORT || 3002;
   
   app.listen(PORT, () => {
-    console.log('🚀 Lead Scoring API v2.0 running on port', PORT);
-    console.log('📊 API Documentation: http://localhost:' + PORT + '/');
-    console.log('');
-    console.log('Scoring Criteria:');
-    console.log('  • Company Size/Funding (25%)');
-    console.log('  • Partnership Potential (30%)');
-    console.log('  • Contact Accessibility (25%)');
-    console.log('  • Market Relevance (20%)');
   });
 }

@@ -52,7 +52,6 @@ class MicroActions extends EventEmitter {
   }
   
   async initialize() {
-    console.log('⚡ Micro-Actions: Initializing...');
     
     // Load action history
     await this._loadHistory();
@@ -66,11 +65,9 @@ class MicroActions extends EventEmitter {
    */
   start() {
     if (!this.config.enabled) {
-      console.log('⚡ Micro-Actions: Disabled');
       return;
     }
     
-    console.log('⚡ Micro-Actions: Starting processor...');
     this.state.running = true;
     
     // Process queue every 5 minutes
@@ -90,7 +87,6 @@ class MicroActions extends EventEmitter {
       clearInterval(this.processTimer);
       this.processTimer = null;
     }
-    console.log('⚡ Micro-Actions: Stopped');
   }
   
   /**
@@ -99,7 +95,6 @@ class MicroActions extends EventEmitter {
   queueAction(action) {
     // Validate action type
     if (!this.allowedActions.has(action.type)) {
-      console.log(`⚡ Micro-Actions: Action type '${action.type}' not allowed for autonomous execution`);
       this.emit('action-rejected', { action, reason: 'not_allowed' });
       return false;
     }
@@ -114,7 +109,6 @@ class MicroActions extends EventEmitter {
     
     this.state.actionsQueue.push(queuedAction);
     
-    console.log(`⚡ Micro-Actions: Queued ${action.type} for ${action.leadId || 'system'}`);
     
     // Process immediately if high priority
     if (action.priority === 'high') {
@@ -140,7 +134,6 @@ class MicroActions extends EventEmitter {
     
     // Check rate limit
     if (this.state.actionCount.hour >= this.config.maxActionsPerHour) {
-      console.log('⚡ Micro-Actions: Hourly rate limit reached');
       return;
     }
     
@@ -156,7 +149,6 @@ class MicroActions extends EventEmitter {
    * Execute a single action
    */
   async _executeAction(action) {
-    console.log(`⚡ Micro-Actions: Executing ${action.type}...`);
     
     try {
       let result;
@@ -198,7 +190,6 @@ class MicroActions extends EventEmitter {
       
       this.emit('action-executed', action);
       
-      console.log(`⚡ Micro-Actions: ${action.type} completed`);
       
     } catch (err) {
       action.status = 'failed';
@@ -231,7 +222,6 @@ class MicroActions extends EventEmitter {
     };
     
     // Would integrate with calendar/task system
-    console.log(`📅 Reminder scheduled for ${leadId}: ${reminder.message}`);
     
     return reminder;
   }
@@ -252,7 +242,6 @@ class MicroActions extends EventEmitter {
     };
     
     // Would update lead record with flag
-    console.log(`🚩 Contact flagged for ${leadId}: ${field} - ${reason}`);
     
     return flag;
   }
@@ -311,7 +300,6 @@ class MicroActions extends EventEmitter {
     }
     
     // Would save enriched data
-    console.log(`📊 Lead enriched for ${leadId}: ${updates.join(', ')}`);
     
     return { leadId, updates, enriched };
   }
@@ -331,7 +319,6 @@ class MicroActions extends EventEmitter {
     };
     
     // Would update lead in database
-    console.log(`🔄 Lead status updated for ${leadId}: ${status}`);
     
     return update;
   }
@@ -355,7 +342,6 @@ class MicroActions extends EventEmitter {
     };
     
     // Would create task in task management system
-    console.log(`✅ Task created: ${title}`);
     
     return task;
   }
@@ -375,7 +361,6 @@ class MicroActions extends EventEmitter {
     };
     
     // Would log to activity feed
-    console.log(`📝 Activity logged for ${leadId}: ${activityType}`);
     
     return activity;
   }

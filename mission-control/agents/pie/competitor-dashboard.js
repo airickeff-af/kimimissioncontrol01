@@ -449,60 +449,27 @@ class Dashboard {
   // ========================================================================
 
   toConsole(dashboard) {
-    console.log('\n' + '='.repeat(80));
-    console.log('🏢 COMPETITOR INTELLIGENCE DASHBOARD');
-    console.log('='.repeat(80));
-    console.log(`Generated: ${new Date(dashboard.generatedAt).toLocaleString()}`);
-    console.log('');
 
     // Summary
-    console.log('📊 SUMMARY');
-    console.log('-'.repeat(40));
-    console.log(`Total Competitors: ${dashboard.summary.totalCompetitors}`);
-    console.log(`Activities (24h): ${dashboard.summary.activities24h}`);
-    console.log(`Activities (7d): ${dashboard.summary.activities7d}`);
-    console.log(`Total Funding Tracked: $${(dashboard.summary.totalFunding / 1000000).toFixed(2)}M`);
-    console.log(`Partnerships: ${dashboard.summary.partnerships}`);
-    console.log(`Product Launches: ${dashboard.summary.products}`);
-    console.log(`Market Expansions: ${dashboard.summary.expansions}`);
-    console.log('');
 
     // Hot Competitors
-    console.log('🔥 HOT COMPETITORS (Top 5)');
-    console.log('-'.repeat(40));
     dashboard.hotCompetitors.slice(0, 5).forEach((c, i) => {
-      console.log(`${i + 1}. ${c.name} (${c.type}) - Score: ${c.score}`);
-      if (c.recentFunding > 0) console.log(`   💰 ${c.recentFunding} funding round(s)`);
-      if (c.recentPartnerships > 0) console.log(`   🤝 ${c.recentPartnerships} partnership(s)`);
-      if (c.recentProducts > 0) console.log(`   🚀 ${c.recentProducts} product launch(es)`);
     });
-    console.log('');
 
     // Recent Activity
-    console.log('📰 RECENT ACTIVITY (Last 10)');
-    console.log('-'.repeat(40));
     dashboard.recentActivity.slice(0, 10).forEach((a, i) => {
       const time = new Date(a.timestamp).toLocaleTimeString();
       const icon = this.getActivityIcon(a.type);
-      console.log(`${icon} [${time}] ${a.competitorName}: ${a.title.substring(0, 50)}...`);
     });
-    console.log('');
 
     // By Type
-    console.log('📁 COMPETITORS BY TYPE');
-    console.log('-'.repeat(40));
     for (const [type, list] of Object.entries(dashboard.byType)) {
-      console.log(`${type.toUpperCase()}: ${list.length}`);
       list.slice(0, 3).forEach(c => {
-        console.log(`  • ${c.name}`);
       });
       if (list.length > 3) {
-        console.log(`  ... and ${list.length - 3} more`);
       }
     }
-    console.log('');
 
-    console.log('='.repeat(80));
   }
 
   getActivityIcon(type) {
@@ -650,40 +617,30 @@ if (require.main === module) {
       break;
       
     case 'list':
-      console.log('\n🏢 Competitors:\n');
       for (const c of tracker.getAllCompetitors()) {
-        console.log(`  • ${c.name} (${c.type})`);
       }
-      console.log('');
       break;
       
     case 'add':
       const name = process.argv[3];
       const type = process.argv[4];
       if (!name || !type) {
-        console.log('Usage: node competitor-dashboard.js add <name> <type>');
         process.exit(1);
       }
       tracker.addCompetitor({ name, type });
-      console.log(`✅ Added ${name} (${type})`);
       break;
       
     case 'activity':
       const compId = process.argv[3];
       if (!compId) {
-        console.log('Usage: node competitor-dashboard.js activity <competitor-id>');
         process.exit(1);
       }
       const activities = tracker.getActivities(compId);
-      console.log(`\n📰 Activities for ${compId}:\n`);
       activities.slice(0, 10).forEach(a => {
-        console.log(`  [${a.type}] ${a.title}`);
       });
-      console.log('');
       break;
       
     default:
-      console.log(`
 🏢 Competitor Dashboard - PIE Intelligence Module
 
 Usage: node competitor-dashboard.js <command>

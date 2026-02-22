@@ -17,7 +17,6 @@ const AUTO_ENRICH_PATH = path.join(__dirname, 'auto-enrich.js');
 
 function runEnrichment(args = []) {
   return new Promise((resolve, reject) => {
-    console.log('🚀 Triggering lead enrichment...');
     
     const child = spawn('node', [AUTO_ENRICH_PATH, '--once', ...args], {
       stdio: 'inherit',
@@ -26,7 +25,6 @@ function runEnrichment(args = []) {
 
     child.on('close', (code) => {
       if (code === 0) {
-        console.log('✅ Enrichment completed successfully');
         resolve();
       } else {
         reject(new Error(`Enrichment process exited with code ${code}`));

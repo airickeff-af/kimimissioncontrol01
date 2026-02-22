@@ -19,7 +19,6 @@ module.exports = (req, res) => {
   const pathSegments = url.pathname.replace('/api/', '').split('/').filter(Boolean);
   
   // Log what we received for debugging
-  console.log('Catch-all received:', {
     pathname: url.pathname,
     segments: pathSegments,
     query: Object.fromEntries(url.searchParams)

@@ -397,7 +397,6 @@ module.exports = SendScheduler;
 if (require.main === module) {
   const scheduler = new SendScheduler();
   
-  console.log('📅 Send Scheduler Demo\n');
   
   // Demo lead
   const demoLead = {
@@ -410,25 +409,14 @@ if (require.main === module) {
   // Calculate optimal time
   const optimal = scheduler.calculateOptimalTime(demoLead);
   
-  console.log(`Lead: ${optimal.company} (${optimal.contact})`);
-  console.log(`Timezone: ${optimal.timezone}\n`);
   
-  console.log('Top 5 Recommended Send Times:');
   optimal.recommendations.forEach((rec, i) => {
-    console.log(`  ${i + 1}. ${rec.localTime} (Score: ${rec.score})`);
-    console.log(`     Expected Open Rate: ${rec.expectedOpenRate}%`);
-    console.log(`     Expected Reply Rate: ${rec.expectedReplyRate}%`);
   });
   
   // Best windows
-  console.log('\n📊 Best Send Windows:');
   const windows = scheduler.getBestWindows();
-  console.log(`  Best Days: ${windows.byOpenRate.days.join(', ')}`);
-  console.log(`  Best Hours: ${windows.byOpenRate.hours.join(', ')}`);
-  console.log(`  Avoid: ${windows.avoid.days.slice(0, 3).join(', ')}`);
   
   // Weekly schedule demo
-  console.log('\n📅 Sample Weekly Schedule (9 leads):');
   const demoLeads = [
     { id: '1', company: 'Coins.ph', contact_name: 'Wei Zhou', notes: 'Philippines' },
     { id: '2', company: 'Maya', contact_name: 'Shailesh Baidwan', notes: 'Philippines' },
@@ -445,13 +433,9 @@ if (require.main === module) {
   
   for (const [day, slots] of Object.entries(weeklySchedule.schedule)) {
     if (slots.length > 0) {
-      console.log(`\n${day}:`);
       slots.forEach(slot => {
-        console.log(`  ${slot.time.split(',')[2]?.trim() || slot.time} - ${slot.company} (${slot.contact})`);
       });
     }
   }
   
-  console.log(`\nSummary: ${weeklySchedule.summary.total} emails scheduled`);
-  console.log(`Average Quality Score: ${weeklySchedule.summary.avgScore}/100`);
 }

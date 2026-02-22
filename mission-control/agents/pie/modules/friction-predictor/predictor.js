@@ -46,7 +46,6 @@ class FrictionPredictor extends EventEmitter {
   }
   
   async initialize() {
-    console.log('🔍 Friction Predictor: Initializing...');
     
     // Load historical patterns
     await this._loadPatterns();

@@ -97,7 +97,6 @@ class PredictiveIntelligenceEngine extends EventEmitter {
    * Initialize PIE and load persisted state
    */
   async initialize() {
-    console.log('🔮 PIE: Initializing Predictive Intelligence Engine...');
     
     // Ensure data directory exists
     await fs.mkdir(this.config.dataDir, { recursive: true });
@@ -117,7 +116,6 @@ class PredictiveIntelligenceEngine extends EventEmitter {
     await this._loadState();
     
     this.state.initialized = true;
-    console.log('✅ PIE: Initialization complete');
     
     this.emit('initialized');
     return this;
@@ -131,7 +129,6 @@ class PredictiveIntelligenceEngine extends EventEmitter {
       await this.initialize();
     }
     
-    console.log('🚀 PIE: Starting continuous intelligence...');
     
     // Start radar scanning
     this.radar.start(this.config.scanInterval);
@@ -150,7 +147,6 @@ class PredictiveIntelligenceEngine extends EventEmitter {
    * Stop all monitoring
    */
   async stop() {
-    console.log('🛑 PIE: Stopping...');
     
     this.radar.stop();
     this.microActions.stop();
@@ -286,7 +282,6 @@ class PredictiveIntelligenceEngine extends EventEmitter {
       this.state.leadScores = new Map(parsed.leadScores || []);
     } catch (err) {
       // State doesn't exist yet, start fresh
-      console.log('📄 PIE: No persisted state found, starting fresh');
     }
   }
   
@@ -316,7 +311,5 @@ if (require.main === module) {
     
     // Generate initial report
     const report = await pie.getIntelligenceReport({ includeBriefings: true });
-    console.log('\n📊 PIE Intelligence Report:');
-    console.log(JSON.stringify(report, null, 2));
   })();
 }

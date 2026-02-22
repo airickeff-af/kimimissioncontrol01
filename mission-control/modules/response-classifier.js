@@ -364,26 +364,13 @@ if (require.main === module) {
     }
   ];
   
-  console.log('🧪 Response Classification Tests\n');
   
   for (const test of testResponses) {
     const result = classifier.classify(test.text, test.context);
-    console.log(`Test: "${test.text.substring(0, 50)}..."`);
-    console.log(`  Category: ${result.primaryCategory} (${Math.round(result.confidence * 100)}% confidence)`);
-    console.log(`  Sentiment: ${result.sentiment}`);
-    console.log(`  Action: ${result.suggestedAction}`);
-    console.log(`  Entities: ${JSON.stringify(result.entities)}`);
-    console.log('');
   }
   
   // Batch classification
   const batchResults = classifier.classifyBatch(testResponses);
   const summary = classifier.getSummary(batchResults);
   
-  console.log('📊 Summary:');
-  console.log(`  Total: ${summary.total}`);
-  console.log(`  By Category: ${JSON.stringify(summary.byCategory)}`);
-  console.log(`  By Sentiment: ${JSON.stringify(summary.bySentiment)}`);
-  console.log(`  Avg Confidence: ${Math.round(summary.avgConfidence * 100)}%`);
-  console.log(`  Requires Review: ${summary.requiresReview}`);
 }

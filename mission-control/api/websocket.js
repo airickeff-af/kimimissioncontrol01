@@ -115,8 +115,6 @@ class MCWebSocketServer extends EventEmitter {
 
       // Start listening
       this.server.listen(this.config.port, () => {
-        console.log(`🔌 WebSocket Server running on port ${this.config.port}`);
-        console.log(`📡 Endpoint: ws://localhost:${this.config.port}/api/ws`);
         this.startHeartbeat();
         resolve();
       });
@@ -193,7 +191,6 @@ class MCWebSocketServer extends EventEmitter {
 
     this.clients.set(clientId, clientInfo);
 
-    console.log(`🔌 Client connected: ${clientId} (${this.clients.size} total)`);
 
     // Send welcome message
     setImmediate(() => {
@@ -296,7 +293,6 @@ class MCWebSocketServer extends EventEmitter {
     if (!client) return;
 
     this.clients.delete(clientId);
-    console.log(`🔌 Client disconnected: ${clientId} (${this.clients.size} remaining)`);
 
     this.emit('clientDisconnected', { clientId, code, reason });
     this.broadcast({
@@ -381,7 +377,6 @@ class MCWebSocketServer extends EventEmitter {
 
       for (const [clientId, client] of this.clients) {
         if (now - client.lastPing > timeout) {
-          console.log(`💔 Client ${clientId} timed out`);
           client.ws.terminate();
           this.clients.delete(clientId);
         } else {
@@ -658,12 +653,10 @@ if (require.main === module) {
 
   // Graceful shutdown
   process.on('SIGTERM', () => {
-    console.log('SIGTERM received, shutting down WebSocket server...');
     wsServer.stop().then(() => process.exit(0));
   });
 
   process.on('SIGINT', () => {
-    console.log('SIGINT received, shutting down WebSocket server...');
     wsServer.stop().then(() => process.exit(0));
   });
 }

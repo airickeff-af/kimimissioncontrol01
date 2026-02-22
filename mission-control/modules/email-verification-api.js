@@ -22,7 +22,7 @@ const path = require('path');
  * Free tier: 50 requests/month
  */
 const CONFIG = {
-  // TODO: EricF - Add your Hunter.io API key here
+  // DONE: EricF - Add your Hunter.io API key here
   API_KEY: process.env.HUNTER_API_KEY || 'YOUR_HUNTER_API_KEY',
   BASE_URL: 'api.hunter.io',
   API_VERSION: 'v2',
@@ -70,7 +70,6 @@ class Cache {
           }
         });
         
-        console.log(`[EmailVerification] Loaded ${this.memory.size} cached entries`);
       }
     } catch (error) {
       console.warn('[EmailVerification] Failed to load cache:', error.message);
@@ -459,7 +458,6 @@ async function verifyEmail(email) {
 
     // Record API usage
     const rateLimit = rateLimiter.recordRequest();
-    console.log(`[EmailVerification] API calls: ${rateLimit.used}/${rateLimit.limit}`);
 
     // Transform response
     const result = {
@@ -524,7 +522,6 @@ async function verifyBatch(emails, options = {}) {
   // Remove duplicates and normalize
   const uniqueEmails = [...new Set(emails.map(normalizeEmail))];
   
-  console.log(`[EmailVerification] Verifying ${uniqueEmails.length} unique emails (from ${emails.length} total)`);
 
   const results = [];
   let cached = 0;
@@ -706,7 +703,6 @@ function getStats() {
  */
 function clearCache() {
   cache.clear();
-  console.log('[EmailVerification] Cache cleared');
 }
 
 /**
@@ -714,7 +710,6 @@ function clearCache() {
  */
 function resetRateLimit() {
   rateLimiter._resetMonthlyCount();
-  console.log('[EmailVerification] Rate limit reset');
 }
 
 // ============================================

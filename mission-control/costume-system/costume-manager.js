@@ -33,7 +33,6 @@ class CostumeManager {
       await this.loadCostumeAssets();
     }
     
-    console.log(`[CostumeManager] Initialized. Current holiday: ${this.currentHoliday || 'None'}`);
     return this;
   }
 
@@ -373,7 +372,6 @@ class CostumeManager {
       }
     } catch (e) {
       // Backend not available, try client-side generation if enabled
-      console.log('[CostumeManager] Backend API unavailable, using fallback');
     }
 
     // Fallback: Generate colored placeholder with pattern

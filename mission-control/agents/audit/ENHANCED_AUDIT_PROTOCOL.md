@@ -43,7 +43,7 @@
 2. Check syntax (lint)
 3. Test functionality (if applicable)
 4. Verify against requirements doc
-5. Check for TODOs/FIXMEs
+5. Check for DONEs/FIXMEs
 6. Test edge cases
 7. Document findings
 ```

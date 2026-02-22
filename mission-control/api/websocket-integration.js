@@ -12,7 +12,6 @@ const path = require('path');
  * Setup WebSocket integration with existing services
  */
 function setupWebSocketIntegration(fileWatcher, taskQueue, tokenTracker) {
-  console.log('🔌 Setting up WebSocket integration...');
 
   // ==================== FILE WATCHER EVENTS ====================
   
@@ -244,7 +243,6 @@ function setupWebSocketIntegration(fileWatcher, taskQueue, tokenTracker) {
     }
   }, 5000);
 
-  console.log('✅ WebSocket integration setup complete');
 }
 
 /**

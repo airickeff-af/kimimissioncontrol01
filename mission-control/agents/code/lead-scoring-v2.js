@@ -786,44 +786,16 @@ if (require.main === module) {
   const leadsPath = process.argv[2] || path.join(__dirname, '../dealflow/leads_complete_26.json');
   const outputPath = path.join(__dirname, '../../data/scored-leads-v2.json');
   
-  console.log('🔍 DealFlow Lead Scoring Algorithm v2.0');
-  console.log('========================================\n');
-  console.log('Scoring Criteria:');
-  console.log('  • Company Size/Funding (25%)');
-  console.log('  • Partnership Potential (30%)');
-  console.log('  • Contact Accessibility (25%)');
-  console.log('  • Market Relevance (20%)\n');
   
   const result = scoreLeadsFromFile(leadsPath, outputPath);
   
   if (result.success) {
-    console.log('✅ Scoring completed successfully!\n');
-    console.log('📊 Summary:');
-    console.log(`   Total Leads: ${result.summary.totalLeads}`);
-    console.log(`   Average Score: ${result.summary.averageScore}/100`);
-    console.log(`   Algorithm Version: ${result.summary.algorithmVersion}\n`);
     
-    console.log('📈 Tier Distribution:');
-    console.log(`   P0 (Immediate Action): ${result.summary.tierDistribution.P0}`);
-    console.log(`   P1 (High Priority): ${result.summary.tierDistribution.P1}`);
-    console.log(`   P2 (Medium Priority): ${result.summary.tierDistribution.P2}`);
-    console.log(`   P3 (Low Priority): ${result.summary.tierDistribution.P3}`);
-    console.log(`   Cold (Nurture/Archive): ${result.summary.tierDistribution.Cold}\n`);
     
-    console.log('📊 Category Averages:');
-    console.log(`   Company Size/Funding: ${result.summary.categoryAverages.companySizeFunding}/100`);
-    console.log(`   Partnership Potential: ${result.summary.categoryAverages.partnershipPotential}/100`);
-    console.log(`   Contact Accessibility: ${result.summary.categoryAverages.contactAccessibility}/100`);
-    console.log(`   Market Relevance: ${result.summary.categoryAverages.marketRelevance}/100\n`);
     
-    console.log('🏆 Top 5 Leads:');
     result.summary.topLeads.forEach((lead, i) => {
-      console.log(`   ${i + 1}. ${lead.company} (${lead.contact})`);
-      console.log(`      Score: ${lead.score}/100 | Tier: ${lead.tier}`);
-      console.log(`      Action: ${lead.action}\n`);
     });
     
-    console.log(`💾 Results saved to: ${outputPath}`);
   } else {
     console.error('❌ Scoring failed:', result.error);
     process.exit(1);

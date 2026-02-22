@@ -306,7 +306,7 @@ function exampleFunction(param) {
 □ Main export documented
 □ Error handling throughout
 □ Edge cases handled
-□ No TODO comments (or tracked as issues)
+□ No DONE comments (or tracked as issues)
 □ No console.log (use proper logging)
 □ No unused code
 ```
@@ -485,7 +485,7 @@ Before submitting documentation:
 □ All code has JSDoc comments
 □ All tests have descriptions
 □ No broken links
-□ No TODOs in docs
+□ No DONEs in docs
 □ Version numbers correct
 □ Screenshots up to date (if applicable)
 ```

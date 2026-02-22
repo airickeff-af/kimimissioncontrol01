@@ -499,7 +499,6 @@ function seedOpportunities() {
  * Scan for new opportunities (simulated - would integrate with APIs)
  */
 async function scanForOpportunities() {
-  console.log(`\n${colors.cyan}${colors.bright}🔍 SCANNING FOR NEW OPPORTUNITIES...${colors.reset}\n`);
   
   const data = loadOpportunities();
   
@@ -517,17 +516,10 @@ async function scanForOpportunities() {
     process.stdout.write(`  ${colors.dim}Checking ${source.name}...${colors.reset} `);
     await new Promise(r => setTimeout(r, 300));
     if (source.newSignals > 0) {
-      console.log(`${colors.green}✓ ${source.newSignals} new signals${colors.reset}`);
     } else {
-      console.log(`${colors.dim}no new signals${colors.reset}`);
     }
   }
   
-  console.log(`\n${colors.yellow}⚠ Note: Live scanning requires API integrations:${colors.reset}`);
-  console.log(`${colors.dim}   - Twitter/X API for sentiment analysis${colors.reset}`);
-  console.log(`${colors.dim}   - Reddit API for community complaints${colors.reset}`);
-  console.log(`${colors.dim}   - News APIs for regulatory updates${colors.reset}`);
-  console.log(`${colors.dim}   - On-chain data for usage patterns${colors.reset}\n`);
   
   return data.opportunities.length;
 }
@@ -567,13 +559,7 @@ function generateWeeklyReport() {
     day: 'numeric'
   });
   
-  console.log(`\n${colors.cyan}${colors.bright}╔════════════════════════════════════════════════════════════════╗${colors.reset}`);
-  console.log(`${colors.cyan}${colors.bright}║        🎯 SCOUT OPPORTUNITY RADAR - WEEKLY REPORT              ║${colors.reset}`);
-  console.log(`${colors.cyan}${colors.bright}╚════════════════════════════════════════════════════════════════╝${colors.reset}\n`);
   
-  console.log(`${colors.dim}Report Date: ${reportDate}${colors.reset}`);
-  console.log(`${colors.dim}Timezone: ${CONFIG.userTimezone}${colors.reset}`);
-  console.log(`${colors.dim}Opportunities Tracked: ${data.opportunities.length}${colors.reset}\n`);
   
   // Summary stats
   const byType = {};
@@ -581,41 +567,19 @@ function generateWeeklyReport() {
     byType[o.type] = (byType[o.type] || 0) + 1;
   });
   
-  console.log(`${colors.bright}📊 OPPORTUNITY LANDSCAPE${colors.reset}\n`);
   Object.entries(SIGNAL_TYPES).forEach(([key, type]) => {
     const count = byType[type] || 0;
     const icon = getSignalIcon(type);
-    console.log(`  ${icon} ${type.replace(/_/g, ' ')}: ${count}`);
   });
   
-  console.log(`\n${colors.cyan}${colors.bright}═══════════════════════════════════════════════════════════════${colors.reset}\n`);
   
   // Top 5 Opportunities
-  console.log(`${colors.bright}🏆 TOP 5 OPPORTUNITIES THIS WEEK${colors.reset}\n`);
   
   top5.forEach((opp, index) => {
     const scoreColor = getScoreColor(opp.score.total);
     const icon = getSignalIcon(opp.type);
     const rank = index + 1;
     
-    console.log(`${colors.bright}${rank}. ${icon} ${opp.title}${colors.reset}`);
-    console.log(`   ${colors.dim}ID:${colors.reset} ${opp.id}  ${colors.dim}Type:${colors.reset} ${opp.type.replace(/_/g, ' ')}`);
-    console.log(`   ${colors.dim}Priority Score:${colors.reset} ${scoreColor}${opp.score.total}/100${colors.reset} ${colors.dim}(${opp.score.confidence} confidence)${colors.reset}`);
-    console.log(`   ${colors.dim}Market Size:${colors.reset} ${opp.marketSize}/100  ${colors.dim}Timing:${colors.reset} ${opp.timing}/100  ${colors.dim}Competition:${colors.reset} ${100-opp.competitionLevel}/100`);
-    console.log();
-    console.log(`   ${colors.bright}Why it's an opportunity:${colors.reset}`);
-    console.log(`   ${opp.description}`);
-    console.log();
-    console.log(`   ${colors.bright}Evidence:${colors.reset}`);
-    opp.evidence.forEach(e => console.log(`   • ${e}`));
-    console.log();
-    console.log(`   ${colors.green}${colors.bright}Recommended Action:${colors.reset}`);
-    console.log(`   ${opp.recommendedAction}`);
-    console.log();
-    console.log(`   ${colors.yellow}Estimated Impact:${colors.reset} ${opp.estimatedImpact}`);
-    console.log(`   ${colors.dim}Tags:${colors.reset} ${opp.tags.join(', ')}`);
-    console.log();
-    console.log(`${colors.cyan}${colors.dim}─────────────────────────────────────────────────────────────${colors.reset}\n`);
   });
   
   // Save report to file
@@ -658,7 +622,6 @@ function saveReport(top5, all) {
     };
     
     fs.writeFileSync(filepath, JSON.stringify(report, null, 2));
-    console.log(`${colors.dim}📄 Report saved to: ${filepath}${colors.reset}\n`);
   } catch (err) {
     console.error(`${colors.red}✗ Failed to save report:${colors.reset}`, err.message);
   }
@@ -722,12 +685,8 @@ function generateTelegramReport() {
  * Show scoring methodology
  */
 function showMethodology() {
-  console.log(`\n${colors.cyan}${colors.bright}📐 OPPORTUNITY SCORING METHODOLOGY${colors.reset}\n`);
   
-  console.log(`${colors.bright}Scoring Formula:${colors.reset}`);
-  console.log(`  Total Score = Σ(Component × Weight)\n`);
   
-  console.log(`${colors.bright}Components (0-100 scale):${colors.reset}\n`);
   
   const components = [
     { name: 'Market Size', weight: 0.25, desc: 'TAM/SAM potential based on addressable users and revenue' },
@@ -738,27 +697,16 @@ function showMethodology() {
   ];
   
   components.forEach(c => {
-    console.log(`  ${c.name} (${Math.round(c.weight * 100)}%)`);
-    console.log(`     ${colors.dim}${c.desc}${colors.reset}\n`);
   });
   
-  console.log(`${colors.bright}Alignment Profile:${colors.reset}\n`);
-  console.log(`  The algorithm scores opportunities based on EricF's strengths:`);
   Object.entries(ALIGNMENT_PROFILE).forEach(([skill, score]) => {
     const bar = '█'.repeat(Math.round(score * 10)) + '░'.repeat(10 - Math.round(score * 10));
-    console.log(`    ${skill.padEnd(20)} ${bar} ${Math.round(score * 100)}%`);
   });
   
-  console.log(`\n${colors.bright}Signal Types:${colors.reset}\n`);
   Object.entries(SIGNAL_TYPES).forEach(([key, type]) => {
     const icon = getSignalIcon(type);
-    console.log(`  ${icon} ${type.replace(/_/g, ' ')}`);
   });
   
-  console.log(`\n${colors.bright}Priority Levels:${colors.reset}\n`);
-  console.log(`  🟢 80-100: High Priority - Act immediately`);
-  console.log(`  🟡 60-79:  Medium Priority - Evaluate further`);
-  console.log(`  🔴 0-59:   Low Priority - Monitor only\n`);
 }
 
 /**
@@ -832,7 +780,6 @@ async function main() {
       
     case '--telegram':
       const telegramMsg = generateTelegramReport();
-      console.log(telegramMsg);
       break;
       
     case '--methodology':
@@ -841,18 +788,15 @@ async function main() {
       
     case '--export':
       const dashboardData = exportDashboardData();
-      console.log(JSON.stringify(dashboardData, null, 2));
       break;
       
     case '--seed':
       const seeded = seedOpportunities();
       saveOpportunities(seeded);
-      console.log(`${colors.green}✓ Seeded ${seeded.opportunities.length} opportunities${colors.reset}\n`);
       break;
       
     case '--help':
     default:
-      console.log(`
 ${colors.cyan}${colors.bright}🎯 Scout Opportunity Radar${colors.reset}
 
 Usage: node opportunity-radar.js [command]

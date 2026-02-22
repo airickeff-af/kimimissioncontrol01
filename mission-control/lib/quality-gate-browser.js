@@ -77,7 +77,6 @@ class QualityGateBrowserAutomation {
    * Initialize browser automation
    */
   async init() {
-    console.log('🔧 Initializing Quality Gate Browser Automation...');
     
     // Ensure output directories exist
     await fs.mkdir(this.config.outputDir, { recursive: true });
@@ -88,7 +87,6 @@ class QualityGateBrowserAutomation {
     await this.tryInitPlaywright() || 
     await this.initFetchMode();
     
-    console.log(`✅ Browser automation ready (${this.browserType})`);
     return this;
   }
 
@@ -109,10 +107,8 @@ class QualityGateBrowserAutomation {
       });
       
       this.browserType = 'puppeteer';
-      console.log('🎭 Using Puppeteer for browser automation');
       return true;
     } catch (error) {
-      console.log(`⚠️  Puppeteer not available: ${error.message}`);
       return false;
     }
   }
@@ -130,10 +126,8 @@ class QualityGateBrowserAutomation {
       });
       
       this.browserType = 'playwright';
-      console.log('🎭 Using Playwright for browser automation');
       return true;
     } catch (error) {
-      console.log(`⚠️  Playwright not available: ${error.message}`);
       return false;
     }
   }
@@ -143,10 +137,6 @@ class QualityGateBrowserAutomation {
    */
   async initFetchMode() {
     this.browserType = 'fetch';
-    console.log('🌐 Using fetch-only mode (limited functionality)');
-    console.log('   - Console error detection: Not available');
-    console.log('   - Mobile viewport testing: Meta tag verification only');
-    console.log('   - Screenshots: Not available');
   }
 
   /**
@@ -167,7 +157,6 @@ class QualityGateBrowserAutomation {
     for (const chromePath of possiblePaths) {
       try {
         await fs.access(chromePath);
-        console.log(`🔍 Found Chrome at: ${chromePath}`);
         return chromePath;
       } catch {
         continue;
@@ -181,7 +170,6 @@ class QualityGateBrowserAutomation {
    * Run all quality gate tests
    */
   async runAllTests() {
-    console.log('\n🚀 Starting Quality Gate Tests...\n');
     
     // 1. Test all pages
     await this.testPages();
@@ -210,7 +198,6 @@ class QualityGateBrowserAutomation {
    * Test all pages
    */
   async testPages() {
-    console.log('📄 Testing Pages...');
     
     for (const page of this.config.pages) {
       const result = await this.testPage(page);
@@ -323,7 +310,6 @@ class QualityGateBrowserAutomation {
    * Test all API endpoints
    */
   async testAPIs() {
-    console.log('🔌 Testing API Endpoints...');
     
     for (const api of this.config.apis) {
       const result = await this.testAPI(api);
@@ -395,7 +381,6 @@ class QualityGateBrowserAutomation {
    * Test mobile responsiveness at different viewports
    */
   async testMobileResponsiveness() {
-    console.log('📱 Testing Mobile Responsiveness...');
     
     // Test the main page at different viewports
     const testPage = this.config.pages[0]; // HQ Dashboard
@@ -506,7 +491,6 @@ class QualityGateBrowserAutomation {
    * Test for console errors
    */
   async testConsoleErrors() {
-    console.log('🐛 Testing Console Errors...');
     
     const testPage = this.config.pages[0]; // HQ Dashboard
     const url = `${this.config.baseUrl}${testPage.path}`;
@@ -551,7 +535,6 @@ class QualityGateBrowserAutomation {
         warningCount: warnings.length
       };
       
-      console.log(`   ${errors.length === 0 ? '✅' : '❌'} ${testPage.name}: ${errors.length} errors, ${warnings.length} warnings`);
       
     } catch (error) {
       this.results.consoleErrors = {
@@ -655,9 +638,6 @@ class QualityGateBrowserAutomation {
     await fs.writeFile(latestJson, JSON.stringify(this.results, null, 2));
     await fs.writeFile(latestMd, markdown);
     
-    console.log(`\n📊 Reports saved:`);
-    console.log(`   JSON: ${reportPath}`);
-    console.log(`   Markdown: ${markdownPath}`);
   }
 
   /**
@@ -787,17 +767,14 @@ Screenshots captured at:
   logResult(result) {
     const status = result.passed ? '✅' : '❌';
     const name = result.name || result.page || result.viewport || 'Unknown';
-    console.log(`   ${status} ${name}`);
     
     if (result.errors && result.errors.length > 0) {
       for (const error of result.errors) {
-        console.log(`      ❌ ${error}`);
       }
     }
     
     if (result.warnings && result.warnings.length > 0) {
       for (const warning of result.warnings) {
-        console.log(`      ⚠️  ${warning}`);
       }
     }
   }
@@ -812,7 +789,6 @@ Screenshots captured at:
       } else if (this.browserType === 'playwright') {
         await this.browser.close();
       }
-      console.log('\n🔒 Browser closed');
     }
   }
 }
@@ -828,13 +804,6 @@ async function runQualityGate() {
     const results = await automation.runAllTests();
     await automation.close();
     
-    console.log('\n═══════════════════════════════════════════════════════════════');
-    console.log('                    QUALITY GATE RESULTS                       ');
-    console.log('═══════════════════════════════════════════════════════════════');
-    console.log(`Status: ${results.summary.status}`);
-    console.log(`Score: ${results.summary.score}/100`);
-    console.log(`Passed: ${results.summary.passed}/${results.summary.totalTests}`);
-    console.log('═══════════════════════════════════════════════════════════════');
     
     // Exit with appropriate code
     process.exit(results.summary.status === 'PASS' ? 0 : 1);

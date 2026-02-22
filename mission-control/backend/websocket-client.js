@@ -5,7 +5,6 @@
  * Usage:
  *   const ws = new MCWebSocketClient();
  *   ws.connect();
- *   ws.on('agent_status', (data) => console.log(data));
  */
 
 class MCWebSocketClient extends EventTarget {
@@ -29,16 +28,13 @@ class MCWebSocketClient extends EventTarget {
      */
     connect() {
         if (this.ws?.readyState === WebSocket.OPEN) {
-            console.log('[MC-WS] Already connected');
             return;
         }
 
-        console.log(`[MC-WS] Connecting to ${this.url}...`);
         
         this.ws = new WebSocket(this.url);
         
         this.ws.onopen = () => {
-            console.log('[MC-WS] Connected');
             this.isConnected = true;
             this.reconnectAttempts = 0;
             this.dispatchEvent(new CustomEvent('connected'));
@@ -68,7 +64,6 @@ class MCWebSocketClient extends EventTarget {
         };
 
         this.ws.onclose = () => {
-            console.log('[MC-WS] Disconnected');
             this.isConnected = false;
             this.dispatchEvent(new CustomEvent('disconnected'));
             this.attemptReconnect();
@@ -102,7 +97,6 @@ class MCWebSocketClient extends EventTarget {
         
         // Log for debugging
         if (type !== 'heartbeat') {
-            console.log(`[MC-WS] ${type}:`, data);
         }
     }
 
@@ -170,7 +164,6 @@ class MCWebSocketClient extends EventTarget {
         }
 
         this.reconnectAttempts++;
-        console.log(`[MC-WS] Reconnecting in ${this.reconnectInterval}ms (attempt ${this.reconnectAttempts})`);
         
         setTimeout(() => {
             this.connect();

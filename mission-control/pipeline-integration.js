@@ -77,32 +77,24 @@ class PipelineOrchestrator extends EventEmitter {
    * Initialize all pipeline components
    */
   async initialize() {
-    console.log('\n╔════════════════════════════════════════════════════════════╗');
-    console.log('║   FULL PIPELINE INTEGRATION                                ║');
-    console.log('║   PIE → Scout → DealFlow → ColdCall                        ║');
-    console.log('╚════════════════════════════════════════════════════════════\n');
 
     this.logEvent('pipeline', 'initialization_started');
 
     // Initialize PIE WebSocket Server
-    console.log('🔮 Initializing PIE WebSocket Feed...');
     this.pie = new PIEWebSocketServer();
     await this.pie.start();
     this.logEvent('pie', 'websocket_started', { port: 3003 });
 
     // Initialize Scout Integration
-    console.log('🔭 Connecting Scout to PIE...');
     this.scout = new ScoutIntegration(this.pie);
     await this.scout.connect();
     this.logEvent('scout', 'connected_to_pie');
 
     // Initialize DealFlow
-    console.log('💼 Initializing DealFlow Hunter Integration...');
     this.dealflow = new DealFlowPipeline();
     this.logEvent('dealflow', 'initialized');
 
     // Initialize ColdCall
-    console.log('📞 Initializing ColdCall Automation...');
     this.coldcall = new ColdCallAutomation();
     this.logEvent('coldcall', 'initialized');
 
@@ -112,7 +104,6 @@ class PipelineOrchestrator extends EventEmitter {
     this.state.status = 'ready';
     this.logEvent('pipeline', 'initialization_complete');
 
-    console.log('\n✅ All components initialized\n');
     
     return this;
   }
@@ -156,9 +147,6 @@ class PipelineOrchestrator extends EventEmitter {
    * Handle high-value opportunity from PIE
    */
   async handleHighValueOpportunity(opportunity) {
-    console.log(`\n🎯 High-value opportunity detected: ${opportunity.coin}`);
-    console.log(`   Confidence: ${(opportunity.confidence * 100).toFixed(0)}%`);
-    console.log(`   Auto-triggering enrichment pipeline...\n`);
 
     // Create lead from opportunity
     const lead = {
@@ -186,35 +174,28 @@ class PipelineOrchestrator extends EventEmitter {
   async processSingleLead(lead) {
     const startTime = Date.now();
     
-    console.log(`\n🔄 Processing lead: ${lead.company}`);
     this.logEvent('pipeline', 'lead_processing_started', { lead: lead.id });
 
     try {
       // Stage 1: DealFlow Enrichment (Email verification)
       this.state.stage = 'dealflow';
-      console.log('   Stage 1: DealFlow enrichment...');
       
       const enrichment = await this.dealflow.verifier.verifyLead(lead);
       
       if (!enrichment.email) {
-        console.log('   ⚠️  No email found, skipping...');
         this.logEvent('pipeline', 'lead_skipped', { reason: 'no_email' });
         return { success: false, reason: 'no_email' };
       }
 
-      console.log(`   ✅ Email: ${enrichment.email} (${enrichment.email_verified})`);
 
       // Stage 2: ColdCall Sequence Creation
       this.state.stage = 'coldcall';
-      console.log('   Stage 2: Creating outreach sequence...');
       
       const sequence = this.coldcall.sequences.createSequence(enrichment);
       
       if (CONFIG.REQUIRE_APPROVAL) {
-        console.log(`   ⏳ Sequence created (pending approval): ${sequence.id}`);
       } else {
         this.coldcall.sequences.activate(sequence.id);
-        console.log(`   ✅ Sequence activated: ${sequence.id}`);
       }
 
       // Calculate processing time
@@ -226,7 +207,6 @@ class PipelineOrchestrator extends EventEmitter {
         sequenceId: sequence.id
       });
 
-      console.log(`   ✅ Complete in ${processingTime}ms\n`);
 
       // Update metrics
       this.updateMetrics(processingTime, true);
@@ -250,7 +230,6 @@ class PipelineOrchestrator extends EventEmitter {
    * Run full pipeline on all leads
    */
   async runFullPipeline() {
-    console.log('\n🚀 Starting Full Pipeline Run\n');
     this.logEvent('pipeline', 'full_run_started');
     
     this.state.status = 'running';
@@ -258,13 +237,10 @@ class PipelineOrchestrator extends EventEmitter {
 
     try {
       // Stage 1: PIE Market Data (already running via WebSocket)
-      console.log('Stage 1: PIE Real-time Feed ✅ (already running)\n');
 
       // Stage 2: Scout Validation (already connected)
-      console.log('Stage 2: Scout Integration ✅ (already connected)\n');
 
       // Stage 3: DealFlow Enrichment
-      console.log('Stage 3: DealFlow Email Verification');
       const enrichmentResults = await this.dealflow.runPipeline();
       
       // Check quality gate
@@ -273,11 +249,8 @@ class PipelineOrchestrator extends EventEmitter {
       }
 
       // Stage 4: ColdCall Activation
-      console.log('\nStage 4: ColdCall Outreach Sequences');
       const init = await this.coldcall.initializeFromLeads();
       
-      console.log(`   Created ${init.sequencesCreated} sequences`);
-      console.log(`   Pending EricF approval: ${init.sequencesCreated}`);
 
       // Calculate total time
       const totalTime = Date.now() - startTime;
@@ -290,12 +263,6 @@ class PipelineOrchestrator extends EventEmitter {
       // Save state
       await this.saveState();
 
-      console.log('\n╔════════════════════════════════════════════════════════════╗');
-      console.log('║   PIPELINE RUN COMPLETE                                    ║');
-      console.log('╚════════════════════════════════════════════════════════════\n');
-      console.log(`⏱️  Total Time: ${(totalTime / 1000).toFixed(1)}s`);
-      console.log(`📧 Email Coverage: ${enrichmentResults.coverage.coveragePercent}%`);
-      console.log(`📞 Sequences Ready: ${init.sequencesCreated}\n`);
 
       return {
         success: true,
@@ -413,7 +380,6 @@ class PipelineOrchestrator extends EventEmitter {
    * Shutdown gracefully
    */
   async shutdown() {
-    console.log('\n🛑 Shutting down pipeline...\n');
     
     if (this.pie) {
       await this.pie.stop();
@@ -421,7 +387,6 @@ class PipelineOrchestrator extends EventEmitter {
     
     await this.saveState();
     
-    console.log('✅ Pipeline shutdown complete\n');
   }
 }
 
@@ -438,7 +403,6 @@ class PipelineTester {
    * Run end-to-end test
    */
   async runE2ETest() {
-    console.log('\n🧪 Running End-to-End Pipeline Test\n');
 
     const testLead = {
       id: 'test_lead_001',
@@ -452,21 +416,13 @@ class PipelineTester {
       industry: 'Fintech'
     };
 
-    console.log('Test Lead:', testLead.company);
     
     const startTime = Date.now();
     const result = await this.orchestrator.processSingleLead(testLead);
     const processingTime = Date.now() - startTime;
 
-    console.log('\n📊 Test Results:');
-    console.log(`   Success: ${result.success}`);
-    console.log(`   Processing Time: ${processingTime}ms`);
-    console.log(`   Target: <${CONFIG.MAX_PROCESSING_TIME}ms`);
-    console.log(`   Status: ${processingTime < CONFIG.MAX_PROCESSING_TIME ? '✅ PASS' : '❌ FAIL'}`);
 
     if (result.sequence) {
-      console.log(`   Sequence Created: ${result.sequence.id}`);
-      console.log(`   Sequence Status: ${result.sequence.status}`);
     }
 
     return {
@@ -480,7 +436,6 @@ class PipelineTester {
    * Validate all components
    */
   async validateComponents() {
-    console.log('\n🔍 Validating Pipeline Components\n');
 
     const checks = {
       pie: !!this.orchestrator.pie?.isRunning,
@@ -490,11 +445,9 @@ class PipelineTester {
     };
 
     for (const [component, status] of Object.entries(checks)) {
-      console.log(`   ${component.toUpperCase()}: ${status ? '✅' : '❌'}`);
     }
 
     const allReady = Object.values(checks).every(v => v);
-    console.log(`\n   Overall: ${allReady ? '✅ READY' : '❌ NOT READY'}\n`);
 
     return allReady;
   }
@@ -553,12 +506,10 @@ async function main() {
   }
 
   // Keep running for WebSocket
-  console.log('\n⏳ Pipeline running. Press Ctrl+C to stop.\n');
   
   // Status updates every 30 seconds
   setInterval(() => {
     const status = orchestrator.getStatus();
-    console.log(`[${new Date().toISOString()}] Status: ${status.status} | Processed: ${status.metrics.totalProcessed}`);
   }, 30000);
 }
 

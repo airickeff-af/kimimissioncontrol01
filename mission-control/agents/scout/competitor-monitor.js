@@ -153,7 +153,6 @@ async function sendTelegramNotification(alert) {
   const chatId = CONFIG.telegram.chatId;
   
   if (!token) {
-    console.log(`${colors.yellow}⚠ Telegram bot token not configured${colors.reset}`);
     return { success: false, error: 'No bot token' };
   }
 
@@ -203,7 +202,6 @@ ${alert.url ? `🔗 <a href="${alert.url}">Read more</a>` : ''}
         try {
           const result = JSON.parse(responseData);
           if (result.ok) {
-            console.log(`${colors.green}✓ Telegram notification sent${colors.reset}`);
             resolve({ success: true, messageId: result.result.message_id });
           } else {
             console.error(`${colors.red}✗ Telegram API error:${colors.reset}`, result.description);
@@ -235,7 +233,6 @@ async function sendDailyDigest(alerts) {
   const chatId = CONFIG.telegram.chatId;
   
   if (!token) {
-    console.log(`${colors.yellow}⚠ Telegram bot token not configured${colors.reset}`);
     return { success: false, error: 'No bot token' };
   }
 
@@ -297,7 +294,6 @@ async function sendDailyDigest(alerts) {
         try {
           const result = JSON.parse(responseData);
           if (result.ok) {
-            console.log(`${colors.green}✓ Daily digest sent${colors.reset}`);
             resolve({ success: true, messageId: result.result.message_id });
           } else {
             resolve({ success: false, error: result.description });
@@ -375,7 +371,6 @@ async function createAlert(alertData) {
   
   // Send immediate notification for P0 alerts
   if (alert.priority === 'P0') {
-    console.log(`${colors.red}🚨 P0 ALERT - Sending immediate notification${colors.reset}`);
     await sendTelegramNotification(alert);
   }
   
@@ -386,9 +381,6 @@ async function createAlert(alertData) {
  * Generate monitoring report
  */
 function generateReport(competitors) {
-  console.log(`\n${colors.cyan}${colors.bright}═══════════════════════════════════════════════════════════════${colors.reset}`);
-  console.log(`${colors.cyan}${colors.bright}  🔭 SCOUT COMPETITOR MONITOR - Daily Report${colors.reset}`);
-  console.log(`${colors.cyan}${colors.bright}═══════════════════════════════════════════════════════════════${colors.reset}\n`);
   
   const now = new Date().toLocaleString('en-US', {
     timeZone: CONFIG.userTimezone,
@@ -400,7 +392,6 @@ function generateReport(competitors) {
     minute: '2-digit'
   });
   
-  console.log(`${colors.dim}Report generated: ${now} (${CONFIG.userTimezone})${colors.reset}\n`);
   
   // Group by priority
   const p0 = competitors.filter(c => c.priority === 'P0');
@@ -408,50 +399,29 @@ function generateReport(competitors) {
   const p2 = competitors.filter(c => c.priority === 'P2');
   
   // Summary stats
-  console.log(`${colors.bright}📊 MONITORING SUMMARY${colors.reset}\n`);
-  console.log(`  Total Competitors: ${competitors.length}`);
-  console.log(`  ${colors.red}🔴 P0 (Critical):${colors.reset} ${p0.length}`);
-  console.log(`  ${colors.yellow}🟡 P1 (Important):${colors.reset} ${p1.length}`);
-  console.log(`  ${colors.green}🟢 P2 (Monitor):${colors.reset} ${p2.length}\n`);
   
   // Alert Triggers Reference
-  console.log(`${colors.bright}🎯 ALERT TRIGGERS${colors.reset}\n`);
   Object.entries(ALERT_TRIGGERS).forEach(([type, config]) => {
     const priorityColor = config.priority === 'P0' ? colors.red : 
                           config.priority === 'P1' ? colors.yellow : colors.green;
-    console.log(`  ${config.icon} ${type.replace(/_/g, ' ')} ${priorityColor}(${config.priority})${colors.reset}`);
   });
-  console.log();
   
   // P0 Competitors
   if (p0.length > 0) {
-    console.log(`${colors.red}${colors.bright}🔴 P0 COMPETITORS (Critical - Immediate Alerts)${colors.reset}\n`);
     p0.forEach(c => {
-      console.log(`  ${colors.bright}${c.name}${colors.reset} (${c.region})`);
-      console.log(`     Category: ${c.category.replace(/_/g, ' ')}`);
-      console.log(`     Key URLs: ${Object.keys(c.urls).join(', ')}`);
-      console.log(`     Watch for: ${c.watchKeywords.slice(0, 5).join(', ')}...`);
-      console.log(`     Alert Level: ${c.alertThreshold.toUpperCase()}\n`);
     });
   }
   
   // P1 Competitors
   if (p1.length > 0) {
-    console.log(`${colors.yellow}${colors.bright}🟡 P1 COMPETITORS (Important - Daily Digest)${colors.reset}\n`);
     p1.forEach(c => {
-      console.log(`  ${colors.bright}${c.name}${colors.reset} (${c.region})`);
-      console.log(`     Category: ${c.category.replace(/_/g, ' ')}`);
-      console.log(`     Alert Level: ${c.alertThreshold.toUpperCase()}\n`);
     });
   }
   
   // P2 Competitors
   if (p2.length > 0) {
-    console.log(`${colors.green}${colors.bright}🟢 P2 COMPETITORS (Monitor - Weekly Summary)${colors.reset}\n`);
     p2.forEach(c => {
-      console.log(`  ${c.name} (${c.region})`);
     });
-    console.log();
   }
   
   // Category breakdown
@@ -460,21 +430,16 @@ function generateReport(competitors) {
     categories[c.category] = (categories[c.category] || 0) + 1;
   });
   
-  console.log(`${colors.bright}🏷️  BY CATEGORY${colors.reset}\n`);
   Object.entries(categories).forEach(([cat, count]) => {
     const icon = cat === 'crypto_exchange' ? '💱' : cat === 'payment_processor' ? '💳' : '🏦';
-    console.log(`  ${icon} ${cat.replace(/_/g, ' ')}: ${count}`);
   });
   
-  console.log();
-  console.log(`${colors.cyan}${colors.bright}═══════════════════════════════════════════════════════════════${colors.reset}\n`);
 }
 
 /**
  * Simulate a competitor check (placeholder for actual API integration)
  */
 async function runCompetitorCheck(competitors) {
-  console.log(`\n${colors.cyan}${colors.bright}🔍 RUNNING COMPETITOR CHECK...${colors.reset}\n`);
   
   const history = loadHistory();
   const newAlerts = [];
@@ -499,14 +464,8 @@ async function runCompetitorCheck(competitors) {
       status: 'checked'
     };
     
-    console.log(`${colors.green}✓${colors.reset}`);
   }
   
-  console.log(`\n${colors.yellow}⚠ Note: This is a monitoring framework.${colors.reset}`);
-  console.log(`${colors.dim}   To enable live monitoring, integrate with:${colors.reset}`);
-  console.log(`${colors.dim}   - RSS feeds for blog/newsroom URLs${colors.reset}`);
-  console.log(`${colors.dim}   - Twitter/X API for social monitoring${colors.reset}`);
-  console.log(`${colors.dim}   - News APIs (NewsAPI, GNews) for press coverage${colors.reset}\n`);
   
   // Update history
   history.lastCheck = timestamp;
@@ -519,7 +478,6 @@ async function runCompetitorCheck(competitors) {
  * Generate alert test
  */
 async function testAlertSystem(competitors) {
-  console.log(`\n${colors.magenta}${colors.bright}🚨 ALERT SYSTEM TEST${colors.reset}\n`);
   
   const testAlerts = [
     {
@@ -563,22 +521,16 @@ async function testAlertSystem(competitors) {
     }
   ];
   
-  console.log(`${colors.bright}Generating ${testAlerts.length} test alerts...${colors.reset}\n`);
   
   for (const alertData of testAlerts) {
     const trigger = ALERT_TRIGGERS[alertData.type] || { icon: '🔔' };
     const priorityColor = alertData.priority === 'P0' ? colors.red : 
                           alertData.priority === 'P1' ? colors.yellow : colors.green;
     
-    console.log(`  ${trigger.icon} ${priorityColor}[${alertData.priority}]${colors.reset} ${alertData.competitor}`);
-    console.log(`     ${alertData.title}`);
     
     const alert = await createAlert(alertData);
-    console.log(`     ${colors.dim}Alert ID: ${alert.id}${colors.reset}`);
-    console.log();
   }
   
-  console.log(`${colors.green}✓ Test alerts saved to history${colors.reset}\n`);
   
   // Show recent alerts
   showRecentAlerts();
@@ -592,10 +544,8 @@ async function testAlertSystem(competitors) {
 function showRecentAlerts() {
   const history = loadHistory();
   
-  console.log(`${colors.cyan}${colors.bright}📋 RECENT ALERTS${colors.reset}\n`);
   
   if (!history.alerts || history.alerts.length === 0) {
-    console.log(`${colors.dim}  No alerts recorded yet.${colors.reset}\n`);
     return;
   }
   
@@ -609,12 +559,8 @@ function showRecentAlerts() {
     const priorityColor = alert.priority === 'P0' ? colors.red : 
                           alert.priority === 'P1' ? colors.yellow : colors.green;
     
-    console.log(`  ${trigger.icon} ${priorityColor}[${alert.priority}]${colors.reset} ${alert.competitor}`);
-    console.log(`     ${colors.bright}${alert.title}${colors.reset}`);
-    console.log(`     ${colors.dim}${formatTime(alert.timestamp)}${colors.reset}\n`);
   });
   
-  console.log(`${colors.dim}  Showing last ${sorted.length} of ${history.alerts.length} total alerts${colors.reset}\n`);
 }
 
 /**
@@ -671,14 +617,9 @@ async function sendManualAlert() {
     priority: 'P0'
   };
   
-  console.log(`\n${colors.magenta}${colors.bright}📤 SENDING MANUAL ALERT${colors.reset}\n`);
   
   const alert = await createAlert(alertData);
   
-  console.log(`${colors.green}✓ Alert created:${colors.reset} ${alert.id}`);
-  console.log(`${colors.dim}  Priority: ${alert.priority}${colors.reset}`);
-  console.log(`${colors.dim}  Type: ${alert.type}${colors.reset}`);
-  console.log(`${colors.dim}  Competitor: ${alert.competitor}${colors.reset}\n`);
   
   return alert;
 }
@@ -720,12 +661,10 @@ async function main() {
       
     case '--export':
       const dashboardData = exportForDashboard(competitors);
-      console.log(JSON.stringify(dashboardData, null, 2));
       break;
       
     case '--help':
     default:
-      console.log(`
 ${colors.cyan}${colors.bright}🔭 Scout Competitor Monitor - Enhanced Alert System${colors.reset}
 
 Usage: node competitor-monitor.js [command]

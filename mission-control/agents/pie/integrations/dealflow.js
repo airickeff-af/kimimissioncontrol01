@@ -39,7 +39,6 @@ class DealFlowIntegration extends EventEmitter {
   }
   
   async initialize() {
-    console.log('🔗 DealFlow Integration: Initializing...');
     
     // Ensure data directory exists
     await fs.mkdir(path.join(this.config.dataDir, 'sync'), { recursive: true });
@@ -48,7 +47,6 @@ class DealFlowIntegration extends EventEmitter {
     await this._loadSyncState();
     
     this.state.initialized = true;
-    console.log('🔗 DealFlow Integration: Ready');
     
     return this;
   }
@@ -57,7 +55,6 @@ class DealFlowIntegration extends EventEmitter {
    * Start continuous sync
    */
   start() {
-    console.log('🔗 DealFlow Integration: Starting sync...');
     
     // Initial sync
     this.sync();
@@ -81,12 +78,10 @@ class DealFlowIntegration extends EventEmitter {
    */
   async sync() {
     if (this.state.syncStatus === 'syncing') {
-      console.log('🔗 DealFlow Integration: Sync already in progress');
       return;
     }
     
     this.state.syncStatus = 'syncing';
-    console.log('🔗 DealFlow Integration: Syncing...');
     
     try {
       // Pull leads from DealFlow
@@ -109,7 +104,6 @@ class DealFlowIntegration extends EventEmitter {
       this.state.lastSync = new Date().toISOString();
       this.state.syncStatus = 'idle';
       
-      console.log(`🔗 DealFlow Integration: Sync complete - ${dealflowLeads.length} leads, ${this.state.enrichedLeads.size} enriched`);
       
       this.emit('sync-complete', {
         leadsSynced: dealflowLeads.length,
@@ -135,7 +129,6 @@ class DealFlowIntegration extends EventEmitter {
       const leads = JSON.parse(data);
       return Array.isArray(leads) ? leads : [];
     } catch (err) {
-      console.log('🔗 DealFlow Integration: No leads file found, returning empty');
       return [];
     }
   }
@@ -151,7 +144,6 @@ class DealFlowIntegration extends EventEmitter {
       const data = await fs.readFile(frictionPath, 'utf8');
       frictionData = JSON.parse(data);
     } catch (err) {
-      console.log('🔗 DealFlow Integration: No friction analysis available');
     }
     
     // Load opportunities
@@ -161,7 +153,6 @@ class DealFlowIntegration extends EventEmitter {
       const data = await fs.readFile(oppPath, 'utf8');
       opportunities = JSON.parse(data);
     } catch (err) {
-      console.log('🔗 DealFlow Integration: No opportunities available');
     }
     
     // Enrich each lead
@@ -246,7 +237,6 @@ class DealFlowIntegration extends EventEmitter {
       }, null, 2)
     );
     
-    console.log(`🔗 DealFlow Integration: Enriched ${this.state.enrichedLeads.size} leads`);
   }
   
   /**
@@ -384,7 +374,6 @@ class DealFlowIntegration extends EventEmitter {
     const dealflowPath = path.join(this.config.dataDir, 'dealflow-export.json');
     await fs.writeFile(dealflowPath, JSON.stringify(dealflowData, null, 2));
     
-    console.log(`🔗 DealFlow Integration: Exported ${dealflowData.leads.length} leads to DealFlow format`);
   }
   
   /**
@@ -421,10 +410,8 @@ class DealFlowIntegration extends EventEmitter {
         opportunities: dealflowOpps
       }, null, 2));
       
-      console.log(`🔗 DealFlow Integration: Synced ${dealflowOpps.length} opportunities`);
       
     } catch (err) {
-      console.log('🔗 DealFlow Integration: No opportunities to sync');
     }
   }
   
@@ -502,7 +489,6 @@ class DealFlowIntegration extends EventEmitter {
     // Check for duplicates
     const exists = opportunities.some(o => o.id === opportunity.id);
     if (exists) {
-      console.log(`🔗 DealFlow Integration: Opportunity ${opportunity.id} already exists`);
       return opportunity;
     }
     
@@ -521,7 +507,6 @@ class DealFlowIntegration extends EventEmitter {
     
     this.emit('opportunity-created', enrichedOpportunity);
     
-    console.log(`🔗 DealFlow Integration: Created opportunity ${opportunity.id}`);
     
     return enrichedOpportunity;
   }
@@ -660,7 +645,6 @@ class DealFlowIntegration extends EventEmitter {
     const leadsPath = path.join(this.config.dataDir, 'leads.json');
     await fs.writeFile(leadsPath, JSON.stringify(existing, null, 2));
     
-    console.log(`🔗 DealFlow Integration: Imported ${imported.length} leads`);
     
     this.emit('leads-imported', { count: imported.length, source });
     
@@ -721,12 +705,9 @@ if (require.main === module) {
     
     // Get metrics
     const metrics = await integration.getPipelineMetrics();
-    console.log('\n📊 Pipeline Metrics:');
-    console.log(JSON.stringify(metrics, null, 2));
     
     // Get enriched leads
     const enriched = await integration.getAllEnrichedLeads();
-    console.log(`\n✅ Enriched ${enriched.length} leads`);
     
     // Save final state
     await integration._saveSyncState();

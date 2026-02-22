@@ -392,7 +392,6 @@ class TrendForecaster {
   }
 
   generateQuarterlyReport(quarter, year) {
-    console.log(`\n📊 Generating ${year} ${quarter} Trend Forecast Report...\n`);
 
     // Analyze all sectors
     CONFIG.sectors.forEach(sector => {
@@ -432,9 +431,6 @@ class TrendForecaster {
     const markdownPath = path.join(CONFIG.reportDir, `${year}-${quarter}-trend-report.md`);
     fs.writeFileSync(markdownPath, this.generateMarkdownReport(report));
 
-    console.log(`✅ Reports saved:`);
-    console.log(`   - ${reportPath}`);
-    console.log(`   - ${markdownPath}`);
 
     return report;
   }
@@ -634,41 +630,25 @@ function main() {
       const report = forecaster.generateQuarterlyReport(quarter, year);
       
       // Print summary to console
-      console.log('\n' + '='.repeat(60));
-      console.log('TREND FORECAST SUMMARY');
-      console.log('='.repeat(60));
-      console.log(`\nSentiment: ${report.executiveSummary.overallSentiment.toUpperCase()}`);
-      console.log(`\nAccelerating Sectors: ${report.executiveSummary.acceleratingSectors.join(', ') || 'None'}`);
-      console.log(`Declining Sectors: ${report.executiveSummary.decliningSectors.join(', ') || 'None'}`);
-      console.log('\n---\n');
       
       report.sectorAnalysis.forEach(s => {
-        console.log(`${s.sector.toUpperCase()}: ${s.momentumScore > 0 ? '📈' : '📉'} ${s.momentumScore.toFixed(2)}% momentum`);
       });
       
-      console.log('\n---\n');
-      console.log('Top Emerging Trends:');
       report.emergingTrends.slice(0, 5).forEach((t, i) => {
-        console.log(`  ${i + 1}. ${t.trend} (${t.signal})`);
       });
       
-      console.log('\n' + '='.repeat(60));
       break;
 
     case 'analyze':
       const sector = args[1];
       if (!sector) {
-        console.log('Usage: node trend-forecaster.js analyze <sector>');
-        console.log('Sectors:', CONFIG.sectors.join(', '));
         process.exit(1);
       }
       const analysis = forecaster.analyzeSector(sector);
-      console.log(JSON.stringify(analysis.forecast, null, 2));
       break;
 
     case 'help':
     default:
-      console.log(`
 Scout Trend Forecaster - Industry Trend Forecasting System
 
 Usage:

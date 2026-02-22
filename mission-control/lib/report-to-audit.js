@@ -71,7 +71,6 @@ async function reportToAudit(report) {
   for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
     try {
       await sendReport(fullReport);
-      console.log(`[AUDIT] Report sent: ${fullReport.agent} - ${fullReport.task} (${fullReport.progress}%)`);
       return true;
     } catch (error) {
       lastError = error;
@@ -144,7 +143,6 @@ async function logToFallback(report, error) {
       'utf8'
     );
 
-    console.log(`[AUDIT] Report logged to fallback: ${FALLBACK_LOG_PATH}`);
   } catch (fallbackError) {
     console.error('[AUDIT] CRITICAL: Failed to write fallback log:', fallbackError);
   }
@@ -180,7 +178,6 @@ async function replayFallbackLogs() {
       return 0;
     }
 
-    console.log(`[AUDIT] Replaying ${lines.length} fallback reports...`);
     
     let replayed = 0;
     const failed = [];
@@ -203,10 +200,8 @@ async function replayFallbackLogs() {
     // Rewrite fallback file with only failed entries
     if (failed.length > 0) {
       await fs.writeFile(FALLBACK_LOG_PATH, failed.join('\n') + '\n', 'utf8');
-      console.log(`[AUDIT] ${failed.length} reports still pending`);
     } else {
       await fs.unlink(FALLBACK_LOG_PATH);
-      console.log('[AUDIT] All fallback reports replayed successfully');
     }
 
     return replayed;
@@ -306,26 +301,4 @@ module.exports = {
 
 // If run directly, show usage
 if (require.main === module) {
-  console.log('Agent Audit Reporting Module');
-  console.log('============================');
-  console.log('');
-  console.log('Usage in your code:');
-  console.log('');
-  console.log('  const { reportToAudit, quickReports } = require("./report-to-audit");');
-  console.log('');
-  console.log('  // Full report');
-  console.log('  await reportToAudit({');
-  console.log('    agent: "Builder-1",');
-  console.log('    task: "TASK-001",');
-  console.log('    progress: 50,');
-  console.log('    status: "in_progress",');
-  console.log('    details: "Halfway done"');
-  console.log('  });');
-  console.log('');
-  console.log('  // Quick helpers');
-  console.log('  await quickReports.started("Builder-1", "TASK-001", "Starting work");');
-  console.log('  await quickReports.half("Builder-1", "TASK-001", "50% complete");');
-  console.log('  await quickReports.completed("Builder-1", "TASK-001", "Done!");');
-  console.log('');
-  console.log(`Dashboard URL: ${AUDIT_DASHBOARD_URL}`);
 }

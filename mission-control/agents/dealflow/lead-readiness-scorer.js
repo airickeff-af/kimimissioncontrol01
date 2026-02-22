@@ -453,23 +453,12 @@ if (require.main === module) {
     fs.writeFileSync(outputPath, JSON.stringify(report, null, 2));
     
     // Console output
-    console.log('\n📊 LEAD READINESS REPORT\n');
-    console.log(`Total Leads: ${report.totalLeads}`);
-    console.log(`Average Score: ${report.averageScore}/100`);
-    console.log('\nDistribution:');
-    console.log(`  ✅ Ready for Outreach: ${report.distribution.ready}`);
-    console.log(`  🟡 Ready with Prep: ${report.distribution.ready_with_prep}`);
-    console.log(`  🟠 Needs Enrichment: ${report.distribution.needs_enrichment}`);
-    console.log(`  🔴 Not Ready: ${report.distribution.not_ready}`);
     
     if (report.readyLeads.length > 0) {
-      console.log('\n🎯 Ready for Outreach:');
       report.readyLeads.forEach(lead => {
-        console.log(`  • ${lead.company} (${lead.contact}) - Score: ${lead.totalScore}`);
       });
     }
     
-    console.log(`\n✅ Report saved to: ${outputPath}`);
     
   } catch (error) {
     console.error('Error:', error.message);

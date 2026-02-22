@@ -47,7 +47,6 @@ class OpportunityRadar extends EventEmitter {
   }
   
   async initialize() {
-    console.log('📡 Opportunity Radar: Initializing...');
     this.state.initialized = true;
     return this;
   }
@@ -56,7 +55,6 @@ class OpportunityRadar extends EventEmitter {
    * Start continuous monitoring
    */
   start(interval = this.config.scanInterval) {
-    console.log(`📡 Opportunity Radar: Starting live scans every ${interval}ms`);
     
     // Initial scan
     this.scan();
@@ -73,7 +71,6 @@ class OpportunityRadar extends EventEmitter {
       clearInterval(this.scanTimer);
       this.scanTimer = null;
     }
-    console.log('📡 Opportunity Radar: Stopped');
   }
   
   /**
@@ -81,12 +78,10 @@ class OpportunityRadar extends EventEmitter {
    */
   async scan(options = {}) {
     if (this.state.scanning) {
-      console.log('📡 Opportunity Radar: Scan already in progress');
       return;
     }
     
     this.state.scanning = true;
-    console.log('📡 Opportunity Radar: Scanning for opportunities...');
     
     try {
       // Fetch live market data first
@@ -123,7 +118,6 @@ class OpportunityRadar extends EventEmitter {
       this.state.opportunities = scoredOpportunities;
       this.state.lastScan = new Date().toISOString();
       
-      console.log(`📡 Opportunity Radar: Found ${newOpportunities.length} new opportunities (${scoredOpportunities.length} total)`);
       
       return scoredOpportunities;
     } catch (err) {

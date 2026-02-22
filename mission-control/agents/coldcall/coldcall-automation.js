@@ -592,10 +592,8 @@ class ColdCallAutomation extends EventEmitter {
    * Initialize from enriched leads
    */
   async initializeFromLeads() {
-    console.log('\n📥 Loading enriched leads...\n');
     
     const leads = await this.loadEnrichedLeads();
-    console.log(`✅ Loaded ${leads.length} leads\n`);
 
     // Filter to ready leads with emails
     const readyLeads = leads.filter(l => 
@@ -604,7 +602,6 @@ class ColdCallAutomation extends EventEmitter {
       l.coldcall_ready !== false
     );
 
-    console.log(`🎯 ${readyLeads.length} leads ready for outreach\n`);
 
     // Create sequences for each lead
     for (const lead of readyLeads) {
@@ -669,8 +666,6 @@ class ColdCallAutomation extends EventEmitter {
    */
   approveAll() {
     if (CONFIG.REQUIRE_APPROVAL) {
-      console.log('\n✅ EricF Approval: GRANTED');
-      console.log(`   Activating ${this.approvalQueue.length} sequences...\n`);
     }
 
     for (const seq of this.approvalQueue) {
@@ -786,65 +781,35 @@ module.exports = {
 // ============================================
 
 async function main() {
-  console.log('\n╔════════════════════════════════════════════════════════════╗');
-  console.log('║   COLDCALL AUTOMATION - OUTREACH SEQUENCES                 ║');
-  console.log('║   P1 TASK: ColdCall Activation                             ║');
-  console.log('╚════════════════════════════════════════════════════════════\n');
 
   const coldcall = new ColdCallAutomation();
 
   // Initialize from leads
   const init = await coldcall.initializeFromLeads();
   
-  console.log('📊 Initialization Summary:');
-  console.log(`   Total Leads: ${init.total}`);
-  console.log(`   Ready for Outreach: ${init.ready}`);
-  console.log(`   Sequences Created: ${init.sequencesCreated}\n`);
 
   // Show approval queue
   const queue = coldcall.getApprovalQueue();
   
-  console.log('⏳ PENDING ERICF APPROVAL\n');
-  console.log(`   ${queue.length} sequences awaiting approval\n`);
 
   // Show sample preview
   if (queue.length > 0) {
     const sample = queue[0];
-    console.log('📧 Sample Email Preview:');
-    console.log(`   To: ${sample.lead.name} <${sample.lead.email}>`);
-    console.log(`   Company: ${sample.lead.company}`);
-    console.log(`   Priority: ${sample.lead.priority}`);
-    console.log(`   Variant: ${sample.variant}\n`);
-    console.log(`   Subject: ${sample.preview.subject}\n`);
-    console.log('   Body Preview:');
-    console.log(sample.preview.body.split('\n').slice(0, 5).join('\n'));
-    console.log('   ...\n');
   }
 
   // Simulate approval for testing (in production, wait for EricF)
   if (process.argv.includes('--approve')) {
     const activation = coldcall.approveAll();
     
-    console.log('🚀 ACTIVATION COMPLETE\n');
-    console.log(`   Sequences Activated: ${activation.activated}`);
-    console.log(`   Status: ${activation.status}\n`);
 
     // Save state
     await coldcall.save();
-    console.log('💾 State saved to:', CONFIG.SEQUENCES_FILE);
   } else {
-    console.log('⚠️  Use --approve flag to activate sequences\n');
-    console.log('   Or call coldcall.approveAll() after EricF review\n');
   }
 
   // Generate report
   const report = coldcall.generateReport();
   
-  console.log('\n📈 Status Report:');
-  console.log(`   Status: ${report.status}`);
-  console.log(`   Pending Approval: ${report.byStatus.pending_approval}`);
-  console.log(`   Active: ${report.byStatus.active}`);
-  console.log(`   Ready to Send: ${report.readyToSend}\n`);
 }
 
 if (require.main === module) {

@@ -34,15 +34,12 @@ function assert(condition, message) {
 }
 
 async function runTests() {
-  console.log('🧪 Hunter.io Enrichment Tests\n');
-  console.log('============================\n');
   
   let passed = 0;
   let failed = 0;
   
   // Test 1: parseName
   try {
-    console.log('Test 1: parseName()');
     const name1 = parseName('John Collison');
     assert(name1.first === 'John', 'First name should be John');
     assert(name1.last === 'Collison', 'Last name should be Collison');
@@ -55,16 +52,13 @@ async function runTests() {
     assert(name3.first === 'Prince', 'Single name should work');
     assert(name3.last === 'Prince', 'Single name should use same for last');
     
-    console.log('  ✅ parseName() passed\n');
     passed++;
   } catch (error) {
-    console.log(`  ❌ parseName() failed: ${error.message}\n`);
     failed++;
   }
   
   // Test 2: generateEmailPatterns
   try {
-    console.log('Test 2: generateEmailPatterns()');
     const patterns = generateEmailPatterns('John', 'Collison', 'stripe.com');
     
     assert(patterns.includes('john@stripe.com'), 'Should include first@domain');
@@ -73,16 +67,13 @@ async function runTests() {
     assert(patterns.includes('jcollison@stripe.com'), 'Should include first initial + last@domain');
     assert(patterns.length >= 10, 'Should generate at least 10 patterns');
     
-    console.log(`  ✅ generateEmailPatterns() passed (${patterns.length} patterns)\n`);
     passed++;
   } catch (error) {
-    console.log(`  ❌ generateEmailPatterns() failed: ${error.message}\n`);
     failed++;
   }
   
   // Test 3: EnrichmentState
   try {
-    console.log('Test 3: EnrichmentState()');
     const state = new EnrichmentState();
     
     state.markLeadProcessing('test_001');
@@ -100,16 +91,13 @@ async function runTests() {
     const coverage = state.calculateCoverage();
     assert(coverage === 50, 'Coverage should be 50% (1 of 2)');
     
-    console.log('  ✅ EnrichmentState() passed\n');
     passed++;
   } catch (error) {
-    console.log(`  ❌ EnrichmentState() failed: ${error.message}\n`);
     failed++;
   }
   
   // Test 4: Cache
   try {
-    console.log('Test 4: Cache()');
     const cache = new Cache();
     
     // Test set and get
@@ -121,16 +109,13 @@ async function runTests() {
     const missing = cache.get('test:missing');
     assert(missing === null, 'Missing key should return null');
     
-    console.log('  ✅ Cache() passed\n');
     passed++;
   } catch (error) {
-    console.log(`  ❌ Cache() failed: ${error.message}\n`);
     failed++;
   }
   
   // Test 5: RateLimiter
   try {
-    console.log('Test 5: RateLimiter()');
     const limiter = new RateLimiter();
     
     // Test that waitIfNeeded doesn't throw
@@ -144,16 +129,13 @@ async function runTests() {
     // The rate limiter may filter out old requests, so just check it has requests
     assert(limiter.requests.length >= 1, 'Should have at least 1 recorded request');
     
-    console.log('  ✅ RateLimiter() passed\n');
     passed++;
   } catch (error) {
-    console.log(`  ❌ RateLimiter() failed: ${error.message}\n`);
     failed++;
   }
   
   // Test 6: Data file structure
   try {
-    console.log('Test 6: Data file structure');
     const leadsFile = path.join(__dirname, 'data', 'scored-leads.json');
     const data = await fs.readFile(leadsFile, 'utf8');
     const leads = JSON.parse(data);
@@ -169,16 +151,13 @@ async function runTests() {
     assert(firstLead.contactName, 'Lead should have contactName');
     assert(firstLead.priorityTier, 'Lead should have priorityTier');
     
-    console.log(`  ✅ Data file structure passed (${leads.scoredLeads.length} leads)\n`);
     passed++;
   } catch (error) {
-    console.log(`  ❌ Data file structure failed: ${error.message}\n`);
     failed++;
   }
   
   // Test 7: Mock enrichment flow
   try {
-    console.log('Test 7: Mock enrichment flow');
     
     const state = new EnrichmentState();
     const cache = new Cache();
@@ -199,22 +178,16 @@ async function runTests() {
     assert(state.state.leads[lead.leadId].confidence === 85, 'Confidence should be 85');
     assert(state.state.successfulEnrichments === 1, 'Should have 1 success');
     
-    console.log(`  ✅ Mock enrichment flow passed\n`);
     passed++;
   } catch (error) {
-    console.log(`  ❌ Mock enrichment flow failed: ${error.message}\n`);
     failed++;
   }
   
   // Summary
-  console.log('============================');
-  console.log(`\n📊 Test Results: ${passed} passed, ${failed} failed`);
   
   if (failed === 0) {
-    console.log('\n✅ All tests passed!');
     process.exit(0);
   } else {
-    console.log('\n❌ Some tests failed');
     process.exit(1);
   }
 }

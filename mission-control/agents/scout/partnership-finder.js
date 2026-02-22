@@ -528,10 +528,6 @@ function generateOutreachRecommendations(opportunity) {
  * Generate weekly partnership report
  */
 function generateWeeklyReport() {
-  console.log(`\n${colors.bright}${colors.cyan}╔════════════════════════════════════════════════════════════════╗${colors.reset}`);
-  console.log(`${colors.bright}${colors.cyan}║     🤝 SCOUT PARTNERSHIP OPPORTUNITY FINDER 🤝                ║${colors.reset}`);
-  console.log(`${colors.bright}${colors.cyan}║     Weekly Report - ${new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).padEnd(34)}║${colors.reset}`);
-  console.log(`${colors.bright}${colors.cyan}╚════════════════════════════════════════════════════════════════╝${colors.reset}\n`);
   
   // Load and score opportunities
   const database = getPartnershipDatabase();
@@ -549,7 +545,6 @@ function generateWeeklyReport() {
   scoredOpportunities.sort((a, b) => b.scores.total - a.scores.total);
   
   // Display top 10
-  console.log(`${colors.bright}${colors.yellow}📊 TOP 10 PARTNERSHIP TARGETS${colors.reset}\n`);
   
   scoredOpportunities.slice(0, 10).forEach((opp, index) => {
     const rank = index + 1;
@@ -565,38 +560,21 @@ function generateWeeklyReport() {
       [SIGNAL_TYPES.INTEGRATION_MARKETPLACE]: '🔌'
     }[opp.signalType] || '📌';
     
-    console.log(`${colors.bright}${scoreColor}#${rank} ${opp.company}${colors.reset} ${signalEmoji} ${colors.dim}(${opp.signalType.replace(/_/g, ' ')})${colors.reset}`);
-    console.log(`   ${colors.cyan}Score:${colors.reset} ${opp.scores.total}/100 ${colors.dim}|${colors.reset} ${colors.cyan}Region:${colors.reset} ${opp.region}`);
-    console.log(`   ${colors.white}${opp.title}${colors.reset}`);
-    console.log(`   ${colors.dim}${opp.description.substring(0, 100)}...${colors.reset}`);
     
     // Why they're seeking partners
-    console.log(`   ${colors.yellow}Why seeking partners:${colors.reset}`);
     opp.signals.forEach(signal => {
-      console.log(`      • ${signal}`);
     });
     
     // Score breakdown
-    console.log(`   ${colors.dim}Fit: ${opp.scores.breakdown.strategicFit} | Urgency: ${opp.scores.breakdown.urgency} | Presence: ${opp.scores.breakdown.marketPresence} | Access: ${opp.scores.breakdown.accessibility}${colors.reset}`);
     
     // Contact info
-    console.log(`   ${colors.green}Contact:${colors.reset}`);
-    if (opp.contactInfo.partnerships) console.log(`      📧 ${opp.contactInfo.partnerships}`);
-    if (opp.contactInfo.linkedin) console.log(`      💼 ${opp.contactInfo.linkedin}`);
-    if (opp.contactInfo.website) console.log(`      🌐 ${opp.contactInfo.website}`);
     
-    console.log();
   });
   
   // Generate summary
   const highPriority = scoredOpportunities.filter(o => o.scores.total >= 80);
   const mediumPriority = scoredOpportunities.filter(o => o.scores.total >= 60 && o.scores.total < 80);
   
-  console.log(`${colors.bright}${colors.cyan}📈 SUMMARY${colors.reset}\n`);
-  console.log(`   High Priority (80+): ${highPriority.length} targets`);
-  console.log(`   Medium Priority (60-79): ${mediumPriority.length} targets`);
-  console.log(`   Total Scanned: ${scoredOpportunities.length} companies`);
-  console.log(`   Report Generated: ${new Date().toLocaleString('en-US', { timeZone: CONFIG.userTimezone })}`);
   
   // Save report to file
   const reportData = {
@@ -626,7 +604,6 @@ function generateWeeklyReport() {
       fs.mkdirSync(CONFIG.reportPath, { recursive: true });
     }
     fs.writeFileSync(reportPath, JSON.stringify(reportData, null, 2));
-    console.log(`\n   ${colors.green}✓ Report saved to:${colors.reset} ${reportPath}`);
   } catch (error) {
     console.error(`\n   ${colors.red}✗ Error saving report:${colors.reset}`, error.message);
   }
@@ -939,7 +916,6 @@ function generateDashboard() {
   
   const dashboardPath = path.join(CONFIG.reportPath, `partnership-dashboard-${new Date().toISOString().split('T')[0]}.html`);
   fs.writeFileSync(dashboardPath, html);
-  console.log(`   ${colors.green}✓ Dashboard saved to:${colors.reset} ${dashboardPath}`);
   
   return dashboardPath;
 }
@@ -953,9 +929,7 @@ function main() {
   
   switch (command) {
     case '--scan':
-      console.log(`${colors.cyan}🔍 Scanning for new partnership opportunities...${colors.reset}`);
       // In a full implementation, this would search APIs, job boards, etc.
-      console.log(`${colors.yellow}⚠️  Live scanning not yet implemented. Using curated database.${colors.reset}`);
       generateWeeklyReport();
       break;
       
@@ -968,17 +942,14 @@ function main() {
       break;
       
     case '--score':
-      console.log(`${colors.cyan}📊 Scoring opportunities...${colors.reset}`);
       const database = getPartnershipDatabase();
       database.forEach(opp => {
         const scores = calculatePartnershipScore(opp);
-        console.log(`${opp.company}: ${scores.total}/100`);
       });
       break;
       
     case '--help':
     default:
-      console.log(`
 ${colors.bright}Scout Partnership Opportunity Finder${colors.reset}
 
 Usage: node partnership-finder.js [command]

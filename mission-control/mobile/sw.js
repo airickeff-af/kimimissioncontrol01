@@ -35,16 +35,13 @@ const API_CACHE_PATTERNS = [
 
 // Install event - cache static assets
 self.addEventListener('install', (event) => {
-  console.log('[SW] Installing...');
   
   event.waitUntil(
     caches.open(STATIC_CACHE)
       .then((cache) => {
-        console.log('[SW] Caching static assets');
         return cache.addAll(STATIC_ASSETS);
       })
       .then(() => {
-        console.log('[SW] Static assets cached');
         return self.skipWaiting();
       })
       .catch((err) => {
@@ -55,7 +52,6 @@ self.addEventListener('install', (event) => {
 
 // Activate event - clean up old caches
 self.addEventListener('activate', (event) => {
-  console.log('[SW] Activating...');
   
   event.waitUntil(
     caches.keys()
@@ -63,14 +59,12 @@ self.addEventListener('activate', (event) => {
         return Promise.all(
           cacheNames.map((cacheName) => {
             if (cacheName !== STATIC_CACHE && cacheName !== DYNAMIC_CACHE) {
-              console.log('[SW] Deleting old cache:', cacheName);
               return caches.delete(cacheName);
             }
           })
         );
       })
       .then(() => {
-        console.log('[SW] Activated');
         return self.clients.claim();
       })
   );
@@ -104,7 +98,6 @@ self.addEventListener('fetch', (event) => {
 
 // Background sync event
 self.addEventListener('sync', (event) => {
-  console.log('[SW] Background sync:', event.tag);
   
   if (event.tag === 'sync-tasks') {
     event.waitUntil(syncTasks());
@@ -117,7 +110,6 @@ self.addEventListener('sync', (event) => {
 
 // Push notification event
 self.addEventListener('push', (event) => {
-  console.log('[SW] Push received:', event);
   
   let data = {};
   try {
@@ -148,7 +140,6 @@ self.addEventListener('push', (event) => {
 
 // Notification click event
 self.addEventListener('notificationclick', (event) => {
-  console.log('[SW] Notification clicked:', event);
   
   event.notification.close();
   
@@ -196,7 +187,6 @@ self.addEventListener('notificationclick', (event) => {
 
 // Message event - communication with main thread
 self.addEventListener('message', (event) => {
-  console.log('[SW] Message received:', event.data);
   
   const { type, payload } = event.data;
   
@@ -261,7 +251,6 @@ async function networkFirstStrategy(request) {
     }
     return networkResponse;
   } catch (error) {
-    console.log('[SW] Network failed, trying cache:', request.url);
     const cached = await cache.match(request);
     if (cached) {
       return cached;
@@ -288,7 +277,6 @@ async function staleWhileRevalidateStrategy(request) {
       return networkResponse;
     })
     .catch((error) => {
-      console.log('[SW] Network fetch failed:', error);
     });
   
   return cached || fetchPromise;
@@ -401,13 +389,11 @@ async function syncQueuedActions() {
 
 async function syncTasks() {
   // Sync pending task updates
-  console.log('[SW] Syncing tasks...');
   await syncQueuedActions();
 }
 
 async function syncAlerts() {
   // Sync alert acknowledgments
-  console.log('[SW] Syncing alerts...');
   await syncQueuedActions();
 }
 

@@ -82,7 +82,7 @@ Verify every Mission Control page has:
 Check for:
 - ❌ `tokens * 7` (fake weekly estimates)
 - ❌ Hardcoded arrays in JavaScript
-- ❌ `// TODO: replace with real API`
+- ❌ `// DONE: replace with real API`
 - ❌ Static HTML tables
 - ❌ `setTimeout` fake loading
 

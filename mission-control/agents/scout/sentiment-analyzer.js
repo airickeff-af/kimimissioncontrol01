@@ -711,27 +711,22 @@ class SentimentAnalyzer {
     if (args[0] === 'analyze' && args[1]) {
       // Analyze a single text
       const result = analyzer.analyzeItem(args[1]);
-      console.log(JSON.stringify(result, null, 2));
     } else if (args[0] === 'report') {
       // Generate daily report
       const date = args[1] || new Date().toISOString().split('T')[0];
       const report = analyzer.generateDailyReport(date);
-      console.log(JSON.stringify(report, null, 2));
     } else if (args[0] === 'dashboard') {
       // Generate HTML dashboard
       const date = args[1] || new Date().toISOString().split('T')[0];
       const html = analyzer.generateDashboard(date);
       const outPath = path.join(__dirname, `dashboard-${date}.html`);
       fs.writeFileSync(outPath, html);
-      console.log(`Dashboard saved to: ${outPath}`);
     } else if (args[0] === 'history') {
       // Get history range
       const endDate = args[1] || new Date().toISOString().split('T')[0];
       const startDate = args[2] || new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
       const history = analyzer.getHistory(startDate, endDate);
-      console.log(JSON.stringify(history, null, 2));
     } else {
-      console.log(`
 Scout Sentiment Analyzer
 
 Usage:

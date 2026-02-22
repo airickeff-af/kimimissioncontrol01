@@ -415,9 +415,6 @@ async function searchLinkedInSignals(region, industry) {
  * Run full discovery scan
  */
 async function runDiscoveryScan(dryRun = false) {
-  console.log(`\n${colors.cyan}${colors.bright}═══════════════════════════════════════════════════════════════${colors.reset}`);
-  console.log(`${colors.cyan}${colors.bright}  🔍 SCOUT REGIONAL LEAD AUTO-DISCOVERY${colors.reset}`);
-  console.log(`${colors.cyan}${colors.bright}═══════════════════════════════════════════════════════════════${colors.reset}\n`);
   
   const now = new Date().toLocaleString('en-US', {
     timeZone: 'Asia/Shanghai',
@@ -429,22 +426,13 @@ async function runDiscoveryScan(dryRun = false) {
     minute: '2-digit'
   });
   
-  console.log(`${colors.dim}Scan started: ${now} (Asia/Shanghai)${colors.reset}\n`);
   
   // Load existing data
   const existingLeads = loadExistingLeads();
   const state = loadState();
   
-  console.log(`${colors.bright}📊 CURRENT STATE${colors.reset}`);
-  console.log(`  Existing leads: ${existingLeads.length}`);
-  console.log(`  Total scans run: ${state.scanCount}`);
-  console.log(`  Total discovered historically: ${state.totalDiscovered}`);
-  console.log(`  Last scan: ${state.lastScan || 'Never'}\n`);
   
   // Target configuration
-  console.log(`${colors.bright}🎯 SCAN CONFIGURATION${colors.reset}`);
-  console.log(`  Regions: ${CONFIG.targetRegions.join(', ')}`);
-  console.log(`  Industries: ${CONFIG.targetIndustries.join(', ')}\n`);
   
   // Run scans for each region + industry combination
   const allDiscoveries = [];
@@ -456,7 +444,6 @@ async function runDiscoveryScan(dryRun = false) {
     skipped: []
   };
   
-  console.log(`${colors.bright}🔎 RUNNING SCANS...${colors.reset}\n`);
   
   for (const region of CONFIG.targetRegions) {
     for (const industry of CONFIG.targetIndustries) {
@@ -472,7 +459,6 @@ async function runDiscoveryScan(dryRun = false) {
       const combined = [...fundingResults, ...blogResults, ...linkedinResults];
       scanResults.queries += 3;
       
-      console.log(`${colors.green}${combined.length} found${colors.reset}`);
       
       for (const discovery of combined) {
         // Check if already known
@@ -501,10 +487,6 @@ async function runDiscoveryScan(dryRun = false) {
     }
   }
   
-  console.log(`\n${colors.bright}📈 SCAN RESULTS${colors.reset}`);
-  console.log(`  Total queries: ${scanResults.queries}`);
-  console.log(`  New discoveries: ${allDiscoveries.length}`);
-  console.log(`  Skipped (duplicates): ${scanResults.skipped.length}\n`);
   
   // Sort by score
   allDiscoveries.sort((a, b) => b.score - a.score);
@@ -516,29 +498,23 @@ async function runDiscoveryScan(dryRun = false) {
     const p2 = allDiscoveries.filter(d => d.priority === 'P2');
     
     if (p0.length > 0) {
-      console.log(`${colors.red}${colors.bright}🔴 P0 DISCOVERIES (${p0.length})${colors.reset}\n`);
       p0.forEach(d => displayDiscovery(d));
     }
     
     if (p1.length > 0) {
-      console.log(`${colors.yellow}${colors.bright}🟡 P1 DISCOVERIES (${p1.length})${colors.reset}\n`);
       p1.forEach(d => displayDiscovery(d));
     }
     
     if (p2.length > 0) {
-      console.log(`${colors.green}${colors.bright}🟢 P2 DISCOVERIES (${p2.length})${colors.reset}\n`);
       p2.slice(0, 5).forEach(d => displayDiscovery(d));
       if (p2.length > 5) {
-        console.log(`${colors.dim}  ... and ${p2.length - 5} more P2 discoveries${colors.reset}\n`);
       }
     }
   } else {
-    console.log(`${colors.yellow}⚠ No new discoveries this scan${colors.reset}\n`);
   }
   
   // Add to leads.json if not dry run
   if (!dryRun && allDiscoveries.length > 0) {
-    console.log(`${colors.bright}💾 ADDING TO LEADS DATABASE...${colors.reset}\n`);
     
     for (const discovery of allDiscoveries) {
       const leadId = generateLeadId(existingLeads);
@@ -572,18 +548,15 @@ async function runDiscoveryScan(dryRun = false) {
       existingLeads.push(newLead);
       scanResults.added.push(newLead);
       
-      console.log(`  ${colors.green}✓${colors.reset} Added ${colors.bright}${discovery.company}${colors.reset} (${discovery.priority})`);
     }
     
     // Save updated leads
     try {
       fs.writeFileSync(CONFIG.leadsPath, JSON.stringify(existingLeads, null, 2));
-      console.log(`\n${colors.green}✓ Saved ${allDiscoveries.length} new leads to leads.json${colors.reset}`);
     } catch (err) {
       console.error(`\n${colors.red}✗ Failed to save leads:${colors.reset}`, err.message);
     }
   } else if (dryRun) {
-    console.log(`${colors.yellow}⚠ DRY RUN - No changes saved${colors.reset}\n`);
   }
   
   // Update state
@@ -606,9 +579,6 @@ async function runDiscoveryScan(dryRun = false) {
   // Save detailed report
   saveReport(scanResults, allDiscoveries);
   
-  console.log(`\n${colors.cyan}${colors.bright}═══════════════════════════════════════════════════════════════${colors.reset}`);
-  console.log(`${colors.cyan}${colors.bright}  ✓ SCAN COMPLETE${colors.reset}`);
-  console.log(`${colors.cyan}${colors.bright}═══════════════════════════════════════════════════════════════${colors.reset}\n`);
   
   return {
     discoveries: allDiscoveries,
@@ -622,12 +592,6 @@ async function runDiscoveryScan(dryRun = false) {
  */
 function displayDiscovery(d) {
   const color = d.priority === 'P0' ? colors.red : d.priority === 'P1' ? colors.yellow : colors.green;
-  console.log(`  ${color}[${d.priority}]${colors.reset} ${colors.bright}${d.company}${colors.reset} (${d.region})`);
-  console.log(`     Industry: ${d.industry} | Score: ${d.score}/100`);
-  console.log(`     Funding: $${(d.funding / 1000000).toFixed(1)}M ${d.round} (${d.date})`);
-  console.log(`     Contact: ${d.contact}, ${d.title}`);
-  console.log(`     Source: ${d.source}`);
-  console.log();
 }
 
 /**
@@ -669,7 +633,6 @@ function saveReport(scanResults, discoveries) {
     });
     
     fs.writeFileSync(reportFile, JSON.stringify(report, null, 2));
-    console.log(`${colors.dim}📄 Report saved: ${reportFile}${colors.reset}\n`);
     
     return report;
   } catch (err) {
@@ -681,9 +644,6 @@ function saveReport(scanResults, discoveries) {
  * Generate weekly summary report
  */
 function generateWeeklyReport() {
-  console.log(`\n${colors.cyan}${colors.bright}═══════════════════════════════════════════════════════════════${colors.reset}`);
-  console.log(`${colors.cyan}${colors.bright}  📊 WEEKLY DISCOVERY REPORT${colors.reset}`);
-  console.log(`${colors.cyan}${colors.bright}═══════════════════════════════════════════════════════════════${colors.reset}\n`);
   
   const state = loadState();
   const existingLeads = loadExistingLeads();
@@ -691,15 +651,9 @@ function generateWeeklyReport() {
   // Get auto-discovered leads
   const autoDiscovered = existingLeads.filter(l => l.auto_discovered === true);
   
-  console.log(`${colors.bright}📈 LIFETIME STATISTICS${colors.reset}\n`);
-  console.log(`  Total scans run: ${state.scanCount}`);
-  console.log(`  Total companies tracked: ${state.knownCompanies.length}`);
-  console.log(`  Auto-discovered leads in database: ${autoDiscovered.length}`);
-  console.log(`  Last scan: ${state.lastScan ? new Date(state.lastScan).toLocaleString('en-US', { timeZone: 'Asia/Shanghai' }) : 'Never'}\n`);
   
   // Recent scan history
   if (state.scanHistory && state.scanHistory.length > 0) {
-    console.log(`${colors.bright}📅 RECENT SCAN HISTORY${colors.reset}\n`);
     
     const recent = state.scanHistory.slice(-5).reverse();
     recent.forEach(scan => {
@@ -708,9 +662,7 @@ function generateWeeklyReport() {
         month: 'short',
         day: 'numeric'
       });
-      console.log(`  ${date}: ${scan.discoveries} discoveries (${scan.queries} queries)`);
     });
-    console.log();
   }
   
   // By region breakdown
@@ -719,13 +671,10 @@ function generateWeeklyReport() {
     byRegion[l.region] = (byRegion[l.region] || 0) + 1;
   });
   
-  console.log(`${colors.bright}🌍 DISCOVERIES BY REGION${colors.reset}\n`);
   Object.entries(byRegion)
     .sort((a, b) => b[1] - a[1])
     .forEach(([region, count]) => {
-      console.log(`  ${region}: ${count}`);
     });
-  console.log();
   
   // By industry breakdown
   const byIndustry = {};
@@ -734,17 +683,13 @@ function generateWeeklyReport() {
     byIndustry[industry] = (byIndustry[industry] || 0) + 1;
   });
   
-  console.log(`${colors.bright}🏭 DISCOVERIES BY INDUSTRY${colors.reset}\n`);
   Object.entries(byIndustry)
     .sort((a, b) => b[1] - a[1])
     .forEach(([industry, count]) => {
-      console.log(`  ${industry}: ${count}`);
     });
-  console.log();
   
   // Recent discoveries
   if (autoDiscovered.length > 0) {
-    console.log(`${colors.bright}🆕 RECENT AUTO-DISCOVERED LEADS${colors.reset}\n`);
     
     const recent = autoDiscovered
       .sort((a, b) => new Date(b.created_date) - new Date(a.created_date))
@@ -752,13 +697,9 @@ function generateWeeklyReport() {
     
     recent.forEach(l => {
       const color = l.priority === 'P0' ? colors.red : l.priority === 'P1' ? colors.yellow : colors.green;
-      console.log(`  ${color}[${l.priority}]${colors.reset} ${colors.bright}${l.company}${colors.reset}`);
-      console.log(`     ${l.region} | ${l.industry} | Score: ${l.discovery_score}`);
-      console.log(`     Added: ${l.created_date}\n`);
     });
   }
   
-  console.log(`${colors.cyan}${colors.bright}═══════════════════════════════════════════════════════════════${colors.reset}\n`);
   
   return {
     totalDiscovered: autoDiscovered.length,
@@ -772,7 +713,6 @@ function generateWeeklyReport() {
  * Show help
  */
 function showHelp() {
-  console.log(`
 ${colors.cyan}${colors.bright}🔍 Scout Regional Lead Auto-Discovery${colors.reset}
 
 Usage: node auto-discover.js [command]
@@ -805,9 +745,6 @@ Sources:
  * Show sample discovered leads
  */
 function showSampleLeads() {
-  console.log(`\n${colors.cyan}${colors.bright}═══════════════════════════════════════════════════════════════${colors.reset}`);
-  console.log(`${colors.cyan}${colors.bright}  📝 SAMPLE DISCOVERED LEADS${colors.reset}`);
-  console.log(`${colors.cyan}${colors.bright}═══════════════════════════════════════════════════════════════${colors.reset}\n`);
   
   const samples = [
     {
@@ -869,15 +806,8 @@ function showSampleLeads() {
   
   samples.forEach(s => {
     const color = s.priority === 'P0' ? colors.red : colors.yellow;
-    console.log(`  ${color}[${s.priority}]${colors.reset} ${colors.bright}${s.company}${colors.reset} (${s.region})`);
-    console.log(`     Industry: ${s.industry} | Score: ${s.score}/100`);
-    console.log(`     Funding: ${s.funding} ${s.round}`);
-    console.log(`     Contact: ${s.contact}, ${s.title}`);
-    console.log(`     Tags: auto-discovered, ${s.region.toLowerCase().replace(' ', '-')}, ${s.industry.toLowerCase()}`);
-    console.log();
   });
   
-  console.log(`${colors.cyan}${colors.bright}═══════════════════════════════════════════════════════════════${colors.reset}\n`);
 }
 
 /**

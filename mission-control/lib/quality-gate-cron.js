@@ -42,12 +42,6 @@ const CONFIG = {
  * Run quality gate (cron-friendly version)
  */
 async function runQualityGateCron() {
-  console.log('═══════════════════════════════════════════════════════════════');
-  console.log('              QUALITY GATE - CRON RUNNER');
-  console.log('═══════════════════════════════════════════════════════════════');
-  console.log(`URL: ${CONFIG.baseUrl}`);
-  console.log(`Time: ${new Date().toLocaleString()}`);
-  console.log('═══════════════════════════════════════════════════════════════\n');
 
   const results = {
     timestamp: new Date().toISOString(),
@@ -59,26 +53,20 @@ async function runQualityGateCron() {
   };
 
   // Test pages
-  console.log('📄 Testing Pages...');
   for (const page of CONFIG.pages) {
     const result = await testPage(page);
     results.pages.push(result);
-    console.log(`   ${result.passed ? '✅' : '❌'} ${page.name}: ${result.status} (${result.loadTime}ms)`);
   }
 
   // Test APIs
-  console.log('\n🔌 Testing API Endpoints...');
   for (const api of CONFIG.apis) {
     const result = await testAPI(api);
     results.apis.push(result);
-    console.log(`   ${result.passed ? '✅' : '❌'} ${api.name}: ${result.status} (${result.isJSON ? 'JSON' : 'Not JSON'})`);
   }
 
   // Test mobile (meta tag verification)
-  console.log('\n📱 Testing Mobile Responsiveness...');
   const mobileResult = await testMobile();
   results.mobile = mobileResult;
-  console.log(`   ${mobileResult.passed ? '✅' : '❌'} Viewport meta tag: ${mobileResult.hasViewport ? 'Present' : 'Missing'}`);
 
   // Calculate score
   const pageScore = results.pages.filter(p => p.passed).length / results.pages.length;
@@ -102,14 +90,6 @@ async function runQualityGateCron() {
   await saveReport(results);
 
   // Print summary
-  console.log('\n═══════════════════════════════════════════════════════════════');
-  console.log('                    QUALITY GATE RESULTS');
-  console.log('═══════════════════════════════════════════════════════════════');
-  console.log(`Score: ${results.summary.score}/100`);
-  console.log(`Status: ${results.summary.status}`);
-  console.log(`Pages: ${results.summary.pagesPassed}/${results.summary.pagesTotal}`);
-  console.log(`APIs: ${results.summary.apisPassed}/${results.summary.apisTotal}`);
-  console.log('═══════════════════════════════════════════════════════════════');
 
   return results.summary.status === 'PASS';
 }
@@ -238,8 +218,6 @@ async function saveReport(results) {
     JSON.stringify(results, null, 2)
   );
 
-  console.log(`\n📊 Reports saved to:`);
-  console.log(`   ${jsonPath}`);
 }
 
 /**

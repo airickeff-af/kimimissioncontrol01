@@ -61,7 +61,6 @@ class EnrichmentState {
         this.stats = { ...this.stats, ...enriched.stats };
       }
       
-      console.log(`📊 Loaded ${this.processedIds.size} previously enriched leads`);
     } catch (err) {
       if (err.code !== 'ENOENT') {
         console.warn('⚠️  Could not load previous state:', err.message);
@@ -108,7 +107,6 @@ class Logger {
       watch: '👁️ '
     }[level] || 'ℹ️ ';
     
-    console.log(`${prefix} ${message}`);
     
     // File logging
     try {
@@ -386,10 +384,8 @@ async function singleRun(state, logger, leadId = null, dryRun = false) {
   
   if (dryRun) {
     logger.info('DRY RUN MODE - No changes will be saved');
-    console.log('\nLeads that would be enriched:');
     leadsToProcess
       .filter(l => !state.processedIds.has(l.id))
-      .forEach(l => console.log(`  - ${l.name} @ ${l.company}`));
     return;
   }
   
@@ -413,17 +409,6 @@ async function singleRun(state, logger, leadId = null, dryRun = false) {
     await updatePendingTasks(logger, enriched.length);
     
     // Print summary
-    console.log('\n' + '='.repeat(60));
-    console.log('ENRICHMENT SUMMARY');
-    console.log('='.repeat(60));
-    console.log(`Total leads processed: ${enriched.length}`);
-    console.log(`High quality: ${enriched.filter(e => e.quality === 'high').length}`);
-    console.log(`Medium quality: ${enriched.filter(e => e.quality === 'medium').length}`);
-    console.log(`Low quality: ${enriched.filter(e => e.quality === 'low').length}`);
-    console.log(`Emails found: ${enriched.filter(e => e.email?.verified?.valid).length}`);
-    console.log(`LinkedIn profiles: ${enriched.filter(e => e.social?.profiles?.linkedin).length}`);
-    console.log(`Twitter profiles: ${enriched.filter(e => e.social?.profiles?.twitter).length}`);
-    console.log('='.repeat(60));
   }
 }
 
@@ -439,9 +424,6 @@ async function main() {
   const logger = new Logger();
   const state = new EnrichmentState();
   
-  console.log('\n' + '='.repeat(60));
-  console.log('DEALFLOW LEAD ENRICHMENT AUTOMATION');
-  console.log('='.repeat(60) + '\n');
   
   // Load previous state
   await state.load();
@@ -460,7 +442,6 @@ process.on('unhandledRejection', (err) => {
 });
 
 process.on('SIGINT', () => {
-  console.log('\n\n👋 Enrichment automation stopped');
   process.exit(0);
 });
 

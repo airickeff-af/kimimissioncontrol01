@@ -11,7 +11,6 @@ let costumeUI = null;
  * Initialize the costume system
  */
 async function initializeCostumeSystem(options = {}) {
-  console.log('[CostumeSystem] Initializing...');
   
   // Inject styles
   if (typeof injectCostumeStyles === 'function') {
@@ -22,11 +21,9 @@ async function initializeCostumeSystem(options = {}) {
   costumeManager = new CostumeManager({
     aiEnabled: options.aiEnabled !== false,
     onCostumeChange: (enabled) => {
-      console.log(`[CostumeSystem] Costumes ${enabled ? 'enabled' : 'disabled'}`);
       updateAgentCostumes();
     },
     onHolidayChange: (holidayId, holiday) => {
-      console.log(`[CostumeSystem] Holiday changed: ${holiday?.name || 'None'}`);
       showHolidayNotification(holiday);
     }
   });
@@ -37,7 +34,6 @@ async function initializeCostumeSystem(options = {}) {
   costumeUI = new CostumeUI(costumeManager, {
     container: document.body,
     onSelectAgent: (agentId) => {
-      console.log(`[CostumeSystem] Selected agent: ${agentId}`);
     },
     onApplyCostume: (agentId, costume) => {
       applyCostumeToAgent(agentId, costume);
@@ -49,7 +45,6 @@ async function initializeCostumeSystem(options = {}) {
   // Apply initial costumes to agents
   updateAgentCostumes();
   
-  console.log('[CostumeSystem] Initialized successfully');
   return { manager: costumeManager, ui: costumeUI };
 }
 

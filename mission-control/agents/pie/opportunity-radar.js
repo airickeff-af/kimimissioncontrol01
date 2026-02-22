@@ -530,7 +530,6 @@ class OpportunityRadar {
   // ========================================================================
 
   async initialize() {
-    console.log('🎯 Opportunity Radar initializing...');
     
     // Ensure data directories exist
     this.store.ensureDirectories();
@@ -538,10 +537,8 @@ class OpportunityRadar {
     // Load previous state if exists
     const state = this.store.load('state');
     if (state) {
-      console.log('📂 Restored previous state');
     }
     
-    console.log('✅ Opportunity Radar initialized');
     return this;
   }
 
@@ -551,7 +548,6 @@ class OpportunityRadar {
 
   async monitorNewsSource(source) {
     try {
-      console.log(`📡 Fetching from ${source.name}...`);
       
       let items = [];
       
@@ -560,11 +556,9 @@ class OpportunityRadar {
         items = RSSParser.parse(xml);
       } else if (source.type === 'api') {
         // API-specific handling would go here
-        console.log(`  ⚠️ API source ${source.name} requires implementation`);
         return [];
       }
 
-      console.log(`  📰 Found ${items.length} items`);
       
       const analyzedItems = [];
       
@@ -589,7 +583,6 @@ class OpportunityRadar {
             }
           });
           
-          console.log(`  🚨 ALERT: ${briefing.type} - ${item.title.substring(0, 60)}...`);
         }
       }
 
@@ -608,7 +601,6 @@ class OpportunityRadar {
   }
 
   async monitorAllNews() {
-    console.log('\n📰 === NEWS MONITORING ===');
     
     const allSources = [
       ...this.config.sources.cryptoNews,
@@ -630,7 +622,6 @@ class OpportunityRadar {
   // ========================================================================
 
   async trackCompetitor(competitorName, type) {
-    console.log(`🔍 Tracking ${competitorName}...`);
     
     // In production, this would search news, social media, etc.
     // For now, we'll create a snapshot structure
@@ -668,13 +659,11 @@ class OpportunityRadar {
 
     this.store.saveCompetitorSnapshot(competitorName, snapshot);
     
-    console.log(`  📊 Found ${snapshot.mentions.length} mentions`);
     
     return snapshot;
   }
 
   async trackAllCompetitors() {
-    console.log('\n🏢 === COMPETITOR TRACKING ===');
     
     const results = [];
     
@@ -693,7 +682,6 @@ class OpportunityRadar {
   // ========================================================================
 
   async scanForOpportunities() {
-    console.log('\n💎 === OPPORTUNITY SCAN ===');
     
     const opportunities = [];
     const alerts = this.store.getAlerts();
@@ -702,8 +690,6 @@ class OpportunityRadar {
     const fundingAlerts = alerts.filter(a => a.type === 'FUNDING_ALERT');
     const partnershipAlerts = alerts.filter(a => a.type === 'PARTNERSHIP_OPPORTUNITY');
     
-    console.log(`  💰 Funding alerts: ${fundingAlerts.length}`);
-    console.log(`  🤝 Partnership alerts: ${partnershipAlerts.length}`);
 
     // Identify hot sectors with activity
     const sectorActivity = {};
@@ -719,7 +705,6 @@ class OpportunityRadar {
       .sort((a, b) => b[1] - a[1])
       .slice(0, 5);
 
-    console.log('  🔥 Hot sectors:', hotSectors.map(s => s[0]).join(', '));
 
     // Generate opportunity report
     const report = {
@@ -778,7 +763,6 @@ class OpportunityRadar {
   // ========================================================================
 
   generateDashboard() {
-    console.log('\n📊 === DASHBOARD ===');
     
     const alerts = this.store.getAlerts();
     const today = new Date().toISOString().split('T')[0];
@@ -808,9 +792,6 @@ class OpportunityRadar {
       hotOpportunities: alerts.filter(a => a.priority === 'HIGH').slice(0, 5)
     };
 
-    console.log(`  📈 Total alerts today: ${stats.totalAlerts}`);
-    console.log(`  🚨 High priority: ${stats.hotAlerts}`);
-    console.log(`  💰 Funding alerts: ${stats.fundingDetected}`);
     
     return dashboard;
   }
@@ -838,11 +819,9 @@ class OpportunityRadar {
 
   start() {
     if (this.isRunning) {
-      console.log('⚠️ Already running');
       return;
     }
 
-    console.log('\n🚀 Starting Opportunity Radar...');
     this.isRunning = true;
 
     // Run initial scan
@@ -854,7 +833,6 @@ class OpportunityRadar {
     this.schedule('opportunities', this.config.intervals.opportunities, () => this.scanForOpportunities());
     this.schedule('dashboard', this.config.intervals.opportunities, () => this.generateDashboard());
 
-    console.log('✅ Opportunity Radar is running');
   }
 
   schedule(name, interval, fn) {
@@ -867,28 +845,23 @@ class OpportunityRadar {
   }
 
   stop() {
-    console.log('\n🛑 Stopping Opportunity Radar...');
     
     for (const [name, timer] of this.monitors) {
       clearInterval(timer);
-      console.log(`  ⏹️ Stopped ${name}`);
     }
     
     this.monitors.clear();
     this.isRunning = false;
     
-    console.log('✅ Opportunity Radar stopped');
   }
 
   async runFullScan() {
-    console.log('\n🔍 === FULL SCAN ===');
     
     await this.monitorAllNews();
     await this.trackAllCompetitors();
     await this.scanForOpportunities();
     this.generateDashboard();
     
-    console.log('\n✅ Full scan complete');
   }
 
   // ========================================================================
@@ -970,39 +943,29 @@ if (require.main === module) {
         
       case 'dashboard':
         const dashboard = radar.generateDashboard();
-        console.log('\n📊 Dashboard Data:');
-        console.log(JSON.stringify(dashboard, null, 2));
         process.exit(0);
         break;
         
       case 'alerts':
         const alerts = radar.getAlerts();
-        console.log('\n🚨 Recent Alerts:');
-        console.log(JSON.stringify(alerts.slice(-10), null, 2));
         process.exit(0);
         break;
         
       case 'opportunities':
         const opportunities = radar.getOpportunities();
-        console.log('\n💎 Hot Opportunities:');
-        console.log(JSON.stringify(opportunities, null, 2));
         process.exit(0);
         break;
         
       case 'search':
         const query = process.argv[3];
         if (!query) {
-          console.log('Usage: node opportunity-radar.js search <query>');
           process.exit(1);
         }
         const results = radar.search(query);
-        console.log(`\n🔍 Search results for "${query}":`);
-        console.log(JSON.stringify(results, null, 2));
         process.exit(0);
         break;
         
       default:
-        console.log(`
 🎯 Opportunity Radar - PIE Intelligence Module
 
 Usage: node opportunity-radar.js <command>

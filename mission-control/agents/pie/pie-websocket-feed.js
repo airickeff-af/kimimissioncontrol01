@@ -231,7 +231,6 @@ class MarketDataClient extends EventEmitter {
     if (this.isRunning) return;
     this.isRunning = true;
 
-    console.log('[MarketData] Starting real-time market data feeds...');
 
     // Initial fetch
     await this.updateAllData();
@@ -247,7 +246,6 @@ class MarketDataClient extends EventEmitter {
       setInterval(() => this.scanOpportunities(), CONFIG.OPPORTUNITY_SCAN_INTERVAL)
     );
 
-    console.log('[MarketData] All feeds active');
   }
 
   /**
@@ -257,7 +255,6 @@ class MarketDataClient extends EventEmitter {
     this.isRunning = false;
     this.intervals.forEach(clearInterval);
     this.intervals = [];
-    console.log('[MarketData] Stopped');
   }
 
   /**
@@ -425,8 +422,6 @@ class PIEWebSocketServer extends EventEmitter {
     });
 
     this.isRunning = true;
-    console.log(`🔮 PIE WebSocket Server running on port ${this.port}`);
-    console.log(`📡 Endpoint: ws://localhost:${this.port}`);
 
     this.emit('started');
   }
@@ -443,7 +438,6 @@ class PIEWebSocketServer extends EventEmitter {
       connectedAt: Date.now()
     });
 
-    console.log(`🔌 PIE Client connected: ${clientId} (${this.clients.size} total)`);
 
     // Send welcome message with current snapshot
     this.sendToClient(clientId, {
@@ -472,7 +466,6 @@ class PIEWebSocketServer extends EventEmitter {
     // Handle close
     ws.on('close', () => {
       this.clients.delete(clientId);
-      console.log(`🔌 PIE Client disconnected: ${clientId}`);
     });
 
     // Handle errors
@@ -605,7 +598,6 @@ class PIEWebSocketServer extends EventEmitter {
       this.wss.close();
     }
 
-    console.log('[PIE-WS] Server stopped');
   }
 
   /**
@@ -635,7 +627,6 @@ class ScoutIntegration {
    * Connect to Scout and stream opportunities
    */
   async connect() {
-    console.log('[ScoutIntegration] Connecting PIE to Scout...');
 
     // Listen for PIE opportunities
     this.pie.marketData.on('opportunities', (opportunities) => {
@@ -647,7 +638,6 @@ class ScoutIntegration {
       this.validateOpportunities(data);
     });
 
-    console.log('[ScoutIntegration] Connected - streaming real-time data');
   }
 
   /**
@@ -674,7 +664,6 @@ class ScoutIntegration {
         data: enriched
       });
 
-      console.log(`[ScoutIntegration] New opportunity: ${enriched.coin} (${enriched.type})`);
     }
   }
 
@@ -697,7 +686,6 @@ class ScoutIntegration {
           data: opp
         });
 
-        console.log(`[ScoutIntegration] Opportunity validated: ${opp.coin}`);
       }
     }
   }
@@ -796,20 +784,14 @@ if (require.main === module) {
     await server.start();
     await scout.connect();
 
-    console.log('\n╔════════════════════════════════════════════════════════════╗');
-    console.log('║   PIE WEBSOCKET FEED - TASK-056 COMPLETE                   ║');
-    console.log('║   Real-time market data streaming to Scout                 ║');
-    console.log('╚════════════════════════════════════════════════════════════\n');
 
     // Graceful shutdown
     process.on('SIGTERM', async () => {
-      console.log('\n[PIE-WS] Shutting down...');
       await server.stop();
       process.exit(0);
     });
 
     process.on('SIGINT', async () => {
-      console.log('\n[PIE-WS] Shutting down...');
       await server.stop();
       process.exit(0);
     });

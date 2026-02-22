@@ -464,7 +464,6 @@ class BulkVerifier extends EventEmitter {
     this.stats.total = sortedLeads.length;
     this.results = [];
 
-    console.log(`\n🔍 Starting bulk verification of ${sortedLeads.length} leads...\n`);
 
     // Process in batches
     for (let i = 0; i < sortedLeads.length; i += concurrency) {
@@ -495,7 +494,6 @@ class BulkVerifier extends EventEmitter {
 
       // Progress log
       if (this.stats.processed % 10 === 0 || this.stats.processed === this.stats.total) {
-        console.log(`  Progress: ${this.stats.processed}/${this.stats.total} (${Math.round((this.stats.processed/this.stats.total)*100)}%)`);
       }
     }
 
@@ -707,24 +705,13 @@ class DealFlowPipeline {
    * Run full enrichment pipeline
    */
   async runPipeline(options = {}) {
-    console.log('\n╔════════════════════════════════════════════════════════════╗');
-    console.log('║   DEALFLOW HUNTER.IO INTEGRATION - TASK-057                ║');
-    console.log('║   Email Verification & Enrichment Pipeline                 ║');
-    console.log('╚════════════════════════════════════════════════════════════\n');
 
     // Load leads
     const leads = await this.loadLeads();
-    console.log(`📥 Loaded ${leads.length} leads\n`);
 
     // Check API status
     if (!this.hunter.isConfigured()) {
-      console.log('⚠️  WARNING: Hunter.io API key not configured');
-      console.log('   Using pattern-based fallback mode\n');
-      console.log('   To enable full verification:');
-      console.log('   1. Get API key from https://hunter.io/api');
-      console.log('   2. Set HUNTER_API_KEY environment variable\n');
     } else {
-      console.log('✅ Hunter.io API configured\n');
     }
 
     // Run verification
@@ -792,9 +779,6 @@ class DealFlowPipeline {
         JSON.stringify(cacheData, null, 2)
       );
 
-      console.log('\n💾 Results saved:');
-      console.log(`   ${CONFIG.ENRICHED_FILE}`);
-      console.log(`   ${CONFIG.HUNTER_CACHE_FILE}\n`);
     } catch (error) {
       console.error('Failed to save results:', error.message);
     }
@@ -806,22 +790,8 @@ class DealFlowPipeline {
   printSummary(results) {
     const { stats, coverage } = results;
 
-    console.log('\n╔════════════════════════════════════════════════════════════╗');
-    console.log('║   ENRICHMENT COMPLETE                                      ║');
-    console.log('╚════════════════════════════════════════════════════════════\n');
 
-    console.log('📊 Statistics:');
-    console.log(`   Total Leads: ${stats.total}`);
-    console.log(`   Processed: ${stats.processed}`);
-    console.log(`   Verified: ${stats.verified} ✅`);
-    console.log(`   Fallback: ${stats.fallback} ⚠️`);
-    console.log(`   Failed: ${stats.failed} ❌\n`);
 
-    console.log('📧 Email Coverage:');
-    console.log(`   With Email: ${coverage.withEmail}/${coverage.total} (${coverage.coveragePercent}%)`);
-    console.log(`   Verified: ${coverage.verified}/${coverage.total} (${coverage.verifiedPercent}%)`);
-    console.log(`   Target: 95%`);
-    console.log(`   Status: ${coverage.coveragePercent >= 95 ? '✅ TARGET MET' : '⚠️ BELOW TARGET'}\n`);
 
     // Priority breakdown
     const byPriority = {};
@@ -832,15 +802,12 @@ class DealFlowPipeline {
       if (r.email) byPriority[p].withEmail++;
     });
 
-    console.log('📈 By Priority:');
     Object.entries(byPriority)
       .sort(([a], [b]) => a.localeCompare(b))
       .forEach(([priority, data]) => {
         const pct = Math.round((data.withEmail / data.total) * 100);
-        console.log(`   ${priority}: ${data.withEmail}/${data.total} (${pct}%)`);
       });
 
-    console.log('');
   }
 }
 

@@ -54,8 +54,6 @@ class PIEOpportunityRadar {
   // ========================================================================
 
   async initialize() {
-    console.log('🚀 PIE Opportunity Radar - Initializing...');
-    console.log('');
 
     // Initialize core radar
     await this.radar.initialize();
@@ -69,9 +67,6 @@ class PIEOpportunityRadar {
     // Connect radar to alert manager
     this.connectRadarToAlerts();
 
-    console.log('');
-    console.log('✅ PIE Opportunity Radar initialized successfully');
-    console.log('');
 
     return this;
   }
@@ -83,7 +78,6 @@ class PIEOpportunityRadar {
           this.alertManager.addChannel(new ConsoleChannel({
             filter: { minPriority: 'MEDIUM' }
           }));
-          console.log('  ✓ Console alerts enabled');
           break;
           
         case 'file':
@@ -91,7 +85,6 @@ class PIEOpportunityRadar {
             outputDir: `${this.config.dataDir}/alerts`,
             format: 'json'
           }));
-          console.log('  ✓ File alerts enabled');
           break;
           
         case 'slack':
@@ -101,7 +94,6 @@ class PIEOpportunityRadar {
               channel: process.env.SLACK_CHANNEL,
               filter: { minPriority: 'HIGH' }
             }));
-            console.log('  ✓ Slack alerts enabled');
           }
           break;
           
@@ -111,7 +103,6 @@ class PIEOpportunityRadar {
               webhookUrl: process.env.DISCORD_WEBHOOK_URL,
               filter: { minPriority: 'HIGH' }
             }));
-            console.log('  ✓ Discord alerts enabled');
           }
           break;
       }
@@ -127,7 +118,6 @@ class PIEOpportunityRadar {
         loaded++;
       }
     }
-    console.log(`  ✓ Loaded ${loaded} default competitors`);
   }
 
   connectRadarToAlerts() {
@@ -180,7 +170,6 @@ class PIEOpportunityRadar {
   // ========================================================================
 
   async runNewsScan() {
-    console.log('\n📰 Running news scan...');
     
     const results = await this.sourceManager.fetchAll();
     
@@ -209,12 +198,10 @@ class PIEOpportunityRadar {
       }
     }
     
-    console.log(`  ✓ Scanned ${results.length} sources, ${totalItems} items`);
     return results;
   }
 
   async runCompetitorScan() {
-    console.log('\n🏢 Running competitor scan...');
     
     const competitors = this.competitorTracker.getAllCompetitors();
     const results = [];
@@ -232,12 +219,10 @@ class PIEOpportunityRadar {
       });
     }
     
-    console.log(`  ✓ Scanned ${results.length} competitors`);
     return results;
   }
 
   async generateDashboard() {
-    console.log('\n📊 Generating dashboard...');
     
     const dashboard = this.dashboard.generate();
     
@@ -246,13 +231,11 @@ class PIEOpportunityRadar {
     const htmlPath = `${this.config.dataDir}/dashboard.html`;
     require('fs').writeFileSync(htmlPath, html);
     
-    console.log(`  ✓ Dashboard saved to ${htmlPath}`);
     
     return dashboard;
   }
 
   async generateIntelligenceBriefing() {
-    console.log('\n📋 Generating intelligence briefing...');
     
     const alerts = this.radar.store.getAlerts();
     const dashboard = this.dashboard.generate();
@@ -279,7 +262,6 @@ class PIEOpportunityRadar {
     require('fs').mkdirSync(`${this.config.dataDir}/reports`, { recursive: true });
     require('fs').writeFileSync(briefingPath, JSON.stringify(briefing, null, 2));
     
-    console.log(`  ✓ Briefing saved to ${briefingPath}`);
     
     return briefing;
   }
@@ -346,36 +328,21 @@ class PIEOpportunityRadar {
   // ========================================================================
 
   async runFullScan() {
-    console.log('\n' + '='.repeat(60));
-    console.log('🔍 PIE OPPORTUNITY RADAR - FULL SCAN');
-    console.log('='.repeat(60));
     
     await this.runNewsScan();
     await this.runCompetitorScan();
     await this.generateDashboard();
     const briefing = await this.generateIntelligenceBriefing();
     
-    console.log('\n' + '='.repeat(60));
-    console.log('✅ FULL SCAN COMPLETE');
-    console.log('='.repeat(60));
-    console.log('');
-    console.log('📊 Summary:');
-    console.log(`  • Total alerts: ${briefing.executiveSummary.totalAlerts}`);
-    console.log(`  • High priority: ${briefing.executiveSummary.highPriorityAlerts}`);
-    console.log(`  • Funding events: ${briefing.executiveSummary.fundingEvents}`);
-    console.log(`  • Partnership opportunities: ${briefing.executiveSummary.partnershipOpportunities}`);
-    console.log('');
     
     return briefing;
   }
 
   start() {
     if (this.isRunning) {
-      console.log('⚠️ Already running');
       return;
     }
 
-    console.log('\n🚀 Starting PIE Opportunity Radar...');
     this.isRunning = true;
 
     // Run initial scan
@@ -387,11 +354,6 @@ class PIEOpportunityRadar {
     this.schedule('dashboard', 30 * 60 * 1000, () => this.generateDashboard());
     this.schedule('briefing', 60 * 60 * 1000, () => this.generateIntelligenceBriefing());
 
-    console.log('✅ PIE Opportunity Radar is running');
-    console.log('   News scan: every 5 minutes');
-    console.log('   Competitor scan: every 15 minutes');
-    console.log('   Dashboard update: every 30 minutes');
-    console.log('   Intelligence briefing: every hour');
   }
 
   schedule(name, interval, fn) {
@@ -402,17 +364,14 @@ class PIEOpportunityRadar {
   }
 
   stop() {
-    console.log('\n🛑 Stopping PIE Opportunity Radar...');
     
     if (this.timers) {
       for (const [name, timer] of Object.entries(this.timers)) {
         clearInterval(timer);
-        console.log(`  ⏹️ Stopped ${name}`);
       }
     }
     
     this.isRunning = false;
-    console.log('✅ PIE Opportunity Radar stopped');
   }
 
   // ========================================================================
@@ -480,46 +439,34 @@ if (require.main === module) {
 
       case 'dashboard':
         const dashboard = pie.getDashboard();
-        console.log('\n📊 Dashboard Data:');
-        console.log(JSON.stringify(dashboard, null, 2));
         process.exit(0);
         break;
 
       case 'alerts':
         const alerts = pie.getAlerts();
-        console.log('\n🚨 Recent Alerts:');
-        console.log(JSON.stringify(alerts.slice(-10), null, 2));
         process.exit(0);
         break;
 
       case 'opportunities':
         const opportunities = pie.getOpportunities();
-        console.log('\n💎 Hot Opportunities:');
-        console.log(JSON.stringify(opportunities, null, 2));
         process.exit(0);
         break;
 
       case 'search':
         const query = process.argv[3];
         if (!query) {
-          console.log('Usage: node index.js search <query>');
           process.exit(1);
         }
         const results = pie.search(query);
-        console.log(`\n🔍 Search results for "${query}":`);
-        console.log(JSON.stringify(results, null, 2));
         process.exit(0);
         break;
 
       case 'briefing':
         const briefing = await pie.generateIntelligenceBriefing();
-        console.log('\n📋 Intelligence Briefing:');
-        console.log(JSON.stringify(briefing, null, 2));
         process.exit(0);
         break;
 
       default:
-        console.log(`
 🎯 PIE - Opportunity Radar
    Predictive Intelligence Engine Module
 
