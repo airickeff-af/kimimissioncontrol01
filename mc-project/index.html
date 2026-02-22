@@ -1126,6 +1126,21 @@
     </style>
 </head>
 <body>
+    <!-- Tutorial Overlay -->
+    <div class="loading-overlay" id="tutorialOverlay" style="display: none; background: rgba(0,0,0,0.9);">
+        <div style="text-align: center; max-width: 600px; padding: 2rem;">
+            <h2 style="font-family: var(--font-pixel); font-size: 16px; color: var(--pixel-cyan); margin-bottom: 1rem;">🎮 WELCOME TO MC PROJECT</h2>
+            <div style="text-align: left; margin: 2rem 0; line-height: 1.8;">
+                <p>👤 <strong>Character:</strong> View your VRM avatar with 5 poses</p>
+                <p>❤️ <strong>Health:</strong> Track exercise, sleep, meals</p>
+                <p>💰 <strong>Wealth:</strong> Monitor savings, investments</p>
+                <p>🏆 <strong>Achievements:</strong> Unlock badges as you progress</p>
+                <p>📢 <strong>Confessions:</strong> Share anonymously</p>
+            </div>
+            <button class="pixel-btn" onclick="dismissTutorial()" style="font-size: 12px; padding: 1rem 2rem;">GET STARTED</button>
+        </div>
+    </div>
+
     <!-- Loading Overlay -->
     <div class="loading-overlay" id="loadingOverlay">
         <div class="pixel-spinner"></div>
@@ -1172,6 +1187,8 @@
                 <button class="pixel-btn" onclick="randomPose()">🎲 POSE</button>
                 <button class="pixel-btn meditate" id="meditateBtn" onclick="toggleMeditation()">🧘 MEDITATE</button>
                 <button class="pixel-btn" onclick="exportReport()">📊 EXPORT</button>
+                <button class="pixel-btn" onclick="exportData()">💾 DATA</button>
+                <button class="pixel-btn" onclick="importData()">📥 IMPORT</button>
                 <button class="pixel-btn" onclick="shareToTwitter()">📤 SHARE</button>
                 <button class="pixel-btn" style="background: linear-gradient(135deg, #ff6b9d, #ff8fab);" onclick="toggleFullscreen()">⛶ FULLSCREEN</button>
                 <div style="position: relative; display: inline-block;">
@@ -1325,13 +1342,63 @@
         </div>
     </div>
 
+    <!-- Daily Quote Section -->
+    <section class="challenge-section" id="quote">
+        <div class="pixel-card" style="text-align: center;">
+            <div style="font-size: 14px; color: #888; margin-bottom: 0.5rem;">💬 DAILY INSPIRATION</div>
+            <div id="dailyQuote" style="font-style: italic; font-size: 16px; color: var(--pixel-cyan);">"The best time to start was yesterday. The second best time is now."</div>
+            <button onclick="newQuote()" class="pixel-btn" style="margin-top: 0.5rem;">🔄 NEW QUOTE</button>
+        </div>
+    </section>
+
+    <!-- Stats Dashboard Section -->
+    <section class="challenge-section" id="stats">
+        <div class="challenge-header">
+            <h2 class="pixel-card-title">📊 STATS DASHBOARD</h2>
+            <button class="pixel-btn" onclick="refreshStats()">🔄 REFRESH</button>
+        </div>
+        <div id="statsContainer">
+            <div class="pixel-card" style="margin-bottom: 0.5rem;">
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; text-align: center;">
+                    <div>
+                        <div style="font-family: var(--font-pixel); font-size: 20px; color: var(--pixel-cyan);" id="statTotalLogins">1</div>
+                        <div style="font-size: 12px; color: #888;">TOTAL LOGINS</div>
+                    </div>
+                    <div>
+                        <div style="font-family: var(--font-pixel); font-size: 20px; color: var(--pixel-green);" id="statConfessions">0</div>
+                        <div style="font-size: 12px; color: #888;">CONFESSIONS</div>
+                    </div>
+                    <div>
+                        <div style="font-family: var(--font-pixel); font-size: 20px; color: var(--pixel-gold);" id="statAchievements">0</div>
+                        <div style="font-size: 12px; color: #888;">ACHIEVEMENTS</div>
+                    </div>
+                </div>
+            </div>
+            <div class="pixel-card">
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;">
+                    <div>
+                        <div style="font-size: 14px; color: #888; margin-bottom: 0.5rem;">AVG HEALTH</div>
+                        <div style="font-family: var(--font-pixel); font-size: 16px; color: var(--pixel-cyan);" id="statAvgHealth">78</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 14px; color: #888; margin-bottom: 0.5rem;">AVG WEALTH</div>
+                        <div style="font-family: var(--font-pixel); font-size: 16px; color: var(--pixel-cyan);" id="statAvgWealth">65</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Confession Section -->
     <section class="confession-section" id="confessions">
         <div class="confession-header">
             <h2 class="pixel-card-title">📢 DAILY CONFESSIONS</h2>
-            <span style="font-family: var(--font-pixel); font-size: 8px; color: #888;">
-                <span id="confessionCount">0</span> CONFESSIONS
-            </span>
+            <div style="display: flex; gap: 0.5rem; align-items: center;">
+                <input type="text" id="confessionSearch" class="pixel-input" placeholder="Search..." style="width: 150px; font-size: 12px; padding: 0.5rem;" onkeyup="searchConfessions()">
+                <span style="font-family: var(--font-pixel); font-size: 8px; color: #888;">
+                    <span id="confessionCount">0</span> CONFESSIONS
+                </span>
+            </div>
         </div>
 
         <!-- Submission Form -->
@@ -1446,7 +1513,8 @@
     <!-- Footer -->
     <footer class="pixel-footer">
         <p>🎮 MC PROJECT - KAIROSOFT STYLE LIFE SIM</p>
-        <p style="margin-top: 0.5rem; font-size: 12px;">VRM #11318 | HEALTH + WEALTH TRACKER</p>
+        <p style="margin-top: 0.5rem; font-size: 12px;">VRM #11318 | HEALTH + WEALTH TRACKER | v2.0.0</p>
+        <p style="margin-top: 0.25rem; font-size: 10px; color: #444;">Built with ❤️ by MC Project Team</p>
     </footer>
 
     <!-- Health Detail Modal -->
@@ -1564,6 +1632,7 @@
                     <option value="30">30 DAYS</option>
                 </select>
                 <button onclick="createChallenge()" class="pixel-btn primary" style="width: 100%;">CREATE CHALLENGE</button>
+                <button onclick="copyChallengeLink()" class="pixel-btn" style="width: 100%; margin-top: 0.5rem;">📋 COPY INVITE LINK</button>
             </div>
         </div>
     </div>
@@ -2703,6 +2772,106 @@
 
         // Export Report (P1-032 alternative)
 
+        // P1-038: Stats Dashboard
+        function refreshStats() {
+            document.getElementById('statTotalLogins').textContent = parseInt(localStorage.getItem('mc_total_logins') || '1');
+            document.getElementById('statConfessions').textContent = confessions.length;
+            document.getElementById('statAchievements').textContent = unlockedAchievements.length;
+            document.getElementById('statAvgHealth').textContent = growthState.healthScore;
+            document.getElementById('statAvgWealth').textContent = growthState.wealthScore;
+            showNotification('📊 STATS REFRESHED!');
+        }
+
+        // Track logins
+        const totalLogins = parseInt(localStorage.getItem('mc_total_logins') || '0') + 1;
+        localStorage.setItem('mc_total_logins', totalLogins.toString());
+
+        // P1-043: Easter eggs
+        const easterEggs = {
+            'konami': () => {
+                showNotification('🎮 KONAMI CODE ACTIVATED!');
+                document.body.style.filter = 'hue-rotate(180deg)';
+                setTimeout(() => document.body.style.filter = '', 5000);
+            },
+            'meemo': () => showNotification('👋 HELLO MEEMO!'),
+            'eric': () => showNotification('🎉 HI ERIC!'),
+            '1337': () => showNotification('💻 LEET MODE!')
+        };
+
+        let keyBuffer = '';
+        document.addEventListener('keydown', (e) => {
+            keyBuffer += e.key.toLowerCase();
+            if (keyBuffer.length > 20) keyBuffer = keyBuffer.slice(-20);
+            
+            // Check for easter eggs
+            Object.keys(easterEggs).forEach(code => {
+                if (keyBuffer.includes(code)) {
+                    easterEggs[code]();
+                    keyBuffer = '';
+                }
+            });
+            
+            // Konami code
+            if (keyBuffer.includes('arrowuparrowuparrowdownarrowdownarrowleftarrowrightarrowrightba')) {
+                easterEggs.konami();
+                keyBuffer = '';
+            }
+        });
+
+        // P1-037: Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+            
+            switch(e.key) {
+                case ' ':
+                    e.preventDefault();
+                    randomPose();
+                    break;
+                case 'm':
+                case 'M':
+                    toggleMeditation();
+                    break;
+                case 'f':
+                case 'F':
+                    toggleFullscreen();
+                    break;
+                case 'r':
+                case 'R':
+                    resetView();
+                    break;
+                case 't':
+                case 'T':
+                    toggleTheme();
+                    break;
+                case 's':
+                case 'S':
+                    if (e.ctrlKey || e.metaKey) {
+                        e.preventDefault();
+                        shareToTwitter();
+                    }
+                    break;
+                case '?':
+                    showNotification('⌨️ SPACE=Pose | M=Meditate | F=Fullscreen | R=Reset | T=Theme | Ctrl+S=Share');
+                    break;
+            }
+        });
+
+        // P1-037: Keyboard shortcuts help
+        function showKeyboardHelp() {
+            const help = `
+🎮 KEYBOARD SHORTCUTS:
+
+SPACE - Random pose
+M - Toggle meditation
+F - Toggle fullscreen
+R - Reset view
+T - Toggle theme
+Ctrl+S - Share to Twitter
+? - Show this help
+            `;
+            alert(help);
+        }
+
         // P1-022: Initialize Hammer.js touch gestures
         function initTouchGestures() {
             const canvas = document.getElementById('character-canvas');
@@ -2745,6 +2914,52 @@
 
         // FULLSCREEN MODE
         let isFullscreen = false;
+
+        // P1-042: Tutorial system
+        function showTutorial() {
+            if (!localStorage.getItem('mc_tutorial_seen')) {
+                document.getElementById('tutorialOverlay').style.display = 'flex';
+            }
+        }
+
+        function dismissTutorial() {
+            document.getElementById('tutorialOverlay').style.display = 'none';
+            localStorage.setItem('mc_tutorial_seen', 'true');
+        }
+
+        // P1-041: Copy challenge invite link
+        function copyChallengeLink() {
+            const link = `https://airickeff-af.github.io/mc-project/?ref=${currentUser}`;
+            navigator.clipboard.writeText(link).then(() => {
+                showNotification('📋 INVITE LINK COPIED!');
+            }).catch(() => {
+                // Fallback
+                const textarea = document.createElement('textarea');
+                textarea.value = link;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                showNotification('📋 INVITE LINK COPIED!');
+            });
+        }
+
+        // P1-040: Auto dark mode based on time
+        function checkAutoTheme() {
+            const hour = new Date().getHours();
+            const isDark = hour < 6 || hour >= 18; // Dark 6PM - 6AM
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            
+            if (isDark && currentTheme === 'light') {
+                toggleTheme();
+            } else if (!isDark && currentTheme === 'dark') {
+                toggleTheme();
+            }
+        }
+
+        // Check theme every hour
+        setInterval(checkAutoTheme, 3600000);
+        checkAutoTheme(); // Check on load
 
         // P1-026: Browser Notifications
         function requestNotificationPermission() {
@@ -2797,6 +3012,64 @@ Keep up the great work! 🎮`;
             a.click();
             URL.revokeObjectURL(url);
             showNotification('📊 REPORT DOWNLOADED!');
+        }
+
+        // P1-035: Export all user data
+        function exportData() {
+            const data = {
+                character: growthState,
+                achievements: unlockedAchievements,
+                confessions: confessions,
+                challenges: challenges,
+                streak: JSON.parse(localStorage.getItem('mc_streak') || '{}'),
+                exportDate: new Date().toISOString()
+            };
+            
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `mc-project-data-${Date.now()}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            showNotification('💾 DATA EXPORTED!');
+        }
+
+        // P1-036: Import user data
+        function importData() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json';
+            input.onchange = (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+                
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    try {
+                        const data = JSON.parse(event.target.result);
+                        
+                        // Restore data
+                        if (data.character) Object.assign(growthState, data.character);
+                        if (data.achievements) unlockedAchievements.splice(0, unlockedAchievements.length, ...data.achievements);
+                        if (data.confessions) confessions.splice(0, confessions.length, ...data.confessions);
+                        if (data.challenges) challenges.splice(0, challenges.length, ...data.challenges);
+                        if (data.streak) localStorage.setItem('mc_streak', JSON.stringify(data.streak));
+                        
+                        // Refresh UI
+                        updateGrowth();
+                        renderAchievements();
+                        renderConfessions();
+                        renderChallenges();
+                        
+                        showNotification('📥 DATA IMPORTED!');
+                    } catch (err) {
+                        showNotification('❌ INVALID FILE');
+                    }
+                };
+                reader.readAsText(file);
+            };
+            input.click();
         }
 
         // P1-025: Social Sharing with Screenshot
@@ -3700,11 +3973,54 @@ Keep up the great work! 🎮`;
                                 <button class="action-btn ${hasLiked ? 'liked' : ''}" onclick="toggleLike('${confession.id}')">
                                     ${hasLiked ? '❤️' : '🤍'} ${confession.likes}
                                 </button>
+                                <button class="action-btn" onclick="addReaction('${confession.id}', '🔥')">🔥</button>
+                                <button class="action-btn" onclick="addReaction('${confession.id}', '😂')">😂</button>
+                                <button class="action-btn" onclick="addReaction('${confession.id}', '😮')">😮</button>
                             </div>
                         </div>
                     </div>
                 `;
             }).join('');
+        }
+
+        // P1-045: Daily quotes
+        const QUOTES = [
+            "The best time to start was yesterday. The second best time is now.",
+            "Small steps every day lead to big results.",
+            "Your health is your wealth.",
+            "Save first, spend later.",
+            "Progress, not perfection.",
+            "Consistency beats intensity.",
+            "Invest in yourself first.",
+            "Every day is a fresh start."
+        ];
+
+        function newQuote() {
+            const quote = QUOTES[Math.floor(Math.random() * QUOTES.length)];
+            document.getElementById('dailyQuote').textContent = `"${quote}"`;
+        }
+
+        // P1-044: Search confessions
+        function searchConfessions() {
+            const query = document.getElementById('confessionSearch').value.toLowerCase();
+            const cards = document.querySelectorAll('.confession-card');
+            
+            cards.forEach(card => {
+                const text = card.textContent.toLowerCase();
+                card.style.display = text.includes(query) ? 'block' : 'none';
+            });
+        }
+
+        // P1-039: Confession reactions
+        let confessionReactions = JSON.parse(localStorage.getItem('mc_confession_reactions') || '{}');
+
+        function addReaction(confessionId, emoji) {
+            const key = `${confessionId}_${emoji}`;
+            if (!confessionReactions[key]) confessionReactions[key] = 0;
+            confessionReactions[key]++;
+            localStorage.setItem('mc_confession_reactions', JSON.stringify(confessionReactions));
+            showNotification(`${emoji} REACTION ADDED!`);
+            renderConfessions();
         }
 
         // Challenge System
@@ -3882,6 +4198,8 @@ Keep up the great work! 🎮`;
             checkAchievements();
             renderAchievements();
             requestNotificationPermission();
+            refreshStats();
+            showTutorial();
         });
 
         window.addEventListener('resize', () => {
