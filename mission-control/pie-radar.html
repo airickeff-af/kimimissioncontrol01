@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PIE Radar | Predictive Intelligence</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0a0a1a 0%, #1a1a2e 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+        }
+        .header {
+            background: linear-gradient(180deg, #2d1b4e 0%, #1a1a2e 100%);
+            border-bottom: 4px solid #ff6b6b;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 1.2rem;
+            color: #ff6b6b;
+            text-shadow: 2px 2px 0 #8b0000;
+        }
+        .container { max-width: 1400px; margin: 0 auto; padding: 2rem; }
+        h1 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 1.2rem;
+            color: #ff6b6b;
+            margin-bottom: 2rem;
+            text-shadow: 2px 2px 0 #8b0000;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        .card {
+            background: linear-gradient(180deg, #2a2a4e 0%, #1a1a2e 100%);
+            border: 3px solid #444;
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+        .card h2 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.8rem;
+            color: #ffd700;
+            margin-bottom: 1rem;
+        }
+        .alert {
+            padding: 0.75rem;
+            margin: 0.5rem 0;
+            border-radius: 8px;
+            font-family: 'VT323', monospace;
+            font-size: 1.1rem;
+        }
+        .alert-green {
+            background: rgba(0,255,136,0.1);
+            border: 2px solid #00ff88;
+            color: #00ff88;
+        }
+        .alert-yellow {
+            background: rgba(255,193,7,0.1);
+            border: 2px solid #ffc107;
+            color: #ffc107;
+        }
+        .alert-red {
+            background: rgba(255,107,107,0.1);
+            border: 2px solid #ff6b6b;
+            color: #ff6b6b;
+        }
+        .metric {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #333;
+        }
+        .metric-label {
+            font-family: 'VT323', monospace;
+            color: #888;
+        }
+        .metric-value {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.7rem;
+            color: #00d4ff;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">🥧 PIE RADAR</div>
+        <nav>
+            <a href="index.html" style="color: #888; text-decoration: none; margin-right: 1rem;">← Back to HQ</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <h1>📡 PREDICTIVE INTELLIGENCE ENGINE</h1>
+        
+        <div class="grid">
+            <div class="card">
+                <h2>🚨 ACTIVE ALERTS</h2>
+                <div class="alert alert-green">
+                    🟢 HashKey: New license approval - OPTIMAL timing
+                </div>
+                <div class="alert alert-yellow">
+                    🟡 OSL: Product launch detected - GOOD timing
+                </div>
+                <div class="alert alert-red">
+                    🔴 Binance: Regulatory scrutiny - WAIT
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>📊 MARKET METRICS</h2>
+                <div class="metric">
+                    <span class="metric-label">Opportunities</span>
+                    <span class="metric-value">47</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Hot Leads</span>
+                    <span class="metric-value">12</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Avg Lead Score</span>
+                    <span class="metric-value">87</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Market Sentiment</span>
+                    <span class="metric-value">BULLISH</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>🔥 TRENDING</h2>
+                <div class="metric">
+                    <span class="metric-label">1. DeFi Yield</span>
+                    <span class="metric-value">+24%</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">2. RWA Tokenization</span>
+                    <span class="metric-value">+18%</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">3. AI Agents</span>
+                    <span class="metric-value">+32%</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">4. Stablecoins</span>
+                    <span class="metric-value">+15%</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>⚠️ RISK MONITOR</h2>
+                <div class="metric">
+                    <span class="metric-label">Regulatory Risk</span>
+                    <span class="metric-value" style="color: #ffc107;">MEDIUM</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Market Volatility</span>
+                    <span class="metric-value" style="color: #00ff88;">LOW</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Competitor Activity</span>
+                    <span class="metric-value" style="color: #ff6b6b;">HIGH</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Auto-refresh every 5 minutes
+        setInterval(() => {
+            console.log('[PIE] Refreshing intelligence...');
+            // In production, this would fetch from /api/pie/intelligence
+        }, 5 * 60 * 1000);
+    </script>
+</body>
+</html>

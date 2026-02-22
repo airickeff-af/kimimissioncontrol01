@@ -5,7 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <meta name="description" content="MC Project - Kairosoft Style Health & Wealth Tracker with VRM Character">
     <meta name="theme-color" content="#2d1b4e">
-    <title>🎮 MC Project | Kairosoft Life Sim</title>
+    <title>🎮 MC Project | Kairosoft Life Sim v2.1</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
@@ -1260,12 +1263,6 @@
         </div>
     </div>
 
-    <!-- Loading Overlay -->
-    <div class="loading-overlay" id="loadingOverlay">
-        <div class="pixel-spinner"></div>
-        <div class="loading-text">LOADING VRM #11318...</div>
-    </div>
-
     <!-- Pixel Header -->
     <header class="pixel-header">
         <div class="pixel-logo">MC PROJECT</div>
@@ -1290,16 +1287,30 @@
         <section class="viewer-section" id="character">
             <h2 class="viewer-title">👤 YOUR CHARACTER</h2>
             <div style="position: relative;">
-                <div id="character-canvas"></div>
+                <!-- 3D Character Container -->
+                <div id="character-container" style="width: 100%; height: 500px; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border-radius: 12px; display: flex; justify-content: center; align-items: center;">
+                    <!-- Initial Click to Load -->
+                    <div id="character-placeholder" style="text-align: center; cursor: pointer;" onclick="loadVRMInIframe()">
+                        <div style="font-size: 120px; margin-bottom: 20px;">👤</div>
+                        <p style="color: #4ecdc4; font-family: 'Press Start 2P', cursive; font-size: 14px;">Click to Load 3D Character</p>
+                        <p style="color: #888; font-size: 12px; margin-top: 10px;">VRM #11318 with Pose Controls</p>
+                    </div>
+                    <!-- Iframe for VRM (hidden initially) -->
+                    <iframe id="vrm-iframe" src="" style="width: 100%; height: 100%; border: none; border-radius: 12px; display: none;"></iframe>
+                </div>
                 <div class="character-overlay">
                     <div class="level-badge">LVL <span id="currentLevel">4</span></div>
                     <div class="stage-label" id="stageLabel">🎓 ADULT</div>
                 </div>
-                <div class="movement-indicator" id="movementIndicator">
-                    <span>🎭</span>
-                    <span>IDLE</span>
-                </div>
             </div>
+            
+            <script>
+                function loadVRMInIframe() {
+                    document.getElementById('character-placeholder').style.display = 'none';
+                    document.getElementById('vrm-iframe').style.display = 'block';
+                    document.getElementById('vrm-iframe').src = 'vrm-11318.html';
+                }
+            </script>
             <div class="viewer-controls">
                 <button class="pixel-btn" onclick="rotateCharacter()">🔄 ROTATE</button>
                 <button class="pixel-btn" onclick="toggleWireframe()">🔲 WIREFRAME</button>
@@ -2537,158 +2548,71 @@
 
         function loadVRM() {
             console.log('🎭 Loading VRM #11318...');
-
-            // Show loading
             document.getElementById('loadingOverlay').classList.remove('hidden');
-            document.querySelector('.loading-text').textContent = 'LOADING VRM #11318...';
-
-            // Check if VRM library loaded
-            if (typeof THREE.VRM === 'undefined') {
-                console.warn('⚠️ THREE.VRM not loaded, using GLTF fallback');
-                loadVRMWithGLTF();
-                return;
-            }
-
-            const loader = new THREE.GLTFLoader();
-
-            // Try local file first, then CORS proxies
-            const vrmUrls = [
-                'assets/character.vrm', // Local file first
-                './assets/character.vrm',
-                'https://airickeff-af.github.io/mc-project/assets/character.vrm',
-                'https://api.allorigins.win/raw?url=' + encodeURIComponent('https://files.meebits.app/vrm/11318.vrm'),
-                'https://corsproxy.io/?' + encodeURIComponent('https://files.meebits.app/vrm/11318.vrm')
-            ];
-
-            let urlIndex = 0;
-
-            function tryLoadVRM() {
-                if (urlIndex >= vrmUrls.length) {
-                    console.warn('⚠️ All VRM URLs failed, using GLTF fallback');
-                    loadVRMWithGLTF();
-                    return;
-                }
-
-                const vrmUrl = vrmUrls[urlIndex];
-                urlIndex++;
-
-                console.log('🔄 Trying VRM URL #' + urlIndex + ':', vrmUrl.substring(0, 50) + '...');
-                document.querySelector('.loading-text').textContent = `LOADING VRM #11318... (Attempt ${urlIndex})`;
-
-                loader.load(
-                    vrmUrl,
-                    function(gltf) {
-                        console.log('✅ GLTF loaded, converting to VRM...');
-
-                        THREE.VRM.from(gltf).then((vrm) => {
-                            console.log('✅ VRM #11318 loaded successfully!');
-
-                            // Remove any existing character
-                            if (character) scene.remove(character);
-
-                            character = vrm.scene;
-                            character.scale.set(0.4, 0.4, 0.4);
-                            character.position.set(0, -0.5, 0);
-
-                            // Enable shadows
-                            character.traverse((child) => {
-                                if (child.isMesh) {
-                                    child.castShadow = true;
-                                    child.receiveShadow = true;
-                                }
-                            });
-
-                            scene.add(character);
-                            window.currentVRM = vrm;
-
-                            // Hide loading
-                            document.getElementById('loadingOverlay').classList.add('hidden');
-                            showNotification('✅ VRM #11318 LOADED!');
-
-                            // Start pose animation
-                            applyPose(0);
-
-                        }).catch((error) => {
-                            console.warn('⚠️ VRM conversion failed:', error);
-                            tryLoadVRM(); // Try next URL
-                        });
-                    },
-                    function(xhr) {
-                        if (xhr.total > 0) {
-                            const percent = Math.round((xhr.loaded / xhr.total) * 100);
-                            document.querySelector('.loading-text').textContent = `LOADING VRM #11318... ${percent}%`;
-                        }
-                    },
-                    function(error) {
-                        console.warn('⚠️ VRM load failed:', error.message);
-                        tryLoadVRM(); // Try next URL
-                    }
-                );
-            }
-
-            // Start loading
-            tryLoadVRM();
-
-            // Timeout fallback after 15 seconds
-            setTimeout(() => {
-                if (!window.currentVRM) {
-                    console.warn('⏱️ VRM loading timeout, switching to fallback');
-                    loadVRMWithGLTF();
-                }
-            }, 15000);
+            
+            // Skip VRM conversion, use GLTF directly
+            loadVRMWithGLTF();
         }
 
-        // Fallback GLTF loader without VRM conversion
+        // Simple GLTF loader - no VRM conversion
         function loadVRMWithGLTF() {
             const loader = new THREE.GLTFLoader();
-            const vrmUrls = [
+            
+            // Try GLB first (most compatible)
+            const urls = [
+                'assets/character.glb',
+                './assets/character.glb', 
                 'assets/character.vrm',
-                './assets/character.vrm',
-                'https://airickeff-af.github.io/mc-project/assets/character.vrm',
-                'https://api.allorigins.win/raw?url=' + encodeURIComponent('https://files.meebits.app/vrm/11318.vrm'),
-                'https://corsproxy.io/?' + encodeURIComponent('https://files.meebits.app/vrm/11318.vrm')
+                './assets/character.vrm'
             ];
-
-            let urlIndex = 0;
-
-            function tryLoadGLTF() {
-                if (urlIndex >= vrmUrls.length) {
-                    console.warn('⚠️ All GLTF URLs failed, creating fallback');
-                    createFallbackCharacter();
-                    return;
-                }
-
-                const vrmUrl = vrmUrls[urlIndex];
-                urlIndex++;
-
-                console.log('🔄 Trying GLTF URL #' + urlIndex + ':', vrmUrl.substring(0, 50) + '...');
-                document.querySelector('.loading-text').textContent = `LOADING MODEL... (Attempt ${urlIndex})`;
-
-                loader.load(
-                    vrmUrl,
-                    function(gltf) {
-                        console.log('✅ GLTF loaded successfully');
-
-                        if (character) scene.remove(character);
-
-                        character = gltf.scene;
-                        character.scale.set(0.4, 0.4, 0.4);
-                        character.position.set(0, -0.5, 0);
-
-                        character.traverse((child) => {
-                            if (child.isMesh) {
-                                child.castShadow = true;
-                                child.receiveShadow = true;
-                            }
-                        });
-
-                        scene.add(character);
-                        document.getElementById('loadingOverlay').classList.add('hidden');
-                        showNotification('✅ MODEL LOADED!');
+            
+            console.log('🎭 Loading GLTF model...');
+            document.querySelector('.loading-text').textContent = 'LOADING MODEL...';
+            
+            loader.load(
+                urls[0],
+                function(gltf) {
+                    console.log('✅ GLTF loaded:', gltf);
+                    
+                    if (character) scene.remove(character);
+                    
+                    character = gltf.scene;
+                    
+                    // Auto-scale to fit
+                    const box = new THREE.Box3().setFromObject(character);
+                    const size = box.getSize(new THREE.Vector3());
+                    const scale = 1.5 / Math.max(size.x, size.y, size.z);
+                    character.scale.setScalar(scale);
+                    character.position.y = -0.5;
+                    
+                    character.traverse((child) => {
+                        if (child.isMesh) {
+                            child.castShadow = true;
+                            child.receiveShadow = true;
+                        }
+                    });
+                    
+                    scene.add(character);
+                    document.getElementById('loadingOverlay').classList.add('hidden');
+                    showNotification('✅ VRM #11318 LOADED!');
+                    
+                    // Start animation
+                    if (poses.length > 0) {
                         applyPose(0);
-                    },
-                    function(xhr) {
-                        if (xhr.total > 0) {
+                        startPoseRotation();
+                    }
+                },
+                function(xhr) {
+                    const pct = Math.round((xhr.loaded / xhr.total) * 100);
+                    document.querySelector('.loading-text').textContent = `LOADING... ${pct}%`;
+                },
+                function(error) {
+                    console.error('❌ GLTF load failed:', error);
+                    // Try next URL
+                    loader.load(urls[1], ...arguments);
+                }
+            );
+        }
                             const percent = Math.round((xhr.loaded / xhr.total) * 100);
                             document.querySelector('.loading-text').textContent = `LOADING MODEL... ${percent}%`;
                         }
