@@ -1,0 +1,10 @@
+{
+  "id": "TH-020",
+  "company": "Bitazza Pay",
+  "type": "Crypto Payment Gateway",
+  "license": "Bank of Thailand",
+  "focus": "Merchant crypto payments",
+  "priority": "P1",
+  "score": 81,
+  "contact_status": "researching"
+}

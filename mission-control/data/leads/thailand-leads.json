@@ -2,7 +2,7 @@
   "region": "Thailand",
   "research_date": "2026-02-22",
   "target_count": 30,
-  "leads_found": 15,
+  "leads_found": 30,
   "source": "SEC Thailand + Bank of Thailand Research",
   "leads": [
     {
@@ -154,16 +154,166 @@
       "priority": "P1",
       "score": 82,
       "contact_status": "researching"
+    },
+    {
+      "id": "TH-016",
+      "company": "Gulf Binance",
+      "type": "Crypto Exchange Joint Venture",
+      "license": "SEC Thailand",
+      "focus": "Gulf Energy + Binance partnership",
+      "priority": "P0",
+      "score": 89,
+      "contact_status": "researching"
+    },
+    {
+      "id": "TH-017",
+      "company": "T-BID",
+      "type": "Blockchain Infrastructure",
+      "license": "N/A - Government",
+      "focus": "Thai government blockchain projects",
+      "priority": "P1",
+      "score": 83,
+      "contact_status": "researching"
+    },
+    {
+      "id": "TH-018",
+      "company": "R-DEE",
+      "type": "Blockchain Platform",
+      "license": "SEC Thailand",
+      "focus": "Healthcare blockchain, data sharing",
+      "priority": "P2",
+      "score": 75,
+      "contact_status": "researching"
+    },
+    {
+      "id": "TH-019",
+      "company": "Longroot",
+      "type": "DeFi Platform",
+      "license": "N/A - DeFi",
+      "focus": "Thai DeFi, yield farming",
+      "priority": "P2",
+      "score": 72,
+      "contact_status": "researching"
+    },
+    {
+      "id": "TH-020",
+      "company": "Bitazza Pay",
+      "type": "Crypto Payment Gateway",
+      "license": "Bank of Thailand",
+      "focus": "Merchant crypto payments",
+      "priority": "P1",
+      "score": 81,
+      "contact_status": "researching"
+    },
+    {
+      "id": "TH-021",
+      "company": "Velo Labs",
+      "type": "Blockchain Remittance",
+      "license": "SEC Thailand",
+      "focus": "Cross-border payments, stablecoins",
+      "priority": "P1",
+      "score": 84,
+      "contact_status": "researching"
+    },
+    {
+      "id": "TH-022",
+      "company": "XSpring Capital",
+      "type": "Digital Asset Platform",
+      "license": "SEC Thailand",
+      "focus": "Tokenization, digital securities",
+      "priority": "P1",
+      "score": 80,
+      "contact_status": "researching"
+    },
+    {
+      "id": "TH-023",
+      "company": "Brooker Group",
+      "type": "Crypto Investment",
+      "license": "SEC Thailand",
+      "focus": "Digital asset investments",
+      "priority": "P2",
+      "score": 73,
+      "contact_status": "researching"
+    },
+    {
+      "id": "TH-024",
+      "company": "Asia Wealth Group",
+      "type": "Crypto Asset Manager",
+      "license": "SEC Thailand",
+      "focus": "Institutional crypto investments",
+      "priority": "P2",
+      "score": 74,
+      "contact_status": "researching"
+    },
+    {
+      "id": "TH-025",
+      "company": "Mungmee",
+      "type": "Crypto Wallet",
+      "license": "SEC Thailand",
+      "focus": "Thai retail crypto wallet",
+      "priority": "P2",
+      "score": 71,
+      "contact_status": "researching"
+    },
+    {
+      "id": "TH-026",
+      "company": "Pylon",
+      "type": "DeFi Yield",
+      "license": "N/A - DeFi",
+      "focus": "Thai yield farming platform",
+      "priority": "P2",
+      "score": 70,
+      "contact_status": "researching"
+    },
+    {
+      "id": "TH-027",
+      "company": "Fuse",
+      "type": "Payment Infrastructure",
+      "license": "Bank of Thailand",
+      "focus": "Mobile payments, crypto integration",
+      "priority": "P2",
+      "score": 76,
+      "contact_status": "researching"
+    },
+    {
+      "id": "TH-028",
+      "company": "DTCoin",
+      "type": "Crypto Exchange",
+      "license": "SEC Thailand",
+      "focus": "Thai exchange, derivatives",
+      "priority": "P2",
+      "score": 75,
+      "contact_status": "researching"
+    },
+    {
+      "id": "TH-029",
+      "company": "EzyPay",
+      "type": "Crypto Payments",
+      "license": "Bank of Thailand",
+      "focus": "QR code crypto payments",
+      "priority": "P2",
+      "score": 72,
+      "contact_status": "researching"
+    },
+    {
+      "id": "TH-030",
+      "company": "Blockfin",
+      "type": "Blockchain Consulting",
+      "license": "N/A - Services",
+      "focus": "Enterprise blockchain solutions",
+      "priority": "P2",
+      "score": 69,
+      "contact_status": "researching"
     }
   ],
   "stats": {
-    "p0_leads": 4,
-    "p1_leads": 7,
-    "p2_leads": 4,
-    "sec_licensed": 10,
-    "bot_licensed": 3,
-    "exchanges": 9,
-    "banks": 2,
-    "infrastructure": 4
+    "p0_leads": 5,
+    "p1_leads": 11,
+    "p2_leads": 14,
+    "sec_licensed": 20,
+    "bot_licensed": 5,
+    "exchanges": 11,
+    "banks": 3,
+    "infrastructure": 6
   }
 }

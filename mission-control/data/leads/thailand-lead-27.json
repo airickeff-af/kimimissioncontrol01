@@ -1,0 +1,10 @@
+{
+  "id": "TH-027",
+  "company": "Fuse",
+  "type": "Payment Infrastructure",
+  "license": "Bank of Thailand",
+  "focus": "Mobile payments, crypto integration",
+  "priority": "P2",
+  "score": 76,
+  "contact_status": "researching"
+}

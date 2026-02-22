@@ -1,0 +1,10 @@
+{
+  "id": "TH-028",
+  "company": "DTCoin",
+  "type": "Crypto Exchange",
+  "license": "SEC Thailand",
+  "focus": "Thai exchange, derivatives",
+  "priority": "P2",
+  "score": 75,
+  "contact_status": "researching"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "TH-029",
+  "company": "EzyPay",
+  "type": "Crypto Payments",
+  "license": "Bank of Thailand",
+  "focus": "QR code crypto payments",
+  "priority": "P2",
+  "score": 72,
+  "contact_status": "researching"
+}
