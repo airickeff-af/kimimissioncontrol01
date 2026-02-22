@@ -1,8 +1,23 @@
 {
-  "rewrites": [
-    { "source": "/office", "destination": "/office.html" },
-    { "source": "/agents", "destination": "/agents.html" },
-    { "source": "/tasks", "destination": "/tasks.html" },
-    { "source": "/(.*)", "destination": "/index.html" }
+  "version": 2,
+  "builds": [
+    {"src": "*.html", "use": "@vercel/static"},
+    {"src": "api/**/*.js", "use": "@vercel/node"}
+  ],
+  "routes": [
+    {"src": "/api/quality", "dest": "/api/quality.js"},
+    {"src": "/api/cron", "dest": "/api/cron.js"},
+    {"src": "/api/(.*)", "dest": "/api/$1"},
+    {"src": "/dashboard/(.*)", "dest": "/dashboard/$1"},
+    {"src": "/(.*)", "dest": "/$1"}
+  ],
+  "headers": [
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        {"key": "Access-Control-Allow-Origin", "value": "*"},
+        {"key": "Cache-Control", "value": "s-maxage=0"}
+      ]
+    }
   ]
 }

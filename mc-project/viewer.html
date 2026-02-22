@@ -337,6 +337,16 @@
             <button class="btn" id="btn-reset">↺ Reset View</button>
             <button class="btn" id="btn-movement">🚶 Toggle Movement</button>
         </div>
+        
+        <!-- Pose Controls -->
+        <div class="pose-controls" style="position: absolute; bottom: 80px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; z-index: 10; flex-wrap: wrap; justify-content: center; background: rgba(0,0,0,0.6); padding: 10px 20px; border-radius: 12px;">
+            <button class="btn pose-btn" data-pose="IDLE" title="Idle">🧘 Idle</button>
+            <button class="btn pose-btn" data-pose="WALK" title="Walk">🚶 Walk</button>
+            <button class="btn pose-btn" data-pose="WAVE" title="Wave">👋 Wave</button>
+            <button class="btn pose-btn" data-pose="MEDITATE" title="Meditate">🧘‍♂️ Meditate</button>
+            <button class="btn pose-btn" data-pose="DANCE" title="Dance">💃 Dance</button>
+            <button class="btn pose-btn" data-pose="JUMP" title="Jump">⬆️ Jump</button>
+        </div>
     </div>
     
     <!-- Achievement Popup -->
@@ -351,8 +361,9 @@
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
     
+    <script src="character-animations.js"></script>
     <script>
-        // MC Project - 3D Viewer with Random Movement
+        // MC Project - 3D Viewer with Pose System
         let scene, camera, renderer, controls;
         let character, mixer;
         let isAutoRotating = false;
@@ -489,40 +500,108 @@
             });
         }
         
-        // Load GLB character or create placeholder
+        // Load GLB/VRM character or create placeholder
         function loadCharacter() {
             const loader = new THREE.GLTFLoader();
             
-            loader.load(
-                '/assets/character.vrm',
-                function(gltf) {
-                    character = gltf.scene;
-                    character.position.y = 0;
-                    character.traverse(function(node) {
-                        if (node.isMesh) {
-                            node.castShadow = true;
-                            node.receiveShadow = true;
-                        }
-                    });
-                    scene.add(character);
-                    
-                    if (gltf.animations.length > 0) {
-                        mixer = new THREE.AnimationMixer(character);
-                        const action = mixer.clipAction(gltf.animations[0]);
-                        action.play();
-                    }
-                    
-                    document.getElementById('loading').style.display = 'none';
-                    console.log('✅ GLB Character loaded');
-                },
-                function(xhr) {
-                    console.log((xhr.loaded / xhr.total * 100) + '% loaded');
-                },
-                function(error) {
-                    console.warn('⚠️ GLB not found, using placeholder:', error);
+            // Try multiple paths for VRM
+            const vrmPaths = [
+                './assets/character.vrm',
+                'assets/character.vrm',
+                '/mc-project/assets/character.vrm',
+                'https://files.meebits.app/vrm/11318.vrm'
+            ];
+            
+            let pathIndex = 0;
+            
+            function tryLoadPath() {
+                if (pathIndex >= vrmPaths.length) {
+                    console.warn('⚠️ All VRM paths failed, using placeholder');
                     createPlaceholderCharacter();
+                    return;
                 }
-            );
+                
+                const path = vrmPaths[pathIndex];
+                console.log(`🔄 Trying VRM path: ${path}`);
+                
+                loader.load(
+                    path,
+                    function(gltf) {
+                        console.log(`✅ VRM loaded from: ${path}`);
+                        character = gltf.scene;
+                        character.position.y = 0;
+                        character.traverse(function(node) {
+                            if (node.isMesh) {
+                                node.castShadow = true;
+                                node.receiveShadow = true;
+                            }
+                        });
+                        scene.add(character);
+                        
+                        // Extract character parts for animation
+                        extractCharacterParts(character);
+                        
+                        if (gltf.animations && gltf.animations.length > 0) {
+                            mixer = new THREE.AnimationMixer(character);
+                            const action = mixer.clipAction(gltf.animations[0]);
+                            action.play();
+                        }
+                        
+                        document.getElementById('loading').style.display = 'none';
+                        document.getElementById('fallback').style.display = 'none';
+                        
+                        showAchievement('Character Loaded!', 'VRM model loaded successfully', '🎮');
+                    },
+                    function(xhr) {
+                        const percent = Math.round((xhr.loaded / xhr.total) * 100);
+                        console.log(`${path}: ${percent}% loaded`);
+                    },
+                    function(error) {
+                        console.warn(`❌ Failed to load from ${path}:`, error.message);
+                        pathIndex++;
+                        tryLoadPath(); // Try next path
+                    }
+                );
+            }
+            
+            tryLoadPath();
+        }
+        
+        // Extract character parts from VRM for animation
+        function extractCharacterParts(vrmScene) {
+            vrmScene.traverse(function(node) {
+                if (!node.isBone && !node.isMesh) return;
+                
+                const name = node.name.toLowerCase();
+                
+                // Map VRM bones to our animation system
+                if (name.includes('head') || name.includes('face')) {
+                    characterParts.head = node;
+                } else if (name.includes('spine') || name.includes('body') || name.includes('chest')) {
+                    characterParts.body = node;
+                } else if (name.includes('arm') || name.includes('hand')) {
+                    if (name.includes('left') || name.includes('l.')) {
+                        characterParts.leftArm = node;
+                    } else if (name.includes('right') || name.includes('r.')) {
+                        characterParts.rightArm = node;
+                    }
+                } else if (name.includes('leg') || name.includes('foot')) {
+                    if (name.includes('left') || name.includes('l.')) {
+                        characterParts.leftLeg = node;
+                    } else if (name.includes('right') || name.includes('r.')) {
+                        characterParts.rightLeg = node;
+                    }
+                }
+            });
+            
+            console.log('🦴 Character parts extracted:', {
+                head: !!characterParts.head,
+                body: !!characterParts.body,
+                leftArm: !!characterParts.leftArm,
+                rightArm: !!characterParts.rightArm,
+                leftLeg: !!characterParts.leftLeg,
+                rightLeg: !!characterParts.rightLeg
+            });
         }
         
         // Create placeholder character with animatable parts
@@ -780,8 +859,13 @@
                 mixer.update(delta * (0.5 + stats.energy / 100));
             }
             
-            // Update character movement
-            updateMovement(delta);
+            // Update character with pose system
+            if (typeof updateCharacterAnimation === 'function') {
+                updateCharacterAnimation(delta);
+            } else {
+                // Fallback to old movement system
+                updateMovement(delta);
+            }
             
             controls.update();
             renderer.render(scene, camera);
@@ -946,6 +1030,18 @@
         // Select random movement on page load
         window.addEventListener('load', () => {
             setTimeout(selectRandomMovement, 1000);
+        });
+        
+        // Pose button event listeners
+        document.querySelectorAll('.pose-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const pose = btn.dataset.pose;
+                setPose(pose);
+                
+                // Update active state
+                document.querySelectorAll('.pose-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            });
         });
         
         // Simulate stat updates

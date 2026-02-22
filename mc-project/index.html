@@ -14,6 +14,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
     <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         :root {
@@ -64,14 +68,27 @@
 
         /* Kairosoft Pixel Header */
         .pixel-header {
-            background: linear-gradient(180deg, #2d1b4e 0%, #1a1a2e 100%);
+            background: linear-gradient(180deg, #4d3b6e 0%, #3d2b5e 50%, #2d1b4e 100%);
             border-bottom: 4px solid var(--pixel-cyan);
             padding: 1rem 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 4px 0 #000;
+            box-shadow: 
+                0 4px 0 #000,
+                inset 0 2px 0 rgba(255,255,255,0.1);
             position: relative;
+        }
+
+        .pixel-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 50%;
+            background: linear-gradient(180deg, rgba(255,255,255,0.1) 0%, transparent 100%);
+            pointer-events: none;
         }
 
         .pixel-header::after {
@@ -135,7 +152,50 @@
             padding: 2rem;
         }
 
+        /* Mobile Navigation Toggle */
+        .mobile-menu-toggle {
+            display: none;
+            font-size: 20px;
+            background: none;
+            border: 2px solid var(--pixel-cyan);
+            color: var(--pixel-cyan);
+            padding: 0.5rem;
+            cursor: pointer;
+            font-family: var(--font-pixel);
+        }
+
         @media (max-width: 900px) {
+            .mobile-menu-toggle {
+                display: block;
+            }
+
+            .pixel-nav {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--pixel-dark);
+                flex-direction: column;
+                padding: 1rem;
+                border-bottom: 4px solid var(--pixel-cyan);
+                transform: translateY(-100%);
+                opacity: 0;
+                pointer-events: none;
+                transition: all 0.3s;
+                z-index: 1000;
+            }
+
+            .pixel-nav.active {
+                transform: translateY(0);
+                opacity: 1;
+                pointer-events: all;
+            }
+
+            .pixel-nav a, .pixel-nav button {
+                width: 100%;
+                text-align: center;
+                margin: 0.25rem 0;
+            }
             .main-container {
                 grid-template-columns: 1fr;
             }
@@ -283,16 +343,31 @@
             font-family: var(--font-pixel);
             font-size: 8px;
             padding: 0.75rem 1rem;
-            border: 2px solid var(--pixel-cyan);
-            background: rgba(0,212,255,0.1);
+            border: 3px solid var(--pixel-cyan);
+            background: linear-gradient(180deg, rgba(0,212,255,0.2) 0%, rgba(0,212,255,0.05) 100%);
             color: var(--pixel-cyan);
             cursor: pointer;
             transition: all 0.1s;
-            box-shadow: 2px 2px 0 #000;
+            box-shadow: 
+                3px 3px 0 #000,
+                inset 1px 1px 0 rgba(255,255,255,0.2),
+                inset -1px -1px 0 rgba(0,0,0,0.3);
             position: relative;
             overflow: hidden;
             will-change: transform, box-shadow;
             transform: translateZ(0);
+            text-shadow: 1px 1px 0 #000;
+        }
+
+        .pixel-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 50%;
+            background: linear-gradient(180deg, rgba(255,255,255,0.1) 0%, transparent 100%);
+            pointer-events: none;
         }
 
         .pixel-btn::before {
@@ -457,17 +532,42 @@
         }
 
         .pixel-card {
-            background: linear-gradient(135deg, #2d1b4e, #1a1a2e);
-            border: 4px solid #333;
-            border-radius: 8px;
+            background: linear-gradient(180deg, #3d2b5e 0%, #2d1b4e 50%, #1a1a2e 100%);
+            border: 4px solid #4a4a5e;
+            border-radius: 4px;
             padding: 1.5rem;
-            box-shadow: 8px 8px 0 #000;
+            box-shadow: 
+                6px 6px 0 #000,
+                inset 2px 2px 0 rgba(255,255,255,0.1),
+                inset -2px -2px 0 rgba(0,0,0,0.3);
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.15s;
             position: relative;
             overflow: hidden;
             will-change: transform, box-shadow;
             transform: translateZ(0);
+        }
+
+        .pixel-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 40%;
+            background: linear-gradient(180deg, rgba(255,255,255,0.08) 0%, transparent 100%);
+            pointer-events: none;
+            border-radius: 2px 2px 0 0;
+        }
+
+        .pixel-card::after {
+            content: '';
+            position: absolute;
+            bottom: 4px;
+            left: 4px;
+            right: 4px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
         }
 
         .pixel-card::before {
@@ -487,8 +587,9 @@
 
         .pixel-card:hover {
             border-color: var(--pixel-cyan);
-            transform: translate(-2px, -2px);
-            box-shadow: 10px 10px 0 #000;
+            transform: translate(-4px, -4px) scale(1.02);
+            box-shadow: 12px 12px 0 #000, 0 0 30px rgba(0, 212, 255, 0.3);
+            z-index: 10;
         }
 
         .pixel-card:active {
@@ -558,19 +659,21 @@
         }
 
         .pixel-progress {
-            height: 20px;
-            background: #0f0f1a;
-            border: 2px solid #333;
+            height: 24px;
+            background: #0a0a15;
+            border: 3px solid #4a4a5e;
             border-radius: 4px;
             overflow: hidden;
             position: relative;
+            box-shadow: inset 2px 2px 4px rgba(0,0,0,0.5);
         }
 
         .pixel-progress-fill {
             height: 100%;
-            background: linear-gradient(90deg, var(--pixel-cyan), var(--pixel-green));
+            background: linear-gradient(180deg, #00f4ff 0%, #00a4cc 50%, #0084aa 100%);
             transition: width 0.3s ease;
             position: relative;
+            box-shadow: inset 1px 1px 0 rgba(255,255,255,0.3);
         }
 
         .pixel-progress-fill::after {
@@ -579,8 +682,24 @@
             top: 0;
             left: 0;
             right: 0;
-            bottom: 0;
-            background: repeating-linear-gradient(90deg, transparent 0px, transparent 4px, rgba(0,0,0,0.2) 4px, rgba(0,0,0,0.2) 8px);
+            height: 40%;
+            background: linear-gradient(180deg, rgba(255,255,255,0.4) 0%, transparent 100%);
+        }
+
+        .pixel-progress-fill::before {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            right: 2px;
+            bottom: 2px;
+            background: repeating-linear-gradient(
+                90deg,
+                transparent 0px,
+                transparent 8px,
+                rgba(0,0,0,0.1) 8px,
+                rgba(0,0,0,0.1) 16px
+            );
         }
 
         /* Growth Panel */
@@ -1150,7 +1269,8 @@
     <!-- Pixel Header -->
     <header class="pixel-header">
         <div class="pixel-logo">MC PROJECT</div>
-        <nav class="pixel-nav">
+        <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">☰ MENU</button>
+        <nav class="pixel-nav" id="mainNav">
             <a href="#character" class="active">CHARACTER</a>
             <a href="#health">HEALTH</a>
             <a href="#wealth">WEALTH</a>
@@ -2416,38 +2536,142 @@
         }
 
         function loadVRM() {
-            // Show fallback immediately while VRM loads in background
-            console.log('🎭 Loading VRM #11318 in background...');
+            console.log('🎭 Loading VRM #11318...');
 
-            // Create fallback first so user sees something immediately
-            createFallbackCharacter();
+            // Show loading
+            document.getElementById('loadingOverlay').classList.remove('hidden');
+            document.querySelector('.loading-text').textContent = 'LOADING VRM #11318...';
 
-            // Try to load VRM in background
+            // Check if VRM library loaded
             if (typeof THREE.VRM === 'undefined') {
-                console.warn('⚠️ THREE.VRM not loaded, keeping fallback');
-                document.getElementById('loadingOverlay').classList.add('hidden');
+                console.warn('⚠️ THREE.VRM not loaded, using GLTF fallback');
+                loadVRMWithGLTF();
                 return;
             }
 
             const loader = new THREE.GLTFLoader();
 
-            // Use a reliable CORS proxy
-            const vrmUrl = 'https://api.allorigins.win/raw?url=' + encodeURIComponent('https://files.meebits.app/vrm/11318.vrm');
+            // Try local file first, then CORS proxies
+            const vrmUrls = [
+                'assets/character.vrm', // Local file first
+                './assets/character.vrm',
+                'https://airickeff-af.github.io/mc-project/assets/character.vrm',
+                'https://api.allorigins.win/raw?url=' + encodeURIComponent('https://files.meebits.app/vrm/11318.vrm'),
+                'https://corsproxy.io/?' + encodeURIComponent('https://files.meebits.app/vrm/11318.vrm')
+            ];
 
-            console.log('🔄 Loading VRM:', vrmUrl.substring(0, 50) + '...');
+            let urlIndex = 0;
 
-            loader.load(
-                vrmUrl,
-                function(gltf) {
-                    console.log('✅ GLTF loaded, converting to VRM...');
+            function tryLoadVRM() {
+                if (urlIndex >= vrmUrls.length) {
+                    console.warn('⚠️ All VRM URLs failed, using GLTF fallback');
+                    loadVRMWithGLTF();
+                    return;
+                }
 
-                    THREE.VRM.from(gltf).then((vrm) => {
-                        console.log('✅ VRM #11318 loaded!');
+                const vrmUrl = vrmUrls[urlIndex];
+                urlIndex++;
 
-                        // Remove fallback
+                console.log('🔄 Trying VRM URL #' + urlIndex + ':', vrmUrl.substring(0, 50) + '...');
+                document.querySelector('.loading-text').textContent = `LOADING VRM #11318... (Attempt ${urlIndex})`;
+
+                loader.load(
+                    vrmUrl,
+                    function(gltf) {
+                        console.log('✅ GLTF loaded, converting to VRM...');
+
+                        THREE.VRM.from(gltf).then((vrm) => {
+                            console.log('✅ VRM #11318 loaded successfully!');
+
+                            // Remove any existing character
+                            if (character) scene.remove(character);
+
+                            character = vrm.scene;
+                            character.scale.set(0.4, 0.4, 0.4);
+                            character.position.set(0, -0.5, 0);
+
+                            // Enable shadows
+                            character.traverse((child) => {
+                                if (child.isMesh) {
+                                    child.castShadow = true;
+                                    child.receiveShadow = true;
+                                }
+                            });
+
+                            scene.add(character);
+                            window.currentVRM = vrm;
+
+                            // Hide loading
+                            document.getElementById('loadingOverlay').classList.add('hidden');
+                            showNotification('✅ VRM #11318 LOADED!');
+
+                            // Start pose animation
+                            applyPose(0);
+
+                        }).catch((error) => {
+                            console.warn('⚠️ VRM conversion failed:', error);
+                            tryLoadVRM(); // Try next URL
+                        });
+                    },
+                    function(xhr) {
+                        if (xhr.total > 0) {
+                            const percent = Math.round((xhr.loaded / xhr.total) * 100);
+                            document.querySelector('.loading-text').textContent = `LOADING VRM #11318... ${percent}%`;
+                        }
+                    },
+                    function(error) {
+                        console.warn('⚠️ VRM load failed:', error.message);
+                        tryLoadVRM(); // Try next URL
+                    }
+                );
+            }
+
+            // Start loading
+            tryLoadVRM();
+
+            // Timeout fallback after 15 seconds
+            setTimeout(() => {
+                if (!window.currentVRM) {
+                    console.warn('⏱️ VRM loading timeout, switching to fallback');
+                    loadVRMWithGLTF();
+                }
+            }, 15000);
+        }
+
+        // Fallback GLTF loader without VRM conversion
+        function loadVRMWithGLTF() {
+            const loader = new THREE.GLTFLoader();
+            const vrmUrls = [
+                'assets/character.vrm',
+                './assets/character.vrm',
+                'https://airickeff-af.github.io/mc-project/assets/character.vrm',
+                'https://api.allorigins.win/raw?url=' + encodeURIComponent('https://files.meebits.app/vrm/11318.vrm'),
+                'https://corsproxy.io/?' + encodeURIComponent('https://files.meebits.app/vrm/11318.vrm')
+            ];
+
+            let urlIndex = 0;
+
+            function tryLoadGLTF() {
+                if (urlIndex >= vrmUrls.length) {
+                    console.warn('⚠️ All GLTF URLs failed, creating fallback');
+                    createFallbackCharacter();
+                    return;
+                }
+
+                const vrmUrl = vrmUrls[urlIndex];
+                urlIndex++;
+
+                console.log('🔄 Trying GLTF URL #' + urlIndex + ':', vrmUrl.substring(0, 50) + '...');
+                document.querySelector('.loading-text').textContent = `LOADING MODEL... (Attempt ${urlIndex})`;
+
+                loader.load(
+                    vrmUrl,
+                    function(gltf) {
+                        console.log('✅ GLTF loaded successfully');
+
                         if (character) scene.remove(character);
 
-                        character = vrm.scene;
+                        character = gltf.scene;
                         character.scale.set(0.4, 0.4, 0.4);
                         character.position.set(0, -0.5, 0);
 
@@ -2455,76 +2679,36 @@
                             if (child.isMesh) {
                                 child.castShadow = true;
                                 child.receiveShadow = true;
-
-                                // Remove blue/cyan artifacts (floating planes)
-                                const color = child.material?.color;
-                                if (color) {
-                                    const hex = color.getHex();
-                                    // Check for bright blue/cyan colors (artifacts)
-                                    if (hex === 0x00d4ff || hex === 0x4ecdc4 || hex === 0x00ffff) {
-                                        console.log('🧹 Removing blue artifact:', child.name);
-                                        child.visible = false;
-                                    }
-                                }
                             }
                         });
 
                         scene.add(character);
-                        window.currentVRM = vrm;
-
-                        showNotification('✅ VRM #11318 LOADED!');
-                    }).catch((error) => {
-                        console.warn('⚠️ VRM conversion failed, keeping fallback:', error);
-                    });
-                },
-                function(xhr) {
-                    if (xhr.total > 0) {
-                        const percent = Math.round((xhr.loaded / xhr.total) * 100);
-                        console.log('VRM loading: ' + percent + '%');
-                    }
-                },
-                function(error) {
-                    console.warn('⚠️ VRM load failed, keeping fallback:', error.message);
-                }
-            );
-
-            // Hide loading overlay immediately (fallback is showing)
-            document.getElementById('loadingOverlay').classList.add('hidden');
-        }
-
-        // Fallback GLTF loader without VRM conversion
-        function loadVRMWithGLTF() {
-            const loader = new THREE.GLTFLoader();
-            const vrmUrl = 'https://api.allorigins.win/raw?url=' + encodeURIComponent('https://files.meebits.app/vrm/11318.vrm');
-
-            loader.load(
-                vrmUrl,
-                function(gltf) {
-                    console.log('✅ GLTF loaded (no VRM conversion)');
-
-                    if (character) scene.remove(character);
-
-                    character = gltf.scene;
-                    character.scale.set(0.4, 0.4, 0.4);
-                    character.position.set(0, -0.5, 0);
-
-                    character.traverse((child) => {
-                        if (child.isMesh) {
-                            child.castShadow = true;
-                            child.receiveShadow = true;
+                        document.getElementById('loadingOverlay').classList.add('hidden');
+                        showNotification('✅ MODEL LOADED!');
+                        applyPose(0);
+                    },
+                    function(xhr) {
+                        if (xhr.total > 0) {
+                            const percent = Math.round((xhr.loaded / xhr.total) * 100);
+                            document.querySelector('.loading-text').textContent = `LOADING MODEL... ${percent}%`;
                         }
-                    });
+                    },
+                    function(error) {
+                        console.warn('⚠️ GLTF load failed:', error.message);
+                        tryLoadGLTF();
+                    }
+                );
+            }
 
-                    scene.add(character);
-                    document.getElementById('loadingOverlay').classList.add('hidden');
-                    showNotification('✅ MODEL LOADED!');
-                },
-                undefined,
-                function(error) {
-                    console.warn('⚠️ GLTF load failed:', error);
+            tryLoadGLTF();
+
+            // Timeout after 10 seconds
+            setTimeout(() => {
+                if (!character) {
+                    console.warn('⏱️ GLTF loading timeout, creating fallback');
                     createFallbackCharacter();
                 }
-            );
+            }, 10000);
         }
 
         function createFallbackCharacter() {
@@ -2785,6 +2969,19 @@
         // Track logins
         const totalLogins = parseInt(localStorage.getItem('mc_total_logins') || '0') + 1;
         localStorage.setItem('mc_total_logins', totalLogins.toString());
+
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const nav = document.getElementById('mainNav');
+            nav.classList.toggle('active');
+        }
+
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('.pixel-nav a').forEach(link => {
+            link.addEventListener('click', () => {
+                document.getElementById('mainNav').classList.remove('active');
+            });
+        });
 
         // P1-043: Easter eggs
         const easterEggs = {

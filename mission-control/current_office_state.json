@@ -1,9 +1,9 @@
 {
-    "timestamp": "2026-02-22T00:00:06+08:00",
-    "hour": 00,
-    "state": "night_ops",
-    "zone": "ops_center",
-    "description": "Night operations - Sentry/Cipher monitoring",
+    "timestamp": "2026-02-22T16:00:13+08:00",
+    "hour": 16,
+    "state": "review_qa",
+    "zone": "qa_station",
+    "description": "Review and QA session",
     "positions": {
         "air1ck3ff": "command_center",
         "glasses": "content_desk",
