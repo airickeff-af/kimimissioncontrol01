@@ -4,9 +4,16 @@
   "builds": [
     { "src": "*.html", "use": "@vercel/static" },
     { "src": "dashboard/*.html", "use": "@vercel/static" },
+    { "src": "mission-control/api/**/*.js", "use": "@vercel/node" },
     { "src": "api/**/*.js", "use": "@vercel/node" }
   ],
   "rewrites": [
+    { "source": "/api/leads", "destination": "/mission-control/api/leads.js" },
+    { "source": "/api/agents", "destination": "/mission-control/api/agents.js" },
+    { "source": "/api/tasks", "destination": "/mission-control/api/tasks.js" },
+    { "source": "/api/stats", "destination": "/mission-control/api/stats.js" },
+    { "source": "/api/health", "destination": "/mission-control/api/health.js" },
+    { "source": "/api/metrics", "destination": "/mission-control/api/metrics.js" },
     { "source": "/api/(.*)", "destination": "/api/$1" },
     { "source": "/agents", "destination": "/agents.html" },
     { "source": "/tasks", "destination": "/task-board.html" },
@@ -43,6 +50,9 @@
   ],
   "functions": {
     "api/**/*.js": {
+      "maxDuration": 10
+    },
+    "mission-control/api/**/*.js": {
       "maxDuration": 10
     }
   }
