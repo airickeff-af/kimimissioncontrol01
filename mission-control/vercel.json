@@ -11,6 +11,7 @@
     {"src": "/api/stats", "dest": "/api/stats.js"},
     {"src": "/api/metrics", "dest": "/api/metrics.js"},
     {"src": "/api/config", "dest": "/api/config.js"},
+    {"src": "/api/leads", "dest": "/api/leads.js"},
     {"src": "/api/(.*)", "dest": "/api/$1.js"},
     {"src": "/(.*)", "dest": "/$1"}
   ]
