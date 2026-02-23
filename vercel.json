@@ -8,7 +8,7 @@
     { "src": "api/**/*.js", "use": "@vercel/node" }
   ],
   "rewrites": [
-    { "source": "/api/leads", "destination": "/mission-control/api/leads.js" },
+    { "source": "/api/leads", "destination": "/api/leads.js" },
     { "source": "/api/agents", "destination": "/mission-control/api/agents.js" },
     { "source": "/api/tasks", "destination": "/mission-control/api/tasks.js" },
     { "source": "/api/stats", "destination": "/mission-control/api/stats.js" },
