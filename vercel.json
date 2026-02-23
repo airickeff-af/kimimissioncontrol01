@@ -1,1 +1,1 @@
-{"version":2,"name":"mission-control-dashboard","builds":[{"src":"*.html","use":"@vercel/static"},{"src":"api/**/*.js","use":"@vercel/node"}],"rewrites":[{"source":"/","destination":"/index.html"},{"source":"/api/(.*)","destination":"/api/$1"}]}
+{"version":2,"builds":[{"src":"mission-control/*.html","use":"@vercel/static"},{"src":"mission-control/api/**/*.js","use":"@vercel/node"}],"routes":[{"src":"/api/(.*)","dest":"/mission-control/api/$1"},{"src":"/(.*)","dest":"/mission-control/$1"}]}
