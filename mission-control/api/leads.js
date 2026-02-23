@@ -19,19 +19,32 @@ module.exports = (req, res) => {
   try {
     const { region } = req.query;
     
-    // Define paths to lead files
-    const leadsDir = path.join(process.cwd(), 'mission-control', 'data', 'leads');
-    const hkFile = path.join(leadsDir, 'hongkong-leads.json');
-    const sgFile = path.join(leadsDir, 'singapore-leads.json');
+    // Try multiple possible paths for leads data
+    const possiblePaths = [
+      path.join(process.cwd(), 'data', 'leads'),
+      path.join(process.cwd(), 'mission-control', 'data', 'leads'),
+      path.join(__dirname, '..', 'data', 'leads'),
+      '/var/task/data/leads'
+    ];
+    
+    let leadsDir = null;
+    for (const p of possiblePaths) {
+      if (fs.existsSync(p)) {
+        leadsDir = p;
+        break;
+      }
+    }
     
     let response = {
       success: true,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
+      debug: { cwd: process.cwd(), foundPath: leadsDir }
     };
 
     // Load Hong Kong leads
     if (!region || region === 'hongkong' || region === 'hk') {
-      if (fs.existsSync(hkFile)) {
+      const hkFile = leadsDir ? path.join(leadsDir, 'hongkong-leads.json') : null;
+      if (hkFile && fs.existsSync(hkFile)) {
         const hkData = JSON.parse(fs.readFileSync(hkFile, 'utf8'));
         response.hongkong = {
           metadata: hkData.metadata,
@@ -39,13 +52,19 @@ module.exports = (req, res) => {
           leads: hkData.leads || []
         };
       } else {
-        response.hongkong = { error: 'File not found', count: 0, leads: [] };
+        response.hongkong = { 
+          error: 'File not found', 
+          searchedPaths: possiblePaths.map(p => path.join(p, 'hongkong-leads.json')),
+          count: 0, 
+          leads: [] 
+        };
       }
     }
 
     // Load Singapore leads
     if (!region || region === 'singapore' || region === 'sg') {
-      if (fs.existsSync(sgFile)) {
+      const sgFile = leadsDir ? path.join(leadsDir, 'singapore-leads.json') : null;
+      if (sgFile && fs.existsSync(sgFile)) {
         const sgData = JSON.parse(fs.readFileSync(sgFile, 'utf8'));
         response.singapore = {
           metadata: sgData.metadata,
@@ -53,7 +72,11 @@ module.exports = (req, res) => {
           leads: sgData.leads || []
         };
       } else {
-        response.singapore = { error: 'File not found', count: 0, leads: [] };
+        response.singapore = { 
+          error: 'File not found', 
+          count: 0, 
+          leads: [] 
+        };
       }
     }
 
@@ -74,6 +97,7 @@ module.exports = (req, res) => {
     res.status(500).json({
       success: false,
       error: error.message,
+      stack: error.stack,
       timestamp: new Date().toISOString()
     });
   }
