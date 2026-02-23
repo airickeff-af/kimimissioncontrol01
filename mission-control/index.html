@@ -277,20 +277,36 @@
         // Real API Integration
         async function loadData() {
             try {
-                const [agentsRes, statsRes] = await Promise.all([
-                    fetch('/api/agents'),
-                    fetch('/api/stats')
-                ]);
+                // Fetch agents and stats independently
+                let agents = [];
+                let stats = {};
                 
-                const agentsData = await agentsRes.json();
-                const statsData = await statsRes.json();
+                try {
+                    const agentsRes = await fetch('/api/agents');
+                    if (agentsRes.ok) {
+                        const agentsData = await agentsRes.json();
+                        agents = agentsData.agents || [];
+                    }
+                } catch (e) {
+                    console.error('Agents API Error:', e);
+                }
                 
-                renderAgents(agentsData.agents || []);
-                updateStats(statsData.stats || {});
+                try {
+                    const statsRes = await fetch('/api/stats');
+                    if (statsRes.ok) {
+                        const statsData = await statsRes.json();
+                        stats = statsData.stats || {};
+                    }
+                } catch (e) {
+                    console.error('Stats API Error:', e);
+                }
+                
+                renderAgents(agents);
+                updateStats(stats);
             } catch (error) {
-                console.error('API Error:', error);
+                console.error('LoadData Error:', error);
                 document.getElementById('agentGrid').innerHTML = 
-                    '<div class="loading">⚠️ API Error. Retrying...</div>';
+                    '<div class="loading">⚠️ Error loading data. <button onclick="loadData()" style="margin-left:10px;padding:5px 10px;background:#00d4ff;border:none;border-radius:4px;cursor:pointer;">Retry</button></div>';
             }
         }
 
